@@ -39,7 +39,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ClinicalUseDefinition] resource type. */
 public object ClinicalUseDefinitionSearchParams {
-  public val Contraindication: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+  public val contraindication: SearchParam<ClinicalUseDefinition, CodeableConcept> =
     SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
       name = "contraindication",
       type = SearchParamType.fromCode("token"),
@@ -49,7 +49,7 @@ public object ClinicalUseDefinitionSearchParams {
       },
     )
 
-  public val ContraindicationReference: SearchParam<ClinicalUseDefinition, Reference> =
+  public val contraindicationReference: SearchParam<ClinicalUseDefinition, Reference> =
     SimpleSearchParam<ClinicalUseDefinition, Reference>(
       name = "contraindication-reference",
       type = SearchParamType.fromCode("reference"),
@@ -60,7 +60,7 @@ public object ClinicalUseDefinitionSearchParams {
       },
     )
 
-  public val Effect: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+  public val effect: SearchParam<ClinicalUseDefinition, CodeableConcept> =
     SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
       name = "effect",
       type = SearchParamType.fromCode("token"),
@@ -70,7 +70,7 @@ public object ClinicalUseDefinitionSearchParams {
       },
     )
 
-  public val EffectReference: SearchParam<ClinicalUseDefinition, Reference> =
+  public val effectReference: SearchParam<ClinicalUseDefinition, Reference> =
     SimpleSearchParam<ClinicalUseDefinition, Reference>(
       name = "effect-reference",
       type = SearchParamType.fromCode("reference"),
@@ -81,7 +81,7 @@ public object ClinicalUseDefinitionSearchParams {
       },
     )
 
-  public val Identifier: SearchParam<ClinicalUseDefinition, Identifier> =
+  public val identifier: SearchParam<ClinicalUseDefinition, Identifier> =
     SimpleSearchParam<ClinicalUseDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -89,7 +89,7 @@ public object ClinicalUseDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Indication: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+  public val indication: SearchParam<ClinicalUseDefinition, CodeableConcept> =
     SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
       name = "indication",
       type = SearchParamType.fromCode("token"),
@@ -99,7 +99,7 @@ public object ClinicalUseDefinitionSearchParams {
       },
     )
 
-  public val IndicationReference: SearchParam<ClinicalUseDefinition, Reference> =
+  public val indicationReference: SearchParam<ClinicalUseDefinition, Reference> =
     SimpleSearchParam<ClinicalUseDefinition, Reference>(
       name = "indication-reference",
       type = SearchParamType.fromCode("reference"),
@@ -110,7 +110,7 @@ public object ClinicalUseDefinitionSearchParams {
       },
     )
 
-  public val Interaction: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+  public val interaction: SearchParam<ClinicalUseDefinition, CodeableConcept> =
     SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
       name = "interaction",
       type = SearchParamType.fromCode("token"),
@@ -118,7 +118,7 @@ public object ClinicalUseDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.interaction?.type) },
     )
 
-  public val Product: SearchParam<ClinicalUseDefinition, Reference> =
+  public val product: SearchParam<ClinicalUseDefinition, Reference> =
     SimpleSearchParam<ClinicalUseDefinition, Reference>(
       name = "product",
       type = SearchParamType.fromCode("reference"),
@@ -131,7 +131,7 @@ public object ClinicalUseDefinitionSearchParams {
       },
     )
 
-  public val Status: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+  public val status: SearchParam<ClinicalUseDefinition, CodeableConcept> =
     SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -139,7 +139,7 @@ public object ClinicalUseDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Subject: SearchParam<ClinicalUseDefinition, Reference> =
+  public val subject: SearchParam<ClinicalUseDefinition, Reference> =
     SimpleSearchParam<ClinicalUseDefinition, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -159,7 +159,7 @@ public object ClinicalUseDefinitionSearchParams {
       extractor = { resource -> resource.subject },
     )
 
-  public val Type: SearchParam<ClinicalUseDefinition, Any> =
+  public val type: SearchParam<ClinicalUseDefinition, Any> =
     SimpleSearchParam<ClinicalUseDefinition, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -168,19 +168,19 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   /** All search parameters for the ClinicalUseDefinition resource type. */
-  public val ALL: List<SearchParam<ClinicalUseDefinition, *>> =
+  public val all: List<SearchParam<ClinicalUseDefinition, *>> =
     listOf(
-      Contraindication,
-      ContraindicationReference,
-      Effect,
-      EffectReference,
-      Identifier,
-      Indication,
-      IndicationReference,
-      Interaction,
-      Product,
-      Status,
-      Subject,
-      Type,
+      contraindication,
+      contraindicationReference,
+      effect,
+      effectReference,
+      identifier,
+      indication,
+      indicationReference,
+      interaction,
+      product,
+      status,
+      subject,
+      type,
     )
 }

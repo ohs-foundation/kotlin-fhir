@@ -29,7 +29,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ManufacturedItemDefinition] resource type. */
 public object ManufacturedItemDefinitionSearchParams {
-  public val DoseForm: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
+  public val doseForm: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
     SimpleSearchParam<ManufacturedItemDefinition, CodeableConcept>(
       name = "dose-form",
       type = SearchParamType.fromCode("token"),
@@ -37,7 +37,7 @@ public object ManufacturedItemDefinitionSearchParams {
       extractor = { resource -> listOf(resource.manufacturedDoseForm) },
     )
 
-  public val Identifier: SearchParam<ManufacturedItemDefinition, Identifier> =
+  public val identifier: SearchParam<ManufacturedItemDefinition, Identifier> =
     SimpleSearchParam<ManufacturedItemDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -45,7 +45,7 @@ public object ManufacturedItemDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Ingredient: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
+  public val ingredient: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
     SimpleSearchParam<ManufacturedItemDefinition, CodeableConcept>(
       name = "ingredient",
       type = SearchParamType.fromCode("token"),
@@ -53,7 +53,7 @@ public object ManufacturedItemDefinitionSearchParams {
       extractor = { resource -> resource.ingredient },
     )
 
-  public val Name: SearchParam<ManufacturedItemDefinition, String> =
+  public val name: SearchParam<ManufacturedItemDefinition, String> =
     SimpleSearchParam<ManufacturedItemDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("token"),
@@ -61,7 +61,7 @@ public object ManufacturedItemDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Status: SearchParam<ManufacturedItemDefinition, Any> =
+  public val status: SearchParam<ManufacturedItemDefinition, Any> =
     SimpleSearchParam<ManufacturedItemDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -70,6 +70,6 @@ public object ManufacturedItemDefinitionSearchParams {
     )
 
   /** All search parameters for the ManufacturedItemDefinition resource type. */
-  public val ALL: List<SearchParam<ManufacturedItemDefinition, *>> =
-    listOf(DoseForm, Identifier, Ingredient, Name, Status)
+  public val all: List<SearchParam<ManufacturedItemDefinition, *>> =
+    listOf(doseForm, identifier, ingredient, name, status)
 }

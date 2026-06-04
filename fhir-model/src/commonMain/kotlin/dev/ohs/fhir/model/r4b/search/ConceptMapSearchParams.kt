@@ -37,7 +37,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ConceptMap] resource type. */
 public object ConceptMapSearchParams {
-  public val Context: SearchParam<ConceptMap, CodeableConcept> =
+  public val context: SearchParam<ConceptMap, CodeableConcept> =
     SimpleSearchParam<ConceptMap, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -49,7 +49,7 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<ConceptMap, Quantity> =
+  public val contextQuantity: SearchParam<ConceptMap, Quantity> =
     SimpleSearchParam<ConceptMap, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -59,7 +59,7 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<ConceptMap, Coding> =
+  public val contextType: SearchParam<ConceptMap, Coding> =
     SimpleSearchParam<ConceptMap, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -67,7 +67,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<ConceptMap, UsageContext> =
+  public val contextTypeQuantity: SearchParam<ConceptMap, UsageContext> =
     SimpleSearchParam<ConceptMap, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -75,7 +75,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<ConceptMap, UsageContext> =
+  public val contextTypeValue: SearchParam<ConceptMap, UsageContext> =
     SimpleSearchParam<ConceptMap, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -83,7 +83,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<ConceptMap, DateTime> =
+  public val date: SearchParam<ConceptMap, DateTime> =
     SimpleSearchParam<ConceptMap, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -91,7 +91,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Dependson: SearchParam<ConceptMap, Uri> =
+  public val dependson: SearchParam<ConceptMap, Uri> =
     SimpleSearchParam<ConceptMap, Uri>(
       name = "dependson",
       type = SearchParamType.fromCode("uri"),
@@ -105,7 +105,7 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val Description: SearchParam<ConceptMap, Markdown> =
+  public val description: SearchParam<ConceptMap, Markdown> =
     SimpleSearchParam<ConceptMap, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -113,7 +113,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<ConceptMap, Identifier> =
+  public val identifier: SearchParam<ConceptMap, Identifier> =
     SimpleSearchParam<ConceptMap, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -121,7 +121,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val Jurisdiction: SearchParam<ConceptMap, CodeableConcept> =
+  public val jurisdiction: SearchParam<ConceptMap, CodeableConcept> =
     SimpleSearchParam<ConceptMap, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -129,7 +129,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<ConceptMap, String> =
+  public val name: SearchParam<ConceptMap, String> =
     SimpleSearchParam<ConceptMap, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -137,7 +137,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Other: SearchParam<ConceptMap, Canonical> =
+  public val other: SearchParam<ConceptMap, Canonical> =
     SimpleSearchParam<ConceptMap, Canonical>(
       name = "other",
       type = SearchParamType.fromCode("reference"),
@@ -146,7 +146,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> resource.group.mapNotNull { it.unmapped }.mapNotNull { it.url } },
     )
 
-  public val Product: SearchParam<ConceptMap, Any> =
+  public val product: SearchParam<ConceptMap, Any> =
     SimpleSearchParam<ConceptMap, Any>(
       name = "product",
       type = SearchParamType.fromCode("uri"),
@@ -154,7 +154,7 @@ public object ConceptMapSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Publisher: SearchParam<ConceptMap, String> =
+  public val publisher: SearchParam<ConceptMap, String> =
     SimpleSearchParam<ConceptMap, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -162,7 +162,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Source: SearchParam<ConceptMap, Canonical> =
+  public val source: SearchParam<ConceptMap, Canonical> =
     SimpleSearchParam<ConceptMap, Canonical>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
@@ -173,7 +173,7 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val SourceCode: SearchParam<ConceptMap, Any> =
+  public val sourceCode: SearchParam<ConceptMap, Any> =
     SimpleSearchParam<ConceptMap, Any>(
       name = "source-code",
       type = SearchParamType.fromCode("token"),
@@ -181,7 +181,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> resource.group.flatMap { it.element }.mapNotNull { it.code } },
     )
 
-  public val SourceSystem: SearchParam<ConceptMap, Uri> =
+  public val sourceSystem: SearchParam<ConceptMap, Uri> =
     SimpleSearchParam<ConceptMap, Uri>(
       name = "source-system",
       type = SearchParamType.fromCode("uri"),
@@ -189,7 +189,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> resource.group.mapNotNull { it.source } },
     )
 
-  public val SourceUri: SearchParam<ConceptMap, Uri> =
+  public val sourceUri: SearchParam<ConceptMap, Uri> =
     SimpleSearchParam<ConceptMap, Uri>(
       name = "source-uri",
       type = SearchParamType.fromCode("reference"),
@@ -198,7 +198,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull((resource.source as? ConceptMap.Source.Uri)?.value) },
     )
 
-  public val Status: SearchParam<ConceptMap, Any> =
+  public val status: SearchParam<ConceptMap, Any> =
     SimpleSearchParam<ConceptMap, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -206,7 +206,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Target: SearchParam<ConceptMap, Canonical> =
+  public val target: SearchParam<ConceptMap, Canonical> =
     SimpleSearchParam<ConceptMap, Canonical>(
       name = "target",
       type = SearchParamType.fromCode("reference"),
@@ -217,7 +217,7 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val TargetCode: SearchParam<ConceptMap, Any> =
+  public val targetCode: SearchParam<ConceptMap, Any> =
     SimpleSearchParam<ConceptMap, Any>(
       name = "target-code",
       type = SearchParamType.fromCode("token"),
@@ -227,7 +227,7 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val TargetSystem: SearchParam<ConceptMap, Uri> =
+  public val targetSystem: SearchParam<ConceptMap, Uri> =
     SimpleSearchParam<ConceptMap, Uri>(
       name = "target-system",
       type = SearchParamType.fromCode("uri"),
@@ -235,7 +235,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> resource.group.mapNotNull { it.target } },
     )
 
-  public val TargetUri: SearchParam<ConceptMap, Uri> =
+  public val targetUri: SearchParam<ConceptMap, Uri> =
     SimpleSearchParam<ConceptMap, Uri>(
       name = "target-uri",
       type = SearchParamType.fromCode("reference"),
@@ -244,7 +244,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull((resource.target as? ConceptMap.Target.Uri)?.value) },
     )
 
-  public val Title: SearchParam<ConceptMap, String> =
+  public val title: SearchParam<ConceptMap, String> =
     SimpleSearchParam<ConceptMap, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -252,7 +252,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<ConceptMap, Uri> =
+  public val url: SearchParam<ConceptMap, Uri> =
     SimpleSearchParam<ConceptMap, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -260,7 +260,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<ConceptMap, String> =
+  public val version: SearchParam<ConceptMap, String> =
     SimpleSearchParam<ConceptMap, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -269,33 +269,33 @@ public object ConceptMapSearchParams {
     )
 
   /** All search parameters for the ConceptMap resource type. */
-  public val ALL: List<SearchParam<ConceptMap, *>> =
+  public val all: List<SearchParam<ConceptMap, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Dependson,
-      Description,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Other,
-      Product,
-      Publisher,
-      Source,
-      SourceCode,
-      SourceSystem,
-      SourceUri,
-      Status,
-      Target,
-      TargetCode,
-      TargetSystem,
-      TargetUri,
-      Title,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      dependson,
+      description,
+      identifier,
+      jurisdiction,
+      name,
+      other,
+      product,
+      publisher,
+      source,
+      sourceCode,
+      sourceSystem,
+      sourceUri,
+      status,
+      target,
+      targetCode,
+      targetSystem,
+      targetUri,
+      title,
+      url,
+      version,
     )
 }

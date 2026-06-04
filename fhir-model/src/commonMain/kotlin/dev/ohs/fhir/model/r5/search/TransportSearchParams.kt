@@ -27,7 +27,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Transport] resource type. */
 public object TransportSearchParams {
-  public val Identifier: SearchParam<Transport, Identifier> =
+  public val identifier: SearchParam<Transport, Identifier> =
     SimpleSearchParam<Transport, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -35,7 +35,7 @@ public object TransportSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Status: SearchParam<Transport, Any> =
+  public val status: SearchParam<Transport, Any> =
     SimpleSearchParam<Transport, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -44,5 +44,5 @@ public object TransportSearchParams {
     )
 
   /** All search parameters for the Transport resource type. */
-  public val ALL: List<SearchParam<Transport, *>> = listOf(Identifier, Status)
+  public val all: List<SearchParam<Transport, *>> = listOf(identifier, status)
 }

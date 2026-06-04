@@ -35,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [SearchParameter] resource type. */
 public object SearchParameterSearchParams {
-  public val Base: SearchParam<SearchParameter, Any> =
+  public val base: SearchParam<SearchParameter, Any> =
     SimpleSearchParam<SearchParameter, Any>(
       name = "base",
       type = SearchParamType.fromCode("token"),
@@ -43,7 +43,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> resource.base },
     )
 
-  public val Code: SearchParam<SearchParameter, Any> =
+  public val code: SearchParam<SearchParameter, Any> =
     SimpleSearchParam<SearchParameter, Any>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -51,7 +51,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOf(resource.code) },
     )
 
-  public val Component: SearchParam<SearchParameter, Canonical> =
+  public val component: SearchParam<SearchParameter, Canonical> =
     SimpleSearchParam<SearchParameter, Canonical>(
       name = "component",
       type = SearchParamType.fromCode("reference"),
@@ -60,7 +60,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> resource.component.map { it.definition } },
     )
 
-  public val Context: SearchParam<SearchParameter, CodeableConcept> =
+  public val context: SearchParam<SearchParameter, CodeableConcept> =
     SimpleSearchParam<SearchParameter, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -72,7 +72,7 @@ public object SearchParameterSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<SearchParameter, Quantity> =
+  public val contextQuantity: SearchParam<SearchParameter, Quantity> =
     SimpleSearchParam<SearchParameter, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -82,7 +82,7 @@ public object SearchParameterSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<SearchParameter, Coding> =
+  public val contextType: SearchParam<SearchParameter, Coding> =
     SimpleSearchParam<SearchParameter, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -90,7 +90,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<SearchParameter, UsageContext> =
+  public val contextTypeQuantity: SearchParam<SearchParameter, UsageContext> =
     SimpleSearchParam<SearchParameter, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -98,7 +98,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<SearchParameter, UsageContext> =
+  public val contextTypeValue: SearchParam<SearchParameter, UsageContext> =
     SimpleSearchParam<SearchParameter, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -106,7 +106,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<SearchParameter, DateTime> =
+  public val date: SearchParam<SearchParameter, DateTime> =
     SimpleSearchParam<SearchParameter, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -114,7 +114,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val DerivedFrom: SearchParam<SearchParameter, Canonical> =
+  public val derivedFrom: SearchParam<SearchParameter, Canonical> =
     SimpleSearchParam<SearchParameter, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
@@ -123,7 +123,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOfNotNull(resource.derivedFrom) },
     )
 
-  public val Description: SearchParam<SearchParameter, Markdown> =
+  public val description: SearchParam<SearchParameter, Markdown> =
     SimpleSearchParam<SearchParameter, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -131,7 +131,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOf(resource.description) },
     )
 
-  public val Jurisdiction: SearchParam<SearchParameter, CodeableConcept> =
+  public val jurisdiction: SearchParam<SearchParameter, CodeableConcept> =
     SimpleSearchParam<SearchParameter, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -139,7 +139,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<SearchParameter, String> =
+  public val name: SearchParam<SearchParameter, String> =
     SimpleSearchParam<SearchParameter, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -147,7 +147,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOf(resource.name) },
     )
 
-  public val Publisher: SearchParam<SearchParameter, String> =
+  public val publisher: SearchParam<SearchParameter, String> =
     SimpleSearchParam<SearchParameter, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -155,7 +155,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<SearchParameter, Any> =
+  public val status: SearchParam<SearchParameter, Any> =
     SimpleSearchParam<SearchParameter, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -163,7 +163,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Target: SearchParam<SearchParameter, Any> =
+  public val target: SearchParam<SearchParameter, Any> =
     SimpleSearchParam<SearchParameter, Any>(
       name = "target",
       type = SearchParamType.fromCode("token"),
@@ -171,7 +171,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> resource.target },
     )
 
-  public val Type: SearchParam<SearchParameter, Any> =
+  public val type: SearchParam<SearchParameter, Any> =
     SimpleSearchParam<SearchParameter, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -179,7 +179,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOf(resource.type) },
     )
 
-  public val Url: SearchParam<SearchParameter, Uri> =
+  public val url: SearchParam<SearchParameter, Uri> =
     SimpleSearchParam<SearchParameter, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -187,7 +187,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOf(resource.url) },
     )
 
-  public val Version: SearchParam<SearchParameter, String> =
+  public val version: SearchParam<SearchParameter, String> =
     SimpleSearchParam<SearchParameter, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -196,26 +196,26 @@ public object SearchParameterSearchParams {
     )
 
   /** All search parameters for the SearchParameter resource type. */
-  public val ALL: List<SearchParam<SearchParameter, *>> =
+  public val all: List<SearchParam<SearchParameter, *>> =
     listOf(
-      Base,
-      Code,
-      Component,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      DerivedFrom,
-      Description,
-      Jurisdiction,
-      Name,
-      Publisher,
-      Status,
-      Target,
-      Type,
-      Url,
-      Version,
+      base,
+      code,
+      component,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      derivedFrom,
+      description,
+      jurisdiction,
+      name,
+      publisher,
+      status,
+      target,
+      type,
+      url,
+      version,
     )
 }

@@ -19,6 +19,7 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.Identifier
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Period
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.ResearchStudy
@@ -30,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ResearchSubject] resource type. */
 public object ResearchSubjectSearchParams {
-  public val Date: SearchParam<ResearchSubject, Period> =
+  public val date: SearchParam<ResearchSubject, Period> =
     SimpleSearchParam<ResearchSubject, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -38,7 +39,7 @@ public object ResearchSubjectSearchParams {
       extractor = { resource -> listOfNotNull(resource.period) },
     )
 
-  public val Identifier: SearchParam<ResearchSubject, Identifier> =
+  public val identifier: SearchParam<ResearchSubject, Identifier> =
     SimpleSearchParam<ResearchSubject, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -46,25 +47,25 @@ public object ResearchSubjectSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Individual: SearchParam<ResearchSubject, Reference> =
+  public val individual: SearchParam<ResearchSubject, Reference> =
     SimpleSearchParam<ResearchSubject, Reference>(
       name = "individual",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchSubject.individual",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.individual) },
     )
 
-  public val Patient: SearchParam<ResearchSubject, Reference> =
+  public val patient: SearchParam<ResearchSubject, Reference> =
     SimpleSearchParam<ResearchSubject, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchSubject.individual",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.individual) },
     )
 
-  public val Status: SearchParam<ResearchSubject, Any> =
+  public val status: SearchParam<ResearchSubject, Any> =
     SimpleSearchParam<ResearchSubject, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -72,7 +73,7 @@ public object ResearchSubjectSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Study: SearchParam<ResearchSubject, Reference> =
+  public val study: SearchParam<ResearchSubject, Reference> =
     SimpleSearchParam<ResearchSubject, Reference>(
       name = "study",
       type = SearchParamType.fromCode("reference"),
@@ -82,6 +83,6 @@ public object ResearchSubjectSearchParams {
     )
 
   /** All search parameters for the ResearchSubject resource type. */
-  public val ALL: List<SearchParam<ResearchSubject, *>> =
-    listOf(Date, Identifier, Individual, Patient, Status, Study)
+  public val all: List<SearchParam<ResearchSubject, *>> =
+    listOf(date, identifier, individual, patient, status, study)
 }

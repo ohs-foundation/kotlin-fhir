@@ -176,7 +176,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Measure] resource type. */
 public object MeasureSearchParams {
-  public val ComposedOf: SearchParam<Measure, Canonical> =
+  public val composedOf: SearchParam<Measure, Canonical> =
     SimpleSearchParam<Measure, Canonical>(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
@@ -331,7 +331,7 @@ public object MeasureSearchParams {
       },
     )
 
-  public val Context: SearchParam<Measure, CodeableConcept> =
+  public val context: SearchParam<Measure, CodeableConcept> =
     SimpleSearchParam<Measure, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -343,7 +343,7 @@ public object MeasureSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<Measure, Quantity> =
+  public val contextQuantity: SearchParam<Measure, Quantity> =
     SimpleSearchParam<Measure, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -353,7 +353,7 @@ public object MeasureSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<Measure, Coding> =
+  public val contextType: SearchParam<Measure, Coding> =
     SimpleSearchParam<Measure, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -361,7 +361,7 @@ public object MeasureSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<Measure, UsageContext> =
+  public val contextTypeQuantity: SearchParam<Measure, UsageContext> =
     SimpleSearchParam<Measure, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -369,7 +369,7 @@ public object MeasureSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<Measure, UsageContext> =
+  public val contextTypeValue: SearchParam<Measure, UsageContext> =
     SimpleSearchParam<Measure, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -377,7 +377,7 @@ public object MeasureSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<Measure, DateTime> =
+  public val date: SearchParam<Measure, DateTime> =
     SimpleSearchParam<Measure, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -385,7 +385,7 @@ public object MeasureSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val DependsOn: SearchParam<Measure, Canonical> =
+  public val dependsOn: SearchParam<Measure, Canonical> =
     SimpleSearchParam<Measure, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
@@ -540,7 +540,7 @@ public object MeasureSearchParams {
       },
     )
 
-  public val DerivedFrom: SearchParam<Measure, Canonical> =
+  public val derivedFrom: SearchParam<Measure, Canonical> =
     SimpleSearchParam<Measure, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
@@ -695,7 +695,7 @@ public object MeasureSearchParams {
       },
     )
 
-  public val Description: SearchParam<Measure, Markdown> =
+  public val description: SearchParam<Measure, Markdown> =
     SimpleSearchParam<Measure, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -703,7 +703,7 @@ public object MeasureSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Effective: SearchParam<Measure, Period> =
+  public val effective: SearchParam<Measure, Period> =
     SimpleSearchParam<Measure, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
@@ -711,7 +711,7 @@ public object MeasureSearchParams {
       extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
     )
 
-  public val Identifier: SearchParam<Measure, Identifier> =
+  public val identifier: SearchParam<Measure, Identifier> =
     SimpleSearchParam<Measure, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -719,7 +719,7 @@ public object MeasureSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<Measure, CodeableConcept> =
+  public val jurisdiction: SearchParam<Measure, CodeableConcept> =
     SimpleSearchParam<Measure, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -727,7 +727,7 @@ public object MeasureSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<Measure, String> =
+  public val name: SearchParam<Measure, String> =
     SimpleSearchParam<Measure, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -735,7 +735,7 @@ public object MeasureSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Predecessor: SearchParam<Measure, Canonical> =
+  public val predecessor: SearchParam<Measure, Canonical> =
     SimpleSearchParam<Measure, Canonical>(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
@@ -890,7 +890,7 @@ public object MeasureSearchParams {
       },
     )
 
-  public val Publisher: SearchParam<Measure, String> =
+  public val publisher: SearchParam<Measure, String> =
     SimpleSearchParam<Measure, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -898,7 +898,7 @@ public object MeasureSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<Measure, Any> =
+  public val status: SearchParam<Measure, Any> =
     SimpleSearchParam<Measure, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -906,7 +906,7 @@ public object MeasureSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Successor: SearchParam<Measure, Canonical> =
+  public val successor: SearchParam<Measure, Canonical> =
     SimpleSearchParam<Measure, Canonical>(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
@@ -1061,7 +1061,7 @@ public object MeasureSearchParams {
       },
     )
 
-  public val Title: SearchParam<Measure, String> =
+  public val title: SearchParam<Measure, String> =
     SimpleSearchParam<Measure, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -1069,7 +1069,7 @@ public object MeasureSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Topic: SearchParam<Measure, CodeableConcept> =
+  public val topic: SearchParam<Measure, CodeableConcept> =
     SimpleSearchParam<Measure, CodeableConcept>(
       name = "topic",
       type = SearchParamType.fromCode("token"),
@@ -1077,7 +1077,7 @@ public object MeasureSearchParams {
       extractor = { resource -> resource.topic },
     )
 
-  public val Url: SearchParam<Measure, Uri> =
+  public val url: SearchParam<Measure, Uri> =
     SimpleSearchParam<Measure, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -1085,7 +1085,7 @@ public object MeasureSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<Measure, String> =
+  public val version: SearchParam<Measure, String> =
     SimpleSearchParam<Measure, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -1094,29 +1094,29 @@ public object MeasureSearchParams {
     )
 
   /** All search parameters for the Measure resource type. */
-  public val ALL: CollectionsList<SearchParam<Measure, *>> =
+  public val all: CollectionsList<SearchParam<Measure, *>> =
     listOf(
-      ComposedOf,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      DependsOn,
-      DerivedFrom,
-      Description,
-      Effective,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Predecessor,
-      Publisher,
-      Status,
-      Successor,
-      Title,
-      Topic,
-      Url,
-      Version,
+      composedOf,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      dependsOn,
+      derivedFrom,
+      description,
+      effective,
+      identifier,
+      jurisdiction,
+      name,
+      predecessor,
+      publisher,
+      status,
+      successor,
+      title,
+      topic,
+      url,
+      version,
     )
 }

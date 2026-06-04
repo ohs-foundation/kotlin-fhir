@@ -37,7 +37,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [CapabilityStatement] resource type. */
 public object CapabilityStatementSearchParams {
-  public val Context: SearchParam<CapabilityStatement, CodeableConcept> =
+  public val context: SearchParam<CapabilityStatement, CodeableConcept> =
     SimpleSearchParam<CapabilityStatement, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -49,7 +49,7 @@ public object CapabilityStatementSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<CapabilityStatement, Quantity> =
+  public val contextQuantity: SearchParam<CapabilityStatement, Quantity> =
     SimpleSearchParam<CapabilityStatement, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -59,7 +59,7 @@ public object CapabilityStatementSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<CapabilityStatement, Coding> =
+  public val contextType: SearchParam<CapabilityStatement, Coding> =
     SimpleSearchParam<CapabilityStatement, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -67,7 +67,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<CapabilityStatement, UsageContext> =
+  public val contextTypeQuantity: SearchParam<CapabilityStatement, UsageContext> =
     SimpleSearchParam<CapabilityStatement, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -75,7 +75,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<CapabilityStatement, UsageContext> =
+  public val contextTypeValue: SearchParam<CapabilityStatement, UsageContext> =
     SimpleSearchParam<CapabilityStatement, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -83,7 +83,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<CapabilityStatement, DateTime> =
+  public val date: SearchParam<CapabilityStatement, DateTime> =
     SimpleSearchParam<CapabilityStatement, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -91,7 +91,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOf(resource.date) },
     )
 
-  public val Description: SearchParam<CapabilityStatement, Markdown> =
+  public val description: SearchParam<CapabilityStatement, Markdown> =
     SimpleSearchParam<CapabilityStatement, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -99,7 +99,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Fhirversion: SearchParam<CapabilityStatement, String> =
+  public val fhirversion: SearchParam<CapabilityStatement, String> =
     SimpleSearchParam<CapabilityStatement, String>(
       name = "fhirversion",
       type = SearchParamType.fromCode("token"),
@@ -107,7 +107,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.version) },
     )
 
-  public val Format: SearchParam<CapabilityStatement, Any> =
+  public val format: SearchParam<CapabilityStatement, Any> =
     SimpleSearchParam<CapabilityStatement, Any>(
       name = "format",
       type = SearchParamType.fromCode("token"),
@@ -115,7 +115,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.format },
     )
 
-  public val Guide: SearchParam<CapabilityStatement, Canonical> =
+  public val guide: SearchParam<CapabilityStatement, Canonical> =
     SimpleSearchParam<CapabilityStatement, Canonical>(
       name = "guide",
       type = SearchParamType.fromCode("reference"),
@@ -124,7 +124,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.implementationGuide },
     )
 
-  public val Jurisdiction: SearchParam<CapabilityStatement, CodeableConcept> =
+  public val jurisdiction: SearchParam<CapabilityStatement, CodeableConcept> =
     SimpleSearchParam<CapabilityStatement, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -132,7 +132,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Mode: SearchParam<CapabilityStatement, Any> =
+  public val mode: SearchParam<CapabilityStatement, Any> =
     SimpleSearchParam<CapabilityStatement, Any>(
       name = "mode",
       type = SearchParamType.fromCode("token"),
@@ -140,7 +140,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.rest.map { it.mode } },
     )
 
-  public val Name: SearchParam<CapabilityStatement, String> =
+  public val name: SearchParam<CapabilityStatement, String> =
     SimpleSearchParam<CapabilityStatement, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -148,7 +148,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Publisher: SearchParam<CapabilityStatement, String> =
+  public val publisher: SearchParam<CapabilityStatement, String> =
     SimpleSearchParam<CapabilityStatement, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -156,7 +156,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Resource: SearchParam<CapabilityStatement, Any> =
+  public val resource: SearchParam<CapabilityStatement, Any> =
     SimpleSearchParam<CapabilityStatement, Any>(
       name = "resource",
       type = SearchParamType.fromCode("token"),
@@ -164,7 +164,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.rest.flatMap { it.resource }.map { it.type } },
     )
 
-  public val ResourceProfile: SearchParam<CapabilityStatement, Canonical> =
+  public val resourceProfile: SearchParam<CapabilityStatement, Canonical> =
     SimpleSearchParam<CapabilityStatement, Canonical>(
       name = "resource-profile",
       type = SearchParamType.fromCode("reference"),
@@ -173,7 +173,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.rest.flatMap { it.resource }.mapNotNull { it.profile } },
     )
 
-  public val SecurityService: SearchParam<CapabilityStatement, CodeableConcept> =
+  public val securityService: SearchParam<CapabilityStatement, CodeableConcept> =
     SimpleSearchParam<CapabilityStatement, CodeableConcept>(
       name = "security-service",
       type = SearchParamType.fromCode("token"),
@@ -181,7 +181,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.rest.mapNotNull { it.security }.flatMap { it.service } },
     )
 
-  public val Software: SearchParam<CapabilityStatement, String> =
+  public val software: SearchParam<CapabilityStatement, String> =
     SimpleSearchParam<CapabilityStatement, String>(
       name = "software",
       type = SearchParamType.fromCode("string"),
@@ -189,7 +189,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.software?.name) },
     )
 
-  public val Status: SearchParam<CapabilityStatement, Any> =
+  public val status: SearchParam<CapabilityStatement, Any> =
     SimpleSearchParam<CapabilityStatement, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -197,7 +197,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val SupportedProfile: SearchParam<CapabilityStatement, Canonical> =
+  public val supportedProfile: SearchParam<CapabilityStatement, Canonical> =
     SimpleSearchParam<CapabilityStatement, Canonical>(
       name = "supported-profile",
       type = SearchParamType.fromCode("reference"),
@@ -208,7 +208,7 @@ public object CapabilityStatementSearchParams {
       },
     )
 
-  public val Title: SearchParam<CapabilityStatement, String> =
+  public val title: SearchParam<CapabilityStatement, String> =
     SimpleSearchParam<CapabilityStatement, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -216,7 +216,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<CapabilityStatement, Uri> =
+  public val url: SearchParam<CapabilityStatement, Uri> =
     SimpleSearchParam<CapabilityStatement, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -224,7 +224,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<CapabilityStatement, String> =
+  public val version: SearchParam<CapabilityStatement, String> =
     SimpleSearchParam<CapabilityStatement, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -233,30 +233,30 @@ public object CapabilityStatementSearchParams {
     )
 
   /** All search parameters for the CapabilityStatement resource type. */
-  public val ALL: List<SearchParam<CapabilityStatement, *>> =
+  public val all: List<SearchParam<CapabilityStatement, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Fhirversion,
-      Format,
-      Guide,
-      Jurisdiction,
-      Mode,
-      Name,
-      Publisher,
-      Resource,
-      ResourceProfile,
-      SecurityService,
-      Software,
-      Status,
-      SupportedProfile,
-      Title,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      fhirversion,
+      format,
+      guide,
+      jurisdiction,
+      mode,
+      name,
+      publisher,
+      resource,
+      resourceProfile,
+      securityService,
+      software,
+      status,
+      supportedProfile,
+      title,
+      url,
+      version,
     )
 }

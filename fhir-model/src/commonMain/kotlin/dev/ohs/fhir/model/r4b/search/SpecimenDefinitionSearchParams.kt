@@ -27,7 +27,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [SpecimenDefinition] resource type. */
 public object SpecimenDefinitionSearchParams {
-  public val Container: SearchParam<SpecimenDefinition, CodeableConcept> =
+  public val container: SearchParam<SpecimenDefinition, CodeableConcept> =
     SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
       name = "container",
       type = SearchParamType.fromCode("token"),
@@ -37,7 +37,7 @@ public object SpecimenDefinitionSearchParams {
       },
     )
 
-  public val Identifier: SearchParam<SpecimenDefinition, Identifier> =
+  public val identifier: SearchParam<SpecimenDefinition, Identifier> =
     SimpleSearchParam<SpecimenDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -45,7 +45,7 @@ public object SpecimenDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val Type: SearchParam<SpecimenDefinition, CodeableConcept> =
+  public val type: SearchParam<SpecimenDefinition, CodeableConcept> =
     SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -54,5 +54,5 @@ public object SpecimenDefinitionSearchParams {
     )
 
   /** All search parameters for the SpecimenDefinition resource type. */
-  public val ALL: List<SearchParam<SpecimenDefinition, *>> = listOf(Container, Identifier, Type)
+  public val all: List<SearchParam<SpecimenDefinition, *>> = listOf(container, identifier, type)
 }

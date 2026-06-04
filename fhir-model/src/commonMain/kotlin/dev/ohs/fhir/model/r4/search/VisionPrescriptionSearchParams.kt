@@ -19,9 +19,11 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
@@ -33,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [VisionPrescription] resource type. */
 public object VisionPrescriptionSearchParams {
-  public val Datewritten: SearchParam<VisionPrescription, DateTime> =
+  public val datewritten: SearchParam<VisionPrescription, DateTime> =
     SimpleSearchParam<VisionPrescription, DateTime>(
       name = "datewritten",
       type = SearchParamType.fromCode("date"),
@@ -41,16 +43,16 @@ public object VisionPrescriptionSearchParams {
       extractor = { resource -> listOf(resource.dateWritten) },
     )
 
-  public val Encounter: SearchParam<VisionPrescription, Reference> =
+  public val encounter: SearchParam<VisionPrescription, Reference> =
     SimpleSearchParam<VisionPrescription, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "VisionPrescription.encounter",
-      target = listOf(dev.ohs.fhir.model.r4.Encounter::class, EpisodeOfCare::class),
+      target = listOf(Encounter::class, EpisodeOfCare::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Identifier: SearchParam<VisionPrescription, Identifier> =
+  public val identifier: SearchParam<VisionPrescription, Identifier> =
     SimpleSearchParam<VisionPrescription, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -58,16 +60,16 @@ public object VisionPrescriptionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<VisionPrescription, Reference> =
+  public val patient: SearchParam<VisionPrescription, Reference> =
     SimpleSearchParam<VisionPrescription, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "VisionPrescription.patient",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class),
+      target = listOf(Patient::class, Group::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Prescriber: SearchParam<VisionPrescription, Reference> =
+  public val prescriber: SearchParam<VisionPrescription, Reference> =
     SimpleSearchParam<VisionPrescription, Reference>(
       name = "prescriber",
       type = SearchParamType.fromCode("reference"),
@@ -76,7 +78,7 @@ public object VisionPrescriptionSearchParams {
       extractor = { resource -> listOf(resource.prescriber) },
     )
 
-  public val Status: SearchParam<VisionPrescription, Any> =
+  public val status: SearchParam<VisionPrescription, Any> =
     SimpleSearchParam<VisionPrescription, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -85,6 +87,6 @@ public object VisionPrescriptionSearchParams {
     )
 
   /** All search parameters for the VisionPrescription resource type. */
-  public val ALL: List<SearchParam<VisionPrescription, *>> =
-    listOf(Datewritten, Encounter, Identifier, Patient, Prescriber, Status)
+  public val all: List<SearchParam<VisionPrescription, *>> =
+    listOf(datewritten, encounter, identifier, patient, prescriber, status)
 }

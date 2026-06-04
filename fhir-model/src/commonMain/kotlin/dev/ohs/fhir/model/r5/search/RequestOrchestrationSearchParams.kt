@@ -70,6 +70,7 @@ import dev.ohs.fhir.model.r5.DeviceRequest
 import dev.ohs.fhir.model.r5.DeviceUsage
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
@@ -131,6 +132,7 @@ import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.OrganizationAffiliation
 import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Parameters
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
 import dev.ohs.fhir.model.r5.Permission
@@ -187,7 +189,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [RequestOrchestration] resource type. */
 public object RequestOrchestrationSearchParams {
-  public val Author: SearchParam<RequestOrchestration, Reference> =
+  public val author: SearchParam<RequestOrchestration, Reference> =
     SimpleSearchParam<RequestOrchestration, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -196,7 +198,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> listOfNotNull(resource.author) },
     )
 
-  public val Authored: SearchParam<RequestOrchestration, DateTime> =
+  public val authored: SearchParam<RequestOrchestration, DateTime> =
     SimpleSearchParam<RequestOrchestration, DateTime>(
       name = "authored",
       type = SearchParamType.fromCode("date"),
@@ -204,7 +206,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
 
-  public val BasedOn: SearchParam<RequestOrchestration, Reference> =
+  public val basedOn: SearchParam<RequestOrchestration, Reference> =
     SimpleSearchParam<RequestOrchestration, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -260,7 +262,7 @@ public object RequestOrchestrationSearchParams {
           DeviceUsage::class,
           DiagnosticReport::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r5.Encounter::class,
+          Encounter::class,
           EncounterHistory::class,
           Endpoint::class,
           EnrollmentRequest::class,
@@ -321,7 +323,7 @@ public object RequestOrchestrationSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -373,7 +375,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val Code: SearchParam<RequestOrchestration, CodeableConcept> =
+  public val code: SearchParam<RequestOrchestration, CodeableConcept> =
     SimpleSearchParam<RequestOrchestration, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -381,16 +383,16 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Encounter: SearchParam<RequestOrchestration, Reference> =
+  public val encounter: SearchParam<RequestOrchestration, Reference> =
     SimpleSearchParam<RequestOrchestration, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestOrchestration.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val GroupIdentifier: SearchParam<RequestOrchestration, Identifier> =
+  public val groupIdentifier: SearchParam<RequestOrchestration, Identifier> =
     SimpleSearchParam<RequestOrchestration, Identifier>(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
@@ -398,7 +400,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
 
-  public val Identifier: SearchParam<RequestOrchestration, Identifier> =
+  public val identifier: SearchParam<RequestOrchestration, Identifier> =
     SimpleSearchParam<RequestOrchestration, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -406,7 +408,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val InstantiatesCanonical: SearchParam<RequestOrchestration, Canonical> =
+  public val instantiatesCanonical: SearchParam<RequestOrchestration, Canonical> =
     SimpleSearchParam<RequestOrchestration, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
@@ -455,7 +457,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> resource.instantiatesCanonical },
     )
 
-  public val InstantiatesUri: SearchParam<RequestOrchestration, Uri> =
+  public val instantiatesUri: SearchParam<RequestOrchestration, Uri> =
     SimpleSearchParam<RequestOrchestration, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
@@ -463,7 +465,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> resource.instantiatesUri },
     )
 
-  public val Intent: SearchParam<RequestOrchestration, Any> =
+  public val intent: SearchParam<RequestOrchestration, Any> =
     SimpleSearchParam<RequestOrchestration, Any>(
       name = "intent",
       type = SearchParamType.fromCode("token"),
@@ -471,7 +473,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> listOf(resource.intent) },
     )
 
-  public val Participant: SearchParam<RequestOrchestration, Any> =
+  public val participant: SearchParam<RequestOrchestration, Any> =
     SimpleSearchParam<RequestOrchestration, Any>(
       name = "participant",
       type = SearchParamType.fromCode("reference"),
@@ -490,17 +492,17 @@ public object RequestOrchestrationSearchParams {
           Endpoint::class,
           DeviceDefinition::class,
           PractitionerRole::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { emptyList() },
     )
 
-  public val Patient: SearchParam<RequestOrchestration, Reference> =
+  public val patient: SearchParam<RequestOrchestration, Reference> =
     SimpleSearchParam<RequestOrchestration, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestOrchestration.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -508,7 +510,7 @@ public object RequestOrchestrationSearchParams {
       },
     )
 
-  public val Priority: SearchParam<RequestOrchestration, Any> =
+  public val priority: SearchParam<RequestOrchestration, Any> =
     SimpleSearchParam<RequestOrchestration, Any>(
       name = "priority",
       type = SearchParamType.fromCode("token"),
@@ -516,7 +518,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
 
-  public val Status: SearchParam<RequestOrchestration, Any> =
+  public val status: SearchParam<RequestOrchestration, Any> =
     SimpleSearchParam<RequestOrchestration, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -524,7 +526,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<RequestOrchestration, Reference> =
+  public val subject: SearchParam<RequestOrchestration, Reference> =
     SimpleSearchParam<RequestOrchestration, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -540,28 +542,28 @@ public object RequestOrchestrationSearchParams {
           Group::class,
           Practitioner::class,
           Location::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
   /** All search parameters for the RequestOrchestration resource type. */
-  public val ALL: CollectionsList<SearchParam<RequestOrchestration, *>> =
+  public val all: CollectionsList<SearchParam<RequestOrchestration, *>> =
     listOf(
-      Author,
-      Authored,
-      BasedOn,
-      Code,
-      Encounter,
-      GroupIdentifier,
-      Identifier,
-      InstantiatesCanonical,
-      InstantiatesUri,
-      Intent,
-      Participant,
-      Patient,
-      Priority,
-      Status,
-      Subject,
+      author,
+      authored,
+      basedOn,
+      code,
+      encounter,
+      groupIdentifier,
+      identifier,
+      instantiatesCanonical,
+      instantiatesUri,
+      intent,
+      participant,
+      patient,
+      priority,
+      status,
+      subject,
     )
 }

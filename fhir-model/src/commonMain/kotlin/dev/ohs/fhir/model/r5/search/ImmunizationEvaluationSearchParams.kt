@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Immunization
 import dev.ohs.fhir.model.r5.ImmunizationEvaluation
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
@@ -31,7 +32,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ImmunizationEvaluation] resource type. */
 public object ImmunizationEvaluationSearchParams {
-  public val Date: SearchParam<ImmunizationEvaluation, DateTime> =
+  public val date: SearchParam<ImmunizationEvaluation, DateTime> =
     SimpleSearchParam<ImmunizationEvaluation, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -39,7 +40,7 @@ public object ImmunizationEvaluationSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val DoseStatus: SearchParam<ImmunizationEvaluation, CodeableConcept> =
+  public val doseStatus: SearchParam<ImmunizationEvaluation, CodeableConcept> =
     SimpleSearchParam<ImmunizationEvaluation, CodeableConcept>(
       name = "dose-status",
       type = SearchParamType.fromCode("token"),
@@ -47,7 +48,7 @@ public object ImmunizationEvaluationSearchParams {
       extractor = { resource -> listOf(resource.doseStatus) },
     )
 
-  public val Identifier: SearchParam<ImmunizationEvaluation, Identifier> =
+  public val identifier: SearchParam<ImmunizationEvaluation, Identifier> =
     SimpleSearchParam<ImmunizationEvaluation, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -55,7 +56,7 @@ public object ImmunizationEvaluationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val ImmunizationEvent: SearchParam<ImmunizationEvaluation, Reference> =
+  public val immunizationEvent: SearchParam<ImmunizationEvaluation, Reference> =
     SimpleSearchParam<ImmunizationEvaluation, Reference>(
       name = "immunization-event",
       type = SearchParamType.fromCode("reference"),
@@ -64,16 +65,16 @@ public object ImmunizationEvaluationSearchParams {
       extractor = { resource -> listOf(resource.immunizationEvent) },
     )
 
-  public val Patient: SearchParam<ImmunizationEvaluation, Reference> =
+  public val patient: SearchParam<ImmunizationEvaluation, Reference> =
     SimpleSearchParam<ImmunizationEvaluation, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ImmunizationEvaluation.patient",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Status: SearchParam<ImmunizationEvaluation, Any> =
+  public val status: SearchParam<ImmunizationEvaluation, Any> =
     SimpleSearchParam<ImmunizationEvaluation, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -81,7 +82,7 @@ public object ImmunizationEvaluationSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val TargetDisease: SearchParam<ImmunizationEvaluation, CodeableConcept> =
+  public val targetDisease: SearchParam<ImmunizationEvaluation, CodeableConcept> =
     SimpleSearchParam<ImmunizationEvaluation, CodeableConcept>(
       name = "target-disease",
       type = SearchParamType.fromCode("token"),
@@ -90,6 +91,6 @@ public object ImmunizationEvaluationSearchParams {
     )
 
   /** All search parameters for the ImmunizationEvaluation resource type. */
-  public val ALL: List<SearchParam<ImmunizationEvaluation, *>> =
-    listOf(Date, DoseStatus, Identifier, ImmunizationEvent, Patient, Status, TargetDisease)
+  public val all: List<SearchParam<ImmunizationEvaluation, *>> =
+    listOf(date, doseStatus, identifier, immunizationEvent, patient, status, targetDisease)
 }

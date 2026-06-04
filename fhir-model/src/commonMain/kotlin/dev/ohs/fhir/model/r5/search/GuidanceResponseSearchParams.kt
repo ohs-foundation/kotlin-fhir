@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
@@ -29,7 +30,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [GuidanceResponse] resource type. */
 public object GuidanceResponseSearchParams {
-  public val Identifier: SearchParam<GuidanceResponse, Identifier> =
+  public val identifier: SearchParam<GuidanceResponse, Identifier> =
     SimpleSearchParam<GuidanceResponse, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -37,12 +38,12 @@ public object GuidanceResponseSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<GuidanceResponse, Reference> =
+  public val patient: SearchParam<GuidanceResponse, Reference> =
     SimpleSearchParam<GuidanceResponse, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "GuidanceResponse.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -50,7 +51,7 @@ public object GuidanceResponseSearchParams {
       },
     )
 
-  public val Request: SearchParam<GuidanceResponse, Identifier> =
+  public val request: SearchParam<GuidanceResponse, Identifier> =
     SimpleSearchParam<GuidanceResponse, Identifier>(
       name = "request",
       type = SearchParamType.fromCode("token"),
@@ -58,7 +59,7 @@ public object GuidanceResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.requestIdentifier) },
     )
 
-  public val Status: SearchParam<GuidanceResponse, Any> =
+  public val status: SearchParam<GuidanceResponse, Any> =
     SimpleSearchParam<GuidanceResponse, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -66,16 +67,16 @@ public object GuidanceResponseSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<GuidanceResponse, Reference> =
+  public val subject: SearchParam<GuidanceResponse, Reference> =
     SimpleSearchParam<GuidanceResponse, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "GuidanceResponse.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
   /** All search parameters for the GuidanceResponse resource type. */
-  public val ALL: List<SearchParam<GuidanceResponse, *>> =
-    listOf(Identifier, Patient, Request, Status, Subject)
+  public val all: List<SearchParam<GuidanceResponse, *>> =
+    listOf(identifier, patient, request, status, subject)
 }

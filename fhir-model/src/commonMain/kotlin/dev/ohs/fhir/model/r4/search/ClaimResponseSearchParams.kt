@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4.Date
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Organization
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
@@ -35,7 +36,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ClaimResponse] resource type. */
 public object ClaimResponseSearchParams {
-  public val Created: SearchParam<ClaimResponse, DateTime> =
+  public val created: SearchParam<ClaimResponse, DateTime> =
     SimpleSearchParam<ClaimResponse, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
@@ -43,7 +44,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOf(resource.created) },
     )
 
-  public val Disposition: SearchParam<ClaimResponse, String> =
+  public val disposition: SearchParam<ClaimResponse, String> =
     SimpleSearchParam<ClaimResponse, String>(
       name = "disposition",
       type = SearchParamType.fromCode("string"),
@@ -51,7 +52,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.disposition) },
     )
 
-  public val Identifier: SearchParam<ClaimResponse, Identifier> =
+  public val identifier: SearchParam<ClaimResponse, Identifier> =
     SimpleSearchParam<ClaimResponse, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -59,7 +60,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Insurer: SearchParam<ClaimResponse, Reference> =
+  public val insurer: SearchParam<ClaimResponse, Reference> =
     SimpleSearchParam<ClaimResponse, Reference>(
       name = "insurer",
       type = SearchParamType.fromCode("reference"),
@@ -68,7 +69,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOf(resource.insurer) },
     )
 
-  public val Outcome: SearchParam<ClaimResponse, Any> =
+  public val outcome: SearchParam<ClaimResponse, Any> =
     SimpleSearchParam<ClaimResponse, Any>(
       name = "outcome",
       type = SearchParamType.fromCode("token"),
@@ -76,16 +77,16 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOf(resource.outcome) },
     )
 
-  public val Patient: SearchParam<ClaimResponse, Reference> =
+  public val patient: SearchParam<ClaimResponse, Reference> =
     SimpleSearchParam<ClaimResponse, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ClaimResponse.patient",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val PaymentDate: SearchParam<ClaimResponse, Date> =
+  public val paymentDate: SearchParam<ClaimResponse, Date> =
     SimpleSearchParam<ClaimResponse, Date>(
       name = "payment-date",
       type = SearchParamType.fromCode("date"),
@@ -93,7 +94,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.payment?.date) },
     )
 
-  public val Request: SearchParam<ClaimResponse, Reference> =
+  public val request: SearchParam<ClaimResponse, Reference> =
     SimpleSearchParam<ClaimResponse, Reference>(
       name = "request",
       type = SearchParamType.fromCode("reference"),
@@ -102,7 +103,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.request) },
     )
 
-  public val Requestor: SearchParam<ClaimResponse, Reference> =
+  public val requestor: SearchParam<ClaimResponse, Reference> =
     SimpleSearchParam<ClaimResponse, Reference>(
       name = "requestor",
       type = SearchParamType.fromCode("reference"),
@@ -111,7 +112,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.requestor) },
     )
 
-  public val Status: SearchParam<ClaimResponse, Any> =
+  public val status: SearchParam<ClaimResponse, Any> =
     SimpleSearchParam<ClaimResponse, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -119,7 +120,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Use: SearchParam<ClaimResponse, Any> =
+  public val use: SearchParam<ClaimResponse, Any> =
     SimpleSearchParam<ClaimResponse, Any>(
       name = "use",
       type = SearchParamType.fromCode("token"),
@@ -128,18 +129,18 @@ public object ClaimResponseSearchParams {
     )
 
   /** All search parameters for the ClaimResponse resource type. */
-  public val ALL: List<SearchParam<ClaimResponse, *>> =
+  public val all: List<SearchParam<ClaimResponse, *>> =
     listOf(
-      Created,
-      Disposition,
-      Identifier,
-      Insurer,
-      Outcome,
-      Patient,
-      PaymentDate,
-      Request,
-      Requestor,
-      Status,
-      Use,
+      created,
+      disposition,
+      identifier,
+      insurer,
+      outcome,
+      patient,
+      paymentDate,
+      request,
+      requestor,
+      status,
+      use,
     )
 }

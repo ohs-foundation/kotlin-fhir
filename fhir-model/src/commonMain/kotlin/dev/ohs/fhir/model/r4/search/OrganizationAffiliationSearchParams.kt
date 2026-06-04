@@ -21,8 +21,10 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.Boolean
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.ContactPoint
+import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.HealthcareService
 import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Location
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.OrganizationAffiliation
 import dev.ohs.fhir.model.r4.Period
@@ -33,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [OrganizationAffiliation] resource type. */
 public object OrganizationAffiliationSearchParams {
-  public val Active: SearchParam<OrganizationAffiliation, Boolean> =
+  public val active: SearchParam<OrganizationAffiliation, Boolean> =
     SimpleSearchParam<OrganizationAffiliation, Boolean>(
       name = "active",
       type = SearchParamType.fromCode("token"),
@@ -41,7 +43,7 @@ public object OrganizationAffiliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.active) },
     )
 
-  public val Date: SearchParam<OrganizationAffiliation, Period> =
+  public val date: SearchParam<OrganizationAffiliation, Period> =
     SimpleSearchParam<OrganizationAffiliation, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -49,7 +51,7 @@ public object OrganizationAffiliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.period) },
     )
 
-  public val Email: SearchParam<OrganizationAffiliation, ContactPoint> =
+  public val email: SearchParam<OrganizationAffiliation, ContactPoint> =
     SimpleSearchParam<OrganizationAffiliation, ContactPoint>(
       name = "email",
       type = SearchParamType.fromCode("token"),
@@ -59,16 +61,16 @@ public object OrganizationAffiliationSearchParams {
       },
     )
 
-  public val Endpoint: SearchParam<OrganizationAffiliation, Reference> =
+  public val endpoint: SearchParam<OrganizationAffiliation, Reference> =
     SimpleSearchParam<OrganizationAffiliation, Reference>(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "OrganizationAffiliation.endpoint",
-      target = listOf(dev.ohs.fhir.model.r4.Endpoint::class),
+      target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
     )
 
-  public val Identifier: SearchParam<OrganizationAffiliation, Identifier> =
+  public val identifier: SearchParam<OrganizationAffiliation, Identifier> =
     SimpleSearchParam<OrganizationAffiliation, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -76,16 +78,16 @@ public object OrganizationAffiliationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Location: SearchParam<OrganizationAffiliation, Reference> =
+  public val location: SearchParam<OrganizationAffiliation, Reference> =
     SimpleSearchParam<OrganizationAffiliation, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "OrganizationAffiliation.location",
-      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      target = listOf(Location::class),
       extractor = { resource -> resource.location },
     )
 
-  public val Network: SearchParam<OrganizationAffiliation, Reference> =
+  public val network: SearchParam<OrganizationAffiliation, Reference> =
     SimpleSearchParam<OrganizationAffiliation, Reference>(
       name = "network",
       type = SearchParamType.fromCode("reference"),
@@ -94,7 +96,7 @@ public object OrganizationAffiliationSearchParams {
       extractor = { resource -> resource.network },
     )
 
-  public val ParticipatingOrganization: SearchParam<OrganizationAffiliation, Reference> =
+  public val participatingOrganization: SearchParam<OrganizationAffiliation, Reference> =
     SimpleSearchParam<OrganizationAffiliation, Reference>(
       name = "participating-organization",
       type = SearchParamType.fromCode("reference"),
@@ -103,7 +105,7 @@ public object OrganizationAffiliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.participatingOrganization) },
     )
 
-  public val Phone: SearchParam<OrganizationAffiliation, ContactPoint> =
+  public val phone: SearchParam<OrganizationAffiliation, ContactPoint> =
     SimpleSearchParam<OrganizationAffiliation, ContactPoint>(
       name = "phone",
       type = SearchParamType.fromCode("token"),
@@ -113,7 +115,7 @@ public object OrganizationAffiliationSearchParams {
       },
     )
 
-  public val PrimaryOrganization: SearchParam<OrganizationAffiliation, Reference> =
+  public val primaryOrganization: SearchParam<OrganizationAffiliation, Reference> =
     SimpleSearchParam<OrganizationAffiliation, Reference>(
       name = "primary-organization",
       type = SearchParamType.fromCode("reference"),
@@ -122,7 +124,7 @@ public object OrganizationAffiliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.organization) },
     )
 
-  public val Role: SearchParam<OrganizationAffiliation, CodeableConcept> =
+  public val role: SearchParam<OrganizationAffiliation, CodeableConcept> =
     SimpleSearchParam<OrganizationAffiliation, CodeableConcept>(
       name = "role",
       type = SearchParamType.fromCode("token"),
@@ -130,7 +132,7 @@ public object OrganizationAffiliationSearchParams {
       extractor = { resource -> resource.code },
     )
 
-  public val Service: SearchParam<OrganizationAffiliation, Reference> =
+  public val service: SearchParam<OrganizationAffiliation, Reference> =
     SimpleSearchParam<OrganizationAffiliation, Reference>(
       name = "service",
       type = SearchParamType.fromCode("reference"),
@@ -139,7 +141,7 @@ public object OrganizationAffiliationSearchParams {
       extractor = { resource -> resource.healthcareService },
     )
 
-  public val Specialty: SearchParam<OrganizationAffiliation, CodeableConcept> =
+  public val specialty: SearchParam<OrganizationAffiliation, CodeableConcept> =
     SimpleSearchParam<OrganizationAffiliation, CodeableConcept>(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
@@ -147,7 +149,7 @@ public object OrganizationAffiliationSearchParams {
       extractor = { resource -> resource.specialty },
     )
 
-  public val Telecom: SearchParam<OrganizationAffiliation, ContactPoint> =
+  public val telecom: SearchParam<OrganizationAffiliation, ContactPoint> =
     SimpleSearchParam<OrganizationAffiliation, ContactPoint>(
       name = "telecom",
       type = SearchParamType.fromCode("token"),
@@ -156,21 +158,21 @@ public object OrganizationAffiliationSearchParams {
     )
 
   /** All search parameters for the OrganizationAffiliation resource type. */
-  public val ALL: List<SearchParam<OrganizationAffiliation, *>> =
+  public val all: List<SearchParam<OrganizationAffiliation, *>> =
     listOf(
-      Active,
-      Date,
-      Email,
-      Endpoint,
-      Identifier,
-      Location,
-      Network,
-      ParticipatingOrganization,
-      Phone,
-      PrimaryOrganization,
-      Role,
-      Service,
-      Specialty,
-      Telecom,
+      active,
+      date,
+      email,
+      endpoint,
+      identifier,
+      location,
+      network,
+      participatingOrganization,
+      phone,
+      primaryOrganization,
+      role,
+      service,
+      specialty,
+      telecom,
     )
 }

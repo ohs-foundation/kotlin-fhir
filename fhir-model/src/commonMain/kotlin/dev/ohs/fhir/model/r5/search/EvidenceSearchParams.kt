@@ -33,7 +33,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Evidence] resource type. */
 public object EvidenceSearchParams {
-  public val Context: SearchParam<Evidence, Any> =
+  public val context: SearchParam<Evidence, Any> =
     SimpleSearchParam<Evidence, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -41,7 +41,7 @@ public object EvidenceSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<Evidence, Any> =
+  public val contextQuantity: SearchParam<Evidence, Any> =
     SimpleSearchParam<Evidence, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -49,7 +49,7 @@ public object EvidenceSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<Evidence, Coding> =
+  public val contextType: SearchParam<Evidence, Coding> =
     SimpleSearchParam<Evidence, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -57,7 +57,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<Evidence, UsageContext> =
+  public val contextTypeQuantity: SearchParam<Evidence, UsageContext> =
     SimpleSearchParam<Evidence, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -65,7 +65,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<Evidence, UsageContext> =
+  public val contextTypeValue: SearchParam<Evidence, UsageContext> =
     SimpleSearchParam<Evidence, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -73,7 +73,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<Evidence, DateTime> =
+  public val date: SearchParam<Evidence, DateTime> =
     SimpleSearchParam<Evidence, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -81,7 +81,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<Evidence, Markdown> =
+  public val description: SearchParam<Evidence, Markdown> =
     SimpleSearchParam<Evidence, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -89,7 +89,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<Evidence, Identifier> =
+  public val identifier: SearchParam<Evidence, Identifier> =
     SimpleSearchParam<Evidence, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -97,7 +97,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Publisher: SearchParam<Evidence, String> =
+  public val publisher: SearchParam<Evidence, String> =
     SimpleSearchParam<Evidence, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -105,7 +105,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<Evidence, Any> =
+  public val status: SearchParam<Evidence, Any> =
     SimpleSearchParam<Evidence, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -113,7 +113,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<Evidence, String> =
+  public val title: SearchParam<Evidence, String> =
     SimpleSearchParam<Evidence, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -121,7 +121,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<Evidence, Uri> =
+  public val url: SearchParam<Evidence, Uri> =
     SimpleSearchParam<Evidence, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -129,7 +129,7 @@ public object EvidenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<Evidence, String> =
+  public val version: SearchParam<Evidence, String> =
     SimpleSearchParam<Evidence, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -138,20 +138,20 @@ public object EvidenceSearchParams {
     )
 
   /** All search parameters for the Evidence resource type. */
-  public val ALL: List<SearchParam<Evidence, *>> =
+  public val all: List<SearchParam<Evidence, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Identifier,
-      Publisher,
-      Status,
-      Title,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      identifier,
+      publisher,
+      status,
+      title,
+      url,
+      version,
     )
 }

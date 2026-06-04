@@ -34,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ActorDefinition] resource type. */
 public object ActorDefinitionSearchParams {
-  public val Context: SearchParam<ActorDefinition, Any> =
+  public val context: SearchParam<ActorDefinition, Any> =
     SimpleSearchParam<ActorDefinition, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -42,7 +42,7 @@ public object ActorDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<ActorDefinition, Any> =
+  public val contextQuantity: SearchParam<ActorDefinition, Any> =
     SimpleSearchParam<ActorDefinition, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -50,7 +50,7 @@ public object ActorDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<ActorDefinition, Coding> =
+  public val contextType: SearchParam<ActorDefinition, Coding> =
     SimpleSearchParam<ActorDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -58,7 +58,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<ActorDefinition, UsageContext> =
+  public val contextTypeQuantity: SearchParam<ActorDefinition, UsageContext> =
     SimpleSearchParam<ActorDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -66,7 +66,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<ActorDefinition, UsageContext> =
+  public val contextTypeValue: SearchParam<ActorDefinition, UsageContext> =
     SimpleSearchParam<ActorDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -74,7 +74,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<ActorDefinition, DateTime> =
+  public val date: SearchParam<ActorDefinition, DateTime> =
     SimpleSearchParam<ActorDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -82,7 +82,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<ActorDefinition, Markdown> =
+  public val description: SearchParam<ActorDefinition, Markdown> =
     SimpleSearchParam<ActorDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -90,7 +90,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<ActorDefinition, Identifier> =
+  public val identifier: SearchParam<ActorDefinition, Identifier> =
     SimpleSearchParam<ActorDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -98,7 +98,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<ActorDefinition, CodeableConcept> =
+  public val jurisdiction: SearchParam<ActorDefinition, CodeableConcept> =
     SimpleSearchParam<ActorDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -106,7 +106,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Publisher: SearchParam<ActorDefinition, String> =
+  public val publisher: SearchParam<ActorDefinition, String> =
     SimpleSearchParam<ActorDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -114,7 +114,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<ActorDefinition, Any> =
+  public val status: SearchParam<ActorDefinition, Any> =
     SimpleSearchParam<ActorDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -122,7 +122,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<ActorDefinition, String> =
+  public val title: SearchParam<ActorDefinition, String> =
     SimpleSearchParam<ActorDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -130,7 +130,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Type: SearchParam<ActorDefinition, Any> =
+  public val type: SearchParam<ActorDefinition, Any> =
     SimpleSearchParam<ActorDefinition, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -138,7 +138,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> listOf(resource.type) },
     )
 
-  public val Url: SearchParam<ActorDefinition, Uri> =
+  public val url: SearchParam<ActorDefinition, Uri> =
     SimpleSearchParam<ActorDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -146,7 +146,7 @@ public object ActorDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<ActorDefinition, String> =
+  public val version: SearchParam<ActorDefinition, String> =
     SimpleSearchParam<ActorDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -155,22 +155,22 @@ public object ActorDefinitionSearchParams {
     )
 
   /** All search parameters for the ActorDefinition resource type. */
-  public val ALL: List<SearchParam<ActorDefinition, *>> =
+  public val all: List<SearchParam<ActorDefinition, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Identifier,
-      Jurisdiction,
-      Publisher,
-      Status,
-      Title,
-      Type,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      identifier,
+      jurisdiction,
+      publisher,
+      status,
+      title,
+      type,
+      url,
+      version,
     )
 }

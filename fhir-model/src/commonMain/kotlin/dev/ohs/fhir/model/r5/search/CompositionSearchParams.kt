@@ -69,6 +69,7 @@ import dev.ohs.fhir.model.r5.DeviceRequest
 import dev.ohs.fhir.model.r5.DeviceUsage
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
@@ -131,6 +132,7 @@ import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.OrganizationAffiliation
 import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Parameters
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
 import dev.ohs.fhir.model.r5.Period
@@ -189,7 +191,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Composition] resource type. */
 public object CompositionSearchParams {
-  public val Attester: SearchParam<Composition, Reference> =
+  public val attester: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "attester",
       type = SearchParamType.fromCode("reference"),
@@ -200,12 +202,12 @@ public object CompositionSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.attester.mapNotNull { it.party } },
     )
 
-  public val Author: SearchParam<Composition, Reference> =
+  public val author: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -217,12 +219,12 @@ public object CompositionSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.author },
     )
 
-  public val Category: SearchParam<Composition, CodeableConcept> =
+  public val category: SearchParam<Composition, CodeableConcept> =
     SimpleSearchParam<Composition, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -230,7 +232,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Date: SearchParam<Composition, DateTime> =
+  public val date: SearchParam<Composition, DateTime> =
     SimpleSearchParam<Composition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -238,16 +240,16 @@ public object CompositionSearchParams {
       extractor = { resource -> listOf(resource.date) },
     )
 
-  public val Encounter: SearchParam<Composition, Reference> =
+  public val encounter: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Entry: SearchParam<Composition, Reference> =
+  public val entry: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "entry",
       type = SearchParamType.fromCode("reference"),
@@ -303,7 +305,7 @@ public object CompositionSearchParams {
           DeviceUsage::class,
           DiagnosticReport::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r5.Encounter::class,
+          Encounter::class,
           EncounterHistory::class,
           Endpoint::class,
           EnrollmentRequest::class,
@@ -364,7 +366,7 @@ public object CompositionSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -416,7 +418,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.section.flatMap { it.entry } },
     )
 
-  public val EventCode: SearchParam<Composition, CodeableConcept> =
+  public val eventCode: SearchParam<Composition, CodeableConcept> =
     SimpleSearchParam<Composition, CodeableConcept>(
       name = "event-code",
       type = SearchParamType.fromCode("token"),
@@ -424,7 +426,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.event.flatMap { it.detail }.mapNotNull { it.concept } },
     )
 
-  public val EventReference: SearchParam<Composition, Reference> =
+  public val eventReference: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "event-reference",
       type = SearchParamType.fromCode("reference"),
@@ -480,7 +482,7 @@ public object CompositionSearchParams {
           DeviceUsage::class,
           DiagnosticReport::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r5.Encounter::class,
+          Encounter::class,
           EncounterHistory::class,
           Endpoint::class,
           EnrollmentRequest::class,
@@ -541,7 +543,7 @@ public object CompositionSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -593,7 +595,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.event.flatMap { it.detail }.mapNotNull { it.reference } },
     )
 
-  public val Identifier: SearchParam<Composition, Identifier> =
+  public val identifier: SearchParam<Composition, Identifier> =
     SimpleSearchParam<Composition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -601,18 +603,18 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<Composition, Reference> =
+  public val patient: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
       },
     )
 
-  public val Period: SearchParam<Composition, Period> =
+  public val period: SearchParam<Composition, Period> =
     SimpleSearchParam<Composition, Period>(
       name = "period",
       type = SearchParamType.fromCode("date"),
@@ -620,7 +622,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.event.mapNotNull { it.period } },
     )
 
-  public val Related: SearchParam<Composition, Reference> =
+  public val related: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "related",
       type = SearchParamType.fromCode("reference"),
@@ -676,7 +678,7 @@ public object CompositionSearchParams {
           DeviceUsage::class,
           DiagnosticReport::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r5.Encounter::class,
+          Encounter::class,
           EncounterHistory::class,
           Endpoint::class,
           EnrollmentRequest::class,
@@ -737,7 +739,7 @@ public object CompositionSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -789,7 +791,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.relatesTo.mapNotNull { it.resourceReference } },
     )
 
-  public val Section: SearchParam<Composition, CodeableConcept> =
+  public val section: SearchParam<Composition, CodeableConcept> =
     SimpleSearchParam<Composition, CodeableConcept>(
       name = "section",
       type = SearchParamType.fromCode("token"),
@@ -797,7 +799,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.section.mapNotNull { it.code } },
     )
 
-  public val SectionCodeText: SearchParam<Composition, Composition.Section> =
+  public val sectionCodeText: SearchParam<Composition, Composition.Section> =
     SimpleSearchParam<Composition, Composition.Section>(
       name = "section-code-text",
       type = SearchParamType.fromCode("composite"),
@@ -805,7 +807,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.section },
     )
 
-  public val SectionText: SearchParam<Composition, Narrative> =
+  public val sectionText: SearchParam<Composition, Narrative> =
     SimpleSearchParam<Composition, Narrative>(
       name = "section-text",
       type = SearchParamType.fromCode("special"),
@@ -813,7 +815,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.section.mapNotNull { it.text } },
     )
 
-  public val Status: SearchParam<Composition, Any> =
+  public val status: SearchParam<Composition, Any> =
     SimpleSearchParam<Composition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -821,7 +823,7 @@ public object CompositionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<Composition, Reference> =
+  public val subject: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -877,7 +879,7 @@ public object CompositionSearchParams {
           DeviceUsage::class,
           DiagnosticReport::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r5.Encounter::class,
+          Encounter::class,
           EncounterHistory::class,
           Endpoint::class,
           EnrollmentRequest::class,
@@ -938,7 +940,7 @@ public object CompositionSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -990,7 +992,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.subject },
     )
 
-  public val Title: SearchParam<Composition, String> =
+  public val title: SearchParam<Composition, String> =
     SimpleSearchParam<Composition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -998,7 +1000,7 @@ public object CompositionSearchParams {
       extractor = { resource -> listOf(resource.title) },
     )
 
-  public val Type: SearchParam<Composition, CodeableConcept> =
+  public val type: SearchParam<Composition, CodeableConcept> =
     SimpleSearchParam<Composition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -1006,7 +1008,7 @@ public object CompositionSearchParams {
       extractor = { resource -> listOf(resource.type) },
     )
 
-  public val Url: SearchParam<Composition, Uri> =
+  public val url: SearchParam<Composition, Uri> =
     SimpleSearchParam<Composition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -1014,7 +1016,7 @@ public object CompositionSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<Composition, String> =
+  public val version: SearchParam<Composition, String> =
     SimpleSearchParam<Composition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -1023,28 +1025,28 @@ public object CompositionSearchParams {
     )
 
   /** All search parameters for the Composition resource type. */
-  public val ALL: CollectionsList<SearchParam<Composition, *>> =
+  public val all: CollectionsList<SearchParam<Composition, *>> =
     listOf(
-      Attester,
-      Author,
-      Category,
-      Date,
-      Encounter,
-      Entry,
-      EventCode,
-      EventReference,
-      Identifier,
-      Patient,
-      Period,
-      Related,
-      Section,
-      SectionCodeText,
-      SectionText,
-      Status,
-      Subject,
-      Title,
-      Type,
-      Url,
-      Version,
+      attester,
+      author,
+      category,
+      date,
+      encounter,
+      entry,
+      eventCode,
+      eventReference,
+      identifier,
+      patient,
+      period,
+      related,
+      section,
+      sectionCodeText,
+      sectionText,
+      status,
+      subject,
+      title,
+      type,
+      url,
+      version,
     )
 }

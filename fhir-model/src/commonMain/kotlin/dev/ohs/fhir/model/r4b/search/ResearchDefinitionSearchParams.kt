@@ -176,7 +176,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [ResearchDefinition] resource type. */
 public object ResearchDefinitionSearchParams {
-  public val ComposedOf: SearchParam<ResearchDefinition, Canonical> =
+  public val composedOf: SearchParam<ResearchDefinition, Canonical> =
     SimpleSearchParam<ResearchDefinition, Canonical>(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
@@ -331,7 +331,7 @@ public object ResearchDefinitionSearchParams {
       },
     )
 
-  public val Context: SearchParam<ResearchDefinition, CodeableConcept> =
+  public val context: SearchParam<ResearchDefinition, CodeableConcept> =
     SimpleSearchParam<ResearchDefinition, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -343,7 +343,7 @@ public object ResearchDefinitionSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<ResearchDefinition, Quantity> =
+  public val contextQuantity: SearchParam<ResearchDefinition, Quantity> =
     SimpleSearchParam<ResearchDefinition, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -353,7 +353,7 @@ public object ResearchDefinitionSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<ResearchDefinition, Coding> =
+  public val contextType: SearchParam<ResearchDefinition, Coding> =
     SimpleSearchParam<ResearchDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -361,7 +361,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<ResearchDefinition, UsageContext> =
+  public val contextTypeQuantity: SearchParam<ResearchDefinition, UsageContext> =
     SimpleSearchParam<ResearchDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -369,7 +369,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<ResearchDefinition, UsageContext> =
+  public val contextTypeValue: SearchParam<ResearchDefinition, UsageContext> =
     SimpleSearchParam<ResearchDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -377,7 +377,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<ResearchDefinition, DateTime> =
+  public val date: SearchParam<ResearchDefinition, DateTime> =
     SimpleSearchParam<ResearchDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -385,7 +385,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val DependsOn: SearchParam<ResearchDefinition, Canonical> =
+  public val dependsOn: SearchParam<ResearchDefinition, Canonical> =
     SimpleSearchParam<ResearchDefinition, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
@@ -540,7 +540,7 @@ public object ResearchDefinitionSearchParams {
       },
     )
 
-  public val DerivedFrom: SearchParam<ResearchDefinition, Canonical> =
+  public val derivedFrom: SearchParam<ResearchDefinition, Canonical> =
     SimpleSearchParam<ResearchDefinition, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
@@ -695,7 +695,7 @@ public object ResearchDefinitionSearchParams {
       },
     )
 
-  public val Description: SearchParam<ResearchDefinition, Markdown> =
+  public val description: SearchParam<ResearchDefinition, Markdown> =
     SimpleSearchParam<ResearchDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -703,7 +703,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Effective: SearchParam<ResearchDefinition, Period> =
+  public val effective: SearchParam<ResearchDefinition, Period> =
     SimpleSearchParam<ResearchDefinition, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
@@ -711,7 +711,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
     )
 
-  public val Identifier: SearchParam<ResearchDefinition, Identifier> =
+  public val identifier: SearchParam<ResearchDefinition, Identifier> =
     SimpleSearchParam<ResearchDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -719,7 +719,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<ResearchDefinition, CodeableConcept> =
+  public val jurisdiction: SearchParam<ResearchDefinition, CodeableConcept> =
     SimpleSearchParam<ResearchDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -727,7 +727,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<ResearchDefinition, String> =
+  public val name: SearchParam<ResearchDefinition, String> =
     SimpleSearchParam<ResearchDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -735,7 +735,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Predecessor: SearchParam<ResearchDefinition, Canonical> =
+  public val predecessor: SearchParam<ResearchDefinition, Canonical> =
     SimpleSearchParam<ResearchDefinition, Canonical>(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
@@ -890,7 +890,7 @@ public object ResearchDefinitionSearchParams {
       },
     )
 
-  public val Publisher: SearchParam<ResearchDefinition, String> =
+  public val publisher: SearchParam<ResearchDefinition, String> =
     SimpleSearchParam<ResearchDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -898,7 +898,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<ResearchDefinition, Any> =
+  public val status: SearchParam<ResearchDefinition, Any> =
     SimpleSearchParam<ResearchDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -906,7 +906,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Successor: SearchParam<ResearchDefinition, Canonical> =
+  public val successor: SearchParam<ResearchDefinition, Canonical> =
     SimpleSearchParam<ResearchDefinition, Canonical>(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
@@ -1061,7 +1061,7 @@ public object ResearchDefinitionSearchParams {
       },
     )
 
-  public val Title: SearchParam<ResearchDefinition, String> =
+  public val title: SearchParam<ResearchDefinition, String> =
     SimpleSearchParam<ResearchDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -1069,7 +1069,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Topic: SearchParam<ResearchDefinition, CodeableConcept> =
+  public val topic: SearchParam<ResearchDefinition, CodeableConcept> =
     SimpleSearchParam<ResearchDefinition, CodeableConcept>(
       name = "topic",
       type = SearchParamType.fromCode("token"),
@@ -1077,7 +1077,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> resource.topic },
     )
 
-  public val Url: SearchParam<ResearchDefinition, Uri> =
+  public val url: SearchParam<ResearchDefinition, Uri> =
     SimpleSearchParam<ResearchDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -1085,7 +1085,7 @@ public object ResearchDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<ResearchDefinition, String> =
+  public val version: SearchParam<ResearchDefinition, String> =
     SimpleSearchParam<ResearchDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -1094,29 +1094,29 @@ public object ResearchDefinitionSearchParams {
     )
 
   /** All search parameters for the ResearchDefinition resource type. */
-  public val ALL: CollectionsList<SearchParam<ResearchDefinition, *>> =
+  public val all: CollectionsList<SearchParam<ResearchDefinition, *>> =
     listOf(
-      ComposedOf,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      DependsOn,
-      DerivedFrom,
-      Description,
-      Effective,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Predecessor,
-      Publisher,
-      Status,
-      Successor,
-      Title,
-      Topic,
-      Url,
-      Version,
+      composedOf,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      dependsOn,
+      derivedFrom,
+      description,
+      effective,
+      identifier,
+      jurisdiction,
+      name,
+      predecessor,
+      publisher,
+      status,
+      successor,
+      title,
+      topic,
+      url,
+      version,
     )
 }

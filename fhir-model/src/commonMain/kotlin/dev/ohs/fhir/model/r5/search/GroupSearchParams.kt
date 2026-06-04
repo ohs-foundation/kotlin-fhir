@@ -188,7 +188,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Group] resource type. */
 public object GroupSearchParams {
-  public val Characteristic: SearchParam<Group, CodeableConcept> =
+  public val characteristic: SearchParam<Group, CodeableConcept> =
     SimpleSearchParam<Group, CodeableConcept>(
       name = "characteristic",
       type = SearchParamType.fromCode("token"),
@@ -196,7 +196,7 @@ public object GroupSearchParams {
       extractor = { resource -> resource.characteristic.map { it.code } },
     )
 
-  public val CharacteristicReference: SearchParam<Group, Any> =
+  public val characteristicReference: SearchParam<Group, Any> =
     SimpleSearchParam<Group, Any>(
       name = "characteristic-reference",
       type = SearchParamType.fromCode("reference"),
@@ -365,7 +365,7 @@ public object GroupSearchParams {
       extractor = { emptyList() },
     )
 
-  public val CharacteristicValue: SearchParam<Group, Group.Characteristic> =
+  public val characteristicValue: SearchParam<Group, Group.Characteristic> =
     SimpleSearchParam<Group, Group.Characteristic>(
       name = "characteristic-value",
       type = SearchParamType.fromCode("composite"),
@@ -373,7 +373,7 @@ public object GroupSearchParams {
       extractor = { resource -> resource.characteristic },
     )
 
-  public val Code: SearchParam<Group, CodeableConcept> =
+  public val code: SearchParam<Group, CodeableConcept> =
     SimpleSearchParam<Group, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -381,7 +381,7 @@ public object GroupSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Exclude: SearchParam<Group, Boolean> =
+  public val exclude: SearchParam<Group, Boolean> =
     SimpleSearchParam<Group, Boolean>(
       name = "exclude",
       type = SearchParamType.fromCode("token"),
@@ -389,7 +389,7 @@ public object GroupSearchParams {
       extractor = { resource -> resource.characteristic.map { it.exclude } },
     )
 
-  public val Identifier: SearchParam<Group, Identifier> =
+  public val identifier: SearchParam<Group, Identifier> =
     SimpleSearchParam<Group, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -397,7 +397,7 @@ public object GroupSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val ManagingEntity: SearchParam<Group, Reference> =
+  public val managingEntity: SearchParam<Group, Reference> =
     SimpleSearchParam<Group, Reference>(
       name = "managing-entity",
       type = SearchParamType.fromCode("reference"),
@@ -412,7 +412,7 @@ public object GroupSearchParams {
       extractor = { resource -> listOfNotNull(resource.managingEntity) },
     )
 
-  public val Member: SearchParam<Group, Reference> =
+  public val member: SearchParam<Group, Reference> =
     SimpleSearchParam<Group, Reference>(
       name = "member",
       type = SearchParamType.fromCode("reference"),
@@ -434,7 +434,7 @@ public object GroupSearchParams {
       extractor = { resource -> resource.member.map { it.entity } },
     )
 
-  public val Membership: SearchParam<Group, Any> =
+  public val membership: SearchParam<Group, Any> =
     SimpleSearchParam<Group, Any>(
       name = "membership",
       type = SearchParamType.fromCode("token"),
@@ -442,7 +442,7 @@ public object GroupSearchParams {
       extractor = { resource -> listOf(resource.membership) },
     )
 
-  public val Name: SearchParam<Group, String> =
+  public val name: SearchParam<Group, String> =
     SimpleSearchParam<Group, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -450,7 +450,7 @@ public object GroupSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Type: SearchParam<Group, Any> =
+  public val type: SearchParam<Group, Any> =
     SimpleSearchParam<Group, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -458,7 +458,7 @@ public object GroupSearchParams {
       extractor = { resource -> listOf(resource.type) },
     )
 
-  public val Value: SearchParam<Group, Any> =
+  public val `value`: SearchParam<Group, Any> =
     SimpleSearchParam<Group, Any>(
       name = "value",
       type = SearchParamType.fromCode("token"),
@@ -467,19 +467,19 @@ public object GroupSearchParams {
     )
 
   /** All search parameters for the Group resource type. */
-  public val ALL: CollectionsList<SearchParam<Group, *>> =
+  public val all: CollectionsList<SearchParam<Group, *>> =
     listOf(
-      Characteristic,
-      CharacteristicReference,
-      CharacteristicValue,
-      Code,
-      Exclude,
-      Identifier,
-      ManagingEntity,
-      Member,
-      Membership,
-      Name,
-      Type,
-      Value,
+      characteristic,
+      characteristicReference,
+      characteristicValue,
+      code,
+      exclude,
+      identifier,
+      managingEntity,
+      member,
+      membership,
+      name,
+      type,
+      `value`,
     )
 }

@@ -57,6 +57,7 @@ import dev.ohs.fhir.model.r4b.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r4b.CoverageEligibilityResponse
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.DetectedIssue
+import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.DeviceDefinition
 import dev.ohs.fhir.model.r4b.DeviceMetric
 import dev.ohs.fhir.model.r4b.DeviceRequest
@@ -64,6 +65,7 @@ import dev.ohs.fhir.model.r4b.DeviceUseStatement
 import dev.ohs.fhir.model.r4b.DiagnosticReport
 import dev.ohs.fhir.model.r4b.DocumentManifest
 import dev.ohs.fhir.model.r4b.DocumentReference
+import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Endpoint
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
@@ -118,6 +120,7 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Person
@@ -142,6 +145,7 @@ import dev.ohs.fhir.model.r4b.Schedule
 import dev.ohs.fhir.model.r4b.SearchParameter
 import dev.ohs.fhir.model.r4b.ServiceRequest
 import dev.ohs.fhir.model.r4b.Slot
+import dev.ohs.fhir.model.r4b.Specimen
 import dev.ohs.fhir.model.r4b.SpecimenDefinition
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.StructureDefinition
@@ -167,7 +171,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Observation] resource type. */
 public object ObservationSearchParams {
-  public val AminoAcidChange: SearchParam<Observation, Any> =
+  public val aminoAcidChange: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "amino-acid-change",
       type = SearchParamType.fromCode("string"),
@@ -176,7 +180,7 @@ public object ObservationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val BasedOn: SearchParam<Observation, Reference> =
+  public val basedOn: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -193,7 +197,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val Category: SearchParam<Observation, CodeableConcept> =
+  public val category: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -201,7 +205,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Code: SearchParam<Observation, CodeableConcept> =
+  public val code: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -209,7 +213,7 @@ public object ObservationSearchParams {
       extractor = { resource -> listOf(resource.code) },
     )
 
-  public val CodeValueConcept: SearchParam<Observation, Any> =
+  public val codeValueConcept: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "code-value-concept",
       type = SearchParamType.fromCode("composite"),
@@ -217,7 +221,7 @@ public object ObservationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val CodeValueDate: SearchParam<Observation, Any> =
+  public val codeValueDate: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "code-value-date",
       type = SearchParamType.fromCode("composite"),
@@ -225,7 +229,7 @@ public object ObservationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val CodeValueQuantity: SearchParam<Observation, Any> =
+  public val codeValueQuantity: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "code-value-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -233,7 +237,7 @@ public object ObservationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val CodeValueString: SearchParam<Observation, Any> =
+  public val codeValueString: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "code-value-string",
       type = SearchParamType.fromCode("composite"),
@@ -241,7 +245,7 @@ public object ObservationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ComboCode: SearchParam<Observation, CodeableConcept> =
+  public val comboCode: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "combo-code",
       type = SearchParamType.fromCode("token"),
@@ -249,7 +253,7 @@ public object ObservationSearchParams {
       extractor = { resource -> listOf(resource.code) },
     )
 
-  public val ComboCodeValueConcept: SearchParam<Observation, Observation.Component> =
+  public val comboCodeValueConcept: SearchParam<Observation, Observation.Component> =
     SimpleSearchParam<Observation, Observation.Component>(
       name = "combo-code-value-concept",
       type = SearchParamType.fromCode("composite"),
@@ -257,7 +261,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.component },
     )
 
-  public val ComboCodeValueQuantity: SearchParam<Observation, Observation.Component> =
+  public val comboCodeValueQuantity: SearchParam<Observation, Observation.Component> =
     SimpleSearchParam<Observation, Observation.Component>(
       name = "combo-code-value-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -265,7 +269,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.component },
     )
 
-  public val ComboDataAbsentReason: SearchParam<Observation, CodeableConcept> =
+  public val comboDataAbsentReason: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "combo-data-absent-reason",
       type = SearchParamType.fromCode("token"),
@@ -273,7 +277,7 @@ public object ObservationSearchParams {
       extractor = { resource -> listOfNotNull(resource.dataAbsentReason) },
     )
 
-  public val ComboValueConcept: SearchParam<Observation, CodeableConcept> =
+  public val comboValueConcept: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "combo-value-concept",
       type = SearchParamType.fromCode("token"),
@@ -283,7 +287,7 @@ public object ObservationSearchParams {
       },
     )
 
-  public val ComboValueQuantity: SearchParam<Observation, Quantity> =
+  public val comboValueQuantity: SearchParam<Observation, Quantity> =
     SimpleSearchParam<Observation, Quantity>(
       name = "combo-value-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -293,7 +297,7 @@ public object ObservationSearchParams {
       },
     )
 
-  public val ComponentCode: SearchParam<Observation, CodeableConcept> =
+  public val componentCode: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "component-code",
       type = SearchParamType.fromCode("token"),
@@ -301,7 +305,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.component.map { it.code } },
     )
 
-  public val ComponentCodeValueConcept: SearchParam<Observation, Observation.Component> =
+  public val componentCodeValueConcept: SearchParam<Observation, Observation.Component> =
     SimpleSearchParam<Observation, Observation.Component>(
       name = "component-code-value-concept",
       type = SearchParamType.fromCode("composite"),
@@ -309,7 +313,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.component },
     )
 
-  public val ComponentCodeValueQuantity: SearchParam<Observation, Observation.Component> =
+  public val componentCodeValueQuantity: SearchParam<Observation, Observation.Component> =
     SimpleSearchParam<Observation, Observation.Component>(
       name = "component-code-value-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -317,7 +321,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.component },
     )
 
-  public val ComponentDataAbsentReason: SearchParam<Observation, CodeableConcept> =
+  public val componentDataAbsentReason: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "component-data-absent-reason",
       type = SearchParamType.fromCode("token"),
@@ -325,7 +329,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.component.mapNotNull { it.dataAbsentReason } },
     )
 
-  public val ComponentValueConcept: SearchParam<Observation, CodeableConcept> =
+  public val componentValueConcept: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "component-value-concept",
       type = SearchParamType.fromCode("token"),
@@ -337,7 +341,7 @@ public object ObservationSearchParams {
       },
     )
 
-  public val ComponentValueQuantity: SearchParam<Observation, Quantity> =
+  public val componentValueQuantity: SearchParam<Observation, Quantity> =
     SimpleSearchParam<Observation, Quantity>(
       name = "component-value-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -349,7 +353,7 @@ public object ObservationSearchParams {
       },
     )
 
-  public val DataAbsentReason: SearchParam<Observation, CodeableConcept> =
+  public val dataAbsentReason: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "data-absent-reason",
       type = SearchParamType.fromCode("token"),
@@ -357,7 +361,7 @@ public object ObservationSearchParams {
       extractor = { resource -> listOfNotNull(resource.dataAbsentReason) },
     )
 
-  public val Date: SearchParam<Observation, Observation.Effective> =
+  public val date: SearchParam<Observation, Observation.Effective> =
     SimpleSearchParam<Observation, Observation.Effective>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -365,7 +369,7 @@ public object ObservationSearchParams {
       extractor = { resource -> listOfNotNull(resource.effective) },
     )
 
-  public val DerivedFrom: SearchParam<Observation, Reference> =
+  public val derivedFrom: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
@@ -382,16 +386,16 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.derivedFrom },
     )
 
-  public val Device: SearchParam<Observation, Reference> =
+  public val device: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.device",
-      target = listOf(dev.ohs.fhir.model.r4b.Device::class, DeviceMetric::class),
+      target = listOf(Device::class, DeviceMetric::class),
       extractor = { resource -> listOfNotNull(resource.device) },
     )
 
-  public val DnaVariant: SearchParam<Observation, Any> =
+  public val dnaVariant: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "dna-variant",
       type = SearchParamType.fromCode("string"),
@@ -400,16 +404,16 @@ public object ObservationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Encounter: SearchParam<Observation, Reference> =
+  public val encounter: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.encounter",
-      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Focus: SearchParam<Observation, Reference> =
+  public val focus: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
@@ -453,7 +457,7 @@ public object ObservationSearchParams {
           CoverageEligibilityRequest::class,
           CoverageEligibilityResponse::class,
           DetectedIssue::class,
-          dev.ohs.fhir.model.r4b.Device::class,
+          Device::class,
           DeviceDefinition::class,
           DeviceMetric::class,
           DeviceRequest::class,
@@ -461,7 +465,7 @@ public object ObservationSearchParams {
           DiagnosticReport::class,
           DocumentManifest::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r4b.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
@@ -515,7 +519,7 @@ public object ObservationSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -538,7 +542,7 @@ public object ObservationSearchParams {
           SearchParameter::class,
           ServiceRequest::class,
           Slot::class,
-          dev.ohs.fhir.model.r4b.Specimen::class,
+          Specimen::class,
           SpecimenDefinition::class,
           StructureDefinition::class,
           StructureMap::class,
@@ -560,7 +564,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.focus },
     )
 
-  public val GeneAminoAcidChange: SearchParam<Observation, Any> =
+  public val geneAminoAcidChange: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "gene-amino-acid-change",
       type = SearchParamType.fromCode("string"),
@@ -569,7 +573,7 @@ public object ObservationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val GeneDnavariant: SearchParam<Observation, Any> =
+  public val geneDnavariant: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "gene-dnavariant",
       type = SearchParamType.fromCode("string"),
@@ -578,7 +582,7 @@ public object ObservationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val GeneIdentifier: SearchParam<Observation, Any> =
+  public val geneIdentifier: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "gene-identifier",
       type = SearchParamType.fromCode("token"),
@@ -587,7 +591,7 @@ public object ObservationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val HasMember: SearchParam<Observation, Reference> =
+  public val hasMember: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "has-member",
       type = SearchParamType.fromCode("reference"),
@@ -596,7 +600,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.hasMember },
     )
 
-  public val Identifier: SearchParam<Observation, Identifier> =
+  public val identifier: SearchParam<Observation, Identifier> =
     SimpleSearchParam<Observation, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -604,7 +608,7 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Method: SearchParam<Observation, CodeableConcept> =
+  public val method: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "method",
       type = SearchParamType.fromCode("token"),
@@ -612,7 +616,7 @@ public object ObservationSearchParams {
       extractor = { resource -> listOfNotNull(resource.method) },
     )
 
-  public val PartOf: SearchParam<Observation, Reference> =
+  public val partOf: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
@@ -629,12 +633,12 @@ public object ObservationSearchParams {
       extractor = { resource -> resource.partOf },
     )
 
-  public val Patient: SearchParam<Observation, Reference> =
+  public val patient: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -642,7 +646,7 @@ public object ObservationSearchParams {
       },
     )
 
-  public val Performer: SearchParam<Observation, Reference> =
+  public val performer: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
@@ -652,23 +656,23 @@ public object ObservationSearchParams {
           Practitioner::class,
           Organization::class,
           CareTeam::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.performer },
     )
 
-  public val Specimen: SearchParam<Observation, Reference> =
+  public val specimen: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "specimen",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.specimen",
-      target = listOf(dev.ohs.fhir.model.r4b.Specimen::class),
+      target = listOf(Specimen::class),
       extractor = { resource -> listOfNotNull(resource.specimen) },
     )
 
-  public val Status: SearchParam<Observation, Any> =
+  public val status: SearchParam<Observation, Any> =
     SimpleSearchParam<Observation, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -676,7 +680,7 @@ public object ObservationSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<Observation, Reference> =
+  public val subject: SearchParam<Observation, Reference> =
     SimpleSearchParam<Observation, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -686,9 +690,9 @@ public object ObservationSearchParams {
           Practitioner::class,
           Group::class,
           Organization::class,
-          dev.ohs.fhir.model.r4b.Device::class,
+          Device::class,
           Medication::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           Procedure::class,
           Substance::class,
           Location::class,
@@ -696,7 +700,7 @@ public object ObservationSearchParams {
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val ValueConcept: SearchParam<Observation, CodeableConcept> =
+  public val valueConcept: SearchParam<Observation, CodeableConcept> =
     SimpleSearchParam<Observation, CodeableConcept>(
       name = "value-concept",
       type = SearchParamType.fromCode("token"),
@@ -706,7 +710,7 @@ public object ObservationSearchParams {
       },
     )
 
-  public val ValueDate: SearchParam<Observation, DateTime> =
+  public val valueDate: SearchParam<Observation, DateTime> =
     SimpleSearchParam<Observation, DateTime>(
       name = "value-date",
       type = SearchParamType.fromCode("date"),
@@ -716,7 +720,7 @@ public object ObservationSearchParams {
       },
     )
 
-  public val ValueQuantity: SearchParam<Observation, Quantity> =
+  public val valueQuantity: SearchParam<Observation, Quantity> =
     SimpleSearchParam<Observation, Quantity>(
       name = "value-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -726,7 +730,7 @@ public object ObservationSearchParams {
       },
     )
 
-  public val ValueString: SearchParam<Observation, String> =
+  public val valueString: SearchParam<Observation, String> =
     SimpleSearchParam<Observation, String>(
       name = "value-string",
       type = SearchParamType.fromCode("string"),
@@ -737,50 +741,50 @@ public object ObservationSearchParams {
     )
 
   /** All search parameters for the Observation resource type. */
-  public val ALL: CollectionsList<SearchParam<Observation, *>> =
+  public val all: CollectionsList<SearchParam<Observation, *>> =
     listOf(
-      AminoAcidChange,
-      BasedOn,
-      Category,
-      Code,
-      CodeValueConcept,
-      CodeValueDate,
-      CodeValueQuantity,
-      CodeValueString,
-      ComboCode,
-      ComboCodeValueConcept,
-      ComboCodeValueQuantity,
-      ComboDataAbsentReason,
-      ComboValueConcept,
-      ComboValueQuantity,
-      ComponentCode,
-      ComponentCodeValueConcept,
-      ComponentCodeValueQuantity,
-      ComponentDataAbsentReason,
-      ComponentValueConcept,
-      ComponentValueQuantity,
-      DataAbsentReason,
-      Date,
-      DerivedFrom,
-      Device,
-      DnaVariant,
-      Encounter,
-      Focus,
-      GeneAminoAcidChange,
-      GeneDnavariant,
-      GeneIdentifier,
-      HasMember,
-      Identifier,
-      Method,
-      PartOf,
-      Patient,
-      Performer,
-      Specimen,
-      Status,
-      Subject,
-      ValueConcept,
-      ValueDate,
-      ValueQuantity,
-      ValueString,
+      aminoAcidChange,
+      basedOn,
+      category,
+      code,
+      codeValueConcept,
+      codeValueDate,
+      codeValueQuantity,
+      codeValueString,
+      comboCode,
+      comboCodeValueConcept,
+      comboCodeValueQuantity,
+      comboDataAbsentReason,
+      comboValueConcept,
+      comboValueQuantity,
+      componentCode,
+      componentCodeValueConcept,
+      componentCodeValueQuantity,
+      componentDataAbsentReason,
+      componentValueConcept,
+      componentValueQuantity,
+      dataAbsentReason,
+      date,
+      derivedFrom,
+      device,
+      dnaVariant,
+      encounter,
+      focus,
+      geneAminoAcidChange,
+      geneDnavariant,
+      geneIdentifier,
+      hasMember,
+      identifier,
+      method,
+      partOf,
+      patient,
+      performer,
+      specimen,
+      status,
+      subject,
+      valueConcept,
+      valueDate,
+      valueQuantity,
+      valueString,
     )
 }

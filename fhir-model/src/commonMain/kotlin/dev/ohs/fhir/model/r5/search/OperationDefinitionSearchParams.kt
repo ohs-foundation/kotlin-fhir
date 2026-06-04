@@ -37,7 +37,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [OperationDefinition] resource type. */
 public object OperationDefinitionSearchParams {
-  public val Base: SearchParam<OperationDefinition, Canonical> =
+  public val base: SearchParam<OperationDefinition, Canonical> =
     SimpleSearchParam<OperationDefinition, Canonical>(
       name = "base",
       type = SearchParamType.fromCode("reference"),
@@ -46,7 +46,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.base) },
     )
 
-  public val Code: SearchParam<OperationDefinition, Any> =
+  public val code: SearchParam<OperationDefinition, Any> =
     SimpleSearchParam<OperationDefinition, Any>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -54,7 +54,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOf(resource.code) },
     )
 
-  public val Context: SearchParam<OperationDefinition, Any> =
+  public val context: SearchParam<OperationDefinition, Any> =
     SimpleSearchParam<OperationDefinition, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -62,7 +62,7 @@ public object OperationDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<OperationDefinition, Any> =
+  public val contextQuantity: SearchParam<OperationDefinition, Any> =
     SimpleSearchParam<OperationDefinition, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -70,7 +70,7 @@ public object OperationDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<OperationDefinition, Coding> =
+  public val contextType: SearchParam<OperationDefinition, Coding> =
     SimpleSearchParam<OperationDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -78,7 +78,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<OperationDefinition, UsageContext> =
+  public val contextTypeQuantity: SearchParam<OperationDefinition, UsageContext> =
     SimpleSearchParam<OperationDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -86,7 +86,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<OperationDefinition, UsageContext> =
+  public val contextTypeValue: SearchParam<OperationDefinition, UsageContext> =
     SimpleSearchParam<OperationDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -94,7 +94,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<OperationDefinition, DateTime> =
+  public val date: SearchParam<OperationDefinition, DateTime> =
     SimpleSearchParam<OperationDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -102,7 +102,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<OperationDefinition, Markdown> =
+  public val description: SearchParam<OperationDefinition, Markdown> =
     SimpleSearchParam<OperationDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -110,7 +110,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<OperationDefinition, Identifier> =
+  public val identifier: SearchParam<OperationDefinition, Identifier> =
     SimpleSearchParam<OperationDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -118,7 +118,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val InputProfile: SearchParam<OperationDefinition, Canonical> =
+  public val inputProfile: SearchParam<OperationDefinition, Canonical> =
     SimpleSearchParam<OperationDefinition, Canonical>(
       name = "input-profile",
       type = SearchParamType.fromCode("reference"),
@@ -127,7 +127,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.inputProfile) },
     )
 
-  public val Instance: SearchParam<OperationDefinition, Boolean> =
+  public val instance: SearchParam<OperationDefinition, Boolean> =
     SimpleSearchParam<OperationDefinition, Boolean>(
       name = "instance",
       type = SearchParamType.fromCode("token"),
@@ -135,7 +135,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOf(resource.instance) },
     )
 
-  public val Jurisdiction: SearchParam<OperationDefinition, CodeableConcept> =
+  public val jurisdiction: SearchParam<OperationDefinition, CodeableConcept> =
     SimpleSearchParam<OperationDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -143,7 +143,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Kind: SearchParam<OperationDefinition, Any> =
+  public val kind: SearchParam<OperationDefinition, Any> =
     SimpleSearchParam<OperationDefinition, Any>(
       name = "kind",
       type = SearchParamType.fromCode("token"),
@@ -151,7 +151,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOf(resource.kind) },
     )
 
-  public val Name: SearchParam<OperationDefinition, String> =
+  public val name: SearchParam<OperationDefinition, String> =
     SimpleSearchParam<OperationDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -159,7 +159,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOf(resource.name) },
     )
 
-  public val OutputProfile: SearchParam<OperationDefinition, Canonical> =
+  public val outputProfile: SearchParam<OperationDefinition, Canonical> =
     SimpleSearchParam<OperationDefinition, Canonical>(
       name = "output-profile",
       type = SearchParamType.fromCode("reference"),
@@ -168,7 +168,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.outputProfile) },
     )
 
-  public val Publisher: SearchParam<OperationDefinition, String> =
+  public val publisher: SearchParam<OperationDefinition, String> =
     SimpleSearchParam<OperationDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -176,7 +176,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<OperationDefinition, Any> =
+  public val status: SearchParam<OperationDefinition, Any> =
     SimpleSearchParam<OperationDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -184,7 +184,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val System: SearchParam<OperationDefinition, Boolean> =
+  public val system: SearchParam<OperationDefinition, Boolean> =
     SimpleSearchParam<OperationDefinition, Boolean>(
       name = "system",
       type = SearchParamType.fromCode("token"),
@@ -192,7 +192,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOf(resource.system) },
     )
 
-  public val Title: SearchParam<OperationDefinition, String> =
+  public val title: SearchParam<OperationDefinition, String> =
     SimpleSearchParam<OperationDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -200,7 +200,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Type: SearchParam<OperationDefinition, Boolean> =
+  public val type: SearchParam<OperationDefinition, Boolean> =
     SimpleSearchParam<OperationDefinition, Boolean>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -208,7 +208,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOf(resource.type) },
     )
 
-  public val Url: SearchParam<OperationDefinition, Uri> =
+  public val url: SearchParam<OperationDefinition, Uri> =
     SimpleSearchParam<OperationDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -216,7 +216,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<OperationDefinition, String> =
+  public val version: SearchParam<OperationDefinition, String> =
     SimpleSearchParam<OperationDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -225,30 +225,30 @@ public object OperationDefinitionSearchParams {
     )
 
   /** All search parameters for the OperationDefinition resource type. */
-  public val ALL: List<SearchParam<OperationDefinition, *>> =
+  public val all: List<SearchParam<OperationDefinition, *>> =
     listOf(
-      Base,
-      Code,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Identifier,
-      InputProfile,
-      Instance,
-      Jurisdiction,
-      Kind,
-      Name,
-      OutputProfile,
-      Publisher,
-      Status,
-      System,
-      Title,
-      Type,
-      Url,
-      Version,
+      base,
+      code,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      identifier,
+      inputProfile,
+      instance,
+      jurisdiction,
+      kind,
+      name,
+      outputProfile,
+      publisher,
+      status,
+      system,
+      title,
+      type,
+      url,
+      version,
     )
 }

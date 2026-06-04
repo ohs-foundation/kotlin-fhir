@@ -18,9 +18,11 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.DeviceUseStatement
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.Identifier
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Suppress
@@ -28,16 +30,16 @@ import kotlin.collections.List
 
 /** Search parameters for the [DeviceUseStatement] resource type. */
 public object DeviceUseStatementSearchParams {
-  public val Device: SearchParam<DeviceUseStatement, Reference> =
+  public val device: SearchParam<DeviceUseStatement, Reference> =
     SimpleSearchParam<DeviceUseStatement, Reference>(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceUseStatement.device",
-      target = listOf(dev.ohs.fhir.model.r4b.Device::class),
+      target = listOf(Device::class),
       extractor = { resource -> listOf(resource.device) },
     )
 
-  public val Identifier: SearchParam<DeviceUseStatement, Identifier> =
+  public val identifier: SearchParam<DeviceUseStatement, Identifier> =
     SimpleSearchParam<DeviceUseStatement, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -45,12 +47,12 @@ public object DeviceUseStatementSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<DeviceUseStatement, Reference> =
+  public val patient: SearchParam<DeviceUseStatement, Reference> =
     SimpleSearchParam<DeviceUseStatement, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceUseStatement.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -58,16 +60,16 @@ public object DeviceUseStatementSearchParams {
       },
     )
 
-  public val Subject: SearchParam<DeviceUseStatement, Reference> =
+  public val subject: SearchParam<DeviceUseStatement, Reference> =
     SimpleSearchParam<DeviceUseStatement, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceUseStatement.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
   /** All search parameters for the DeviceUseStatement resource type. */
-  public val ALL: List<SearchParam<DeviceUseStatement, *>> =
-    listOf(Device, Identifier, Patient, Subject)
+  public val all: List<SearchParam<DeviceUseStatement, *>> =
+    listOf(device, identifier, patient, subject)
 }

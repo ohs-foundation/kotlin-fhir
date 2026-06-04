@@ -169,7 +169,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [PaymentNotice] resource type. */
 public object PaymentNoticeSearchParams {
-  public val Created: SearchParam<PaymentNotice, DateTime> =
+  public val created: SearchParam<PaymentNotice, DateTime> =
     SimpleSearchParam<PaymentNotice, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
@@ -177,7 +177,7 @@ public object PaymentNoticeSearchParams {
       extractor = { resource -> listOf(resource.created) },
     )
 
-  public val Identifier: SearchParam<PaymentNotice, Identifier> =
+  public val identifier: SearchParam<PaymentNotice, Identifier> =
     SimpleSearchParam<PaymentNotice, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -185,7 +185,7 @@ public object PaymentNoticeSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val PaymentStatus: SearchParam<PaymentNotice, CodeableConcept> =
+  public val paymentStatus: SearchParam<PaymentNotice, CodeableConcept> =
     SimpleSearchParam<PaymentNotice, CodeableConcept>(
       name = "payment-status",
       type = SearchParamType.fromCode("token"),
@@ -193,7 +193,7 @@ public object PaymentNoticeSearchParams {
       extractor = { resource -> listOfNotNull(resource.paymentStatus) },
     )
 
-  public val Provider: SearchParam<PaymentNotice, Reference> =
+  public val provider: SearchParam<PaymentNotice, Reference> =
     SimpleSearchParam<PaymentNotice, Reference>(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
@@ -202,7 +202,7 @@ public object PaymentNoticeSearchParams {
       extractor = { resource -> listOfNotNull(resource.provider) },
     )
 
-  public val Request: SearchParam<PaymentNotice, Reference> =
+  public val request: SearchParam<PaymentNotice, Reference> =
     SimpleSearchParam<PaymentNotice, Reference>(
       name = "request",
       type = SearchParamType.fromCode("reference"),
@@ -353,7 +353,7 @@ public object PaymentNoticeSearchParams {
       extractor = { resource -> listOfNotNull(resource.request) },
     )
 
-  public val Response: SearchParam<PaymentNotice, Reference> =
+  public val response: SearchParam<PaymentNotice, Reference> =
     SimpleSearchParam<PaymentNotice, Reference>(
       name = "response",
       type = SearchParamType.fromCode("reference"),
@@ -504,7 +504,7 @@ public object PaymentNoticeSearchParams {
       extractor = { resource -> listOfNotNull(resource.response) },
     )
 
-  public val Status: SearchParam<PaymentNotice, Any> =
+  public val status: SearchParam<PaymentNotice, Any> =
     SimpleSearchParam<PaymentNotice, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -513,6 +513,6 @@ public object PaymentNoticeSearchParams {
     )
 
   /** All search parameters for the PaymentNotice resource type. */
-  public val ALL: CollectionsList<SearchParam<PaymentNotice, *>> =
-    listOf(Created, Identifier, PaymentStatus, Provider, Request, Response, Status)
+  public val all: CollectionsList<SearchParam<PaymentNotice, *>> =
+    listOf(created, identifier, paymentStatus, provider, request, response, status)
 }

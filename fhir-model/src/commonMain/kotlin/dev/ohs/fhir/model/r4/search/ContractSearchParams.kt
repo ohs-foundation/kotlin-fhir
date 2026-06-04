@@ -121,6 +121,7 @@ import dev.ohs.fhir.model.r4.OperationDefinition
 import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.OrganizationAffiliation
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PaymentNotice
 import dev.ohs.fhir.model.r4.PaymentReconciliation
 import dev.ohs.fhir.model.r4.Person
@@ -173,7 +174,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Contract] resource type. */
 public object ContractSearchParams {
-  public val Authority: SearchParam<Contract, Reference> =
+  public val authority: SearchParam<Contract, Reference> =
     SimpleSearchParam<Contract, Reference>(
       name = "authority",
       type = SearchParamType.fromCode("reference"),
@@ -182,7 +183,7 @@ public object ContractSearchParams {
       extractor = { resource -> resource.authority },
     )
 
-  public val Domain: SearchParam<Contract, Reference> =
+  public val domain: SearchParam<Contract, Reference> =
     SimpleSearchParam<Contract, Reference>(
       name = "domain",
       type = SearchParamType.fromCode("reference"),
@@ -191,7 +192,7 @@ public object ContractSearchParams {
       extractor = { resource -> resource.domain },
     )
 
-  public val Identifier: SearchParam<Contract, Identifier> =
+  public val identifier: SearchParam<Contract, Identifier> =
     SimpleSearchParam<Contract, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -199,7 +200,7 @@ public object ContractSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Instantiates: SearchParam<Contract, Uri> =
+  public val instantiates: SearchParam<Contract, Uri> =
     SimpleSearchParam<Contract, Uri>(
       name = "instantiates",
       type = SearchParamType.fromCode("uri"),
@@ -207,7 +208,7 @@ public object ContractSearchParams {
       extractor = { resource -> listOfNotNull(resource.instantiatesUri) },
     )
 
-  public val Issued: SearchParam<Contract, DateTime> =
+  public val issued: SearchParam<Contract, DateTime> =
     SimpleSearchParam<Contract, DateTime>(
       name = "issued",
       type = SearchParamType.fromCode("date"),
@@ -215,18 +216,18 @@ public object ContractSearchParams {
       extractor = { resource -> listOfNotNull(resource.issued) },
     )
 
-  public val Patient: SearchParam<Contract, Reference> =
+  public val patient: SearchParam<Contract, Reference> =
     SimpleSearchParam<Contract, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Contract.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
       },
     )
 
-  public val Signer: SearchParam<Contract, Reference> =
+  public val signer: SearchParam<Contract, Reference> =
     SimpleSearchParam<Contract, Reference>(
       name = "signer",
       type = SearchParamType.fromCode("reference"),
@@ -235,14 +236,14 @@ public object ContractSearchParams {
         listOf(
           Practitioner::class,
           Organization::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.signer.map { it.party } },
     )
 
-  public val Status: SearchParam<Contract, Any> =
+  public val status: SearchParam<Contract, Any> =
     SimpleSearchParam<Contract, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -250,7 +251,7 @@ public object ContractSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Subject: SearchParam<Contract, Reference> =
+  public val subject: SearchParam<Contract, Reference> =
     SimpleSearchParam<Contract, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -358,7 +359,7 @@ public object ContractSearchParams {
           OperationOutcome::class,
           Organization::class,
           OrganizationAffiliation::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -406,7 +407,7 @@ public object ContractSearchParams {
       extractor = { resource -> resource.subject },
     )
 
-  public val Url: SearchParam<Contract, Uri> =
+  public val url: SearchParam<Contract, Uri> =
     SimpleSearchParam<Contract, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -415,17 +416,17 @@ public object ContractSearchParams {
     )
 
   /** All search parameters for the Contract resource type. */
-  public val ALL: CollectionsList<SearchParam<Contract, *>> =
+  public val all: CollectionsList<SearchParam<Contract, *>> =
     listOf(
-      Authority,
-      Domain,
-      Identifier,
-      Instantiates,
-      Issued,
-      Patient,
-      Signer,
-      Status,
-      Subject,
-      Url,
+      authority,
+      domain,
+      identifier,
+      instantiates,
+      issued,
+      patient,
+      signer,
+      status,
+      subject,
+      url,
     )
 }

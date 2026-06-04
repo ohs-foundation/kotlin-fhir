@@ -120,6 +120,7 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Person
@@ -170,7 +171,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [AuditEvent] resource type. */
 public object AuditEventSearchParams {
-  public val Action: SearchParam<AuditEvent, Any> =
+  public val action: SearchParam<AuditEvent, Any> =
     SimpleSearchParam<AuditEvent, Any>(
       name = "action",
       type = SearchParamType.fromCode("token"),
@@ -178,7 +179,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.action) },
     )
 
-  public val Address: SearchParam<AuditEvent, String> =
+  public val address: SearchParam<AuditEvent, String> =
     SimpleSearchParam<AuditEvent, String>(
       name = "address",
       type = SearchParamType.fromCode("string"),
@@ -186,7 +187,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.agent.mapNotNull { it.network }.mapNotNull { it.address } },
     )
 
-  public val Agent: SearchParam<AuditEvent, Reference> =
+  public val agent: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "agent",
       type = SearchParamType.fromCode("reference"),
@@ -196,14 +197,14 @@ public object AuditEventSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.agent.mapNotNull { it.who } },
     )
 
-  public val AgentName: SearchParam<AuditEvent, String> =
+  public val agentName: SearchParam<AuditEvent, String> =
     SimpleSearchParam<AuditEvent, String>(
       name = "agent-name",
       type = SearchParamType.fromCode("string"),
@@ -211,7 +212,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.agent.mapNotNull { it.name } },
     )
 
-  public val AgentRole: SearchParam<AuditEvent, CodeableConcept> =
+  public val agentRole: SearchParam<AuditEvent, CodeableConcept> =
     SimpleSearchParam<AuditEvent, CodeableConcept>(
       name = "agent-role",
       type = SearchParamType.fromCode("token"),
@@ -219,7 +220,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.agent.flatMap { it.role } },
     )
 
-  public val Altid: SearchParam<AuditEvent, String> =
+  public val altid: SearchParam<AuditEvent, String> =
     SimpleSearchParam<AuditEvent, String>(
       name = "altid",
       type = SearchParamType.fromCode("token"),
@@ -227,7 +228,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.agent.mapNotNull { it.altId } },
     )
 
-  public val Date: SearchParam<AuditEvent, Instant> =
+  public val date: SearchParam<AuditEvent, Instant> =
     SimpleSearchParam<AuditEvent, Instant>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -235,7 +236,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> listOf(resource.recorded) },
     )
 
-  public val Entity: SearchParam<AuditEvent, Reference> =
+  public val entity: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "entity",
       type = SearchParamType.fromCode("reference"),
@@ -341,7 +342,7 @@ public object AuditEventSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -386,7 +387,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.entity.mapNotNull { it.what } },
     )
 
-  public val EntityName: SearchParam<AuditEvent, String> =
+  public val entityName: SearchParam<AuditEvent, String> =
     SimpleSearchParam<AuditEvent, String>(
       name = "entity-name",
       type = SearchParamType.fromCode("string"),
@@ -394,7 +395,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.entity.mapNotNull { it.name } },
     )
 
-  public val EntityRole: SearchParam<AuditEvent, Coding> =
+  public val entityRole: SearchParam<AuditEvent, Coding> =
     SimpleSearchParam<AuditEvent, Coding>(
       name = "entity-role",
       type = SearchParamType.fromCode("token"),
@@ -402,7 +403,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.entity.mapNotNull { it.role } },
     )
 
-  public val EntityType: SearchParam<AuditEvent, Coding> =
+  public val entityType: SearchParam<AuditEvent, Coding> =
     SimpleSearchParam<AuditEvent, Coding>(
       name = "entity-type",
       type = SearchParamType.fromCode("token"),
@@ -410,7 +411,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.entity.mapNotNull { it.type } },
     )
 
-  public val Outcome: SearchParam<AuditEvent, Any> =
+  public val outcome: SearchParam<AuditEvent, Any> =
     SimpleSearchParam<AuditEvent, Any>(
       name = "outcome",
       type = SearchParamType.fromCode("token"),
@@ -418,12 +419,12 @@ public object AuditEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.outcome) },
     )
 
-  public val Patient: SearchParam<AuditEvent, Reference> =
+  public val patient: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "AuditEvent.agent.who.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         resource.agent
           .mapNotNull { it.who }
@@ -431,7 +432,7 @@ public object AuditEventSearchParams {
       },
     )
 
-  public val Policy: SearchParam<AuditEvent, Uri> =
+  public val policy: SearchParam<AuditEvent, Uri> =
     SimpleSearchParam<AuditEvent, Uri>(
       name = "policy",
       type = SearchParamType.fromCode("uri"),
@@ -439,7 +440,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.agent.flatMap { it.policy } },
     )
 
-  public val Site: SearchParam<AuditEvent, String> =
+  public val site: SearchParam<AuditEvent, String> =
     SimpleSearchParam<AuditEvent, String>(
       name = "site",
       type = SearchParamType.fromCode("token"),
@@ -447,7 +448,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.source.site) },
     )
 
-  public val Source: SearchParam<AuditEvent, Reference> =
+  public val source: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
@@ -457,14 +458,14 @@ public object AuditEventSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> listOf(resource.source.observer) },
     )
 
-  public val Subtype: SearchParam<AuditEvent, Coding> =
+  public val subtype: SearchParam<AuditEvent, Coding> =
     SimpleSearchParam<AuditEvent, Coding>(
       name = "subtype",
       type = SearchParamType.fromCode("token"),
@@ -472,7 +473,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.subtype },
     )
 
-  public val Type: SearchParam<AuditEvent, Coding> =
+  public val type: SearchParam<AuditEvent, Coding> =
     SimpleSearchParam<AuditEvent, Coding>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -481,25 +482,25 @@ public object AuditEventSearchParams {
     )
 
   /** All search parameters for the AuditEvent resource type. */
-  public val ALL: CollectionsList<SearchParam<AuditEvent, *>> =
+  public val all: CollectionsList<SearchParam<AuditEvent, *>> =
     listOf(
-      Action,
-      Address,
-      Agent,
-      AgentName,
-      AgentRole,
-      Altid,
-      Date,
-      Entity,
-      EntityName,
-      EntityRole,
-      EntityType,
-      Outcome,
-      Patient,
-      Policy,
-      Site,
-      Source,
-      Subtype,
-      Type,
+      action,
+      address,
+      agent,
+      agentName,
+      agentRole,
+      altid,
+      date,
+      entity,
+      entityName,
+      entityRole,
+      entityType,
+      outcome,
+      patient,
+      policy,
+      site,
+      source,
+      subtype,
+      type,
     )
 }

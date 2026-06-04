@@ -21,12 +21,15 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.CarePlan
 import dev.ohs.fhir.model.r4b.CareTeam
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.DeviceMetric
+import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Media
 import dev.ohs.fhir.model.r4b.Organization
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
@@ -40,7 +43,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Media] resource type. */
 public object MediaSearchParams {
-  public val BasedOn: SearchParam<Media, Reference> =
+  public val basedOn: SearchParam<Media, Reference> =
     SimpleSearchParam<Media, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -49,7 +52,7 @@ public object MediaSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val Created: SearchParam<Media, Media.Created> =
+  public val created: SearchParam<Media, Media.Created> =
     SimpleSearchParam<Media, Media.Created>(
       name = "created",
       type = SearchParamType.fromCode("date"),
@@ -57,25 +60,25 @@ public object MediaSearchParams {
       extractor = { resource -> listOfNotNull(resource.created) },
     )
 
-  public val Device: SearchParam<Media, Reference> =
+  public val device: SearchParam<Media, Reference> =
     SimpleSearchParam<Media, Reference>(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.device",
-      target = listOf(dev.ohs.fhir.model.r4b.Device::class, DeviceMetric::class),
+      target = listOf(Device::class, DeviceMetric::class),
       extractor = { resource -> listOfNotNull(resource.device) },
     )
 
-  public val Encounter: SearchParam<Media, Reference> =
+  public val encounter: SearchParam<Media, Reference> =
     SimpleSearchParam<Media, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.encounter",
-      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Identifier: SearchParam<Media, Identifier> =
+  public val identifier: SearchParam<Media, Identifier> =
     SimpleSearchParam<Media, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -83,7 +86,7 @@ public object MediaSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Modality: SearchParam<Media, CodeableConcept> =
+  public val modality: SearchParam<Media, CodeableConcept> =
     SimpleSearchParam<Media, CodeableConcept>(
       name = "modality",
       type = SearchParamType.fromCode("token"),
@@ -91,7 +94,7 @@ public object MediaSearchParams {
       extractor = { resource -> listOfNotNull(resource.modality) },
     )
 
-  public val Operator: SearchParam<Media, Reference> =
+  public val `operator`: SearchParam<Media, Reference> =
     SimpleSearchParam<Media, Reference>(
       name = "operator",
       type = SearchParamType.fromCode("reference"),
@@ -101,20 +104,20 @@ public object MediaSearchParams {
           Practitioner::class,
           Organization::class,
           CareTeam::class,
-          dev.ohs.fhir.model.r4b.Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Device::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> listOfNotNull(resource.`operator`) },
     )
 
-  public val Patient: SearchParam<Media, Reference> =
+  public val patient: SearchParam<Media, Reference> =
     SimpleSearchParam<Media, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -122,7 +125,7 @@ public object MediaSearchParams {
       },
     )
 
-  public val Site: SearchParam<Media, CodeableConcept> =
+  public val site: SearchParam<Media, CodeableConcept> =
     SimpleSearchParam<Media, CodeableConcept>(
       name = "site",
       type = SearchParamType.fromCode("token"),
@@ -130,7 +133,7 @@ public object MediaSearchParams {
       extractor = { resource -> listOfNotNull(resource.bodySite) },
     )
 
-  public val Status: SearchParam<Media, Any> =
+  public val status: SearchParam<Media, Any> =
     SimpleSearchParam<Media, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -138,7 +141,7 @@ public object MediaSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<Media, Reference> =
+  public val subject: SearchParam<Media, Reference> =
     SimpleSearchParam<Media, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -148,15 +151,15 @@ public object MediaSearchParams {
           Practitioner::class,
           Group::class,
           Specimen::class,
-          dev.ohs.fhir.model.r4b.Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Device::class,
+          Patient::class,
           PractitionerRole::class,
           Location::class,
         ),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val Type: SearchParam<Media, CodeableConcept> =
+  public val type: SearchParam<Media, CodeableConcept> =
     SimpleSearchParam<Media, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -164,7 +167,7 @@ public object MediaSearchParams {
       extractor = { resource -> listOfNotNull(resource.type) },
     )
 
-  public val View: SearchParam<Media, CodeableConcept> =
+  public val view: SearchParam<Media, CodeableConcept> =
     SimpleSearchParam<Media, CodeableConcept>(
       name = "view",
       type = SearchParamType.fromCode("token"),
@@ -173,20 +176,20 @@ public object MediaSearchParams {
     )
 
   /** All search parameters for the Media resource type. */
-  public val ALL: List<SearchParam<Media, *>> =
+  public val all: List<SearchParam<Media, *>> =
     listOf(
-      BasedOn,
-      Created,
-      Device,
-      Encounter,
-      Identifier,
-      Modality,
-      Operator,
-      Patient,
-      Site,
-      Status,
-      Subject,
-      Type,
-      View,
+      basedOn,
+      created,
+      device,
+      encounter,
+      identifier,
+      modality,
+      `operator`,
+      patient,
+      site,
+      status,
+      subject,
+      type,
+      view,
     )
 }

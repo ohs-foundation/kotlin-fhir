@@ -119,6 +119,7 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Person
@@ -166,7 +167,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [DetectedIssue] resource type. */
 public object DetectedIssueSearchParams {
-  public val Author: SearchParam<DetectedIssue, Reference> =
+  public val author: SearchParam<DetectedIssue, Reference> =
     SimpleSearchParam<DetectedIssue, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -175,7 +176,7 @@ public object DetectedIssueSearchParams {
       extractor = { resource -> listOfNotNull(resource.author) },
     )
 
-  public val Code: SearchParam<DetectedIssue, CodeableConcept> =
+  public val code: SearchParam<DetectedIssue, CodeableConcept> =
     SimpleSearchParam<DetectedIssue, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -183,7 +184,7 @@ public object DetectedIssueSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Identified: SearchParam<DetectedIssue, DetectedIssue.Identified> =
+  public val identified: SearchParam<DetectedIssue, DetectedIssue.Identified> =
     SimpleSearchParam<DetectedIssue, DetectedIssue.Identified>(
       name = "identified",
       type = SearchParamType.fromCode("date"),
@@ -191,7 +192,7 @@ public object DetectedIssueSearchParams {
       extractor = { resource -> listOfNotNull(resource.identified) },
     )
 
-  public val Identifier: SearchParam<DetectedIssue, Identifier> =
+  public val identifier: SearchParam<DetectedIssue, Identifier> =
     SimpleSearchParam<DetectedIssue, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -199,7 +200,7 @@ public object DetectedIssueSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Implicated: SearchParam<DetectedIssue, Reference> =
+  public val implicated: SearchParam<DetectedIssue, Reference> =
     SimpleSearchParam<DetectedIssue, Reference>(
       name = "implicated",
       type = SearchParamType.fromCode("reference"),
@@ -305,7 +306,7 @@ public object DetectedIssueSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -350,16 +351,16 @@ public object DetectedIssueSearchParams {
       extractor = { resource -> resource.implicated },
     )
 
-  public val Patient: SearchParam<DetectedIssue, Reference> =
+  public val patient: SearchParam<DetectedIssue, Reference> =
     SimpleSearchParam<DetectedIssue, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DetectedIssue.patient",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.patient) },
     )
 
   /** All search parameters for the DetectedIssue resource type. */
-  public val ALL: CollectionsList<SearchParam<DetectedIssue, *>> =
-    listOf(Author, Code, Identified, Identifier, Implicated, Patient)
+  public val all: CollectionsList<SearchParam<DetectedIssue, *>> =
+    listOf(author, code, identified, identifier, implicated, patient)
 }

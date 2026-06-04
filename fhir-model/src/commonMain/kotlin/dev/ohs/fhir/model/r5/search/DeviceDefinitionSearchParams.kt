@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceDefinition
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
@@ -29,7 +30,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [DeviceDefinition] resource type. */
 public object DeviceDefinitionSearchParams {
-  public val DeviceName: SearchParam<DeviceDefinition, String> =
+  public val deviceName: SearchParam<DeviceDefinition, String> =
     SimpleSearchParam<DeviceDefinition, String>(
       name = "device-name",
       type = SearchParamType.fromCode("string"),
@@ -37,7 +38,7 @@ public object DeviceDefinitionSearchParams {
       extractor = { resource -> resource.deviceName.map { it.name } },
     )
 
-  public val Identifier: SearchParam<DeviceDefinition, Identifier> =
+  public val identifier: SearchParam<DeviceDefinition, Identifier> =
     SimpleSearchParam<DeviceDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -45,25 +46,25 @@ public object DeviceDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Manufacturer: SearchParam<DeviceDefinition, Reference> =
+  public val manufacturer: SearchParam<DeviceDefinition, Reference> =
     SimpleSearchParam<DeviceDefinition, Reference>(
       name = "manufacturer",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceDefinition.manufacturer",
-      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.manufacturer) },
     )
 
-  public val Organization: SearchParam<DeviceDefinition, Reference> =
+  public val organization: SearchParam<DeviceDefinition, Reference> =
     SimpleSearchParam<DeviceDefinition, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceDefinition.owner",
-      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.owner) },
     )
 
-  public val Specification: SearchParam<DeviceDefinition, CodeableConcept> =
+  public val specification: SearchParam<DeviceDefinition, CodeableConcept> =
     SimpleSearchParam<DeviceDefinition, CodeableConcept>(
       name = "specification",
       type = SearchParamType.fromCode("token"),
@@ -71,7 +72,7 @@ public object DeviceDefinitionSearchParams {
       extractor = { resource -> resource.conformsTo.map { it.specification } },
     )
 
-  public val SpecificationVersion: SearchParam<DeviceDefinition, DeviceDefinition.ConformsTo> =
+  public val specificationVersion: SearchParam<DeviceDefinition, DeviceDefinition.ConformsTo> =
     SimpleSearchParam<DeviceDefinition, DeviceDefinition.ConformsTo>(
       name = "specification-version",
       type = SearchParamType.fromCode("composite"),
@@ -79,7 +80,7 @@ public object DeviceDefinitionSearchParams {
       extractor = { resource -> resource.conformsTo },
     )
 
-  public val Type: SearchParam<DeviceDefinition, CodeableConcept> =
+  public val type: SearchParam<DeviceDefinition, CodeableConcept> =
     SimpleSearchParam<DeviceDefinition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -88,14 +89,14 @@ public object DeviceDefinitionSearchParams {
     )
 
   /** All search parameters for the DeviceDefinition resource type. */
-  public val ALL: List<SearchParam<DeviceDefinition, *>> =
+  public val all: List<SearchParam<DeviceDefinition, *>> =
     listOf(
-      DeviceName,
-      Identifier,
-      Manufacturer,
-      Organization,
-      Specification,
-      SpecificationVersion,
-      Type,
+      deviceName,
+      identifier,
+      manufacturer,
+      organization,
+      specification,
+      specificationVersion,
+      type,
     )
 }

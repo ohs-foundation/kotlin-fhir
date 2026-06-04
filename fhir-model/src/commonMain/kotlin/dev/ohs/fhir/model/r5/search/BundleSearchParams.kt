@@ -19,6 +19,7 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Bundle
+import dev.ohs.fhir.model.r5.Composition
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.MessageHeader
@@ -29,25 +30,25 @@ import kotlin.collections.List
 
 /** Search parameters for the [Bundle] resource type. */
 public object BundleSearchParams {
-  public val Composition: SearchParam<Bundle, Any> =
+  public val composition: SearchParam<Bundle, Any> =
     SimpleSearchParam<Bundle, Any>(
       name = "composition",
       type = SearchParamType.fromCode("reference"),
       expression = "Bundle.entry[0].resource as Composition",
-      target = listOf(dev.ohs.fhir.model.r5.Composition::class),
+      target = listOf(Composition::class),
       extractor = { emptyList() },
     )
 
-  public val ExampleConstraint: SearchParam<Bundle, Any> =
+  public val exampleConstraint: SearchParam<Bundle, Any> =
     SimpleSearchParam<Bundle, Any>(
       name = "example-constraint",
       type = SearchParamType.fromCode("reference"),
       expression = "Bundle.entry[0].resource",
-      target = listOf(dev.ohs.fhir.model.r5.Composition::class),
+      target = listOf(Composition::class),
       extractor = { emptyList() },
     )
 
-  public val Identifier: SearchParam<Bundle, Identifier> =
+  public val identifier: SearchParam<Bundle, Identifier> =
     SimpleSearchParam<Bundle, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -55,7 +56,7 @@ public object BundleSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val Message: SearchParam<Bundle, Any> =
+  public val message: SearchParam<Bundle, Any> =
     SimpleSearchParam<Bundle, Any>(
       name = "message",
       type = SearchParamType.fromCode("reference"),
@@ -64,7 +65,7 @@ public object BundleSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Timestamp: SearchParam<Bundle, Instant> =
+  public val timestamp: SearchParam<Bundle, Instant> =
     SimpleSearchParam<Bundle, Instant>(
       name = "timestamp",
       type = SearchParamType.fromCode("date"),
@@ -72,7 +73,7 @@ public object BundleSearchParams {
       extractor = { resource -> listOfNotNull(resource.timestamp) },
     )
 
-  public val Type: SearchParam<Bundle, Any> =
+  public val type: SearchParam<Bundle, Any> =
     SimpleSearchParam<Bundle, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -81,6 +82,6 @@ public object BundleSearchParams {
     )
 
   /** All search parameters for the Bundle resource type. */
-  public val ALL: List<SearchParam<Bundle, *>> =
-    listOf(Composition, ExampleConstraint, Identifier, Message, Timestamp, Type)
+  public val all: List<SearchParam<Bundle, *>> =
+    listOf(composition, exampleConstraint, identifier, message, timestamp, type)
 }

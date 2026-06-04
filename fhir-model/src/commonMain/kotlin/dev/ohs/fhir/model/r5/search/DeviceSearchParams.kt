@@ -23,6 +23,8 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DeviceDefinition
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Location
+import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
@@ -33,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Device] resource type. */
 public object DeviceSearchParams {
-  public val BiologicalSourceEvent: SearchParam<Device, Identifier> =
+  public val biologicalSourceEvent: SearchParam<Device, Identifier> =
     SimpleSearchParam<Device, Identifier>(
       name = "biological-source-event",
       type = SearchParamType.fromCode("token"),
@@ -41,7 +43,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.biologicalSourceEvent) },
     )
 
-  public val Code: SearchParam<Device, CodeableConcept> =
+  public val code: SearchParam<Device, CodeableConcept> =
     SimpleSearchParam<Device, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -49,7 +51,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.definition?.concept) },
     )
 
-  public val CodeValueConcept: SearchParam<Device, Any> =
+  public val codeValueConcept: SearchParam<Device, Any> =
     SimpleSearchParam<Device, Any>(
       name = "code-value-concept",
       type = SearchParamType.fromCode("composite"),
@@ -57,7 +59,7 @@ public object DeviceSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Definition: SearchParam<Device, Reference> =
+  public val definition: SearchParam<Device, Reference> =
     SimpleSearchParam<Device, Reference>(
       name = "definition",
       type = SearchParamType.fromCode("reference"),
@@ -66,7 +68,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.definition?.reference) },
     )
 
-  public val DeviceName: SearchParam<Device, String> =
+  public val deviceName: SearchParam<Device, String> =
     SimpleSearchParam<Device, String>(
       name = "device-name",
       type = SearchParamType.fromCode("string"),
@@ -74,7 +76,7 @@ public object DeviceSearchParams {
       extractor = { resource -> resource.name.map { it.`value` } },
     )
 
-  public val ExpirationDate: SearchParam<Device, DateTime> =
+  public val expirationDate: SearchParam<Device, DateTime> =
     SimpleSearchParam<Device, DateTime>(
       name = "expiration-date",
       type = SearchParamType.fromCode("date"),
@@ -82,7 +84,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.expirationDate) },
     )
 
-  public val Identifier: SearchParam<Device, Identifier> =
+  public val identifier: SearchParam<Device, Identifier> =
     SimpleSearchParam<Device, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -90,16 +92,16 @@ public object DeviceSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Location: SearchParam<Device, Reference> =
+  public val location: SearchParam<Device, Reference> =
     SimpleSearchParam<Device, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Device.location",
-      target = listOf(dev.ohs.fhir.model.r5.Location::class),
+      target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
     )
 
-  public val LotNumber: SearchParam<Device, String> =
+  public val lotNumber: SearchParam<Device, String> =
     SimpleSearchParam<Device, String>(
       name = "lot-number",
       type = SearchParamType.fromCode("string"),
@@ -107,7 +109,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.lotNumber) },
     )
 
-  public val ManufactureDate: SearchParam<Device, DateTime> =
+  public val manufactureDate: SearchParam<Device, DateTime> =
     SimpleSearchParam<Device, DateTime>(
       name = "manufacture-date",
       type = SearchParamType.fromCode("date"),
@@ -115,7 +117,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.manufactureDate) },
     )
 
-  public val Manufacturer: SearchParam<Device, String> =
+  public val manufacturer: SearchParam<Device, String> =
     SimpleSearchParam<Device, String>(
       name = "manufacturer",
       type = SearchParamType.fromCode("string"),
@@ -123,7 +125,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.manufacturer) },
     )
 
-  public val Model: SearchParam<Device, String> =
+  public val model: SearchParam<Device, String> =
     SimpleSearchParam<Device, String>(
       name = "model",
       type = SearchParamType.fromCode("string"),
@@ -131,16 +133,16 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.modelNumber) },
     )
 
-  public val Organization: SearchParam<Device, Reference> =
+  public val organization: SearchParam<Device, Reference> =
     SimpleSearchParam<Device, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "Device.owner",
-      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.owner) },
     )
 
-  public val Parent: SearchParam<Device, Reference> =
+  public val parent: SearchParam<Device, Reference> =
     SimpleSearchParam<Device, Reference>(
       name = "parent",
       type = SearchParamType.fromCode("reference"),
@@ -149,7 +151,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.parent) },
     )
 
-  public val SerialNumber: SearchParam<Device, String> =
+  public val serialNumber: SearchParam<Device, String> =
     SimpleSearchParam<Device, String>(
       name = "serial-number",
       type = SearchParamType.fromCode("string"),
@@ -157,7 +159,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.serialNumber) },
     )
 
-  public val Specification: SearchParam<Device, CodeableConcept> =
+  public val specification: SearchParam<Device, CodeableConcept> =
     SimpleSearchParam<Device, CodeableConcept>(
       name = "specification",
       type = SearchParamType.fromCode("token"),
@@ -165,7 +167,7 @@ public object DeviceSearchParams {
       extractor = { resource -> resource.conformsTo.map { it.specification } },
     )
 
-  public val SpecificationVersion: SearchParam<Device, Device.ConformsTo> =
+  public val specificationVersion: SearchParam<Device, Device.ConformsTo> =
     SimpleSearchParam<Device, Device.ConformsTo>(
       name = "specification-version",
       type = SearchParamType.fromCode("composite"),
@@ -173,7 +175,7 @@ public object DeviceSearchParams {
       extractor = { resource -> resource.conformsTo },
     )
 
-  public val Status: SearchParam<Device, Any> =
+  public val status: SearchParam<Device, Any> =
     SimpleSearchParam<Device, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -181,7 +183,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Type: SearchParam<Device, CodeableConcept> =
+  public val type: SearchParam<Device, CodeableConcept> =
     SimpleSearchParam<Device, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -189,7 +191,7 @@ public object DeviceSearchParams {
       extractor = { resource -> resource.type },
     )
 
-  public val UdiCarrier: SearchParam<Device, String> =
+  public val udiCarrier: SearchParam<Device, String> =
     SimpleSearchParam<Device, String>(
       name = "udi-carrier",
       type = SearchParamType.fromCode("string"),
@@ -197,7 +199,7 @@ public object DeviceSearchParams {
       extractor = { resource -> resource.udiCarrier.mapNotNull { it.carrierHRF } },
     )
 
-  public val UdiDi: SearchParam<Device, String> =
+  public val udiDi: SearchParam<Device, String> =
     SimpleSearchParam<Device, String>(
       name = "udi-di",
       type = SearchParamType.fromCode("string"),
@@ -205,7 +207,7 @@ public object DeviceSearchParams {
       extractor = { resource -> resource.udiCarrier.map { it.deviceIdentifier } },
     )
 
-  public val Url: SearchParam<Device, Uri> =
+  public val url: SearchParam<Device, Uri> =
     SimpleSearchParam<Device, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -213,7 +215,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<Device, String> =
+  public val version: SearchParam<Device, String> =
     SimpleSearchParam<Device, String>(
       name = "version",
       type = SearchParamType.fromCode("string"),
@@ -222,30 +224,30 @@ public object DeviceSearchParams {
     )
 
   /** All search parameters for the Device resource type. */
-  public val ALL: List<SearchParam<Device, *>> =
+  public val all: List<SearchParam<Device, *>> =
     listOf(
-      BiologicalSourceEvent,
-      Code,
-      CodeValueConcept,
-      Definition,
-      DeviceName,
-      ExpirationDate,
-      Identifier,
-      Location,
-      LotNumber,
-      ManufactureDate,
-      Manufacturer,
-      Model,
-      Organization,
-      Parent,
-      SerialNumber,
-      Specification,
-      SpecificationVersion,
-      Status,
-      Type,
-      UdiCarrier,
-      UdiDi,
-      Url,
-      Version,
+      biologicalSourceEvent,
+      code,
+      codeValueConcept,
+      definition,
+      deviceName,
+      expirationDate,
+      identifier,
+      location,
+      lotNumber,
+      manufactureDate,
+      manufacturer,
+      model,
+      organization,
+      parent,
+      serialNumber,
+      specification,
+      specificationVersion,
+      status,
+      type,
+      udiCarrier,
+      udiDi,
+      url,
+      version,
     )
 }

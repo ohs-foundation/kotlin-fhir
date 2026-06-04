@@ -37,7 +37,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [StructureDefinition] resource type. */
 public object StructureDefinitionSearchParams {
-  public val Abstract: SearchParam<StructureDefinition, Boolean> =
+  public val `abstract`: SearchParam<StructureDefinition, Boolean> =
     SimpleSearchParam<StructureDefinition, Boolean>(
       name = "abstract",
       type = SearchParamType.fromCode("token"),
@@ -45,7 +45,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOf(resource.`abstract`) },
     )
 
-  public val Base: SearchParam<StructureDefinition, Canonical> =
+  public val base: SearchParam<StructureDefinition, Canonical> =
     SimpleSearchParam<StructureDefinition, Canonical>(
       name = "base",
       type = SearchParamType.fromCode("reference"),
@@ -54,7 +54,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.baseDefinition) },
     )
 
-  public val BasePath: SearchParam<StructureDefinition, String> =
+  public val basePath: SearchParam<StructureDefinition, String> =
     SimpleSearchParam<StructureDefinition, String>(
       name = "base-path",
       type = SearchParamType.fromCode("token"),
@@ -64,7 +64,7 @@ public object StructureDefinitionSearchParams {
       },
     )
 
-  public val Context: SearchParam<StructureDefinition, Any> =
+  public val context: SearchParam<StructureDefinition, Any> =
     SimpleSearchParam<StructureDefinition, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -72,7 +72,7 @@ public object StructureDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<StructureDefinition, Any> =
+  public val contextQuantity: SearchParam<StructureDefinition, Any> =
     SimpleSearchParam<StructureDefinition, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -80,7 +80,7 @@ public object StructureDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<StructureDefinition, Coding> =
+  public val contextType: SearchParam<StructureDefinition, Coding> =
     SimpleSearchParam<StructureDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -88,7 +88,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<StructureDefinition, UsageContext> =
+  public val contextTypeQuantity: SearchParam<StructureDefinition, UsageContext> =
     SimpleSearchParam<StructureDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -96,7 +96,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<StructureDefinition, UsageContext> =
+  public val contextTypeValue: SearchParam<StructureDefinition, UsageContext> =
     SimpleSearchParam<StructureDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -104,7 +104,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<StructureDefinition, DateTime> =
+  public val date: SearchParam<StructureDefinition, DateTime> =
     SimpleSearchParam<StructureDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -112,7 +112,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Derivation: SearchParam<StructureDefinition, Any> =
+  public val derivation: SearchParam<StructureDefinition, Any> =
     SimpleSearchParam<StructureDefinition, Any>(
       name = "derivation",
       type = SearchParamType.fromCode("token"),
@@ -120,7 +120,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.derivation) },
     )
 
-  public val Description: SearchParam<StructureDefinition, Markdown> =
+  public val description: SearchParam<StructureDefinition, Markdown> =
     SimpleSearchParam<StructureDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -128,7 +128,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Experimental: SearchParam<StructureDefinition, Boolean> =
+  public val experimental: SearchParam<StructureDefinition, Boolean> =
     SimpleSearchParam<StructureDefinition, Boolean>(
       name = "experimental",
       type = SearchParamType.fromCode("token"),
@@ -136,7 +136,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.experimental) },
     )
 
-  public val ExtContext: SearchParam<StructureDefinition, StructureDefinition.Context> =
+  public val extContext: SearchParam<StructureDefinition, StructureDefinition.Context> =
     SimpleSearchParam<StructureDefinition, StructureDefinition.Context>(
       name = "ext-context",
       type = SearchParamType.fromCode("composite"),
@@ -144,7 +144,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.context },
     )
 
-  public val ExtContextExpression: SearchParam<StructureDefinition, String> =
+  public val extContextExpression: SearchParam<StructureDefinition, String> =
     SimpleSearchParam<StructureDefinition, String>(
       name = "ext-context-expression",
       type = SearchParamType.fromCode("token"),
@@ -152,7 +152,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.context.map { it.expression } },
     )
 
-  public val ExtContextType: SearchParam<StructureDefinition, Any> =
+  public val extContextType: SearchParam<StructureDefinition, Any> =
     SimpleSearchParam<StructureDefinition, Any>(
       name = "ext-context-type",
       type = SearchParamType.fromCode("token"),
@@ -160,7 +160,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.context.map { it.type } },
     )
 
-  public val Identifier: SearchParam<StructureDefinition, Identifier> =
+  public val identifier: SearchParam<StructureDefinition, Identifier> =
     SimpleSearchParam<StructureDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -168,7 +168,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<StructureDefinition, CodeableConcept> =
+  public val jurisdiction: SearchParam<StructureDefinition, CodeableConcept> =
     SimpleSearchParam<StructureDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -176,7 +176,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Keyword: SearchParam<StructureDefinition, Coding> =
+  public val keyword: SearchParam<StructureDefinition, Coding> =
     SimpleSearchParam<StructureDefinition, Coding>(
       name = "keyword",
       type = SearchParamType.fromCode("token"),
@@ -184,7 +184,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.keyword },
     )
 
-  public val Kind: SearchParam<StructureDefinition, Any> =
+  public val kind: SearchParam<StructureDefinition, Any> =
     SimpleSearchParam<StructureDefinition, Any>(
       name = "kind",
       type = SearchParamType.fromCode("token"),
@@ -192,7 +192,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOf(resource.kind) },
     )
 
-  public val Name: SearchParam<StructureDefinition, String> =
+  public val name: SearchParam<StructureDefinition, String> =
     SimpleSearchParam<StructureDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -200,7 +200,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOf(resource.name) },
     )
 
-  public val Path: SearchParam<StructureDefinition, String> =
+  public val path: SearchParam<StructureDefinition, String> =
     SimpleSearchParam<StructureDefinition, String>(
       name = "path",
       type = SearchParamType.fromCode("token"),
@@ -208,7 +208,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> (resource.snapshot?.element ?: emptyList()).map { it.path } },
     )
 
-  public val Publisher: SearchParam<StructureDefinition, String> =
+  public val publisher: SearchParam<StructureDefinition, String> =
     SimpleSearchParam<StructureDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -216,7 +216,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<StructureDefinition, Any> =
+  public val status: SearchParam<StructureDefinition, Any> =
     SimpleSearchParam<StructureDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -224,7 +224,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<StructureDefinition, String> =
+  public val title: SearchParam<StructureDefinition, String> =
     SimpleSearchParam<StructureDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -232,7 +232,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Type: SearchParam<StructureDefinition, Uri> =
+  public val type: SearchParam<StructureDefinition, Uri> =
     SimpleSearchParam<StructureDefinition, Uri>(
       name = "type",
       type = SearchParamType.fromCode("uri"),
@@ -240,7 +240,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOf(resource.type) },
     )
 
-  public val Url: SearchParam<StructureDefinition, Uri> =
+  public val url: SearchParam<StructureDefinition, Uri> =
     SimpleSearchParam<StructureDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -248,7 +248,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOf(resource.url) },
     )
 
-  public val Valueset: SearchParam<StructureDefinition, Canonical> =
+  public val valueset: SearchParam<StructureDefinition, Canonical> =
     SimpleSearchParam<StructureDefinition, Canonical>(
       name = "valueset",
       type = SearchParamType.fromCode("reference"),
@@ -261,7 +261,7 @@ public object StructureDefinitionSearchParams {
       },
     )
 
-  public val Version: SearchParam<StructureDefinition, String> =
+  public val version: SearchParam<StructureDefinition, String> =
     SimpleSearchParam<StructureDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -270,35 +270,35 @@ public object StructureDefinitionSearchParams {
     )
 
   /** All search parameters for the StructureDefinition resource type. */
-  public val ALL: List<SearchParam<StructureDefinition, *>> =
+  public val all: List<SearchParam<StructureDefinition, *>> =
     listOf(
-      Abstract,
-      Base,
-      BasePath,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Derivation,
-      Description,
-      Experimental,
-      ExtContext,
-      ExtContextExpression,
-      ExtContextType,
-      Identifier,
-      Jurisdiction,
-      Keyword,
-      Kind,
-      Name,
-      Path,
-      Publisher,
-      Status,
-      Title,
-      Type,
-      Url,
-      Valueset,
-      Version,
+      `abstract`,
+      base,
+      basePath,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      derivation,
+      description,
+      experimental,
+      extContext,
+      extContextExpression,
+      extContextType,
+      identifier,
+      jurisdiction,
+      keyword,
+      kind,
+      name,
+      path,
+      publisher,
+      status,
+      title,
+      type,
+      url,
+      valueset,
+      version,
     )
 }

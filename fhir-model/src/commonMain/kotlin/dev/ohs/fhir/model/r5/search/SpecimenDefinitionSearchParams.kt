@@ -31,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [SpecimenDefinition] resource type. */
 public object SpecimenDefinitionSearchParams {
-  public val Container: SearchParam<SpecimenDefinition, CodeableConcept> =
+  public val container: SearchParam<SpecimenDefinition, CodeableConcept> =
     SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
       name = "container",
       type = SearchParamType.fromCode("token"),
@@ -41,7 +41,7 @@ public object SpecimenDefinitionSearchParams {
       },
     )
 
-  public val Experimental: SearchParam<SpecimenDefinition, Boolean> =
+  public val experimental: SearchParam<SpecimenDefinition, Boolean> =
     SimpleSearchParam<SpecimenDefinition, Boolean>(
       name = "experimental",
       type = SearchParamType.fromCode("token"),
@@ -49,7 +49,7 @@ public object SpecimenDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.experimental) },
     )
 
-  public val Identifier: SearchParam<SpecimenDefinition, Identifier> =
+  public val identifier: SearchParam<SpecimenDefinition, Identifier> =
     SimpleSearchParam<SpecimenDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -57,7 +57,7 @@ public object SpecimenDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val IsDerived: SearchParam<SpecimenDefinition, Boolean> =
+  public val isDerived: SearchParam<SpecimenDefinition, Boolean> =
     SimpleSearchParam<SpecimenDefinition, Boolean>(
       name = "is-derived",
       type = SearchParamType.fromCode("token"),
@@ -65,7 +65,7 @@ public object SpecimenDefinitionSearchParams {
       extractor = { resource -> resource.typeTested.mapNotNull { it.isDerived } },
     )
 
-  public val Status: SearchParam<SpecimenDefinition, Any> =
+  public val status: SearchParam<SpecimenDefinition, Any> =
     SimpleSearchParam<SpecimenDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -73,7 +73,7 @@ public object SpecimenDefinitionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<SpecimenDefinition, String> =
+  public val title: SearchParam<SpecimenDefinition, String> =
     SimpleSearchParam<SpecimenDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -81,7 +81,7 @@ public object SpecimenDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Type: SearchParam<SpecimenDefinition, CodeableConcept> =
+  public val type: SearchParam<SpecimenDefinition, CodeableConcept> =
     SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -89,7 +89,7 @@ public object SpecimenDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.typeCollected) },
     )
 
-  public val TypeTested: SearchParam<SpecimenDefinition, CodeableConcept> =
+  public val typeTested: SearchParam<SpecimenDefinition, CodeableConcept> =
     SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
       name = "type-tested",
       type = SearchParamType.fromCode("token"),
@@ -97,7 +97,7 @@ public object SpecimenDefinitionSearchParams {
       extractor = { resource -> resource.typeTested.mapNotNull { it.type } },
     )
 
-  public val Url: SearchParam<SpecimenDefinition, Uri> =
+  public val url: SearchParam<SpecimenDefinition, Uri> =
     SimpleSearchParam<SpecimenDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -106,6 +106,6 @@ public object SpecimenDefinitionSearchParams {
     )
 
   /** All search parameters for the SpecimenDefinition resource type. */
-  public val ALL: List<SearchParam<SpecimenDefinition, *>> =
-    listOf(Container, Experimental, Identifier, IsDerived, Status, Title, Type, TypeTested, Url)
+  public val all: List<SearchParam<SpecimenDefinition, *>> =
+    listOf(container, experimental, identifier, isDerived, status, title, type, typeTested, url)
 }

@@ -26,7 +26,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Permission] resource type. */
 public object PermissionSearchParams {
-  public val Status: SearchParam<Permission, Any> =
+  public val status: SearchParam<Permission, Any> =
     SimpleSearchParam<Permission, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -35,5 +35,5 @@ public object PermissionSearchParams {
     )
 
   /** All search parameters for the Permission resource type. */
-  public val ALL: List<SearchParam<Permission, *>> = listOf(Status)
+  public val all: List<SearchParam<Permission, *>> = listOf(status)
 }

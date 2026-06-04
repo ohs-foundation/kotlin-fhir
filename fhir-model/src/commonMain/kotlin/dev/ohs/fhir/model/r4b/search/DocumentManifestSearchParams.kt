@@ -120,6 +120,7 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Person
@@ -170,7 +171,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [DocumentManifest] resource type. */
 public object DocumentManifestSearchParams {
-  public val Author: SearchParam<DocumentManifest, Reference> =
+  public val author: SearchParam<DocumentManifest, Reference> =
     SimpleSearchParam<DocumentManifest, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -180,14 +181,14 @@ public object DocumentManifestSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.author },
     )
 
-  public val Created: SearchParam<DocumentManifest, DateTime> =
+  public val created: SearchParam<DocumentManifest, DateTime> =
     SimpleSearchParam<DocumentManifest, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
@@ -195,7 +196,7 @@ public object DocumentManifestSearchParams {
       extractor = { resource -> listOfNotNull(resource.created) },
     )
 
-  public val Description: SearchParam<DocumentManifest, String> =
+  public val description: SearchParam<DocumentManifest, String> =
     SimpleSearchParam<DocumentManifest, String>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -203,7 +204,7 @@ public object DocumentManifestSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<DocumentManifest, Identifier> =
+  public val identifier: SearchParam<DocumentManifest, Identifier> =
     SimpleSearchParam<DocumentManifest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -211,7 +212,7 @@ public object DocumentManifestSearchParams {
       extractor = { resource -> listOfNotNull(resource.masterIdentifier) },
     )
 
-  public val Item: SearchParam<DocumentManifest, Reference> =
+  public val item: SearchParam<DocumentManifest, Reference> =
     SimpleSearchParam<DocumentManifest, Reference>(
       name = "item",
       type = SearchParamType.fromCode("reference"),
@@ -317,7 +318,7 @@ public object DocumentManifestSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -362,12 +363,12 @@ public object DocumentManifestSearchParams {
       extractor = { resource -> resource.content },
     )
 
-  public val Patient: SearchParam<DocumentManifest, Reference> =
+  public val patient: SearchParam<DocumentManifest, Reference> =
     SimpleSearchParam<DocumentManifest, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentManifest.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -375,7 +376,7 @@ public object DocumentManifestSearchParams {
       },
     )
 
-  public val Recipient: SearchParam<DocumentManifest, Reference> =
+  public val recipient: SearchParam<DocumentManifest, Reference> =
     SimpleSearchParam<DocumentManifest, Reference>(
       name = "recipient",
       type = SearchParamType.fromCode("reference"),
@@ -384,14 +385,14 @@ public object DocumentManifestSearchParams {
         listOf(
           Practitioner::class,
           Organization::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.recipient },
     )
 
-  public val RelatedId: SearchParam<DocumentManifest, Identifier> =
+  public val relatedId: SearchParam<DocumentManifest, Identifier> =
     SimpleSearchParam<DocumentManifest, Identifier>(
       name = "related-id",
       type = SearchParamType.fromCode("token"),
@@ -399,7 +400,7 @@ public object DocumentManifestSearchParams {
       extractor = { resource -> resource.related.mapNotNull { it.identifier } },
     )
 
-  public val RelatedRef: SearchParam<DocumentManifest, Reference> =
+  public val relatedRef: SearchParam<DocumentManifest, Reference> =
     SimpleSearchParam<DocumentManifest, Reference>(
       name = "related-ref",
       type = SearchParamType.fromCode("reference"),
@@ -505,7 +506,7 @@ public object DocumentManifestSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -550,7 +551,7 @@ public object DocumentManifestSearchParams {
       extractor = { resource -> resource.related.mapNotNull { it.ref } },
     )
 
-  public val Source: SearchParam<DocumentManifest, Uri> =
+  public val source: SearchParam<DocumentManifest, Uri> =
     SimpleSearchParam<DocumentManifest, Uri>(
       name = "source",
       type = SearchParamType.fromCode("uri"),
@@ -558,7 +559,7 @@ public object DocumentManifestSearchParams {
       extractor = { resource -> listOfNotNull(resource.source) },
     )
 
-  public val Status: SearchParam<DocumentManifest, Any> =
+  public val status: SearchParam<DocumentManifest, Any> =
     SimpleSearchParam<DocumentManifest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -566,22 +567,16 @@ public object DocumentManifestSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<DocumentManifest, Reference> =
+  public val subject: SearchParam<DocumentManifest, Reference> =
     SimpleSearchParam<DocumentManifest, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentManifest.subject",
-      target =
-        listOf(
-          Practitioner::class,
-          Group::class,
-          Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
-        ),
+      target = listOf(Practitioner::class, Group::class, Device::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val Type: SearchParam<DocumentManifest, CodeableConcept> =
+  public val type: SearchParam<DocumentManifest, CodeableConcept> =
     SimpleSearchParam<DocumentManifest, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -590,20 +585,20 @@ public object DocumentManifestSearchParams {
     )
 
   /** All search parameters for the DocumentManifest resource type. */
-  public val ALL: CollectionsList<SearchParam<DocumentManifest, *>> =
+  public val all: CollectionsList<SearchParam<DocumentManifest, *>> =
     listOf(
-      Author,
-      Created,
-      Description,
-      Identifier,
-      Item,
-      Patient,
-      Recipient,
-      RelatedId,
-      RelatedRef,
-      Source,
-      Status,
-      Subject,
-      Type,
+      author,
+      created,
+      description,
+      identifier,
+      item,
+      patient,
+      recipient,
+      relatedId,
+      relatedRef,
+      source,
+      status,
+      subject,
+      type,
     )
 }

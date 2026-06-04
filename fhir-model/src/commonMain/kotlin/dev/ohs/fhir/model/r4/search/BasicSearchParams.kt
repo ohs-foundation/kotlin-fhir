@@ -122,6 +122,7 @@ import dev.ohs.fhir.model.r4.OperationDefinition
 import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.OrganizationAffiliation
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PaymentNotice
 import dev.ohs.fhir.model.r4.PaymentReconciliation
 import dev.ohs.fhir.model.r4.Person
@@ -172,7 +173,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Basic] resource type. */
 public object BasicSearchParams {
-  public val Author: SearchParam<Basic, Reference> =
+  public val author: SearchParam<Basic, Reference> =
     SimpleSearchParam<Basic, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -181,14 +182,14 @@ public object BasicSearchParams {
         listOf(
           Practitioner::class,
           Organization::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> listOfNotNull(resource.author) },
     )
 
-  public val Code: SearchParam<Basic, CodeableConcept> =
+  public val code: SearchParam<Basic, CodeableConcept> =
     SimpleSearchParam<Basic, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -196,7 +197,7 @@ public object BasicSearchParams {
       extractor = { resource -> listOf(resource.code) },
     )
 
-  public val Created: SearchParam<Basic, Date> =
+  public val created: SearchParam<Basic, Date> =
     SimpleSearchParam<Basic, Date>(
       name = "created",
       type = SearchParamType.fromCode("date"),
@@ -204,7 +205,7 @@ public object BasicSearchParams {
       extractor = { resource -> listOfNotNull(resource.created) },
     )
 
-  public val Identifier: SearchParam<Basic, Identifier> =
+  public val identifier: SearchParam<Basic, Identifier> =
     SimpleSearchParam<Basic, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -212,12 +213,12 @@ public object BasicSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<Basic, Reference> =
+  public val patient: SearchParam<Basic, Reference> =
     SimpleSearchParam<Basic, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Basic.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -225,7 +226,7 @@ public object BasicSearchParams {
       },
     )
 
-  public val Subject: SearchParam<Basic, Reference> =
+  public val subject: SearchParam<Basic, Reference> =
     SimpleSearchParam<Basic, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -333,7 +334,7 @@ public object BasicSearchParams {
           OperationOutcome::class,
           Organization::class,
           OrganizationAffiliation::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -382,6 +383,6 @@ public object BasicSearchParams {
     )
 
   /** All search parameters for the Basic resource type. */
-  public val ALL: CollectionsList<SearchParam<Basic, *>> =
-    listOf(Author, Code, Created, Identifier, Patient, Subject)
+  public val all: CollectionsList<SearchParam<Basic, *>> =
+    listOf(author, code, created, identifier, patient, subject)
 }

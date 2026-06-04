@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
 import dev.ohs.fhir.model.r5.MedicinalProductDefinition
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -33,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Ingredient] resource type. */
 public object IngredientSearchParams {
-  public val For: SearchParam<Ingredient, Reference> =
+  public val `for`: SearchParam<Ingredient, Reference> =
     SimpleSearchParam<Ingredient, Reference>(
       name = "for",
       type = SearchParamType.fromCode("reference"),
@@ -47,7 +48,7 @@ public object IngredientSearchParams {
       extractor = { resource -> resource.`for` },
     )
 
-  public val Function: SearchParam<Ingredient, CodeableConcept> =
+  public val function: SearchParam<Ingredient, CodeableConcept> =
     SimpleSearchParam<Ingredient, CodeableConcept>(
       name = "function",
       type = SearchParamType.fromCode("token"),
@@ -55,7 +56,7 @@ public object IngredientSearchParams {
       extractor = { resource -> resource.function },
     )
 
-  public val Identifier: SearchParam<Ingredient, Identifier> =
+  public val identifier: SearchParam<Ingredient, Identifier> =
     SimpleSearchParam<Ingredient, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -63,7 +64,7 @@ public object IngredientSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val Manufacturer: SearchParam<Ingredient, Reference> =
+  public val manufacturer: SearchParam<Ingredient, Reference> =
     SimpleSearchParam<Ingredient, Reference>(
       name = "manufacturer",
       type = SearchParamType.fromCode("reference"),
@@ -72,7 +73,7 @@ public object IngredientSearchParams {
       extractor = { resource -> resource.manufacturer.map { it.manufacturer } },
     )
 
-  public val Role: SearchParam<Ingredient, CodeableConcept> =
+  public val role: SearchParam<Ingredient, CodeableConcept> =
     SimpleSearchParam<Ingredient, CodeableConcept>(
       name = "role",
       type = SearchParamType.fromCode("token"),
@@ -80,7 +81,7 @@ public object IngredientSearchParams {
       extractor = { resource -> listOf(resource.role) },
     )
 
-  public val Status: SearchParam<Ingredient, Any> =
+  public val status: SearchParam<Ingredient, Any> =
     SimpleSearchParam<Ingredient, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -88,7 +89,7 @@ public object IngredientSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val StrengthConcentrationQuantity: SearchParam<Ingredient, Any> =
+  public val strengthConcentrationQuantity: SearchParam<Ingredient, Any> =
     SimpleSearchParam<Ingredient, Any>(
       name = "strength-concentration-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -96,7 +97,7 @@ public object IngredientSearchParams {
       extractor = { emptyList() },
     )
 
-  public val StrengthConcentrationRatio: SearchParam<Ingredient, Any> =
+  public val strengthConcentrationRatio: SearchParam<Ingredient, Any> =
     SimpleSearchParam<Ingredient, Any>(
       name = "strength-concentration-ratio",
       type = SearchParamType.fromCode("composite"),
@@ -104,7 +105,7 @@ public object IngredientSearchParams {
       extractor = { emptyList() },
     )
 
-  public val StrengthPresentationQuantity: SearchParam<Ingredient, Any> =
+  public val strengthPresentationQuantity: SearchParam<Ingredient, Any> =
     SimpleSearchParam<Ingredient, Any>(
       name = "strength-presentation-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -112,7 +113,7 @@ public object IngredientSearchParams {
       extractor = { emptyList() },
     )
 
-  public val StrengthPresentationRatio: SearchParam<Ingredient, Any> =
+  public val strengthPresentationRatio: SearchParam<Ingredient, Any> =
     SimpleSearchParam<Ingredient, Any>(
       name = "strength-presentation-ratio",
       type = SearchParamType.fromCode("composite"),
@@ -120,16 +121,16 @@ public object IngredientSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Substance: SearchParam<Ingredient, Reference> =
+  public val substance: SearchParam<Ingredient, Reference> =
     SimpleSearchParam<Ingredient, Reference>(
       name = "substance",
       type = SearchParamType.fromCode("reference"),
       expression = "Ingredient.substance.code.reference",
-      target = listOf(dev.ohs.fhir.model.r5.SubstanceDefinition::class),
+      target = listOf(SubstanceDefinition::class),
       extractor = { resource -> listOfNotNull(resource.substance.code.reference) },
     )
 
-  public val SubstanceCode: SearchParam<Ingredient, CodeableConcept> =
+  public val substanceCode: SearchParam<Ingredient, CodeableConcept> =
     SimpleSearchParam<Ingredient, CodeableConcept>(
       name = "substance-code",
       type = SearchParamType.fromCode("token"),
@@ -137,30 +138,30 @@ public object IngredientSearchParams {
       extractor = { resource -> listOfNotNull(resource.substance.code.concept) },
     )
 
-  public val SubstanceDefinition: SearchParam<Ingredient, Reference> =
+  public val substanceDefinition: SearchParam<Ingredient, Reference> =
     SimpleSearchParam<Ingredient, Reference>(
       name = "substance-definition",
       type = SearchParamType.fromCode("reference"),
       expression = "Ingredient.substance.code.reference",
-      target = listOf(dev.ohs.fhir.model.r5.SubstanceDefinition::class),
+      target = listOf(SubstanceDefinition::class),
       extractor = { resource -> listOfNotNull(resource.substance.code.reference) },
     )
 
   /** All search parameters for the Ingredient resource type. */
-  public val ALL: List<SearchParam<Ingredient, *>> =
+  public val all: List<SearchParam<Ingredient, *>> =
     listOf(
-      For,
-      Function,
-      Identifier,
-      Manufacturer,
-      Role,
-      Status,
-      StrengthConcentrationQuantity,
-      StrengthConcentrationRatio,
-      StrengthPresentationQuantity,
-      StrengthPresentationRatio,
-      Substance,
-      SubstanceCode,
-      SubstanceDefinition,
+      `for`,
+      function,
+      identifier,
+      manufacturer,
+      role,
+      status,
+      strengthConcentrationQuantity,
+      strengthConcentrationRatio,
+      strengthPresentationQuantity,
+      strengthPresentationRatio,
+      substance,
+      substanceCode,
+      substanceDefinition,
     )
 }

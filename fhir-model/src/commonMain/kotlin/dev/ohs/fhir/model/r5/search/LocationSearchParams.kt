@@ -21,8 +21,10 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.Address
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
+import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Location
+import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
@@ -32,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Location] resource type. */
 public object LocationSearchParams {
-  public val Address: SearchParam<Location, Address> =
+  public val address: SearchParam<Location, Address> =
     SimpleSearchParam<Location, Address>(
       name = "address",
       type = SearchParamType.fromCode("string"),
@@ -40,7 +42,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.address) },
     )
 
-  public val AddressCity: SearchParam<Location, String> =
+  public val addressCity: SearchParam<Location, String> =
     SimpleSearchParam<Location, String>(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
@@ -48,7 +50,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.address?.city) },
     )
 
-  public val AddressCountry: SearchParam<Location, String> =
+  public val addressCountry: SearchParam<Location, String> =
     SimpleSearchParam<Location, String>(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
@@ -56,7 +58,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.address?.country) },
     )
 
-  public val AddressPostalcode: SearchParam<Location, String> =
+  public val addressPostalcode: SearchParam<Location, String> =
     SimpleSearchParam<Location, String>(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
@@ -64,7 +66,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.address?.postalCode) },
     )
 
-  public val AddressState: SearchParam<Location, String> =
+  public val addressState: SearchParam<Location, String> =
     SimpleSearchParam<Location, String>(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
@@ -72,7 +74,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.address?.state) },
     )
 
-  public val AddressUse: SearchParam<Location, Any> =
+  public val addressUse: SearchParam<Location, Any> =
     SimpleSearchParam<Location, Any>(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
@@ -80,7 +82,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.address?.use) },
     )
 
-  public val Characteristic: SearchParam<Location, CodeableConcept> =
+  public val characteristic: SearchParam<Location, CodeableConcept> =
     SimpleSearchParam<Location, CodeableConcept>(
       name = "characteristic",
       type = SearchParamType.fromCode("token"),
@@ -88,7 +90,7 @@ public object LocationSearchParams {
       extractor = { resource -> resource.characteristic },
     )
 
-  public val Contains: SearchParam<Location, Any> =
+  public val contains: SearchParam<Location, Any> =
     SimpleSearchParam<Location, Any>(
       name = "contains",
       type = SearchParamType.fromCode("special"),
@@ -97,16 +99,16 @@ public object LocationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Endpoint: SearchParam<Location, Reference> =
+  public val endpoint: SearchParam<Location, Reference> =
     SimpleSearchParam<Location, Reference>(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "Location.endpoint",
-      target = listOf(dev.ohs.fhir.model.r5.Endpoint::class),
+      target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
     )
 
-  public val Identifier: SearchParam<Location, Identifier> =
+  public val identifier: SearchParam<Location, Identifier> =
     SimpleSearchParam<Location, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -114,7 +116,7 @@ public object LocationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Name: SearchParam<Location, String> =
+  public val name: SearchParam<Location, String> =
     SimpleSearchParam<Location, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -122,7 +124,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Near: SearchParam<Location, Location.Position> =
+  public val near: SearchParam<Location, Location.Position> =
     SimpleSearchParam<Location, Location.Position>(
       name = "near",
       type = SearchParamType.fromCode("special"),
@@ -130,7 +132,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.position) },
     )
 
-  public val OperationalStatus: SearchParam<Location, Coding> =
+  public val operationalStatus: SearchParam<Location, Coding> =
     SimpleSearchParam<Location, Coding>(
       name = "operational-status",
       type = SearchParamType.fromCode("token"),
@@ -138,16 +140,16 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.operationalStatus) },
     )
 
-  public val Organization: SearchParam<Location, Reference> =
+  public val organization: SearchParam<Location, Reference> =
     SimpleSearchParam<Location, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "Location.managingOrganization",
-      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
     )
 
-  public val Partof: SearchParam<Location, Reference> =
+  public val partof: SearchParam<Location, Reference> =
     SimpleSearchParam<Location, Reference>(
       name = "partof",
       type = SearchParamType.fromCode("reference"),
@@ -156,7 +158,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.partOf) },
     )
 
-  public val Status: SearchParam<Location, Any> =
+  public val status: SearchParam<Location, Any> =
     SimpleSearchParam<Location, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -164,7 +166,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Type: SearchParam<Location, CodeableConcept> =
+  public val type: SearchParam<Location, CodeableConcept> =
     SimpleSearchParam<Location, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -173,24 +175,24 @@ public object LocationSearchParams {
     )
 
   /** All search parameters for the Location resource type. */
-  public val ALL: List<SearchParam<Location, *>> =
+  public val all: List<SearchParam<Location, *>> =
     listOf(
-      Address,
-      AddressCity,
-      AddressCountry,
-      AddressPostalcode,
-      AddressState,
-      AddressUse,
-      Characteristic,
-      Contains,
-      Endpoint,
-      Identifier,
-      Name,
-      Near,
-      OperationalStatus,
-      Organization,
-      Partof,
-      Status,
-      Type,
+      address,
+      addressCity,
+      addressCountry,
+      addressPostalcode,
+      addressState,
+      addressUse,
+      characteristic,
+      contains,
+      endpoint,
+      identifier,
+      name,
+      near,
+      operationalStatus,
+      organization,
+      partof,
+      status,
+      type,
     )
 }

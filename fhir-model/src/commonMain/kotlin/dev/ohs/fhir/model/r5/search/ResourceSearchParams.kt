@@ -153,7 +153,7 @@ public object ResourceSearchParams {
     )
 
   /** All search parameters for the Resource resource type. */
-  public val ALL: List<SearchParam<Resource, *>> =
+  public val all: List<SearchParam<Resource, *>> =
     listOf(
       _content,
       _filter,

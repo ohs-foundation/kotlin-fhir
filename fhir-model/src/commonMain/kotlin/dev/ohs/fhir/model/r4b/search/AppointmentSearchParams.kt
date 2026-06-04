@@ -95,6 +95,7 @@ import dev.ohs.fhir.model.r4b.Invoice
 import dev.ohs.fhir.model.r4b.Library
 import dev.ohs.fhir.model.r4b.Linkage
 import dev.ohs.fhir.model.r4b.List as R4bList
+import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.ManufacturedItemDefinition
 import dev.ohs.fhir.model.r4b.Measure
 import dev.ohs.fhir.model.r4b.MeasureReport
@@ -119,10 +120,12 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Person
 import dev.ohs.fhir.model.r4b.PlanDefinition
+import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Procedure
 import dev.ohs.fhir.model.r4b.Provenance
@@ -140,6 +143,7 @@ import dev.ohs.fhir.model.r4b.RiskAssessment
 import dev.ohs.fhir.model.r4b.Schedule
 import dev.ohs.fhir.model.r4b.SearchParameter
 import dev.ohs.fhir.model.r4b.ServiceRequest
+import dev.ohs.fhir.model.r4b.Slot
 import dev.ohs.fhir.model.r4b.Specimen
 import dev.ohs.fhir.model.r4b.SpecimenDefinition
 import dev.ohs.fhir.model.r4b.StructureDefinition
@@ -165,25 +169,25 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Appointment] resource type. */
 public object AppointmentSearchParams {
-  public val Actor: SearchParam<Appointment, Reference> =
+  public val actor: SearchParam<Appointment, Reference> =
     SimpleSearchParam<Appointment, Reference>(
       name = "actor",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.participant.actor",
       target =
         listOf(
-          dev.ohs.fhir.model.r4b.Practitioner::class,
+          Practitioner::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           HealthcareService::class,
           PractitionerRole::class,
           RelatedPerson::class,
-          dev.ohs.fhir.model.r4b.Location::class,
+          Location::class,
         ),
       extractor = { resource -> resource.participant.mapNotNull { it.actor } },
     )
 
-  public val AppointmentType: SearchParam<Appointment, CodeableConcept> =
+  public val appointmentType: SearchParam<Appointment, CodeableConcept> =
     SimpleSearchParam<Appointment, CodeableConcept>(
       name = "appointment-type",
       type = SearchParamType.fromCode("token"),
@@ -191,7 +195,7 @@ public object AppointmentSearchParams {
       extractor = { resource -> listOfNotNull(resource.appointmentType) },
     )
 
-  public val BasedOn: SearchParam<Appointment, Reference> =
+  public val basedOn: SearchParam<Appointment, Reference> =
     SimpleSearchParam<Appointment, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -200,7 +204,7 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val Date: SearchParam<Appointment, Instant> =
+  public val date: SearchParam<Appointment, Instant> =
     SimpleSearchParam<Appointment, Instant>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -208,7 +212,7 @@ public object AppointmentSearchParams {
       extractor = { resource -> listOfNotNull(resource.start) },
     )
 
-  public val Identifier: SearchParam<Appointment, Identifier> =
+  public val identifier: SearchParam<Appointment, Identifier> =
     SimpleSearchParam<Appointment, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -216,12 +220,12 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Location: SearchParam<Appointment, Reference> =
+  public val location: SearchParam<Appointment, Reference> =
     SimpleSearchParam<Appointment, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.participant.actor.where(resolve() is Location)",
-      target = listOf(dev.ohs.fhir.model.r4b.Location::class),
+      target = listOf(Location::class),
       extractor = { resource ->
         resource.participant
           .mapNotNull { it.actor }
@@ -229,7 +233,7 @@ public object AppointmentSearchParams {
       },
     )
 
-  public val PartStatus: SearchParam<Appointment, Any> =
+  public val partStatus: SearchParam<Appointment, Any> =
     SimpleSearchParam<Appointment, Any>(
       name = "part-status",
       type = SearchParamType.fromCode("token"),
@@ -237,12 +241,12 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.participant.map { it.status } },
     )
 
-  public val Patient: SearchParam<Appointment, Reference> =
+  public val patient: SearchParam<Appointment, Reference> =
     SimpleSearchParam<Appointment, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.participant.actor.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         resource.participant
           .mapNotNull { it.actor }
@@ -250,12 +254,12 @@ public object AppointmentSearchParams {
       },
     )
 
-  public val Practitioner: SearchParam<Appointment, Reference> =
+  public val practitioner: SearchParam<Appointment, Reference> =
     SimpleSearchParam<Appointment, Reference>(
       name = "practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.participant.actor.where(resolve() is Practitioner)",
-      target = listOf(dev.ohs.fhir.model.r4b.Practitioner::class),
+      target = listOf(Practitioner::class),
       extractor = { resource ->
         resource.participant
           .mapNotNull { it.actor }
@@ -263,7 +267,7 @@ public object AppointmentSearchParams {
       },
     )
 
-  public val ReasonCode: SearchParam<Appointment, CodeableConcept> =
+  public val reasonCode: SearchParam<Appointment, CodeableConcept> =
     SimpleSearchParam<Appointment, CodeableConcept>(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
@@ -271,7 +275,7 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.reasonCode },
     )
 
-  public val ReasonReference: SearchParam<Appointment, Reference> =
+  public val reasonReference: SearchParam<Appointment, Reference> =
     SimpleSearchParam<Appointment, Reference>(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
@@ -286,7 +290,7 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.reasonReference },
     )
 
-  public val ServiceCategory: SearchParam<Appointment, CodeableConcept> =
+  public val serviceCategory: SearchParam<Appointment, CodeableConcept> =
     SimpleSearchParam<Appointment, CodeableConcept>(
       name = "service-category",
       type = SearchParamType.fromCode("token"),
@@ -294,7 +298,7 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.serviceCategory },
     )
 
-  public val ServiceType: SearchParam<Appointment, CodeableConcept> =
+  public val serviceType: SearchParam<Appointment, CodeableConcept> =
     SimpleSearchParam<Appointment, CodeableConcept>(
       name = "service-type",
       type = SearchParamType.fromCode("token"),
@@ -302,16 +306,16 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.serviceType },
     )
 
-  public val Slot: SearchParam<Appointment, Reference> =
+  public val slot: SearchParam<Appointment, Reference> =
     SimpleSearchParam<Appointment, Reference>(
       name = "slot",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.slot",
-      target = listOf(dev.ohs.fhir.model.r4b.Slot::class),
+      target = listOf(Slot::class),
       extractor = { resource -> resource.slot },
     )
 
-  public val Specialty: SearchParam<Appointment, CodeableConcept> =
+  public val specialty: SearchParam<Appointment, CodeableConcept> =
     SimpleSearchParam<Appointment, CodeableConcept>(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
@@ -319,7 +323,7 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.specialty },
     )
 
-  public val Status: SearchParam<Appointment, Any> =
+  public val status: SearchParam<Appointment, Any> =
     SimpleSearchParam<Appointment, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -327,7 +331,7 @@ public object AppointmentSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val SupportingInfo: SearchParam<Appointment, Reference> =
+  public val supportingInfo: SearchParam<Appointment, Reference> =
     SimpleSearchParam<Appointment, Reference>(
       name = "supporting-info",
       type = SearchParamType.fromCode("reference"),
@@ -408,7 +412,7 @@ public object AppointmentSearchParams {
           Library::class,
           Linkage::class,
           R4bList::class,
-          dev.ohs.fhir.model.r4b.Location::class,
+          Location::class,
           ManufacturedItemDefinition::class,
           Measure::class,
           MeasureReport::class,
@@ -433,12 +437,12 @@ public object AppointmentSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
           PlanDefinition::class,
-          dev.ohs.fhir.model.r4b.Practitioner::class,
+          Practitioner::class,
           PractitionerRole::class,
           Procedure::class,
           Provenance::class,
@@ -455,7 +459,7 @@ public object AppointmentSearchParams {
           Schedule::class,
           SearchParameter::class,
           ServiceRequest::class,
-          dev.ohs.fhir.model.r4b.Slot::class,
+          Slot::class,
           Specimen::class,
           SpecimenDefinition::class,
           StructureDefinition::class,
@@ -479,24 +483,24 @@ public object AppointmentSearchParams {
     )
 
   /** All search parameters for the Appointment resource type. */
-  public val ALL: CollectionsList<SearchParam<Appointment, *>> =
+  public val all: CollectionsList<SearchParam<Appointment, *>> =
     listOf(
-      Actor,
-      AppointmentType,
-      BasedOn,
-      Date,
-      Identifier,
-      Location,
-      PartStatus,
-      Patient,
-      Practitioner,
-      ReasonCode,
-      ReasonReference,
-      ServiceCategory,
-      ServiceType,
-      Slot,
-      Specialty,
-      Status,
-      SupportingInfo,
+      actor,
+      appointmentType,
+      basedOn,
+      date,
+      identifier,
+      location,
+      partStatus,
+      patient,
+      practitioner,
+      reasonCode,
+      reasonReference,
+      serviceCategory,
+      serviceType,
+      slot,
+      specialty,
+      status,
+      supportingInfo,
     )
 }

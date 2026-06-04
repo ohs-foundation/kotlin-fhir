@@ -24,6 +24,8 @@ import dev.ohs.fhir.model.r5.EpisodeOfCare
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Observation
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Procedure
@@ -36,7 +38,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [EpisodeOfCare] resource type. */
 public object EpisodeOfCareSearchParams {
-  public val CareManager: SearchParam<EpisodeOfCare, Reference> =
+  public val careManager: SearchParam<EpisodeOfCare, Reference> =
     SimpleSearchParam<EpisodeOfCare, Reference>(
       name = "care-manager",
       type = SearchParamType.fromCode("reference"),
@@ -49,7 +51,7 @@ public object EpisodeOfCareSearchParams {
       },
     )
 
-  public val Date: SearchParam<EpisodeOfCare, Period> =
+  public val date: SearchParam<EpisodeOfCare, Period> =
     SimpleSearchParam<EpisodeOfCare, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -57,7 +59,7 @@ public object EpisodeOfCareSearchParams {
       extractor = { resource -> listOfNotNull(resource.period) },
     )
 
-  public val DiagnosisCode: SearchParam<EpisodeOfCare, CodeableConcept> =
+  public val diagnosisCode: SearchParam<EpisodeOfCare, CodeableConcept> =
     SimpleSearchParam<EpisodeOfCare, CodeableConcept>(
       name = "diagnosis-code",
       type = SearchParamType.fromCode("token"),
@@ -67,7 +69,7 @@ public object EpisodeOfCareSearchParams {
       },
     )
 
-  public val DiagnosisReference: SearchParam<EpisodeOfCare, Reference> =
+  public val diagnosisReference: SearchParam<EpisodeOfCare, Reference> =
     SimpleSearchParam<EpisodeOfCare, Reference>(
       name = "diagnosis-reference",
       type = SearchParamType.fromCode("reference"),
@@ -78,7 +80,7 @@ public object EpisodeOfCareSearchParams {
       },
     )
 
-  public val Identifier: SearchParam<EpisodeOfCare, Identifier> =
+  public val identifier: SearchParam<EpisodeOfCare, Identifier> =
     SimpleSearchParam<EpisodeOfCare, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -86,7 +88,7 @@ public object EpisodeOfCareSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val IncomingReferral: SearchParam<EpisodeOfCare, Reference> =
+  public val incomingReferral: SearchParam<EpisodeOfCare, Reference> =
     SimpleSearchParam<EpisodeOfCare, Reference>(
       name = "incoming-referral",
       type = SearchParamType.fromCode("reference"),
@@ -95,25 +97,25 @@ public object EpisodeOfCareSearchParams {
       extractor = { resource -> resource.referralRequest },
     )
 
-  public val Organization: SearchParam<EpisodeOfCare, Reference> =
+  public val organization: SearchParam<EpisodeOfCare, Reference> =
     SimpleSearchParam<EpisodeOfCare, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.managingOrganization",
-      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
     )
 
-  public val Patient: SearchParam<EpisodeOfCare, Reference> =
+  public val patient: SearchParam<EpisodeOfCare, Reference> =
     SimpleSearchParam<EpisodeOfCare, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.patient",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val ReasonCode: SearchParam<EpisodeOfCare, CodeableConcept> =
+  public val reasonCode: SearchParam<EpisodeOfCare, CodeableConcept> =
     SimpleSearchParam<EpisodeOfCare, CodeableConcept>(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
@@ -121,7 +123,7 @@ public object EpisodeOfCareSearchParams {
       extractor = { resource -> resource.reason.flatMap { it.`value` }.mapNotNull { it.concept } },
     )
 
-  public val ReasonReference: SearchParam<EpisodeOfCare, Reference> =
+  public val reasonReference: SearchParam<EpisodeOfCare, Reference> =
     SimpleSearchParam<EpisodeOfCare, Reference>(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
@@ -131,7 +133,7 @@ public object EpisodeOfCareSearchParams {
       extractor = { resource -> resource.reason.flatMap { it.`value` }.mapNotNull { it.reference } },
     )
 
-  public val Status: SearchParam<EpisodeOfCare, Any> =
+  public val status: SearchParam<EpisodeOfCare, Any> =
     SimpleSearchParam<EpisodeOfCare, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -139,7 +141,7 @@ public object EpisodeOfCareSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Type: SearchParam<EpisodeOfCare, CodeableConcept> =
+  public val type: SearchParam<EpisodeOfCare, CodeableConcept> =
     SimpleSearchParam<EpisodeOfCare, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -148,19 +150,19 @@ public object EpisodeOfCareSearchParams {
     )
 
   /** All search parameters for the EpisodeOfCare resource type. */
-  public val ALL: List<SearchParam<EpisodeOfCare, *>> =
+  public val all: List<SearchParam<EpisodeOfCare, *>> =
     listOf(
-      CareManager,
-      Date,
-      DiagnosisCode,
-      DiagnosisReference,
-      Identifier,
-      IncomingReferral,
-      Organization,
-      Patient,
-      ReasonCode,
-      ReasonReference,
-      Status,
-      Type,
+      careManager,
+      date,
+      diagnosisCode,
+      diagnosisReference,
+      identifier,
+      incomingReferral,
+      organization,
+      patient,
+      reasonCode,
+      reasonReference,
+      status,
+      type,
     )
 }

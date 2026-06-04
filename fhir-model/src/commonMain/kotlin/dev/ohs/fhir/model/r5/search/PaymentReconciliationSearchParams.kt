@@ -38,7 +38,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [PaymentReconciliation] resource type. */
 public object PaymentReconciliationSearchParams {
-  public val AllocationAccount: SearchParam<PaymentReconciliation, Reference> =
+  public val allocationAccount: SearchParam<PaymentReconciliation, Reference> =
     SimpleSearchParam<PaymentReconciliation, Reference>(
       name = "allocation-account",
       type = SearchParamType.fromCode("reference"),
@@ -47,7 +47,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> resource.allocation.mapNotNull { it.account } },
     )
 
-  public val AllocationEncounter: SearchParam<PaymentReconciliation, Reference> =
+  public val allocationEncounter: SearchParam<PaymentReconciliation, Reference> =
     SimpleSearchParam<PaymentReconciliation, Reference>(
       name = "allocation-encounter",
       type = SearchParamType.fromCode("reference"),
@@ -56,7 +56,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> resource.allocation.mapNotNull { it.encounter } },
     )
 
-  public val Created: SearchParam<PaymentReconciliation, DateTime> =
+  public val created: SearchParam<PaymentReconciliation, DateTime> =
     SimpleSearchParam<PaymentReconciliation, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
@@ -64,7 +64,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> listOf(resource.created) },
     )
 
-  public val Disposition: SearchParam<PaymentReconciliation, String> =
+  public val disposition: SearchParam<PaymentReconciliation, String> =
     SimpleSearchParam<PaymentReconciliation, String>(
       name = "disposition",
       type = SearchParamType.fromCode("string"),
@@ -72,7 +72,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.disposition) },
     )
 
-  public val Identifier: SearchParam<PaymentReconciliation, Identifier> =
+  public val identifier: SearchParam<PaymentReconciliation, Identifier> =
     SimpleSearchParam<PaymentReconciliation, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -80,7 +80,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Outcome: SearchParam<PaymentReconciliation, Any> =
+  public val outcome: SearchParam<PaymentReconciliation, Any> =
     SimpleSearchParam<PaymentReconciliation, Any>(
       name = "outcome",
       type = SearchParamType.fromCode("token"),
@@ -88,7 +88,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.outcome) },
     )
 
-  public val PaymentIssuer: SearchParam<PaymentReconciliation, Reference> =
+  public val paymentIssuer: SearchParam<PaymentReconciliation, Reference> =
     SimpleSearchParam<PaymentReconciliation, Reference>(
       name = "payment-issuer",
       type = SearchParamType.fromCode("reference"),
@@ -97,7 +97,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.paymentIssuer) },
     )
 
-  public val Request: SearchParam<PaymentReconciliation, Reference> =
+  public val request: SearchParam<PaymentReconciliation, Reference> =
     SimpleSearchParam<PaymentReconciliation, Reference>(
       name = "request",
       type = SearchParamType.fromCode("reference"),
@@ -106,7 +106,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.request) },
     )
 
-  public val Requestor: SearchParam<PaymentReconciliation, Reference> =
+  public val requestor: SearchParam<PaymentReconciliation, Reference> =
     SimpleSearchParam<PaymentReconciliation, Reference>(
       name = "requestor",
       type = SearchParamType.fromCode("reference"),
@@ -115,7 +115,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.requestor) },
     )
 
-  public val Status: SearchParam<PaymentReconciliation, Any> =
+  public val status: SearchParam<PaymentReconciliation, Any> =
     SimpleSearchParam<PaymentReconciliation, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -124,17 +124,17 @@ public object PaymentReconciliationSearchParams {
     )
 
   /** All search parameters for the PaymentReconciliation resource type. */
-  public val ALL: List<SearchParam<PaymentReconciliation, *>> =
+  public val all: List<SearchParam<PaymentReconciliation, *>> =
     listOf(
-      AllocationAccount,
-      AllocationEncounter,
-      Created,
-      Disposition,
-      Identifier,
-      Outcome,
-      PaymentIssuer,
-      Request,
-      Requestor,
-      Status,
+      allocationAccount,
+      allocationEncounter,
+      created,
+      disposition,
+      identifier,
+      outcome,
+      paymentIssuer,
+      request,
+      requestor,
+      status,
     )
 }

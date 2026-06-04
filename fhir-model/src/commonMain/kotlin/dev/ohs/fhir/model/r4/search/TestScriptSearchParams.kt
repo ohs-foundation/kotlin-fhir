@@ -35,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [TestScript] resource type. */
 public object TestScriptSearchParams {
-  public val Context: SearchParam<TestScript, CodeableConcept> =
+  public val context: SearchParam<TestScript, CodeableConcept> =
     SimpleSearchParam<TestScript, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -47,7 +47,7 @@ public object TestScriptSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<TestScript, Quantity> =
+  public val contextQuantity: SearchParam<TestScript, Quantity> =
     SimpleSearchParam<TestScript, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -57,7 +57,7 @@ public object TestScriptSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<TestScript, Coding> =
+  public val contextType: SearchParam<TestScript, Coding> =
     SimpleSearchParam<TestScript, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -65,7 +65,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<TestScript, UsageContext> =
+  public val contextTypeQuantity: SearchParam<TestScript, UsageContext> =
     SimpleSearchParam<TestScript, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -73,7 +73,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<TestScript, UsageContext> =
+  public val contextTypeValue: SearchParam<TestScript, UsageContext> =
     SimpleSearchParam<TestScript, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -81,7 +81,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<TestScript, DateTime> =
+  public val date: SearchParam<TestScript, DateTime> =
     SimpleSearchParam<TestScript, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -89,7 +89,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<TestScript, Markdown> =
+  public val description: SearchParam<TestScript, Markdown> =
     SimpleSearchParam<TestScript, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -97,7 +97,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<TestScript, Identifier> =
+  public val identifier: SearchParam<TestScript, Identifier> =
     SimpleSearchParam<TestScript, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -105,7 +105,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val Jurisdiction: SearchParam<TestScript, CodeableConcept> =
+  public val jurisdiction: SearchParam<TestScript, CodeableConcept> =
     SimpleSearchParam<TestScript, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -113,7 +113,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<TestScript, String> =
+  public val name: SearchParam<TestScript, String> =
     SimpleSearchParam<TestScript, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -121,7 +121,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> listOf(resource.name) },
     )
 
-  public val Publisher: SearchParam<TestScript, String> =
+  public val publisher: SearchParam<TestScript, String> =
     SimpleSearchParam<TestScript, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -129,7 +129,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<TestScript, Any> =
+  public val status: SearchParam<TestScript, Any> =
     SimpleSearchParam<TestScript, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -137,7 +137,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val TestscriptCapability: SearchParam<TestScript, String> =
+  public val testscriptCapability: SearchParam<TestScript, String> =
     SimpleSearchParam<TestScript, String>(
       name = "testscript-capability",
       type = SearchParamType.fromCode("string"),
@@ -147,7 +147,7 @@ public object TestScriptSearchParams {
       },
     )
 
-  public val Title: SearchParam<TestScript, String> =
+  public val title: SearchParam<TestScript, String> =
     SimpleSearchParam<TestScript, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -155,7 +155,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<TestScript, Uri> =
+  public val url: SearchParam<TestScript, Uri> =
     SimpleSearchParam<TestScript, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -163,7 +163,7 @@ public object TestScriptSearchParams {
       extractor = { resource -> listOf(resource.url) },
     )
 
-  public val Version: SearchParam<TestScript, String> =
+  public val version: SearchParam<TestScript, String> =
     SimpleSearchParam<TestScript, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -172,23 +172,23 @@ public object TestScriptSearchParams {
     )
 
   /** All search parameters for the TestScript resource type. */
-  public val ALL: List<SearchParam<TestScript, *>> =
+  public val all: List<SearchParam<TestScript, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Publisher,
-      Status,
-      TestscriptCapability,
-      Title,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      identifier,
+      jurisdiction,
+      name,
+      publisher,
+      status,
+      testscriptCapability,
+      title,
+      url,
+      version,
     )
 }

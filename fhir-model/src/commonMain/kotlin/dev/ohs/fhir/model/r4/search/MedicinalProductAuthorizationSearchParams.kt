@@ -31,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductAuthorization] resource type. */
 public object MedicinalProductAuthorizationSearchParams {
-  public val Country: SearchParam<MedicinalProductAuthorization, CodeableConcept> =
+  public val country: SearchParam<MedicinalProductAuthorization, CodeableConcept> =
     SimpleSearchParam<MedicinalProductAuthorization, CodeableConcept>(
       name = "country",
       type = SearchParamType.fromCode("token"),
@@ -39,7 +39,7 @@ public object MedicinalProductAuthorizationSearchParams {
       extractor = { resource -> resource.country },
     )
 
-  public val Holder: SearchParam<MedicinalProductAuthorization, Reference> =
+  public val holder: SearchParam<MedicinalProductAuthorization, Reference> =
     SimpleSearchParam<MedicinalProductAuthorization, Reference>(
       name = "holder",
       type = SearchParamType.fromCode("reference"),
@@ -48,7 +48,7 @@ public object MedicinalProductAuthorizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.holder) },
     )
 
-  public val Identifier: SearchParam<MedicinalProductAuthorization, Identifier> =
+  public val identifier: SearchParam<MedicinalProductAuthorization, Identifier> =
     SimpleSearchParam<MedicinalProductAuthorization, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -56,7 +56,7 @@ public object MedicinalProductAuthorizationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Status: SearchParam<MedicinalProductAuthorization, CodeableConcept> =
+  public val status: SearchParam<MedicinalProductAuthorization, CodeableConcept> =
     SimpleSearchParam<MedicinalProductAuthorization, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -64,7 +64,7 @@ public object MedicinalProductAuthorizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Subject: SearchParam<MedicinalProductAuthorization, Reference> =
+  public val subject: SearchParam<MedicinalProductAuthorization, Reference> =
     SimpleSearchParam<MedicinalProductAuthorization, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -74,6 +74,6 @@ public object MedicinalProductAuthorizationSearchParams {
     )
 
   /** All search parameters for the MedicinalProductAuthorization resource type. */
-  public val ALL: List<SearchParam<MedicinalProductAuthorization, *>> =
-    listOf(Country, Holder, Identifier, Status, Subject)
+  public val all: List<SearchParam<MedicinalProductAuthorization, *>> =
+    listOf(country, holder, identifier, status, subject)
 }

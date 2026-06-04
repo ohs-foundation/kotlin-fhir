@@ -20,9 +20,11 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.NutritionOrder
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
@@ -33,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [NutritionOrder] resource type. */
 public object NutritionOrderSearchParams {
-  public val Additive: SearchParam<NutritionOrder, CodeableConcept> =
+  public val additive: SearchParam<NutritionOrder, CodeableConcept> =
     SimpleSearchParam<NutritionOrder, CodeableConcept>(
       name = "additive",
       type = SearchParamType.fromCode("token"),
@@ -45,7 +47,7 @@ public object NutritionOrderSearchParams {
       },
     )
 
-  public val Datetime: SearchParam<NutritionOrder, DateTime> =
+  public val datetime: SearchParam<NutritionOrder, DateTime> =
     SimpleSearchParam<NutritionOrder, DateTime>(
       name = "datetime",
       type = SearchParamType.fromCode("date"),
@@ -53,16 +55,16 @@ public object NutritionOrderSearchParams {
       extractor = { resource -> listOf(resource.dateTime) },
     )
 
-  public val Encounter: SearchParam<NutritionOrder, Reference> =
+  public val encounter: SearchParam<NutritionOrder, Reference> =
     SimpleSearchParam<NutritionOrder, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Formula: SearchParam<NutritionOrder, CodeableConcept> =
+  public val formula: SearchParam<NutritionOrder, CodeableConcept> =
     SimpleSearchParam<NutritionOrder, CodeableConcept>(
       name = "formula",
       type = SearchParamType.fromCode("token"),
@@ -70,7 +72,7 @@ public object NutritionOrderSearchParams {
       extractor = { resource -> listOfNotNull(resource.enteralFormula?.baseFormulaType?.concept) },
     )
 
-  public val GroupIdentifier: SearchParam<NutritionOrder, Identifier> =
+  public val groupIdentifier: SearchParam<NutritionOrder, Identifier> =
     SimpleSearchParam<NutritionOrder, Identifier>(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
@@ -78,7 +80,7 @@ public object NutritionOrderSearchParams {
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
 
-  public val Identifier: SearchParam<NutritionOrder, Identifier> =
+  public val identifier: SearchParam<NutritionOrder, Identifier> =
     SimpleSearchParam<NutritionOrder, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -86,7 +88,7 @@ public object NutritionOrderSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Oraldiet: SearchParam<NutritionOrder, CodeableConcept> =
+  public val oraldiet: SearchParam<NutritionOrder, CodeableConcept> =
     SimpleSearchParam<NutritionOrder, CodeableConcept>(
       name = "oraldiet",
       type = SearchParamType.fromCode("token"),
@@ -94,12 +96,12 @@ public object NutritionOrderSearchParams {
       extractor = { resource -> resource.oralDiet?.type ?: emptyList() },
     )
 
-  public val Patient: SearchParam<NutritionOrder, Reference> =
+  public val patient: SearchParam<NutritionOrder, Reference> =
     SimpleSearchParam<NutritionOrder, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -107,7 +109,7 @@ public object NutritionOrderSearchParams {
       },
     )
 
-  public val Provider: SearchParam<NutritionOrder, Reference> =
+  public val provider: SearchParam<NutritionOrder, Reference> =
     SimpleSearchParam<NutritionOrder, Reference>(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
@@ -116,7 +118,7 @@ public object NutritionOrderSearchParams {
       extractor = { resource -> listOfNotNull(resource.orderer) },
     )
 
-  public val Status: SearchParam<NutritionOrder, Any> =
+  public val status: SearchParam<NutritionOrder, Any> =
     SimpleSearchParam<NutritionOrder, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -124,16 +126,16 @@ public object NutritionOrderSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<NutritionOrder, Reference> =
+  public val subject: SearchParam<NutritionOrder, Reference> =
     SimpleSearchParam<NutritionOrder, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  public val Supplement: SearchParam<NutritionOrder, CodeableConcept> =
+  public val supplement: SearchParam<NutritionOrder, CodeableConcept> =
     SimpleSearchParam<NutritionOrder, CodeableConcept>(
       name = "supplement",
       type = SearchParamType.fromCode("token"),
@@ -144,19 +146,19 @@ public object NutritionOrderSearchParams {
     )
 
   /** All search parameters for the NutritionOrder resource type. */
-  public val ALL: List<SearchParam<NutritionOrder, *>> =
+  public val all: List<SearchParam<NutritionOrder, *>> =
     listOf(
-      Additive,
-      Datetime,
-      Encounter,
-      Formula,
-      GroupIdentifier,
-      Identifier,
-      Oraldiet,
-      Patient,
-      Provider,
-      Status,
-      Subject,
-      Supplement,
+      additive,
+      datetime,
+      encounter,
+      formula,
+      groupIdentifier,
+      identifier,
+      oraldiet,
+      patient,
+      provider,
+      status,
+      subject,
+      supplement,
     )
 }

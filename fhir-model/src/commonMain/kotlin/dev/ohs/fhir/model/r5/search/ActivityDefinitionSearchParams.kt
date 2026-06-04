@@ -193,7 +193,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [ActivityDefinition] resource type. */
 public object ActivityDefinitionSearchParams {
-  public val ComposedOf: SearchParam<ActivityDefinition, Canonical> =
+  public val composedOf: SearchParam<ActivityDefinition, Canonical> =
     SimpleSearchParam<ActivityDefinition, Canonical>(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
@@ -366,7 +366,7 @@ public object ActivityDefinitionSearchParams {
       },
     )
 
-  public val Context: SearchParam<ActivityDefinition, Any> =
+  public val context: SearchParam<ActivityDefinition, Any> =
     SimpleSearchParam<ActivityDefinition, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -374,7 +374,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<ActivityDefinition, Any> =
+  public val contextQuantity: SearchParam<ActivityDefinition, Any> =
     SimpleSearchParam<ActivityDefinition, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -382,7 +382,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<ActivityDefinition, Coding> =
+  public val contextType: SearchParam<ActivityDefinition, Coding> =
     SimpleSearchParam<ActivityDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -390,7 +390,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<ActivityDefinition, UsageContext> =
+  public val contextTypeQuantity: SearchParam<ActivityDefinition, UsageContext> =
     SimpleSearchParam<ActivityDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -398,7 +398,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<ActivityDefinition, UsageContext> =
+  public val contextTypeValue: SearchParam<ActivityDefinition, UsageContext> =
     SimpleSearchParam<ActivityDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -406,7 +406,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<ActivityDefinition, DateTime> =
+  public val date: SearchParam<ActivityDefinition, DateTime> =
     SimpleSearchParam<ActivityDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -414,7 +414,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val DependsOn: SearchParam<ActivityDefinition, Canonical> =
+  public val dependsOn: SearchParam<ActivityDefinition, Canonical> =
     SimpleSearchParam<ActivityDefinition, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
@@ -587,7 +587,7 @@ public object ActivityDefinitionSearchParams {
       },
     )
 
-  public val DerivedFrom: SearchParam<ActivityDefinition, Canonical> =
+  public val derivedFrom: SearchParam<ActivityDefinition, Canonical> =
     SimpleSearchParam<ActivityDefinition, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
@@ -760,7 +760,7 @@ public object ActivityDefinitionSearchParams {
       },
     )
 
-  public val Description: SearchParam<ActivityDefinition, Markdown> =
+  public val description: SearchParam<ActivityDefinition, Markdown> =
     SimpleSearchParam<ActivityDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -768,7 +768,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Effective: SearchParam<ActivityDefinition, Period> =
+  public val effective: SearchParam<ActivityDefinition, Period> =
     SimpleSearchParam<ActivityDefinition, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
@@ -776,7 +776,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
     )
 
-  public val Identifier: SearchParam<ActivityDefinition, Identifier> =
+  public val identifier: SearchParam<ActivityDefinition, Identifier> =
     SimpleSearchParam<ActivityDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -784,7 +784,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<ActivityDefinition, CodeableConcept> =
+  public val jurisdiction: SearchParam<ActivityDefinition, CodeableConcept> =
     SimpleSearchParam<ActivityDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -792,7 +792,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Kind: SearchParam<ActivityDefinition, Any> =
+  public val kind: SearchParam<ActivityDefinition, Any> =
     SimpleSearchParam<ActivityDefinition, Any>(
       name = "kind",
       type = SearchParamType.fromCode("token"),
@@ -800,7 +800,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.kind) },
     )
 
-  public val Name: SearchParam<ActivityDefinition, String> =
+  public val name: SearchParam<ActivityDefinition, String> =
     SimpleSearchParam<ActivityDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -808,7 +808,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Predecessor: SearchParam<ActivityDefinition, Canonical> =
+  public val predecessor: SearchParam<ActivityDefinition, Canonical> =
     SimpleSearchParam<ActivityDefinition, Canonical>(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
@@ -981,7 +981,7 @@ public object ActivityDefinitionSearchParams {
       },
     )
 
-  public val Publisher: SearchParam<ActivityDefinition, String> =
+  public val publisher: SearchParam<ActivityDefinition, String> =
     SimpleSearchParam<ActivityDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -989,7 +989,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<ActivityDefinition, Any> =
+  public val status: SearchParam<ActivityDefinition, Any> =
     SimpleSearchParam<ActivityDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -997,7 +997,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Successor: SearchParam<ActivityDefinition, Canonical> =
+  public val successor: SearchParam<ActivityDefinition, Canonical> =
     SimpleSearchParam<ActivityDefinition, Canonical>(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
@@ -1170,7 +1170,7 @@ public object ActivityDefinitionSearchParams {
       },
     )
 
-  public val Title: SearchParam<ActivityDefinition, String> =
+  public val title: SearchParam<ActivityDefinition, String> =
     SimpleSearchParam<ActivityDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -1178,7 +1178,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Topic: SearchParam<ActivityDefinition, CodeableConcept> =
+  public val topic: SearchParam<ActivityDefinition, CodeableConcept> =
     SimpleSearchParam<ActivityDefinition, CodeableConcept>(
       name = "topic",
       type = SearchParamType.fromCode("token"),
@@ -1186,7 +1186,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> resource.topic },
     )
 
-  public val Url: SearchParam<ActivityDefinition, Uri> =
+  public val url: SearchParam<ActivityDefinition, Uri> =
     SimpleSearchParam<ActivityDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -1194,7 +1194,7 @@ public object ActivityDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<ActivityDefinition, String> =
+  public val version: SearchParam<ActivityDefinition, String> =
     SimpleSearchParam<ActivityDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -1203,30 +1203,30 @@ public object ActivityDefinitionSearchParams {
     )
 
   /** All search parameters for the ActivityDefinition resource type. */
-  public val ALL: CollectionsList<SearchParam<ActivityDefinition, *>> =
+  public val all: CollectionsList<SearchParam<ActivityDefinition, *>> =
     listOf(
-      ComposedOf,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      DependsOn,
-      DerivedFrom,
-      Description,
-      Effective,
-      Identifier,
-      Jurisdiction,
-      Kind,
-      Name,
-      Predecessor,
-      Publisher,
-      Status,
-      Successor,
-      Title,
-      Topic,
-      Url,
-      Version,
+      composedOf,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      dependsOn,
+      derivedFrom,
+      description,
+      effective,
+      identifier,
+      jurisdiction,
+      kind,
+      name,
+      predecessor,
+      publisher,
+      status,
+      successor,
+      title,
+      topic,
+      url,
+      version,
     )
 }

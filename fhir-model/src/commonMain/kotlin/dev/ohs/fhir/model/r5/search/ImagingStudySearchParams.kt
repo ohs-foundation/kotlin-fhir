@@ -20,18 +20,22 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Appointment
 import dev.ohs.fhir.model.r5.AppointmentResponse
+import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.CarePlan
 import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
@@ -45,7 +49,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ImagingStudy] resource type. */
 public object ImagingStudySearchParams {
-  public val BasedOn: SearchParam<ImagingStudy, Reference> =
+  public val basedOn: SearchParam<ImagingStudy, Reference> =
     SimpleSearchParam<ImagingStudy, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -61,7 +65,7 @@ public object ImagingStudySearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val BodySite: SearchParam<ImagingStudy, CodeableConcept> =
+  public val bodySite: SearchParam<ImagingStudy, CodeableConcept> =
     SimpleSearchParam<ImagingStudy, CodeableConcept>(
       name = "body-site",
       type = SearchParamType.fromCode("token"),
@@ -71,18 +75,18 @@ public object ImagingStudySearchParams {
       },
     )
 
-  public val BodyStructure: SearchParam<ImagingStudy, Reference> =
+  public val bodyStructure: SearchParam<ImagingStudy, Reference> =
     SimpleSearchParam<ImagingStudy, Reference>(
       name = "body-structure",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.series.bodySite.reference",
-      target = listOf(dev.ohs.fhir.model.r5.BodyStructure::class),
+      target = listOf(BodyStructure::class),
       extractor = { resource ->
         resource.series.mapNotNull { it.bodySite }.mapNotNull { it.reference }
       },
     )
 
-  public val DicomClass: SearchParam<ImagingStudy, Coding> =
+  public val dicomClass: SearchParam<ImagingStudy, Coding> =
     SimpleSearchParam<ImagingStudy, Coding>(
       name = "dicom-class",
       type = SearchParamType.fromCode("token"),
@@ -90,25 +94,25 @@ public object ImagingStudySearchParams {
       extractor = { resource -> resource.series.flatMap { it.instance }.map { it.sopClass } },
     )
 
-  public val Encounter: SearchParam<ImagingStudy, Reference> =
+  public val encounter: SearchParam<ImagingStudy, Reference> =
     SimpleSearchParam<ImagingStudy, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Endpoint: SearchParam<ImagingStudy, Reference> =
+  public val endpoint: SearchParam<ImagingStudy, Reference> =
     SimpleSearchParam<ImagingStudy, Reference>(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.endpoint",
-      target = listOf(dev.ohs.fhir.model.r5.Endpoint::class),
+      target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
     )
 
-  public val Identifier: SearchParam<ImagingStudy, Identifier> =
+  public val identifier: SearchParam<ImagingStudy, Identifier> =
     SimpleSearchParam<ImagingStudy, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -116,7 +120,7 @@ public object ImagingStudySearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Instance: SearchParam<ImagingStudy, Id> =
+  public val instance: SearchParam<ImagingStudy, Id> =
     SimpleSearchParam<ImagingStudy, Id>(
       name = "instance",
       type = SearchParamType.fromCode("token"),
@@ -124,7 +128,7 @@ public object ImagingStudySearchParams {
       extractor = { resource -> resource.series.flatMap { it.instance }.map { it.uid } },
     )
 
-  public val Modality: SearchParam<ImagingStudy, CodeableConcept> =
+  public val modality: SearchParam<ImagingStudy, CodeableConcept> =
     SimpleSearchParam<ImagingStudy, CodeableConcept>(
       name = "modality",
       type = SearchParamType.fromCode("token"),
@@ -132,12 +136,12 @@ public object ImagingStudySearchParams {
       extractor = { resource -> resource.series.map { it.modality } },
     )
 
-  public val Patient: SearchParam<ImagingStudy, Reference> =
+  public val patient: SearchParam<ImagingStudy, Reference> =
     SimpleSearchParam<ImagingStudy, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -145,7 +149,7 @@ public object ImagingStudySearchParams {
       },
     )
 
-  public val Performer: SearchParam<ImagingStudy, Reference> =
+  public val performer: SearchParam<ImagingStudy, Reference> =
     SimpleSearchParam<ImagingStudy, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
@@ -159,12 +163,12 @@ public object ImagingStudySearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.series.flatMap { it.performer }.map { it.actor } },
     )
 
-  public val Reason: SearchParam<ImagingStudy, Any> =
+  public val reason: SearchParam<ImagingStudy, Any> =
     SimpleSearchParam<ImagingStudy, Any>(
       name = "reason",
       type = SearchParamType.fromCode("token"),
@@ -172,7 +176,7 @@ public object ImagingStudySearchParams {
       extractor = { emptyList() },
     )
 
-  public val Referrer: SearchParam<ImagingStudy, Reference> =
+  public val referrer: SearchParam<ImagingStudy, Reference> =
     SimpleSearchParam<ImagingStudy, Reference>(
       name = "referrer",
       type = SearchParamType.fromCode("reference"),
@@ -181,7 +185,7 @@ public object ImagingStudySearchParams {
       extractor = { resource -> listOfNotNull(resource.referrer) },
     )
 
-  public val Series: SearchParam<ImagingStudy, Id> =
+  public val series: SearchParam<ImagingStudy, Id> =
     SimpleSearchParam<ImagingStudy, Id>(
       name = "series",
       type = SearchParamType.fromCode("token"),
@@ -189,7 +193,7 @@ public object ImagingStudySearchParams {
       extractor = { resource -> resource.series.map { it.uid } },
     )
 
-  public val Started: SearchParam<ImagingStudy, DateTime> =
+  public val started: SearchParam<ImagingStudy, DateTime> =
     SimpleSearchParam<ImagingStudy, DateTime>(
       name = "started",
       type = SearchParamType.fromCode("date"),
@@ -197,7 +201,7 @@ public object ImagingStudySearchParams {
       extractor = { resource -> listOfNotNull(resource.started) },
     )
 
-  public val Status: SearchParam<ImagingStudy, Any> =
+  public val status: SearchParam<ImagingStudy, Any> =
     SimpleSearchParam<ImagingStudy, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -205,34 +209,34 @@ public object ImagingStudySearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<ImagingStudy, Reference> =
+  public val subject: SearchParam<ImagingStudy, Reference> =
     SimpleSearchParam<ImagingStudy, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.subject",
-      target = listOf(Device::class, Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Device::class, Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
   /** All search parameters for the ImagingStudy resource type. */
-  public val ALL: List<SearchParam<ImagingStudy, *>> =
+  public val all: List<SearchParam<ImagingStudy, *>> =
     listOf(
-      BasedOn,
-      BodySite,
-      BodyStructure,
-      DicomClass,
-      Encounter,
-      Endpoint,
-      Identifier,
-      Instance,
-      Modality,
-      Patient,
-      Performer,
-      Reason,
-      Referrer,
-      Series,
-      Started,
-      Status,
-      Subject,
+      basedOn,
+      bodySite,
+      bodyStructure,
+      dicomClass,
+      encounter,
+      endpoint,
+      identifier,
+      instance,
+      modality,
+      patient,
+      performer,
+      reason,
+      referrer,
+      series,
+      started,
+      status,
+      subject,
     )
 }

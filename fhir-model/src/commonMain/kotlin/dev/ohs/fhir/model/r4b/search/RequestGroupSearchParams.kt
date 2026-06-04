@@ -22,8 +22,10 @@ import dev.ohs.fhir.model.r4b.Canonical
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Device
+import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.Identifier
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
@@ -37,7 +39,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [RequestGroup] resource type. */
 public object RequestGroupSearchParams {
-  public val Author: SearchParam<RequestGroup, Reference> =
+  public val author: SearchParam<RequestGroup, Reference> =
     SimpleSearchParam<RequestGroup, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -46,7 +48,7 @@ public object RequestGroupSearchParams {
       extractor = { resource -> listOfNotNull(resource.author) },
     )
 
-  public val Authored: SearchParam<RequestGroup, DateTime> =
+  public val authored: SearchParam<RequestGroup, DateTime> =
     SimpleSearchParam<RequestGroup, DateTime>(
       name = "authored",
       type = SearchParamType.fromCode("date"),
@@ -54,7 +56,7 @@ public object RequestGroupSearchParams {
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
 
-  public val Code: SearchParam<RequestGroup, CodeableConcept> =
+  public val code: SearchParam<RequestGroup, CodeableConcept> =
     SimpleSearchParam<RequestGroup, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -62,16 +64,16 @@ public object RequestGroupSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Encounter: SearchParam<RequestGroup, Reference> =
+  public val encounter: SearchParam<RequestGroup, Reference> =
     SimpleSearchParam<RequestGroup, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestGroup.encounter",
-      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val GroupIdentifier: SearchParam<RequestGroup, Identifier> =
+  public val groupIdentifier: SearchParam<RequestGroup, Identifier> =
     SimpleSearchParam<RequestGroup, Identifier>(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
@@ -79,7 +81,7 @@ public object RequestGroupSearchParams {
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
 
-  public val Identifier: SearchParam<RequestGroup, Identifier> =
+  public val identifier: SearchParam<RequestGroup, Identifier> =
     SimpleSearchParam<RequestGroup, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -87,7 +89,7 @@ public object RequestGroupSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val InstantiatesCanonical: SearchParam<RequestGroup, Canonical> =
+  public val instantiatesCanonical: SearchParam<RequestGroup, Canonical> =
     SimpleSearchParam<RequestGroup, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
@@ -95,7 +97,7 @@ public object RequestGroupSearchParams {
       extractor = { resource -> resource.instantiatesCanonical },
     )
 
-  public val InstantiatesUri: SearchParam<RequestGroup, Uri> =
+  public val instantiatesUri: SearchParam<RequestGroup, Uri> =
     SimpleSearchParam<RequestGroup, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
@@ -103,7 +105,7 @@ public object RequestGroupSearchParams {
       extractor = { resource -> resource.instantiatesUri },
     )
 
-  public val Intent: SearchParam<RequestGroup, Any> =
+  public val intent: SearchParam<RequestGroup, Any> =
     SimpleSearchParam<RequestGroup, Any>(
       name = "intent",
       type = SearchParamType.fromCode("token"),
@@ -111,7 +113,7 @@ public object RequestGroupSearchParams {
       extractor = { resource -> listOf(resource.intent) },
     )
 
-  public val Participant: SearchParam<RequestGroup, Reference> =
+  public val participant: SearchParam<RequestGroup, Reference> =
     SimpleSearchParam<RequestGroup, Reference>(
       name = "participant",
       type = SearchParamType.fromCode("reference"),
@@ -120,19 +122,19 @@ public object RequestGroupSearchParams {
         listOf(
           Practitioner::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.action.flatMap { it.participant } },
     )
 
-  public val Patient: SearchParam<RequestGroup, Reference> =
+  public val patient: SearchParam<RequestGroup, Reference> =
     SimpleSearchParam<RequestGroup, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestGroup.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -140,7 +142,7 @@ public object RequestGroupSearchParams {
       },
     )
 
-  public val Priority: SearchParam<RequestGroup, Any> =
+  public val priority: SearchParam<RequestGroup, Any> =
     SimpleSearchParam<RequestGroup, Any>(
       name = "priority",
       type = SearchParamType.fromCode("token"),
@@ -148,7 +150,7 @@ public object RequestGroupSearchParams {
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
 
-  public val Status: SearchParam<RequestGroup, Any> =
+  public val status: SearchParam<RequestGroup, Any> =
     SimpleSearchParam<RequestGroup, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -156,31 +158,31 @@ public object RequestGroupSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<RequestGroup, Reference> =
+  public val subject: SearchParam<RequestGroup, Reference> =
     SimpleSearchParam<RequestGroup, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestGroup.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
   /** All search parameters for the RequestGroup resource type. */
-  public val ALL: List<SearchParam<RequestGroup, *>> =
+  public val all: List<SearchParam<RequestGroup, *>> =
     listOf(
-      Author,
-      Authored,
-      Code,
-      Encounter,
-      GroupIdentifier,
-      Identifier,
-      InstantiatesCanonical,
-      InstantiatesUri,
-      Intent,
-      Participant,
-      Patient,
-      Priority,
-      Status,
-      Subject,
+      author,
+      authored,
+      code,
+      encounter,
+      groupIdentifier,
+      identifier,
+      instantiatesCanonical,
+      instantiatesUri,
+      intent,
+      participant,
+      patient,
+      priority,
+      status,
+      subject,
     )
 }

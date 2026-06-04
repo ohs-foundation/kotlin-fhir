@@ -34,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [StructureMap] resource type. */
 public object StructureMapSearchParams {
-  public val Context: SearchParam<StructureMap, Any> =
+  public val context: SearchParam<StructureMap, Any> =
     SimpleSearchParam<StructureMap, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -42,7 +42,7 @@ public object StructureMapSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<StructureMap, Any> =
+  public val contextQuantity: SearchParam<StructureMap, Any> =
     SimpleSearchParam<StructureMap, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -50,7 +50,7 @@ public object StructureMapSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<StructureMap, Coding> =
+  public val contextType: SearchParam<StructureMap, Coding> =
     SimpleSearchParam<StructureMap, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -58,7 +58,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<StructureMap, UsageContext> =
+  public val contextTypeQuantity: SearchParam<StructureMap, UsageContext> =
     SimpleSearchParam<StructureMap, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -66,7 +66,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<StructureMap, UsageContext> =
+  public val contextTypeValue: SearchParam<StructureMap, UsageContext> =
     SimpleSearchParam<StructureMap, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -74,7 +74,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<StructureMap, DateTime> =
+  public val date: SearchParam<StructureMap, DateTime> =
     SimpleSearchParam<StructureMap, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -82,7 +82,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<StructureMap, Markdown> =
+  public val description: SearchParam<StructureMap, Markdown> =
     SimpleSearchParam<StructureMap, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -90,7 +90,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<StructureMap, Identifier> =
+  public val identifier: SearchParam<StructureMap, Identifier> =
     SimpleSearchParam<StructureMap, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -98,7 +98,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<StructureMap, CodeableConcept> =
+  public val jurisdiction: SearchParam<StructureMap, CodeableConcept> =
     SimpleSearchParam<StructureMap, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -106,7 +106,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<StructureMap, String> =
+  public val name: SearchParam<StructureMap, String> =
     SimpleSearchParam<StructureMap, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -114,7 +114,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> listOf(resource.name) },
     )
 
-  public val Publisher: SearchParam<StructureMap, String> =
+  public val publisher: SearchParam<StructureMap, String> =
     SimpleSearchParam<StructureMap, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -122,7 +122,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<StructureMap, Any> =
+  public val status: SearchParam<StructureMap, Any> =
     SimpleSearchParam<StructureMap, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -130,7 +130,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<StructureMap, String> =
+  public val title: SearchParam<StructureMap, String> =
     SimpleSearchParam<StructureMap, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -138,7 +138,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<StructureMap, Uri> =
+  public val url: SearchParam<StructureMap, Uri> =
     SimpleSearchParam<StructureMap, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -146,7 +146,7 @@ public object StructureMapSearchParams {
       extractor = { resource -> listOf(resource.url) },
     )
 
-  public val Version: SearchParam<StructureMap, String> =
+  public val version: SearchParam<StructureMap, String> =
     SimpleSearchParam<StructureMap, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -155,22 +155,22 @@ public object StructureMapSearchParams {
     )
 
   /** All search parameters for the StructureMap resource type. */
-  public val ALL: List<SearchParam<StructureMap, *>> =
+  public val all: List<SearchParam<StructureMap, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Publisher,
-      Status,
-      Title,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      identifier,
+      jurisdiction,
+      name,
+      publisher,
+      status,
+      title,
+      url,
+      version,
     )
 }

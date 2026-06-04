@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Integer
 import dev.ohs.fhir.model.r4.MolecularSequence
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
@@ -30,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MolecularSequence] resource type. */
 public object MolecularSequenceSearchParams {
-  public val Chromosome: SearchParam<MolecularSequence, CodeableConcept> =
+  public val chromosome: SearchParam<MolecularSequence, CodeableConcept> =
     SimpleSearchParam<MolecularSequence, CodeableConcept>(
       name = "chromosome",
       type = SearchParamType.fromCode("token"),
@@ -38,7 +39,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.referenceSeq?.chromosome) },
     )
 
-  public val ChromosomeVariantCoordinate:
+  public val chromosomeVariantCoordinate:
     SearchParam<MolecularSequence, MolecularSequence.Variant> =
     SimpleSearchParam<MolecularSequence, MolecularSequence.Variant>(
       name = "chromosome-variant-coordinate",
@@ -47,7 +48,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> resource.variant },
     )
 
-  public val ChromosomeWindowCoordinate:
+  public val chromosomeWindowCoordinate:
     SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> =
     SimpleSearchParam<MolecularSequence, MolecularSequence.ReferenceSeq>(
       name = "chromosome-window-coordinate",
@@ -56,7 +57,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.referenceSeq) },
     )
 
-  public val Identifier: SearchParam<MolecularSequence, Identifier> =
+  public val identifier: SearchParam<MolecularSequence, Identifier> =
     SimpleSearchParam<MolecularSequence, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -64,16 +65,16 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<MolecularSequence, Reference> =
+  public val patient: SearchParam<MolecularSequence, Reference> =
     SimpleSearchParam<MolecularSequence, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "MolecularSequence.patient",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.patient) },
     )
 
-  public val Referenceseqid: SearchParam<MolecularSequence, CodeableConcept> =
+  public val referenceseqid: SearchParam<MolecularSequence, CodeableConcept> =
     SimpleSearchParam<MolecularSequence, CodeableConcept>(
       name = "referenceseqid",
       type = SearchParamType.fromCode("token"),
@@ -81,7 +82,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.referenceSeq?.referenceSeqId) },
     )
 
-  public val ReferenceseqidVariantCoordinate:
+  public val referenceseqidVariantCoordinate:
     SearchParam<MolecularSequence, MolecularSequence.Variant> =
     SimpleSearchParam<MolecularSequence, MolecularSequence.Variant>(
       name = "referenceseqid-variant-coordinate",
@@ -90,7 +91,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> resource.variant },
     )
 
-  public val ReferenceseqidWindowCoordinate:
+  public val referenceseqidWindowCoordinate:
     SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> =
     SimpleSearchParam<MolecularSequence, MolecularSequence.ReferenceSeq>(
       name = "referenceseqid-window-coordinate",
@@ -99,7 +100,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.referenceSeq) },
     )
 
-  public val Type: SearchParam<MolecularSequence, Any> =
+  public val type: SearchParam<MolecularSequence, Any> =
     SimpleSearchParam<MolecularSequence, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -107,7 +108,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.type) },
     )
 
-  public val VariantEnd: SearchParam<MolecularSequence, Integer> =
+  public val variantEnd: SearchParam<MolecularSequence, Integer> =
     SimpleSearchParam<MolecularSequence, Integer>(
       name = "variant-end",
       type = SearchParamType.fromCode("number"),
@@ -115,7 +116,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> resource.variant.mapNotNull { it.end } },
     )
 
-  public val VariantStart: SearchParam<MolecularSequence, Integer> =
+  public val variantStart: SearchParam<MolecularSequence, Integer> =
     SimpleSearchParam<MolecularSequence, Integer>(
       name = "variant-start",
       type = SearchParamType.fromCode("number"),
@@ -123,7 +124,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> resource.variant.mapNotNull { it.start } },
     )
 
-  public val WindowEnd: SearchParam<MolecularSequence, Integer> =
+  public val windowEnd: SearchParam<MolecularSequence, Integer> =
     SimpleSearchParam<MolecularSequence, Integer>(
       name = "window-end",
       type = SearchParamType.fromCode("number"),
@@ -131,7 +132,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.referenceSeq?.windowEnd) },
     )
 
-  public val WindowStart: SearchParam<MolecularSequence, Integer> =
+  public val windowStart: SearchParam<MolecularSequence, Integer> =
     SimpleSearchParam<MolecularSequence, Integer>(
       name = "window-start",
       type = SearchParamType.fromCode("number"),
@@ -140,20 +141,20 @@ public object MolecularSequenceSearchParams {
     )
 
   /** All search parameters for the MolecularSequence resource type. */
-  public val ALL: List<SearchParam<MolecularSequence, *>> =
+  public val all: List<SearchParam<MolecularSequence, *>> =
     listOf(
-      Chromosome,
-      ChromosomeVariantCoordinate,
-      ChromosomeWindowCoordinate,
-      Identifier,
-      Patient,
-      Referenceseqid,
-      ReferenceseqidVariantCoordinate,
-      ReferenceseqidWindowCoordinate,
-      Type,
-      VariantEnd,
-      VariantStart,
-      WindowEnd,
-      WindowStart,
+      chromosome,
+      chromosomeVariantCoordinate,
+      chromosomeWindowCoordinate,
+      identifier,
+      patient,
+      referenceseqid,
+      referenceseqidVariantCoordinate,
+      referenceseqidWindowCoordinate,
+      type,
+      variantEnd,
+      variantStart,
+      windowEnd,
+      windowStart,
     )
 }

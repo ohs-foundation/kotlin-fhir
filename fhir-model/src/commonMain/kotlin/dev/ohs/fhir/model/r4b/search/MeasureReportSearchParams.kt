@@ -97,6 +97,7 @@ import dev.ohs.fhir.model.r4b.Linkage
 import dev.ohs.fhir.model.r4b.List as R4bList
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r4b.Measure
 import dev.ohs.fhir.model.r4b.MeasureReport
 import dev.ohs.fhir.model.r4b.Media
 import dev.ohs.fhir.model.r4b.Medication
@@ -119,6 +120,7 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Period
@@ -168,7 +170,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [MeasureReport] resource type. */
 public object MeasureReportSearchParams {
-  public val Date: SearchParam<MeasureReport, DateTime> =
+  public val date: SearchParam<MeasureReport, DateTime> =
     SimpleSearchParam<MeasureReport, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -176,7 +178,7 @@ public object MeasureReportSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val EvaluatedResource: SearchParam<MeasureReport, Reference> =
+  public val evaluatedResource: SearchParam<MeasureReport, Reference> =
     SimpleSearchParam<MeasureReport, Reference>(
       name = "evaluated-resource",
       type = SearchParamType.fromCode("reference"),
@@ -259,7 +261,7 @@ public object MeasureReportSearchParams {
           R4bList::class,
           Location::class,
           ManufacturedItemDefinition::class,
-          dev.ohs.fhir.model.r4b.Measure::class,
+          Measure::class,
           MeasureReport::class,
           Media::class,
           Medication::class,
@@ -282,7 +284,7 @@ public object MeasureReportSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -327,7 +329,7 @@ public object MeasureReportSearchParams {
       extractor = { resource -> resource.evaluatedResource },
     )
 
-  public val Identifier: SearchParam<MeasureReport, Identifier> =
+  public val identifier: SearchParam<MeasureReport, Identifier> =
     SimpleSearchParam<MeasureReport, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -335,21 +337,21 @@ public object MeasureReportSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Measure: SearchParam<MeasureReport, Canonical> =
+  public val measure: SearchParam<MeasureReport, Canonical> =
     SimpleSearchParam<MeasureReport, Canonical>(
       name = "measure",
       type = SearchParamType.fromCode("reference"),
       expression = "MeasureReport.measure",
-      target = listOf(dev.ohs.fhir.model.r4b.Measure::class),
+      target = listOf(Measure::class),
       extractor = { resource -> listOf(resource.measure) },
     )
 
-  public val Patient: SearchParam<MeasureReport, Reference> =
+  public val patient: SearchParam<MeasureReport, Reference> =
     SimpleSearchParam<MeasureReport, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "MeasureReport.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -357,7 +359,7 @@ public object MeasureReportSearchParams {
       },
     )
 
-  public val Period: SearchParam<MeasureReport, Period> =
+  public val period: SearchParam<MeasureReport, Period> =
     SimpleSearchParam<MeasureReport, Period>(
       name = "period",
       type = SearchParamType.fromCode("date"),
@@ -365,7 +367,7 @@ public object MeasureReportSearchParams {
       extractor = { resource -> listOf(resource.period) },
     )
 
-  public val Reporter: SearchParam<MeasureReport, Reference> =
+  public val reporter: SearchParam<MeasureReport, Reference> =
     SimpleSearchParam<MeasureReport, Reference>(
       name = "reporter",
       type = SearchParamType.fromCode("reference"),
@@ -375,7 +377,7 @@ public object MeasureReportSearchParams {
       extractor = { resource -> listOfNotNull(resource.reporter) },
     )
 
-  public val Status: SearchParam<MeasureReport, Any> =
+  public val status: SearchParam<MeasureReport, Any> =
     SimpleSearchParam<MeasureReport, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -383,7 +385,7 @@ public object MeasureReportSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<MeasureReport, Reference> =
+  public val subject: SearchParam<MeasureReport, Reference> =
     SimpleSearchParam<MeasureReport, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -393,7 +395,7 @@ public object MeasureReportSearchParams {
           Practitioner::class,
           Group::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
           Location::class,
@@ -402,6 +404,6 @@ public object MeasureReportSearchParams {
     )
 
   /** All search parameters for the MeasureReport resource type. */
-  public val ALL: CollectionsList<SearchParam<MeasureReport, *>> =
-    listOf(Date, EvaluatedResource, Identifier, Measure, Patient, Period, Reporter, Status, Subject)
+  public val all: CollectionsList<SearchParam<MeasureReport, *>> =
+    listOf(date, evaluatedResource, identifier, measure, patient, period, reporter, status, subject)
 }

@@ -34,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [TerminologyCapabilities] resource type. */
 public object TerminologyCapabilitiesSearchParams {
-  public val Context: SearchParam<TerminologyCapabilities, Any> =
+  public val context: SearchParam<TerminologyCapabilities, Any> =
     SimpleSearchParam<TerminologyCapabilities, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -42,7 +42,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<TerminologyCapabilities, Any> =
+  public val contextQuantity: SearchParam<TerminologyCapabilities, Any> =
     SimpleSearchParam<TerminologyCapabilities, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -50,7 +50,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<TerminologyCapabilities, Coding> =
+  public val contextType: SearchParam<TerminologyCapabilities, Coding> =
     SimpleSearchParam<TerminologyCapabilities, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -58,7 +58,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<TerminologyCapabilities, UsageContext> =
+  public val contextTypeQuantity: SearchParam<TerminologyCapabilities, UsageContext> =
     SimpleSearchParam<TerminologyCapabilities, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -66,7 +66,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<TerminologyCapabilities, UsageContext> =
+  public val contextTypeValue: SearchParam<TerminologyCapabilities, UsageContext> =
     SimpleSearchParam<TerminologyCapabilities, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -74,7 +74,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<TerminologyCapabilities, DateTime> =
+  public val date: SearchParam<TerminologyCapabilities, DateTime> =
     SimpleSearchParam<TerminologyCapabilities, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -82,7 +82,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> listOf(resource.date) },
     )
 
-  public val Description: SearchParam<TerminologyCapabilities, Markdown> =
+  public val description: SearchParam<TerminologyCapabilities, Markdown> =
     SimpleSearchParam<TerminologyCapabilities, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -90,7 +90,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<TerminologyCapabilities, Identifier> =
+  public val identifier: SearchParam<TerminologyCapabilities, Identifier> =
     SimpleSearchParam<TerminologyCapabilities, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -98,7 +98,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<TerminologyCapabilities, CodeableConcept> =
+  public val jurisdiction: SearchParam<TerminologyCapabilities, CodeableConcept> =
     SimpleSearchParam<TerminologyCapabilities, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -106,7 +106,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<TerminologyCapabilities, String> =
+  public val name: SearchParam<TerminologyCapabilities, String> =
     SimpleSearchParam<TerminologyCapabilities, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -114,7 +114,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Publisher: SearchParam<TerminologyCapabilities, String> =
+  public val publisher: SearchParam<TerminologyCapabilities, String> =
     SimpleSearchParam<TerminologyCapabilities, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -122,7 +122,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<TerminologyCapabilities, Any> =
+  public val status: SearchParam<TerminologyCapabilities, Any> =
     SimpleSearchParam<TerminologyCapabilities, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -130,7 +130,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<TerminologyCapabilities, String> =
+  public val title: SearchParam<TerminologyCapabilities, String> =
     SimpleSearchParam<TerminologyCapabilities, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -138,7 +138,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<TerminologyCapabilities, Uri> =
+  public val url: SearchParam<TerminologyCapabilities, Uri> =
     SimpleSearchParam<TerminologyCapabilities, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -146,7 +146,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<TerminologyCapabilities, String> =
+  public val version: SearchParam<TerminologyCapabilities, String> =
     SimpleSearchParam<TerminologyCapabilities, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -155,22 +155,22 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   /** All search parameters for the TerminologyCapabilities resource type. */
-  public val ALL: List<SearchParam<TerminologyCapabilities, *>> =
+  public val all: List<SearchParam<TerminologyCapabilities, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Publisher,
-      Status,
-      Title,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      identifier,
+      jurisdiction,
+      name,
+      publisher,
+      status,
+      title,
+      url,
+      version,
     )
 }

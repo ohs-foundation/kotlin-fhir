@@ -35,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Citation] resource type. */
 public object CitationSearchParams {
-  public val Classification: SearchParam<Citation, Citation.Classification> =
+  public val classification: SearchParam<Citation, Citation.Classification> =
     SimpleSearchParam<Citation, Citation.Classification>(
       name = "classification",
       type = SearchParamType.fromCode("composite"),
@@ -43,7 +43,7 @@ public object CitationSearchParams {
       extractor = { resource -> resource.classification },
     )
 
-  public val ClassificationType: SearchParam<Citation, Any> =
+  public val classificationType: SearchParam<Citation, Any> =
     SimpleSearchParam<Citation, Any>(
       name = "classification-type",
       type = SearchParamType.fromCode("token"),
@@ -51,7 +51,7 @@ public object CitationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Classifier: SearchParam<Citation, Any> =
+  public val classifier: SearchParam<Citation, Any> =
     SimpleSearchParam<Citation, Any>(
       name = "classifier",
       type = SearchParamType.fromCode("token"),
@@ -59,7 +59,7 @@ public object CitationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Context: SearchParam<Citation, Any> =
+  public val context: SearchParam<Citation, Any> =
     SimpleSearchParam<Citation, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -67,7 +67,7 @@ public object CitationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<Citation, Any> =
+  public val contextQuantity: SearchParam<Citation, Any> =
     SimpleSearchParam<Citation, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -75,7 +75,7 @@ public object CitationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<Citation, Coding> =
+  public val contextType: SearchParam<Citation, Coding> =
     SimpleSearchParam<Citation, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -83,7 +83,7 @@ public object CitationSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<Citation, UsageContext> =
+  public val contextTypeQuantity: SearchParam<Citation, UsageContext> =
     SimpleSearchParam<Citation, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -91,7 +91,7 @@ public object CitationSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<Citation, UsageContext> =
+  public val contextTypeValue: SearchParam<Citation, UsageContext> =
     SimpleSearchParam<Citation, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -99,7 +99,7 @@ public object CitationSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<Citation, DateTime> =
+  public val date: SearchParam<Citation, DateTime> =
     SimpleSearchParam<Citation, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -107,7 +107,7 @@ public object CitationSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<Citation, Markdown> =
+  public val description: SearchParam<Citation, Markdown> =
     SimpleSearchParam<Citation, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -115,7 +115,7 @@ public object CitationSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Effective: SearchParam<Citation, Period> =
+  public val effective: SearchParam<Citation, Period> =
     SimpleSearchParam<Citation, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
@@ -123,7 +123,7 @@ public object CitationSearchParams {
       extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
     )
 
-  public val Identifier: SearchParam<Citation, Identifier> =
+  public val identifier: SearchParam<Citation, Identifier> =
     SimpleSearchParam<Citation, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -131,7 +131,7 @@ public object CitationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<Citation, CodeableConcept> =
+  public val jurisdiction: SearchParam<Citation, CodeableConcept> =
     SimpleSearchParam<Citation, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -139,7 +139,7 @@ public object CitationSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<Citation, String> =
+  public val name: SearchParam<Citation, String> =
     SimpleSearchParam<Citation, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -147,7 +147,7 @@ public object CitationSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Publisher: SearchParam<Citation, String> =
+  public val publisher: SearchParam<Citation, String> =
     SimpleSearchParam<Citation, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -155,7 +155,7 @@ public object CitationSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<Citation, Any> =
+  public val status: SearchParam<Citation, Any> =
     SimpleSearchParam<Citation, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -163,7 +163,7 @@ public object CitationSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<Citation, String> =
+  public val title: SearchParam<Citation, String> =
     SimpleSearchParam<Citation, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -171,7 +171,7 @@ public object CitationSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<Citation, Uri> =
+  public val url: SearchParam<Citation, Uri> =
     SimpleSearchParam<Citation, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -179,7 +179,7 @@ public object CitationSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<Citation, String> =
+  public val version: SearchParam<Citation, String> =
     SimpleSearchParam<Citation, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -188,26 +188,26 @@ public object CitationSearchParams {
     )
 
   /** All search parameters for the Citation resource type. */
-  public val ALL: List<SearchParam<Citation, *>> =
+  public val all: List<SearchParam<Citation, *>> =
     listOf(
-      Classification,
-      ClassificationType,
-      Classifier,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Effective,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Publisher,
-      Status,
-      Title,
-      Url,
-      Version,
+      classification,
+      classificationType,
+      classifier,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      effective,
+      identifier,
+      jurisdiction,
+      name,
+      publisher,
+      status,
+      title,
+      url,
+      version,
     )
 }

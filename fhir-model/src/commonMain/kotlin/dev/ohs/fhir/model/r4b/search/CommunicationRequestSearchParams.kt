@@ -65,6 +65,7 @@ import dev.ohs.fhir.model.r4b.DeviceUseStatement
 import dev.ohs.fhir.model.r4b.DiagnosticReport
 import dev.ohs.fhir.model.r4b.DocumentManifest
 import dev.ohs.fhir.model.r4b.DocumentReference
+import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Endpoint
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
@@ -119,6 +120,7 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Person
@@ -167,7 +169,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [CommunicationRequest] resource type. */
 public object CommunicationRequestSearchParams {
-  public val Authored: SearchParam<CommunicationRequest, DateTime> =
+  public val authored: SearchParam<CommunicationRequest, DateTime> =
     SimpleSearchParam<CommunicationRequest, DateTime>(
       name = "authored",
       type = SearchParamType.fromCode("date"),
@@ -175,7 +177,7 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
 
-  public val BasedOn: SearchParam<CommunicationRequest, Reference> =
+  public val basedOn: SearchParam<CommunicationRequest, Reference> =
     SimpleSearchParam<CommunicationRequest, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -227,7 +229,7 @@ public object CommunicationRequestSearchParams {
           DiagnosticReport::class,
           DocumentManifest::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r4b.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
@@ -281,7 +283,7 @@ public object CommunicationRequestSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -326,7 +328,7 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val Category: SearchParam<CommunicationRequest, CodeableConcept> =
+  public val category: SearchParam<CommunicationRequest, CodeableConcept> =
     SimpleSearchParam<CommunicationRequest, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -334,16 +336,16 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Encounter: SearchParam<CommunicationRequest, Reference> =
+  public val encounter: SearchParam<CommunicationRequest, Reference> =
     SimpleSearchParam<CommunicationRequest, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.encounter",
-      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val GroupIdentifier: SearchParam<CommunicationRequest, Identifier> =
+  public val groupIdentifier: SearchParam<CommunicationRequest, Identifier> =
     SimpleSearchParam<CommunicationRequest, Identifier>(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
@@ -351,7 +353,7 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
 
-  public val Identifier: SearchParam<CommunicationRequest, Identifier> =
+  public val identifier: SearchParam<CommunicationRequest, Identifier> =
     SimpleSearchParam<CommunicationRequest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -359,7 +361,7 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Medium: SearchParam<CommunicationRequest, CodeableConcept> =
+  public val medium: SearchParam<CommunicationRequest, CodeableConcept> =
     SimpleSearchParam<CommunicationRequest, CodeableConcept>(
       name = "medium",
       type = SearchParamType.fromCode("token"),
@@ -367,7 +369,7 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> resource.medium },
     )
 
-  public val Occurrence: SearchParam<CommunicationRequest, DateTime> =
+  public val occurrence: SearchParam<CommunicationRequest, DateTime> =
     SimpleSearchParam<CommunicationRequest, DateTime>(
       name = "occurrence",
       type = SearchParamType.fromCode("date"),
@@ -377,12 +379,12 @@ public object CommunicationRequestSearchParams {
       },
     )
 
-  public val Patient: SearchParam<CommunicationRequest, Reference> =
+  public val patient: SearchParam<CommunicationRequest, Reference> =
     SimpleSearchParam<CommunicationRequest, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -390,7 +392,7 @@ public object CommunicationRequestSearchParams {
       },
     )
 
-  public val Priority: SearchParam<CommunicationRequest, Any> =
+  public val priority: SearchParam<CommunicationRequest, Any> =
     SimpleSearchParam<CommunicationRequest, Any>(
       name = "priority",
       type = SearchParamType.fromCode("token"),
@@ -398,7 +400,7 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
 
-  public val Recipient: SearchParam<CommunicationRequest, Reference> =
+  public val recipient: SearchParam<CommunicationRequest, Reference> =
     SimpleSearchParam<CommunicationRequest, Reference>(
       name = "recipient",
       type = SearchParamType.fromCode("reference"),
@@ -410,7 +412,7 @@ public object CommunicationRequestSearchParams {
           Organization::class,
           CareTeam::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           HealthcareService::class,
           PractitionerRole::class,
           RelatedPerson::class,
@@ -418,7 +420,7 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> resource.recipient },
     )
 
-  public val Replaces: SearchParam<CommunicationRequest, Reference> =
+  public val replaces: SearchParam<CommunicationRequest, Reference> =
     SimpleSearchParam<CommunicationRequest, Reference>(
       name = "replaces",
       type = SearchParamType.fromCode("reference"),
@@ -427,7 +429,7 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> resource.replaces },
     )
 
-  public val Requester: SearchParam<CommunicationRequest, Reference> =
+  public val requester: SearchParam<CommunicationRequest, Reference> =
     SimpleSearchParam<CommunicationRequest, Reference>(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
@@ -437,14 +439,14 @@ public object CommunicationRequestSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> listOfNotNull(resource.requester) },
     )
 
-  public val Sender: SearchParam<CommunicationRequest, Reference> =
+  public val sender: SearchParam<CommunicationRequest, Reference> =
     SimpleSearchParam<CommunicationRequest, Reference>(
       name = "sender",
       type = SearchParamType.fromCode("reference"),
@@ -454,7 +456,7 @@ public object CommunicationRequestSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           HealthcareService::class,
           PractitionerRole::class,
           RelatedPerson::class,
@@ -462,7 +464,7 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.sender) },
     )
 
-  public val Status: SearchParam<CommunicationRequest, Any> =
+  public val status: SearchParam<CommunicationRequest, Any> =
     SimpleSearchParam<CommunicationRequest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -470,33 +472,33 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<CommunicationRequest, Reference> =
+  public val subject: SearchParam<CommunicationRequest, Reference> =
     SimpleSearchParam<CommunicationRequest, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
   /** All search parameters for the CommunicationRequest resource type. */
-  public val ALL: CollectionsList<SearchParam<CommunicationRequest, *>> =
+  public val all: CollectionsList<SearchParam<CommunicationRequest, *>> =
     listOf(
-      Authored,
-      BasedOn,
-      Category,
-      Encounter,
-      GroupIdentifier,
-      Identifier,
-      Medium,
-      Occurrence,
-      Patient,
-      Priority,
-      Recipient,
-      Replaces,
-      Requester,
-      Sender,
-      Status,
-      Subject,
+      authored,
+      basedOn,
+      category,
+      encounter,
+      groupIdentifier,
+      identifier,
+      medium,
+      occurrence,
+      patient,
+      priority,
+      recipient,
+      replaces,
+      requester,
+      sender,
+      status,
+      subject,
     )
 }

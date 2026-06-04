@@ -37,7 +37,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MessageDefinition] resource type. */
 public object MessageDefinitionSearchParams {
-  public val Category: SearchParam<MessageDefinition, Any> =
+  public val category: SearchParam<MessageDefinition, Any> =
     SimpleSearchParam<MessageDefinition, Any>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -45,7 +45,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.category) },
     )
 
-  public val Context: SearchParam<MessageDefinition, Any> =
+  public val context: SearchParam<MessageDefinition, Any> =
     SimpleSearchParam<MessageDefinition, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -53,7 +53,7 @@ public object MessageDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<MessageDefinition, Any> =
+  public val contextQuantity: SearchParam<MessageDefinition, Any> =
     SimpleSearchParam<MessageDefinition, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -61,7 +61,7 @@ public object MessageDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<MessageDefinition, Coding> =
+  public val contextType: SearchParam<MessageDefinition, Coding> =
     SimpleSearchParam<MessageDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -69,7 +69,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<MessageDefinition, UsageContext> =
+  public val contextTypeQuantity: SearchParam<MessageDefinition, UsageContext> =
     SimpleSearchParam<MessageDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -77,7 +77,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<MessageDefinition, UsageContext> =
+  public val contextTypeValue: SearchParam<MessageDefinition, UsageContext> =
     SimpleSearchParam<MessageDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -85,7 +85,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<MessageDefinition, DateTime> =
+  public val date: SearchParam<MessageDefinition, DateTime> =
     SimpleSearchParam<MessageDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -93,7 +93,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOf(resource.date) },
     )
 
-  public val Description: SearchParam<MessageDefinition, Markdown> =
+  public val description: SearchParam<MessageDefinition, Markdown> =
     SimpleSearchParam<MessageDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -101,7 +101,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Event: SearchParam<MessageDefinition, Any> =
+  public val event: SearchParam<MessageDefinition, Any> =
     SimpleSearchParam<MessageDefinition, Any>(
       name = "event",
       type = SearchParamType.fromCode("token"),
@@ -109,7 +109,7 @@ public object MessageDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Focus: SearchParam<MessageDefinition, Any> =
+  public val focus: SearchParam<MessageDefinition, Any> =
     SimpleSearchParam<MessageDefinition, Any>(
       name = "focus",
       type = SearchParamType.fromCode("token"),
@@ -117,7 +117,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> resource.focus.map { it.code } },
     )
 
-  public val Identifier: SearchParam<MessageDefinition, Identifier> =
+  public val identifier: SearchParam<MessageDefinition, Identifier> =
     SimpleSearchParam<MessageDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -125,7 +125,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<MessageDefinition, CodeableConcept> =
+  public val jurisdiction: SearchParam<MessageDefinition, CodeableConcept> =
     SimpleSearchParam<MessageDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -133,7 +133,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<MessageDefinition, String> =
+  public val name: SearchParam<MessageDefinition, String> =
     SimpleSearchParam<MessageDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -141,7 +141,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Parent: SearchParam<MessageDefinition, Canonical> =
+  public val parent: SearchParam<MessageDefinition, Canonical> =
     SimpleSearchParam<MessageDefinition, Canonical>(
       name = "parent",
       type = SearchParamType.fromCode("reference"),
@@ -150,7 +150,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> resource.parent },
     )
 
-  public val Publisher: SearchParam<MessageDefinition, String> =
+  public val publisher: SearchParam<MessageDefinition, String> =
     SimpleSearchParam<MessageDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -158,7 +158,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<MessageDefinition, Any> =
+  public val status: SearchParam<MessageDefinition, Any> =
     SimpleSearchParam<MessageDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -166,7 +166,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<MessageDefinition, String> =
+  public val title: SearchParam<MessageDefinition, String> =
     SimpleSearchParam<MessageDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -174,7 +174,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<MessageDefinition, Uri> =
+  public val url: SearchParam<MessageDefinition, Uri> =
     SimpleSearchParam<MessageDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -182,7 +182,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<MessageDefinition, String> =
+  public val version: SearchParam<MessageDefinition, String> =
     SimpleSearchParam<MessageDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -191,26 +191,26 @@ public object MessageDefinitionSearchParams {
     )
 
   /** All search parameters for the MessageDefinition resource type. */
-  public val ALL: List<SearchParam<MessageDefinition, *>> =
+  public val all: List<SearchParam<MessageDefinition, *>> =
     listOf(
-      Category,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Event,
-      Focus,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Parent,
-      Publisher,
-      Status,
-      Title,
-      Url,
-      Version,
+      category,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      event,
+      focus,
+      identifier,
+      jurisdiction,
+      name,
+      parent,
+      publisher,
+      status,
+      title,
+      url,
+      version,
     )
 }

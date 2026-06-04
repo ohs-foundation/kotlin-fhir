@@ -69,6 +69,7 @@ import dev.ohs.fhir.model.r5.DeviceRequest
 import dev.ohs.fhir.model.r5.DeviceUsage
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
@@ -131,6 +132,7 @@ import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.OrganizationAffiliation
 import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Parameters
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
 import dev.ohs.fhir.model.r5.Permission
@@ -187,7 +189,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [R5List] resource type. */
 public object ListSearchParams {
-  public val Code: SearchParam<R5List, CodeableConcept> =
+  public val code: SearchParam<R5List, CodeableConcept> =
     SimpleSearchParam<R5List, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -195,7 +197,7 @@ public object ListSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Date: SearchParam<R5List, DateTime> =
+  public val date: SearchParam<R5List, DateTime> =
     SimpleSearchParam<R5List, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -203,7 +205,7 @@ public object ListSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val EmptyReason: SearchParam<R5List, CodeableConcept> =
+  public val emptyReason: SearchParam<R5List, CodeableConcept> =
     SimpleSearchParam<R5List, CodeableConcept>(
       name = "empty-reason",
       type = SearchParamType.fromCode("token"),
@@ -211,16 +213,16 @@ public object ListSearchParams {
       extractor = { resource -> listOfNotNull(resource.emptyReason) },
     )
 
-  public val Encounter: SearchParam<R5List, Reference> =
+  public val encounter: SearchParam<R5List, Reference> =
     SimpleSearchParam<R5List, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "List.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Identifier: SearchParam<R5List, Identifier> =
+  public val identifier: SearchParam<R5List, Identifier> =
     SimpleSearchParam<R5List, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -228,7 +230,7 @@ public object ListSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Item: SearchParam<R5List, Reference> =
+  public val item: SearchParam<R5List, Reference> =
     SimpleSearchParam<R5List, Reference>(
       name = "item",
       type = SearchParamType.fromCode("reference"),
@@ -284,7 +286,7 @@ public object ListSearchParams {
           DeviceUsage::class,
           DiagnosticReport::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r5.Encounter::class,
+          Encounter::class,
           EncounterHistory::class,
           Endpoint::class,
           EnrollmentRequest::class,
@@ -345,7 +347,7 @@ public object ListSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -397,7 +399,7 @@ public object ListSearchParams {
       extractor = { resource -> resource.entry.map { it.item } },
     )
 
-  public val Notes: SearchParam<R5List, Markdown> =
+  public val notes: SearchParam<R5List, Markdown> =
     SimpleSearchParam<R5List, Markdown>(
       name = "notes",
       type = SearchParamType.fromCode("string"),
@@ -405,18 +407,18 @@ public object ListSearchParams {
       extractor = { resource -> resource.note.map { it.text } },
     )
 
-  public val Patient: SearchParam<R5List, Reference> =
+  public val patient: SearchParam<R5List, Reference> =
     SimpleSearchParam<R5List, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "List.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
       },
     )
 
-  public val Source: SearchParam<R5List, Reference> =
+  public val source: SearchParam<R5List, Reference> =
     SimpleSearchParam<R5List, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
@@ -429,12 +431,12 @@ public object ListSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOfNotNull(resource.source) },
     )
 
-  public val Status: SearchParam<R5List, Any> =
+  public val status: SearchParam<R5List, Any> =
     SimpleSearchParam<R5List, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -442,7 +444,7 @@ public object ListSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<R5List, Reference> =
+  public val subject: SearchParam<R5List, Reference> =
     SimpleSearchParam<R5List, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -498,7 +500,7 @@ public object ListSearchParams {
           DeviceUsage::class,
           DiagnosticReport::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r5.Encounter::class,
+          Encounter::class,
           EncounterHistory::class,
           Endpoint::class,
           EnrollmentRequest::class,
@@ -559,7 +561,7 @@ public object ListSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -611,7 +613,7 @@ public object ListSearchParams {
       extractor = { resource -> resource.subject },
     )
 
-  public val Title: SearchParam<R5List, String> =
+  public val title: SearchParam<R5List, String> =
     SimpleSearchParam<R5List, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -620,19 +622,19 @@ public object ListSearchParams {
     )
 
   /** All search parameters for the List resource type. */
-  public val ALL: CollectionsList<SearchParam<R5List, *>> =
+  public val all: CollectionsList<SearchParam<R5List, *>> =
     listOf(
-      Code,
-      Date,
-      EmptyReason,
-      Encounter,
-      Identifier,
-      Item,
-      Notes,
-      Patient,
-      Source,
-      Status,
-      Subject,
-      Title,
+      code,
+      date,
+      emptyReason,
+      encounter,
+      identifier,
+      item,
+      notes,
+      patient,
+      source,
+      status,
+      subject,
+      title,
     )
 }

@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Location
 import dev.ohs.fhir.model.r4.Organization
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
@@ -33,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [CoverageEligibilityRequest] resource type. */
 public object CoverageEligibilityRequestSearchParams {
-  public val Created: SearchParam<CoverageEligibilityRequest, DateTime> =
+  public val created: SearchParam<CoverageEligibilityRequest, DateTime> =
     SimpleSearchParam<CoverageEligibilityRequest, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
@@ -41,7 +42,7 @@ public object CoverageEligibilityRequestSearchParams {
       extractor = { resource -> listOf(resource.created) },
     )
 
-  public val Enterer: SearchParam<CoverageEligibilityRequest, Reference> =
+  public val enterer: SearchParam<CoverageEligibilityRequest, Reference> =
     SimpleSearchParam<CoverageEligibilityRequest, Reference>(
       name = "enterer",
       type = SearchParamType.fromCode("reference"),
@@ -50,7 +51,7 @@ public object CoverageEligibilityRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.enterer) },
     )
 
-  public val Facility: SearchParam<CoverageEligibilityRequest, Reference> =
+  public val facility: SearchParam<CoverageEligibilityRequest, Reference> =
     SimpleSearchParam<CoverageEligibilityRequest, Reference>(
       name = "facility",
       type = SearchParamType.fromCode("reference"),
@@ -59,7 +60,7 @@ public object CoverageEligibilityRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.facility) },
     )
 
-  public val Identifier: SearchParam<CoverageEligibilityRequest, Identifier> =
+  public val identifier: SearchParam<CoverageEligibilityRequest, Identifier> =
     SimpleSearchParam<CoverageEligibilityRequest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -67,16 +68,16 @@ public object CoverageEligibilityRequestSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<CoverageEligibilityRequest, Reference> =
+  public val patient: SearchParam<CoverageEligibilityRequest, Reference> =
     SimpleSearchParam<CoverageEligibilityRequest, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "CoverageEligibilityRequest.patient",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Provider: SearchParam<CoverageEligibilityRequest, Reference> =
+  public val provider: SearchParam<CoverageEligibilityRequest, Reference> =
     SimpleSearchParam<CoverageEligibilityRequest, Reference>(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
@@ -85,7 +86,7 @@ public object CoverageEligibilityRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.provider) },
     )
 
-  public val Status: SearchParam<CoverageEligibilityRequest, Any> =
+  public val status: SearchParam<CoverageEligibilityRequest, Any> =
     SimpleSearchParam<CoverageEligibilityRequest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -94,6 +95,6 @@ public object CoverageEligibilityRequestSearchParams {
     )
 
   /** All search parameters for the CoverageEligibilityRequest resource type. */
-  public val ALL: List<SearchParam<CoverageEligibilityRequest, *>> =
-    listOf(Created, Enterer, Facility, Identifier, Patient, Provider, Status)
+  public val all: List<SearchParam<CoverageEligibilityRequest, *>> =
+    listOf(created, enterer, facility, identifier, patient, provider, status)
 }

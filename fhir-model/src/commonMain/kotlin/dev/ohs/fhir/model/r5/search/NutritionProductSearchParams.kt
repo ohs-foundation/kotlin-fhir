@@ -28,7 +28,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [NutritionProduct] resource type. */
 public object NutritionProductSearchParams {
-  public val Code: SearchParam<NutritionProduct, CodeableConcept> =
+  public val code: SearchParam<NutritionProduct, CodeableConcept> =
     SimpleSearchParam<NutritionProduct, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -36,7 +36,7 @@ public object NutritionProductSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Identifier: SearchParam<NutritionProduct, Identifier> =
+  public val identifier: SearchParam<NutritionProduct, Identifier> =
     SimpleSearchParam<NutritionProduct, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -44,7 +44,7 @@ public object NutritionProductSearchParams {
       extractor = { resource -> resource.instance.flatMap { it.identifier } },
     )
 
-  public val LotNumber: SearchParam<NutritionProduct, String> =
+  public val lotNumber: SearchParam<NutritionProduct, String> =
     SimpleSearchParam<NutritionProduct, String>(
       name = "lot-number",
       type = SearchParamType.fromCode("token"),
@@ -52,7 +52,7 @@ public object NutritionProductSearchParams {
       extractor = { resource -> resource.instance.mapNotNull { it.lotNumber } },
     )
 
-  public val SerialNumber: SearchParam<NutritionProduct, Identifier> =
+  public val serialNumber: SearchParam<NutritionProduct, Identifier> =
     SimpleSearchParam<NutritionProduct, Identifier>(
       name = "serial-number",
       type = SearchParamType.fromCode("token"),
@@ -60,7 +60,7 @@ public object NutritionProductSearchParams {
       extractor = { resource -> resource.instance.flatMap { it.identifier } },
     )
 
-  public val Status: SearchParam<NutritionProduct, CodeableConcept> =
+  public val status: SearchParam<NutritionProduct, CodeableConcept> =
     SimpleSearchParam<NutritionProduct, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -69,6 +69,6 @@ public object NutritionProductSearchParams {
     )
 
   /** All search parameters for the NutritionProduct resource type. */
-  public val ALL: List<SearchParam<NutritionProduct, *>> =
-    listOf(Code, Identifier, LotNumber, SerialNumber, Status)
+  public val all: List<SearchParam<NutritionProduct, *>> =
+    listOf(code, identifier, lotNumber, serialNumber, status)
 }

@@ -38,7 +38,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [SupplyRequest] resource type. */
 public object SupplyRequestSearchParams {
-  public val Category: SearchParam<SupplyRequest, CodeableConcept> =
+  public val category: SearchParam<SupplyRequest, CodeableConcept> =
     SimpleSearchParam<SupplyRequest, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -46,7 +46,7 @@ public object SupplyRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.category) },
     )
 
-  public val Date: SearchParam<SupplyRequest, DateTime> =
+  public val date: SearchParam<SupplyRequest, DateTime> =
     SimpleSearchParam<SupplyRequest, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -54,7 +54,7 @@ public object SupplyRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
 
-  public val Identifier: SearchParam<SupplyRequest, Identifier> =
+  public val identifier: SearchParam<SupplyRequest, Identifier> =
     SimpleSearchParam<SupplyRequest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -62,7 +62,7 @@ public object SupplyRequestSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Requester: SearchParam<SupplyRequest, Reference> =
+  public val requester: SearchParam<SupplyRequest, Reference> =
     SimpleSearchParam<SupplyRequest, Reference>(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
@@ -79,7 +79,7 @@ public object SupplyRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.requester) },
     )
 
-  public val Status: SearchParam<SupplyRequest, Any> =
+  public val status: SearchParam<SupplyRequest, Any> =
     SimpleSearchParam<SupplyRequest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -87,7 +87,7 @@ public object SupplyRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Subject: SearchParam<SupplyRequest, Reference> =
+  public val subject: SearchParam<SupplyRequest, Reference> =
     SimpleSearchParam<SupplyRequest, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -96,7 +96,7 @@ public object SupplyRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.deliverTo) },
     )
 
-  public val Supplier: SearchParam<SupplyRequest, Reference> =
+  public val supplier: SearchParam<SupplyRequest, Reference> =
     SimpleSearchParam<SupplyRequest, Reference>(
       name = "supplier",
       type = SearchParamType.fromCode("reference"),
@@ -106,6 +106,6 @@ public object SupplyRequestSearchParams {
     )
 
   /** All search parameters for the SupplyRequest resource type. */
-  public val ALL: List<SearchParam<SupplyRequest, *>> =
-    listOf(Category, Date, Identifier, Requester, Status, Subject, Supplier)
+  public val all: List<SearchParam<SupplyRequest, *>> =
+    listOf(category, date, identifier, requester, status, subject, supplier)
 }

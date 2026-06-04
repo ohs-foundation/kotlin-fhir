@@ -23,11 +23,14 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DeviceDefinition
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Medication
 import dev.ohs.fhir.model.r5.MedicationRequest
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
@@ -39,7 +42,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MedicationRequest] resource type. */
 public object MedicationRequestSearchParams {
-  public val Authoredon: SearchParam<MedicationRequest, DateTime> =
+  public val authoredon: SearchParam<MedicationRequest, DateTime> =
     SimpleSearchParam<MedicationRequest, DateTime>(
       name = "authoredon",
       type = SearchParamType.fromCode("date"),
@@ -47,7 +50,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
 
-  public val Category: SearchParam<MedicationRequest, CodeableConcept> =
+  public val category: SearchParam<MedicationRequest, CodeableConcept> =
     SimpleSearchParam<MedicationRequest, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -55,7 +58,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Code: SearchParam<MedicationRequest, CodeableConcept> =
+  public val code: SearchParam<MedicationRequest, CodeableConcept> =
     SimpleSearchParam<MedicationRequest, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -63,7 +66,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.medication.concept) },
     )
 
-  public val ComboDate: SearchParam<MedicationRequest, DateTime> =
+  public val comboDate: SearchParam<MedicationRequest, DateTime> =
     SimpleSearchParam<MedicationRequest, DateTime>(
       name = "combo-date",
       type = SearchParamType.fromCode("date"),
@@ -73,16 +76,16 @@ public object MedicationRequestSearchParams {
       },
     )
 
-  public val Encounter: SearchParam<MedicationRequest, Reference> =
+  public val encounter: SearchParam<MedicationRequest, Reference> =
     SimpleSearchParam<MedicationRequest, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val GroupIdentifier: SearchParam<MedicationRequest, Identifier> =
+  public val groupIdentifier: SearchParam<MedicationRequest, Identifier> =
     SimpleSearchParam<MedicationRequest, Identifier>(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
@@ -90,7 +93,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
 
-  public val Identifier: SearchParam<MedicationRequest, Identifier> =
+  public val identifier: SearchParam<MedicationRequest, Identifier> =
     SimpleSearchParam<MedicationRequest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -98,7 +101,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val IntendedDispenser: SearchParam<MedicationRequest, Reference> =
+  public val intendedDispenser: SearchParam<MedicationRequest, Reference> =
     SimpleSearchParam<MedicationRequest, Reference>(
       name = "intended-dispenser",
       type = SearchParamType.fromCode("reference"),
@@ -107,7 +110,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.dispenseRequest?.dispenser) },
     )
 
-  public val IntendedPerformer: SearchParam<MedicationRequest, Reference> =
+  public val intendedPerformer: SearchParam<MedicationRequest, Reference> =
     SimpleSearchParam<MedicationRequest, Reference>(
       name = "intended-performer",
       type = SearchParamType.fromCode("reference"),
@@ -121,12 +124,12 @@ public object MedicationRequestSearchParams {
           PractitionerRole::class,
           DeviceDefinition::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.performer },
     )
 
-  public val IntendedPerformertype: SearchParam<MedicationRequest, CodeableConcept> =
+  public val intendedPerformertype: SearchParam<MedicationRequest, CodeableConcept> =
     SimpleSearchParam<MedicationRequest, CodeableConcept>(
       name = "intended-performertype",
       type = SearchParamType.fromCode("token"),
@@ -134,7 +137,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.performerType) },
     )
 
-  public val Intent: SearchParam<MedicationRequest, Any> =
+  public val intent: SearchParam<MedicationRequest, Any> =
     SimpleSearchParam<MedicationRequest, Any>(
       name = "intent",
       type = SearchParamType.fromCode("token"),
@@ -142,21 +145,21 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOf(resource.intent) },
     )
 
-  public val Medication: SearchParam<MedicationRequest, Reference> =
+  public val medication: SearchParam<MedicationRequest, Reference> =
     SimpleSearchParam<MedicationRequest, Reference>(
       name = "medication",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.medication.reference",
-      target = listOf(dev.ohs.fhir.model.r5.Medication::class),
+      target = listOf(Medication::class),
       extractor = { resource -> listOfNotNull(resource.medication.reference) },
     )
 
-  public val Patient: SearchParam<MedicationRequest, Reference> =
+  public val patient: SearchParam<MedicationRequest, Reference> =
     SimpleSearchParam<MedicationRequest, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -164,7 +167,7 @@ public object MedicationRequestSearchParams {
       },
     )
 
-  public val Priority: SearchParam<MedicationRequest, Any> =
+  public val priority: SearchParam<MedicationRequest, Any> =
     SimpleSearchParam<MedicationRequest, Any>(
       name = "priority",
       type = SearchParamType.fromCode("token"),
@@ -172,7 +175,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
 
-  public val Requester: SearchParam<MedicationRequest, Reference> =
+  public val requester: SearchParam<MedicationRequest, Reference> =
     SimpleSearchParam<MedicationRequest, Reference>(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
@@ -184,12 +187,12 @@ public object MedicationRequestSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOfNotNull(resource.requester) },
     )
 
-  public val Status: SearchParam<MedicationRequest, Any> =
+  public val status: SearchParam<MedicationRequest, Any> =
     SimpleSearchParam<MedicationRequest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -197,34 +200,34 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<MedicationRequest, Reference> =
+  public val subject: SearchParam<MedicationRequest, Reference> =
     SimpleSearchParam<MedicationRequest, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
   /** All search parameters for the MedicationRequest resource type. */
-  public val ALL: List<SearchParam<MedicationRequest, *>> =
+  public val all: List<SearchParam<MedicationRequest, *>> =
     listOf(
-      Authoredon,
-      Category,
-      Code,
-      ComboDate,
-      Encounter,
-      GroupIdentifier,
-      Identifier,
-      IntendedDispenser,
-      IntendedPerformer,
-      IntendedPerformertype,
-      Intent,
-      Medication,
-      Patient,
-      Priority,
-      Requester,
-      Status,
-      Subject,
+      authoredon,
+      category,
+      code,
+      comboDate,
+      encounter,
+      groupIdentifier,
+      identifier,
+      intendedDispenser,
+      intendedPerformer,
+      intendedPerformertype,
+      intent,
+      medication,
+      patient,
+      priority,
+      requester,
+      status,
+      subject,
     )
 }

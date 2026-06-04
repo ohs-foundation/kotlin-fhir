@@ -35,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [GraphDefinition] resource type. */
 public object GraphDefinitionSearchParams {
-  public val Context: SearchParam<GraphDefinition, Any> =
+  public val context: SearchParam<GraphDefinition, Any> =
     SimpleSearchParam<GraphDefinition, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -43,7 +43,7 @@ public object GraphDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<GraphDefinition, Any> =
+  public val contextQuantity: SearchParam<GraphDefinition, Any> =
     SimpleSearchParam<GraphDefinition, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -51,7 +51,7 @@ public object GraphDefinitionSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<GraphDefinition, Coding> =
+  public val contextType: SearchParam<GraphDefinition, Coding> =
     SimpleSearchParam<GraphDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -59,7 +59,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<GraphDefinition, UsageContext> =
+  public val contextTypeQuantity: SearchParam<GraphDefinition, UsageContext> =
     SimpleSearchParam<GraphDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -67,7 +67,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<GraphDefinition, UsageContext> =
+  public val contextTypeValue: SearchParam<GraphDefinition, UsageContext> =
     SimpleSearchParam<GraphDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -75,7 +75,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<GraphDefinition, DateTime> =
+  public val date: SearchParam<GraphDefinition, DateTime> =
     SimpleSearchParam<GraphDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -83,7 +83,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<GraphDefinition, Markdown> =
+  public val description: SearchParam<GraphDefinition, Markdown> =
     SimpleSearchParam<GraphDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -91,7 +91,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<GraphDefinition, Identifier> =
+  public val identifier: SearchParam<GraphDefinition, Identifier> =
     SimpleSearchParam<GraphDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -99,7 +99,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<GraphDefinition, CodeableConcept> =
+  public val jurisdiction: SearchParam<GraphDefinition, CodeableConcept> =
     SimpleSearchParam<GraphDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -107,7 +107,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<GraphDefinition, String> =
+  public val name: SearchParam<GraphDefinition, String> =
     SimpleSearchParam<GraphDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -115,7 +115,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> listOf(resource.name) },
     )
 
-  public val Publisher: SearchParam<GraphDefinition, String> =
+  public val publisher: SearchParam<GraphDefinition, String> =
     SimpleSearchParam<GraphDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -123,7 +123,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Start: SearchParam<GraphDefinition, Id> =
+  public val start: SearchParam<GraphDefinition, Id> =
     SimpleSearchParam<GraphDefinition, Id>(
       name = "start",
       type = SearchParamType.fromCode("token"),
@@ -131,7 +131,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.start) },
     )
 
-  public val Status: SearchParam<GraphDefinition, Any> =
+  public val status: SearchParam<GraphDefinition, Any> =
     SimpleSearchParam<GraphDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -139,7 +139,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Url: SearchParam<GraphDefinition, Uri> =
+  public val url: SearchParam<GraphDefinition, Uri> =
     SimpleSearchParam<GraphDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -147,7 +147,7 @@ public object GraphDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<GraphDefinition, String> =
+  public val version: SearchParam<GraphDefinition, String> =
     SimpleSearchParam<GraphDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -156,22 +156,22 @@ public object GraphDefinitionSearchParams {
     )
 
   /** All search parameters for the GraphDefinition resource type. */
-  public val ALL: List<SearchParam<GraphDefinition, *>> =
+  public val all: List<SearchParam<GraphDefinition, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Publisher,
-      Start,
-      Status,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      identifier,
+      jurisdiction,
+      name,
+      publisher,
+      start,
+      status,
+      url,
+      version,
     )
 }

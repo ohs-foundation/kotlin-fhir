@@ -20,12 +20,14 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Flag
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.Medication
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.PlanDefinition
 import dev.ohs.fhir.model.r5.Practitioner
@@ -40,7 +42,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Flag] resource type. */
 public object FlagSearchParams {
-  public val Author: SearchParam<Flag, Reference> =
+  public val author: SearchParam<Flag, Reference> =
     SimpleSearchParam<Flag, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -52,12 +54,12 @@ public object FlagSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOfNotNull(resource.author) },
     )
 
-  public val Category: SearchParam<Flag, CodeableConcept> =
+  public val category: SearchParam<Flag, CodeableConcept> =
     SimpleSearchParam<Flag, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -65,7 +67,7 @@ public object FlagSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Date: SearchParam<Flag, Period> =
+  public val date: SearchParam<Flag, Period> =
     SimpleSearchParam<Flag, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -73,16 +75,16 @@ public object FlagSearchParams {
       extractor = { resource -> listOfNotNull(resource.period) },
     )
 
-  public val Encounter: SearchParam<Flag, Reference> =
+  public val encounter: SearchParam<Flag, Reference> =
     SimpleSearchParam<Flag, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Flag.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Identifier: SearchParam<Flag, Identifier> =
+  public val identifier: SearchParam<Flag, Identifier> =
     SimpleSearchParam<Flag, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -90,12 +92,12 @@ public object FlagSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<Flag, Reference> =
+  public val patient: SearchParam<Flag, Reference> =
     SimpleSearchParam<Flag, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Flag.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -103,7 +105,7 @@ public object FlagSearchParams {
       },
     )
 
-  public val Status: SearchParam<Flag, Any> =
+  public val status: SearchParam<Flag, Any> =
     SimpleSearchParam<Flag, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -111,7 +113,7 @@ public object FlagSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<Flag, Reference> =
+  public val subject: SearchParam<Flag, Reference> =
     SimpleSearchParam<Flag, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -126,13 +128,13 @@ public object FlagSearchParams {
           Group::class,
           Practitioner::class,
           Location::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           Medication::class,
         ),
       extractor = { resource -> listOf(resource.subject) },
     )
 
   /** All search parameters for the Flag resource type. */
-  public val ALL: List<SearchParam<Flag, *>> =
-    listOf(Author, Category, Date, Encounter, Identifier, Patient, Status, Subject)
+  public val all: List<SearchParam<Flag, *>> =
+    listOf(author, category, date, encounter, identifier, patient, status, subject)
 }

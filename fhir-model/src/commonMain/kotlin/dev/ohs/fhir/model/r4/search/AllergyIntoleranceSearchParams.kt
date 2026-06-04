@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
@@ -34,22 +35,17 @@ import kotlin.collections.List
 
 /** Search parameters for the [AllergyIntolerance] resource type. */
 public object AllergyIntoleranceSearchParams {
-  public val Asserter: SearchParam<AllergyIntolerance, Reference> =
+  public val asserter: SearchParam<AllergyIntolerance, Reference> =
     SimpleSearchParam<AllergyIntolerance, Reference>(
       name = "asserter",
       type = SearchParamType.fromCode("reference"),
       expression = "AllergyIntolerance.asserter",
       target =
-        listOf(
-          Practitioner::class,
-          dev.ohs.fhir.model.r4.Patient::class,
-          PractitionerRole::class,
-          RelatedPerson::class,
-        ),
+        listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class),
       extractor = { resource -> listOfNotNull(resource.asserter) },
     )
 
-  public val Category: SearchParam<AllergyIntolerance, Any> =
+  public val category: SearchParam<AllergyIntolerance, Any> =
     SimpleSearchParam<AllergyIntolerance, Any>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -57,7 +53,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val ClinicalStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
+  public val clinicalStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
     SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
       name = "clinical-status",
       type = SearchParamType.fromCode("token"),
@@ -65,7 +61,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> listOfNotNull(resource.clinicalStatus) },
     )
 
-  public val Code: SearchParam<AllergyIntolerance, CodeableConcept> =
+  public val code: SearchParam<AllergyIntolerance, CodeableConcept> =
     SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -73,7 +69,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Criticality: SearchParam<AllergyIntolerance, Any> =
+  public val criticality: SearchParam<AllergyIntolerance, Any> =
     SimpleSearchParam<AllergyIntolerance, Any>(
       name = "criticality",
       type = SearchParamType.fromCode("token"),
@@ -81,7 +77,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> listOfNotNull(resource.criticality) },
     )
 
-  public val Date: SearchParam<AllergyIntolerance, DateTime> =
+  public val date: SearchParam<AllergyIntolerance, DateTime> =
     SimpleSearchParam<AllergyIntolerance, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -89,7 +85,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> listOfNotNull(resource.recordedDate) },
     )
 
-  public val Identifier: SearchParam<AllergyIntolerance, Identifier> =
+  public val identifier: SearchParam<AllergyIntolerance, Identifier> =
     SimpleSearchParam<AllergyIntolerance, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -97,7 +93,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val LastDate: SearchParam<AllergyIntolerance, DateTime> =
+  public val lastDate: SearchParam<AllergyIntolerance, DateTime> =
     SimpleSearchParam<AllergyIntolerance, DateTime>(
       name = "last-date",
       type = SearchParamType.fromCode("date"),
@@ -105,7 +101,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> listOfNotNull(resource.lastOccurrence) },
     )
 
-  public val Manifestation: SearchParam<AllergyIntolerance, CodeableConcept> =
+  public val manifestation: SearchParam<AllergyIntolerance, CodeableConcept> =
     SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
       name = "manifestation",
       type = SearchParamType.fromCode("token"),
@@ -113,7 +109,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> resource.reaction.flatMap { it.manifestation } },
     )
 
-  public val Onset: SearchParam<AllergyIntolerance, DateTime> =
+  public val onset: SearchParam<AllergyIntolerance, DateTime> =
     SimpleSearchParam<AllergyIntolerance, DateTime>(
       name = "onset",
       type = SearchParamType.fromCode("date"),
@@ -121,31 +117,26 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> resource.reaction.mapNotNull { it.onset } },
     )
 
-  public val Patient: SearchParam<AllergyIntolerance, Reference> =
+  public val patient: SearchParam<AllergyIntolerance, Reference> =
     SimpleSearchParam<AllergyIntolerance, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "AllergyIntolerance.patient",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class),
+      target = listOf(Patient::class, Group::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Recorder: SearchParam<AllergyIntolerance, Reference> =
+  public val recorder: SearchParam<AllergyIntolerance, Reference> =
     SimpleSearchParam<AllergyIntolerance, Reference>(
       name = "recorder",
       type = SearchParamType.fromCode("reference"),
       expression = "AllergyIntolerance.recorder",
       target =
-        listOf(
-          Practitioner::class,
-          dev.ohs.fhir.model.r4.Patient::class,
-          PractitionerRole::class,
-          RelatedPerson::class,
-        ),
+        listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class),
       extractor = { resource -> listOfNotNull(resource.recorder) },
     )
 
-  public val Route: SearchParam<AllergyIntolerance, CodeableConcept> =
+  public val route: SearchParam<AllergyIntolerance, CodeableConcept> =
     SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
       name = "route",
       type = SearchParamType.fromCode("token"),
@@ -153,7 +144,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> resource.reaction.mapNotNull { it.exposureRoute } },
     )
 
-  public val Severity: SearchParam<AllergyIntolerance, Any> =
+  public val severity: SearchParam<AllergyIntolerance, Any> =
     SimpleSearchParam<AllergyIntolerance, Any>(
       name = "severity",
       type = SearchParamType.fromCode("token"),
@@ -161,7 +152,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> resource.reaction.mapNotNull { it.severity } },
     )
 
-  public val Type: SearchParam<AllergyIntolerance, Any> =
+  public val type: SearchParam<AllergyIntolerance, Any> =
     SimpleSearchParam<AllergyIntolerance, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -169,7 +160,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> listOfNotNull(resource.type) },
     )
 
-  public val VerificationStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
+  public val verificationStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
     SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
       name = "verification-status",
       type = SearchParamType.fromCode("token"),
@@ -178,23 +169,23 @@ public object AllergyIntoleranceSearchParams {
     )
 
   /** All search parameters for the AllergyIntolerance resource type. */
-  public val ALL: List<SearchParam<AllergyIntolerance, *>> =
+  public val all: List<SearchParam<AllergyIntolerance, *>> =
     listOf(
-      Asserter,
-      Category,
-      ClinicalStatus,
-      Code,
-      Criticality,
-      Date,
-      Identifier,
-      LastDate,
-      Manifestation,
-      Onset,
-      Patient,
-      Recorder,
-      Route,
-      Severity,
-      Type,
-      VerificationStatus,
+      asserter,
+      category,
+      clinicalStatus,
+      code,
+      criticality,
+      date,
+      identifier,
+      lastDate,
+      manifestation,
+      onset,
+      patient,
+      recorder,
+      route,
+      severity,
+      type,
+      verificationStatus,
     )
 }

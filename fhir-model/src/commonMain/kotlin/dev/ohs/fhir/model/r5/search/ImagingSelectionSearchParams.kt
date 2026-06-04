@@ -20,6 +20,7 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Appointment
 import dev.ohs.fhir.model.r5.AppointmentResponse
+import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.CarePlan
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
@@ -33,6 +34,7 @@ import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.Medication
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Reference
@@ -47,7 +49,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ImagingSelection] resource type. */
 public object ImagingSelectionSearchParams {
-  public val BasedOn: SearchParam<ImagingSelection, Reference> =
+  public val basedOn: SearchParam<ImagingSelection, Reference> =
     SimpleSearchParam<ImagingSelection, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -63,7 +65,7 @@ public object ImagingSelectionSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val BodySite: SearchParam<ImagingSelection, CodeableConcept> =
+  public val bodySite: SearchParam<ImagingSelection, CodeableConcept> =
     SimpleSearchParam<ImagingSelection, CodeableConcept>(
       name = "body-site",
       type = SearchParamType.fromCode("token"),
@@ -71,16 +73,16 @@ public object ImagingSelectionSearchParams {
       extractor = { resource -> listOfNotNull(resource.bodySite?.concept) },
     )
 
-  public val BodyStructure: SearchParam<ImagingSelection, Reference> =
+  public val bodyStructure: SearchParam<ImagingSelection, Reference> =
     SimpleSearchParam<ImagingSelection, Reference>(
       name = "body-structure",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.bodySite.reference",
-      target = listOf(dev.ohs.fhir.model.r5.BodyStructure::class),
+      target = listOf(BodyStructure::class),
       extractor = { resource -> listOfNotNull(resource.bodySite?.reference) },
     )
 
-  public val Code: SearchParam<ImagingSelection, Any> =
+  public val code: SearchParam<ImagingSelection, Any> =
     SimpleSearchParam<ImagingSelection, Any>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -88,7 +90,7 @@ public object ImagingSelectionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val DerivedFrom: SearchParam<ImagingSelection, Reference> =
+  public val derivedFrom: SearchParam<ImagingSelection, Reference> =
     SimpleSearchParam<ImagingSelection, Reference>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
@@ -97,7 +99,7 @@ public object ImagingSelectionSearchParams {
       extractor = { resource -> resource.derivedFrom },
     )
 
-  public val Identifier: SearchParam<ImagingSelection, Identifier> =
+  public val identifier: SearchParam<ImagingSelection, Identifier> =
     SimpleSearchParam<ImagingSelection, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -105,7 +107,7 @@ public object ImagingSelectionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Issued: SearchParam<ImagingSelection, Instant> =
+  public val issued: SearchParam<ImagingSelection, Instant> =
     SimpleSearchParam<ImagingSelection, Instant>(
       name = "issued",
       type = SearchParamType.fromCode("date"),
@@ -113,12 +115,12 @@ public object ImagingSelectionSearchParams {
       extractor = { resource -> listOfNotNull(resource.issued) },
     )
 
-  public val Patient: SearchParam<ImagingSelection, Reference> =
+  public val patient: SearchParam<ImagingSelection, Reference> =
     SimpleSearchParam<ImagingSelection, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -126,7 +128,7 @@ public object ImagingSelectionSearchParams {
       },
     )
 
-  public val Status: SearchParam<ImagingSelection, Any> =
+  public val status: SearchParam<ImagingSelection, Any> =
     SimpleSearchParam<ImagingSelection, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -134,7 +136,7 @@ public object ImagingSelectionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val StudyUid: SearchParam<ImagingSelection, Id> =
+  public val studyUid: SearchParam<ImagingSelection, Id> =
     SimpleSearchParam<ImagingSelection, Id>(
       name = "study-uid",
       type = SearchParamType.fromCode("token"),
@@ -142,7 +144,7 @@ public object ImagingSelectionSearchParams {
       extractor = { resource -> listOfNotNull(resource.studyUid) },
     )
 
-  public val Subject: SearchParam<ImagingSelection, Reference> =
+  public val subject: SearchParam<ImagingSelection, Reference> =
     SimpleSearchParam<ImagingSelection, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -157,25 +159,25 @@ public object ImagingSelectionSearchParams {
           Specimen::class,
           Substance::class,
           Location::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           Medication::class,
         ),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
   /** All search parameters for the ImagingSelection resource type. */
-  public val ALL: List<SearchParam<ImagingSelection, *>> =
+  public val all: List<SearchParam<ImagingSelection, *>> =
     listOf(
-      BasedOn,
-      BodySite,
-      BodyStructure,
-      Code,
-      DerivedFrom,
-      Identifier,
-      Issued,
-      Patient,
-      Status,
-      StudyUid,
-      Subject,
+      basedOn,
+      bodySite,
+      bodyStructure,
+      code,
+      derivedFrom,
+      identifier,
+      issued,
+      patient,
+      status,
+      studyUid,
+      subject,
     )
 }

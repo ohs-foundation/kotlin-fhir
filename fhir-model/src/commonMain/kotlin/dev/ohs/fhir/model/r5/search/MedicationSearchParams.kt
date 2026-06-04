@@ -33,7 +33,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Medication] resource type. */
 public object MedicationSearchParams {
-  public val Code: SearchParam<Medication, CodeableConcept> =
+  public val code: SearchParam<Medication, CodeableConcept> =
     SimpleSearchParam<Medication, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -41,7 +41,7 @@ public object MedicationSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val ExpirationDate: SearchParam<Medication, DateTime> =
+  public val expirationDate: SearchParam<Medication, DateTime> =
     SimpleSearchParam<Medication, DateTime>(
       name = "expiration-date",
       type = SearchParamType.fromCode("date"),
@@ -49,7 +49,7 @@ public object MedicationSearchParams {
       extractor = { resource -> listOfNotNull(resource.batch?.expirationDate) },
     )
 
-  public val Form: SearchParam<Medication, Any> =
+  public val form: SearchParam<Medication, Any> =
     SimpleSearchParam<Medication, Any>(
       name = "form",
       type = SearchParamType.fromCode("token"),
@@ -57,7 +57,7 @@ public object MedicationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Identifier: SearchParam<Medication, Identifier> =
+  public val identifier: SearchParam<Medication, Identifier> =
     SimpleSearchParam<Medication, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -65,7 +65,7 @@ public object MedicationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Ingredient: SearchParam<Medication, Reference> =
+  public val ingredient: SearchParam<Medication, Reference> =
     SimpleSearchParam<Medication, Reference>(
       name = "ingredient",
       type = SearchParamType.fromCode("reference"),
@@ -74,7 +74,7 @@ public object MedicationSearchParams {
       extractor = { resource -> resource.ingredient.map { it.item }.mapNotNull { it.reference } },
     )
 
-  public val IngredientCode: SearchParam<Medication, CodeableConcept> =
+  public val ingredientCode: SearchParam<Medication, CodeableConcept> =
     SimpleSearchParam<Medication, CodeableConcept>(
       name = "ingredient-code",
       type = SearchParamType.fromCode("token"),
@@ -82,7 +82,7 @@ public object MedicationSearchParams {
       extractor = { resource -> resource.ingredient.map { it.item }.mapNotNull { it.concept } },
     )
 
-  public val LotNumber: SearchParam<Medication, String> =
+  public val lotNumber: SearchParam<Medication, String> =
     SimpleSearchParam<Medication, String>(
       name = "lot-number",
       type = SearchParamType.fromCode("token"),
@@ -90,7 +90,7 @@ public object MedicationSearchParams {
       extractor = { resource -> listOfNotNull(resource.batch?.lotNumber) },
     )
 
-  public val Marketingauthorizationholder: SearchParam<Medication, Reference> =
+  public val marketingauthorizationholder: SearchParam<Medication, Reference> =
     SimpleSearchParam<Medication, Reference>(
       name = "marketingauthorizationholder",
       type = SearchParamType.fromCode("reference"),
@@ -99,7 +99,7 @@ public object MedicationSearchParams {
       extractor = { resource -> listOfNotNull(resource.marketingAuthorizationHolder) },
     )
 
-  public val SerialNumber: SearchParam<Medication, Identifier> =
+  public val serialNumber: SearchParam<Medication, Identifier> =
     SimpleSearchParam<Medication, Identifier>(
       name = "serial-number",
       type = SearchParamType.fromCode("token"),
@@ -107,7 +107,7 @@ public object MedicationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Status: SearchParam<Medication, Any> =
+  public val status: SearchParam<Medication, Any> =
     SimpleSearchParam<Medication, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -116,17 +116,17 @@ public object MedicationSearchParams {
     )
 
   /** All search parameters for the Medication resource type. */
-  public val ALL: List<SearchParam<Medication, *>> =
+  public val all: List<SearchParam<Medication, *>> =
     listOf(
-      Code,
-      ExpirationDate,
-      Form,
-      Identifier,
-      Ingredient,
-      IngredientCode,
-      LotNumber,
-      Marketingauthorizationholder,
-      SerialNumber,
-      Status,
+      code,
+      expirationDate,
+      form,
+      identifier,
+      ingredient,
+      ingredientCode,
+      lotNumber,
+      marketingauthorizationholder,
+      serialNumber,
+      status,
     )
 }

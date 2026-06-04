@@ -31,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Substance] resource type. */
 public object SubstanceSearchParams {
-  public val Category: SearchParam<Substance, CodeableConcept> =
+  public val category: SearchParam<Substance, CodeableConcept> =
     SimpleSearchParam<Substance, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -39,7 +39,7 @@ public object SubstanceSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Code: SearchParam<Substance, CodeableConcept> =
+  public val code: SearchParam<Substance, CodeableConcept> =
     SimpleSearchParam<Substance, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -47,7 +47,7 @@ public object SubstanceSearchParams {
       extractor = { resource -> listOf(resource.code) },
     )
 
-  public val ContainerIdentifier: SearchParam<Substance, Identifier> =
+  public val containerIdentifier: SearchParam<Substance, Identifier> =
     SimpleSearchParam<Substance, Identifier>(
       name = "container-identifier",
       type = SearchParamType.fromCode("token"),
@@ -55,7 +55,7 @@ public object SubstanceSearchParams {
       extractor = { resource -> resource.instance.mapNotNull { it.identifier } },
     )
 
-  public val Expiry: SearchParam<Substance, DateTime> =
+  public val expiry: SearchParam<Substance, DateTime> =
     SimpleSearchParam<Substance, DateTime>(
       name = "expiry",
       type = SearchParamType.fromCode("date"),
@@ -63,7 +63,7 @@ public object SubstanceSearchParams {
       extractor = { resource -> resource.instance.mapNotNull { it.expiry } },
     )
 
-  public val Identifier: SearchParam<Substance, Identifier> =
+  public val identifier: SearchParam<Substance, Identifier> =
     SimpleSearchParam<Substance, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -71,7 +71,7 @@ public object SubstanceSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Quantity: SearchParam<Substance, Quantity> =
+  public val quantity: SearchParam<Substance, Quantity> =
     SimpleSearchParam<Substance, Quantity>(
       name = "quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -79,7 +79,7 @@ public object SubstanceSearchParams {
       extractor = { resource -> resource.instance.mapNotNull { it.quantity } },
     )
 
-  public val Status: SearchParam<Substance, Any> =
+  public val status: SearchParam<Substance, Any> =
     SimpleSearchParam<Substance, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -87,7 +87,7 @@ public object SubstanceSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val SubstanceReference: SearchParam<Substance, Reference> =
+  public val substanceReference: SearchParam<Substance, Reference> =
     SimpleSearchParam<Substance, Reference>(
       name = "substance-reference",
       type = SearchParamType.fromCode("reference"),
@@ -101,15 +101,15 @@ public object SubstanceSearchParams {
     )
 
   /** All search parameters for the Substance resource type. */
-  public val ALL: List<SearchParam<Substance, *>> =
+  public val all: List<SearchParam<Substance, *>> =
     listOf(
-      Category,
-      Code,
-      ContainerIdentifier,
-      Expiry,
-      Identifier,
-      Quantity,
-      Status,
-      SubstanceReference,
+      category,
+      code,
+      containerIdentifier,
+      expiry,
+      identifier,
+      quantity,
+      status,
+      substanceReference,
     )
 }

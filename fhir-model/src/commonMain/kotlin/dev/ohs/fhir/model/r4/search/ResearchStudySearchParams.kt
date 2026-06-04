@@ -20,6 +20,7 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Location
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.PlanDefinition
@@ -35,7 +36,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ResearchStudy] resource type. */
 public object ResearchStudySearchParams {
-  public val Category: SearchParam<ResearchStudy, CodeableConcept> =
+  public val category: SearchParam<ResearchStudy, CodeableConcept> =
     SimpleSearchParam<ResearchStudy, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -43,7 +44,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Date: SearchParam<ResearchStudy, Period> =
+  public val date: SearchParam<ResearchStudy, Period> =
     SimpleSearchParam<ResearchStudy, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -51,7 +52,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> listOfNotNull(resource.period) },
     )
 
-  public val Focus: SearchParam<ResearchStudy, CodeableConcept> =
+  public val focus: SearchParam<ResearchStudy, CodeableConcept> =
     SimpleSearchParam<ResearchStudy, CodeableConcept>(
       name = "focus",
       type = SearchParamType.fromCode("token"),
@@ -59,7 +60,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> resource.focus },
     )
 
-  public val Identifier: SearchParam<ResearchStudy, Identifier> =
+  public val identifier: SearchParam<ResearchStudy, Identifier> =
     SimpleSearchParam<ResearchStudy, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -67,7 +68,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Keyword: SearchParam<ResearchStudy, CodeableConcept> =
+  public val keyword: SearchParam<ResearchStudy, CodeableConcept> =
     SimpleSearchParam<ResearchStudy, CodeableConcept>(
       name = "keyword",
       type = SearchParamType.fromCode("token"),
@@ -75,7 +76,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> resource.keyword },
     )
 
-  public val Location: SearchParam<ResearchStudy, CodeableConcept> =
+  public val location: SearchParam<ResearchStudy, CodeableConcept> =
     SimpleSearchParam<ResearchStudy, CodeableConcept>(
       name = "location",
       type = SearchParamType.fromCode("token"),
@@ -83,7 +84,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> resource.location },
     )
 
-  public val Partof: SearchParam<ResearchStudy, Reference> =
+  public val partof: SearchParam<ResearchStudy, Reference> =
     SimpleSearchParam<ResearchStudy, Reference>(
       name = "partof",
       type = SearchParamType.fromCode("reference"),
@@ -92,7 +93,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> resource.partOf },
     )
 
-  public val Principalinvestigator: SearchParam<ResearchStudy, Reference> =
+  public val principalinvestigator: SearchParam<ResearchStudy, Reference> =
     SimpleSearchParam<ResearchStudy, Reference>(
       name = "principalinvestigator",
       type = SearchParamType.fromCode("reference"),
@@ -101,7 +102,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> listOfNotNull(resource.principalInvestigator) },
     )
 
-  public val Protocol: SearchParam<ResearchStudy, Reference> =
+  public val protocol: SearchParam<ResearchStudy, Reference> =
     SimpleSearchParam<ResearchStudy, Reference>(
       name = "protocol",
       type = SearchParamType.fromCode("reference"),
@@ -110,16 +111,16 @@ public object ResearchStudySearchParams {
       extractor = { resource -> resource.protocol },
     )
 
-  public val Site: SearchParam<ResearchStudy, Reference> =
+  public val site: SearchParam<ResearchStudy, Reference> =
     SimpleSearchParam<ResearchStudy, Reference>(
       name = "site",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchStudy.site",
-      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      target = listOf(Location::class),
       extractor = { resource -> resource.site },
     )
 
-  public val Sponsor: SearchParam<ResearchStudy, Reference> =
+  public val sponsor: SearchParam<ResearchStudy, Reference> =
     SimpleSearchParam<ResearchStudy, Reference>(
       name = "sponsor",
       type = SearchParamType.fromCode("reference"),
@@ -128,7 +129,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> listOfNotNull(resource.sponsor) },
     )
 
-  public val Status: SearchParam<ResearchStudy, Any> =
+  public val status: SearchParam<ResearchStudy, Any> =
     SimpleSearchParam<ResearchStudy, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -136,7 +137,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<ResearchStudy, String> =
+  public val title: SearchParam<ResearchStudy, String> =
     SimpleSearchParam<ResearchStudy, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -145,20 +146,20 @@ public object ResearchStudySearchParams {
     )
 
   /** All search parameters for the ResearchStudy resource type. */
-  public val ALL: List<SearchParam<ResearchStudy, *>> =
+  public val all: List<SearchParam<ResearchStudy, *>> =
     listOf(
-      Category,
-      Date,
-      Focus,
-      Identifier,
-      Keyword,
-      Location,
-      Partof,
-      Principalinvestigator,
-      Protocol,
-      Site,
-      Sponsor,
-      Status,
-      Title,
+      category,
+      date,
+      focus,
+      identifier,
+      keyword,
+      location,
+      partof,
+      principalinvestigator,
+      protocol,
+      site,
+      sponsor,
+      status,
+      title,
     )
 }

@@ -65,6 +65,7 @@ import dev.ohs.fhir.model.r4b.DeviceUseStatement
 import dev.ohs.fhir.model.r4b.DiagnosticReport
 import dev.ohs.fhir.model.r4b.DocumentManifest
 import dev.ohs.fhir.model.r4b.DocumentReference
+import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Endpoint
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
@@ -119,6 +120,7 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Period
@@ -169,7 +171,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Composition] resource type. */
 public object CompositionSearchParams {
-  public val Attester: SearchParam<Composition, Reference> =
+  public val attester: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "attester",
       type = SearchParamType.fromCode("reference"),
@@ -178,14 +180,14 @@ public object CompositionSearchParams {
         listOf(
           Practitioner::class,
           Organization::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.attester.mapNotNull { it.party } },
     )
 
-  public val Author: SearchParam<Composition, Reference> =
+  public val author: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -195,14 +197,14 @@ public object CompositionSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.author },
     )
 
-  public val Category: SearchParam<Composition, CodeableConcept> =
+  public val category: SearchParam<Composition, CodeableConcept> =
     SimpleSearchParam<Composition, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -210,7 +212,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Confidentiality: SearchParam<Composition, Any> =
+  public val confidentiality: SearchParam<Composition, Any> =
     SimpleSearchParam<Composition, Any>(
       name = "confidentiality",
       type = SearchParamType.fromCode("token"),
@@ -218,7 +220,7 @@ public object CompositionSearchParams {
       extractor = { resource -> listOfNotNull(resource.confidentiality) },
     )
 
-  public val Context: SearchParam<Composition, CodeableConcept> =
+  public val context: SearchParam<Composition, CodeableConcept> =
     SimpleSearchParam<Composition, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -226,7 +228,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.event.flatMap { it.code } },
     )
 
-  public val Date: SearchParam<Composition, DateTime> =
+  public val date: SearchParam<Composition, DateTime> =
     SimpleSearchParam<Composition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -234,16 +236,16 @@ public object CompositionSearchParams {
       extractor = { resource -> listOf(resource.date) },
     )
 
-  public val Encounter: SearchParam<Composition, Reference> =
+  public val encounter: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.encounter",
-      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Entry: SearchParam<Composition, Reference> =
+  public val entry: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "entry",
       type = SearchParamType.fromCode("reference"),
@@ -295,7 +297,7 @@ public object CompositionSearchParams {
           DiagnosticReport::class,
           DocumentManifest::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r4b.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
@@ -349,7 +351,7 @@ public object CompositionSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -394,7 +396,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.section.flatMap { it.entry } },
     )
 
-  public val Identifier: SearchParam<Composition, Identifier> =
+  public val identifier: SearchParam<Composition, Identifier> =
     SimpleSearchParam<Composition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -402,12 +404,12 @@ public object CompositionSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val Patient: SearchParam<Composition, Reference> =
+  public val patient: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -415,7 +417,7 @@ public object CompositionSearchParams {
       },
     )
 
-  public val Period: SearchParam<Composition, Period> =
+  public val period: SearchParam<Composition, Period> =
     SimpleSearchParam<Composition, Period>(
       name = "period",
       type = SearchParamType.fromCode("date"),
@@ -423,7 +425,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.event.mapNotNull { it.period } },
     )
 
-  public val RelatedId: SearchParam<Composition, Identifier> =
+  public val relatedId: SearchParam<Composition, Identifier> =
     SimpleSearchParam<Composition, Identifier>(
       name = "related-id",
       type = SearchParamType.fromCode("token"),
@@ -435,7 +437,7 @@ public object CompositionSearchParams {
       },
     )
 
-  public val RelatedRef: SearchParam<Composition, Reference> =
+  public val relatedRef: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "related-ref",
       type = SearchParamType.fromCode("reference"),
@@ -448,7 +450,7 @@ public object CompositionSearchParams {
       },
     )
 
-  public val Section: SearchParam<Composition, CodeableConcept> =
+  public val section: SearchParam<Composition, CodeableConcept> =
     SimpleSearchParam<Composition, CodeableConcept>(
       name = "section",
       type = SearchParamType.fromCode("token"),
@@ -456,7 +458,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.section.mapNotNull { it.code } },
     )
 
-  public val Status: SearchParam<Composition, Any> =
+  public val status: SearchParam<Composition, Any> =
     SimpleSearchParam<Composition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -464,7 +466,7 @@ public object CompositionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<Composition, Reference> =
+  public val subject: SearchParam<Composition, Reference> =
     SimpleSearchParam<Composition, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -516,7 +518,7 @@ public object CompositionSearchParams {
           DiagnosticReport::class,
           DocumentManifest::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r4b.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
@@ -570,7 +572,7 @@ public object CompositionSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -615,7 +617,7 @@ public object CompositionSearchParams {
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val Title: SearchParam<Composition, String> =
+  public val title: SearchParam<Composition, String> =
     SimpleSearchParam<Composition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -623,7 +625,7 @@ public object CompositionSearchParams {
       extractor = { resource -> listOf(resource.title) },
     )
 
-  public val Type: SearchParam<Composition, CodeableConcept> =
+  public val type: SearchParam<Composition, CodeableConcept> =
     SimpleSearchParam<Composition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -632,25 +634,25 @@ public object CompositionSearchParams {
     )
 
   /** All search parameters for the Composition resource type. */
-  public val ALL: CollectionsList<SearchParam<Composition, *>> =
+  public val all: CollectionsList<SearchParam<Composition, *>> =
     listOf(
-      Attester,
-      Author,
-      Category,
-      Confidentiality,
-      Context,
-      Date,
-      Encounter,
-      Entry,
-      Identifier,
-      Patient,
-      Period,
-      RelatedId,
-      RelatedRef,
-      Section,
-      Status,
-      Subject,
-      Title,
-      Type,
+      attester,
+      author,
+      category,
+      confidentiality,
+      context,
+      date,
+      encounter,
+      entry,
+      identifier,
+      patient,
+      period,
+      relatedId,
+      relatedRef,
+      section,
+      status,
+      subject,
+      title,
+      type,
     )
 }

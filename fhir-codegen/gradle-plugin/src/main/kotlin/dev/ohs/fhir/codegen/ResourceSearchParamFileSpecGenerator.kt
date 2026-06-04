@@ -78,11 +78,6 @@ object ResourceSearchParamFileSpecGenerator {
     val resolver = FhirPathExpressionResolver(elementsByType)
     val dedupedParams = searchParams.distinctBy { it.code }.sortedBy { it.code }
 
-    // The generated `val`s share the object's scope, so a target whose simple name matches a `val`
-    // name (e.g. a `patient` search param produces a `Patient` val) would shadow the model class in
-    // `X::class` expression position. Such targets are fully-qualified instead.
-    val valNames = dedupedParams.mapTo(mutableSetOf()) { it.code.toPropertyName() }
-
     val containerObject =
       TypeSpec.objectBuilder(containerObjectName)
         .addModifiers(KModifier.PUBLIC)
@@ -98,7 +93,6 @@ object ResourceSearchParamFileSpecGenerator {
                 searchParamInterfaceClassName,
                 simpleSearchParamClassName,
                 searchParamTypeClassName,
-                valNames,
                 resolver,
               )
             )
@@ -109,13 +103,24 @@ object ResourceSearchParamFileSpecGenerator {
               .parameterizedBy(
                 searchParamInterfaceClassName.parameterizedBy(resourceClassName, STAR)
               )
+          val allInit =
+            CodeBlock.builder()
+              .apply {
+                add("listOf(")
+                dedupedParams.forEachIndexed { i, sp ->
+                  if (i > 0) add(", ")
+                  // Use %N so KotlinPoet backtick-escapes names that are Kotlin keywords
+                  // (e.g. a search param coded `class` or `for`).
+                  add("%N", sp.code.toPropertyName())
+                }
+                add(")")
+              }
+              .build()
           addProperty(
-            PropertySpec.builder("ALL", allListType)
+            PropertySpec.builder("all", allListType)
               .addModifiers(KModifier.PUBLIC)
               .addKdoc("All search parameters for the %L resource type.", resourceName)
-              .initializer(
-                "listOf(${dedupedParams.joinToString(", ") { it.code.toPropertyName() }})"
-              )
+              .initializer(allInit)
               .build()
           )
         }
@@ -135,7 +140,6 @@ object ResourceSearchParamFileSpecGenerator {
     searchParamInterfaceClassName: ClassName,
     simpleSearchParamClassName: ClassName,
     searchParamTypeClassName: ClassName,
-    valNames: Set<String>,
     resolver: FhirPathExpressionResolver,
   ): PropertySpec {
     val propertyName = searchParam.code.toPropertyName()
@@ -164,12 +168,7 @@ object ResourceSearchParamFileSpecGenerator {
             add("target = listOf(")
             searchParam.target.forEachIndexed { index, target ->
               if (index > 0) add(", ")
-              if (target in valNames) {
-                // Fully-qualify to force the class literal rather than the shadowing `val`.
-                add("%L", "$packageName.$target::class")
-              } else {
-                add("%T::class", ClassName(packageName, target))
-              }
+              add("%T::class", ClassName(packageName, target))
             }
             add("),\n")
           }
@@ -259,7 +258,10 @@ private fun SearchParameterDefinition.extractExpressionForResource(resourceName:
 }
 
 /**
- * Converts a search parameter code (e.g., "general-practitioner") to a property name (e.g.,
- * "GeneralPractitioner").
+ * Converts a search parameter code (e.g., "general-practitioner") to a lowerCamelCase property name
+ * (e.g., "generalPractitioner"), matching the Kotlin style guide for properties.
  */
-private fun String.toPropertyName(): String = split("-").joinToString("") { it.capitalized() }
+private fun String.toPropertyName(): String {
+  val parts = split("-")
+  return parts.first() + parts.drop(1).joinToString("") { it.capitalized() }
+}

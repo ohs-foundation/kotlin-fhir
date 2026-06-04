@@ -36,7 +36,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Requirements] resource type. */
 public object RequirementsSearchParams {
-  public val Actor: SearchParam<Requirements, Canonical> =
+  public val actor: SearchParam<Requirements, Canonical> =
     SimpleSearchParam<Requirements, Canonical>(
       name = "actor",
       type = SearchParamType.fromCode("reference"),
@@ -45,7 +45,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> resource.actor },
     )
 
-  public val Context: SearchParam<Requirements, Any> =
+  public val context: SearchParam<Requirements, Any> =
     SimpleSearchParam<Requirements, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -53,7 +53,7 @@ public object RequirementsSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<Requirements, Any> =
+  public val contextQuantity: SearchParam<Requirements, Any> =
     SimpleSearchParam<Requirements, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -61,7 +61,7 @@ public object RequirementsSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<Requirements, Coding> =
+  public val contextType: SearchParam<Requirements, Coding> =
     SimpleSearchParam<Requirements, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -69,7 +69,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<Requirements, UsageContext> =
+  public val contextTypeQuantity: SearchParam<Requirements, UsageContext> =
     SimpleSearchParam<Requirements, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -77,7 +77,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<Requirements, UsageContext> =
+  public val contextTypeValue: SearchParam<Requirements, UsageContext> =
     SimpleSearchParam<Requirements, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -85,7 +85,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<Requirements, DateTime> =
+  public val date: SearchParam<Requirements, DateTime> =
     SimpleSearchParam<Requirements, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -93,7 +93,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val DerivedFrom: SearchParam<Requirements, Canonical> =
+  public val derivedFrom: SearchParam<Requirements, Canonical> =
     SimpleSearchParam<Requirements, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
@@ -102,7 +102,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> resource.derivedFrom },
     )
 
-  public val Description: SearchParam<Requirements, Markdown> =
+  public val description: SearchParam<Requirements, Markdown> =
     SimpleSearchParam<Requirements, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -110,7 +110,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<Requirements, Identifier> =
+  public val identifier: SearchParam<Requirements, Identifier> =
     SimpleSearchParam<Requirements, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -118,7 +118,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<Requirements, CodeableConcept> =
+  public val jurisdiction: SearchParam<Requirements, CodeableConcept> =
     SimpleSearchParam<Requirements, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -126,7 +126,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<Requirements, String> =
+  public val name: SearchParam<Requirements, String> =
     SimpleSearchParam<Requirements, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -134,7 +134,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Publisher: SearchParam<Requirements, String> =
+  public val publisher: SearchParam<Requirements, String> =
     SimpleSearchParam<Requirements, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -142,7 +142,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<Requirements, Any> =
+  public val status: SearchParam<Requirements, Any> =
     SimpleSearchParam<Requirements, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -150,7 +150,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<Requirements, String> =
+  public val title: SearchParam<Requirements, String> =
     SimpleSearchParam<Requirements, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -158,7 +158,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<Requirements, Uri> =
+  public val url: SearchParam<Requirements, Uri> =
     SimpleSearchParam<Requirements, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -166,7 +166,7 @@ public object RequirementsSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<Requirements, String> =
+  public val version: SearchParam<Requirements, String> =
     SimpleSearchParam<Requirements, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -175,24 +175,24 @@ public object RequirementsSearchParams {
     )
 
   /** All search parameters for the Requirements resource type. */
-  public val ALL: List<SearchParam<Requirements, *>> =
+  public val all: List<SearchParam<Requirements, *>> =
     listOf(
-      Actor,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      DerivedFrom,
-      Description,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Publisher,
-      Status,
-      Title,
-      Url,
-      Version,
+      actor,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      derivedFrom,
+      description,
+      identifier,
+      jurisdiction,
+      name,
+      publisher,
+      status,
+      title,
+      url,
+      version,
     )
 }

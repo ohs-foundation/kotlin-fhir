@@ -34,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ExampleScenario] resource type. */
 public object ExampleScenarioSearchParams {
-  public val Context: SearchParam<ExampleScenario, CodeableConcept> =
+  public val context: SearchParam<ExampleScenario, CodeableConcept> =
     SimpleSearchParam<ExampleScenario, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -46,7 +46,7 @@ public object ExampleScenarioSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<ExampleScenario, Quantity> =
+  public val contextQuantity: SearchParam<ExampleScenario, Quantity> =
     SimpleSearchParam<ExampleScenario, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -56,7 +56,7 @@ public object ExampleScenarioSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<ExampleScenario, Coding> =
+  public val contextType: SearchParam<ExampleScenario, Coding> =
     SimpleSearchParam<ExampleScenario, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -64,7 +64,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<ExampleScenario, UsageContext> =
+  public val contextTypeQuantity: SearchParam<ExampleScenario, UsageContext> =
     SimpleSearchParam<ExampleScenario, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -72,7 +72,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<ExampleScenario, UsageContext> =
+  public val contextTypeValue: SearchParam<ExampleScenario, UsageContext> =
     SimpleSearchParam<ExampleScenario, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -80,7 +80,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<ExampleScenario, DateTime> =
+  public val date: SearchParam<ExampleScenario, DateTime> =
     SimpleSearchParam<ExampleScenario, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -88,7 +88,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Identifier: SearchParam<ExampleScenario, Identifier> =
+  public val identifier: SearchParam<ExampleScenario, Identifier> =
     SimpleSearchParam<ExampleScenario, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -96,7 +96,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<ExampleScenario, CodeableConcept> =
+  public val jurisdiction: SearchParam<ExampleScenario, CodeableConcept> =
     SimpleSearchParam<ExampleScenario, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -104,7 +104,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<ExampleScenario, String> =
+  public val name: SearchParam<ExampleScenario, String> =
     SimpleSearchParam<ExampleScenario, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -112,7 +112,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Publisher: SearchParam<ExampleScenario, String> =
+  public val publisher: SearchParam<ExampleScenario, String> =
     SimpleSearchParam<ExampleScenario, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -120,7 +120,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<ExampleScenario, Any> =
+  public val status: SearchParam<ExampleScenario, Any> =
     SimpleSearchParam<ExampleScenario, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -128,7 +128,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Url: SearchParam<ExampleScenario, Uri> =
+  public val url: SearchParam<ExampleScenario, Uri> =
     SimpleSearchParam<ExampleScenario, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -136,7 +136,7 @@ public object ExampleScenarioSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<ExampleScenario, String> =
+  public val version: SearchParam<ExampleScenario, String> =
     SimpleSearchParam<ExampleScenario, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -145,20 +145,20 @@ public object ExampleScenarioSearchParams {
     )
 
   /** All search parameters for the ExampleScenario resource type. */
-  public val ALL: List<SearchParam<ExampleScenario, *>> =
+  public val all: List<SearchParam<ExampleScenario, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Identifier,
-      Jurisdiction,
-      Name,
-      Publisher,
-      Status,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      identifier,
+      jurisdiction,
+      name,
+      publisher,
+      status,
+      url,
+      version,
     )
 }

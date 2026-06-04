@@ -32,7 +32,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductDefinition] resource type. */
 public object MedicinalProductDefinitionSearchParams {
-  public val Characteristic:
+  public val characteristic:
     SearchParam<MedicinalProductDefinition, MedicinalProductDefinition.Characteristic.Value> =
     SimpleSearchParam<MedicinalProductDefinition, MedicinalProductDefinition.Characteristic.Value>(
       name = "characteristic",
@@ -41,7 +41,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> resource.characteristic.mapNotNull { it.`value` } },
     )
 
-  public val CharacteristicType: SearchParam<MedicinalProductDefinition, CodeableConcept> =
+  public val characteristicType: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "characteristic-type",
       type = SearchParamType.fromCode("token"),
@@ -49,7 +49,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> resource.characteristic.map { it.type } },
     )
 
-  public val Contact: SearchParam<MedicinalProductDefinition, Reference> =
+  public val contact: SearchParam<MedicinalProductDefinition, Reference> =
     SimpleSearchParam<MedicinalProductDefinition, Reference>(
       name = "contact",
       type = SearchParamType.fromCode("reference"),
@@ -58,7 +58,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> resource.contact.map { it.contact } },
     )
 
-  public val Domain: SearchParam<MedicinalProductDefinition, CodeableConcept> =
+  public val domain: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "domain",
       type = SearchParamType.fromCode("token"),
@@ -66,7 +66,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.domain) },
     )
 
-  public val Identifier: SearchParam<MedicinalProductDefinition, Identifier> =
+  public val identifier: SearchParam<MedicinalProductDefinition, Identifier> =
     SimpleSearchParam<MedicinalProductDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -74,7 +74,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Ingredient: SearchParam<MedicinalProductDefinition, CodeableConcept> =
+  public val ingredient: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "ingredient",
       type = SearchParamType.fromCode("token"),
@@ -82,7 +82,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> resource.ingredient },
     )
 
-  public val MasterFile: SearchParam<MedicinalProductDefinition, Reference> =
+  public val masterFile: SearchParam<MedicinalProductDefinition, Reference> =
     SimpleSearchParam<MedicinalProductDefinition, Reference>(
       name = "master-file",
       type = SearchParamType.fromCode("reference"),
@@ -91,7 +91,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> resource.masterFile },
     )
 
-  public val Name: SearchParam<MedicinalProductDefinition, String> =
+  public val name: SearchParam<MedicinalProductDefinition, String> =
     SimpleSearchParam<MedicinalProductDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -99,7 +99,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> resource.name.map { it.productName } },
     )
 
-  public val NameLanguage: SearchParam<MedicinalProductDefinition, CodeableConcept> =
+  public val nameLanguage: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "name-language",
       type = SearchParamType.fromCode("token"),
@@ -107,7 +107,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> resource.name.flatMap { it.countryLanguage }.map { it.language } },
     )
 
-  public val ProductClassification: SearchParam<MedicinalProductDefinition, CodeableConcept> =
+  public val productClassification: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "product-classification",
       type = SearchParamType.fromCode("token"),
@@ -115,7 +115,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> resource.classification },
     )
 
-  public val Status: SearchParam<MedicinalProductDefinition, CodeableConcept> =
+  public val status: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -123,7 +123,7 @@ public object MedicinalProductDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Type: SearchParam<MedicinalProductDefinition, CodeableConcept> =
+  public val type: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -132,19 +132,19 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   /** All search parameters for the MedicinalProductDefinition resource type. */
-  public val ALL: List<SearchParam<MedicinalProductDefinition, *>> =
+  public val all: List<SearchParam<MedicinalProductDefinition, *>> =
     listOf(
-      Characteristic,
-      CharacteristicType,
-      Contact,
-      Domain,
-      Identifier,
-      Ingredient,
-      MasterFile,
-      Name,
-      NameLanguage,
-      ProductClassification,
-      Status,
-      Type,
+      characteristic,
+      characteristicType,
+      contact,
+      domain,
+      identifier,
+      ingredient,
+      masterFile,
+      name,
+      nameLanguage,
+      productClassification,
+      status,
+      type,
     )
 }

@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
@@ -29,7 +30,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [BodyStructure] resource type. */
 public object BodyStructureSearchParams {
-  public val Excluded_structure: SearchParam<BodyStructure, Any> =
+  public val excluded_structure: SearchParam<BodyStructure, Any> =
     SimpleSearchParam<BodyStructure, Any>(
       name = "excluded_structure",
       type = SearchParamType.fromCode("token"),
@@ -37,7 +38,7 @@ public object BodyStructureSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Identifier: SearchParam<BodyStructure, Identifier> =
+  public val identifier: SearchParam<BodyStructure, Identifier> =
     SimpleSearchParam<BodyStructure, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -45,7 +46,7 @@ public object BodyStructureSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Included_structure: SearchParam<BodyStructure, CodeableConcept> =
+  public val included_structure: SearchParam<BodyStructure, CodeableConcept> =
     SimpleSearchParam<BodyStructure, CodeableConcept>(
       name = "included_structure",
       type = SearchParamType.fromCode("token"),
@@ -53,7 +54,7 @@ public object BodyStructureSearchParams {
       extractor = { resource -> resource.includedStructure.map { it.structure } },
     )
 
-  public val Morphology: SearchParam<BodyStructure, CodeableConcept> =
+  public val morphology: SearchParam<BodyStructure, CodeableConcept> =
     SimpleSearchParam<BodyStructure, CodeableConcept>(
       name = "morphology",
       type = SearchParamType.fromCode("token"),
@@ -61,16 +62,16 @@ public object BodyStructureSearchParams {
       extractor = { resource -> listOfNotNull(resource.morphology) },
     )
 
-  public val Patient: SearchParam<BodyStructure, Reference> =
+  public val patient: SearchParam<BodyStructure, Reference> =
     SimpleSearchParam<BodyStructure, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "BodyStructure.patient",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
   /** All search parameters for the BodyStructure resource type. */
-  public val ALL: List<SearchParam<BodyStructure, *>> =
-    listOf(Excluded_structure, Identifier, Included_structure, Morphology, Patient)
+  public val all: List<SearchParam<BodyStructure, *>> =
+    listOf(excluded_structure, identifier, included_structure, morphology, patient)
 }

@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceUsage
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
@@ -29,7 +30,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [DeviceUsage] resource type. */
 public object DeviceUsageSearchParams {
-  public val Device: SearchParam<DeviceUsage, CodeableConcept> =
+  public val device: SearchParam<DeviceUsage, CodeableConcept> =
     SimpleSearchParam<DeviceUsage, CodeableConcept>(
       name = "device",
       type = SearchParamType.fromCode("token"),
@@ -37,7 +38,7 @@ public object DeviceUsageSearchParams {
       extractor = { resource -> listOfNotNull(resource.device.concept) },
     )
 
-  public val Identifier: SearchParam<DeviceUsage, Identifier> =
+  public val identifier: SearchParam<DeviceUsage, Identifier> =
     SimpleSearchParam<DeviceUsage, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -45,16 +46,16 @@ public object DeviceUsageSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<DeviceUsage, Reference> =
+  public val patient: SearchParam<DeviceUsage, Reference> =
     SimpleSearchParam<DeviceUsage, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceUsage.patient",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Status: SearchParam<DeviceUsage, Any> =
+  public val status: SearchParam<DeviceUsage, Any> =
     SimpleSearchParam<DeviceUsage, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -63,5 +64,5 @@ public object DeviceUsageSearchParams {
     )
 
   /** All search parameters for the DeviceUsage resource type. */
-  public val ALL: List<SearchParam<DeviceUsage, *>> = listOf(Device, Identifier, Patient, Status)
+  public val all: List<SearchParam<DeviceUsage, *>> = listOf(device, identifier, patient, status)
 }

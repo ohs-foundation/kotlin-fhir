@@ -35,5 +35,5 @@ public object DomainResourceSearchParams {
     )
 
   /** All search parameters for the DomainResource resource type. */
-  public val ALL: List<SearchParam<DomainResource, *>> = listOf(_text)
+  public val all: List<SearchParam<DomainResource, *>> = listOf(_text)
 }

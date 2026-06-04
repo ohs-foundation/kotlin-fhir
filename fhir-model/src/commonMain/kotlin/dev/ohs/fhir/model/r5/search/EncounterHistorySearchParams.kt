@@ -18,9 +18,11 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
@@ -29,16 +31,16 @@ import kotlin.collections.List
 
 /** Search parameters for the [EncounterHistory] resource type. */
 public object EncounterHistorySearchParams {
-  public val Encounter: SearchParam<EncounterHistory, Reference> =
+  public val encounter: SearchParam<EncounterHistory, Reference> =
     SimpleSearchParam<EncounterHistory, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "EncounterHistory.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Identifier: SearchParam<EncounterHistory, Identifier> =
+  public val identifier: SearchParam<EncounterHistory, Identifier> =
     SimpleSearchParam<EncounterHistory, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -46,12 +48,12 @@ public object EncounterHistorySearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<EncounterHistory, Reference> =
+  public val patient: SearchParam<EncounterHistory, Reference> =
     SimpleSearchParam<EncounterHistory, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "EncounterHistory.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -59,7 +61,7 @@ public object EncounterHistorySearchParams {
       },
     )
 
-  public val Status: SearchParam<EncounterHistory, Any> =
+  public val status: SearchParam<EncounterHistory, Any> =
     SimpleSearchParam<EncounterHistory, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -67,16 +69,16 @@ public object EncounterHistorySearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<EncounterHistory, Reference> =
+  public val subject: SearchParam<EncounterHistory, Reference> =
     SimpleSearchParam<EncounterHistory, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "EncounterHistory.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
   /** All search parameters for the EncounterHistory resource type. */
-  public val ALL: List<SearchParam<EncounterHistory, *>> =
-    listOf(Encounter, Identifier, Patient, Status, Subject)
+  public val all: List<SearchParam<EncounterHistory, *>> =
+    listOf(encounter, identifier, patient, status, subject)
 }

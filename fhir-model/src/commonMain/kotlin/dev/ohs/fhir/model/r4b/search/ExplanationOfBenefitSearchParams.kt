@@ -18,12 +18,16 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Claim
+import dev.ohs.fhir.model.r4b.Coverage
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Device
+import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.ExplanationOfBenefit
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Organization
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
@@ -36,7 +40,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ExplanationOfBenefit] resource type. */
 public object ExplanationOfBenefitSearchParams {
-  public val CareTeam: SearchParam<ExplanationOfBenefit, Reference> =
+  public val careTeam: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "care-team",
       type = SearchParamType.fromCode("reference"),
@@ -45,25 +49,25 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> resource.careTeam.map { it.provider } },
     )
 
-  public val Claim: SearchParam<ExplanationOfBenefit, Reference> =
+  public val claim: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "claim",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.claim",
-      target = listOf(dev.ohs.fhir.model.r4b.Claim::class),
+      target = listOf(Claim::class),
       extractor = { resource -> listOfNotNull(resource.claim) },
     )
 
-  public val Coverage: SearchParam<ExplanationOfBenefit, Reference> =
+  public val coverage: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "coverage",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.insurance.coverage",
-      target = listOf(dev.ohs.fhir.model.r4b.Coverage::class),
+      target = listOf(Coverage::class),
       extractor = { resource -> resource.insurance.map { it.coverage } },
     )
 
-  public val Created: SearchParam<ExplanationOfBenefit, DateTime> =
+  public val created: SearchParam<ExplanationOfBenefit, DateTime> =
     SimpleSearchParam<ExplanationOfBenefit, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
@@ -71,7 +75,7 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> listOf(resource.created) },
     )
 
-  public val DetailUdi: SearchParam<ExplanationOfBenefit, Reference> =
+  public val detailUdi: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "detail-udi",
       type = SearchParamType.fromCode("reference"),
@@ -80,7 +84,7 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> resource.item.flatMap { it.detail }.flatMap { it.udi } },
     )
 
-  public val Disposition: SearchParam<ExplanationOfBenefit, String> =
+  public val disposition: SearchParam<ExplanationOfBenefit, String> =
     SimpleSearchParam<ExplanationOfBenefit, String>(
       name = "disposition",
       type = SearchParamType.fromCode("string"),
@@ -88,16 +92,16 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> listOfNotNull(resource.disposition) },
     )
 
-  public val Encounter: SearchParam<ExplanationOfBenefit, Reference> =
+  public val encounter: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.item.encounter",
-      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> resource.item.flatMap { it.encounter } },
     )
 
-  public val Enterer: SearchParam<ExplanationOfBenefit, Reference> =
+  public val enterer: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "enterer",
       type = SearchParamType.fromCode("reference"),
@@ -106,7 +110,7 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> listOfNotNull(resource.enterer) },
     )
 
-  public val Facility: SearchParam<ExplanationOfBenefit, Reference> =
+  public val facility: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "facility",
       type = SearchParamType.fromCode("reference"),
@@ -115,7 +119,7 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> listOfNotNull(resource.facility) },
     )
 
-  public val Identifier: SearchParam<ExplanationOfBenefit, Identifier> =
+  public val identifier: SearchParam<ExplanationOfBenefit, Identifier> =
     SimpleSearchParam<ExplanationOfBenefit, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -123,7 +127,7 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val ItemUdi: SearchParam<ExplanationOfBenefit, Reference> =
+  public val itemUdi: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "item-udi",
       type = SearchParamType.fromCode("reference"),
@@ -132,16 +136,16 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> resource.item.flatMap { it.udi } },
     )
 
-  public val Patient: SearchParam<ExplanationOfBenefit, Reference> =
+  public val patient: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.patient",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Payee: SearchParam<ExplanationOfBenefit, Reference> =
+  public val payee: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "payee",
       type = SearchParamType.fromCode("reference"),
@@ -150,14 +154,14 @@ public object ExplanationOfBenefitSearchParams {
         listOf(
           Practitioner::class,
           Organization::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> listOfNotNull(resource.payee?.party) },
     )
 
-  public val ProcedureUdi: SearchParam<ExplanationOfBenefit, Reference> =
+  public val procedureUdi: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "procedure-udi",
       type = SearchParamType.fromCode("reference"),
@@ -166,7 +170,7 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> resource.procedure.flatMap { it.udi } },
     )
 
-  public val Provider: SearchParam<ExplanationOfBenefit, Reference> =
+  public val provider: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
@@ -175,7 +179,7 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> listOf(resource.provider) },
     )
 
-  public val Status: SearchParam<ExplanationOfBenefit, Any> =
+  public val status: SearchParam<ExplanationOfBenefit, Any> =
     SimpleSearchParam<ExplanationOfBenefit, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -183,7 +187,7 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val SubdetailUdi: SearchParam<ExplanationOfBenefit, Reference> =
+  public val subdetailUdi: SearchParam<ExplanationOfBenefit, Reference> =
     SimpleSearchParam<ExplanationOfBenefit, Reference>(
       name = "subdetail-udi",
       type = SearchParamType.fromCode("reference"),
@@ -195,24 +199,24 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   /** All search parameters for the ExplanationOfBenefit resource type. */
-  public val ALL: List<SearchParam<ExplanationOfBenefit, *>> =
+  public val all: List<SearchParam<ExplanationOfBenefit, *>> =
     listOf(
-      CareTeam,
-      Claim,
-      Coverage,
-      Created,
-      DetailUdi,
-      Disposition,
-      Encounter,
-      Enterer,
-      Facility,
-      Identifier,
-      ItemUdi,
-      Patient,
-      Payee,
-      ProcedureUdi,
-      Provider,
-      Status,
-      SubdetailUdi,
+      careTeam,
+      claim,
+      coverage,
+      created,
+      detailUdi,
+      disposition,
+      encounter,
+      enterer,
+      facility,
+      identifier,
+      itemUdi,
+      patient,
+      payee,
+      procedureUdi,
+      provider,
+      status,
+      subdetailUdi,
     )
 }

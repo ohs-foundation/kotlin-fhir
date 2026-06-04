@@ -106,6 +106,7 @@ import dev.ohs.fhir.model.r5.Invoice
 import dev.ohs.fhir.model.r5.Library
 import dev.ohs.fhir.model.r5.Linkage
 import dev.ohs.fhir.model.r5.List as R5List
+import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Measure
@@ -132,6 +133,7 @@ import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.OrganizationAffiliation
 import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Parameters
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
 import dev.ohs.fhir.model.r5.Period
@@ -190,7 +192,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [DocumentReference] resource type. */
 public object DocumentReferenceSearchParams {
-  public val Attester: SearchParam<DocumentReference, Reference> =
+  public val attester: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "attester",
       type = SearchParamType.fromCode("reference"),
@@ -201,12 +203,12 @@ public object DocumentReferenceSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.attester.mapNotNull { it.party } },
     )
 
-  public val Author: SearchParam<DocumentReference, Reference> =
+  public val author: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -219,12 +221,12 @@ public object DocumentReferenceSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.author },
     )
 
-  public val BasedOn: SearchParam<DocumentReference, Reference> =
+  public val basedOn: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -251,7 +253,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val Bodysite: SearchParam<DocumentReference, CodeableConcept> =
+  public val bodysite: SearchParam<DocumentReference, CodeableConcept> =
     SimpleSearchParam<DocumentReference, CodeableConcept>(
       name = "bodysite",
       type = SearchParamType.fromCode("token"),
@@ -259,7 +261,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.bodySite.mapNotNull { it.concept } },
     )
 
-  public val BodysiteReference: SearchParam<DocumentReference, Reference> =
+  public val bodysiteReference: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "bodysite-reference",
       type = SearchParamType.fromCode("reference"),
@@ -268,7 +270,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.bodySite.mapNotNull { it.reference } },
     )
 
-  public val Category: SearchParam<DocumentReference, CodeableConcept> =
+  public val category: SearchParam<DocumentReference, CodeableConcept> =
     SimpleSearchParam<DocumentReference, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -276,7 +278,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Contenttype: SearchParam<DocumentReference, Any> =
+  public val contenttype: SearchParam<DocumentReference, Any> =
     SimpleSearchParam<DocumentReference, Any>(
       name = "contenttype",
       type = SearchParamType.fromCode("token"),
@@ -286,7 +288,7 @@ public object DocumentReferenceSearchParams {
       },
     )
 
-  public val Context: SearchParam<DocumentReference, Reference> =
+  public val context: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "context",
       type = SearchParamType.fromCode("reference"),
@@ -295,7 +297,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.context },
     )
 
-  public val Creation: SearchParam<DocumentReference, DateTime> =
+  public val creation: SearchParam<DocumentReference, DateTime> =
     SimpleSearchParam<DocumentReference, DateTime>(
       name = "creation",
       type = SearchParamType.fromCode("date"),
@@ -303,7 +305,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.content.map { it.attachment }.mapNotNull { it.creation } },
     )
 
-  public val Custodian: SearchParam<DocumentReference, Reference> =
+  public val custodian: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "custodian",
       type = SearchParamType.fromCode("reference"),
@@ -312,7 +314,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.custodian) },
     )
 
-  public val Date: SearchParam<DocumentReference, Instant> =
+  public val date: SearchParam<DocumentReference, Instant> =
     SimpleSearchParam<DocumentReference, Instant>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -320,7 +322,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<DocumentReference, Markdown> =
+  public val description: SearchParam<DocumentReference, Markdown> =
     SimpleSearchParam<DocumentReference, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -328,7 +330,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val DocStatus: SearchParam<DocumentReference, Any> =
+  public val docStatus: SearchParam<DocumentReference, Any> =
     SimpleSearchParam<DocumentReference, Any>(
       name = "doc-status",
       type = SearchParamType.fromCode("token"),
@@ -336,7 +338,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.docStatus) },
     )
 
-  public val EventCode: SearchParam<DocumentReference, CodeableConcept> =
+  public val eventCode: SearchParam<DocumentReference, CodeableConcept> =
     SimpleSearchParam<DocumentReference, CodeableConcept>(
       name = "event-code",
       type = SearchParamType.fromCode("token"),
@@ -344,7 +346,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.event.mapNotNull { it.concept } },
     )
 
-  public val EventReference: SearchParam<DocumentReference, Reference> =
+  public val eventReference: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "event-reference",
       type = SearchParamType.fromCode("reference"),
@@ -435,7 +437,7 @@ public object DocumentReferenceSearchParams {
           Library::class,
           Linkage::class,
           R5List::class,
-          dev.ohs.fhir.model.r5.Location::class,
+          Location::class,
           ManufacturedItemDefinition::class,
           Measure::class,
           MeasureReport::class,
@@ -461,7 +463,7 @@ public object DocumentReferenceSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -513,7 +515,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.event.mapNotNull { it.reference } },
     )
 
-  public val Facility: SearchParam<DocumentReference, CodeableConcept> =
+  public val facility: SearchParam<DocumentReference, CodeableConcept> =
     SimpleSearchParam<DocumentReference, CodeableConcept>(
       name = "facility",
       type = SearchParamType.fromCode("token"),
@@ -521,7 +523,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.facilityType) },
     )
 
-  public val FormatCanonical: SearchParam<DocumentReference, Any> =
+  public val formatCanonical: SearchParam<DocumentReference, Any> =
     SimpleSearchParam<DocumentReference, Any>(
       name = "format-canonical",
       type = SearchParamType.fromCode("reference"),
@@ -570,7 +572,7 @@ public object DocumentReferenceSearchParams {
       extractor = { emptyList() },
     )
 
-  public val FormatCode: SearchParam<DocumentReference, Any> =
+  public val formatCode: SearchParam<DocumentReference, Any> =
     SimpleSearchParam<DocumentReference, Any>(
       name = "format-code",
       type = SearchParamType.fromCode("token"),
@@ -578,7 +580,7 @@ public object DocumentReferenceSearchParams {
       extractor = { emptyList() },
     )
 
-  public val FormatUri: SearchParam<DocumentReference, Any> =
+  public val formatUri: SearchParam<DocumentReference, Any> =
     SimpleSearchParam<DocumentReference, Any>(
       name = "format-uri",
       type = SearchParamType.fromCode("uri"),
@@ -586,7 +588,7 @@ public object DocumentReferenceSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Identifier: SearchParam<DocumentReference, Identifier> =
+  public val identifier: SearchParam<DocumentReference, Identifier> =
     SimpleSearchParam<DocumentReference, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -594,7 +596,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Language: SearchParam<DocumentReference, Any> =
+  public val language: SearchParam<DocumentReference, Any> =
     SimpleSearchParam<DocumentReference, Any>(
       name = "language",
       type = SearchParamType.fromCode("token"),
@@ -602,7 +604,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.content.map { it.attachment }.mapNotNull { it.language } },
     )
 
-  public val Location: SearchParam<DocumentReference, Url> =
+  public val location: SearchParam<DocumentReference, Url> =
     SimpleSearchParam<DocumentReference, Url>(
       name = "location",
       type = SearchParamType.fromCode("uri"),
@@ -610,7 +612,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.content.map { it.attachment }.mapNotNull { it.url } },
     )
 
-  public val Modality: SearchParam<DocumentReference, CodeableConcept> =
+  public val modality: SearchParam<DocumentReference, CodeableConcept> =
     SimpleSearchParam<DocumentReference, CodeableConcept>(
       name = "modality",
       type = SearchParamType.fromCode("token"),
@@ -618,12 +620,12 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.modality },
     )
 
-  public val Patient: SearchParam<DocumentReference, Reference> =
+  public val patient: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -631,7 +633,7 @@ public object DocumentReferenceSearchParams {
       },
     )
 
-  public val Period: SearchParam<DocumentReference, Period> =
+  public val period: SearchParam<DocumentReference, Period> =
     SimpleSearchParam<DocumentReference, Period>(
       name = "period",
       type = SearchParamType.fromCode("date"),
@@ -639,7 +641,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.period) },
     )
 
-  public val Relatesto: SearchParam<DocumentReference, Reference> =
+  public val relatesto: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "relatesto",
       type = SearchParamType.fromCode("reference"),
@@ -648,7 +650,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.relatesTo.map { it.target } },
     )
 
-  public val Relation: SearchParam<DocumentReference, CodeableConcept> =
+  public val relation: SearchParam<DocumentReference, CodeableConcept> =
     SimpleSearchParam<DocumentReference, CodeableConcept>(
       name = "relation",
       type = SearchParamType.fromCode("token"),
@@ -656,7 +658,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.relatesTo.map { it.code } },
     )
 
-  public val Relationship: SearchParam<DocumentReference, DocumentReference.RelatesTo> =
+  public val relationship: SearchParam<DocumentReference, DocumentReference.RelatesTo> =
     SimpleSearchParam<DocumentReference, DocumentReference.RelatesTo>(
       name = "relationship",
       type = SearchParamType.fromCode("composite"),
@@ -664,7 +666,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.relatesTo },
     )
 
-  public val SecurityLabel: SearchParam<DocumentReference, CodeableConcept> =
+  public val securityLabel: SearchParam<DocumentReference, CodeableConcept> =
     SimpleSearchParam<DocumentReference, CodeableConcept>(
       name = "security-label",
       type = SearchParamType.fromCode("token"),
@@ -672,7 +674,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.securityLabel },
     )
 
-  public val Setting: SearchParam<DocumentReference, CodeableConcept> =
+  public val setting: SearchParam<DocumentReference, CodeableConcept> =
     SimpleSearchParam<DocumentReference, CodeableConcept>(
       name = "setting",
       type = SearchParamType.fromCode("token"),
@@ -680,7 +682,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.practiceSetting) },
     )
 
-  public val Status: SearchParam<DocumentReference, Any> =
+  public val status: SearchParam<DocumentReference, Any> =
     SimpleSearchParam<DocumentReference, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -688,7 +690,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<DocumentReference, Reference> =
+  public val subject: SearchParam<DocumentReference, Reference> =
     SimpleSearchParam<DocumentReference, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -779,7 +781,7 @@ public object DocumentReferenceSearchParams {
           Library::class,
           Linkage::class,
           R5List::class,
-          dev.ohs.fhir.model.r5.Location::class,
+          Location::class,
           ManufacturedItemDefinition::class,
           Measure::class,
           MeasureReport::class,
@@ -805,7 +807,7 @@ public object DocumentReferenceSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -857,7 +859,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val Type: SearchParam<DocumentReference, CodeableConcept> =
+  public val type: SearchParam<DocumentReference, CodeableConcept> =
     SimpleSearchParam<DocumentReference, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -865,7 +867,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.type) },
     )
 
-  public val Version: SearchParam<DocumentReference, String> =
+  public val version: SearchParam<DocumentReference, String> =
     SimpleSearchParam<DocumentReference, String>(
       name = "version",
       type = SearchParamType.fromCode("string"),
@@ -874,41 +876,41 @@ public object DocumentReferenceSearchParams {
     )
 
   /** All search parameters for the DocumentReference resource type. */
-  public val ALL: CollectionsList<SearchParam<DocumentReference, *>> =
+  public val all: CollectionsList<SearchParam<DocumentReference, *>> =
     listOf(
-      Attester,
-      Author,
-      BasedOn,
-      Bodysite,
-      BodysiteReference,
-      Category,
-      Contenttype,
-      Context,
-      Creation,
-      Custodian,
-      Date,
-      Description,
-      DocStatus,
-      EventCode,
-      EventReference,
-      Facility,
-      FormatCanonical,
-      FormatCode,
-      FormatUri,
-      Identifier,
-      Language,
-      Location,
-      Modality,
-      Patient,
-      Period,
-      Relatesto,
-      Relation,
-      Relationship,
-      SecurityLabel,
-      Setting,
-      Status,
-      Subject,
-      Type,
-      Version,
+      attester,
+      author,
+      basedOn,
+      bodysite,
+      bodysiteReference,
+      category,
+      contenttype,
+      context,
+      creation,
+      custodian,
+      date,
+      description,
+      docStatus,
+      eventCode,
+      eventReference,
+      facility,
+      formatCanonical,
+      formatCode,
+      formatUri,
+      identifier,
+      language,
+      location,
+      modality,
+      patient,
+      period,
+      relatesto,
+      relation,
+      relationship,
+      securityLabel,
+      setting,
+      status,
+      subject,
+      type,
+      version,
     )
 }

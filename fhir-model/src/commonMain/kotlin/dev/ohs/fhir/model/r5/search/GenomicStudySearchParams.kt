@@ -129,6 +129,7 @@ import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.OrganizationAffiliation
 import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Parameters
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
 import dev.ohs.fhir.model.r5.Permission
@@ -184,7 +185,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [GenomicStudy] resource type. */
 public object GenomicStudySearchParams {
-  public val Focus: SearchParam<GenomicStudy, Reference> =
+  public val focus: SearchParam<GenomicStudy, Reference> =
     SimpleSearchParam<GenomicStudy, Reference>(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
@@ -301,7 +302,7 @@ public object GenomicStudySearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -353,7 +354,7 @@ public object GenomicStudySearchParams {
       extractor = { resource -> resource.analysis.flatMap { it.focus } },
     )
 
-  public val Identifier: SearchParam<GenomicStudy, Identifier> =
+  public val identifier: SearchParam<GenomicStudy, Identifier> =
     SimpleSearchParam<GenomicStudy, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -361,12 +362,12 @@ public object GenomicStudySearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<GenomicStudy, Reference> =
+  public val patient: SearchParam<GenomicStudy, Reference> =
     SimpleSearchParam<GenomicStudy, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "GenomicStudy.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -374,7 +375,7 @@ public object GenomicStudySearchParams {
       },
     )
 
-  public val Status: SearchParam<GenomicStudy, Any> =
+  public val status: SearchParam<GenomicStudy, Any> =
     SimpleSearchParam<GenomicStudy, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -382,7 +383,7 @@ public object GenomicStudySearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<GenomicStudy, Reference> =
+  public val subject: SearchParam<GenomicStudy, Reference> =
     SimpleSearchParam<GenomicStudy, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -393,12 +394,12 @@ public object GenomicStudySearchParams {
           Group::class,
           BiologicallyDerivedProduct::class,
           Substance::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOf(resource.subject) },
     )
 
   /** All search parameters for the GenomicStudy resource type. */
-  public val ALL: CollectionsList<SearchParam<GenomicStudy, *>> =
-    listOf(Focus, Identifier, Patient, Status, Subject)
+  public val all: CollectionsList<SearchParam<GenomicStudy, *>> =
+    listOf(focus, identifier, patient, status, subject)
 }

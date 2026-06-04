@@ -35,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [EvidenceVariable] resource type. */
 public object EvidenceVariableSearchParams {
-  public val Context: SearchParam<EvidenceVariable, CodeableConcept> =
+  public val context: SearchParam<EvidenceVariable, CodeableConcept> =
     SimpleSearchParam<EvidenceVariable, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -47,7 +47,7 @@ public object EvidenceVariableSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<EvidenceVariable, Quantity> =
+  public val contextQuantity: SearchParam<EvidenceVariable, Quantity> =
     SimpleSearchParam<EvidenceVariable, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -57,7 +57,7 @@ public object EvidenceVariableSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<EvidenceVariable, Coding> =
+  public val contextType: SearchParam<EvidenceVariable, Coding> =
     SimpleSearchParam<EvidenceVariable, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -65,7 +65,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<EvidenceVariable, UsageContext> =
+  public val contextTypeQuantity: SearchParam<EvidenceVariable, UsageContext> =
     SimpleSearchParam<EvidenceVariable, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -73,7 +73,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<EvidenceVariable, UsageContext> =
+  public val contextTypeValue: SearchParam<EvidenceVariable, UsageContext> =
     SimpleSearchParam<EvidenceVariable, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -81,7 +81,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<EvidenceVariable, DateTime> =
+  public val date: SearchParam<EvidenceVariable, DateTime> =
     SimpleSearchParam<EvidenceVariable, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -89,7 +89,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<EvidenceVariable, Markdown> =
+  public val description: SearchParam<EvidenceVariable, Markdown> =
     SimpleSearchParam<EvidenceVariable, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -97,7 +97,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<EvidenceVariable, Identifier> =
+  public val identifier: SearchParam<EvidenceVariable, Identifier> =
     SimpleSearchParam<EvidenceVariable, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -105,7 +105,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Name: SearchParam<EvidenceVariable, String> =
+  public val name: SearchParam<EvidenceVariable, String> =
     SimpleSearchParam<EvidenceVariable, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -113,7 +113,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Publisher: SearchParam<EvidenceVariable, String> =
+  public val publisher: SearchParam<EvidenceVariable, String> =
     SimpleSearchParam<EvidenceVariable, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -121,7 +121,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<EvidenceVariable, Any> =
+  public val status: SearchParam<EvidenceVariable, Any> =
     SimpleSearchParam<EvidenceVariable, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -129,7 +129,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<EvidenceVariable, String> =
+  public val title: SearchParam<EvidenceVariable, String> =
     SimpleSearchParam<EvidenceVariable, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -137,7 +137,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<EvidenceVariable, Uri> =
+  public val url: SearchParam<EvidenceVariable, Uri> =
     SimpleSearchParam<EvidenceVariable, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -145,7 +145,7 @@ public object EvidenceVariableSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<EvidenceVariable, String> =
+  public val version: SearchParam<EvidenceVariable, String> =
     SimpleSearchParam<EvidenceVariable, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -154,21 +154,21 @@ public object EvidenceVariableSearchParams {
     )
 
   /** All search parameters for the EvidenceVariable resource type. */
-  public val ALL: List<SearchParam<EvidenceVariable, *>> =
+  public val all: List<SearchParam<EvidenceVariable, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Identifier,
-      Name,
-      Publisher,
-      Status,
-      Title,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      identifier,
+      name,
+      publisher,
+      status,
+      title,
+      url,
+      version,
     )
 }

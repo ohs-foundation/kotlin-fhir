@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.FamilyMemberHistory
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Measure
 import dev.ohs.fhir.model.r5.OperationDefinition
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PlanDefinition
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.Reference
@@ -37,7 +38,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [FamilyMemberHistory] resource type. */
 public object FamilyMemberHistorySearchParams {
-  public val Code: SearchParam<FamilyMemberHistory, CodeableConcept> =
+  public val code: SearchParam<FamilyMemberHistory, CodeableConcept> =
     SimpleSearchParam<FamilyMemberHistory, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -45,7 +46,7 @@ public object FamilyMemberHistorySearchParams {
       extractor = { resource -> resource.condition.map { it.code } },
     )
 
-  public val Date: SearchParam<FamilyMemberHistory, DateTime> =
+  public val date: SearchParam<FamilyMemberHistory, DateTime> =
     SimpleSearchParam<FamilyMemberHistory, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -53,7 +54,7 @@ public object FamilyMemberHistorySearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Identifier: SearchParam<FamilyMemberHistory, Identifier> =
+  public val identifier: SearchParam<FamilyMemberHistory, Identifier> =
     SimpleSearchParam<FamilyMemberHistory, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -61,7 +62,7 @@ public object FamilyMemberHistorySearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val InstantiatesCanonical: SearchParam<FamilyMemberHistory, Canonical> =
+  public val instantiatesCanonical: SearchParam<FamilyMemberHistory, Canonical> =
     SimpleSearchParam<FamilyMemberHistory, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
@@ -77,7 +78,7 @@ public object FamilyMemberHistorySearchParams {
       extractor = { resource -> resource.instantiatesCanonical },
     )
 
-  public val InstantiatesUri: SearchParam<FamilyMemberHistory, Uri> =
+  public val instantiatesUri: SearchParam<FamilyMemberHistory, Uri> =
     SimpleSearchParam<FamilyMemberHistory, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
@@ -85,16 +86,16 @@ public object FamilyMemberHistorySearchParams {
       extractor = { resource -> resource.instantiatesUri },
     )
 
-  public val Patient: SearchParam<FamilyMemberHistory, Reference> =
+  public val patient: SearchParam<FamilyMemberHistory, Reference> =
     SimpleSearchParam<FamilyMemberHistory, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "FamilyMemberHistory.patient",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Relationship: SearchParam<FamilyMemberHistory, CodeableConcept> =
+  public val relationship: SearchParam<FamilyMemberHistory, CodeableConcept> =
     SimpleSearchParam<FamilyMemberHistory, CodeableConcept>(
       name = "relationship",
       type = SearchParamType.fromCode("token"),
@@ -102,7 +103,7 @@ public object FamilyMemberHistorySearchParams {
       extractor = { resource -> listOf(resource.relationship) },
     )
 
-  public val Sex: SearchParam<FamilyMemberHistory, CodeableConcept> =
+  public val sex: SearchParam<FamilyMemberHistory, CodeableConcept> =
     SimpleSearchParam<FamilyMemberHistory, CodeableConcept>(
       name = "sex",
       type = SearchParamType.fromCode("token"),
@@ -110,7 +111,7 @@ public object FamilyMemberHistorySearchParams {
       extractor = { resource -> listOfNotNull(resource.sex) },
     )
 
-  public val Status: SearchParam<FamilyMemberHistory, Any> =
+  public val status: SearchParam<FamilyMemberHistory, Any> =
     SimpleSearchParam<FamilyMemberHistory, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -119,16 +120,16 @@ public object FamilyMemberHistorySearchParams {
     )
 
   /** All search parameters for the FamilyMemberHistory resource type. */
-  public val ALL: List<SearchParam<FamilyMemberHistory, *>> =
+  public val all: List<SearchParam<FamilyMemberHistory, *>> =
     listOf(
-      Code,
-      Date,
-      Identifier,
-      InstantiatesCanonical,
-      InstantiatesUri,
-      Patient,
-      Relationship,
-      Sex,
-      Status,
+      code,
+      date,
+      identifier,
+      instantiatesCanonical,
+      instantiatesUri,
+      patient,
+      relationship,
+      sex,
+      status,
     )
 }

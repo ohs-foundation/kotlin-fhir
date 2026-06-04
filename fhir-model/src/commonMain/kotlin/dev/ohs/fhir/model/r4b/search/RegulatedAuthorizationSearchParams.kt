@@ -41,7 +41,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [RegulatedAuthorization] resource type. */
 public object RegulatedAuthorizationSearchParams {
-  public val Case: SearchParam<RegulatedAuthorization, Identifier> =
+  public val case: SearchParam<RegulatedAuthorization, Identifier> =
     SimpleSearchParam<RegulatedAuthorization, Identifier>(
       name = "case",
       type = SearchParamType.fromCode("token"),
@@ -49,7 +49,7 @@ public object RegulatedAuthorizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.case?.identifier) },
     )
 
-  public val CaseType: SearchParam<RegulatedAuthorization, CodeableConcept> =
+  public val caseType: SearchParam<RegulatedAuthorization, CodeableConcept> =
     SimpleSearchParam<RegulatedAuthorization, CodeableConcept>(
       name = "case-type",
       type = SearchParamType.fromCode("token"),
@@ -57,7 +57,7 @@ public object RegulatedAuthorizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.case?.type) },
     )
 
-  public val Holder: SearchParam<RegulatedAuthorization, Reference> =
+  public val holder: SearchParam<RegulatedAuthorization, Reference> =
     SimpleSearchParam<RegulatedAuthorization, Reference>(
       name = "holder",
       type = SearchParamType.fromCode("reference"),
@@ -66,7 +66,7 @@ public object RegulatedAuthorizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.holder) },
     )
 
-  public val Identifier: SearchParam<RegulatedAuthorization, Identifier> =
+  public val identifier: SearchParam<RegulatedAuthorization, Identifier> =
     SimpleSearchParam<RegulatedAuthorization, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -74,7 +74,7 @@ public object RegulatedAuthorizationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Region: SearchParam<RegulatedAuthorization, CodeableConcept> =
+  public val region: SearchParam<RegulatedAuthorization, CodeableConcept> =
     SimpleSearchParam<RegulatedAuthorization, CodeableConcept>(
       name = "region",
       type = SearchParamType.fromCode("token"),
@@ -82,7 +82,7 @@ public object RegulatedAuthorizationSearchParams {
       extractor = { resource -> resource.region },
     )
 
-  public val Status: SearchParam<RegulatedAuthorization, CodeableConcept> =
+  public val status: SearchParam<RegulatedAuthorization, CodeableConcept> =
     SimpleSearchParam<RegulatedAuthorization, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -90,7 +90,7 @@ public object RegulatedAuthorizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Subject: SearchParam<RegulatedAuthorization, Reference> =
+  public val subject: SearchParam<RegulatedAuthorization, Reference> =
     SimpleSearchParam<RegulatedAuthorization, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -115,6 +115,6 @@ public object RegulatedAuthorizationSearchParams {
     )
 
   /** All search parameters for the RegulatedAuthorization resource type. */
-  public val ALL: List<SearchParam<RegulatedAuthorization, *>> =
-    listOf(Case, CaseType, Holder, Identifier, Region, Status, Subject)
+  public val all: List<SearchParam<RegulatedAuthorization, *>> =
+    listOf(case, caseType, holder, identifier, region, status, subject)
 }

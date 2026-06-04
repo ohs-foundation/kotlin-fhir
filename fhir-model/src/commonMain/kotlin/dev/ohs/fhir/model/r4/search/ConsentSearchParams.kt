@@ -121,7 +121,9 @@ import dev.ohs.fhir.model.r4.Observation
 import dev.ohs.fhir.model.r4.ObservationDefinition
 import dev.ohs.fhir.model.r4.OperationDefinition
 import dev.ohs.fhir.model.r4.OperationOutcome
+import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.OrganizationAffiliation
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PaymentNotice
 import dev.ohs.fhir.model.r4.PaymentReconciliation
 import dev.ohs.fhir.model.r4.Period
@@ -174,7 +176,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Consent] resource type. */
 public object ConsentSearchParams {
-  public val Action: SearchParam<Consent, CodeableConcept> =
+  public val action: SearchParam<Consent, CodeableConcept> =
     SimpleSearchParam<Consent, CodeableConcept>(
       name = "action",
       type = SearchParamType.fromCode("token"),
@@ -182,7 +184,7 @@ public object ConsentSearchParams {
       extractor = { resource -> resource.provision?.action ?: emptyList() },
     )
 
-  public val Actor: SearchParam<Consent, Reference> =
+  public val actor: SearchParam<Consent, Reference> =
     SimpleSearchParam<Consent, Reference>(
       name = "actor",
       type = SearchParamType.fromCode("reference"),
@@ -191,17 +193,17 @@ public object ConsentSearchParams {
         listOf(
           Practitioner::class,
           Group::class,
-          dev.ohs.fhir.model.r4.Organization::class,
+          Organization::class,
           CareTeam::class,
           Device::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> (resource.provision?.actor ?: emptyList()).map { it.reference } },
     )
 
-  public val Category: SearchParam<Consent, CodeableConcept> =
+  public val category: SearchParam<Consent, CodeableConcept> =
     SimpleSearchParam<Consent, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -209,7 +211,7 @@ public object ConsentSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Consentor: SearchParam<Consent, Reference> =
+  public val consentor: SearchParam<Consent, Reference> =
     SimpleSearchParam<Consent, Reference>(
       name = "consentor",
       type = SearchParamType.fromCode("reference"),
@@ -217,15 +219,15 @@ public object ConsentSearchParams {
       target =
         listOf(
           Practitioner::class,
-          dev.ohs.fhir.model.r4.Organization::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Organization::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.performer },
     )
 
-  public val Data: SearchParam<Consent, Reference> =
+  public val `data`: SearchParam<Consent, Reference> =
     SimpleSearchParam<Consent, Reference>(
       name = "data",
       type = SearchParamType.fromCode("reference"),
@@ -331,9 +333,9 @@ public object ConsentSearchParams {
           ObservationDefinition::class,
           OperationDefinition::class,
           OperationOutcome::class,
-          dev.ohs.fhir.model.r4.Organization::class,
+          Organization::class,
           OrganizationAffiliation::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -381,7 +383,7 @@ public object ConsentSearchParams {
       extractor = { resource -> (resource.provision?.`data` ?: emptyList()).map { it.reference } },
     )
 
-  public val Date: SearchParam<Consent, DateTime> =
+  public val date: SearchParam<Consent, DateTime> =
     SimpleSearchParam<Consent, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -389,7 +391,7 @@ public object ConsentSearchParams {
       extractor = { resource -> listOfNotNull(resource.dateTime) },
     )
 
-  public val Identifier: SearchParam<Consent, Identifier> =
+  public val identifier: SearchParam<Consent, Identifier> =
     SimpleSearchParam<Consent, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -397,25 +399,25 @@ public object ConsentSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Organization: SearchParam<Consent, Reference> =
+  public val organization: SearchParam<Consent, Reference> =
     SimpleSearchParam<Consent, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.organization",
-      target = listOf(dev.ohs.fhir.model.r4.Organization::class),
+      target = listOf(Organization::class),
       extractor = { resource -> resource.organization },
     )
 
-  public val Patient: SearchParam<Consent, Reference> =
+  public val patient: SearchParam<Consent, Reference> =
     SimpleSearchParam<Consent, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.patient",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class),
+      target = listOf(Patient::class, Group::class),
       extractor = { resource -> listOfNotNull(resource.patient) },
     )
 
-  public val Period: SearchParam<Consent, Period> =
+  public val period: SearchParam<Consent, Period> =
     SimpleSearchParam<Consent, Period>(
       name = "period",
       type = SearchParamType.fromCode("date"),
@@ -423,7 +425,7 @@ public object ConsentSearchParams {
       extractor = { resource -> listOfNotNull(resource.provision?.period) },
     )
 
-  public val Purpose: SearchParam<Consent, Coding> =
+  public val purpose: SearchParam<Consent, Coding> =
     SimpleSearchParam<Consent, Coding>(
       name = "purpose",
       type = SearchParamType.fromCode("token"),
@@ -431,7 +433,7 @@ public object ConsentSearchParams {
       extractor = { resource -> resource.provision?.purpose ?: emptyList() },
     )
 
-  public val Scope: SearchParam<Consent, CodeableConcept> =
+  public val scope: SearchParam<Consent, CodeableConcept> =
     SimpleSearchParam<Consent, CodeableConcept>(
       name = "scope",
       type = SearchParamType.fromCode("token"),
@@ -439,7 +441,7 @@ public object ConsentSearchParams {
       extractor = { resource -> listOf(resource.scope) },
     )
 
-  public val SecurityLabel: SearchParam<Consent, Coding> =
+  public val securityLabel: SearchParam<Consent, Coding> =
     SimpleSearchParam<Consent, Coding>(
       name = "security-label",
       type = SearchParamType.fromCode("token"),
@@ -447,7 +449,7 @@ public object ConsentSearchParams {
       extractor = { resource -> resource.provision?.securityLabel ?: emptyList() },
     )
 
-  public val SourceReference: SearchParam<Consent, Consent.Source> =
+  public val sourceReference: SearchParam<Consent, Consent.Source> =
     SimpleSearchParam<Consent, Consent.Source>(
       name = "source-reference",
       type = SearchParamType.fromCode("reference"),
@@ -462,7 +464,7 @@ public object ConsentSearchParams {
       extractor = { resource -> listOfNotNull(resource.source) },
     )
 
-  public val Status: SearchParam<Consent, Any> =
+  public val status: SearchParam<Consent, Any> =
     SimpleSearchParam<Consent, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -471,22 +473,22 @@ public object ConsentSearchParams {
     )
 
   /** All search parameters for the Consent resource type. */
-  public val ALL: CollectionsList<SearchParam<Consent, *>> =
+  public val all: CollectionsList<SearchParam<Consent, *>> =
     listOf(
-      Action,
-      Actor,
-      Category,
-      Consentor,
-      Data,
-      Date,
-      Identifier,
-      Organization,
-      Patient,
-      Period,
-      Purpose,
-      Scope,
-      SecurityLabel,
-      SourceReference,
-      Status,
+      action,
+      actor,
+      category,
+      consentor,
+      `data`,
+      date,
+      identifier,
+      organization,
+      patient,
+      period,
+      purpose,
+      scope,
+      securityLabel,
+      sourceReference,
+      status,
     )
 }

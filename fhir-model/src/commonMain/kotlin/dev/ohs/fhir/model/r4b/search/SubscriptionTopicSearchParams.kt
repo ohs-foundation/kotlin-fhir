@@ -31,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [SubscriptionTopic] resource type. */
 public object SubscriptionTopicSearchParams {
-  public val Date: SearchParam<SubscriptionTopic, DateTime> =
+  public val date: SearchParam<SubscriptionTopic, DateTime> =
     SimpleSearchParam<SubscriptionTopic, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -39,7 +39,7 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val DerivedOrSelf: SearchParam<SubscriptionTopic, Uri> =
+  public val derivedOrSelf: SearchParam<SubscriptionTopic, Uri> =
     SimpleSearchParam<SubscriptionTopic, Uri>(
       name = "derived-or-self",
       type = SearchParamType.fromCode("uri"),
@@ -47,7 +47,7 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> listOf(resource.url) },
     )
 
-  public val Identifier: SearchParam<SubscriptionTopic, Identifier> =
+  public val identifier: SearchParam<SubscriptionTopic, Identifier> =
     SimpleSearchParam<SubscriptionTopic, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -55,7 +55,7 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Resource: SearchParam<SubscriptionTopic, Uri> =
+  public val resource: SearchParam<SubscriptionTopic, Uri> =
     SimpleSearchParam<SubscriptionTopic, Uri>(
       name = "resource",
       type = SearchParamType.fromCode("uri"),
@@ -63,7 +63,7 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> resource.resourceTrigger.map { it.resource } },
     )
 
-  public val Status: SearchParam<SubscriptionTopic, Any> =
+  public val status: SearchParam<SubscriptionTopic, Any> =
     SimpleSearchParam<SubscriptionTopic, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -71,7 +71,7 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<SubscriptionTopic, String> =
+  public val title: SearchParam<SubscriptionTopic, String> =
     SimpleSearchParam<SubscriptionTopic, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -79,7 +79,7 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val TriggerDescription: SearchParam<SubscriptionTopic, Markdown> =
+  public val triggerDescription: SearchParam<SubscriptionTopic, Markdown> =
     SimpleSearchParam<SubscriptionTopic, Markdown>(
       name = "trigger-description",
       type = SearchParamType.fromCode("string"),
@@ -87,7 +87,7 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> resource.resourceTrigger.mapNotNull { it.description } },
     )
 
-  public val Url: SearchParam<SubscriptionTopic, Uri> =
+  public val url: SearchParam<SubscriptionTopic, Uri> =
     SimpleSearchParam<SubscriptionTopic, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -95,7 +95,7 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> listOf(resource.url) },
     )
 
-  public val Version: SearchParam<SubscriptionTopic, String> =
+  public val version: SearchParam<SubscriptionTopic, String> =
     SimpleSearchParam<SubscriptionTopic, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -104,16 +104,16 @@ public object SubscriptionTopicSearchParams {
     )
 
   /** All search parameters for the SubscriptionTopic resource type. */
-  public val ALL: List<SearchParam<SubscriptionTopic, *>> =
+  public val all: List<SearchParam<SubscriptionTopic, *>> =
     listOf(
-      Date,
-      DerivedOrSelf,
-      Identifier,
-      Resource,
-      Status,
-      Title,
-      TriggerDescription,
-      Url,
-      Version,
+      date,
+      derivedOrSelf,
+      identifier,
+      resource,
+      status,
+      title,
+      triggerDescription,
+      url,
+      version,
     )
 }

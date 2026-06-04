@@ -22,10 +22,14 @@ import dev.ohs.fhir.model.r5.ActivityDefinition
 import dev.ohs.fhir.model.r5.Appointment
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.CarePlan
+import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.CommunicationRequest
+import dev.ohs.fhir.model.r5.Condition
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DeviceRequest
+import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Goal
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImmunizationRecommendation
@@ -34,6 +38,7 @@ import dev.ohs.fhir.model.r5.MedicationRequest
 import dev.ohs.fhir.model.r5.NutritionOrder
 import dev.ohs.fhir.model.r5.OperationDefinition
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.PlanDefinition
 import dev.ohs.fhir.model.r5.Practitioner
@@ -54,7 +59,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [CarePlan] resource type. */
 public object CarePlanSearchParams {
-  public val ActivityReference: SearchParam<CarePlan, Reference> =
+  public val activityReference: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "activity-reference",
       type = SearchParamType.fromCode("reference"),
@@ -76,7 +81,7 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.activity.mapNotNull { it.plannedActivityReference } },
     )
 
-  public val BasedOn: SearchParam<CarePlan, Reference> =
+  public val basedOn: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -91,16 +96,16 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val CareTeam: SearchParam<CarePlan, Reference> =
+  public val careTeam: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "care-team",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.careTeam",
-      target = listOf(dev.ohs.fhir.model.r5.CareTeam::class),
+      target = listOf(CareTeam::class),
       extractor = { resource -> resource.careTeam },
     )
 
-  public val Category: SearchParam<CarePlan, CodeableConcept> =
+  public val category: SearchParam<CarePlan, CodeableConcept> =
     SimpleSearchParam<CarePlan, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -108,16 +113,16 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Condition: SearchParam<CarePlan, Reference> =
+  public val condition: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "condition",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.addresses.reference",
-      target = listOf(dev.ohs.fhir.model.r5.Condition::class),
+      target = listOf(Condition::class),
       extractor = { resource -> resource.addresses.mapNotNull { it.reference } },
     )
 
-  public val Custodian: SearchParam<CarePlan, Reference> =
+  public val custodian: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "custodian",
       type = SearchParamType.fromCode("reference"),
@@ -126,16 +131,16 @@ public object CarePlanSearchParams {
         listOf(
           Device::class,
           Organization::class,
-          dev.ohs.fhir.model.r5.CareTeam::class,
+          CareTeam::class,
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOfNotNull(resource.custodian) },
     )
 
-  public val Date: SearchParam<CarePlan, Period> =
+  public val date: SearchParam<CarePlan, Period> =
     SimpleSearchParam<CarePlan, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -143,25 +148,25 @@ public object CarePlanSearchParams {
       extractor = { resource -> listOfNotNull(resource.period) },
     )
 
-  public val Encounter: SearchParam<CarePlan, Reference> =
+  public val encounter: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Goal: SearchParam<CarePlan, Reference> =
+  public val goal: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "goal",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.goal",
-      target = listOf(dev.ohs.fhir.model.r5.Goal::class),
+      target = listOf(Goal::class),
       extractor = { resource -> resource.goal },
     )
 
-  public val Identifier: SearchParam<CarePlan, Identifier> =
+  public val identifier: SearchParam<CarePlan, Identifier> =
     SimpleSearchParam<CarePlan, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -169,7 +174,7 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val InstantiatesCanonical: SearchParam<CarePlan, Canonical> =
+  public val instantiatesCanonical: SearchParam<CarePlan, Canonical> =
     SimpleSearchParam<CarePlan, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
@@ -185,7 +190,7 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.instantiatesCanonical },
     )
 
-  public val InstantiatesUri: SearchParam<CarePlan, Uri> =
+  public val instantiatesUri: SearchParam<CarePlan, Uri> =
     SimpleSearchParam<CarePlan, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
@@ -193,7 +198,7 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.instantiatesUri },
     )
 
-  public val Intent: SearchParam<CarePlan, Any> =
+  public val intent: SearchParam<CarePlan, Any> =
     SimpleSearchParam<CarePlan, Any>(
       name = "intent",
       type = SearchParamType.fromCode("token"),
@@ -201,7 +206,7 @@ public object CarePlanSearchParams {
       extractor = { resource -> listOf(resource.intent) },
     )
 
-  public val PartOf: SearchParam<CarePlan, Reference> =
+  public val partOf: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
@@ -210,12 +215,12 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.partOf },
     )
 
-  public val Patient: SearchParam<CarePlan, Reference> =
+  public val patient: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -223,7 +228,7 @@ public object CarePlanSearchParams {
       },
     )
 
-  public val Replaces: SearchParam<CarePlan, Reference> =
+  public val replaces: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "replaces",
       type = SearchParamType.fromCode("reference"),
@@ -232,7 +237,7 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.replaces },
     )
 
-  public val Status: SearchParam<CarePlan, Any> =
+  public val status: SearchParam<CarePlan, Any> =
     SimpleSearchParam<CarePlan, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -240,35 +245,35 @@ public object CarePlanSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<CarePlan, Reference> =
+  public val subject: SearchParam<CarePlan, Reference> =
     SimpleSearchParam<CarePlan, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
   /** All search parameters for the CarePlan resource type. */
-  public val ALL: List<SearchParam<CarePlan, *>> =
+  public val all: List<SearchParam<CarePlan, *>> =
     listOf(
-      ActivityReference,
-      BasedOn,
-      CareTeam,
-      Category,
-      Condition,
-      Custodian,
-      Date,
-      Encounter,
-      Goal,
-      Identifier,
-      InstantiatesCanonical,
-      InstantiatesUri,
-      Intent,
-      PartOf,
-      Patient,
-      Replaces,
-      Status,
-      Subject,
+      activityReference,
+      basedOn,
+      careTeam,
+      category,
+      condition,
+      custodian,
+      date,
+      encounter,
+      goal,
+      identifier,
+      instantiatesCanonical,
+      instantiatesUri,
+      intent,
+      partOf,
+      patient,
+      replaces,
+      status,
+      subject,
     )
 }

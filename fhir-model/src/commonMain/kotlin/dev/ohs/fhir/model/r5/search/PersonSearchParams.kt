@@ -23,7 +23,10 @@ import dev.ohs.fhir.model.r5.ContactPoint
 import dev.ohs.fhir.model.r5.Date
 import dev.ohs.fhir.model.r5.HumanName
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Person
+import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.String
@@ -34,7 +37,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Person] resource type. */
 public object PersonSearchParams {
-  public val Address: SearchParam<Person, Address> =
+  public val address: SearchParam<Person, Address> =
     SimpleSearchParam<Person, Address>(
       name = "address",
       type = SearchParamType.fromCode("string"),
@@ -42,7 +45,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.address },
     )
 
-  public val AddressCity: SearchParam<Person, String> =
+  public val addressCity: SearchParam<Person, String> =
     SimpleSearchParam<Person, String>(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
@@ -50,7 +53,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.city } },
     )
 
-  public val AddressCountry: SearchParam<Person, String> =
+  public val addressCountry: SearchParam<Person, String> =
     SimpleSearchParam<Person, String>(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
@@ -58,7 +61,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.country } },
     )
 
-  public val AddressPostalcode: SearchParam<Person, String> =
+  public val addressPostalcode: SearchParam<Person, String> =
     SimpleSearchParam<Person, String>(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
@@ -66,7 +69,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.postalCode } },
     )
 
-  public val AddressState: SearchParam<Person, String> =
+  public val addressState: SearchParam<Person, String> =
     SimpleSearchParam<Person, String>(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
@@ -74,7 +77,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.state } },
     )
 
-  public val AddressUse: SearchParam<Person, Any> =
+  public val addressUse: SearchParam<Person, Any> =
     SimpleSearchParam<Person, Any>(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
@@ -82,7 +85,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.use } },
     )
 
-  public val Birthdate: SearchParam<Person, Date> =
+  public val birthdate: SearchParam<Person, Date> =
     SimpleSearchParam<Person, Date>(
       name = "birthdate",
       type = SearchParamType.fromCode("date"),
@@ -90,7 +93,7 @@ public object PersonSearchParams {
       extractor = { resource -> listOfNotNull(resource.birthDate) },
     )
 
-  public val DeathDate: SearchParam<Person, Any> =
+  public val deathDate: SearchParam<Person, Any> =
     SimpleSearchParam<Person, Any>(
       name = "death-date",
       type = SearchParamType.fromCode("date"),
@@ -98,7 +101,7 @@ public object PersonSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Deceased: SearchParam<Person, Any> =
+  public val deceased: SearchParam<Person, Any> =
     SimpleSearchParam<Person, Any>(
       name = "deceased",
       type = SearchParamType.fromCode("token"),
@@ -106,7 +109,7 @@ public object PersonSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Email: SearchParam<Person, ContactPoint> =
+  public val email: SearchParam<Person, ContactPoint> =
     SimpleSearchParam<Person, ContactPoint>(
       name = "email",
       type = SearchParamType.fromCode("token"),
@@ -116,7 +119,7 @@ public object PersonSearchParams {
       },
     )
 
-  public val Family: SearchParam<Person, String> =
+  public val family: SearchParam<Person, String> =
     SimpleSearchParam<Person, String>(
       name = "family",
       type = SearchParamType.fromCode("string"),
@@ -124,7 +127,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.name.mapNotNull { it.family } },
     )
 
-  public val Gender: SearchParam<Person, Any> =
+  public val gender: SearchParam<Person, Any> =
     SimpleSearchParam<Person, Any>(
       name = "gender",
       type = SearchParamType.fromCode("token"),
@@ -132,7 +135,7 @@ public object PersonSearchParams {
       extractor = { resource -> listOfNotNull(resource.gender) },
     )
 
-  public val Given: SearchParam<Person, String> =
+  public val given: SearchParam<Person, String> =
     SimpleSearchParam<Person, String>(
       name = "given",
       type = SearchParamType.fromCode("string"),
@@ -140,7 +143,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.name.flatMap { it.given } },
     )
 
-  public val Identifier: SearchParam<Person, Identifier> =
+  public val identifier: SearchParam<Person, Identifier> =
     SimpleSearchParam<Person, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -148,22 +151,16 @@ public object PersonSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Link: SearchParam<Person, Reference> =
+  public val link: SearchParam<Person, Reference> =
     SimpleSearchParam<Person, Reference>(
       name = "link",
       type = SearchParamType.fromCode("reference"),
       expression = "Person.link.target",
-      target =
-        listOf(
-          RelatedPerson::class,
-          dev.ohs.fhir.model.r5.Practitioner::class,
-          Person::class,
-          dev.ohs.fhir.model.r5.Patient::class,
-        ),
+      target = listOf(RelatedPerson::class, Practitioner::class, Person::class, Patient::class),
       extractor = { resource -> resource.link.map { it.target } },
     )
 
-  public val Name: SearchParam<Person, HumanName> =
+  public val name: SearchParam<Person, HumanName> =
     SimpleSearchParam<Person, HumanName>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -171,21 +168,21 @@ public object PersonSearchParams {
       extractor = { resource -> resource.name },
     )
 
-  public val Organization: SearchParam<Person, Reference> =
+  public val organization: SearchParam<Person, Reference> =
     SimpleSearchParam<Person, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "Person.managingOrganization",
-      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
     )
 
-  public val Patient: SearchParam<Person, Reference> =
+  public val patient: SearchParam<Person, Reference> =
     SimpleSearchParam<Person, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Person.link.target.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         resource.link
           .map { it.target }
@@ -193,7 +190,7 @@ public object PersonSearchParams {
       },
     )
 
-  public val Phone: SearchParam<Person, ContactPoint> =
+  public val phone: SearchParam<Person, ContactPoint> =
     SimpleSearchParam<Person, ContactPoint>(
       name = "phone",
       type = SearchParamType.fromCode("token"),
@@ -203,7 +200,7 @@ public object PersonSearchParams {
       },
     )
 
-  public val Phonetic: SearchParam<Person, HumanName> =
+  public val phonetic: SearchParam<Person, HumanName> =
     SimpleSearchParam<Person, HumanName>(
       name = "phonetic",
       type = SearchParamType.fromCode("string"),
@@ -211,12 +208,12 @@ public object PersonSearchParams {
       extractor = { resource -> resource.name },
     )
 
-  public val Practitioner: SearchParam<Person, Reference> =
+  public val practitioner: SearchParam<Person, Reference> =
     SimpleSearchParam<Person, Reference>(
       name = "practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "Person.link.target.where(resolve() is Practitioner)",
-      target = listOf(dev.ohs.fhir.model.r5.Practitioner::class),
+      target = listOf(Practitioner::class),
       extractor = { resource ->
         resource.link
           .map { it.target }
@@ -224,7 +221,7 @@ public object PersonSearchParams {
       },
     )
 
-  public val Relatedperson: SearchParam<Person, Reference> =
+  public val relatedperson: SearchParam<Person, Reference> =
     SimpleSearchParam<Person, Reference>(
       name = "relatedperson",
       type = SearchParamType.fromCode("reference"),
@@ -237,7 +234,7 @@ public object PersonSearchParams {
       },
     )
 
-  public val Telecom: SearchParam<Person, ContactPoint> =
+  public val telecom: SearchParam<Person, ContactPoint> =
     SimpleSearchParam<Person, ContactPoint>(
       name = "telecom",
       type = SearchParamType.fromCode("token"),
@@ -246,30 +243,30 @@ public object PersonSearchParams {
     )
 
   /** All search parameters for the Person resource type. */
-  public val ALL: List<SearchParam<Person, *>> =
+  public val all: List<SearchParam<Person, *>> =
     listOf(
-      Address,
-      AddressCity,
-      AddressCountry,
-      AddressPostalcode,
-      AddressState,
-      AddressUse,
-      Birthdate,
-      DeathDate,
-      Deceased,
-      Email,
-      Family,
-      Gender,
-      Given,
-      Identifier,
-      Link,
-      Name,
-      Organization,
-      Patient,
-      Phone,
-      Phonetic,
-      Practitioner,
-      Relatedperson,
-      Telecom,
+      address,
+      addressCity,
+      addressCountry,
+      addressPostalcode,
+      addressState,
+      addressUse,
+      birthdate,
+      deathDate,
+      deceased,
+      email,
+      family,
+      gender,
+      given,
+      identifier,
+      link,
+      name,
+      organization,
+      patient,
+      phone,
+      phonetic,
+      practitioner,
+      relatedperson,
+      telecom,
     )
 }

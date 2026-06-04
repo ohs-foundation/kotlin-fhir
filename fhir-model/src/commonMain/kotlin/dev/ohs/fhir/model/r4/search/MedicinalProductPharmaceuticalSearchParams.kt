@@ -27,7 +27,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductPharmaceutical] resource type. */
 public object MedicinalProductPharmaceuticalSearchParams {
-  public val Identifier: SearchParam<MedicinalProductPharmaceutical, Identifier> =
+  public val identifier: SearchParam<MedicinalProductPharmaceutical, Identifier> =
     SimpleSearchParam<MedicinalProductPharmaceutical, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -35,7 +35,7 @@ public object MedicinalProductPharmaceuticalSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Route: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
+  public val route: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
     SimpleSearchParam<MedicinalProductPharmaceutical, CodeableConcept>(
       name = "route",
       type = SearchParamType.fromCode("token"),
@@ -43,7 +43,7 @@ public object MedicinalProductPharmaceuticalSearchParams {
       extractor = { resource -> resource.routeOfAdministration.map { it.code } },
     )
 
-  public val TargetSpecies: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
+  public val targetSpecies: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
     SimpleSearchParam<MedicinalProductPharmaceutical, CodeableConcept>(
       name = "target-species",
       type = SearchParamType.fromCode("token"),
@@ -54,6 +54,6 @@ public object MedicinalProductPharmaceuticalSearchParams {
     )
 
   /** All search parameters for the MedicinalProductPharmaceutical resource type. */
-  public val ALL: List<SearchParam<MedicinalProductPharmaceutical, *>> =
-    listOf(Identifier, Route, TargetSpecies)
+  public val all: List<SearchParam<MedicinalProductPharmaceutical, *>> =
+    listOf(identifier, route, targetSpecies)
 }

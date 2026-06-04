@@ -28,7 +28,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [SubstanceDefinition] resource type. */
 public object SubstanceDefinitionSearchParams {
-  public val Classification: SearchParam<SubstanceDefinition, CodeableConcept> =
+  public val classification: SearchParam<SubstanceDefinition, CodeableConcept> =
     SimpleSearchParam<SubstanceDefinition, CodeableConcept>(
       name = "classification",
       type = SearchParamType.fromCode("token"),
@@ -36,7 +36,7 @@ public object SubstanceDefinitionSearchParams {
       extractor = { resource -> resource.classification },
     )
 
-  public val Code: SearchParam<SubstanceDefinition, CodeableConcept> =
+  public val code: SearchParam<SubstanceDefinition, CodeableConcept> =
     SimpleSearchParam<SubstanceDefinition, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -44,7 +44,7 @@ public object SubstanceDefinitionSearchParams {
       extractor = { resource -> resource.code.mapNotNull { it.code } },
     )
 
-  public val Domain: SearchParam<SubstanceDefinition, CodeableConcept> =
+  public val domain: SearchParam<SubstanceDefinition, CodeableConcept> =
     SimpleSearchParam<SubstanceDefinition, CodeableConcept>(
       name = "domain",
       type = SearchParamType.fromCode("token"),
@@ -52,7 +52,7 @@ public object SubstanceDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.domain) },
     )
 
-  public val Identifier: SearchParam<SubstanceDefinition, Identifier> =
+  public val identifier: SearchParam<SubstanceDefinition, Identifier> =
     SimpleSearchParam<SubstanceDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -60,7 +60,7 @@ public object SubstanceDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Name: SearchParam<SubstanceDefinition, String> =
+  public val name: SearchParam<SubstanceDefinition, String> =
     SimpleSearchParam<SubstanceDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -69,6 +69,6 @@ public object SubstanceDefinitionSearchParams {
     )
 
   /** All search parameters for the SubstanceDefinition resource type. */
-  public val ALL: List<SearchParam<SubstanceDefinition, *>> =
-    listOf(Classification, Code, Domain, Identifier, Name)
+  public val all: List<SearchParam<SubstanceDefinition, *>> =
+    listOf(classification, code, domain, identifier, name)
 }

@@ -19,6 +19,7 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DeviceMetric
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Reference
@@ -29,7 +30,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [DeviceMetric] resource type. */
 public object DeviceMetricSearchParams {
-  public val Category: SearchParam<DeviceMetric, Any> =
+  public val category: SearchParam<DeviceMetric, Any> =
     SimpleSearchParam<DeviceMetric, Any>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -37,16 +38,16 @@ public object DeviceMetricSearchParams {
       extractor = { resource -> listOf(resource.category) },
     )
 
-  public val Device: SearchParam<DeviceMetric, Reference> =
+  public val device: SearchParam<DeviceMetric, Reference> =
     SimpleSearchParam<DeviceMetric, Reference>(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceMetric.device",
-      target = listOf(dev.ohs.fhir.model.r5.Device::class),
+      target = listOf(Device::class),
       extractor = { resource -> listOf(resource.device) },
     )
 
-  public val Identifier: SearchParam<DeviceMetric, Identifier> =
+  public val identifier: SearchParam<DeviceMetric, Identifier> =
     SimpleSearchParam<DeviceMetric, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -54,7 +55,7 @@ public object DeviceMetricSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Type: SearchParam<DeviceMetric, CodeableConcept> =
+  public val type: SearchParam<DeviceMetric, CodeableConcept> =
     SimpleSearchParam<DeviceMetric, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -63,5 +64,5 @@ public object DeviceMetricSearchParams {
     )
 
   /** All search parameters for the DeviceMetric resource type. */
-  public val ALL: List<SearchParam<DeviceMetric, *>> = listOf(Category, Device, Identifier, Type)
+  public val all: List<SearchParam<DeviceMetric, *>> = listOf(category, device, identifier, type)
 }

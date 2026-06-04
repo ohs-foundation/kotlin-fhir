@@ -122,6 +122,7 @@ import dev.ohs.fhir.model.r4.OperationDefinition
 import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.OrganizationAffiliation
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PaymentNotice
 import dev.ohs.fhir.model.r4.PaymentReconciliation
 import dev.ohs.fhir.model.r4.Person
@@ -172,7 +173,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [ImmunizationRecommendation] resource type. */
 public object ImmunizationRecommendationSearchParams {
-  public val Date: SearchParam<ImmunizationRecommendation, DateTime> =
+  public val date: SearchParam<ImmunizationRecommendation, DateTime> =
     SimpleSearchParam<ImmunizationRecommendation, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -180,7 +181,7 @@ public object ImmunizationRecommendationSearchParams {
       extractor = { resource -> listOf(resource.date) },
     )
 
-  public val Identifier: SearchParam<ImmunizationRecommendation, Identifier> =
+  public val identifier: SearchParam<ImmunizationRecommendation, Identifier> =
     SimpleSearchParam<ImmunizationRecommendation, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -188,7 +189,7 @@ public object ImmunizationRecommendationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Information: SearchParam<ImmunizationRecommendation, Reference> =
+  public val information: SearchParam<ImmunizationRecommendation, Reference> =
     SimpleSearchParam<ImmunizationRecommendation, Reference>(
       name = "information",
       type = SearchParamType.fromCode("reference"),
@@ -296,7 +297,7 @@ public object ImmunizationRecommendationSearchParams {
           OperationOutcome::class,
           Organization::class,
           OrganizationAffiliation::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -346,16 +347,16 @@ public object ImmunizationRecommendationSearchParams {
       },
     )
 
-  public val Patient: SearchParam<ImmunizationRecommendation, Reference> =
+  public val patient: SearchParam<ImmunizationRecommendation, Reference> =
     SimpleSearchParam<ImmunizationRecommendation, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ImmunizationRecommendation.patient",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Status: SearchParam<ImmunizationRecommendation, CodeableConcept> =
+  public val status: SearchParam<ImmunizationRecommendation, CodeableConcept> =
     SimpleSearchParam<ImmunizationRecommendation, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -363,7 +364,7 @@ public object ImmunizationRecommendationSearchParams {
       extractor = { resource -> resource.recommendation.map { it.forecastStatus } },
     )
 
-  public val Support: SearchParam<ImmunizationRecommendation, Reference> =
+  public val support: SearchParam<ImmunizationRecommendation, Reference> =
     SimpleSearchParam<ImmunizationRecommendation, Reference>(
       name = "support",
       type = SearchParamType.fromCode("reference"),
@@ -372,7 +373,7 @@ public object ImmunizationRecommendationSearchParams {
       extractor = { resource -> resource.recommendation.flatMap { it.supportingImmunization } },
     )
 
-  public val TargetDisease: SearchParam<ImmunizationRecommendation, CodeableConcept> =
+  public val targetDisease: SearchParam<ImmunizationRecommendation, CodeableConcept> =
     SimpleSearchParam<ImmunizationRecommendation, CodeableConcept>(
       name = "target-disease",
       type = SearchParamType.fromCode("token"),
@@ -380,7 +381,7 @@ public object ImmunizationRecommendationSearchParams {
       extractor = { resource -> resource.recommendation.mapNotNull { it.targetDisease } },
     )
 
-  public val VaccineType: SearchParam<ImmunizationRecommendation, CodeableConcept> =
+  public val vaccineType: SearchParam<ImmunizationRecommendation, CodeableConcept> =
     SimpleSearchParam<ImmunizationRecommendation, CodeableConcept>(
       name = "vaccine-type",
       type = SearchParamType.fromCode("token"),
@@ -389,6 +390,6 @@ public object ImmunizationRecommendationSearchParams {
     )
 
   /** All search parameters for the ImmunizationRecommendation resource type. */
-  public val ALL: CollectionsList<SearchParam<ImmunizationRecommendation, *>> =
-    listOf(Date, Identifier, Information, Patient, Status, Support, TargetDisease, VaccineType)
+  public val all: CollectionsList<SearchParam<ImmunizationRecommendation, *>> =
+    listOf(date, identifier, information, patient, status, support, targetDisease, vaccineType)
 }

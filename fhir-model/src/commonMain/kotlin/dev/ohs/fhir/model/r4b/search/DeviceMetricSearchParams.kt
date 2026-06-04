@@ -30,7 +30,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [DeviceMetric] resource type. */
 public object DeviceMetricSearchParams {
-  public val Category: SearchParam<DeviceMetric, Any> =
+  public val category: SearchParam<DeviceMetric, Any> =
     SimpleSearchParam<DeviceMetric, Any>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -38,7 +38,7 @@ public object DeviceMetricSearchParams {
       extractor = { resource -> listOf(resource.category) },
     )
 
-  public val Identifier: SearchParam<DeviceMetric, Identifier> =
+  public val identifier: SearchParam<DeviceMetric, Identifier> =
     SimpleSearchParam<DeviceMetric, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -46,7 +46,7 @@ public object DeviceMetricSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Parent: SearchParam<DeviceMetric, Reference> =
+  public val parent: SearchParam<DeviceMetric, Reference> =
     SimpleSearchParam<DeviceMetric, Reference>(
       name = "parent",
       type = SearchParamType.fromCode("reference"),
@@ -55,7 +55,7 @@ public object DeviceMetricSearchParams {
       extractor = { resource -> listOfNotNull(resource.parent) },
     )
 
-  public val Source: SearchParam<DeviceMetric, Reference> =
+  public val source: SearchParam<DeviceMetric, Reference> =
     SimpleSearchParam<DeviceMetric, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
@@ -64,7 +64,7 @@ public object DeviceMetricSearchParams {
       extractor = { resource -> listOfNotNull(resource.source) },
     )
 
-  public val Type: SearchParam<DeviceMetric, CodeableConcept> =
+  public val type: SearchParam<DeviceMetric, CodeableConcept> =
     SimpleSearchParam<DeviceMetric, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -73,6 +73,6 @@ public object DeviceMetricSearchParams {
     )
 
   /** All search parameters for the DeviceMetric resource type. */
-  public val ALL: List<SearchParam<DeviceMetric, *>> =
-    listOf(Category, Identifier, Parent, Source, Type)
+  public val all: List<SearchParam<DeviceMetric, *>> =
+    listOf(category, identifier, parent, source, type)
 }

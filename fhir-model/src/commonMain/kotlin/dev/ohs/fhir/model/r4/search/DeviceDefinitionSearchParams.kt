@@ -28,7 +28,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [DeviceDefinition] resource type. */
 public object DeviceDefinitionSearchParams {
-  public val Identifier: SearchParam<DeviceDefinition, Identifier> =
+  public val identifier: SearchParam<DeviceDefinition, Identifier> =
     SimpleSearchParam<DeviceDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -36,7 +36,7 @@ public object DeviceDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Parent: SearchParam<DeviceDefinition, Reference> =
+  public val parent: SearchParam<DeviceDefinition, Reference> =
     SimpleSearchParam<DeviceDefinition, Reference>(
       name = "parent",
       type = SearchParamType.fromCode("reference"),
@@ -45,7 +45,7 @@ public object DeviceDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.parentDevice) },
     )
 
-  public val Type: SearchParam<DeviceDefinition, CodeableConcept> =
+  public val type: SearchParam<DeviceDefinition, CodeableConcept> =
     SimpleSearchParam<DeviceDefinition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -54,5 +54,5 @@ public object DeviceDefinitionSearchParams {
     )
 
   /** All search parameters for the DeviceDefinition resource type. */
-  public val ALL: List<SearchParam<DeviceDefinition, *>> = listOf(Identifier, Parent, Type)
+  public val all: List<SearchParam<DeviceDefinition, *>> = listOf(identifier, parent, type)
 }

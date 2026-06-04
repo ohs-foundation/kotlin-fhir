@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Organization
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
@@ -32,7 +33,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [SupplyDelivery] resource type. */
 public object SupplyDeliverySearchParams {
-  public val Identifier: SearchParam<SupplyDelivery, Identifier> =
+  public val identifier: SearchParam<SupplyDelivery, Identifier> =
     SimpleSearchParam<SupplyDelivery, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -40,16 +41,16 @@ public object SupplyDeliverySearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<SupplyDelivery, Reference> =
+  public val patient: SearchParam<SupplyDelivery, Reference> =
     SimpleSearchParam<SupplyDelivery, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "SupplyDelivery.patient",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class),
+      target = listOf(Patient::class, Group::class),
       extractor = { resource -> listOfNotNull(resource.patient) },
     )
 
-  public val Receiver: SearchParam<SupplyDelivery, Reference> =
+  public val `receiver`: SearchParam<SupplyDelivery, Reference> =
     SimpleSearchParam<SupplyDelivery, Reference>(
       name = "receiver",
       type = SearchParamType.fromCode("reference"),
@@ -58,7 +59,7 @@ public object SupplyDeliverySearchParams {
       extractor = { resource -> resource.`receiver` },
     )
 
-  public val Status: SearchParam<SupplyDelivery, Any> =
+  public val status: SearchParam<SupplyDelivery, Any> =
     SimpleSearchParam<SupplyDelivery, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -66,7 +67,7 @@ public object SupplyDeliverySearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Supplier: SearchParam<SupplyDelivery, Reference> =
+  public val supplier: SearchParam<SupplyDelivery, Reference> =
     SimpleSearchParam<SupplyDelivery, Reference>(
       name = "supplier",
       type = SearchParamType.fromCode("reference"),
@@ -76,6 +77,6 @@ public object SupplyDeliverySearchParams {
     )
 
   /** All search parameters for the SupplyDelivery resource type. */
-  public val ALL: List<SearchParam<SupplyDelivery, *>> =
-    listOf(Identifier, Patient, Receiver, Status, Supplier)
+  public val all: List<SearchParam<SupplyDelivery, *>> =
+    listOf(identifier, patient, `receiver`, status, supplier)
 }

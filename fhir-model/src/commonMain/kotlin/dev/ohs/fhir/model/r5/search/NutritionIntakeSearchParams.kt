@@ -19,10 +19,12 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.NutritionIntake
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
@@ -34,7 +36,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [NutritionIntake] resource type. */
 public object NutritionIntakeSearchParams {
-  public val Code: SearchParam<NutritionIntake, CodeableConcept> =
+  public val code: SearchParam<NutritionIntake, CodeableConcept> =
     SimpleSearchParam<NutritionIntake, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -42,7 +44,7 @@ public object NutritionIntakeSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Date: SearchParam<NutritionIntake, Any> =
+  public val date: SearchParam<NutritionIntake, Any> =
     SimpleSearchParam<NutritionIntake, Any>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -50,16 +52,16 @@ public object NutritionIntakeSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Encounter: SearchParam<NutritionIntake, Reference> =
+  public val encounter: SearchParam<NutritionIntake, Reference> =
     SimpleSearchParam<NutritionIntake, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionIntake.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Identifier: SearchParam<NutritionIntake, Identifier> =
+  public val identifier: SearchParam<NutritionIntake, Identifier> =
     SimpleSearchParam<NutritionIntake, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -67,7 +69,7 @@ public object NutritionIntakeSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Nutrition: SearchParam<NutritionIntake, CodeableConcept> =
+  public val nutrition: SearchParam<NutritionIntake, CodeableConcept> =
     SimpleSearchParam<NutritionIntake, CodeableConcept>(
       name = "nutrition",
       type = SearchParamType.fromCode("token"),
@@ -77,12 +79,12 @@ public object NutritionIntakeSearchParams {
       },
     )
 
-  public val Patient: SearchParam<NutritionIntake, Reference> =
+  public val patient: SearchParam<NutritionIntake, Reference> =
     SimpleSearchParam<NutritionIntake, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionIntake.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -90,7 +92,7 @@ public object NutritionIntakeSearchParams {
       },
     )
 
-  public val Source: SearchParam<NutritionIntake, Reference> =
+  public val source: SearchParam<NutritionIntake, Reference> =
     SimpleSearchParam<NutritionIntake, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
@@ -101,14 +103,14 @@ public object NutritionIntakeSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource ->
         listOfNotNull((resource.reported as? NutritionIntake.Reported.Reference)?.value)
       },
     )
 
-  public val Status: SearchParam<NutritionIntake, Any> =
+  public val status: SearchParam<NutritionIntake, Any> =
     SimpleSearchParam<NutritionIntake, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -116,16 +118,16 @@ public object NutritionIntakeSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<NutritionIntake, Reference> =
+  public val subject: SearchParam<NutritionIntake, Reference> =
     SimpleSearchParam<NutritionIntake, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionIntake.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
   /** All search parameters for the NutritionIntake resource type. */
-  public val ALL: List<SearchParam<NutritionIntake, *>> =
-    listOf(Code, Date, Encounter, Identifier, Nutrition, Patient, Source, Status, Subject)
+  public val all: List<SearchParam<NutritionIntake, *>> =
+    listOf(code, date, encounter, identifier, nutrition, patient, source, status, subject)
 }

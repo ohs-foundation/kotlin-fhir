@@ -28,7 +28,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Bundle] resource type. */
 public object BundleSearchParams {
-  public val Composition: SearchParam<Bundle, Any> =
+  public val composition: SearchParam<Bundle, Any> =
     SimpleSearchParam<Bundle, Any>(
       name = "composition",
       type = SearchParamType.fromCode("reference"),
@@ -36,7 +36,7 @@ public object BundleSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Identifier: SearchParam<Bundle, Identifier> =
+  public val identifier: SearchParam<Bundle, Identifier> =
     SimpleSearchParam<Bundle, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -44,7 +44,7 @@ public object BundleSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val Message: SearchParam<Bundle, Any> =
+  public val message: SearchParam<Bundle, Any> =
     SimpleSearchParam<Bundle, Any>(
       name = "message",
       type = SearchParamType.fromCode("reference"),
@@ -52,7 +52,7 @@ public object BundleSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Timestamp: SearchParam<Bundle, Instant> =
+  public val timestamp: SearchParam<Bundle, Instant> =
     SimpleSearchParam<Bundle, Instant>(
       name = "timestamp",
       type = SearchParamType.fromCode("date"),
@@ -60,7 +60,7 @@ public object BundleSearchParams {
       extractor = { resource -> listOfNotNull(resource.timestamp) },
     )
 
-  public val Type: SearchParam<Bundle, Any> =
+  public val type: SearchParam<Bundle, Any> =
     SimpleSearchParam<Bundle, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -69,6 +69,6 @@ public object BundleSearchParams {
     )
 
   /** All search parameters for the Bundle resource type. */
-  public val ALL: List<SearchParam<Bundle, *>> =
-    listOf(Composition, Identifier, Message, Timestamp, Type)
+  public val all: List<SearchParam<Bundle, *>> =
+    listOf(composition, identifier, message, timestamp, type)
 }

@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.MedicationStatement
 import dev.ohs.fhir.model.r5.NutritionOrder
 import dev.ohs.fhir.model.r5.Observation
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RiskAssessment
@@ -39,7 +40,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Goal] resource type. */
 public object GoalSearchParams {
-  public val AchievementStatus: SearchParam<Goal, CodeableConcept> =
+  public val achievementStatus: SearchParam<Goal, CodeableConcept> =
     SimpleSearchParam<Goal, CodeableConcept>(
       name = "achievement-status",
       type = SearchParamType.fromCode("token"),
@@ -47,7 +48,7 @@ public object GoalSearchParams {
       extractor = { resource -> listOfNotNull(resource.achievementStatus) },
     )
 
-  public val Addresses: SearchParam<Goal, Reference> =
+  public val addresses: SearchParam<Goal, Reference> =
     SimpleSearchParam<Goal, Reference>(
       name = "addresses",
       type = SearchParamType.fromCode("reference"),
@@ -66,7 +67,7 @@ public object GoalSearchParams {
       extractor = { resource -> resource.addresses },
     )
 
-  public val Category: SearchParam<Goal, CodeableConcept> =
+  public val category: SearchParam<Goal, CodeableConcept> =
     SimpleSearchParam<Goal, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -74,7 +75,7 @@ public object GoalSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Description: SearchParam<Goal, CodeableConcept> =
+  public val description: SearchParam<Goal, CodeableConcept> =
     SimpleSearchParam<Goal, CodeableConcept>(
       name = "description",
       type = SearchParamType.fromCode("token"),
@@ -82,7 +83,7 @@ public object GoalSearchParams {
       extractor = { resource -> listOf(resource.description) },
     )
 
-  public val Identifier: SearchParam<Goal, Identifier> =
+  public val identifier: SearchParam<Goal, Identifier> =
     SimpleSearchParam<Goal, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -90,7 +91,7 @@ public object GoalSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val LifecycleStatus: SearchParam<Goal, Any> =
+  public val lifecycleStatus: SearchParam<Goal, Any> =
     SimpleSearchParam<Goal, Any>(
       name = "lifecycle-status",
       type = SearchParamType.fromCode("token"),
@@ -98,12 +99,12 @@ public object GoalSearchParams {
       extractor = { resource -> listOf(resource.lifecycleStatus) },
     )
 
-  public val Patient: SearchParam<Goal, Reference> =
+  public val patient: SearchParam<Goal, Reference> =
     SimpleSearchParam<Goal, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Goal.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -111,7 +112,7 @@ public object GoalSearchParams {
       },
     )
 
-  public val StartDate: SearchParam<Goal, Any> =
+  public val startDate: SearchParam<Goal, Any> =
     SimpleSearchParam<Goal, Any>(
       name = "start-date",
       type = SearchParamType.fromCode("date"),
@@ -119,16 +120,16 @@ public object GoalSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Subject: SearchParam<Goal, Reference> =
+  public val subject: SearchParam<Goal, Reference> =
     SimpleSearchParam<Goal, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Goal.subject",
-      target = listOf(Organization::class, Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Organization::class, Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  public val TargetDate: SearchParam<Goal, Any> =
+  public val targetDate: SearchParam<Goal, Any> =
     SimpleSearchParam<Goal, Any>(
       name = "target-date",
       type = SearchParamType.fromCode("date"),
@@ -136,7 +137,7 @@ public object GoalSearchParams {
       extractor = { emptyList() },
     )
 
-  public val TargetMeasure: SearchParam<Goal, CodeableConcept> =
+  public val targetMeasure: SearchParam<Goal, CodeableConcept> =
     SimpleSearchParam<Goal, CodeableConcept>(
       name = "target-measure",
       type = SearchParamType.fromCode("token"),
@@ -145,18 +146,18 @@ public object GoalSearchParams {
     )
 
   /** All search parameters for the Goal resource type. */
-  public val ALL: List<SearchParam<Goal, *>> =
+  public val all: List<SearchParam<Goal, *>> =
     listOf(
-      AchievementStatus,
-      Addresses,
-      Category,
-      Description,
-      Identifier,
-      LifecycleStatus,
-      Patient,
-      StartDate,
-      Subject,
-      TargetDate,
-      TargetMeasure,
+      achievementStatus,
+      addresses,
+      category,
+      description,
+      identifier,
+      lifecycleStatus,
+      patient,
+      startDate,
+      subject,
+      targetDate,
+      targetMeasure,
     )
 }

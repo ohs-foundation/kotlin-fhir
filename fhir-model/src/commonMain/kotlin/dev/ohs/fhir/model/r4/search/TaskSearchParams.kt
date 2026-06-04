@@ -63,6 +63,7 @@ import dev.ohs.fhir.model.r4.DiagnosticReport
 import dev.ohs.fhir.model.r4.DocumentManifest
 import dev.ohs.fhir.model.r4.DocumentReference
 import dev.ohs.fhir.model.r4.EffectEvidenceSynthesis
+import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.EnrollmentRequest
 import dev.ohs.fhir.model.r4.EnrollmentResponse
@@ -121,6 +122,7 @@ import dev.ohs.fhir.model.r4.OperationDefinition
 import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.OrganizationAffiliation
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PaymentNotice
 import dev.ohs.fhir.model.r4.PaymentReconciliation
 import dev.ohs.fhir.model.r4.Period
@@ -173,7 +175,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Task] resource type. */
 public object TaskSearchParams {
-  public val AuthoredOn: SearchParam<Task, DateTime> =
+  public val authoredOn: SearchParam<Task, DateTime> =
     SimpleSearchParam<Task, DateTime>(
       name = "authored-on",
       type = SearchParamType.fromCode("date"),
@@ -181,7 +183,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
 
-  public val BasedOn: SearchParam<Task, Reference> =
+  public val basedOn: SearchParam<Task, Reference> =
     SimpleSearchParam<Task, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -231,7 +233,7 @@ public object TaskSearchParams {
           DocumentManifest::class,
           DocumentReference::class,
           EffectEvidenceSynthesis::class,
-          dev.ohs.fhir.model.r4.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
@@ -289,7 +291,7 @@ public object TaskSearchParams {
           OperationOutcome::class,
           Organization::class,
           OrganizationAffiliation::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -337,7 +339,7 @@ public object TaskSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val BusinessStatus: SearchParam<Task, CodeableConcept> =
+  public val businessStatus: SearchParam<Task, CodeableConcept> =
     SimpleSearchParam<Task, CodeableConcept>(
       name = "business-status",
       type = SearchParamType.fromCode("token"),
@@ -345,7 +347,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.businessStatus) },
     )
 
-  public val Code: SearchParam<Task, CodeableConcept> =
+  public val code: SearchParam<Task, CodeableConcept> =
     SimpleSearchParam<Task, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -353,16 +355,16 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Encounter: SearchParam<Task, Reference> =
+  public val encounter: SearchParam<Task, Reference> =
     SimpleSearchParam<Task, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.encounter",
-      target = listOf(dev.ohs.fhir.model.r4.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Focus: SearchParam<Task, Reference> =
+  public val focus: SearchParam<Task, Reference> =
     SimpleSearchParam<Task, Reference>(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
@@ -412,7 +414,7 @@ public object TaskSearchParams {
           DocumentManifest::class,
           DocumentReference::class,
           EffectEvidenceSynthesis::class,
-          dev.ohs.fhir.model.r4.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
@@ -470,7 +472,7 @@ public object TaskSearchParams {
           OperationOutcome::class,
           Organization::class,
           OrganizationAffiliation::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -518,7 +520,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.focus) },
     )
 
-  public val GroupIdentifier: SearchParam<Task, Identifier> =
+  public val groupIdentifier: SearchParam<Task, Identifier> =
     SimpleSearchParam<Task, Identifier>(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
@@ -526,7 +528,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
 
-  public val Identifier: SearchParam<Task, Identifier> =
+  public val identifier: SearchParam<Task, Identifier> =
     SimpleSearchParam<Task, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -534,7 +536,7 @@ public object TaskSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Intent: SearchParam<Task, Any> =
+  public val intent: SearchParam<Task, Any> =
     SimpleSearchParam<Task, Any>(
       name = "intent",
       type = SearchParamType.fromCode("token"),
@@ -542,7 +544,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOf(resource.intent) },
     )
 
-  public val Modified: SearchParam<Task, DateTime> =
+  public val modified: SearchParam<Task, DateTime> =
     SimpleSearchParam<Task, DateTime>(
       name = "modified",
       type = SearchParamType.fromCode("date"),
@@ -550,7 +552,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.lastModified) },
     )
 
-  public val Owner: SearchParam<Task, Reference> =
+  public val owner: SearchParam<Task, Reference> =
     SimpleSearchParam<Task, Reference>(
       name = "owner",
       type = SearchParamType.fromCode("reference"),
@@ -561,7 +563,7 @@ public object TaskSearchParams {
           Organization::class,
           CareTeam::class,
           Device::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           HealthcareService::class,
           PractitionerRole::class,
           RelatedPerson::class,
@@ -569,7 +571,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.owner) },
     )
 
-  public val PartOf: SearchParam<Task, Reference> =
+  public val partOf: SearchParam<Task, Reference> =
     SimpleSearchParam<Task, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
@@ -578,12 +580,12 @@ public object TaskSearchParams {
       extractor = { resource -> resource.partOf },
     )
 
-  public val Patient: SearchParam<Task, Reference> =
+  public val patient: SearchParam<Task, Reference> =
     SimpleSearchParam<Task, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.for.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.`for`).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -591,7 +593,7 @@ public object TaskSearchParams {
       },
     )
 
-  public val Performer: SearchParam<Task, CodeableConcept> =
+  public val performer: SearchParam<Task, CodeableConcept> =
     SimpleSearchParam<Task, CodeableConcept>(
       name = "performer",
       type = SearchParamType.fromCode("token"),
@@ -599,7 +601,7 @@ public object TaskSearchParams {
       extractor = { resource -> resource.performerType },
     )
 
-  public val Period: SearchParam<Task, Period> =
+  public val period: SearchParam<Task, Period> =
     SimpleSearchParam<Task, Period>(
       name = "period",
       type = SearchParamType.fromCode("date"),
@@ -607,7 +609,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.executionPeriod) },
     )
 
-  public val Priority: SearchParam<Task, Any> =
+  public val priority: SearchParam<Task, Any> =
     SimpleSearchParam<Task, Any>(
       name = "priority",
       type = SearchParamType.fromCode("token"),
@@ -615,7 +617,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
 
-  public val Requester: SearchParam<Task, Reference> =
+  public val requester: SearchParam<Task, Reference> =
     SimpleSearchParam<Task, Reference>(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
@@ -625,14 +627,14 @@ public object TaskSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> listOfNotNull(resource.requester) },
     )
 
-  public val Status: SearchParam<Task, Any> =
+  public val status: SearchParam<Task, Any> =
     SimpleSearchParam<Task, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -640,7 +642,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<Task, Reference> =
+  public val subject: SearchParam<Task, Reference> =
     SimpleSearchParam<Task, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -690,7 +692,7 @@ public object TaskSearchParams {
           DocumentManifest::class,
           DocumentReference::class,
           EffectEvidenceSynthesis::class,
-          dev.ohs.fhir.model.r4.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
@@ -748,7 +750,7 @@ public object TaskSearchParams {
           OperationOutcome::class,
           Organization::class,
           OrganizationAffiliation::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -797,26 +799,26 @@ public object TaskSearchParams {
     )
 
   /** All search parameters for the Task resource type. */
-  public val ALL: CollectionsList<SearchParam<Task, *>> =
+  public val all: CollectionsList<SearchParam<Task, *>> =
     listOf(
-      AuthoredOn,
-      BasedOn,
-      BusinessStatus,
-      Code,
-      Encounter,
-      Focus,
-      GroupIdentifier,
-      Identifier,
-      Intent,
-      Modified,
-      Owner,
-      PartOf,
-      Patient,
-      Performer,
-      Period,
-      Priority,
-      Requester,
-      Status,
-      Subject,
+      authoredOn,
+      basedOn,
+      businessStatus,
+      code,
+      encounter,
+      focus,
+      groupIdentifier,
+      identifier,
+      intent,
+      modified,
+      owner,
+      partOf,
+      patient,
+      performer,
+      period,
+      priority,
+      requester,
+      status,
+      subject,
     )
 }

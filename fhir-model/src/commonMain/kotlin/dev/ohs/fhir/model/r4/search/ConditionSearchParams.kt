@@ -64,11 +64,13 @@ import dev.ohs.fhir.model.r4.DiagnosticReport
 import dev.ohs.fhir.model.r4.DocumentManifest
 import dev.ohs.fhir.model.r4.DocumentReference
 import dev.ohs.fhir.model.r4.EffectEvidenceSynthesis
+import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.EnrollmentRequest
 import dev.ohs.fhir.model.r4.EnrollmentResponse
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.EventDefinition
+import dev.ohs.fhir.model.r4.Evidence
 import dev.ohs.fhir.model.r4.EvidenceVariable
 import dev.ohs.fhir.model.r4.ExampleScenario
 import dev.ohs.fhir.model.r4.ExplanationOfBenefit
@@ -121,6 +123,7 @@ import dev.ohs.fhir.model.r4.OperationDefinition
 import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.OrganizationAffiliation
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PaymentNotice
 import dev.ohs.fhir.model.r4.PaymentReconciliation
 import dev.ohs.fhir.model.r4.Person
@@ -172,7 +175,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Condition] resource type. */
 public object ConditionSearchParams {
-  public val AbatementAge: SearchParam<Condition, Age> =
+  public val abatementAge: SearchParam<Condition, Age> =
     SimpleSearchParam<Condition, Age>(
       name = "abatement-age",
       type = SearchParamType.fromCode("quantity"),
@@ -182,7 +185,7 @@ public object ConditionSearchParams {
       },
     )
 
-  public val AbatementDate: SearchParam<Condition, DateTime> =
+  public val abatementDate: SearchParam<Condition, DateTime> =
     SimpleSearchParam<Condition, DateTime>(
       name = "abatement-date",
       type = SearchParamType.fromCode("date"),
@@ -192,7 +195,7 @@ public object ConditionSearchParams {
       },
     )
 
-  public val AbatementString: SearchParam<Condition, String> =
+  public val abatementString: SearchParam<Condition, String> =
     SimpleSearchParam<Condition, String>(
       name = "abatement-string",
       type = SearchParamType.fromCode("string"),
@@ -202,22 +205,17 @@ public object ConditionSearchParams {
       },
     )
 
-  public val Asserter: SearchParam<Condition, Reference> =
+  public val asserter: SearchParam<Condition, Reference> =
     SimpleSearchParam<Condition, Reference>(
       name = "asserter",
       type = SearchParamType.fromCode("reference"),
       expression = "Condition.asserter",
       target =
-        listOf(
-          Practitioner::class,
-          dev.ohs.fhir.model.r4.Patient::class,
-          PractitionerRole::class,
-          RelatedPerson::class,
-        ),
+        listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class),
       extractor = { resource -> listOfNotNull(resource.asserter) },
     )
 
-  public val BodySite: SearchParam<Condition, CodeableConcept> =
+  public val bodySite: SearchParam<Condition, CodeableConcept> =
     SimpleSearchParam<Condition, CodeableConcept>(
       name = "body-site",
       type = SearchParamType.fromCode("token"),
@@ -225,7 +223,7 @@ public object ConditionSearchParams {
       extractor = { resource -> resource.bodySite },
     )
 
-  public val Category: SearchParam<Condition, CodeableConcept> =
+  public val category: SearchParam<Condition, CodeableConcept> =
     SimpleSearchParam<Condition, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -233,7 +231,7 @@ public object ConditionSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val ClinicalStatus: SearchParam<Condition, CodeableConcept> =
+  public val clinicalStatus: SearchParam<Condition, CodeableConcept> =
     SimpleSearchParam<Condition, CodeableConcept>(
       name = "clinical-status",
       type = SearchParamType.fromCode("token"),
@@ -241,7 +239,7 @@ public object ConditionSearchParams {
       extractor = { resource -> listOfNotNull(resource.clinicalStatus) },
     )
 
-  public val Code: SearchParam<Condition, CodeableConcept> =
+  public val code: SearchParam<Condition, CodeableConcept> =
     SimpleSearchParam<Condition, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -249,16 +247,16 @@ public object ConditionSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Encounter: SearchParam<Condition, Reference> =
+  public val encounter: SearchParam<Condition, Reference> =
     SimpleSearchParam<Condition, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Condition.encounter",
-      target = listOf(dev.ohs.fhir.model.r4.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Evidence: SearchParam<Condition, CodeableConcept> =
+  public val evidence: SearchParam<Condition, CodeableConcept> =
     SimpleSearchParam<Condition, CodeableConcept>(
       name = "evidence",
       type = SearchParamType.fromCode("token"),
@@ -266,7 +264,7 @@ public object ConditionSearchParams {
       extractor = { resource -> resource.evidence.flatMap { it.code } },
     )
 
-  public val EvidenceDetail: SearchParam<Condition, Reference> =
+  public val evidenceDetail: SearchParam<Condition, Reference> =
     SimpleSearchParam<Condition, Reference>(
       name = "evidence-detail",
       type = SearchParamType.fromCode("reference"),
@@ -316,13 +314,13 @@ public object ConditionSearchParams {
           DocumentManifest::class,
           DocumentReference::class,
           EffectEvidenceSynthesis::class,
-          dev.ohs.fhir.model.r4.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
           EpisodeOfCare::class,
           EventDefinition::class,
-          dev.ohs.fhir.model.r4.Evidence::class,
+          Evidence::class,
           EvidenceVariable::class,
           ExampleScenario::class,
           ExplanationOfBenefit::class,
@@ -374,7 +372,7 @@ public object ConditionSearchParams {
           OperationOutcome::class,
           Organization::class,
           OrganizationAffiliation::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -422,7 +420,7 @@ public object ConditionSearchParams {
       extractor = { resource -> resource.evidence.flatMap { it.detail } },
     )
 
-  public val Identifier: SearchParam<Condition, Identifier> =
+  public val identifier: SearchParam<Condition, Identifier> =
     SimpleSearchParam<Condition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -430,7 +428,7 @@ public object ConditionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val OnsetAge: SearchParam<Condition, Age> =
+  public val onsetAge: SearchParam<Condition, Age> =
     SimpleSearchParam<Condition, Age>(
       name = "onset-age",
       type = SearchParamType.fromCode("quantity"),
@@ -438,7 +436,7 @@ public object ConditionSearchParams {
       extractor = { resource -> listOfNotNull((resource.onset as? Condition.Onset.Age)?.value) },
     )
 
-  public val OnsetDate: SearchParam<Condition, DateTime> =
+  public val onsetDate: SearchParam<Condition, DateTime> =
     SimpleSearchParam<Condition, DateTime>(
       name = "onset-date",
       type = SearchParamType.fromCode("date"),
@@ -448,7 +446,7 @@ public object ConditionSearchParams {
       },
     )
 
-  public val OnsetInfo: SearchParam<Condition, String> =
+  public val onsetInfo: SearchParam<Condition, String> =
     SimpleSearchParam<Condition, String>(
       name = "onset-info",
       type = SearchParamType.fromCode("string"),
@@ -456,12 +454,12 @@ public object ConditionSearchParams {
       extractor = { resource -> listOfNotNull((resource.onset as? Condition.Onset.String)?.value) },
     )
 
-  public val Patient: SearchParam<Condition, Reference> =
+  public val patient: SearchParam<Condition, Reference> =
     SimpleSearchParam<Condition, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Condition.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class),
+      target = listOf(Patient::class, Group::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -469,7 +467,7 @@ public object ConditionSearchParams {
       },
     )
 
-  public val RecordedDate: SearchParam<Condition, DateTime> =
+  public val recordedDate: SearchParam<Condition, DateTime> =
     SimpleSearchParam<Condition, DateTime>(
       name = "recorded-date",
       type = SearchParamType.fromCode("date"),
@@ -477,7 +475,7 @@ public object ConditionSearchParams {
       extractor = { resource -> listOfNotNull(resource.recordedDate) },
     )
 
-  public val Severity: SearchParam<Condition, CodeableConcept> =
+  public val severity: SearchParam<Condition, CodeableConcept> =
     SimpleSearchParam<Condition, CodeableConcept>(
       name = "severity",
       type = SearchParamType.fromCode("token"),
@@ -485,7 +483,7 @@ public object ConditionSearchParams {
       extractor = { resource -> listOfNotNull(resource.severity) },
     )
 
-  public val Stage: SearchParam<Condition, CodeableConcept> =
+  public val stage: SearchParam<Condition, CodeableConcept> =
     SimpleSearchParam<Condition, CodeableConcept>(
       name = "stage",
       type = SearchParamType.fromCode("token"),
@@ -493,7 +491,7 @@ public object ConditionSearchParams {
       extractor = { resource -> resource.stage.mapNotNull { it.summary } },
     )
 
-  public val Subject: SearchParam<Condition, Reference> =
+  public val subject: SearchParam<Condition, Reference> =
     SimpleSearchParam<Condition, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -502,7 +500,7 @@ public object ConditionSearchParams {
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  public val VerificationStatus: SearchParam<Condition, CodeableConcept> =
+  public val verificationStatus: SearchParam<Condition, CodeableConcept> =
     SimpleSearchParam<Condition, CodeableConcept>(
       name = "verification-status",
       type = SearchParamType.fromCode("token"),
@@ -511,28 +509,28 @@ public object ConditionSearchParams {
     )
 
   /** All search parameters for the Condition resource type. */
-  public val ALL: CollectionsList<SearchParam<Condition, *>> =
+  public val all: CollectionsList<SearchParam<Condition, *>> =
     listOf(
-      AbatementAge,
-      AbatementDate,
-      AbatementString,
-      Asserter,
-      BodySite,
-      Category,
-      ClinicalStatus,
-      Code,
-      Encounter,
-      Evidence,
-      EvidenceDetail,
-      Identifier,
-      OnsetAge,
-      OnsetDate,
-      OnsetInfo,
-      Patient,
-      RecordedDate,
-      Severity,
-      Stage,
-      Subject,
-      VerificationStatus,
+      abatementAge,
+      abatementDate,
+      abatementString,
+      asserter,
+      bodySite,
+      category,
+      clinicalStatus,
+      code,
+      encounter,
+      evidence,
+      evidenceDetail,
+      identifier,
+      onsetAge,
+      onsetDate,
+      onsetInfo,
+      patient,
+      recordedDate,
+      severity,
+      stage,
+      subject,
+      verificationStatus,
     )
 }

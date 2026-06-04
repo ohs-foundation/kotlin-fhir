@@ -186,7 +186,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [MessageHeader] resource type. */
 public object MessageHeaderSearchParams {
-  public val Author: SearchParam<MessageHeader, Reference> =
+  public val author: SearchParam<MessageHeader, Reference> =
     SimpleSearchParam<MessageHeader, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -196,7 +196,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> listOfNotNull(resource.author) },
     )
 
-  public val Code: SearchParam<MessageHeader, Any> =
+  public val code: SearchParam<MessageHeader, Any> =
     SimpleSearchParam<MessageHeader, Any>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -204,7 +204,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> listOfNotNull(resource.response?.code) },
     )
 
-  public val Destination: SearchParam<MessageHeader, String> =
+  public val destination: SearchParam<MessageHeader, String> =
     SimpleSearchParam<MessageHeader, String>(
       name = "destination",
       type = SearchParamType.fromCode("string"),
@@ -212,7 +212,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> resource.destination.mapNotNull { it.name } },
     )
 
-  public val Event: SearchParam<MessageHeader, Any> =
+  public val event: SearchParam<MessageHeader, Any> =
     SimpleSearchParam<MessageHeader, Any>(
       name = "event",
       type = SearchParamType.fromCode("token"),
@@ -220,7 +220,7 @@ public object MessageHeaderSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Focus: SearchParam<MessageHeader, Reference> =
+  public val focus: SearchParam<MessageHeader, Reference> =
     SimpleSearchParam<MessageHeader, Reference>(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
@@ -389,7 +389,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> resource.focus },
     )
 
-  public val Receiver: SearchParam<MessageHeader, Reference> =
+  public val `receiver`: SearchParam<MessageHeader, Reference> =
     SimpleSearchParam<MessageHeader, Reference>(
       name = "receiver",
       type = SearchParamType.fromCode("reference"),
@@ -398,7 +398,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> resource.destination.mapNotNull { it.`receiver` } },
     )
 
-  public val ResponseId: SearchParam<MessageHeader, Identifier> =
+  public val responseId: SearchParam<MessageHeader, Identifier> =
     SimpleSearchParam<MessageHeader, Identifier>(
       name = "response-id",
       type = SearchParamType.fromCode("token"),
@@ -406,7 +406,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> listOfNotNull(resource.response?.identifier) },
     )
 
-  public val Responsible: SearchParam<MessageHeader, Reference> =
+  public val responsible: SearchParam<MessageHeader, Reference> =
     SimpleSearchParam<MessageHeader, Reference>(
       name = "responsible",
       type = SearchParamType.fromCode("reference"),
@@ -415,7 +415,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> listOfNotNull(resource.responsible) },
     )
 
-  public val Sender: SearchParam<MessageHeader, Reference> =
+  public val sender: SearchParam<MessageHeader, Reference> =
     SimpleSearchParam<MessageHeader, Reference>(
       name = "sender",
       type = SearchParamType.fromCode("reference"),
@@ -425,7 +425,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> listOfNotNull(resource.sender) },
     )
 
-  public val Source: SearchParam<MessageHeader, String> =
+  public val source: SearchParam<MessageHeader, String> =
     SimpleSearchParam<MessageHeader, String>(
       name = "source",
       type = SearchParamType.fromCode("string"),
@@ -433,7 +433,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> listOfNotNull(resource.source.name) },
     )
 
-  public val Target: SearchParam<MessageHeader, Reference> =
+  public val target: SearchParam<MessageHeader, Reference> =
     SimpleSearchParam<MessageHeader, Reference>(
       name = "target",
       type = SearchParamType.fromCode("reference"),
@@ -443,18 +443,18 @@ public object MessageHeaderSearchParams {
     )
 
   /** All search parameters for the MessageHeader resource type. */
-  public val ALL: CollectionsList<SearchParam<MessageHeader, *>> =
+  public val all: CollectionsList<SearchParam<MessageHeader, *>> =
     listOf(
-      Author,
-      Code,
-      Destination,
-      Event,
-      Focus,
-      Receiver,
-      ResponseId,
-      Responsible,
-      Sender,
-      Source,
-      Target,
+      author,
+      code,
+      destination,
+      event,
+      focus,
+      `receiver`,
+      responseId,
+      responsible,
+      sender,
+      source,
+      target,
     )
 }

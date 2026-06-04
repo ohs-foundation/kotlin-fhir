@@ -176,7 +176,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [ImplementationGuide] resource type. */
 public object ImplementationGuideSearchParams {
-  public val Context: SearchParam<ImplementationGuide, CodeableConcept> =
+  public val context: SearchParam<ImplementationGuide, CodeableConcept> =
     SimpleSearchParam<ImplementationGuide, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -188,7 +188,7 @@ public object ImplementationGuideSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<ImplementationGuide, Quantity> =
+  public val contextQuantity: SearchParam<ImplementationGuide, Quantity> =
     SimpleSearchParam<ImplementationGuide, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -198,7 +198,7 @@ public object ImplementationGuideSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<ImplementationGuide, Coding> =
+  public val contextType: SearchParam<ImplementationGuide, Coding> =
     SimpleSearchParam<ImplementationGuide, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -206,7 +206,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<ImplementationGuide, UsageContext> =
+  public val contextTypeQuantity: SearchParam<ImplementationGuide, UsageContext> =
     SimpleSearchParam<ImplementationGuide, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -214,7 +214,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<ImplementationGuide, UsageContext> =
+  public val contextTypeValue: SearchParam<ImplementationGuide, UsageContext> =
     SimpleSearchParam<ImplementationGuide, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -222,7 +222,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<ImplementationGuide, DateTime> =
+  public val date: SearchParam<ImplementationGuide, DateTime> =
     SimpleSearchParam<ImplementationGuide, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -230,7 +230,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val DependsOn: SearchParam<ImplementationGuide, Canonical> =
+  public val dependsOn: SearchParam<ImplementationGuide, Canonical> =
     SimpleSearchParam<ImplementationGuide, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
@@ -239,7 +239,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> resource.dependsOn.map { it.uri } },
     )
 
-  public val Description: SearchParam<ImplementationGuide, Markdown> =
+  public val description: SearchParam<ImplementationGuide, Markdown> =
     SimpleSearchParam<ImplementationGuide, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -247,7 +247,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Experimental: SearchParam<ImplementationGuide, Boolean> =
+  public val experimental: SearchParam<ImplementationGuide, Boolean> =
     SimpleSearchParam<ImplementationGuide, Boolean>(
       name = "experimental",
       type = SearchParamType.fromCode("token"),
@@ -255,7 +255,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> listOfNotNull(resource.experimental) },
     )
 
-  public val Global: SearchParam<ImplementationGuide, Canonical> =
+  public val global: SearchParam<ImplementationGuide, Canonical> =
     SimpleSearchParam<ImplementationGuide, Canonical>(
       name = "global",
       type = SearchParamType.fromCode("reference"),
@@ -264,7 +264,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> resource.global.map { it.profile } },
     )
 
-  public val Jurisdiction: SearchParam<ImplementationGuide, CodeableConcept> =
+  public val jurisdiction: SearchParam<ImplementationGuide, CodeableConcept> =
     SimpleSearchParam<ImplementationGuide, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -272,7 +272,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Name: SearchParam<ImplementationGuide, String> =
+  public val name: SearchParam<ImplementationGuide, String> =
     SimpleSearchParam<ImplementationGuide, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -280,7 +280,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> listOf(resource.name) },
     )
 
-  public val Publisher: SearchParam<ImplementationGuide, String> =
+  public val publisher: SearchParam<ImplementationGuide, String> =
     SimpleSearchParam<ImplementationGuide, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -288,7 +288,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Resource: SearchParam<ImplementationGuide, Reference> =
+  public val resource: SearchParam<ImplementationGuide, Reference> =
     SimpleSearchParam<ImplementationGuide, Reference>(
       name = "resource",
       type = SearchParamType.fromCode("reference"),
@@ -441,7 +441,7 @@ public object ImplementationGuideSearchParams {
       },
     )
 
-  public val Status: SearchParam<ImplementationGuide, Any> =
+  public val status: SearchParam<ImplementationGuide, Any> =
     SimpleSearchParam<ImplementationGuide, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -449,7 +449,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<ImplementationGuide, String> =
+  public val title: SearchParam<ImplementationGuide, String> =
     SimpleSearchParam<ImplementationGuide, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -457,7 +457,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<ImplementationGuide, Uri> =
+  public val url: SearchParam<ImplementationGuide, Uri> =
     SimpleSearchParam<ImplementationGuide, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -465,7 +465,7 @@ public object ImplementationGuideSearchParams {
       extractor = { resource -> listOf(resource.url) },
     )
 
-  public val Version: SearchParam<ImplementationGuide, String> =
+  public val version: SearchParam<ImplementationGuide, String> =
     SimpleSearchParam<ImplementationGuide, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -474,25 +474,25 @@ public object ImplementationGuideSearchParams {
     )
 
   /** All search parameters for the ImplementationGuide resource type. */
-  public val ALL: CollectionsList<SearchParam<ImplementationGuide, *>> =
+  public val all: CollectionsList<SearchParam<ImplementationGuide, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      DependsOn,
-      Description,
-      Experimental,
-      Global,
-      Jurisdiction,
-      Name,
-      Publisher,
-      Resource,
-      Status,
-      Title,
-      Url,
-      Version,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      dependsOn,
+      description,
+      experimental,
+      global,
+      jurisdiction,
+      name,
+      publisher,
+      resource,
+      status,
+      title,
+      url,
+      version,
     )
 }

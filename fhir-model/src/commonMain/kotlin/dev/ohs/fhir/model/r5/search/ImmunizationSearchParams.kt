@@ -24,8 +24,10 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Immunization
+import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.Observation
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
@@ -38,7 +40,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Immunization] resource type. */
 public object ImmunizationSearchParams {
-  public val Date: SearchParam<Immunization, Any> =
+  public val date: SearchParam<Immunization, Any> =
     SimpleSearchParam<Immunization, Any>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -46,7 +48,7 @@ public object ImmunizationSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Identifier: SearchParam<Immunization, Identifier> =
+  public val identifier: SearchParam<Immunization, Identifier> =
     SimpleSearchParam<Immunization, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -54,16 +56,16 @@ public object ImmunizationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Location: SearchParam<Immunization, Reference> =
+  public val location: SearchParam<Immunization, Reference> =
     SimpleSearchParam<Immunization, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Immunization.location",
-      target = listOf(dev.ohs.fhir.model.r5.Location::class),
+      target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
     )
 
-  public val LotNumber: SearchParam<Immunization, String> =
+  public val lotNumber: SearchParam<Immunization, String> =
     SimpleSearchParam<Immunization, String>(
       name = "lot-number",
       type = SearchParamType.fromCode("string"),
@@ -71,7 +73,7 @@ public object ImmunizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.lotNumber) },
     )
 
-  public val Manufacturer: SearchParam<Immunization, Reference> =
+  public val manufacturer: SearchParam<Immunization, Reference> =
     SimpleSearchParam<Immunization, Reference>(
       name = "manufacturer",
       type = SearchParamType.fromCode("reference"),
@@ -80,16 +82,16 @@ public object ImmunizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.manufacturer?.reference) },
     )
 
-  public val Patient: SearchParam<Immunization, Reference> =
+  public val patient: SearchParam<Immunization, Reference> =
     SimpleSearchParam<Immunization, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Immunization.patient",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Performer: SearchParam<Immunization, Reference> =
+  public val performer: SearchParam<Immunization, Reference> =
     SimpleSearchParam<Immunization, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
@@ -100,12 +102,12 @@ public object ImmunizationSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.performer.map { it.actor } },
     )
 
-  public val Reaction: SearchParam<Immunization, Reference> =
+  public val reaction: SearchParam<Immunization, Reference> =
     SimpleSearchParam<Immunization, Reference>(
       name = "reaction",
       type = SearchParamType.fromCode("reference"),
@@ -116,7 +118,7 @@ public object ImmunizationSearchParams {
       },
     )
 
-  public val ReactionDate: SearchParam<Immunization, DateTime> =
+  public val reactionDate: SearchParam<Immunization, DateTime> =
     SimpleSearchParam<Immunization, DateTime>(
       name = "reaction-date",
       type = SearchParamType.fromCode("date"),
@@ -124,7 +126,7 @@ public object ImmunizationSearchParams {
       extractor = { resource -> resource.reaction.mapNotNull { it.date } },
     )
 
-  public val ReasonCode: SearchParam<Immunization, CodeableConcept> =
+  public val reasonCode: SearchParam<Immunization, CodeableConcept> =
     SimpleSearchParam<Immunization, CodeableConcept>(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
@@ -132,7 +134,7 @@ public object ImmunizationSearchParams {
       extractor = { resource -> resource.reason.mapNotNull { it.concept } },
     )
 
-  public val ReasonReference: SearchParam<Immunization, Reference> =
+  public val reasonReference: SearchParam<Immunization, Reference> =
     SimpleSearchParam<Immunization, Reference>(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
@@ -141,7 +143,7 @@ public object ImmunizationSearchParams {
       extractor = { resource -> resource.reason.mapNotNull { it.reference } },
     )
 
-  public val Series: SearchParam<Immunization, String> =
+  public val series: SearchParam<Immunization, String> =
     SimpleSearchParam<Immunization, String>(
       name = "series",
       type = SearchParamType.fromCode("string"),
@@ -149,7 +151,7 @@ public object ImmunizationSearchParams {
       extractor = { resource -> resource.protocolApplied.mapNotNull { it.series } },
     )
 
-  public val Status: SearchParam<Immunization, Any> =
+  public val status: SearchParam<Immunization, Any> =
     SimpleSearchParam<Immunization, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -157,7 +159,7 @@ public object ImmunizationSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val StatusReason: SearchParam<Immunization, CodeableConcept> =
+  public val statusReason: SearchParam<Immunization, CodeableConcept> =
     SimpleSearchParam<Immunization, CodeableConcept>(
       name = "status-reason",
       type = SearchParamType.fromCode("token"),
@@ -165,7 +167,7 @@ public object ImmunizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.statusReason) },
     )
 
-  public val TargetDisease: SearchParam<Immunization, CodeableConcept> =
+  public val targetDisease: SearchParam<Immunization, CodeableConcept> =
     SimpleSearchParam<Immunization, CodeableConcept>(
       name = "target-disease",
       type = SearchParamType.fromCode("token"),
@@ -173,7 +175,7 @@ public object ImmunizationSearchParams {
       extractor = { resource -> resource.protocolApplied.flatMap { it.targetDisease } },
     )
 
-  public val VaccineCode: SearchParam<Immunization, CodeableConcept> =
+  public val vaccineCode: SearchParam<Immunization, CodeableConcept> =
     SimpleSearchParam<Immunization, CodeableConcept>(
       name = "vaccine-code",
       type = SearchParamType.fromCode("token"),
@@ -182,23 +184,23 @@ public object ImmunizationSearchParams {
     )
 
   /** All search parameters for the Immunization resource type. */
-  public val ALL: List<SearchParam<Immunization, *>> =
+  public val all: List<SearchParam<Immunization, *>> =
     listOf(
-      Date,
-      Identifier,
-      Location,
-      LotNumber,
-      Manufacturer,
-      Patient,
-      Performer,
-      Reaction,
-      ReactionDate,
-      ReasonCode,
-      ReasonReference,
-      Series,
-      Status,
-      StatusReason,
-      TargetDisease,
-      VaccineCode,
+      date,
+      identifier,
+      location,
+      lotNumber,
+      manufacturer,
+      patient,
+      performer,
+      reaction,
+      reactionDate,
+      reasonCode,
+      reasonReference,
+      series,
+      status,
+      statusReason,
+      targetDisease,
+      vaccineCode,
     )
 }

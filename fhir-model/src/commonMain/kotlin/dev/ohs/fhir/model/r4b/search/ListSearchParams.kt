@@ -65,6 +65,7 @@ import dev.ohs.fhir.model.r4b.DeviceUseStatement
 import dev.ohs.fhir.model.r4b.DiagnosticReport
 import dev.ohs.fhir.model.r4b.DocumentManifest
 import dev.ohs.fhir.model.r4b.DocumentReference
+import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Endpoint
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
@@ -120,6 +121,7 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Person
@@ -169,7 +171,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [R4bList] resource type. */
 public object ListSearchParams {
-  public val Code: SearchParam<R4bList, CodeableConcept> =
+  public val code: SearchParam<R4bList, CodeableConcept> =
     SimpleSearchParam<R4bList, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -177,7 +179,7 @@ public object ListSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Date: SearchParam<R4bList, DateTime> =
+  public val date: SearchParam<R4bList, DateTime> =
     SimpleSearchParam<R4bList, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -185,7 +187,7 @@ public object ListSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val EmptyReason: SearchParam<R4bList, CodeableConcept> =
+  public val emptyReason: SearchParam<R4bList, CodeableConcept> =
     SimpleSearchParam<R4bList, CodeableConcept>(
       name = "empty-reason",
       type = SearchParamType.fromCode("token"),
@@ -193,16 +195,16 @@ public object ListSearchParams {
       extractor = { resource -> listOfNotNull(resource.emptyReason) },
     )
 
-  public val Encounter: SearchParam<R4bList, Reference> =
+  public val encounter: SearchParam<R4bList, Reference> =
     SimpleSearchParam<R4bList, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "List.encounter",
-      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Identifier: SearchParam<R4bList, Identifier> =
+  public val identifier: SearchParam<R4bList, Identifier> =
     SimpleSearchParam<R4bList, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -210,7 +212,7 @@ public object ListSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Item: SearchParam<R4bList, Reference> =
+  public val item: SearchParam<R4bList, Reference> =
     SimpleSearchParam<R4bList, Reference>(
       name = "item",
       type = SearchParamType.fromCode("reference"),
@@ -262,7 +264,7 @@ public object ListSearchParams {
           DiagnosticReport::class,
           DocumentManifest::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r4b.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
@@ -316,7 +318,7 @@ public object ListSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -361,7 +363,7 @@ public object ListSearchParams {
       extractor = { resource -> resource.entry.map { it.item } },
     )
 
-  public val Notes: SearchParam<R4bList, Markdown> =
+  public val notes: SearchParam<R4bList, Markdown> =
     SimpleSearchParam<R4bList, Markdown>(
       name = "notes",
       type = SearchParamType.fromCode("string"),
@@ -369,12 +371,12 @@ public object ListSearchParams {
       extractor = { resource -> resource.note.map { it.text } },
     )
 
-  public val Patient: SearchParam<R4bList, Reference> =
+  public val patient: SearchParam<R4bList, Reference> =
     SimpleSearchParam<R4bList, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "List.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -382,22 +384,16 @@ public object ListSearchParams {
       },
     )
 
-  public val Source: SearchParam<R4bList, Reference> =
+  public val source: SearchParam<R4bList, Reference> =
     SimpleSearchParam<R4bList, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
       expression = "List.source",
-      target =
-        listOf(
-          Practitioner::class,
-          Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
-          PractitionerRole::class,
-        ),
+      target = listOf(Practitioner::class, Device::class, Patient::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.source) },
     )
 
-  public val Status: SearchParam<R4bList, Any> =
+  public val status: SearchParam<R4bList, Any> =
     SimpleSearchParam<R4bList, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -405,17 +401,16 @@ public object ListSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<R4bList, Reference> =
+  public val subject: SearchParam<R4bList, Reference> =
     SimpleSearchParam<R4bList, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "List.subject",
-      target =
-        listOf(Group::class, Device::class, dev.ohs.fhir.model.r4b.Patient::class, Location::class),
+      target = listOf(Group::class, Device::class, Patient::class, Location::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val Title: SearchParam<R4bList, String> =
+  public val title: SearchParam<R4bList, String> =
     SimpleSearchParam<R4bList, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -424,19 +419,19 @@ public object ListSearchParams {
     )
 
   /** All search parameters for the List resource type. */
-  public val ALL: CollectionsList<SearchParam<R4bList, *>> =
+  public val all: CollectionsList<SearchParam<R4bList, *>> =
     listOf(
-      Code,
-      Date,
-      EmptyReason,
-      Encounter,
-      Identifier,
-      Item,
-      Notes,
-      Patient,
-      Source,
-      Status,
-      Subject,
-      Title,
+      code,
+      date,
+      emptyReason,
+      encounter,
+      identifier,
+      item,
+      notes,
+      patient,
+      source,
+      status,
+      subject,
+      title,
     )
 }

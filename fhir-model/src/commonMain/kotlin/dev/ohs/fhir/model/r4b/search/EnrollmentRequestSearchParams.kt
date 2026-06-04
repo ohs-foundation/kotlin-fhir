@@ -20,6 +20,7 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.Identifier
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
@@ -28,7 +29,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [EnrollmentRequest] resource type. */
 public object EnrollmentRequestSearchParams {
-  public val Identifier: SearchParam<EnrollmentRequest, Identifier> =
+  public val identifier: SearchParam<EnrollmentRequest, Identifier> =
     SimpleSearchParam<EnrollmentRequest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -36,16 +37,16 @@ public object EnrollmentRequestSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<EnrollmentRequest, Reference> =
+  public val patient: SearchParam<EnrollmentRequest, Reference> =
     SimpleSearchParam<EnrollmentRequest, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "EnrollmentRequest.candidate",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.candidate) },
     )
 
-  public val Status: SearchParam<EnrollmentRequest, Any> =
+  public val status: SearchParam<EnrollmentRequest, Any> =
     SimpleSearchParam<EnrollmentRequest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -53,16 +54,16 @@ public object EnrollmentRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Subject: SearchParam<EnrollmentRequest, Reference> =
+  public val subject: SearchParam<EnrollmentRequest, Reference> =
     SimpleSearchParam<EnrollmentRequest, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "EnrollmentRequest.candidate",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.candidate) },
     )
 
   /** All search parameters for the EnrollmentRequest resource type. */
-  public val ALL: List<SearchParam<EnrollmentRequest, *>> =
-    listOf(Identifier, Patient, Status, Subject)
+  public val all: List<SearchParam<EnrollmentRequest, *>> =
+    listOf(identifier, patient, status, subject)
 }

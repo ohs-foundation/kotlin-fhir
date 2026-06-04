@@ -69,6 +69,7 @@ import dev.ohs.fhir.model.r5.DeviceRequest
 import dev.ohs.fhir.model.r5.DeviceUsage
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
@@ -130,6 +131,7 @@ import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.OrganizationAffiliation
 import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Parameters
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
 import dev.ohs.fhir.model.r5.Permission
@@ -185,7 +187,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [ClinicalImpression] resource type. */
 public object ClinicalImpressionSearchParams {
-  public val Date: SearchParam<ClinicalImpression, DateTime> =
+  public val date: SearchParam<ClinicalImpression, DateTime> =
     SimpleSearchParam<ClinicalImpression, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -193,16 +195,16 @@ public object ClinicalImpressionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Encounter: SearchParam<ClinicalImpression, Reference> =
+  public val encounter: SearchParam<ClinicalImpression, Reference> =
     SimpleSearchParam<ClinicalImpression, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val FindingCode: SearchParam<ClinicalImpression, CodeableConcept> =
+  public val findingCode: SearchParam<ClinicalImpression, CodeableConcept> =
     SimpleSearchParam<ClinicalImpression, CodeableConcept>(
       name = "finding-code",
       type = SearchParamType.fromCode("token"),
@@ -210,7 +212,7 @@ public object ClinicalImpressionSearchParams {
       extractor = { resource -> resource.finding.mapNotNull { it.item }.mapNotNull { it.concept } },
     )
 
-  public val FindingRef: SearchParam<ClinicalImpression, Reference> =
+  public val findingRef: SearchParam<ClinicalImpression, Reference> =
     SimpleSearchParam<ClinicalImpression, Reference>(
       name = "finding-ref",
       type = SearchParamType.fromCode("reference"),
@@ -221,7 +223,7 @@ public object ClinicalImpressionSearchParams {
       },
     )
 
-  public val Identifier: SearchParam<ClinicalImpression, Identifier> =
+  public val identifier: SearchParam<ClinicalImpression, Identifier> =
     SimpleSearchParam<ClinicalImpression, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -229,12 +231,12 @@ public object ClinicalImpressionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<ClinicalImpression, Reference> =
+  public val patient: SearchParam<ClinicalImpression, Reference> =
     SimpleSearchParam<ClinicalImpression, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -242,7 +244,7 @@ public object ClinicalImpressionSearchParams {
       },
     )
 
-  public val Performer: SearchParam<ClinicalImpression, Reference> =
+  public val performer: SearchParam<ClinicalImpression, Reference> =
     SimpleSearchParam<ClinicalImpression, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
@@ -251,7 +253,7 @@ public object ClinicalImpressionSearchParams {
       extractor = { resource -> listOfNotNull(resource.performer) },
     )
 
-  public val Previous: SearchParam<ClinicalImpression, Reference> =
+  public val previous: SearchParam<ClinicalImpression, Reference> =
     SimpleSearchParam<ClinicalImpression, Reference>(
       name = "previous",
       type = SearchParamType.fromCode("reference"),
@@ -260,7 +262,7 @@ public object ClinicalImpressionSearchParams {
       extractor = { resource -> listOfNotNull(resource.previous) },
     )
 
-  public val Problem: SearchParam<ClinicalImpression, Reference> =
+  public val problem: SearchParam<ClinicalImpression, Reference> =
     SimpleSearchParam<ClinicalImpression, Reference>(
       name = "problem",
       type = SearchParamType.fromCode("reference"),
@@ -269,7 +271,7 @@ public object ClinicalImpressionSearchParams {
       extractor = { resource -> resource.problem },
     )
 
-  public val Status: SearchParam<ClinicalImpression, Any> =
+  public val status: SearchParam<ClinicalImpression, Any> =
     SimpleSearchParam<ClinicalImpression, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -277,16 +279,16 @@ public object ClinicalImpressionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<ClinicalImpression, Reference> =
+  public val subject: SearchParam<ClinicalImpression, Reference> =
     SimpleSearchParam<ClinicalImpression, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  public val SupportingInfo: SearchParam<ClinicalImpression, Reference> =
+  public val supportingInfo: SearchParam<ClinicalImpression, Reference> =
     SimpleSearchParam<ClinicalImpression, Reference>(
       name = "supporting-info",
       type = SearchParamType.fromCode("reference"),
@@ -342,7 +344,7 @@ public object ClinicalImpressionSearchParams {
           DeviceUsage::class,
           DiagnosticReport::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r5.Encounter::class,
+          Encounter::class,
           EncounterHistory::class,
           Endpoint::class,
           EnrollmentRequest::class,
@@ -403,7 +405,7 @@ public object ClinicalImpressionSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -456,19 +458,19 @@ public object ClinicalImpressionSearchParams {
     )
 
   /** All search parameters for the ClinicalImpression resource type. */
-  public val ALL: CollectionsList<SearchParam<ClinicalImpression, *>> =
+  public val all: CollectionsList<SearchParam<ClinicalImpression, *>> =
     listOf(
-      Date,
-      Encounter,
-      FindingCode,
-      FindingRef,
-      Identifier,
-      Patient,
-      Performer,
-      Previous,
-      Problem,
-      Status,
-      Subject,
-      SupportingInfo,
+      date,
+      encounter,
+      findingCode,
+      findingRef,
+      identifier,
+      patient,
+      performer,
+      previous,
+      problem,
+      status,
+      subject,
+      supportingInfo,
     )
 }

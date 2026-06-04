@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Instant
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Schedule
 import dev.ohs.fhir.model.r4.Slot
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
@@ -30,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Slot] resource type. */
 public object SlotSearchParams {
-  public val AppointmentType: SearchParam<Slot, CodeableConcept> =
+  public val appointmentType: SearchParam<Slot, CodeableConcept> =
     SimpleSearchParam<Slot, CodeableConcept>(
       name = "appointment-type",
       type = SearchParamType.fromCode("token"),
@@ -38,7 +39,7 @@ public object SlotSearchParams {
       extractor = { resource -> listOfNotNull(resource.appointmentType) },
     )
 
-  public val Identifier: SearchParam<Slot, Identifier> =
+  public val identifier: SearchParam<Slot, Identifier> =
     SimpleSearchParam<Slot, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -46,16 +47,16 @@ public object SlotSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Schedule: SearchParam<Slot, Reference> =
+  public val schedule: SearchParam<Slot, Reference> =
     SimpleSearchParam<Slot, Reference>(
       name = "schedule",
       type = SearchParamType.fromCode("reference"),
       expression = "Slot.schedule",
-      target = listOf(dev.ohs.fhir.model.r4.Schedule::class),
+      target = listOf(Schedule::class),
       extractor = { resource -> listOf(resource.schedule) },
     )
 
-  public val ServiceCategory: SearchParam<Slot, CodeableConcept> =
+  public val serviceCategory: SearchParam<Slot, CodeableConcept> =
     SimpleSearchParam<Slot, CodeableConcept>(
       name = "service-category",
       type = SearchParamType.fromCode("token"),
@@ -63,7 +64,7 @@ public object SlotSearchParams {
       extractor = { resource -> resource.serviceCategory },
     )
 
-  public val ServiceType: SearchParam<Slot, CodeableConcept> =
+  public val serviceType: SearchParam<Slot, CodeableConcept> =
     SimpleSearchParam<Slot, CodeableConcept>(
       name = "service-type",
       type = SearchParamType.fromCode("token"),
@@ -71,7 +72,7 @@ public object SlotSearchParams {
       extractor = { resource -> resource.serviceType },
     )
 
-  public val Specialty: SearchParam<Slot, CodeableConcept> =
+  public val specialty: SearchParam<Slot, CodeableConcept> =
     SimpleSearchParam<Slot, CodeableConcept>(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
@@ -79,7 +80,7 @@ public object SlotSearchParams {
       extractor = { resource -> resource.specialty },
     )
 
-  public val Start: SearchParam<Slot, Instant> =
+  public val start: SearchParam<Slot, Instant> =
     SimpleSearchParam<Slot, Instant>(
       name = "start",
       type = SearchParamType.fromCode("date"),
@@ -87,7 +88,7 @@ public object SlotSearchParams {
       extractor = { resource -> listOf(resource.start) },
     )
 
-  public val Status: SearchParam<Slot, Any> =
+  public val status: SearchParam<Slot, Any> =
     SimpleSearchParam<Slot, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -96,15 +97,15 @@ public object SlotSearchParams {
     )
 
   /** All search parameters for the Slot resource type. */
-  public val ALL: List<SearchParam<Slot, *>> =
+  public val all: List<SearchParam<Slot, *>> =
     listOf(
-      AppointmentType,
-      Identifier,
-      Schedule,
-      ServiceCategory,
-      ServiceType,
-      Specialty,
-      Start,
-      Status,
+      appointmentType,
+      identifier,
+      schedule,
+      serviceCategory,
+      serviceType,
+      specialty,
+      start,
+      status,
     )
 }

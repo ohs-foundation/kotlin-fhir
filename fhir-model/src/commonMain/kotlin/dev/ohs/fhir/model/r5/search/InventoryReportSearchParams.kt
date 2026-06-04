@@ -34,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [InventoryReport] resource type. */
 public object InventoryReportSearchParams {
-  public val Identifier: SearchParam<InventoryReport, Identifier> =
+  public val identifier: SearchParam<InventoryReport, Identifier> =
     SimpleSearchParam<InventoryReport, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -42,7 +42,7 @@ public object InventoryReportSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Item: SearchParam<InventoryReport, CodeableConcept> =
+  public val item: SearchParam<InventoryReport, CodeableConcept> =
     SimpleSearchParam<InventoryReport, CodeableConcept>(
       name = "item",
       type = SearchParamType.fromCode("token"),
@@ -52,7 +52,7 @@ public object InventoryReportSearchParams {
       },
     )
 
-  public val ItemReference: SearchParam<InventoryReport, Reference> =
+  public val itemReference: SearchParam<InventoryReport, Reference> =
     SimpleSearchParam<InventoryReport, Reference>(
       name = "item-reference",
       type = SearchParamType.fromCode("reference"),
@@ -70,7 +70,7 @@ public object InventoryReportSearchParams {
       },
     )
 
-  public val Status: SearchParam<InventoryReport, Any> =
+  public val status: SearchParam<InventoryReport, Any> =
     SimpleSearchParam<InventoryReport, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -79,6 +79,6 @@ public object InventoryReportSearchParams {
     )
 
   /** All search parameters for the InventoryReport resource type. */
-  public val ALL: List<SearchParam<InventoryReport, *>> =
-    listOf(Identifier, Item, ItemReference, Status)
+  public val all: List<SearchParam<InventoryReport, *>> =
+    listOf(identifier, item, itemReference, status)
 }

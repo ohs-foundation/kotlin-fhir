@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProductDispense
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
@@ -30,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [BiologicallyDerivedProductDispense] resource type. */
 public object BiologicallyDerivedProductDispenseSearchParams {
-  public val Identifier: SearchParam<BiologicallyDerivedProductDispense, Identifier> =
+  public val identifier: SearchParam<BiologicallyDerivedProductDispense, Identifier> =
     SimpleSearchParam<BiologicallyDerivedProductDispense, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -38,16 +39,16 @@ public object BiologicallyDerivedProductDispenseSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<BiologicallyDerivedProductDispense, Reference> =
+  public val patient: SearchParam<BiologicallyDerivedProductDispense, Reference> =
     SimpleSearchParam<BiologicallyDerivedProductDispense, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "BiologicallyDerivedProductDispense.patient",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Performer: SearchParam<BiologicallyDerivedProductDispense, Reference> =
+  public val performer: SearchParam<BiologicallyDerivedProductDispense, Reference> =
     SimpleSearchParam<BiologicallyDerivedProductDispense, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
@@ -56,7 +57,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
       extractor = { resource -> resource.performer.map { it.actor } },
     )
 
-  public val Product: SearchParam<BiologicallyDerivedProductDispense, Reference> =
+  public val product: SearchParam<BiologicallyDerivedProductDispense, Reference> =
     SimpleSearchParam<BiologicallyDerivedProductDispense, Reference>(
       name = "product",
       type = SearchParamType.fromCode("reference"),
@@ -65,7 +66,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
       extractor = { resource -> listOf(resource.product) },
     )
 
-  public val Status: SearchParam<BiologicallyDerivedProductDispense, Any> =
+  public val status: SearchParam<BiologicallyDerivedProductDispense, Any> =
     SimpleSearchParam<BiologicallyDerivedProductDispense, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -74,6 +75,6 @@ public object BiologicallyDerivedProductDispenseSearchParams {
     )
 
   /** All search parameters for the BiologicallyDerivedProductDispense resource type. */
-  public val ALL: List<SearchParam<BiologicallyDerivedProductDispense, *>> =
-    listOf(Identifier, Patient, Performer, Product, Status)
+  public val all: List<SearchParam<BiologicallyDerivedProductDispense, *>> =
+    listOf(identifier, patient, performer, product, status)
 }

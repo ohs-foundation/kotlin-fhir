@@ -21,9 +21,13 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.Boolean
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.ContactPoint
+import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.HealthcareService
 import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Location
+import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
@@ -32,7 +36,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [PractitionerRole] resource type. */
 public object PractitionerRoleSearchParams {
-  public val Active: SearchParam<PractitionerRole, Boolean> =
+  public val active: SearchParam<PractitionerRole, Boolean> =
     SimpleSearchParam<PractitionerRole, Boolean>(
       name = "active",
       type = SearchParamType.fromCode("token"),
@@ -40,7 +44,7 @@ public object PractitionerRoleSearchParams {
       extractor = { resource -> listOfNotNull(resource.active) },
     )
 
-  public val Date: SearchParam<PractitionerRole, Period> =
+  public val date: SearchParam<PractitionerRole, Period> =
     SimpleSearchParam<PractitionerRole, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -48,7 +52,7 @@ public object PractitionerRoleSearchParams {
       extractor = { resource -> listOfNotNull(resource.period) },
     )
 
-  public val Email: SearchParam<PractitionerRole, ContactPoint> =
+  public val email: SearchParam<PractitionerRole, ContactPoint> =
     SimpleSearchParam<PractitionerRole, ContactPoint>(
       name = "email",
       type = SearchParamType.fromCode("token"),
@@ -58,16 +62,16 @@ public object PractitionerRoleSearchParams {
       },
     )
 
-  public val Endpoint: SearchParam<PractitionerRole, Reference> =
+  public val endpoint: SearchParam<PractitionerRole, Reference> =
     SimpleSearchParam<PractitionerRole, Reference>(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "PractitionerRole.endpoint",
-      target = listOf(dev.ohs.fhir.model.r4.Endpoint::class),
+      target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
     )
 
-  public val Identifier: SearchParam<PractitionerRole, Identifier> =
+  public val identifier: SearchParam<PractitionerRole, Identifier> =
     SimpleSearchParam<PractitionerRole, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -75,25 +79,25 @@ public object PractitionerRoleSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Location: SearchParam<PractitionerRole, Reference> =
+  public val location: SearchParam<PractitionerRole, Reference> =
     SimpleSearchParam<PractitionerRole, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "PractitionerRole.location",
-      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      target = listOf(Location::class),
       extractor = { resource -> resource.location },
     )
 
-  public val Organization: SearchParam<PractitionerRole, Reference> =
+  public val organization: SearchParam<PractitionerRole, Reference> =
     SimpleSearchParam<PractitionerRole, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "PractitionerRole.organization",
-      target = listOf(dev.ohs.fhir.model.r4.Organization::class),
+      target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.organization) },
     )
 
-  public val Phone: SearchParam<PractitionerRole, ContactPoint> =
+  public val phone: SearchParam<PractitionerRole, ContactPoint> =
     SimpleSearchParam<PractitionerRole, ContactPoint>(
       name = "phone",
       type = SearchParamType.fromCode("token"),
@@ -103,16 +107,16 @@ public object PractitionerRoleSearchParams {
       },
     )
 
-  public val Practitioner: SearchParam<PractitionerRole, Reference> =
+  public val practitioner: SearchParam<PractitionerRole, Reference> =
     SimpleSearchParam<PractitionerRole, Reference>(
       name = "practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "PractitionerRole.practitioner",
-      target = listOf(dev.ohs.fhir.model.r4.Practitioner::class),
+      target = listOf(Practitioner::class),
       extractor = { resource -> listOfNotNull(resource.practitioner) },
     )
 
-  public val Role: SearchParam<PractitionerRole, CodeableConcept> =
+  public val role: SearchParam<PractitionerRole, CodeableConcept> =
     SimpleSearchParam<PractitionerRole, CodeableConcept>(
       name = "role",
       type = SearchParamType.fromCode("token"),
@@ -120,7 +124,7 @@ public object PractitionerRoleSearchParams {
       extractor = { resource -> resource.code },
     )
 
-  public val Service: SearchParam<PractitionerRole, Reference> =
+  public val service: SearchParam<PractitionerRole, Reference> =
     SimpleSearchParam<PractitionerRole, Reference>(
       name = "service",
       type = SearchParamType.fromCode("reference"),
@@ -129,7 +133,7 @@ public object PractitionerRoleSearchParams {
       extractor = { resource -> resource.healthcareService },
     )
 
-  public val Specialty: SearchParam<PractitionerRole, CodeableConcept> =
+  public val specialty: SearchParam<PractitionerRole, CodeableConcept> =
     SimpleSearchParam<PractitionerRole, CodeableConcept>(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
@@ -137,7 +141,7 @@ public object PractitionerRoleSearchParams {
       extractor = { resource -> resource.specialty },
     )
 
-  public val Telecom: SearchParam<PractitionerRole, ContactPoint> =
+  public val telecom: SearchParam<PractitionerRole, ContactPoint> =
     SimpleSearchParam<PractitionerRole, ContactPoint>(
       name = "telecom",
       type = SearchParamType.fromCode("token"),
@@ -146,20 +150,20 @@ public object PractitionerRoleSearchParams {
     )
 
   /** All search parameters for the PractitionerRole resource type. */
-  public val ALL: List<SearchParam<PractitionerRole, *>> =
+  public val all: List<SearchParam<PractitionerRole, *>> =
     listOf(
-      Active,
-      Date,
-      Email,
-      Endpoint,
-      Identifier,
-      Location,
-      Organization,
-      Phone,
-      Practitioner,
-      Role,
-      Service,
-      Specialty,
-      Telecom,
+      active,
+      date,
+      email,
+      endpoint,
+      identifier,
+      location,
+      organization,
+      phone,
+      practitioner,
+      role,
+      service,
+      specialty,
+      telecom,
     )
 }

@@ -31,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ObservationDefinition] resource type. */
 public object ObservationDefinitionSearchParams {
-  public val Category: SearchParam<ObservationDefinition, CodeableConcept> =
+  public val category: SearchParam<ObservationDefinition, CodeableConcept> =
     SimpleSearchParam<ObservationDefinition, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -39,7 +39,7 @@ public object ObservationDefinitionSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Code: SearchParam<ObservationDefinition, CodeableConcept> =
+  public val code: SearchParam<ObservationDefinition, CodeableConcept> =
     SimpleSearchParam<ObservationDefinition, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -47,7 +47,7 @@ public object ObservationDefinitionSearchParams {
       extractor = { resource -> listOf(resource.code) },
     )
 
-  public val Experimental: SearchParam<ObservationDefinition, Boolean> =
+  public val experimental: SearchParam<ObservationDefinition, Boolean> =
     SimpleSearchParam<ObservationDefinition, Boolean>(
       name = "experimental",
       type = SearchParamType.fromCode("token"),
@@ -55,7 +55,7 @@ public object ObservationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.experimental) },
     )
 
-  public val Identifier: SearchParam<ObservationDefinition, Identifier> =
+  public val identifier: SearchParam<ObservationDefinition, Identifier> =
     SimpleSearchParam<ObservationDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -63,7 +63,7 @@ public object ObservationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val Method: SearchParam<ObservationDefinition, CodeableConcept> =
+  public val method: SearchParam<ObservationDefinition, CodeableConcept> =
     SimpleSearchParam<ObservationDefinition, CodeableConcept>(
       name = "method",
       type = SearchParamType.fromCode("token"),
@@ -71,7 +71,7 @@ public object ObservationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.method) },
     )
 
-  public val Status: SearchParam<ObservationDefinition, Any> =
+  public val status: SearchParam<ObservationDefinition, Any> =
     SimpleSearchParam<ObservationDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -79,7 +79,7 @@ public object ObservationDefinitionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Title: SearchParam<ObservationDefinition, String> =
+  public val title: SearchParam<ObservationDefinition, String> =
     SimpleSearchParam<ObservationDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -87,7 +87,7 @@ public object ObservationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<ObservationDefinition, Uri> =
+  public val url: SearchParam<ObservationDefinition, Uri> =
     SimpleSearchParam<ObservationDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -96,6 +96,6 @@ public object ObservationDefinitionSearchParams {
     )
 
   /** All search parameters for the ObservationDefinition resource type. */
-  public val ALL: List<SearchParam<ObservationDefinition, *>> =
-    listOf(Category, Code, Experimental, Identifier, Method, Status, Title, Url)
+  public val all: List<SearchParam<ObservationDefinition, *>> =
+    listOf(category, code, experimental, identifier, method, status, title, url)
 }

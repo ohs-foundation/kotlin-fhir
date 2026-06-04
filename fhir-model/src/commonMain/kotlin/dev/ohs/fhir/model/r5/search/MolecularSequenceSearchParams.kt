@@ -129,6 +129,7 @@ import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.OrganizationAffiliation
 import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Parameters
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
 import dev.ohs.fhir.model.r5.Permission
@@ -184,7 +185,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [MolecularSequence] resource type. */
 public object MolecularSequenceSearchParams {
-  public val Focus: SearchParam<MolecularSequence, Reference> =
+  public val focus: SearchParam<MolecularSequence, Reference> =
     SimpleSearchParam<MolecularSequence, Reference>(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
@@ -301,7 +302,7 @@ public object MolecularSequenceSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -353,7 +354,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> resource.focus },
     )
 
-  public val Identifier: SearchParam<MolecularSequence, Identifier> =
+  public val identifier: SearchParam<MolecularSequence, Identifier> =
     SimpleSearchParam<MolecularSequence, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -361,12 +362,12 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<MolecularSequence, Reference> =
+  public val patient: SearchParam<MolecularSequence, Reference> =
     SimpleSearchParam<MolecularSequence, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "MolecularSequence.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -374,7 +375,7 @@ public object MolecularSequenceSearchParams {
       },
     )
 
-  public val Subject: SearchParam<MolecularSequence, Reference> =
+  public val subject: SearchParam<MolecularSequence, Reference> =
     SimpleSearchParam<MolecularSequence, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -385,12 +386,12 @@ public object MolecularSequenceSearchParams {
           Group::class,
           BiologicallyDerivedProduct::class,
           Substance::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val Type: SearchParam<MolecularSequence, Any> =
+  public val type: SearchParam<MolecularSequence, Any> =
     SimpleSearchParam<MolecularSequence, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -399,6 +400,6 @@ public object MolecularSequenceSearchParams {
     )
 
   /** All search parameters for the MolecularSequence resource type. */
-  public val ALL: CollectionsList<SearchParam<MolecularSequence, *>> =
-    listOf(Focus, Identifier, Patient, Subject, Type)
+  public val all: CollectionsList<SearchParam<MolecularSequence, *>> =
+    listOf(focus, identifier, patient, subject, type)
 }

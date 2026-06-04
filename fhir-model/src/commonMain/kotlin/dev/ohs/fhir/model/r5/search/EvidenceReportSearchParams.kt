@@ -31,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [EvidenceReport] resource type. */
 public object EvidenceReportSearchParams {
-  public val Context: SearchParam<EvidenceReport, Any> =
+  public val context: SearchParam<EvidenceReport, Any> =
     SimpleSearchParam<EvidenceReport, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -39,7 +39,7 @@ public object EvidenceReportSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextQuantity: SearchParam<EvidenceReport, Any> =
+  public val contextQuantity: SearchParam<EvidenceReport, Any> =
     SimpleSearchParam<EvidenceReport, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -47,7 +47,7 @@ public object EvidenceReportSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ContextType: SearchParam<EvidenceReport, Coding> =
+  public val contextType: SearchParam<EvidenceReport, Coding> =
     SimpleSearchParam<EvidenceReport, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -55,7 +55,7 @@ public object EvidenceReportSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<EvidenceReport, UsageContext> =
+  public val contextTypeQuantity: SearchParam<EvidenceReport, UsageContext> =
     SimpleSearchParam<EvidenceReport, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -63,7 +63,7 @@ public object EvidenceReportSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<EvidenceReport, UsageContext> =
+  public val contextTypeValue: SearchParam<EvidenceReport, UsageContext> =
     SimpleSearchParam<EvidenceReport, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -71,7 +71,7 @@ public object EvidenceReportSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Identifier: SearchParam<EvidenceReport, Identifier> =
+  public val identifier: SearchParam<EvidenceReport, Identifier> =
     SimpleSearchParam<EvidenceReport, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -79,7 +79,7 @@ public object EvidenceReportSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Publisher: SearchParam<EvidenceReport, String> =
+  public val publisher: SearchParam<EvidenceReport, String> =
     SimpleSearchParam<EvidenceReport, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -87,7 +87,7 @@ public object EvidenceReportSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<EvidenceReport, Any> =
+  public val status: SearchParam<EvidenceReport, Any> =
     SimpleSearchParam<EvidenceReport, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -95,7 +95,7 @@ public object EvidenceReportSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Url: SearchParam<EvidenceReport, Uri> =
+  public val url: SearchParam<EvidenceReport, Uri> =
     SimpleSearchParam<EvidenceReport, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -104,16 +104,16 @@ public object EvidenceReportSearchParams {
     )
 
   /** All search parameters for the EvidenceReport resource type. */
-  public val ALL: List<SearchParam<EvidenceReport, *>> =
+  public val all: List<SearchParam<EvidenceReport, *>> =
     listOf(
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Identifier,
-      Publisher,
-      Status,
-      Url,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      identifier,
+      publisher,
+      status,
+      url,
     )
 }

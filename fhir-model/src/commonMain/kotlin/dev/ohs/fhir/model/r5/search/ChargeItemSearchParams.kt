@@ -18,6 +18,7 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Account
 import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.ChargeItem
 import dev.ohs.fhir.model.r5.CodeableConcept
@@ -25,6 +26,7 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Decimal
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
@@ -36,6 +38,7 @@ import dev.ohs.fhir.model.r5.MedicationRequest
 import dev.ohs.fhir.model.r5.Money
 import dev.ohs.fhir.model.r5.Observation
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Procedure
@@ -51,16 +54,16 @@ import kotlin.collections.List
 
 /** Search parameters for the [ChargeItem] resource type. */
 public object ChargeItemSearchParams {
-  public val Account: SearchParam<ChargeItem, Reference> =
+  public val account: SearchParam<ChargeItem, Reference> =
     SimpleSearchParam<ChargeItem, Reference>(
       name = "account",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.account",
-      target = listOf(dev.ohs.fhir.model.r5.Account::class),
+      target = listOf(Account::class),
       extractor = { resource -> resource.account },
     )
 
-  public val Code: SearchParam<ChargeItem, CodeableConcept> =
+  public val code: SearchParam<ChargeItem, CodeableConcept> =
     SimpleSearchParam<ChargeItem, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -68,16 +71,16 @@ public object ChargeItemSearchParams {
       extractor = { resource -> listOf(resource.code) },
     )
 
-  public val Encounter: SearchParam<ChargeItem, Reference> =
+  public val encounter: SearchParam<ChargeItem, Reference> =
     SimpleSearchParam<ChargeItem, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val EnteredDate: SearchParam<ChargeItem, DateTime> =
+  public val enteredDate: SearchParam<ChargeItem, DateTime> =
     SimpleSearchParam<ChargeItem, DateTime>(
       name = "entered-date",
       type = SearchParamType.fromCode("date"),
@@ -85,7 +88,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> listOfNotNull(resource.enteredDate) },
     )
 
-  public val Enterer: SearchParam<ChargeItem, Reference> =
+  public val enterer: SearchParam<ChargeItem, Reference> =
     SimpleSearchParam<ChargeItem, Reference>(
       name = "enterer",
       type = SearchParamType.fromCode("reference"),
@@ -97,12 +100,12 @@ public object ChargeItemSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOfNotNull(resource.enterer) },
     )
 
-  public val FactorOverride: SearchParam<ChargeItem, Decimal> =
+  public val factorOverride: SearchParam<ChargeItem, Decimal> =
     SimpleSearchParam<ChargeItem, Decimal>(
       name = "factor-override",
       type = SearchParamType.fromCode("number"),
@@ -110,7 +113,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> listOfNotNull(resource.totalPriceComponent?.factor) },
     )
 
-  public val Identifier: SearchParam<ChargeItem, Identifier> =
+  public val identifier: SearchParam<ChargeItem, Identifier> =
     SimpleSearchParam<ChargeItem, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -118,7 +121,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Occurrence: SearchParam<ChargeItem, Any> =
+  public val occurrence: SearchParam<ChargeItem, Any> =
     SimpleSearchParam<ChargeItem, Any>(
       name = "occurrence",
       type = SearchParamType.fromCode("date"),
@@ -126,12 +129,12 @@ public object ChargeItemSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Patient: SearchParam<ChargeItem, Reference> =
+  public val patient: SearchParam<ChargeItem, Reference> =
     SimpleSearchParam<ChargeItem, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -139,7 +142,7 @@ public object ChargeItemSearchParams {
       },
     )
 
-  public val PerformerActor: SearchParam<ChargeItem, Reference> =
+  public val performerActor: SearchParam<ChargeItem, Reference> =
     SimpleSearchParam<ChargeItem, Reference>(
       name = "performer-actor",
       type = SearchParamType.fromCode("reference"),
@@ -153,12 +156,12 @@ public object ChargeItemSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.performer.map { it.actor } },
     )
 
-  public val PerformerFunction: SearchParam<ChargeItem, CodeableConcept> =
+  public val performerFunction: SearchParam<ChargeItem, CodeableConcept> =
     SimpleSearchParam<ChargeItem, CodeableConcept>(
       name = "performer-function",
       type = SearchParamType.fromCode("token"),
@@ -166,7 +169,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> resource.performer.mapNotNull { it.function } },
     )
 
-  public val PerformingOrganization: SearchParam<ChargeItem, Reference> =
+  public val performingOrganization: SearchParam<ChargeItem, Reference> =
     SimpleSearchParam<ChargeItem, Reference>(
       name = "performing-organization",
       type = SearchParamType.fromCode("reference"),
@@ -175,7 +178,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> listOfNotNull(resource.performingOrganization) },
     )
 
-  public val PriceOverride: SearchParam<ChargeItem, Money> =
+  public val priceOverride: SearchParam<ChargeItem, Money> =
     SimpleSearchParam<ChargeItem, Money>(
       name = "price-override",
       type = SearchParamType.fromCode("quantity"),
@@ -183,7 +186,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> listOfNotNull(resource.totalPriceComponent?.amount) },
     )
 
-  public val Quantity: SearchParam<ChargeItem, Quantity> =
+  public val quantity: SearchParam<ChargeItem, Quantity> =
     SimpleSearchParam<ChargeItem, Quantity>(
       name = "quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -191,7 +194,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> listOfNotNull(resource.quantity) },
     )
 
-  public val RequestingOrganization: SearchParam<ChargeItem, Reference> =
+  public val requestingOrganization: SearchParam<ChargeItem, Reference> =
     SimpleSearchParam<ChargeItem, Reference>(
       name = "requesting-organization",
       type = SearchParamType.fromCode("reference"),
@@ -200,7 +203,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> listOfNotNull(resource.requestingOrganization) },
     )
 
-  public val Service: SearchParam<ChargeItem, Reference> =
+  public val service: SearchParam<ChargeItem, Reference> =
     SimpleSearchParam<ChargeItem, Reference>(
       name = "service",
       type = SearchParamType.fromCode("reference"),
@@ -221,7 +224,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> resource.service.mapNotNull { it.reference } },
     )
 
-  public val Status: SearchParam<ChargeItem, Any> =
+  public val status: SearchParam<ChargeItem, Any> =
     SimpleSearchParam<ChargeItem, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -229,35 +232,35 @@ public object ChargeItemSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<ChargeItem, Reference> =
+  public val subject: SearchParam<ChargeItem, Reference> =
     SimpleSearchParam<ChargeItem, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
   /** All search parameters for the ChargeItem resource type. */
-  public val ALL: List<SearchParam<ChargeItem, *>> =
+  public val all: List<SearchParam<ChargeItem, *>> =
     listOf(
-      Account,
-      Code,
-      Encounter,
-      EnteredDate,
-      Enterer,
-      FactorOverride,
-      Identifier,
-      Occurrence,
-      Patient,
-      PerformerActor,
-      PerformerFunction,
-      PerformingOrganization,
-      PriceOverride,
-      Quantity,
-      RequestingOrganization,
-      Service,
-      Status,
-      Subject,
+      account,
+      code,
+      encounter,
+      enteredDate,
+      enterer,
+      factorOverride,
+      identifier,
+      occurrence,
+      patient,
+      performerActor,
+      performerFunction,
+      performingOrganization,
+      priceOverride,
+      quantity,
+      requestingOrganization,
+      service,
+      status,
+      subject,
     )
 }

@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
@@ -30,7 +31,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Endpoint] resource type. */
 public object EndpointSearchParams {
-  public val ConnectionType: SearchParam<Endpoint, CodeableConcept> =
+  public val connectionType: SearchParam<Endpoint, CodeableConcept> =
     SimpleSearchParam<Endpoint, CodeableConcept>(
       name = "connection-type",
       type = SearchParamType.fromCode("token"),
@@ -38,7 +39,7 @@ public object EndpointSearchParams {
       extractor = { resource -> resource.connectionType },
     )
 
-  public val Identifier: SearchParam<Endpoint, Identifier> =
+  public val identifier: SearchParam<Endpoint, Identifier> =
     SimpleSearchParam<Endpoint, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -46,7 +47,7 @@ public object EndpointSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Name: SearchParam<Endpoint, String> =
+  public val name: SearchParam<Endpoint, String> =
     SimpleSearchParam<Endpoint, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -54,16 +55,16 @@ public object EndpointSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Organization: SearchParam<Endpoint, Reference> =
+  public val organization: SearchParam<Endpoint, Reference> =
     SimpleSearchParam<Endpoint, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "Endpoint.managingOrganization",
-      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
     )
 
-  public val PayloadType: SearchParam<Endpoint, CodeableConcept> =
+  public val payloadType: SearchParam<Endpoint, CodeableConcept> =
     SimpleSearchParam<Endpoint, CodeableConcept>(
       name = "payload-type",
       type = SearchParamType.fromCode("token"),
@@ -71,7 +72,7 @@ public object EndpointSearchParams {
       extractor = { resource -> resource.payload.flatMap { it.type } },
     )
 
-  public val Status: SearchParam<Endpoint, Any> =
+  public val status: SearchParam<Endpoint, Any> =
     SimpleSearchParam<Endpoint, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -80,6 +81,6 @@ public object EndpointSearchParams {
     )
 
   /** All search parameters for the Endpoint resource type. */
-  public val ALL: List<SearchParam<Endpoint, *>> =
-    listOf(ConnectionType, Identifier, Name, Organization, PayloadType, Status)
+  public val all: List<SearchParam<Endpoint, *>> =
+    listOf(connectionType, identifier, name, organization, payloadType, status)
 }

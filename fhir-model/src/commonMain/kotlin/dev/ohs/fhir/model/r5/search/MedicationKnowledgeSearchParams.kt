@@ -32,7 +32,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MedicationKnowledge] resource type. */
 public object MedicationKnowledgeSearchParams {
-  public val Classification: SearchParam<MedicationKnowledge, CodeableConcept> =
+  public val classification: SearchParam<MedicationKnowledge, CodeableConcept> =
     SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
       name = "classification",
       type = SearchParamType.fromCode("token"),
@@ -40,7 +40,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.medicineClassification.flatMap { it.classification } },
     )
 
-  public val ClassificationType: SearchParam<MedicationKnowledge, CodeableConcept> =
+  public val classificationType: SearchParam<MedicationKnowledge, CodeableConcept> =
     SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
       name = "classification-type",
       type = SearchParamType.fromCode("token"),
@@ -48,7 +48,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.medicineClassification.map { it.type } },
     )
 
-  public val Code: SearchParam<MedicationKnowledge, CodeableConcept> =
+  public val code: SearchParam<MedicationKnowledge, CodeableConcept> =
     SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -56,7 +56,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Doseform: SearchParam<MedicationKnowledge, CodeableConcept> =
+  public val doseform: SearchParam<MedicationKnowledge, CodeableConcept> =
     SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
       name = "doseform",
       type = SearchParamType.fromCode("token"),
@@ -64,7 +64,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> listOfNotNull(resource.definitional?.doseForm) },
     )
 
-  public val Identifier: SearchParam<MedicationKnowledge, Identifier> =
+  public val identifier: SearchParam<MedicationKnowledge, Identifier> =
     SimpleSearchParam<MedicationKnowledge, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -72,7 +72,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Ingredient: SearchParam<MedicationKnowledge, Reference> =
+  public val ingredient: SearchParam<MedicationKnowledge, Reference> =
     SimpleSearchParam<MedicationKnowledge, Reference>(
       name = "ingredient",
       type = SearchParamType.fromCode("reference"),
@@ -85,7 +85,7 @@ public object MedicationKnowledgeSearchParams {
       },
     )
 
-  public val IngredientCode: SearchParam<MedicationKnowledge, CodeableConcept> =
+  public val ingredientCode: SearchParam<MedicationKnowledge, CodeableConcept> =
     SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
       name = "ingredient-code",
       type = SearchParamType.fromCode("token"),
@@ -95,7 +95,7 @@ public object MedicationKnowledgeSearchParams {
       },
     )
 
-  public val MonitoringProgramName: SearchParam<MedicationKnowledge, String> =
+  public val monitoringProgramName: SearchParam<MedicationKnowledge, String> =
     SimpleSearchParam<MedicationKnowledge, String>(
       name = "monitoring-program-name",
       type = SearchParamType.fromCode("token"),
@@ -103,7 +103,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.monitoringProgram.mapNotNull { it.name } },
     )
 
-  public val MonitoringProgramType: SearchParam<MedicationKnowledge, CodeableConcept> =
+  public val monitoringProgramType: SearchParam<MedicationKnowledge, CodeableConcept> =
     SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
       name = "monitoring-program-type",
       type = SearchParamType.fromCode("token"),
@@ -111,7 +111,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.monitoringProgram.mapNotNull { it.type } },
     )
 
-  public val Monograph: SearchParam<MedicationKnowledge, Reference> =
+  public val monograph: SearchParam<MedicationKnowledge, Reference> =
     SimpleSearchParam<MedicationKnowledge, Reference>(
       name = "monograph",
       type = SearchParamType.fromCode("reference"),
@@ -120,7 +120,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.monograph.mapNotNull { it.source } },
     )
 
-  public val MonographType: SearchParam<MedicationKnowledge, CodeableConcept> =
+  public val monographType: SearchParam<MedicationKnowledge, CodeableConcept> =
     SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
       name = "monograph-type",
       type = SearchParamType.fromCode("token"),
@@ -128,7 +128,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.monograph.mapNotNull { it.type } },
     )
 
-  public val PackagingCost: SearchParam<MedicationKnowledge, Any> =
+  public val packagingCost: SearchParam<MedicationKnowledge, Any> =
     SimpleSearchParam<MedicationKnowledge, Any>(
       name = "packaging-cost",
       type = SearchParamType.fromCode("quantity"),
@@ -136,7 +136,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { emptyList() },
     )
 
-  public val PackagingCostConcept: SearchParam<MedicationKnowledge, Any> =
+  public val packagingCostConcept: SearchParam<MedicationKnowledge, Any> =
     SimpleSearchParam<MedicationKnowledge, Any>(
       name = "packaging-cost-concept",
       type = SearchParamType.fromCode("token"),
@@ -144,7 +144,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { emptyList() },
     )
 
-  public val ProductType: SearchParam<MedicationKnowledge, CodeableConcept> =
+  public val productType: SearchParam<MedicationKnowledge, CodeableConcept> =
     SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
       name = "product-type",
       type = SearchParamType.fromCode("token"),
@@ -152,7 +152,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.productType },
     )
 
-  public val SourceCost: SearchParam<MedicationKnowledge, String> =
+  public val sourceCost: SearchParam<MedicationKnowledge, String> =
     SimpleSearchParam<MedicationKnowledge, String>(
       name = "source-cost",
       type = SearchParamType.fromCode("token"),
@@ -160,7 +160,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.cost.mapNotNull { it.source } },
     )
 
-  public val Status: SearchParam<MedicationKnowledge, Any> =
+  public val status: SearchParam<MedicationKnowledge, Any> =
     SimpleSearchParam<MedicationKnowledge, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -169,23 +169,23 @@ public object MedicationKnowledgeSearchParams {
     )
 
   /** All search parameters for the MedicationKnowledge resource type. */
-  public val ALL: List<SearchParam<MedicationKnowledge, *>> =
+  public val all: List<SearchParam<MedicationKnowledge, *>> =
     listOf(
-      Classification,
-      ClassificationType,
-      Code,
-      Doseform,
-      Identifier,
-      Ingredient,
-      IngredientCode,
-      MonitoringProgramName,
-      MonitoringProgramType,
-      Monograph,
-      MonographType,
-      PackagingCost,
-      PackagingCostConcept,
-      ProductType,
-      SourceCost,
-      Status,
+      classification,
+      classificationType,
+      code,
+      doseform,
+      identifier,
+      ingredient,
+      ingredientCode,
+      monitoringProgramName,
+      monitoringProgramType,
+      monograph,
+      monographType,
+      packagingCost,
+      packagingCostConcept,
+      productType,
+      sourceCost,
+      status,
     )
 }

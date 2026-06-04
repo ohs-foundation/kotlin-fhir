@@ -29,7 +29,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Subscription] resource type. */
 public object SubscriptionSearchParams {
-  public val Contact: SearchParam<Subscription, ContactPoint> =
+  public val contact: SearchParam<Subscription, ContactPoint> =
     SimpleSearchParam<Subscription, ContactPoint>(
       name = "contact",
       type = SearchParamType.fromCode("token"),
@@ -37,7 +37,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> resource.contact },
     )
 
-  public val Criteria: SearchParam<Subscription, String> =
+  public val criteria: SearchParam<Subscription, String> =
     SimpleSearchParam<Subscription, String>(
       name = "criteria",
       type = SearchParamType.fromCode("string"),
@@ -45,7 +45,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> listOf(resource.criteria) },
     )
 
-  public val Payload: SearchParam<Subscription, Any> =
+  public val payload: SearchParam<Subscription, Any> =
     SimpleSearchParam<Subscription, Any>(
       name = "payload",
       type = SearchParamType.fromCode("token"),
@@ -53,7 +53,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> listOfNotNull(resource.channel.payload) },
     )
 
-  public val Status: SearchParam<Subscription, Any> =
+  public val status: SearchParam<Subscription, Any> =
     SimpleSearchParam<Subscription, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -61,7 +61,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Type: SearchParam<Subscription, Any> =
+  public val type: SearchParam<Subscription, Any> =
     SimpleSearchParam<Subscription, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -69,7 +69,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> listOf(resource.channel.type) },
     )
 
-  public val Url: SearchParam<Subscription, Url> =
+  public val url: SearchParam<Subscription, Url> =
     SimpleSearchParam<Subscription, Url>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -78,6 +78,6 @@ public object SubscriptionSearchParams {
     )
 
   /** All search parameters for the Subscription resource type. */
-  public val ALL: List<SearchParam<Subscription, *>> =
-    listOf(Contact, Criteria, Payload, Status, Type, Url)
+  public val all: List<SearchParam<Subscription, *>> =
+    listOf(contact, criteria, payload, status, type, url)
 }

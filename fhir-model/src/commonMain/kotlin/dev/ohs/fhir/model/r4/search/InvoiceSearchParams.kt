@@ -18,6 +18,7 @@
 
 package dev.ohs.fhir.model.r4.search
 
+import dev.ohs.fhir.model.r4.Account
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
@@ -26,6 +27,7 @@ import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Invoice
 import dev.ohs.fhir.model.r4.Money
 import dev.ohs.fhir.model.r4.Organization
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
@@ -37,16 +39,16 @@ import kotlin.collections.List
 
 /** Search parameters for the [Invoice] resource type. */
 public object InvoiceSearchParams {
-  public val Account: SearchParam<Invoice, Reference> =
+  public val account: SearchParam<Invoice, Reference> =
     SimpleSearchParam<Invoice, Reference>(
       name = "account",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.account",
-      target = listOf(dev.ohs.fhir.model.r4.Account::class),
+      target = listOf(Account::class),
       extractor = { resource -> listOfNotNull(resource.account) },
     )
 
-  public val Date: SearchParam<Invoice, DateTime> =
+  public val date: SearchParam<Invoice, DateTime> =
     SimpleSearchParam<Invoice, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -54,7 +56,7 @@ public object InvoiceSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Identifier: SearchParam<Invoice, Identifier> =
+  public val identifier: SearchParam<Invoice, Identifier> =
     SimpleSearchParam<Invoice, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -62,7 +64,7 @@ public object InvoiceSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Issuer: SearchParam<Invoice, Reference> =
+  public val issuer: SearchParam<Invoice, Reference> =
     SimpleSearchParam<Invoice, Reference>(
       name = "issuer",
       type = SearchParamType.fromCode("reference"),
@@ -71,7 +73,7 @@ public object InvoiceSearchParams {
       extractor = { resource -> listOfNotNull(resource.issuer) },
     )
 
-  public val Participant: SearchParam<Invoice, Reference> =
+  public val participant: SearchParam<Invoice, Reference> =
     SimpleSearchParam<Invoice, Reference>(
       name = "participant",
       type = SearchParamType.fromCode("reference"),
@@ -81,14 +83,14 @@ public object InvoiceSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.participant.map { it.actor } },
     )
 
-  public val ParticipantRole: SearchParam<Invoice, CodeableConcept> =
+  public val participantRole: SearchParam<Invoice, CodeableConcept> =
     SimpleSearchParam<Invoice, CodeableConcept>(
       name = "participant-role",
       type = SearchParamType.fromCode("token"),
@@ -96,12 +98,12 @@ public object InvoiceSearchParams {
       extractor = { resource -> resource.participant.mapNotNull { it.role } },
     )
 
-  public val Patient: SearchParam<Invoice, Reference> =
+  public val patient: SearchParam<Invoice, Reference> =
     SimpleSearchParam<Invoice, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -109,17 +111,16 @@ public object InvoiceSearchParams {
       },
     )
 
-  public val Recipient: SearchParam<Invoice, Reference> =
+  public val recipient: SearchParam<Invoice, Reference> =
     SimpleSearchParam<Invoice, Reference>(
       name = "recipient",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.recipient",
-      target =
-        listOf(Organization::class, dev.ohs.fhir.model.r4.Patient::class, RelatedPerson::class),
+      target = listOf(Organization::class, Patient::class, RelatedPerson::class),
       extractor = { resource -> listOfNotNull(resource.recipient) },
     )
 
-  public val Status: SearchParam<Invoice, Any> =
+  public val status: SearchParam<Invoice, Any> =
     SimpleSearchParam<Invoice, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -127,16 +128,16 @@ public object InvoiceSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<Invoice, Reference> =
+  public val subject: SearchParam<Invoice, Reference> =
     SimpleSearchParam<Invoice, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val Totalgross: SearchParam<Invoice, Money> =
+  public val totalgross: SearchParam<Invoice, Money> =
     SimpleSearchParam<Invoice, Money>(
       name = "totalgross",
       type = SearchParamType.fromCode("quantity"),
@@ -144,7 +145,7 @@ public object InvoiceSearchParams {
       extractor = { resource -> listOfNotNull(resource.totalGross) },
     )
 
-  public val Totalnet: SearchParam<Invoice, Money> =
+  public val totalnet: SearchParam<Invoice, Money> =
     SimpleSearchParam<Invoice, Money>(
       name = "totalnet",
       type = SearchParamType.fromCode("quantity"),
@@ -152,7 +153,7 @@ public object InvoiceSearchParams {
       extractor = { resource -> listOfNotNull(resource.totalNet) },
     )
 
-  public val Type: SearchParam<Invoice, CodeableConcept> =
+  public val type: SearchParam<Invoice, CodeableConcept> =
     SimpleSearchParam<Invoice, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -161,20 +162,20 @@ public object InvoiceSearchParams {
     )
 
   /** All search parameters for the Invoice resource type. */
-  public val ALL: List<SearchParam<Invoice, *>> =
+  public val all: List<SearchParam<Invoice, *>> =
     listOf(
-      Account,
-      Date,
-      Identifier,
-      Issuer,
-      Participant,
-      ParticipantRole,
-      Patient,
-      Recipient,
-      Status,
-      Subject,
-      Totalgross,
-      Totalnet,
-      Type,
+      account,
+      date,
+      identifier,
+      issuer,
+      participant,
+      participantRole,
+      patient,
+      recipient,
+      status,
+      subject,
+      totalgross,
+      totalnet,
+      type,
     )
 }

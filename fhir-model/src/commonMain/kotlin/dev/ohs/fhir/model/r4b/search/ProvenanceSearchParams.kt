@@ -96,6 +96,7 @@ import dev.ohs.fhir.model.r4b.Invoice
 import dev.ohs.fhir.model.r4b.Library
 import dev.ohs.fhir.model.r4b.Linkage
 import dev.ohs.fhir.model.r4b.List as R4bList
+import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.ManufacturedItemDefinition
 import dev.ohs.fhir.model.r4b.Measure
 import dev.ohs.fhir.model.r4b.MeasureReport
@@ -120,6 +121,7 @@ import dev.ohs.fhir.model.r4b.OperationOutcome
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
+import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
 import dev.ohs.fhir.model.r4b.Person
@@ -167,7 +169,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Provenance] resource type. */
 public object ProvenanceSearchParams {
-  public val Agent: SearchParam<Provenance, Reference> =
+  public val agent: SearchParam<Provenance, Reference> =
     SimpleSearchParam<Provenance, Reference>(
       name = "agent",
       type = SearchParamType.fromCode("reference"),
@@ -177,14 +179,14 @@ public object ProvenanceSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.agent.map { it.who } },
     )
 
-  public val AgentRole: SearchParam<Provenance, CodeableConcept> =
+  public val agentRole: SearchParam<Provenance, CodeableConcept> =
     SimpleSearchParam<Provenance, CodeableConcept>(
       name = "agent-role",
       type = SearchParamType.fromCode("token"),
@@ -192,7 +194,7 @@ public object ProvenanceSearchParams {
       extractor = { resource -> resource.agent.flatMap { it.role } },
     )
 
-  public val AgentType: SearchParam<Provenance, CodeableConcept> =
+  public val agentType: SearchParam<Provenance, CodeableConcept> =
     SimpleSearchParam<Provenance, CodeableConcept>(
       name = "agent-type",
       type = SearchParamType.fromCode("token"),
@@ -200,7 +202,7 @@ public object ProvenanceSearchParams {
       extractor = { resource -> resource.agent.mapNotNull { it.type } },
     )
 
-  public val Entity: SearchParam<Provenance, Reference> =
+  public val entity: SearchParam<Provenance, Reference> =
     SimpleSearchParam<Provenance, Reference>(
       name = "entity",
       type = SearchParamType.fromCode("reference"),
@@ -281,7 +283,7 @@ public object ProvenanceSearchParams {
           Library::class,
           Linkage::class,
           R4bList::class,
-          dev.ohs.fhir.model.r4b.Location::class,
+          Location::class,
           ManufacturedItemDefinition::class,
           Measure::class,
           MeasureReport::class,
@@ -306,7 +308,7 @@ public object ProvenanceSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -351,27 +353,27 @@ public object ProvenanceSearchParams {
       extractor = { resource -> resource.entity.map { it.what } },
     )
 
-  public val Location: SearchParam<Provenance, Reference> =
+  public val location: SearchParam<Provenance, Reference> =
     SimpleSearchParam<Provenance, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Provenance.location",
-      target = listOf(dev.ohs.fhir.model.r4b.Location::class),
+      target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
     )
 
-  public val Patient: SearchParam<Provenance, Reference> =
+  public val patient: SearchParam<Provenance, Reference> =
     SimpleSearchParam<Provenance, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Provenance.target.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         resource.target.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
       },
     )
 
-  public val Recorded: SearchParam<Provenance, Instant> =
+  public val recorded: SearchParam<Provenance, Instant> =
     SimpleSearchParam<Provenance, Instant>(
       name = "recorded",
       type = SearchParamType.fromCode("date"),
@@ -379,7 +381,7 @@ public object ProvenanceSearchParams {
       extractor = { resource -> listOf(resource.recorded) },
     )
 
-  public val SignatureType: SearchParam<Provenance, Coding> =
+  public val signatureType: SearchParam<Provenance, Coding> =
     SimpleSearchParam<Provenance, Coding>(
       name = "signature-type",
       type = SearchParamType.fromCode("token"),
@@ -387,7 +389,7 @@ public object ProvenanceSearchParams {
       extractor = { resource -> resource.signature.flatMap { it.type } },
     )
 
-  public val Target: SearchParam<Provenance, Reference> =
+  public val target: SearchParam<Provenance, Reference> =
     SimpleSearchParam<Provenance, Reference>(
       name = "target",
       type = SearchParamType.fromCode("reference"),
@@ -468,7 +470,7 @@ public object ProvenanceSearchParams {
           Library::class,
           Linkage::class,
           R4bList::class,
-          dev.ohs.fhir.model.r4b.Location::class,
+          Location::class,
           ManufacturedItemDefinition::class,
           Measure::class,
           MeasureReport::class,
@@ -493,7 +495,7 @@ public object ProvenanceSearchParams {
           Organization::class,
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
-          dev.ohs.fhir.model.r4b.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -538,7 +540,7 @@ public object ProvenanceSearchParams {
       extractor = { resource -> resource.target },
     )
 
-  public val When: SearchParam<Provenance, DateTime> =
+  public val `when`: SearchParam<Provenance, DateTime> =
     SimpleSearchParam<Provenance, DateTime>(
       name = "when",
       type = SearchParamType.fromCode("date"),
@@ -549,17 +551,17 @@ public object ProvenanceSearchParams {
     )
 
   /** All search parameters for the Provenance resource type. */
-  public val ALL: CollectionsList<SearchParam<Provenance, *>> =
+  public val all: CollectionsList<SearchParam<Provenance, *>> =
     listOf(
-      Agent,
-      AgentRole,
-      AgentType,
-      Entity,
-      Location,
-      Patient,
-      Recorded,
-      SignatureType,
-      Target,
-      When,
+      agent,
+      agentRole,
+      agentType,
+      entity,
+      location,
+      patient,
+      recorded,
+      signatureType,
+      target,
+      `when`,
     )
 }

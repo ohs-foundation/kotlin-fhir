@@ -26,14 +26,17 @@ import dev.ohs.fhir.model.r4.Condition
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.DiagnosticReport
 import dev.ohs.fhir.model.r4.DocumentReference
+import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Location
 import dev.ohs.fhir.model.r4.Measure
 import dev.ohs.fhir.model.r4.MedicationAdministration
 import dev.ohs.fhir.model.r4.Observation
 import dev.ohs.fhir.model.r4.OperationDefinition
 import dev.ohs.fhir.model.r4.Organization
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PlanDefinition
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
@@ -50,7 +53,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Procedure] resource type. */
 public object ProcedureSearchParams {
-  public val BasedOn: SearchParam<Procedure, Reference> =
+  public val basedOn: SearchParam<Procedure, Reference> =
     SimpleSearchParam<Procedure, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -59,7 +62,7 @@ public object ProcedureSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val Category: SearchParam<Procedure, CodeableConcept> =
+  public val category: SearchParam<Procedure, CodeableConcept> =
     SimpleSearchParam<Procedure, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -67,7 +70,7 @@ public object ProcedureSearchParams {
       extractor = { resource -> listOfNotNull(resource.category) },
     )
 
-  public val Code: SearchParam<Procedure, CodeableConcept> =
+  public val code: SearchParam<Procedure, CodeableConcept> =
     SimpleSearchParam<Procedure, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -75,7 +78,7 @@ public object ProcedureSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Date: SearchParam<Procedure, Procedure.Performed> =
+  public val date: SearchParam<Procedure, Procedure.Performed> =
     SimpleSearchParam<Procedure, Procedure.Performed>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -83,16 +86,16 @@ public object ProcedureSearchParams {
       extractor = { resource -> listOfNotNull(resource.performed) },
     )
 
-  public val Encounter: SearchParam<Procedure, Reference> =
+  public val encounter: SearchParam<Procedure, Reference> =
     SimpleSearchParam<Procedure, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.encounter",
-      target = listOf(dev.ohs.fhir.model.r4.Encounter::class, EpisodeOfCare::class),
+      target = listOf(Encounter::class, EpisodeOfCare::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Identifier: SearchParam<Procedure, Identifier> =
+  public val identifier: SearchParam<Procedure, Identifier> =
     SimpleSearchParam<Procedure, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -100,7 +103,7 @@ public object ProcedureSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val InstantiatesCanonical: SearchParam<Procedure, Canonical> =
+  public val instantiatesCanonical: SearchParam<Procedure, Canonical> =
     SimpleSearchParam<Procedure, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
@@ -116,7 +119,7 @@ public object ProcedureSearchParams {
       extractor = { resource -> resource.instantiatesCanonical },
     )
 
-  public val InstantiatesUri: SearchParam<Procedure, Uri> =
+  public val instantiatesUri: SearchParam<Procedure, Uri> =
     SimpleSearchParam<Procedure, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
@@ -124,16 +127,16 @@ public object ProcedureSearchParams {
       extractor = { resource -> resource.instantiatesUri },
     )
 
-  public val Location: SearchParam<Procedure, Reference> =
+  public val location: SearchParam<Procedure, Reference> =
     SimpleSearchParam<Procedure, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.location",
-      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
     )
 
-  public val PartOf: SearchParam<Procedure, Reference> =
+  public val partOf: SearchParam<Procedure, Reference> =
     SimpleSearchParam<Procedure, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
@@ -142,12 +145,12 @@ public object ProcedureSearchParams {
       extractor = { resource -> resource.partOf },
     )
 
-  public val Patient: SearchParam<Procedure, Reference> =
+  public val patient: SearchParam<Procedure, Reference> =
     SimpleSearchParam<Procedure, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class),
+      target = listOf(Patient::class, Group::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -155,7 +158,7 @@ public object ProcedureSearchParams {
       },
     )
 
-  public val Performer: SearchParam<Procedure, Reference> =
+  public val performer: SearchParam<Procedure, Reference> =
     SimpleSearchParam<Procedure, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
@@ -165,14 +168,14 @@ public object ProcedureSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> resource.performer.map { it.actor } },
     )
 
-  public val ReasonCode: SearchParam<Procedure, CodeableConcept> =
+  public val reasonCode: SearchParam<Procedure, CodeableConcept> =
     SimpleSearchParam<Procedure, CodeableConcept>(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
@@ -180,7 +183,7 @@ public object ProcedureSearchParams {
       extractor = { resource -> resource.reasonCode },
     )
 
-  public val ReasonReference: SearchParam<Procedure, Reference> =
+  public val reasonReference: SearchParam<Procedure, Reference> =
     SimpleSearchParam<Procedure, Reference>(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
@@ -196,7 +199,7 @@ public object ProcedureSearchParams {
       extractor = { resource -> resource.reasonReference },
     )
 
-  public val Status: SearchParam<Procedure, Any> =
+  public val status: SearchParam<Procedure, Any> =
     SimpleSearchParam<Procedure, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -204,33 +207,33 @@ public object ProcedureSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<Procedure, Reference> =
+  public val subject: SearchParam<Procedure, Reference> =
     SimpleSearchParam<Procedure, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.subject",
-      target = listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 
   /** All search parameters for the Procedure resource type. */
-  public val ALL: List<SearchParam<Procedure, *>> =
+  public val all: List<SearchParam<Procedure, *>> =
     listOf(
-      BasedOn,
-      Category,
-      Code,
-      Date,
-      Encounter,
-      Identifier,
-      InstantiatesCanonical,
-      InstantiatesUri,
-      Location,
-      PartOf,
-      Patient,
-      Performer,
-      ReasonCode,
-      ReasonReference,
-      Status,
-      Subject,
+      basedOn,
+      category,
+      code,
+      date,
+      encounter,
+      identifier,
+      instantiatesCanonical,
+      instantiatesUri,
+      location,
+      partOf,
+      patient,
+      performer,
+      reasonCode,
+      reasonReference,
+      status,
+      subject,
     )
 }

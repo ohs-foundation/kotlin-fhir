@@ -26,10 +26,12 @@ import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Immunization
+import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.Medication
 import dev.ohs.fhir.model.r5.MedicationAdministration
 import dev.ohs.fhir.model.r5.MedicationStatement
 import dev.ohs.fhir.model.r5.Observation
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Procedure
@@ -37,6 +39,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
+import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -44,7 +47,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [AdverseEvent] resource type. */
 public object AdverseEventSearchParams {
-  public val Actuality: SearchParam<AdverseEvent, Any> =
+  public val actuality: SearchParam<AdverseEvent, Any> =
     SimpleSearchParam<AdverseEvent, Any>(
       name = "actuality",
       type = SearchParamType.fromCode("token"),
@@ -52,7 +55,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOf(resource.actuality) },
     )
 
-  public val Category: SearchParam<AdverseEvent, CodeableConcept> =
+  public val category: SearchParam<AdverseEvent, CodeableConcept> =
     SimpleSearchParam<AdverseEvent, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -60,7 +63,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Code: SearchParam<AdverseEvent, CodeableConcept> =
+  public val code: SearchParam<AdverseEvent, CodeableConcept> =
     SimpleSearchParam<AdverseEvent, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -68,7 +71,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val Date: SearchParam<AdverseEvent, Any> =
+  public val date: SearchParam<AdverseEvent, Any> =
     SimpleSearchParam<AdverseEvent, Any>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -76,7 +79,7 @@ public object AdverseEventSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Identifier: SearchParam<AdverseEvent, Identifier> =
+  public val identifier: SearchParam<AdverseEvent, Identifier> =
     SimpleSearchParam<AdverseEvent, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -84,21 +87,21 @@ public object AdverseEventSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Location: SearchParam<AdverseEvent, Reference> =
+  public val location: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "AdverseEvent.location",
-      target = listOf(dev.ohs.fhir.model.r5.Location::class),
+      target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
     )
 
-  public val Patient: SearchParam<AdverseEvent, Reference> =
+  public val patient: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "AdverseEvent.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOf(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -106,7 +109,7 @@ public object AdverseEventSearchParams {
       },
     )
 
-  public val Recorder: SearchParam<AdverseEvent, Reference> =
+  public val recorder: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "recorder",
       type = SearchParamType.fromCode("reference"),
@@ -117,12 +120,12 @@ public object AdverseEventSearchParams {
           PractitionerRole::class,
           ResearchSubject::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOfNotNull(resource.recorder) },
     )
 
-  public val Resultingeffect: SearchParam<AdverseEvent, Reference> =
+  public val resultingeffect: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "resultingeffect",
       type = SearchParamType.fromCode("reference"),
@@ -131,7 +134,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> resource.resultingEffect },
     )
 
-  public val Seriousness: SearchParam<AdverseEvent, CodeableConcept> =
+  public val seriousness: SearchParam<AdverseEvent, CodeableConcept> =
     SimpleSearchParam<AdverseEvent, CodeableConcept>(
       name = "seriousness",
       type = SearchParamType.fromCode("token"),
@@ -139,7 +142,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.seriousness) },
     )
 
-  public val Status: SearchParam<AdverseEvent, Any> =
+  public val status: SearchParam<AdverseEvent, Any> =
     SimpleSearchParam<AdverseEvent, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -147,7 +150,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Study: SearchParam<AdverseEvent, Reference> =
+  public val study: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "study",
       type = SearchParamType.fromCode("reference"),
@@ -156,7 +159,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> resource.study },
     )
 
-  public val Subject: SearchParam<AdverseEvent, Reference> =
+  public val subject: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -167,12 +170,12 @@ public object AdverseEventSearchParams {
           ResearchSubject::class,
           Group::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  public val Substance: SearchParam<AdverseEvent, Reference> =
+  public val substance: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "substance",
       type = SearchParamType.fromCode("reference"),
@@ -186,7 +189,7 @@ public object AdverseEventSearchParams {
           MedicationAdministration::class,
           BiologicallyDerivedProduct::class,
           Immunization::class,
-          dev.ohs.fhir.model.r5.Substance::class,
+          Substance::class,
           Medication::class,
         ),
       extractor = { resource ->
@@ -197,21 +200,21 @@ public object AdverseEventSearchParams {
     )
 
   /** All search parameters for the AdverseEvent resource type. */
-  public val ALL: List<SearchParam<AdverseEvent, *>> =
+  public val all: List<SearchParam<AdverseEvent, *>> =
     listOf(
-      Actuality,
-      Category,
-      Code,
-      Date,
-      Identifier,
-      Location,
-      Patient,
-      Recorder,
-      Resultingeffect,
-      Seriousness,
-      Status,
-      Study,
-      Subject,
-      Substance,
+      actuality,
+      category,
+      code,
+      date,
+      identifier,
+      location,
+      patient,
+      recorder,
+      resultingeffect,
+      seriousness,
+      status,
+      study,
+      subject,
+      substance,
     )
 }

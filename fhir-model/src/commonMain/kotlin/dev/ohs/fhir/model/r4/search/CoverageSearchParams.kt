@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coverage
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Organization
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
 import dev.ohs.fhir.model.r4.String
@@ -32,16 +33,16 @@ import kotlin.collections.List
 
 /** Search parameters for the [Coverage] resource type. */
 public object CoverageSearchParams {
-  public val Beneficiary: SearchParam<Coverage, Reference> =
+  public val beneficiary: SearchParam<Coverage, Reference> =
     SimpleSearchParam<Coverage, Reference>(
       name = "beneficiary",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.beneficiary",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.beneficiary) },
     )
 
-  public val ClassType: SearchParam<Coverage, CodeableConcept> =
+  public val classType: SearchParam<Coverage, CodeableConcept> =
     SimpleSearchParam<Coverage, CodeableConcept>(
       name = "class-type",
       type = SearchParamType.fromCode("token"),
@@ -49,7 +50,7 @@ public object CoverageSearchParams {
       extractor = { resource -> resource.`class`.map { it.type } },
     )
 
-  public val ClassValue: SearchParam<Coverage, String> =
+  public val classValue: SearchParam<Coverage, String> =
     SimpleSearchParam<Coverage, String>(
       name = "class-value",
       type = SearchParamType.fromCode("string"),
@@ -57,7 +58,7 @@ public object CoverageSearchParams {
       extractor = { resource -> resource.`class`.map { it.`value` } },
     )
 
-  public val Dependent: SearchParam<Coverage, String> =
+  public val dependent: SearchParam<Coverage, String> =
     SimpleSearchParam<Coverage, String>(
       name = "dependent",
       type = SearchParamType.fromCode("string"),
@@ -65,7 +66,7 @@ public object CoverageSearchParams {
       extractor = { resource -> listOfNotNull(resource.dependent) },
     )
 
-  public val Identifier: SearchParam<Coverage, Identifier> =
+  public val identifier: SearchParam<Coverage, Identifier> =
     SimpleSearchParam<Coverage, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -73,36 +74,34 @@ public object CoverageSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Patient: SearchParam<Coverage, Reference> =
+  public val patient: SearchParam<Coverage, Reference> =
     SimpleSearchParam<Coverage, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.beneficiary",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.beneficiary) },
     )
 
-  public val Payor: SearchParam<Coverage, Reference> =
+  public val payor: SearchParam<Coverage, Reference> =
     SimpleSearchParam<Coverage, Reference>(
       name = "payor",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.payor",
-      target =
-        listOf(Organization::class, dev.ohs.fhir.model.r4.Patient::class, RelatedPerson::class),
+      target = listOf(Organization::class, Patient::class, RelatedPerson::class),
       extractor = { resource -> resource.payor },
     )
 
-  public val PolicyHolder: SearchParam<Coverage, Reference> =
+  public val policyHolder: SearchParam<Coverage, Reference> =
     SimpleSearchParam<Coverage, Reference>(
       name = "policy-holder",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.policyHolder",
-      target =
-        listOf(Organization::class, dev.ohs.fhir.model.r4.Patient::class, RelatedPerson::class),
+      target = listOf(Organization::class, Patient::class, RelatedPerson::class),
       extractor = { resource -> listOfNotNull(resource.policyHolder) },
     )
 
-  public val Status: SearchParam<Coverage, Any> =
+  public val status: SearchParam<Coverage, Any> =
     SimpleSearchParam<Coverage, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -110,16 +109,16 @@ public object CoverageSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subscriber: SearchParam<Coverage, Reference> =
+  public val subscriber: SearchParam<Coverage, Reference> =
     SimpleSearchParam<Coverage, Reference>(
       name = "subscriber",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.subscriber",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class, RelatedPerson::class),
+      target = listOf(Patient::class, RelatedPerson::class),
       extractor = { resource -> listOfNotNull(resource.subscriber) },
     )
 
-  public val Type: SearchParam<Coverage, CodeableConcept> =
+  public val type: SearchParam<Coverage, CodeableConcept> =
     SimpleSearchParam<Coverage, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -128,18 +127,18 @@ public object CoverageSearchParams {
     )
 
   /** All search parameters for the Coverage resource type. */
-  public val ALL: List<SearchParam<Coverage, *>> =
+  public val all: List<SearchParam<Coverage, *>> =
     listOf(
-      Beneficiary,
-      ClassType,
-      ClassValue,
-      Dependent,
-      Identifier,
-      Patient,
-      Payor,
-      PolicyHolder,
-      Status,
-      Subscriber,
-      Type,
+      beneficiary,
+      classType,
+      classValue,
+      dependent,
+      identifier,
+      patient,
+      payor,
+      policyHolder,
+      status,
+      subscriber,
+      type,
     )
 }

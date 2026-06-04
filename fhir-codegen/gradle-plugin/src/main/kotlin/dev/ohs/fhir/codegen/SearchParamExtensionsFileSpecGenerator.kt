@@ -32,8 +32,8 @@ import com.squareup.kotlinpoet.asClassName
  * fun <R : Resource, T> R.extract(param: SearchParam<R, T>): List<T> = param.extract(this)
  * ```
  *
- * which lets call sites read as `patient.extract(PatientSearchParams.Birthdate)` instead of
- * `PatientSearchParams.Birthdate.extract(patient)`.
+ * which lets call sites read as `patient.extract(PatientSearchParams.birthdate)` instead of
+ * `PatientSearchParams.birthdate.extract(patient)`.
  */
 object SearchParamExtensionsFileSpecGenerator {
   fun generate(packageName: String): FileSpec {
@@ -49,7 +49,7 @@ object SearchParamExtensionsFileSpecGenerator {
         .addKdoc(
           "Extracts the values for [param] from this resource. Equivalent to " +
             "`param.extract(this)`, but reads more fluently at the call site " +
-            "(e.g. `patient.extract(PatientSearchParams.Birthdate)`)."
+            "(e.g. `patient.extract(PatientSearchParams.birthdate)`)."
         )
         .addTypeVariable(r)
         .addTypeVariable(t)

@@ -56,8 +56,10 @@ private fun loadSearchParams(
     .groupBy({ it.first }, { it.second })
 }
 
-private fun codeToDataObjectName(code: String): String =
-  code.split("-").joinToString("") { it.replaceFirstChar(Char::uppercaseChar) }
+private fun codeToPropertyName(code: String): String {
+  val parts = code.split("-")
+  return parts.first() + parts.drop(1).joinToString("") { it.replaceFirstChar(Char::uppercaseChar) }
+}
 
 /**
  * Extracts the expression portion relevant to a specific resource from a multi-resource expression.
@@ -108,7 +110,7 @@ class SearchParamTest :
             val containerProperties =
               containerInstance::class.memberProperties as Collection<KProperty1<Any, *>>
 
-            val allProperty = containerProperties.firstOrNull { it.name == "ALL" }
+            val allProperty = containerProperties.firstOrNull { it.name == "all" }
             if (allProperty == null) return@forEach
 
             @Suppress("UNCHECKED_CAST")
@@ -128,9 +130,9 @@ class SearchParamTest :
             }
 
             dedupedExpected.forEach { expected ->
-              val dataObjectName = codeToDataObjectName(expected.code)
+              val propertyName = codeToPropertyName(expected.code)
               test(
-                "$resourceName.$dataObjectName should have name '${expected.code}' and type '${expected.type}'"
+                "$resourceName.$propertyName should have name '${expected.code}' and type '${expected.type}'"
               ) {
                 val actual =
                   searchParamsByName[expected.code]

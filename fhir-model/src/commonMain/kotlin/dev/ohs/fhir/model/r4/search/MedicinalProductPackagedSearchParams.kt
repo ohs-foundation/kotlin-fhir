@@ -28,7 +28,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductPackaged] resource type. */
 public object MedicinalProductPackagedSearchParams {
-  public val Identifier: SearchParam<MedicinalProductPackaged, Identifier> =
+  public val identifier: SearchParam<MedicinalProductPackaged, Identifier> =
     SimpleSearchParam<MedicinalProductPackaged, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -36,7 +36,7 @@ public object MedicinalProductPackagedSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Subject: SearchParam<MedicinalProductPackaged, Reference> =
+  public val subject: SearchParam<MedicinalProductPackaged, Reference> =
     SimpleSearchParam<MedicinalProductPackaged, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -46,5 +46,5 @@ public object MedicinalProductPackagedSearchParams {
     )
 
   /** All search parameters for the MedicinalProductPackaged resource type. */
-  public val ALL: List<SearchParam<MedicinalProductPackaged, *>> = listOf(Identifier, Subject)
+  public val all: List<SearchParam<MedicinalProductPackaged, *>> = listOf(identifier, subject)
 }

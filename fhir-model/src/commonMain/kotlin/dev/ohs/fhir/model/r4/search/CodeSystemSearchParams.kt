@@ -36,7 +36,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [CodeSystem] resource type. */
 public object CodeSystemSearchParams {
-  public val Code: SearchParam<CodeSystem, Any> =
+  public val code: SearchParam<CodeSystem, Any> =
     SimpleSearchParam<CodeSystem, Any>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -44,7 +44,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> resource.concept.map { it.code } },
     )
 
-  public val ContentMode: SearchParam<CodeSystem, Any> =
+  public val contentMode: SearchParam<CodeSystem, Any> =
     SimpleSearchParam<CodeSystem, Any>(
       name = "content-mode",
       type = SearchParamType.fromCode("token"),
@@ -52,7 +52,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOf(resource.content) },
     )
 
-  public val Context: SearchParam<CodeSystem, CodeableConcept> =
+  public val context: SearchParam<CodeSystem, CodeableConcept> =
     SimpleSearchParam<CodeSystem, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
@@ -64,7 +64,7 @@ public object CodeSystemSearchParams {
       },
     )
 
-  public val ContextQuantity: SearchParam<CodeSystem, Quantity> =
+  public val contextQuantity: SearchParam<CodeSystem, Quantity> =
     SimpleSearchParam<CodeSystem, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
@@ -74,7 +74,7 @@ public object CodeSystemSearchParams {
       },
     )
 
-  public val ContextType: SearchParam<CodeSystem, Coding> =
+  public val contextType: SearchParam<CodeSystem, Coding> =
     SimpleSearchParam<CodeSystem, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
@@ -82,7 +82,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> resource.useContext.map { it.code } },
     )
 
-  public val ContextTypeQuantity: SearchParam<CodeSystem, UsageContext> =
+  public val contextTypeQuantity: SearchParam<CodeSystem, UsageContext> =
     SimpleSearchParam<CodeSystem, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
@@ -90,7 +90,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val ContextTypeValue: SearchParam<CodeSystem, UsageContext> =
+  public val contextTypeValue: SearchParam<CodeSystem, UsageContext> =
     SimpleSearchParam<CodeSystem, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
@@ -98,7 +98,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> resource.useContext },
     )
 
-  public val Date: SearchParam<CodeSystem, DateTime> =
+  public val date: SearchParam<CodeSystem, DateTime> =
     SimpleSearchParam<CodeSystem, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -106,7 +106,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Description: SearchParam<CodeSystem, Markdown> =
+  public val description: SearchParam<CodeSystem, Markdown> =
     SimpleSearchParam<CodeSystem, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
@@ -114,7 +114,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val Identifier: SearchParam<CodeSystem, Identifier> =
+  public val identifier: SearchParam<CodeSystem, Identifier> =
     SimpleSearchParam<CodeSystem, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -122,7 +122,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Jurisdiction: SearchParam<CodeSystem, CodeableConcept> =
+  public val jurisdiction: SearchParam<CodeSystem, CodeableConcept> =
     SimpleSearchParam<CodeSystem, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
@@ -130,7 +130,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val Language: SearchParam<CodeSystem, Any> =
+  public val language: SearchParam<CodeSystem, Any> =
     SimpleSearchParam<CodeSystem, Any>(
       name = "language",
       type = SearchParamType.fromCode("token"),
@@ -140,7 +140,7 @@ public object CodeSystemSearchParams {
       },
     )
 
-  public val Name: SearchParam<CodeSystem, String> =
+  public val name: SearchParam<CodeSystem, String> =
     SimpleSearchParam<CodeSystem, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -148,7 +148,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Publisher: SearchParam<CodeSystem, String> =
+  public val publisher: SearchParam<CodeSystem, String> =
     SimpleSearchParam<CodeSystem, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
@@ -156,7 +156,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val Status: SearchParam<CodeSystem, Any> =
+  public val status: SearchParam<CodeSystem, Any> =
     SimpleSearchParam<CodeSystem, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -164,7 +164,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Supplements: SearchParam<CodeSystem, Canonical> =
+  public val supplements: SearchParam<CodeSystem, Canonical> =
     SimpleSearchParam<CodeSystem, Canonical>(
       name = "supplements",
       type = SearchParamType.fromCode("reference"),
@@ -173,7 +173,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.supplements) },
     )
 
-  public val System: SearchParam<CodeSystem, Uri> =
+  public val system: SearchParam<CodeSystem, Uri> =
     SimpleSearchParam<CodeSystem, Uri>(
       name = "system",
       type = SearchParamType.fromCode("uri"),
@@ -181,7 +181,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Title: SearchParam<CodeSystem, String> =
+  public val title: SearchParam<CodeSystem, String> =
     SimpleSearchParam<CodeSystem, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
@@ -189,7 +189,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.title) },
     )
 
-  public val Url: SearchParam<CodeSystem, Uri> =
+  public val url: SearchParam<CodeSystem, Uri> =
     SimpleSearchParam<CodeSystem, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
@@ -197,7 +197,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  public val Version: SearchParam<CodeSystem, String> =
+  public val version: SearchParam<CodeSystem, String> =
     SimpleSearchParam<CodeSystem, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
@@ -206,27 +206,27 @@ public object CodeSystemSearchParams {
     )
 
   /** All search parameters for the CodeSystem resource type. */
-  public val ALL: List<SearchParam<CodeSystem, *>> =
+  public val all: List<SearchParam<CodeSystem, *>> =
     listOf(
-      Code,
-      ContentMode,
-      Context,
-      ContextQuantity,
-      ContextType,
-      ContextTypeQuantity,
-      ContextTypeValue,
-      Date,
-      Description,
-      Identifier,
-      Jurisdiction,
-      Language,
-      Name,
-      Publisher,
-      Status,
-      Supplements,
-      System,
-      Title,
-      Url,
-      Version,
+      code,
+      contentMode,
+      context,
+      contextQuantity,
+      contextType,
+      contextTypeQuantity,
+      contextTypeValue,
+      date,
+      description,
+      identifier,
+      jurisdiction,
+      language,
+      name,
+      publisher,
+      status,
+      supplements,
+      system,
+      title,
+      url,
+      version,
     )
 }

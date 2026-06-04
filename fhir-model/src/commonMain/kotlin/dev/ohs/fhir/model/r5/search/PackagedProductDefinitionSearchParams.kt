@@ -34,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [PackagedProductDefinition] resource type. */
 public object PackagedProductDefinitionSearchParams {
-  public val Biological: SearchParam<PackagedProductDefinition, Reference> =
+  public val biological: SearchParam<PackagedProductDefinition, Reference> =
     SimpleSearchParam<PackagedProductDefinition, Reference>(
       name = "biological",
       type = SearchParamType.fromCode("reference"),
@@ -54,7 +54,7 @@ public object PackagedProductDefinitionSearchParams {
       },
     )
 
-  public val ContainedItem: SearchParam<PackagedProductDefinition, Reference> =
+  public val containedItem: SearchParam<PackagedProductDefinition, Reference> =
     SimpleSearchParam<PackagedProductDefinition, Reference>(
       name = "contained-item",
       type = SearchParamType.fromCode("reference"),
@@ -74,7 +74,7 @@ public object PackagedProductDefinitionSearchParams {
       },
     )
 
-  public val Device: SearchParam<PackagedProductDefinition, Reference> =
+  public val device: SearchParam<PackagedProductDefinition, Reference> =
     SimpleSearchParam<PackagedProductDefinition, Reference>(
       name = "device",
       type = SearchParamType.fromCode("reference"),
@@ -94,7 +94,7 @@ public object PackagedProductDefinitionSearchParams {
       },
     )
 
-  public val Identifier: SearchParam<PackagedProductDefinition, Identifier> =
+  public val identifier: SearchParam<PackagedProductDefinition, Identifier> =
     SimpleSearchParam<PackagedProductDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -102,7 +102,7 @@ public object PackagedProductDefinitionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val ManufacturedItem: SearchParam<PackagedProductDefinition, Reference> =
+  public val manufacturedItem: SearchParam<PackagedProductDefinition, Reference> =
     SimpleSearchParam<PackagedProductDefinition, Reference>(
       name = "manufactured-item",
       type = SearchParamType.fromCode("reference"),
@@ -122,7 +122,7 @@ public object PackagedProductDefinitionSearchParams {
       },
     )
 
-  public val Medication: SearchParam<PackagedProductDefinition, Reference> =
+  public val medication: SearchParam<PackagedProductDefinition, Reference> =
     SimpleSearchParam<PackagedProductDefinition, Reference>(
       name = "medication",
       type = SearchParamType.fromCode("reference"),
@@ -142,7 +142,7 @@ public object PackagedProductDefinitionSearchParams {
       },
     )
 
-  public val Name: SearchParam<PackagedProductDefinition, String> =
+  public val name: SearchParam<PackagedProductDefinition, String> =
     SimpleSearchParam<PackagedProductDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("token"),
@@ -150,7 +150,7 @@ public object PackagedProductDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Nutrition: SearchParam<PackagedProductDefinition, Reference> =
+  public val nutrition: SearchParam<PackagedProductDefinition, Reference> =
     SimpleSearchParam<PackagedProductDefinition, Reference>(
       name = "nutrition",
       type = SearchParamType.fromCode("reference"),
@@ -170,7 +170,7 @@ public object PackagedProductDefinitionSearchParams {
       },
     )
 
-  public val Package: SearchParam<PackagedProductDefinition, Reference> =
+  public val `package`: SearchParam<PackagedProductDefinition, Reference> =
     SimpleSearchParam<PackagedProductDefinition, Reference>(
       name = "package",
       type = SearchParamType.fromCode("reference"),
@@ -190,7 +190,7 @@ public object PackagedProductDefinitionSearchParams {
       },
     )
 
-  public val PackageFor: SearchParam<PackagedProductDefinition, Reference> =
+  public val packageFor: SearchParam<PackagedProductDefinition, Reference> =
     SimpleSearchParam<PackagedProductDefinition, Reference>(
       name = "package-for",
       type = SearchParamType.fromCode("reference"),
@@ -199,7 +199,7 @@ public object PackagedProductDefinitionSearchParams {
       extractor = { resource -> resource.packageFor },
     )
 
-  public val Status: SearchParam<PackagedProductDefinition, CodeableConcept> =
+  public val status: SearchParam<PackagedProductDefinition, CodeableConcept> =
     SimpleSearchParam<PackagedProductDefinition, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -208,18 +208,18 @@ public object PackagedProductDefinitionSearchParams {
     )
 
   /** All search parameters for the PackagedProductDefinition resource type. */
-  public val ALL: List<SearchParam<PackagedProductDefinition, *>> =
+  public val all: List<SearchParam<PackagedProductDefinition, *>> =
     listOf(
-      Biological,
-      ContainedItem,
-      Device,
-      Identifier,
-      ManufacturedItem,
-      Medication,
-      Name,
-      Nutrition,
-      Package,
-      PackageFor,
-      Status,
+      biological,
+      containedItem,
+      device,
+      identifier,
+      manufacturedItem,
+      medication,
+      name,
+      nutrition,
+      `package`,
+      packageFor,
+      status,
     )
 }

@@ -48,7 +48,7 @@ class SearchParamAllUsageTest :
       // telecom by system (FHIRPath: Patient.telecom.where(system='email')), a computation
       // that has no equivalent direct field on Patient.
       val index: List<Pair<String, Any?>> =
-        PatientSearchParams.ALL.flatMap { sp ->
+        PatientSearchParams.all.flatMap { sp ->
           sp.extract(alice).map { value -> sp.name to value }
         }
 

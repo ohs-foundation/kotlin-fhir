@@ -69,6 +69,7 @@ import dev.ohs.fhir.model.r5.DeviceRequest
 import dev.ohs.fhir.model.r5.DeviceUsage
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
+import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
@@ -130,6 +131,7 @@ import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.OrganizationAffiliation
 import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Parameters
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
 import dev.ohs.fhir.model.r5.Permission
@@ -186,7 +188,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [AuditEvent] resource type. */
 public object AuditEventSearchParams {
-  public val Action: SearchParam<AuditEvent, Any> =
+  public val action: SearchParam<AuditEvent, Any> =
     SimpleSearchParam<AuditEvent, Any>(
       name = "action",
       type = SearchParamType.fromCode("token"),
@@ -194,7 +196,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.action) },
     )
 
-  public val Agent: SearchParam<AuditEvent, Reference> =
+  public val agent: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "agent",
       type = SearchParamType.fromCode("reference"),
@@ -207,12 +209,12 @@ public object AuditEventSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.agent.map { it.who } },
     )
 
-  public val AgentRole: SearchParam<AuditEvent, CodeableConcept> =
+  public val agentRole: SearchParam<AuditEvent, CodeableConcept> =
     SimpleSearchParam<AuditEvent, CodeableConcept>(
       name = "agent-role",
       type = SearchParamType.fromCode("token"),
@@ -220,7 +222,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.agent.flatMap { it.role } },
     )
 
-  public val BasedOn: SearchParam<AuditEvent, Reference> =
+  public val basedOn: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -238,7 +240,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val Category: SearchParam<AuditEvent, CodeableConcept> =
+  public val category: SearchParam<AuditEvent, CodeableConcept> =
     SimpleSearchParam<AuditEvent, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -246,7 +248,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Code: SearchParam<AuditEvent, CodeableConcept> =
+  public val code: SearchParam<AuditEvent, CodeableConcept> =
     SimpleSearchParam<AuditEvent, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -254,7 +256,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> listOf(resource.code) },
     )
 
-  public val Date: SearchParam<AuditEvent, Instant> =
+  public val date: SearchParam<AuditEvent, Instant> =
     SimpleSearchParam<AuditEvent, Instant>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -262,16 +264,16 @@ public object AuditEventSearchParams {
       extractor = { resource -> listOf(resource.recorded) },
     )
 
-  public val Encounter: SearchParam<AuditEvent, Reference> =
+  public val encounter: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "AuditEvent.encounter",
-      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Entity: SearchParam<AuditEvent, Reference> =
+  public val entity: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "entity",
       type = SearchParamType.fromCode("reference"),
@@ -327,7 +329,7 @@ public object AuditEventSearchParams {
           DeviceUsage::class,
           DiagnosticReport::class,
           DocumentReference::class,
-          dev.ohs.fhir.model.r5.Encounter::class,
+          Encounter::class,
           EncounterHistory::class,
           Endpoint::class,
           EnrollmentRequest::class,
@@ -388,7 +390,7 @@ public object AuditEventSearchParams {
           OrganizationAffiliation::class,
           PackagedProductDefinition::class,
           Parameters::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Permission::class,
@@ -440,7 +442,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.entity.mapNotNull { it.what } },
     )
 
-  public val EntityRole: SearchParam<AuditEvent, CodeableConcept> =
+  public val entityRole: SearchParam<AuditEvent, CodeableConcept> =
     SimpleSearchParam<AuditEvent, CodeableConcept>(
       name = "entity-role",
       type = SearchParamType.fromCode("token"),
@@ -448,7 +450,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.entity.mapNotNull { it.role } },
     )
 
-  public val Outcome: SearchParam<AuditEvent, Coding> =
+  public val outcome: SearchParam<AuditEvent, Coding> =
     SimpleSearchParam<AuditEvent, Coding>(
       name = "outcome",
       type = SearchParamType.fromCode("token"),
@@ -456,16 +458,16 @@ public object AuditEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.outcome?.code) },
     )
 
-  public val Patient: SearchParam<AuditEvent, Reference> =
+  public val patient: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "AuditEvent.patient",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.patient) },
     )
 
-  public val Policy: SearchParam<AuditEvent, Uri> =
+  public val policy: SearchParam<AuditEvent, Uri> =
     SimpleSearchParam<AuditEvent, Uri>(
       name = "policy",
       type = SearchParamType.fromCode("uri"),
@@ -473,7 +475,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.agent.flatMap { it.policy } },
     )
 
-  public val Purpose: SearchParam<AuditEvent, CodeableConcept> =
+  public val purpose: SearchParam<AuditEvent, CodeableConcept> =
     SimpleSearchParam<AuditEvent, CodeableConcept>(
       name = "purpose",
       type = SearchParamType.fromCode("token"),
@@ -481,7 +483,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.authorization },
     )
 
-  public val Source: SearchParam<AuditEvent, Reference> =
+  public val source: SearchParam<AuditEvent, Reference> =
     SimpleSearchParam<AuditEvent, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
@@ -494,28 +496,28 @@ public object AuditEventSearchParams {
           RelatedPerson::class,
           PractitionerRole::class,
           Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOf(resource.source.observer) },
     )
 
   /** All search parameters for the AuditEvent resource type. */
-  public val ALL: CollectionsList<SearchParam<AuditEvent, *>> =
+  public val all: CollectionsList<SearchParam<AuditEvent, *>> =
     listOf(
-      Action,
-      Agent,
-      AgentRole,
-      BasedOn,
-      Category,
-      Code,
-      Date,
-      Encounter,
-      Entity,
-      EntityRole,
-      Outcome,
-      Patient,
-      Policy,
-      Purpose,
-      Source,
+      action,
+      agent,
+      agentRole,
+      basedOn,
+      category,
+      code,
+      date,
+      encounter,
+      entity,
+      entityRole,
+      outcome,
+      patient,
+      policy,
+      purpose,
+      source,
     )
 }

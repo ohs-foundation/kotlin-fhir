@@ -18,10 +18,14 @@
 
 package dev.ohs.fhir.model.r4.search
 
+import dev.ohs.fhir.model.r4.Appointment
 import dev.ohs.fhir.model.r4.AppointmentResponse
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.HealthcareService
 import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Location
+import dev.ohs.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
@@ -32,34 +36,34 @@ import kotlin.collections.List
 
 /** Search parameters for the [AppointmentResponse] resource type. */
 public object AppointmentResponseSearchParams {
-  public val Actor: SearchParam<AppointmentResponse, Reference> =
+  public val actor: SearchParam<AppointmentResponse, Reference> =
     SimpleSearchParam<AppointmentResponse, Reference>(
       name = "actor",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.actor",
       target =
         listOf(
-          dev.ohs.fhir.model.r4.Practitioner::class,
+          Practitioner::class,
           Device::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           HealthcareService::class,
           PractitionerRole::class,
           RelatedPerson::class,
-          dev.ohs.fhir.model.r4.Location::class,
+          Location::class,
         ),
       extractor = { resource -> listOfNotNull(resource.actor) },
     )
 
-  public val Appointment: SearchParam<AppointmentResponse, Reference> =
+  public val appointment: SearchParam<AppointmentResponse, Reference> =
     SimpleSearchParam<AppointmentResponse, Reference>(
       name = "appointment",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.appointment",
-      target = listOf(dev.ohs.fhir.model.r4.Appointment::class),
+      target = listOf(Appointment::class),
       extractor = { resource -> listOf(resource.appointment) },
     )
 
-  public val Identifier: SearchParam<AppointmentResponse, Identifier> =
+  public val identifier: SearchParam<AppointmentResponse, Identifier> =
     SimpleSearchParam<AppointmentResponse, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -67,12 +71,12 @@ public object AppointmentResponseSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Location: SearchParam<AppointmentResponse, Reference> =
+  public val location: SearchParam<AppointmentResponse, Reference> =
     SimpleSearchParam<AppointmentResponse, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.actor.where(resolve() is Location)",
-      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      target = listOf(Location::class),
       extractor = { resource ->
         listOfNotNull(resource.actor).filter {
           it.reference?.value?.toString()?.contains("Location/") == true
@@ -80,7 +84,7 @@ public object AppointmentResponseSearchParams {
       },
     )
 
-  public val PartStatus: SearchParam<AppointmentResponse, Any> =
+  public val partStatus: SearchParam<AppointmentResponse, Any> =
     SimpleSearchParam<AppointmentResponse, Any>(
       name = "part-status",
       type = SearchParamType.fromCode("token"),
@@ -88,12 +92,12 @@ public object AppointmentResponseSearchParams {
       extractor = { resource -> listOf(resource.participantStatus) },
     )
 
-  public val Patient: SearchParam<AppointmentResponse, Reference> =
+  public val patient: SearchParam<AppointmentResponse, Reference> =
     SimpleSearchParam<AppointmentResponse, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.actor.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.actor).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -101,12 +105,12 @@ public object AppointmentResponseSearchParams {
       },
     )
 
-  public val Practitioner: SearchParam<AppointmentResponse, Reference> =
+  public val practitioner: SearchParam<AppointmentResponse, Reference> =
     SimpleSearchParam<AppointmentResponse, Reference>(
       name = "practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.actor.where(resolve() is Practitioner)",
-      target = listOf(dev.ohs.fhir.model.r4.Practitioner::class),
+      target = listOf(Practitioner::class),
       extractor = { resource ->
         listOfNotNull(resource.actor).filter {
           it.reference?.value?.toString()?.contains("Practitioner/") == true
@@ -115,6 +119,6 @@ public object AppointmentResponseSearchParams {
     )
 
   /** All search parameters for the AppointmentResponse resource type. */
-  public val ALL: List<SearchParam<AppointmentResponse, *>> =
-    listOf(Actor, Appointment, Identifier, Location, PartStatus, Patient, Practitioner)
+  public val all: List<SearchParam<AppointmentResponse, *>> =
+    listOf(actor, appointment, identifier, location, partStatus, patient, practitioner)
 }

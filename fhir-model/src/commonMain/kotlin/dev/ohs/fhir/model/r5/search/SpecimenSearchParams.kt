@@ -25,8 +25,10 @@ import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Location
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
+import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.Specimen
@@ -38,7 +40,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Specimen] resource type. */
 public object SpecimenSearchParams {
-  public val Accession: SearchParam<Specimen, Identifier> =
+  public val accession: SearchParam<Specimen, Identifier> =
     SimpleSearchParam<Specimen, Identifier>(
       name = "accession",
       type = SearchParamType.fromCode("token"),
@@ -46,7 +48,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.accessionIdentifier) },
     )
 
-  public val Bodysite: SearchParam<Specimen, Reference> =
+  public val bodysite: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "bodysite",
       type = SearchParamType.fromCode("reference"),
@@ -55,7 +57,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.collection?.bodySite?.reference) },
     )
 
-  public val Collected: SearchParam<Specimen, Any> =
+  public val collected: SearchParam<Specimen, Any> =
     SimpleSearchParam<Specimen, Any>(
       name = "collected",
       type = SearchParamType.fromCode("date"),
@@ -63,22 +65,17 @@ public object SpecimenSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Collector: SearchParam<Specimen, Reference> =
+  public val collector: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "collector",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.collection.collector",
       target =
-        listOf(
-          RelatedPerson::class,
-          PractitionerRole::class,
-          Practitioner::class,
-          dev.ohs.fhir.model.r5.Patient::class,
-        ),
+        listOf(RelatedPerson::class, PractitionerRole::class, Practitioner::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.collection?.collector) },
     )
 
-  public val ContainerDevice: SearchParam<Specimen, Reference> =
+  public val containerDevice: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "container-device",
       type = SearchParamType.fromCode("reference"),
@@ -91,7 +88,7 @@ public object SpecimenSearchParams {
       },
     )
 
-  public val Identifier: SearchParam<Specimen, Identifier> =
+  public val identifier: SearchParam<Specimen, Identifier> =
     SimpleSearchParam<Specimen, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -99,7 +96,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Parent: SearchParam<Specimen, Reference> =
+  public val parent: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "parent",
       type = SearchParamType.fromCode("reference"),
@@ -108,12 +105,12 @@ public object SpecimenSearchParams {
       extractor = { resource -> resource.parent },
     )
 
-  public val Patient: SearchParam<Specimen, Reference> =
+  public val patient: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -121,16 +118,16 @@ public object SpecimenSearchParams {
       },
     )
 
-  public val Procedure: SearchParam<Specimen, Reference> =
+  public val procedure: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "procedure",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.collection.procedure",
-      target = listOf(dev.ohs.fhir.model.r5.Procedure::class),
+      target = listOf(Procedure::class),
       extractor = { resource -> listOfNotNull(resource.collection?.procedure) },
     )
 
-  public val Status: SearchParam<Specimen, Any> =
+  public val status: SearchParam<Specimen, Any> =
     SimpleSearchParam<Specimen, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -138,7 +135,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Subject: SearchParam<Specimen, Reference> =
+  public val subject: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -150,12 +147,12 @@ public object SpecimenSearchParams {
           BiologicallyDerivedProduct::class,
           Substance::class,
           Location::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val Type: SearchParam<Specimen, CodeableConcept> =
+  public val type: SearchParam<Specimen, CodeableConcept> =
     SimpleSearchParam<Specimen, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -164,19 +161,19 @@ public object SpecimenSearchParams {
     )
 
   /** All search parameters for the Specimen resource type. */
-  public val ALL: List<SearchParam<Specimen, *>> =
+  public val all: List<SearchParam<Specimen, *>> =
     listOf(
-      Accession,
-      Bodysite,
-      Collected,
-      Collector,
-      ContainerDevice,
-      Identifier,
-      Parent,
-      Patient,
-      Procedure,
-      Status,
-      Subject,
-      Type,
+      accession,
+      bodysite,
+      collected,
+      collector,
+      containerDevice,
+      identifier,
+      parent,
+      patient,
+      procedure,
+      status,
+      subject,
+      type,
     )
 }

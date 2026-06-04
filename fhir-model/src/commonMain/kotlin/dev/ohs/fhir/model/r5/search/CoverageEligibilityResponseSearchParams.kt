@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r5.CoverageEligibilityResponse
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
@@ -34,7 +35,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [CoverageEligibilityResponse] resource type. */
 public object CoverageEligibilityResponseSearchParams {
-  public val Created: SearchParam<CoverageEligibilityResponse, DateTime> =
+  public val created: SearchParam<CoverageEligibilityResponse, DateTime> =
     SimpleSearchParam<CoverageEligibilityResponse, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
@@ -42,7 +43,7 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOf(resource.created) },
     )
 
-  public val Disposition: SearchParam<CoverageEligibilityResponse, String> =
+  public val disposition: SearchParam<CoverageEligibilityResponse, String> =
     SimpleSearchParam<CoverageEligibilityResponse, String>(
       name = "disposition",
       type = SearchParamType.fromCode("string"),
@@ -50,7 +51,7 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.disposition) },
     )
 
-  public val Identifier: SearchParam<CoverageEligibilityResponse, Identifier> =
+  public val identifier: SearchParam<CoverageEligibilityResponse, Identifier> =
     SimpleSearchParam<CoverageEligibilityResponse, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -58,7 +59,7 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Insurer: SearchParam<CoverageEligibilityResponse, Reference> =
+  public val insurer: SearchParam<CoverageEligibilityResponse, Reference> =
     SimpleSearchParam<CoverageEligibilityResponse, Reference>(
       name = "insurer",
       type = SearchParamType.fromCode("reference"),
@@ -67,7 +68,7 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOf(resource.insurer) },
     )
 
-  public val Outcome: SearchParam<CoverageEligibilityResponse, Any> =
+  public val outcome: SearchParam<CoverageEligibilityResponse, Any> =
     SimpleSearchParam<CoverageEligibilityResponse, Any>(
       name = "outcome",
       type = SearchParamType.fromCode("token"),
@@ -75,16 +76,16 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOf(resource.outcome) },
     )
 
-  public val Patient: SearchParam<CoverageEligibilityResponse, Reference> =
+  public val patient: SearchParam<CoverageEligibilityResponse, Reference> =
     SimpleSearchParam<CoverageEligibilityResponse, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "CoverageEligibilityResponse.patient",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val Request: SearchParam<CoverageEligibilityResponse, Reference> =
+  public val request: SearchParam<CoverageEligibilityResponse, Reference> =
     SimpleSearchParam<CoverageEligibilityResponse, Reference>(
       name = "request",
       type = SearchParamType.fromCode("reference"),
@@ -93,7 +94,7 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOf(resource.request) },
     )
 
-  public val Requestor: SearchParam<CoverageEligibilityResponse, Reference> =
+  public val requestor: SearchParam<CoverageEligibilityResponse, Reference> =
     SimpleSearchParam<CoverageEligibilityResponse, Reference>(
       name = "requestor",
       type = SearchParamType.fromCode("reference"),
@@ -102,7 +103,7 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.requestor) },
     )
 
-  public val Status: SearchParam<CoverageEligibilityResponse, Any> =
+  public val status: SearchParam<CoverageEligibilityResponse, Any> =
     SimpleSearchParam<CoverageEligibilityResponse, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -111,6 +112,6 @@ public object CoverageEligibilityResponseSearchParams {
     )
 
   /** All search parameters for the CoverageEligibilityResponse resource type. */
-  public val ALL: List<SearchParam<CoverageEligibilityResponse, *>> =
-    listOf(Created, Disposition, Identifier, Insurer, Outcome, Patient, Request, Requestor, Status)
+  public val all: List<SearchParam<CoverageEligibilityResponse, *>> =
+    listOf(created, disposition, identifier, insurer, outcome, patient, request, requestor, status)
 }

@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.Address
 import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
@@ -32,7 +33,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Organization] resource type. */
 public object OrganizationSearchParams {
-  public val Active: SearchParam<Organization, Boolean> =
+  public val active: SearchParam<Organization, Boolean> =
     SimpleSearchParam<Organization, Boolean>(
       name = "active",
       type = SearchParamType.fromCode("token"),
@@ -40,7 +41,7 @@ public object OrganizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.active) },
     )
 
-  public val Address: SearchParam<Organization, Address> =
+  public val address: SearchParam<Organization, Address> =
     SimpleSearchParam<Organization, Address>(
       name = "address",
       type = SearchParamType.fromCode("string"),
@@ -48,7 +49,7 @@ public object OrganizationSearchParams {
       extractor = { resource -> resource.contact.mapNotNull { it.address } },
     )
 
-  public val AddressCity: SearchParam<Organization, String> =
+  public val addressCity: SearchParam<Organization, String> =
     SimpleSearchParam<Organization, String>(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
@@ -56,7 +57,7 @@ public object OrganizationSearchParams {
       extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.city } },
     )
 
-  public val AddressCountry: SearchParam<Organization, String> =
+  public val addressCountry: SearchParam<Organization, String> =
     SimpleSearchParam<Organization, String>(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
@@ -66,7 +67,7 @@ public object OrganizationSearchParams {
       },
     )
 
-  public val AddressPostalcode: SearchParam<Organization, String> =
+  public val addressPostalcode: SearchParam<Organization, String> =
     SimpleSearchParam<Organization, String>(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
@@ -76,7 +77,7 @@ public object OrganizationSearchParams {
       },
     )
 
-  public val AddressState: SearchParam<Organization, String> =
+  public val addressState: SearchParam<Organization, String> =
     SimpleSearchParam<Organization, String>(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
@@ -84,7 +85,7 @@ public object OrganizationSearchParams {
       extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.state } },
     )
 
-  public val AddressUse: SearchParam<Organization, Any> =
+  public val addressUse: SearchParam<Organization, Any> =
     SimpleSearchParam<Organization, Any>(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
@@ -92,16 +93,16 @@ public object OrganizationSearchParams {
       extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.use } },
     )
 
-  public val Endpoint: SearchParam<Organization, Reference> =
+  public val endpoint: SearchParam<Organization, Reference> =
     SimpleSearchParam<Organization, Reference>(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "Organization.endpoint",
-      target = listOf(dev.ohs.fhir.model.r5.Endpoint::class),
+      target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
     )
 
-  public val Identifier: SearchParam<Organization, Identifier> =
+  public val identifier: SearchParam<Organization, Identifier> =
     SimpleSearchParam<Organization, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -109,7 +110,7 @@ public object OrganizationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Name: SearchParam<Organization, String> =
+  public val name: SearchParam<Organization, String> =
     SimpleSearchParam<Organization, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -117,7 +118,7 @@ public object OrganizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Partof: SearchParam<Organization, Reference> =
+  public val partof: SearchParam<Organization, Reference> =
     SimpleSearchParam<Organization, Reference>(
       name = "partof",
       type = SearchParamType.fromCode("reference"),
@@ -126,7 +127,7 @@ public object OrganizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.partOf) },
     )
 
-  public val Phonetic: SearchParam<Organization, String> =
+  public val phonetic: SearchParam<Organization, String> =
     SimpleSearchParam<Organization, String>(
       name = "phonetic",
       type = SearchParamType.fromCode("string"),
@@ -134,7 +135,7 @@ public object OrganizationSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Type: SearchParam<Organization, CodeableConcept> =
+  public val type: SearchParam<Organization, CodeableConcept> =
     SimpleSearchParam<Organization, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -143,20 +144,20 @@ public object OrganizationSearchParams {
     )
 
   /** All search parameters for the Organization resource type. */
-  public val ALL: List<SearchParam<Organization, *>> =
+  public val all: List<SearchParam<Organization, *>> =
     listOf(
-      Active,
-      Address,
-      AddressCity,
-      AddressCountry,
-      AddressPostalcode,
-      AddressState,
-      AddressUse,
-      Endpoint,
-      Identifier,
-      Name,
-      Partof,
-      Phonetic,
-      Type,
+      active,
+      address,
+      addressCity,
+      addressCountry,
+      addressPostalcode,
+      addressState,
+      addressUse,
+      endpoint,
+      identifier,
+      name,
+      partof,
+      phonetic,
+      type,
     )
 }

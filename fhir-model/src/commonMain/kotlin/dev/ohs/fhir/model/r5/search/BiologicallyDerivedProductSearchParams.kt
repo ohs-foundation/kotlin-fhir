@@ -32,7 +32,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [BiologicallyDerivedProduct] resource type. */
 public object BiologicallyDerivedProductSearchParams {
-  public val BiologicalSourceEvent: SearchParam<BiologicallyDerivedProduct, Identifier> =
+  public val biologicalSourceEvent: SearchParam<BiologicallyDerivedProduct, Identifier> =
     SimpleSearchParam<BiologicallyDerivedProduct, Identifier>(
       name = "biological-source-event",
       type = SearchParamType.fromCode("token"),
@@ -40,7 +40,7 @@ public object BiologicallyDerivedProductSearchParams {
       extractor = { resource -> listOfNotNull(resource.biologicalSourceEvent) },
     )
 
-  public val Code: SearchParam<BiologicallyDerivedProduct, CodeableConcept> =
+  public val code: SearchParam<BiologicallyDerivedProduct, CodeableConcept> =
     SimpleSearchParam<BiologicallyDerivedProduct, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
@@ -48,7 +48,7 @@ public object BiologicallyDerivedProductSearchParams {
       extractor = { resource -> listOfNotNull(resource.productCode) },
     )
 
-  public val Collector: SearchParam<BiologicallyDerivedProduct, Reference> =
+  public val collector: SearchParam<BiologicallyDerivedProduct, Reference> =
     SimpleSearchParam<BiologicallyDerivedProduct, Reference>(
       name = "collector",
       type = SearchParamType.fromCode("reference"),
@@ -57,7 +57,7 @@ public object BiologicallyDerivedProductSearchParams {
       extractor = { resource -> listOfNotNull(resource.collection?.collector) },
     )
 
-  public val Identifier: SearchParam<BiologicallyDerivedProduct, Identifier> =
+  public val identifier: SearchParam<BiologicallyDerivedProduct, Identifier> =
     SimpleSearchParam<BiologicallyDerivedProduct, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -65,7 +65,7 @@ public object BiologicallyDerivedProductSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val ProductCategory: SearchParam<BiologicallyDerivedProduct, Coding> =
+  public val productCategory: SearchParam<BiologicallyDerivedProduct, Coding> =
     SimpleSearchParam<BiologicallyDerivedProduct, Coding>(
       name = "product-category",
       type = SearchParamType.fromCode("token"),
@@ -73,7 +73,7 @@ public object BiologicallyDerivedProductSearchParams {
       extractor = { resource -> listOfNotNull(resource.productCategory) },
     )
 
-  public val ProductStatus: SearchParam<BiologicallyDerivedProduct, Coding> =
+  public val productStatus: SearchParam<BiologicallyDerivedProduct, Coding> =
     SimpleSearchParam<BiologicallyDerivedProduct, Coding>(
       name = "product-status",
       type = SearchParamType.fromCode("token"),
@@ -81,7 +81,7 @@ public object BiologicallyDerivedProductSearchParams {
       extractor = { resource -> listOfNotNull(resource.productStatus) },
     )
 
-  public val Request: SearchParam<BiologicallyDerivedProduct, Reference> =
+  public val request: SearchParam<BiologicallyDerivedProduct, Reference> =
     SimpleSearchParam<BiologicallyDerivedProduct, Reference>(
       name = "request",
       type = SearchParamType.fromCode("reference"),
@@ -90,7 +90,7 @@ public object BiologicallyDerivedProductSearchParams {
       extractor = { resource -> resource.request },
     )
 
-  public val SerialNumber: SearchParam<BiologicallyDerivedProduct, Identifier> =
+  public val serialNumber: SearchParam<BiologicallyDerivedProduct, Identifier> =
     SimpleSearchParam<BiologicallyDerivedProduct, Identifier>(
       name = "serial-number",
       type = SearchParamType.fromCode("token"),
@@ -99,15 +99,15 @@ public object BiologicallyDerivedProductSearchParams {
     )
 
   /** All search parameters for the BiologicallyDerivedProduct resource type. */
-  public val ALL: List<SearchParam<BiologicallyDerivedProduct, *>> =
+  public val all: List<SearchParam<BiologicallyDerivedProduct, *>> =
     listOf(
-      BiologicalSourceEvent,
-      Code,
-      Collector,
-      Identifier,
-      ProductCategory,
-      ProductStatus,
-      Request,
-      SerialNumber,
+      biologicalSourceEvent,
+      code,
+      collector,
+      identifier,
+      productCategory,
+      productStatus,
+      request,
+      serialNumber,
     )
 }

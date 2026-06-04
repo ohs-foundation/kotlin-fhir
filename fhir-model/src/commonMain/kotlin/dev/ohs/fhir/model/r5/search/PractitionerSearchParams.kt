@@ -34,7 +34,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Practitioner] resource type. */
 public object PractitionerSearchParams {
-  public val Active: SearchParam<Practitioner, Boolean> =
+  public val active: SearchParam<Practitioner, Boolean> =
     SimpleSearchParam<Practitioner, Boolean>(
       name = "active",
       type = SearchParamType.fromCode("token"),
@@ -42,7 +42,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> listOfNotNull(resource.active) },
     )
 
-  public val Address: SearchParam<Practitioner, Address> =
+  public val address: SearchParam<Practitioner, Address> =
     SimpleSearchParam<Practitioner, Address>(
       name = "address",
       type = SearchParamType.fromCode("string"),
@@ -50,7 +50,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.address },
     )
 
-  public val AddressCity: SearchParam<Practitioner, String> =
+  public val addressCity: SearchParam<Practitioner, String> =
     SimpleSearchParam<Practitioner, String>(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
@@ -58,7 +58,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.city } },
     )
 
-  public val AddressCountry: SearchParam<Practitioner, String> =
+  public val addressCountry: SearchParam<Practitioner, String> =
     SimpleSearchParam<Practitioner, String>(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
@@ -66,7 +66,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.country } },
     )
 
-  public val AddressPostalcode: SearchParam<Practitioner, String> =
+  public val addressPostalcode: SearchParam<Practitioner, String> =
     SimpleSearchParam<Practitioner, String>(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
@@ -74,7 +74,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.postalCode } },
     )
 
-  public val AddressState: SearchParam<Practitioner, String> =
+  public val addressState: SearchParam<Practitioner, String> =
     SimpleSearchParam<Practitioner, String>(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
@@ -82,7 +82,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.state } },
     )
 
-  public val AddressUse: SearchParam<Practitioner, Any> =
+  public val addressUse: SearchParam<Practitioner, Any> =
     SimpleSearchParam<Practitioner, Any>(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
@@ -90,7 +90,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.use } },
     )
 
-  public val Communication: SearchParam<Practitioner, CodeableConcept> =
+  public val communication: SearchParam<Practitioner, CodeableConcept> =
     SimpleSearchParam<Practitioner, CodeableConcept>(
       name = "communication",
       type = SearchParamType.fromCode("token"),
@@ -98,7 +98,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.communication.map { it.language } },
     )
 
-  public val DeathDate: SearchParam<Practitioner, Any> =
+  public val deathDate: SearchParam<Practitioner, Any> =
     SimpleSearchParam<Practitioner, Any>(
       name = "death-date",
       type = SearchParamType.fromCode("date"),
@@ -106,7 +106,7 @@ public object PractitionerSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Deceased: SearchParam<Practitioner, Any> =
+  public val deceased: SearchParam<Practitioner, Any> =
     SimpleSearchParam<Practitioner, Any>(
       name = "deceased",
       type = SearchParamType.fromCode("token"),
@@ -114,7 +114,7 @@ public object PractitionerSearchParams {
       extractor = { emptyList() },
     )
 
-  public val Email: SearchParam<Practitioner, ContactPoint> =
+  public val email: SearchParam<Practitioner, ContactPoint> =
     SimpleSearchParam<Practitioner, ContactPoint>(
       name = "email",
       type = SearchParamType.fromCode("token"),
@@ -124,7 +124,7 @@ public object PractitionerSearchParams {
       },
     )
 
-  public val Family: SearchParam<Practitioner, String> =
+  public val family: SearchParam<Practitioner, String> =
     SimpleSearchParam<Practitioner, String>(
       name = "family",
       type = SearchParamType.fromCode("string"),
@@ -132,7 +132,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.name.mapNotNull { it.family } },
     )
 
-  public val Gender: SearchParam<Practitioner, Any> =
+  public val gender: SearchParam<Practitioner, Any> =
     SimpleSearchParam<Practitioner, Any>(
       name = "gender",
       type = SearchParamType.fromCode("token"),
@@ -140,7 +140,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> listOfNotNull(resource.gender) },
     )
 
-  public val Given: SearchParam<Practitioner, String> =
+  public val given: SearchParam<Practitioner, String> =
     SimpleSearchParam<Practitioner, String>(
       name = "given",
       type = SearchParamType.fromCode("string"),
@@ -148,7 +148,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.name.flatMap { it.given } },
     )
 
-  public val Identifier: SearchParam<Practitioner, Identifier> =
+  public val identifier: SearchParam<Practitioner, Identifier> =
     SimpleSearchParam<Practitioner, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -156,7 +156,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Name: SearchParam<Practitioner, HumanName> =
+  public val name: SearchParam<Practitioner, HumanName> =
     SimpleSearchParam<Practitioner, HumanName>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -164,7 +164,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.name },
     )
 
-  public val Phone: SearchParam<Practitioner, ContactPoint> =
+  public val phone: SearchParam<Practitioner, ContactPoint> =
     SimpleSearchParam<Practitioner, ContactPoint>(
       name = "phone",
       type = SearchParamType.fromCode("token"),
@@ -174,7 +174,7 @@ public object PractitionerSearchParams {
       },
     )
 
-  public val Phonetic: SearchParam<Practitioner, HumanName> =
+  public val phonetic: SearchParam<Practitioner, HumanName> =
     SimpleSearchParam<Practitioner, HumanName>(
       name = "phonetic",
       type = SearchParamType.fromCode("string"),
@@ -182,7 +182,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.name },
     )
 
-  public val QualificationPeriod: SearchParam<Practitioner, Period> =
+  public val qualificationPeriod: SearchParam<Practitioner, Period> =
     SimpleSearchParam<Practitioner, Period>(
       name = "qualification-period",
       type = SearchParamType.fromCode("date"),
@@ -190,7 +190,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.qualification.mapNotNull { it.period } },
     )
 
-  public val Telecom: SearchParam<Practitioner, ContactPoint> =
+  public val telecom: SearchParam<Practitioner, ContactPoint> =
     SimpleSearchParam<Practitioner, ContactPoint>(
       name = "telecom",
       type = SearchParamType.fromCode("token"),
@@ -199,27 +199,27 @@ public object PractitionerSearchParams {
     )
 
   /** All search parameters for the Practitioner resource type. */
-  public val ALL: List<SearchParam<Practitioner, *>> =
+  public val all: List<SearchParam<Practitioner, *>> =
     listOf(
-      Active,
-      Address,
-      AddressCity,
-      AddressCountry,
-      AddressPostalcode,
-      AddressState,
-      AddressUse,
-      Communication,
-      DeathDate,
-      Deceased,
-      Email,
-      Family,
-      Gender,
-      Given,
-      Identifier,
-      Name,
-      Phone,
-      Phonetic,
-      QualificationPeriod,
-      Telecom,
+      active,
+      address,
+      addressCity,
+      addressCountry,
+      addressPostalcode,
+      addressState,
+      addressUse,
+      communication,
+      deathDate,
+      deceased,
+      email,
+      family,
+      gender,
+      given,
+      identifier,
+      name,
+      phone,
+      phonetic,
+      qualificationPeriod,
+      telecom,
     )
 }

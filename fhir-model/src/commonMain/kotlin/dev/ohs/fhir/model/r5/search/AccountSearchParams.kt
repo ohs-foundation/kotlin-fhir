@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
@@ -38,17 +39,16 @@ import kotlin.collections.List
 
 /** Search parameters for the [Account] resource type. */
 public object AccountSearchParams {
-  public val Guarantor: SearchParam<Account, Reference> =
+  public val guarantor: SearchParam<Account, Reference> =
     SimpleSearchParam<Account, Reference>(
       name = "guarantor",
       type = SearchParamType.fromCode("reference"),
       expression = "Account.guarantor.party",
-      target =
-        listOf(Organization::class, RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Organization::class, RelatedPerson::class, Patient::class),
       extractor = { resource -> resource.guarantor.map { it.party } },
     )
 
-  public val Identifier: SearchParam<Account, Identifier> =
+  public val identifier: SearchParam<Account, Identifier> =
     SimpleSearchParam<Account, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -56,7 +56,7 @@ public object AccountSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Name: SearchParam<Account, String> =
+  public val name: SearchParam<Account, String> =
     SimpleSearchParam<Account, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -64,7 +64,7 @@ public object AccountSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Owner: SearchParam<Account, Reference> =
+  public val owner: SearchParam<Account, Reference> =
     SimpleSearchParam<Account, Reference>(
       name = "owner",
       type = SearchParamType.fromCode("reference"),
@@ -73,18 +73,18 @@ public object AccountSearchParams {
       extractor = { resource -> listOfNotNull(resource.owner) },
     )
 
-  public val Patient: SearchParam<Account, Reference> =
+  public val patient: SearchParam<Account, Reference> =
     SimpleSearchParam<Account, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Account.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
       },
     )
 
-  public val Period: SearchParam<Account, Period> =
+  public val period: SearchParam<Account, Period> =
     SimpleSearchParam<Account, Period>(
       name = "period",
       type = SearchParamType.fromCode("date"),
@@ -92,7 +92,7 @@ public object AccountSearchParams {
       extractor = { resource -> listOfNotNull(resource.servicePeriod) },
     )
 
-  public val Relatedaccount: SearchParam<Account, Reference> =
+  public val relatedaccount: SearchParam<Account, Reference> =
     SimpleSearchParam<Account, Reference>(
       name = "relatedaccount",
       type = SearchParamType.fromCode("reference"),
@@ -101,7 +101,7 @@ public object AccountSearchParams {
       extractor = { resource -> resource.relatedAccount.map { it.account } },
     )
 
-  public val Status: SearchParam<Account, Any> =
+  public val status: SearchParam<Account, Any> =
     SimpleSearchParam<Account, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -109,7 +109,7 @@ public object AccountSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<Account, Reference> =
+  public val subject: SearchParam<Account, Reference> =
     SimpleSearchParam<Account, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -122,12 +122,12 @@ public object AccountSearchParams {
           PractitionerRole::class,
           Practitioner::class,
           Location::class,
-          dev.ohs.fhir.model.r5.Patient::class,
+          Patient::class,
         ),
       extractor = { resource -> resource.subject },
     )
 
-  public val Type: SearchParam<Account, CodeableConcept> =
+  public val type: SearchParam<Account, CodeableConcept> =
     SimpleSearchParam<Account, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -136,17 +136,17 @@ public object AccountSearchParams {
     )
 
   /** All search parameters for the Account resource type. */
-  public val ALL: List<SearchParam<Account, *>> =
+  public val all: List<SearchParam<Account, *>> =
     listOf(
-      Guarantor,
-      Identifier,
-      Name,
-      Owner,
-      Patient,
-      Period,
-      Relatedaccount,
-      Status,
-      Subject,
-      Type,
+      guarantor,
+      identifier,
+      name,
+      owner,
+      patient,
+      period,
+      relatedaccount,
+      status,
+      subject,
+      type,
     )
 }

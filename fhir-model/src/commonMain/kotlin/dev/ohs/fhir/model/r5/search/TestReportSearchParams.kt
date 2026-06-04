@@ -32,7 +32,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [TestReport] resource type. */
 public object TestReportSearchParams {
-  public val Identifier: SearchParam<TestReport, Identifier> =
+  public val identifier: SearchParam<TestReport, Identifier> =
     SimpleSearchParam<TestReport, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -40,7 +40,7 @@ public object TestReportSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val Issued: SearchParam<TestReport, DateTime> =
+  public val issued: SearchParam<TestReport, DateTime> =
     SimpleSearchParam<TestReport, DateTime>(
       name = "issued",
       type = SearchParamType.fromCode("date"),
@@ -48,7 +48,7 @@ public object TestReportSearchParams {
       extractor = { resource -> listOfNotNull(resource.issued) },
     )
 
-  public val Participant: SearchParam<TestReport, Uri> =
+  public val participant: SearchParam<TestReport, Uri> =
     SimpleSearchParam<TestReport, Uri>(
       name = "participant",
       type = SearchParamType.fromCode("uri"),
@@ -56,7 +56,7 @@ public object TestReportSearchParams {
       extractor = { resource -> resource.participant.map { it.uri } },
     )
 
-  public val Result: SearchParam<TestReport, Any> =
+  public val result: SearchParam<TestReport, Any> =
     SimpleSearchParam<TestReport, Any>(
       name = "result",
       type = SearchParamType.fromCode("token"),
@@ -64,7 +64,7 @@ public object TestReportSearchParams {
       extractor = { resource -> listOf(resource.result) },
     )
 
-  public val Status: SearchParam<TestReport, Any> =
+  public val status: SearchParam<TestReport, Any> =
     SimpleSearchParam<TestReport, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -72,7 +72,7 @@ public object TestReportSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Tester: SearchParam<TestReport, String> =
+  public val tester: SearchParam<TestReport, String> =
     SimpleSearchParam<TestReport, String>(
       name = "tester",
       type = SearchParamType.fromCode("string"),
@@ -80,7 +80,7 @@ public object TestReportSearchParams {
       extractor = { resource -> listOfNotNull(resource.tester) },
     )
 
-  public val Testscript: SearchParam<TestReport, Canonical> =
+  public val testscript: SearchParam<TestReport, Canonical> =
     SimpleSearchParam<TestReport, Canonical>(
       name = "testscript",
       type = SearchParamType.fromCode("reference"),
@@ -90,6 +90,6 @@ public object TestReportSearchParams {
     )
 
   /** All search parameters for the TestReport resource type. */
-  public val ALL: List<SearchParam<TestReport, *>> =
-    listOf(Identifier, Issued, Participant, Result, Status, Tester, Testscript)
+  public val all: List<SearchParam<TestReport, *>> =
+    listOf(identifier, issued, participant, result, status, tester, testscript)
 }

@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Immunization
+import dev.ohs.fhir.model.r4.Location
 import dev.ohs.fhir.model.r4.Medication
 import dev.ohs.fhir.model.r4.MedicationAdministration
 import dev.ohs.fhir.model.r4.MedicationStatement
@@ -35,6 +36,7 @@ import dev.ohs.fhir.model.r4.Procedure
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
 import dev.ohs.fhir.model.r4.ResearchStudy
+import dev.ohs.fhir.model.r4.Substance
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -42,7 +44,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [AdverseEvent] resource type. */
 public object AdverseEventSearchParams {
-  public val Actuality: SearchParam<AdverseEvent, Any> =
+  public val actuality: SearchParam<AdverseEvent, Any> =
     SimpleSearchParam<AdverseEvent, Any>(
       name = "actuality",
       type = SearchParamType.fromCode("token"),
@@ -50,7 +52,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOf(resource.actuality) },
     )
 
-  public val Category: SearchParam<AdverseEvent, CodeableConcept> =
+  public val category: SearchParam<AdverseEvent, CodeableConcept> =
     SimpleSearchParam<AdverseEvent, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
@@ -58,7 +60,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val Date: SearchParam<AdverseEvent, DateTime> =
+  public val date: SearchParam<AdverseEvent, DateTime> =
     SimpleSearchParam<AdverseEvent, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
@@ -66,7 +68,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val Event: SearchParam<AdverseEvent, CodeableConcept> =
+  public val event: SearchParam<AdverseEvent, CodeableConcept> =
     SimpleSearchParam<AdverseEvent, CodeableConcept>(
       name = "event",
       type = SearchParamType.fromCode("token"),
@@ -74,16 +76,16 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.event) },
     )
 
-  public val Location: SearchParam<AdverseEvent, Reference> =
+  public val location: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "AdverseEvent.location",
-      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
     )
 
-  public val Recorder: SearchParam<AdverseEvent, Reference> =
+  public val recorder: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "recorder",
       type = SearchParamType.fromCode("reference"),
@@ -93,7 +95,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.recorder) },
     )
 
-  public val Resultingcondition: SearchParam<AdverseEvent, Reference> =
+  public val resultingcondition: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "resultingcondition",
       type = SearchParamType.fromCode("reference"),
@@ -102,7 +104,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> resource.resultingCondition },
     )
 
-  public val Seriousness: SearchParam<AdverseEvent, CodeableConcept> =
+  public val seriousness: SearchParam<AdverseEvent, CodeableConcept> =
     SimpleSearchParam<AdverseEvent, CodeableConcept>(
       name = "seriousness",
       type = SearchParamType.fromCode("token"),
@@ -110,7 +112,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.seriousness) },
     )
 
-  public val Severity: SearchParam<AdverseEvent, CodeableConcept> =
+  public val severity: SearchParam<AdverseEvent, CodeableConcept> =
     SimpleSearchParam<AdverseEvent, CodeableConcept>(
       name = "severity",
       type = SearchParamType.fromCode("token"),
@@ -118,7 +120,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.severity) },
     )
 
-  public val Study: SearchParam<AdverseEvent, Reference> =
+  public val study: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "study",
       type = SearchParamType.fromCode("reference"),
@@ -127,7 +129,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> resource.study },
     )
 
-  public val Subject: SearchParam<AdverseEvent, Reference> =
+  public val subject: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -136,7 +138,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  public val Substance: SearchParam<AdverseEvent, Reference> =
+  public val substance: SearchParam<AdverseEvent, Reference> =
     SimpleSearchParam<AdverseEvent, Reference>(
       name = "substance",
       type = SearchParamType.fromCode("reference"),
@@ -147,7 +149,7 @@ public object AdverseEventSearchParams {
           Device::class,
           Medication::class,
           Procedure::class,
-          dev.ohs.fhir.model.r4.Substance::class,
+          Substance::class,
           MedicationAdministration::class,
           MedicationStatement::class,
         ),
@@ -155,19 +157,19 @@ public object AdverseEventSearchParams {
     )
 
   /** All search parameters for the AdverseEvent resource type. */
-  public val ALL: List<SearchParam<AdverseEvent, *>> =
+  public val all: List<SearchParam<AdverseEvent, *>> =
     listOf(
-      Actuality,
-      Category,
-      Date,
-      Event,
-      Location,
-      Recorder,
-      Resultingcondition,
-      Seriousness,
-      Severity,
-      Study,
-      Subject,
-      Substance,
+      actuality,
+      category,
+      date,
+      event,
+      location,
+      recorder,
+      resultingcondition,
+      seriousness,
+      severity,
+      study,
+      subject,
+      substance,
     )
 }

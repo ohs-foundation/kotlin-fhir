@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Location
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
@@ -35,7 +36,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [Specimen] resource type. */
 public object SpecimenSearchParams {
-  public val Accession: SearchParam<Specimen, Identifier> =
+  public val accession: SearchParam<Specimen, Identifier> =
     SimpleSearchParam<Specimen, Identifier>(
       name = "accession",
       type = SearchParamType.fromCode("token"),
@@ -43,7 +44,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.accessionIdentifier) },
     )
 
-  public val Bodysite: SearchParam<Specimen, CodeableConcept> =
+  public val bodysite: SearchParam<Specimen, CodeableConcept> =
     SimpleSearchParam<Specimen, CodeableConcept>(
       name = "bodysite",
       type = SearchParamType.fromCode("token"),
@@ -51,7 +52,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.collection?.bodySite) },
     )
 
-  public val Collected: SearchParam<Specimen, Specimen.Collection.Collected> =
+  public val collected: SearchParam<Specimen, Specimen.Collection.Collected> =
     SimpleSearchParam<Specimen, Specimen.Collection.Collected>(
       name = "collected",
       type = SearchParamType.fromCode("date"),
@@ -59,7 +60,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.collection?.collected) },
     )
 
-  public val Collector: SearchParam<Specimen, Reference> =
+  public val collector: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "collector",
       type = SearchParamType.fromCode("reference"),
@@ -68,7 +69,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.collection?.collector) },
     )
 
-  public val Container: SearchParam<Specimen, CodeableConcept> =
+  public val container: SearchParam<Specimen, CodeableConcept> =
     SimpleSearchParam<Specimen, CodeableConcept>(
       name = "container",
       type = SearchParamType.fromCode("token"),
@@ -76,7 +77,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> resource.container.mapNotNull { it.type } },
     )
 
-  public val ContainerId: SearchParam<Specimen, Identifier> =
+  public val containerId: SearchParam<Specimen, Identifier> =
     SimpleSearchParam<Specimen, Identifier>(
       name = "container-id",
       type = SearchParamType.fromCode("token"),
@@ -84,7 +85,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> resource.container.flatMap { it.identifier } },
     )
 
-  public val Identifier: SearchParam<Specimen, Identifier> =
+  public val identifier: SearchParam<Specimen, Identifier> =
     SimpleSearchParam<Specimen, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -92,7 +93,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Parent: SearchParam<Specimen, Reference> =
+  public val parent: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "parent",
       type = SearchParamType.fromCode("reference"),
@@ -101,12 +102,12 @@ public object SpecimenSearchParams {
       extractor = { resource -> resource.parent },
     )
 
-  public val Patient: SearchParam<Specimen, Reference> =
+  public val patient: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -114,7 +115,7 @@ public object SpecimenSearchParams {
       },
     )
 
-  public val Status: SearchParam<Specimen, Any> =
+  public val status: SearchParam<Specimen, Any> =
     SimpleSearchParam<Specimen, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -122,23 +123,17 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Subject: SearchParam<Specimen, Reference> =
+  public val subject: SearchParam<Specimen, Reference> =
     SimpleSearchParam<Specimen, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.subject",
       target =
-        listOf(
-          Group::class,
-          Device::class,
-          dev.ohs.fhir.model.r4.Patient::class,
-          Substance::class,
-          Location::class,
-        ),
+        listOf(Group::class, Device::class, Patient::class, Substance::class, Location::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  public val Type: SearchParam<Specimen, CodeableConcept> =
+  public val type: SearchParam<Specimen, CodeableConcept> =
     SimpleSearchParam<Specimen, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -147,19 +142,19 @@ public object SpecimenSearchParams {
     )
 
   /** All search parameters for the Specimen resource type. */
-  public val ALL: List<SearchParam<Specimen, *>> =
+  public val all: List<SearchParam<Specimen, *>> =
     listOf(
-      Accession,
-      Bodysite,
-      Collected,
-      Collector,
-      Container,
-      ContainerId,
-      Identifier,
-      Parent,
-      Patient,
-      Status,
-      Subject,
-      Type,
+      accession,
+      bodysite,
+      collected,
+      collector,
+      container,
+      containerId,
+      identifier,
+      parent,
+      patient,
+      status,
+      subject,
+      type,
     )
 }

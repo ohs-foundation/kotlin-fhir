@@ -63,6 +63,7 @@ import dev.ohs.fhir.model.r4.DiagnosticReport
 import dev.ohs.fhir.model.r4.DocumentManifest
 import dev.ohs.fhir.model.r4.DocumentReference
 import dev.ohs.fhir.model.r4.EffectEvidenceSynthesis
+import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.EnrollmentRequest
 import dev.ohs.fhir.model.r4.EnrollmentResponse
@@ -121,6 +122,7 @@ import dev.ohs.fhir.model.r4.OperationDefinition
 import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.OrganizationAffiliation
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PaymentNotice
 import dev.ohs.fhir.model.r4.PaymentReconciliation
 import dev.ohs.fhir.model.r4.Person
@@ -129,6 +131,7 @@ import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Procedure
 import dev.ohs.fhir.model.r4.Provenance
+import dev.ohs.fhir.model.r4.Questionnaire
 import dev.ohs.fhir.model.r4.QuestionnaireResponse
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
@@ -171,7 +174,7 @@ import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [QuestionnaireResponse] resource type. */
 public object QuestionnaireResponseSearchParams {
-  public val Author: SearchParam<QuestionnaireResponse, Reference> =
+  public val author: SearchParam<QuestionnaireResponse, Reference> =
     SimpleSearchParam<QuestionnaireResponse, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
@@ -181,14 +184,14 @@ public object QuestionnaireResponseSearchParams {
           Practitioner::class,
           Organization::class,
           Device::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PractitionerRole::class,
           RelatedPerson::class,
         ),
       extractor = { resource -> listOfNotNull(resource.author) },
     )
 
-  public val Authored: SearchParam<QuestionnaireResponse, DateTime> =
+  public val authored: SearchParam<QuestionnaireResponse, DateTime> =
     SimpleSearchParam<QuestionnaireResponse, DateTime>(
       name = "authored",
       type = SearchParamType.fromCode("date"),
@@ -196,7 +199,7 @@ public object QuestionnaireResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.authored) },
     )
 
-  public val BasedOn: SearchParam<QuestionnaireResponse, Reference> =
+  public val basedOn: SearchParam<QuestionnaireResponse, Reference> =
     SimpleSearchParam<QuestionnaireResponse, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
@@ -205,16 +208,16 @@ public object QuestionnaireResponseSearchParams {
       extractor = { resource -> resource.basedOn },
     )
 
-  public val Encounter: SearchParam<QuestionnaireResponse, Reference> =
+  public val encounter: SearchParam<QuestionnaireResponse, Reference> =
     SimpleSearchParam<QuestionnaireResponse, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "QuestionnaireResponse.encounter",
-      target = listOf(dev.ohs.fhir.model.r4.Encounter::class),
+      target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val Identifier: SearchParam<QuestionnaireResponse, Identifier> =
+  public val identifier: SearchParam<QuestionnaireResponse, Identifier> =
     SimpleSearchParam<QuestionnaireResponse, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -222,7 +225,7 @@ public object QuestionnaireResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
 
-  public val ItemSubject: SearchParam<QuestionnaireResponse, Any> =
+  public val itemSubject: SearchParam<QuestionnaireResponse, Any> =
     SimpleSearchParam<QuestionnaireResponse, Any>(
       name = "item-subject",
       type = SearchParamType.fromCode("reference"),
@@ -231,7 +234,7 @@ public object QuestionnaireResponseSearchParams {
       extractor = { emptyList() },
     )
 
-  public val PartOf: SearchParam<QuestionnaireResponse, Reference> =
+  public val partOf: SearchParam<QuestionnaireResponse, Reference> =
     SimpleSearchParam<QuestionnaireResponse, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
@@ -240,12 +243,12 @@ public object QuestionnaireResponseSearchParams {
       extractor = { resource -> resource.partOf },
     )
 
-  public val Patient: SearchParam<QuestionnaireResponse, Reference> =
+  public val patient: SearchParam<QuestionnaireResponse, Reference> =
     SimpleSearchParam<QuestionnaireResponse, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "QuestionnaireResponse.subject.where(resolve() is Patient)",
-      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      target = listOf(Patient::class),
       extractor = { resource ->
         listOfNotNull(resource.subject).filter {
           it.reference?.value?.toString()?.contains("Patient/") == true
@@ -253,31 +256,26 @@ public object QuestionnaireResponseSearchParams {
       },
     )
 
-  public val Questionnaire: SearchParam<QuestionnaireResponse, Canonical> =
+  public val questionnaire: SearchParam<QuestionnaireResponse, Canonical> =
     SimpleSearchParam<QuestionnaireResponse, Canonical>(
       name = "questionnaire",
       type = SearchParamType.fromCode("reference"),
       expression = "QuestionnaireResponse.questionnaire",
-      target = listOf(dev.ohs.fhir.model.r4.Questionnaire::class),
+      target = listOf(Questionnaire::class),
       extractor = { resource -> listOfNotNull(resource.questionnaire) },
     )
 
-  public val Source: SearchParam<QuestionnaireResponse, Reference> =
+  public val source: SearchParam<QuestionnaireResponse, Reference> =
     SimpleSearchParam<QuestionnaireResponse, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
       expression = "QuestionnaireResponse.source",
       target =
-        listOf(
-          Practitioner::class,
-          dev.ohs.fhir.model.r4.Patient::class,
-          PractitionerRole::class,
-          RelatedPerson::class,
-        ),
+        listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class),
       extractor = { resource -> listOfNotNull(resource.source) },
     )
 
-  public val Status: SearchParam<QuestionnaireResponse, Any> =
+  public val status: SearchParam<QuestionnaireResponse, Any> =
     SimpleSearchParam<QuestionnaireResponse, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -285,7 +283,7 @@ public object QuestionnaireResponseSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val Subject: SearchParam<QuestionnaireResponse, Reference> =
+  public val subject: SearchParam<QuestionnaireResponse, Reference> =
     SimpleSearchParam<QuestionnaireResponse, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
@@ -335,7 +333,7 @@ public object QuestionnaireResponseSearchParams {
           DocumentManifest::class,
           DocumentReference::class,
           EffectEvidenceSynthesis::class,
-          dev.ohs.fhir.model.r4.Encounter::class,
+          Encounter::class,
           Endpoint::class,
           EnrollmentRequest::class,
           EnrollmentResponse::class,
@@ -393,7 +391,7 @@ public object QuestionnaireResponseSearchParams {
           OperationOutcome::class,
           Organization::class,
           OrganizationAffiliation::class,
-          dev.ohs.fhir.model.r4.Patient::class,
+          Patient::class,
           PaymentNotice::class,
           PaymentReconciliation::class,
           Person::class,
@@ -402,7 +400,7 @@ public object QuestionnaireResponseSearchParams {
           PractitionerRole::class,
           Procedure::class,
           Provenance::class,
-          dev.ohs.fhir.model.r4.Questionnaire::class,
+          Questionnaire::class,
           QuestionnaireResponse::class,
           RelatedPerson::class,
           RequestGroup::class,
@@ -442,19 +440,19 @@ public object QuestionnaireResponseSearchParams {
     )
 
   /** All search parameters for the QuestionnaireResponse resource type. */
-  public val ALL: CollectionsList<SearchParam<QuestionnaireResponse, *>> =
+  public val all: CollectionsList<SearchParam<QuestionnaireResponse, *>> =
     listOf(
-      Author,
-      Authored,
-      BasedOn,
-      Encounter,
-      Identifier,
-      ItemSubject,
-      PartOf,
-      Patient,
-      Questionnaire,
-      Source,
-      Status,
-      Subject,
+      author,
+      authored,
+      basedOn,
+      encounter,
+      identifier,
+      itemSubject,
+      partOf,
+      patient,
+      questionnaire,
+      source,
+      status,
+      subject,
     )
 }

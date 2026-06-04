@@ -20,6 +20,7 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Address
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.InsurancePlan
 import dev.ohs.fhir.model.r5.Organization
@@ -32,7 +33,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [InsurancePlan] resource type. */
 public object InsurancePlanSearchParams {
-  public val Address: SearchParam<InsurancePlan, Address> =
+  public val address: SearchParam<InsurancePlan, Address> =
     SimpleSearchParam<InsurancePlan, Address>(
       name = "address",
       type = SearchParamType.fromCode("string"),
@@ -40,7 +41,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> resource.contact.mapNotNull { it.address } },
     )
 
-  public val AddressCity: SearchParam<InsurancePlan, String> =
+  public val addressCity: SearchParam<InsurancePlan, String> =
     SimpleSearchParam<InsurancePlan, String>(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
@@ -48,7 +49,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.city } },
     )
 
-  public val AddressCountry: SearchParam<InsurancePlan, String> =
+  public val addressCountry: SearchParam<InsurancePlan, String> =
     SimpleSearchParam<InsurancePlan, String>(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
@@ -58,7 +59,7 @@ public object InsurancePlanSearchParams {
       },
     )
 
-  public val AddressPostalcode: SearchParam<InsurancePlan, String> =
+  public val addressPostalcode: SearchParam<InsurancePlan, String> =
     SimpleSearchParam<InsurancePlan, String>(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
@@ -68,7 +69,7 @@ public object InsurancePlanSearchParams {
       },
     )
 
-  public val AddressState: SearchParam<InsurancePlan, String> =
+  public val addressState: SearchParam<InsurancePlan, String> =
     SimpleSearchParam<InsurancePlan, String>(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
@@ -76,7 +77,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.state } },
     )
 
-  public val AddressUse: SearchParam<InsurancePlan, Any> =
+  public val addressUse: SearchParam<InsurancePlan, Any> =
     SimpleSearchParam<InsurancePlan, Any>(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
@@ -84,7 +85,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.use } },
     )
 
-  public val AdministeredBy: SearchParam<InsurancePlan, Reference> =
+  public val administeredBy: SearchParam<InsurancePlan, Reference> =
     SimpleSearchParam<InsurancePlan, Reference>(
       name = "administered-by",
       type = SearchParamType.fromCode("reference"),
@@ -93,16 +94,16 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> listOfNotNull(resource.administeredBy) },
     )
 
-  public val Endpoint: SearchParam<InsurancePlan, Reference> =
+  public val endpoint: SearchParam<InsurancePlan, Reference> =
     SimpleSearchParam<InsurancePlan, Reference>(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "InsurancePlan.endpoint",
-      target = listOf(dev.ohs.fhir.model.r5.Endpoint::class),
+      target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
     )
 
-  public val Identifier: SearchParam<InsurancePlan, Identifier> =
+  public val identifier: SearchParam<InsurancePlan, Identifier> =
     SimpleSearchParam<InsurancePlan, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -110,7 +111,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val Name: SearchParam<InsurancePlan, String> =
+  public val name: SearchParam<InsurancePlan, String> =
     SimpleSearchParam<InsurancePlan, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
@@ -118,7 +119,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val OwnedBy: SearchParam<InsurancePlan, Reference> =
+  public val ownedBy: SearchParam<InsurancePlan, Reference> =
     SimpleSearchParam<InsurancePlan, Reference>(
       name = "owned-by",
       type = SearchParamType.fromCode("reference"),
@@ -127,7 +128,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> listOfNotNull(resource.ownedBy) },
     )
 
-  public val Phonetic: SearchParam<InsurancePlan, String> =
+  public val phonetic: SearchParam<InsurancePlan, String> =
     SimpleSearchParam<InsurancePlan, String>(
       name = "phonetic",
       type = SearchParamType.fromCode("string"),
@@ -135,7 +136,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val Status: SearchParam<InsurancePlan, Any> =
+  public val status: SearchParam<InsurancePlan, Any> =
     SimpleSearchParam<InsurancePlan, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -143,7 +144,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val Type: SearchParam<InsurancePlan, CodeableConcept> =
+  public val type: SearchParam<InsurancePlan, CodeableConcept> =
     SimpleSearchParam<InsurancePlan, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
@@ -152,21 +153,21 @@ public object InsurancePlanSearchParams {
     )
 
   /** All search parameters for the InsurancePlan resource type. */
-  public val ALL: List<SearchParam<InsurancePlan, *>> =
+  public val all: List<SearchParam<InsurancePlan, *>> =
     listOf(
-      Address,
-      AddressCity,
-      AddressCountry,
-      AddressPostalcode,
-      AddressState,
-      AddressUse,
-      AdministeredBy,
-      Endpoint,
-      Identifier,
-      Name,
-      OwnedBy,
-      Phonetic,
-      Status,
-      Type,
+      address,
+      addressCity,
+      addressCountry,
+      addressPostalcode,
+      addressState,
+      addressUse,
+      administeredBy,
+      endpoint,
+      identifier,
+      name,
+      ownedBy,
+      phonetic,
+      status,
+      type,
     )
 }

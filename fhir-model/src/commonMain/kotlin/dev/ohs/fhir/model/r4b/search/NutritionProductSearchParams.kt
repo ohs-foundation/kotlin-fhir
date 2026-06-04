@@ -27,7 +27,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [NutritionProduct] resource type. */
 public object NutritionProductSearchParams {
-  public val Identifier: SearchParam<NutritionProduct, Identifier> =
+  public val identifier: SearchParam<NutritionProduct, Identifier> =
     SimpleSearchParam<NutritionProduct, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
@@ -35,7 +35,7 @@ public object NutritionProductSearchParams {
       extractor = { resource -> resource.instance?.identifier ?: emptyList() },
     )
 
-  public val Status: SearchParam<NutritionProduct, Any> =
+  public val status: SearchParam<NutritionProduct, Any> =
     SimpleSearchParam<NutritionProduct, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
@@ -44,5 +44,5 @@ public object NutritionProductSearchParams {
     )
 
   /** All search parameters for the NutritionProduct resource type. */
-  public val ALL: List<SearchParam<NutritionProduct, *>> = listOf(Identifier, Status)
+  public val all: List<SearchParam<NutritionProduct, *>> = listOf(identifier, status)
 }

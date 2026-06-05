@@ -28,7 +28,7 @@ private typealias ContactPointSystem = ContactPoint.ContactPointSystem
 
 class SearchParamAllUsageTest :
   FunSpec({
-    test("indexing extracts (name, value) rows; search queries the index, not extractFrom") {
+    test("indexing builds (name, value) rows with extractFrom; search queries the rows") {
       val email =
         ContactPoint(
           system = Enumeration(`value` = ContactPointSystem.Email),
@@ -42,25 +42,27 @@ class SearchParamAllUsageTest :
       val alice = Patient(telecom = listOf(email, phone))
 
       // ---------- INDEX TIME ----------
-      // When a Patient is saved, the server iterates every FHIR spec search param and calls
-      // extractFrom to populate index rows. The list of params comes from ALL. generated from
-      // the spec, not hand listed. extractFrom does the real work: for "email" it filters
-      // telecom by system (FHIRPath: Patient.telecom.where(system='email')), a computation
-      // that has no equivalent direct field on Patient.
+      // When a Patient is saved, the server walks every search param in `all` and calls
+      // `extractFrom` to produce (name, value) index rows. The `all` list is generated from
+      // the spec, so the index automatically covers every supported search param.
       //
-      // Params whose FHIRPath we don't translate yet are excluded from ALL (they're still
-      // accessible by name on the container, but calling extractFrom on them throws), so
-      // this loop is safe without a catch.
+      // `extractFrom` does the real work. For the `email` param, it filters `telecom` by
+      // `system` (FHIRPath: `Patient.telecom.where(system='email')`), a computation that
+      // has no equivalent direct field on Patient.
+      //
+      // Params whose FHIRPath isn't supported yet are listed in `unsupported` and excluded
+      // from `all`, so this loop never calls `extractFrom` on a param that would throw.
       val index: List<Pair<String, Any?>> =
         PatientSearchParams.all.flatMap { sp ->
           sp.extractFrom(alice).map { value -> sp.name to value }
         }
 
       // ---------- SEARCH TIME ----------
-      // /Patient?email=alice@example.com the server filters the index by both the
-      // name ("email") and the value ("alice@example.com"). extractFrom is never called
-      // here. Filtering an in-memory list of (name, value) pairs is what makes search
-      // fast and uniform across every search param the spec defines.
+      // For a request like `GET /Patient?email=alice@example.com`, the server filters the
+      // pre-built index by both the name (`"email"`) and the value (`"alice@example.com"`).
+      // `extractFrom` is never called at search time. Filtering an in-memory list of
+      // (name, value) pairs is what makes search fast and uniform across every spec-defined
+      // search param.
       val queryName = "email"
       val queryValue = "alice@example.com"
       val matches =

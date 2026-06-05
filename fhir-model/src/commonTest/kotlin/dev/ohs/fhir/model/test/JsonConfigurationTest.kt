@@ -16,7 +16,6 @@
 
 package dev.ohs.fhir.model.test
 
-import dev.ohs.fhir.model.r4.FhirR4Json
 import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Resource
 import io.kotest.assertions.throwables.shouldThrow
@@ -39,7 +38,7 @@ class JsonConfigurationTest :
 
     test("prettyPrint=false produces compact polymorphic JSON with resourceType first") {
       val patient = Patient(id = "patient-01")
-      val json = FhirR4Json { prettyPrint = false }.encodeToString(patient)
+      val json = Json { prettyPrint = false }.encodeToString<Resource>(patient)
       json.shouldBe("""{"resourceType":"Patient","id":"patient-01"}""")
     }
 
@@ -54,8 +53,8 @@ class JsonConfigurationTest :
       // Our generators write fields with explicit `?.let { … }` / `if (isNotEmpty)` guards rather
       // than relying on kotlinx's default-handling, so toggling `encodeDefaults` should be a no-op.
       val patient = Patient(id = "patient-01")
-      val withDefault = FhirR4Json { encodeDefaults = false }.encodeToString(patient)
-      val withDefaultsOn = FhirR4Json { encodeDefaults = true }.encodeToString(patient)
+      val withDefault = Json { encodeDefaults = false }.encodeToString<Resource>(patient)
+      val withDefaultsOn = Json { encodeDefaults = true }.encodeToString<Resource>(patient)
       withDefaultsOn.shouldBe(withDefault)
     }
 
@@ -63,8 +62,8 @@ class JsonConfigurationTest :
       // Same rationale as encodeDefaults — our generators never emit JSON `null`, so flipping
       // explicitNulls has no observable effect.
       val patient = Patient(id = "patient-01")
-      val withNullsOn = FhirR4Json { explicitNulls = true }.encodeToString(patient)
-      val withNullsOff = FhirR4Json { explicitNulls = false }.encodeToString(patient)
+      val withNullsOn = Json { explicitNulls = true }.encodeToString<Resource>(patient)
+      val withNullsOff = Json { explicitNulls = false }.encodeToString<Resource>(patient)
       withNullsOff.shouldBe(withNullsOn)
     }
 
@@ -75,11 +74,11 @@ class JsonConfigurationTest :
       // So a user's custom `classDiscriminator` setting should not affect resource encoding.
       val patient = Patient(id = "patient-01")
       val json =
-        FhirR4Json {
+        Json {
             prettyPrint = false
             classDiscriminator = "kind"
           }
-          .encodeToString(patient)
+          .encodeToString<Resource>(patient)
       json.shouldContain(""""resourceType":"Patient"""")
       json.shouldNotContain(""""kind":"Patient"""")
     }
@@ -96,7 +95,8 @@ class JsonConfigurationTest :
         }
         """
           .trimIndent()
-      val decoded = FhirR4Json { ignoreUnknownKeys = true }.decodeFromString(withExtra) as Patient
+      val decoded =
+        Json { ignoreUnknownKeys = true }.decodeFromString<Resource>(withExtra) as Patient
       decoded.id?.shouldBe("patient-01")
     }
 
@@ -110,7 +110,7 @@ class JsonConfigurationTest :
         }
         """
           .trimIndent()
-      shouldThrow<SerializationException> { FhirR4Json().decodeFromString(withExtra) }
+      shouldThrow<SerializationException> { testJson.decodeFromString<Resource>(withExtra) }
     }
 
     test("isLenient=true accepts unquoted resourceType discriminator") {
@@ -124,20 +124,20 @@ class JsonConfigurationTest :
         }
         """
           .trimIndent()
-      val decoded = FhirR4Json { isLenient = true }.decodeFromString(lenient) as Patient
+      val decoded = Json { isLenient = true }.decodeFromString<Resource>(lenient) as Patient
       decoded.id?.shouldBe("patient-01")
     }
 
     test("polymorphic round-trip preserves equality under non-default config") {
       val original = Patient(id = "patient-01")
-      val json = FhirR4Json {
+      val json = Json {
         prettyPrint = false
         encodeDefaults = true
         ignoreUnknownKeys = true
         classDiscriminator = "kind" // intentionally non-default; should be overridden
       }
-      val s = json.encodeToString(original)
-      val decoded = json.decodeFromString(s) as Patient
+      val s = json.encodeToString<Resource>(original)
+      val decoded = json.decodeFromString<Resource>(s) as Patient
       decoded.id.shouldBe(original.id)
     }
 
@@ -152,7 +152,7 @@ class JsonConfigurationTest :
         }
         """
           .trimIndent()
-      val decoded: Resource = FhirR4Json().decodeFromString(midObject)
+      val decoded: Resource = testJson.decodeFromString<Resource>(midObject)
       (decoded as Patient).id?.shouldBe("patient-01")
     }
   })

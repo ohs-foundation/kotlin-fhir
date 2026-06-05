@@ -161,7 +161,6 @@ abstract class FhirCodegenTask : DefaultTask() {
 
     FhirResourcePolymorphicSerializerFileSpecGenerator.generate(packageName, subclasses)
       .writeTo(outputDir)
-    FhirJsonFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
     FhirDateTimeFileSpecGenerator.generate(packageName).writeTo(outputDir)
     FhirDateFileSpecGenerator.generate(packageName).writeTo(outputDir)

@@ -16,6 +16,9 @@
 
 package dev.ohs.fhir.model.test
 
+import dev.ohs.fhir.model.r4.Resource as R4Resource
+import dev.ohs.fhir.model.r4b.Resource as R4bResource
+import dev.ohs.fhir.model.r5.Resource as R5Resource
 import io.kotest.assertions.json.shouldEqualJson
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.Enabled
@@ -109,17 +112,17 @@ class SerializationRoundTripTest :
   FunSpec({
     listOf(
         SerializationRoundTripTestSuite("R4", ::loadR4Examples, skippedR4TestCaseNameToReasonMap) {
-          jsonR4.encodeToString(jsonR4.decodeFromString(it))
+          testJson.encodeToString<R4Resource>(testJson.decodeFromString<R4Resource>(it))
         },
         SerializationRoundTripTestSuite(
           "R4B",
           ::loadR4BExamples,
           skippedR4BTestCaseNameToReasonMap,
         ) {
-          jsonR4B.encodeToString(jsonR4B.decodeFromString(it))
+          testJson.encodeToString<R4bResource>(testJson.decodeFromString<R4bResource>(it))
         },
         SerializationRoundTripTestSuite("R5", ::loadR5Examples, skippedR5CaseNameToReasonMap) {
-          jsonR5.encodeToString(jsonR5.decodeFromString(it))
+          testJson.encodeToString<R5Resource>(testJson.decodeFromString<R5Resource>(it))
         },
         SerializationRoundTripTestSuite(
           "R4 (direct concrete-type serializer)",

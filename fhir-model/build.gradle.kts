@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 val basePackage: String by project
 val mavenGroupId: String by project
 val mavenArtifactId: String by project
+val mavenVersion: String by project
 val androidNamespace: String by project
 
 plugins {
@@ -177,7 +178,7 @@ tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
 }
 
-version = "1.0.0-beta04"
+version = "1.0.0-beta03"
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()

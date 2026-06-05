@@ -16,6 +16,9 @@
 
 package dev.ohs.fhir.model.test
 
+import dev.ohs.fhir.model.r4.Resource as R4Resource
+import dev.ohs.fhir.model.r4b.Resource as R4bResource
+import dev.ohs.fhir.model.r5.Resource as R5Resource
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.Enabled
 import kotlin.sequences.forEach
@@ -50,13 +53,19 @@ open class BuilderRoundTripTest :
   FunSpec({
     listOf(
         BuilderRoundTripTestSuite("R4", ::loadR4Examples, skippedR4TestCaseNameToReasonMap) {
-          jsonR4.decodeFromString(it).let { resource -> resource to resource.toBuilder().build() }
+          testJson.decodeFromString<R4Resource>(it).let { resource ->
+            resource to resource.toBuilder().build()
+          }
         },
         BuilderRoundTripTestSuite("R4B", ::loadR4BExamples, skippedR4BTestCaseNameToReasonMap) {
-          jsonR4B.decodeFromString(it).let { resource -> resource to resource.toBuilder().build() }
+          testJson.decodeFromString<R4bResource>(it).let { resource ->
+            resource to resource.toBuilder().build()
+          }
         },
         BuilderRoundTripTestSuite("R5", ::loadR5Examples, skippedR5TestCaseNameToReasonMap) {
-          jsonR5.decodeFromString(it).let { resource -> resource to resource.toBuilder().build() }
+          testJson.decodeFromString<R5Resource>(it).let { resource ->
+            resource to resource.toBuilder().build()
+          }
         },
       )
       .forEach { testSuite ->

@@ -527,7 +527,17 @@ Within each package, you'll find the corresponding Kotlin classes for all FHIR r
 version. For example, the `Patient` class generated for FHIR R4 can be found in the
 `dev.ohs.fhir.model.r4` package.
 
-To create a new instance of a FHIR resource, use the provided builder class. For example:
+#### Creating FHIR resources
+
+To create a new instance of a FHIR resource, the most idiomatic way in Kotlin is to use the
+generated data class constructors directly with named arguments. Since all optional fields have
+default values, you only need to specify the properties you actually use.
+
+Because FHIR's `string` primitive type is mapped to a generated `String` class which clashes with
+`kotlin.String`, you should import it using an alias (e.g., `import dev.ohs.fhir.model.r4.String as
+FhirString`).
+
+For example:
 
 ```kotlin
 import dev.ohs.fhir.model.r4.Date
@@ -536,18 +546,39 @@ import dev.ohs.fhir.model.r4.HumanName
 import dev.ohs.fhir.model.r4.Patient
 
 fun main() {
-    val patient =
-        Patient.Builder()
-            .apply {
-                id = "patient-01"
-                name.add(
-                    HumanName.Builder().apply {
-                        given.add(dev.ohs.fhir.model.r4.String.Builder().apply { value = "John" })
-                    }
-                )
-                birthDate = Date.Builder().apply { value = FhirDate.fromString("2000-01-01") }
-            }
-            .build()
+    val patient = Patient(
+        id = "patient-01",
+        name = listOf(
+            HumanName(
+                given = listOf(FhirString(value = "John"))
+            )
+        ),
+        birthDate = Date(value = FhirDate.fromString("2000-01-01"))
+    )
+}
+```
+
+Alternatively, you can use the nested `Builder` classes to create resources:
+
+```kotlin
+import dev.ohs.fhir.model.r4.Date
+import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.HumanName
+import dev.ohs.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.String as FhirString
+
+fun main() {
+    val patient = Patient.Builder()
+        .apply {
+            id = "patient-01"
+            name.add(
+                HumanName.Builder().apply {
+                    given.add(FhirString.Builder().apply { value = "John" })
+                }
+            )
+            birthDate = Date.Builder().apply { value = FhirDate.fromString("2000-01-01") }
+        }
+        .build()
 }
 ```
 
@@ -572,14 +603,24 @@ PatientSearchParams.all.forEach { searchParam ->
 
 ### Non-JSON Serializers
 
-The FHIR Resource models work with any serializer, but only
-[JSON](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md) is extensively
-tested and considered stable. Formats like `CBOR` should work fine, but are not currently tested.
+```kotlin
+val updated = patient.copy(
+    id = "patient-02",
+    birthDate = Date(value = FhirDate.fromString("1990-06-15"))
+)
+```
 
-Binary formats such as `protobuf` are reliant on the internal indexing of the serializer
-descriptors. While these indexes are deterministically generated, they are arbitrary and not
-currently guaranteed to be stable across kotlin-fhir versions. This means using `protobuf` is not
-guaranteed to be wire compatible across versions of `kotlin-fhir`.
+For deeper mutations (e.g. appending to lists or modifying nested elements), use `toBuilder()`:
+
+```kotlin
+val updated = patient.toBuilder().apply {
+    name.add(
+        HumanName.Builder().apply {
+            given.add(FhirString.Builder().apply { value = "Jane" })
+        }
+    )
+}.build()
+```
 
 ### Serialization and deserialization
 
@@ -649,7 +690,7 @@ This section is for developers who want to contribute to the library.
 
 ### Running the codegen locally
 
-You can run the codegen locally to generated FHIR models for all supported FHIR versions at once[^6]:
+You can run the codegen locally to generate FHIR models for all supported FHIR versions at once[^6]:
 
 [^6]: To generate FHIR models for specific versions, run `./gradlew <FHIR_VERSION>` where
 `<FHIR_VERSION>`∈ {`r4`, `r4b`, `r5`}. The generated code will be located in the
@@ -710,15 +751,8 @@ These tests are set up to run on JVM and as Android unit tests. To run them loca
 
 ### Publishing
 
-For a comprehensive understanding of publishing KMP libraries to Maven Central, see the
-[Kotlin Multiplatform Publishing Guide](https://kotlinlang.org/docs/multiplatform-publish-lib.html)
-and the
-[Maven Central Publishing Guide](https://central.sonatype.org/publish/publish-portal-guide/).
-
-> **Note:** The project has already been set up to be released to Maven using the
-> [`gradle-maven-publish-plugin`](https://github.com/vanniktech/gradle-maven-publish-plugin). The
-> following sections outline the additional setup required for a developer to publish to Maven Local
-> and Maven Central.
+To publish a new release, first update `mavenVersion` in `gradle.properties` to the new version.
+Then follow one of the methods below:
 
 #### Maven Local
 
@@ -761,7 +795,7 @@ signing.secretKeyRingFile=/path/to/secring.gpg
 Then run:
 
 ```bash
-./gradlew :datacapture:publishToMavenCentral
+./gradlew :fhir-model:publishToMavenCentral
 ```
 
 ##### Publishing to Maven Central using GitHub Actions
@@ -769,7 +803,7 @@ Then run:
 The project includes a GitHub Actions [workflow](.github/workflows/publish.yml) that publishes to
 Maven Central when a new GitHub release (or pre-release) is created.
 
-The workflow requires the following GitHub organization or repository secrets:
+The workflow requires the following GitHub organization or repository secrets (already set up):
 
 | Secret                   | Description                                                                           |
 |:-------------------------|:--------------------------------------------------------------------------------------|

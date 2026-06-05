@@ -16,6 +16,9 @@
 
 package dev.ohs.fhir.model.test
 
+import dev.ohs.fhir.model.r4.Resource as R4Resource
+import dev.ohs.fhir.model.r4b.Resource as R4bResource
+import dev.ohs.fhir.model.r5.Resource as R5Resource
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.Enabled
 import kotlin.test.assertEquals
@@ -52,19 +55,19 @@ class EqualityTest :
           "R4",
           ::loadR4Examples,
           skippedR4TestCaseNameToReasonMap,
-          jsonR4::decodeFromString,
+          { testJson.decodeFromString<R4Resource>(it) },
         ),
         EqualityTestSuite(
           "R4B",
           ::loadR4BExamples,
           skippedR4BTestCaseNameToReasonMap,
-          jsonR4B::decodeFromString,
+          { testJson.decodeFromString<R4bResource>(it) },
         ),
         EqualityTestSuite(
           "R5",
           ::loadR5Examples,
           skippedR5TestCaseNameToReasonMap,
-          jsonR5::decodeFromString,
+          { testJson.decodeFromString<R5Resource>(it) },
         ),
       )
       .forEach { testSuite ->

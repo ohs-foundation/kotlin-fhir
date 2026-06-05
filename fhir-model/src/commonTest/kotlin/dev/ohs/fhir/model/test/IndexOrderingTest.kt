@@ -27,7 +27,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.protobuf.ProtoBuf
 
 /**
- * Tests the custom serailizer descriptor indexing (json doesnt use this, so we test with protobuf)
+ * Tests the custom serializer descriptor indexing (json doesnt use this, so we test with protobuf)
  */
 @OptIn(ExperimentalSerializationApi::class)
 class IndexOrderingTest :
@@ -45,8 +45,8 @@ class IndexOrderingTest :
     fun simplePatient() = Patient(id = "patient-01")
 
     test("standalone JSON round-trip preserves required fields") {
-      val s = jsonR4.encodeToString(bodyStructureWithPatient())
-      val decoded = jsonR4.decodeFromString(s) as BodyStructure
+      val encoded = testJson.encodeToString(bodyStructureWithPatient())
+      val decoded = testJson.decodeFromString(encoded) as BodyStructure
       decoded.patient.reference?.value.shouldBe("Patient/example")
     }
 
@@ -59,8 +59,8 @@ class IndexOrderingTest :
 
     test("polymorphic JSON round-trip preserves required fields") {
       val original = bodyStructureWithPatient()
-      val s = jsonR4.encodeToString(original)
-      val decoded = jsonR4.decodeFromString(s) as BodyStructure
+      val encoded = testJson.encodeToString<R4Resource>(original)
+      val decoded = testJson.decodeFromString<R4Resource>(encoded) as BodyStructure
       decoded.patient.reference?.value.shouldBe("Patient/example")
     }
 

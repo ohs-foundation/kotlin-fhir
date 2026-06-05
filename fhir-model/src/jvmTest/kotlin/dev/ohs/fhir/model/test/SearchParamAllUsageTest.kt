@@ -28,7 +28,7 @@ private typealias ContactPointSystem = ContactPoint.ContactPointSystem
 
 class SearchParamAllUsageTest :
   FunSpec({
-    test("indexing extracts (name, value) rows; search queries the index, not extract") {
+    test("indexing extracts (name, value) rows; search queries the index, not extractFrom") {
       val email =
         ContactPoint(
           system = Enumeration(`value` = ContactPointSystem.Email),
@@ -43,18 +43,18 @@ class SearchParamAllUsageTest :
 
       // ---------- INDEX TIME ----------
       // When a Patient is saved, the server iterates every FHIR spec search param and calls
-      // extract to populate index rows. The list of params comes from ALL. generated from
-      // the spec, not hand listed. extract does the real work: for "email" it filters
+      // extractFrom to populate index rows. The list of params comes from ALL. generated from
+      // the spec, not hand listed. extractFrom does the real work: for "email" it filters
       // telecom by system (FHIRPath: Patient.telecom.where(system='email')), a computation
       // that has no equivalent direct field on Patient.
       val index: List<Pair<String, Any?>> =
         PatientSearchParams.all.flatMap { sp ->
-          sp.extract(alice).map { value -> sp.name to value }
+          sp.extractFrom(alice).map { value -> sp.name to value }
         }
 
       // ---------- SEARCH TIME ----------
       // /Patient?email=alice@example.com the server filters the index by both the
-      // name ("email") and the value ("alice@example.com"). extract is never called
+      // name ("email") and the value ("alice@example.com"). extractFrom is never called
       // here. Filtering an in-memory list of (name, value) pairs is what makes search
       // fast and uniform across every search param the spec defines.
       val queryName = "email"

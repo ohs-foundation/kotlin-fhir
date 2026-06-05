@@ -34,8 +34,8 @@ import kotlin.reflect.KClass
  * Generates a `SearchParam.kt` file with the typed search-parameter class.
  *
  * `SearchParam<R, T>` carries the metadata about a FHIR search parameter (name, type, expression,
- * target) plus an `extractor` lambda. Its `extract(resource)` function delegates to the lambda to
- * pull values of type `T` out of a resource of type `R`. Per-resource container objects (e.g.,
+ * target) plus an `extractor` lambda. Its `extractFrom(resource)` function delegates to the lambda
+ * to pull values of type `T` out of a resource of type `R`. Per-resource container objects (e.g.,
  * `PatientSearchParams`) expose one `val` per search parameter, each holding a `SearchParam`
  * instance.
  */
@@ -113,7 +113,7 @@ object SearchParamFileSpecGenerator {
             .build()
         )
         .addFunction(
-          FunSpec.builder("extract")
+          FunSpec.builder("extractFrom")
             .addModifiers(KModifier.PUBLIC)
             .addParameter("resource", typeR)
             .returns(listOfT)

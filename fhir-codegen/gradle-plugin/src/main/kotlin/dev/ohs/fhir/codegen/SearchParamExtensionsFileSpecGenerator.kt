@@ -29,11 +29,11 @@ import com.squareup.kotlinpoet.asClassName
  *
  * Currently emits one helper:
  * ```
- * fun <R : Resource, T> R.extract(param: SearchParam<R, T>): List<T> = param.extract(this)
+ * fun <R : Resource, T> R.extract(param: SearchParam<R, T>): List<T> = param.extractFrom(this)
  * ```
  *
  * which lets call sites read as `patient.extract(PatientSearchParams.birthdate)` instead of
- * `PatientSearchParams.birthdate.extract(patient)`.
+ * `PatientSearchParams.birthdate.extractFrom(patient)`.
  */
 object SearchParamExtensionsFileSpecGenerator {
   fun generate(packageName: String): FileSpec {
@@ -48,7 +48,7 @@ object SearchParamExtensionsFileSpecGenerator {
       FunSpec.builder("extract")
         .addKdoc(
           "Extracts the values for [param] from this resource. Equivalent to " +
-            "`param.extract(this)`, but reads more fluently at the call site " +
+            "`param.extractFrom(this)`, but reads more fluently at the call site " +
             "(e.g. `patient.extract(PatientSearchParams.birthdate)`)."
         )
         .addTypeVariable(r)
@@ -56,7 +56,7 @@ object SearchParamExtensionsFileSpecGenerator {
         .receiver(r)
         .addParameter("param", searchParamCN.parameterizedBy(r, t))
         .returns(listOfT)
-        .addStatement("return param.extract(this)")
+        .addStatement("return param.extractFrom(this)")
         .build()
 
     return FileSpec.builder("$packageName.search", "SearchParamExtensions")

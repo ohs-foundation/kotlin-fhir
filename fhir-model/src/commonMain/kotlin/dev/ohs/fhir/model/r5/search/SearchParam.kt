@@ -38,5 +38,5 @@ public class SearchParam<R : Resource, T>(
   private val extractor: (R) -> List<T>,
 ) {
   /** Extracts the values for this search parameter from the given [resource]. */
-  public fun extract(resource: R): List<T> = extractor(resource)
+  public fun extractFrom(resource: R): List<T> = extractor(resource)
 }

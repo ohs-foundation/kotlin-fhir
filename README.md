@@ -222,12 +222,12 @@ The following FHIR value sets are excluded from Kotlin enum generation.
 
 ### Search Parameters
 
-Each FHIR search parameter exposes a typed `extract()` function that pulls its value out of a resource. These search parameters live in per-resource container objects in the `search` subpackage of every version (e.g. `dev.ohs.fhir.model.r4.search.PatientSearchParams`). Each container has:
+Each FHIR search parameter exposes a typed `extractFrom()` function that pulls its value out of a resource. These search parameters live in per-resource container objects in the `search` subpackage of every version (e.g. `dev.ohs.fhir.model.r4.search.PatientSearchParams`). Each container has:
 
 - One `val` per search parameter, typed `SearchParam<R, T>` where `R` is the resource type and `T` is the value type.
 - An `all` list of every search parameter for that resource.
 
-`SearchParam<R, T>` carries the metadata for a search parameter plus a typed `extract` function:
+`SearchParam<R, T>` carries the metadata for a search parameter plus a typed `extractFrom` function:
 
 | Member       | Type                         | Description                                                                       |
 |:-------------|:-----------------------------|:----------------------------------------------------------------------------------|
@@ -235,11 +235,11 @@ Each FHIR search parameter exposes a typed `extract()` function that pulls its v
 | `type`       | `SearchParamType`            | The search parameter type (number, date, string, token, …).                       |
 | `expression` | `String`                     | The FHIRPath expression that extracts values for this param.                      |
 | `target`     | `List<KClass<out Resource>>` | Target resource types for reference search parameters.                            |
-| `extract`    | `(resource: R) -> List<T>`   | Pulls the values of type `T` out of a resource of type `R` for this search param. |
+| `extractFrom` | `(resource: R) -> List<T>`  | Pulls the values of type `T` out of a resource of type `R` for this search param. |
 
 #### Supported FHIRPath patterns
 
-The following FHIRPath patterns produce a typed `extract()`:
+The following FHIRPath patterns produce a typed `extractFrom()`:
 
 | Pattern                           | Example                                       | Notes                                                                                                                                             |
 |:----------------------------------|:----------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -254,20 +254,20 @@ The following FHIRPath patterns produce a typed `extract()`:
 
 #### Unsupported FHIRPath patterns
 
-Some FHIRPath expressions aren't supported yet. For those parameters, `extract()` returns `emptyList()` and the type parameter is `Any`. The rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers can read the `expression` string and evaluate it with a FHIRPath engine instead.
+Some FHIRPath expressions aren't supported yet. For those parameters, `extractFrom()` returns `emptyList()` and the type parameter is `Any`. The rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers can read the `expression` string and evaluate it with a FHIRPath engine instead.
 
 206 such parameters across R4 / R4B / R5 fall into the following categories. See [unsupported-search-params.md](docs/unsupported-search-params.md) for the full per-category list.
 
-| Pattern                                             | Count | Example                                                                                  | Full list                                                                                                       |
-|:----------------------------------------------------|------:|:-----------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
-| `.ofType(Type)` choice narrowing                    |   118 | `Observation.value.ofType(Quantity)`                                                     | [of-type](docs/unsupported-search-params.md#oftype-type-choice-narrowing)                                       |
-| Empty FHIRPath expression                           |    28 | `Patient.age`, `Resource._content`                                                       | [empty](docs/unsupported-search-params.md#empty-fhirpath-expression)                                            |
-| `.extension('url')` access                          |    20 | `Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')` | [extension](docs/unsupported-search-params.md#extension-url-access)                                             |
-| Composite search parameters with no component path  |    13 | `Observation`'s `code-value-quantity`                                                    | [composite](docs/unsupported-search-params.md#composite-search-parameters-with-no-component-path)               |
-| Boolean logic                                       |     5 | `Resource.deceased.exists() and Resource.deceased != false`                              | [boolean-logic](docs/unsupported-search-params.md#boolean-logic)                                                |
-| Multi-resource union without a resource prefix      |     3 | `name \| alias` for `InsurancePlan`'s `name` parameter                                   | [union](docs/unsupported-search-params.md#multi-resource-union-without-a-resource-prefix)                       |
-| Other `where(...)` conditions                       |     3 | `QuestionnaireResponse`'s `item-subject` parameter                                       | [where](docs/unsupported-search-params.md#other-where-conditions)                                               |
-| Other patterns (parens, indexed access, bare paths) |    16 | `(Citation.classification.type)`, `Bundle.entry[0].resource`                             | [other](docs/unsupported-search-params.md#other-patterns-parens-indexed-access-bare-paths)                      |
+| Pattern                                             | Count | Example                                                                                  | Full list                                                                                         |
+|:----------------------------------------------------|------:|:-----------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------|
+| `.ofType(Type)` choice narrowing                    |   118 | `Observation.value.ofType(Quantity)`                                                     | [of-type](docs/unsupported-search-params.md#oftype-type-choice-narrowing)                         |
+| Empty FHIRPath expression                           |    28 | `Patient.age`, `Resource._content`                                                       | [empty](docs/unsupported-search-params.md#empty-fhirpath-expression)                              |
+| `.extension('url')` access                          |    20 | `Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')` | [extension](docs/unsupported-search-params.md#extension-url-access)                               |
+| Composite search parameters with no component path  |    13 | `Observation`'s `code-value-quantity`                                                    | [composite](docs/unsupported-search-params.md#composite-search-parameters-with-no-component-path) |
+| Boolean logic                                       |     5 | `Resource.deceased.exists() and Resource.deceased != false`                              | [boolean-logic](docs/unsupported-search-params.md#boolean-logic)                                  |
+| Multi-resource union without a resource prefix      |     3 | `name \| alias` for `InsurancePlan`'s `name` parameter                                   | [union](docs/unsupported-search-params.md#multi-resource-union-without-a-resource-prefix)         |
+| Other `where(...)` conditions                       |     3 | `QuestionnaireResponse`'s `item-subject` parameter                                       | [where](docs/unsupported-search-params.md#other-where-conditions)                                 |
+| Other patterns (parens, indexed access, bare paths) |    16 | `(Citation.classification.type)`, `Bundle.entry[0].resource`                             | [other](docs/unsupported-search-params.md#other-patterns-parens-indexed-access-bare-paths)        |
 
 ## Serialization and deserialization
 
@@ -553,17 +553,17 @@ fun main() {
 
 ### Working with search parameters
 
-Each generated `{Resource}SearchParams` container exposes a typed `extract()` per parameter, plus an `all` list for iterating every parameter on the resource.
+Each generated `{Resource}SearchParams` container exposes a typed `extractFrom()` per parameter, plus an `all` list for iterating every parameter on the resource.
 
 ```kotlin
 import dev.ohs.fhir.model.r4.search.PatientSearchParams
 
 // Type-safe access to a single parameter:
-val birthdates: List<Date> = PatientSearchParams.birthdate.extract(patient)
+val birthdates: List<Date> = PatientSearchParams.birthdate.extractFrom(patient)
 
 // Iterate every parameter (e.g. to build a search index):
 PatientSearchParams.all.forEach { searchParam ->
-    val values = searchParam.extract(patient)
+    val values = searchParam.extractFrom(patient)
     // index `searchParam.name` against `values`
 }
 ```

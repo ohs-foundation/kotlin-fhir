@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4.Instant
 import dev.ohs.fhir.model.r4.MessageHeader
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -36,7 +37,11 @@ public object BundleSearchParams {
       type = SearchParamType.fromCode("reference"),
       expression = "Bundle.entry[0].resource",
       target = listOf(Composition::class),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'composition' has expression 'Bundle.entry[0].resource' which is not yet supported."
+        )
+      },
     )
 
   public val identifier: SearchParam<Bundle, Identifier> =
@@ -53,7 +58,11 @@ public object BundleSearchParams {
       type = SearchParamType.fromCode("reference"),
       expression = "Bundle.entry[0].resource",
       target = listOf(MessageHeader::class),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'message' has expression 'Bundle.entry[0].resource' which is not yet supported."
+        )
+      },
     )
 
   public val timestamp: SearchParam<Bundle, Instant> =

@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -66,7 +67,11 @@ public object MedicationStatementSearchParams {
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "MedicationStatement.effective.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'effective' has expression 'MedicationStatement.effective.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val encounter: SearchParam<MedicationStatement, Reference> =

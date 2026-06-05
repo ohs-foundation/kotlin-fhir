@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -36,7 +37,11 @@ public object ResourceSearchParams {
       name = "_content",
       type = SearchParamType.fromCode("special"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter '_content' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val _filter: SearchParam<Resource, Any> =
@@ -44,7 +49,11 @@ public object ResourceSearchParams {
       name = "_filter",
       type = SearchParamType.fromCode("special"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter '_filter' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val _has: SearchParam<Resource, Any> =
@@ -52,7 +61,11 @@ public object ResourceSearchParams {
       name = "_has",
       type = SearchParamType.fromCode("special"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter '_has' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val _id: SearchParam<Resource, Any> =
@@ -60,7 +73,11 @@ public object ResourceSearchParams {
       name = "_id",
       type = SearchParamType.fromCode("token"),
       expression = "id",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter '_id' has expression 'id' which is not yet supported."
+        )
+      },
     )
 
   public val _in: SearchParam<Resource, Any> =
@@ -92,7 +109,11 @@ public object ResourceSearchParams {
       name = "_list",
       type = SearchParamType.fromCode("special"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter '_list' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val _profile: SearchParam<Resource, Canonical> =
@@ -109,7 +130,11 @@ public object ResourceSearchParams {
       name = "_query",
       type = SearchParamType.fromCode("special"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter '_query' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val _security: SearchParam<Resource, Coding> =
@@ -141,7 +166,11 @@ public object ResourceSearchParams {
       name = "_text",
       type = SearchParamType.fromCode("string"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter '_text' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val _type: SearchParam<Resource, Any> =
@@ -149,7 +178,11 @@ public object ResourceSearchParams {
       name = "_type",
       type = SearchParamType.fromCode("special"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter '_type' has expression '' which is not yet supported."
+        )
+      },
     )
 
   /** All search parameters for the Resource resource type. */

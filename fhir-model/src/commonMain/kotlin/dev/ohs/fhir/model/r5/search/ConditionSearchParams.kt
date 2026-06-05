@@ -182,6 +182,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -192,7 +193,11 @@ public object ConditionSearchParams {
       name = "abatement-age",
       type = SearchParamType.fromCode("quantity"),
       expression = "Condition.abatement.ofType(Age)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'abatement-age' has expression 'Condition.abatement.ofType(Age)' which is not yet supported."
+        )
+      },
     )
 
   public val abatementDate: SearchParam<Condition, Any> =
@@ -200,7 +205,11 @@ public object ConditionSearchParams {
       name = "abatement-date",
       type = SearchParamType.fromCode("date"),
       expression = "Condition.abatement.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'abatement-date' has expression 'Condition.abatement.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val abatementString: SearchParam<Condition, Any> =
@@ -208,7 +217,11 @@ public object ConditionSearchParams {
       name = "abatement-string",
       type = SearchParamType.fromCode("string"),
       expression = "Condition.abatement.ofType(string)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'abatement-string' has expression 'Condition.abatement.ofType(string)' which is not yet supported."
+        )
+      },
     )
 
   public val bodySite: SearchParam<Condition, CodeableConcept> =
@@ -442,7 +455,11 @@ public object ConditionSearchParams {
       name = "onset-age",
       type = SearchParamType.fromCode("quantity"),
       expression = "Condition.onset.ofType(Age)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'onset-age' has expression 'Condition.onset.ofType(Age)' which is not yet supported."
+        )
+      },
     )
 
   public val onsetDate: SearchParam<Condition, Any> =
@@ -450,7 +467,11 @@ public object ConditionSearchParams {
       name = "onset-date",
       type = SearchParamType.fromCode("date"),
       expression = "Condition.onset.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'onset-date' has expression 'Condition.onset.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val onsetInfo: SearchParam<Condition, Any> =
@@ -458,7 +479,11 @@ public object ConditionSearchParams {
       name = "onset-info",
       type = SearchParamType.fromCode("string"),
       expression = "Condition.onset.ofType(string)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'onset-info' has expression 'Condition.onset.ofType(string)' which is not yet supported."
+        )
+      },
     )
 
   public val participantActor: SearchParam<Condition, Reference> =

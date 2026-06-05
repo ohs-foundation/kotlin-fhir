@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -59,7 +60,11 @@ public object OperationDefinitionSearchParams {
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(OperationDefinition.useContext.value.ofType(CodeableConcept))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context' has expression '(OperationDefinition.useContext.value.ofType(CodeableConcept))' which is not yet supported."
+        )
+      },
     )
 
   public val contextQuantity: SearchParam<OperationDefinition, Any> =
@@ -67,7 +72,11 @@ public object OperationDefinitionSearchParams {
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(OperationDefinition.useContext.value.ofType(Quantity))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context-quantity' has expression '(OperationDefinition.useContext.value.ofType(Quantity))' which is not yet supported."
+        )
+      },
     )
 
   public val contextType: SearchParam<OperationDefinition, Coding> =

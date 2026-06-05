@@ -181,6 +181,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -217,7 +218,11 @@ public object MessageHeaderSearchParams {
       name = "event",
       type = SearchParamType.fromCode("token"),
       expression = "MessageHeader.event.ofType(Coding)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'event' has expression 'MessageHeader.event.ofType(Coding)' which is not yet supported."
+        )
+      },
     )
 
   public val focus: SearchParam<MessageHeader, Reference> =

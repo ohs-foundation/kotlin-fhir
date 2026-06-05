@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -94,7 +95,11 @@ public object IngredientSearchParams {
       name = "strength-concentration-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "Ingredient.substance.strength.concentration.ofType(Quantity)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'strength-concentration-quantity' has expression 'Ingredient.substance.strength.concentration.ofType(Quantity)' which is not yet supported."
+        )
+      },
     )
 
   public val strengthConcentrationRatio: SearchParam<Ingredient, Any> =
@@ -102,7 +107,11 @@ public object IngredientSearchParams {
       name = "strength-concentration-ratio",
       type = SearchParamType.fromCode("composite"),
       expression = "Ingredient.substance.strength.concentration.ofType(Ratio)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'strength-concentration-ratio' has expression 'Ingredient.substance.strength.concentration.ofType(Ratio)' which is not yet supported."
+        )
+      },
     )
 
   public val strengthPresentationQuantity: SearchParam<Ingredient, Any> =
@@ -110,7 +119,11 @@ public object IngredientSearchParams {
       name = "strength-presentation-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "Ingredient.substance.strength.presentation.ofType(Quantity)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'strength-presentation-quantity' has expression 'Ingredient.substance.strength.presentation.ofType(Quantity)' which is not yet supported."
+        )
+      },
     )
 
   public val strengthPresentationRatio: SearchParam<Ingredient, Any> =
@@ -118,7 +131,11 @@ public object IngredientSearchParams {
       name = "strength-presentation-ratio",
       type = SearchParamType.fromCode("composite"),
       expression = "Ingredient.substance.strength.presentation.ofType(Ratio)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'strength-presentation-ratio' has expression 'Ingredient.substance.strength.presentation.ofType(Ratio)' which is not yet supported."
+        )
+      },
     )
 
   public val substance: SearchParam<Ingredient, Reference> =

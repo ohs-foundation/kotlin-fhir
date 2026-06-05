@@ -184,6 +184,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -494,7 +495,11 @@ public object RequestOrchestrationSearchParams {
           PractitionerRole::class,
           Patient::class,
         ),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'participant' has expression 'RequestOrchestration.action.participant.actor.ofType(Reference)' which is not yet supported."
+        )
+      },
     )
 
   public val patient: SearchParam<RequestOrchestration, Reference> =

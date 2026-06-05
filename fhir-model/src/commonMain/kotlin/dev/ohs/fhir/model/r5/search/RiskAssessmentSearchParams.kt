@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -51,7 +52,11 @@ public object RiskAssessmentSearchParams {
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "(RiskAssessment.occurrence.ofType(dateTime))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'date' has expression '(RiskAssessment.occurrence.ofType(dateTime))' which is not yet supported."
+        )
+      },
     )
 
   public val encounter: SearchParam<RiskAssessment, Reference> =
@@ -113,7 +118,11 @@ public object RiskAssessmentSearchParams {
       name = "probability",
       type = SearchParamType.fromCode("number"),
       expression = "RiskAssessment.prediction.probability.ofType(decimal)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'probability' has expression 'RiskAssessment.prediction.probability.ofType(decimal)' which is not yet supported."
+        )
+      },
     )
 
   public val risk: SearchParam<RiskAssessment, CodeableConcept> =

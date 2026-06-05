@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -69,7 +70,11 @@ public object StructureDefinitionSearchParams {
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(StructureDefinition.useContext.value.ofType(CodeableConcept))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context' has expression '(StructureDefinition.useContext.value.ofType(CodeableConcept))' which is not yet supported."
+        )
+      },
     )
 
   public val contextQuantity: SearchParam<StructureDefinition, Any> =
@@ -77,7 +82,11 @@ public object StructureDefinitionSearchParams {
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(StructureDefinition.useContext.value.ofType(Quantity))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context-quantity' has expression '(StructureDefinition.useContext.value.ofType(Quantity))' which is not yet supported."
+        )
+      },
     )
 
   public val contextType: SearchParam<StructureDefinition, Coding> =

@@ -141,14 +141,11 @@ object ResourceSearchParamFileSpecGenerator {
 
     val resourceExpression = searchParam.extractExpressionForResource(resourceName)
     val pattern = parseSearchParamExpression(resourceExpression, resourceName, resolver)
-    val (valueTypeName, extractionCode) = render(pattern, packageName, resourceName)
+    val (valueTypeName, extractionCode, usesResource) =
+      render(pattern, packageName, resourceName, searchParam.code, resourceExpression)
 
     val parameterizedSearchParam =
       searchParamClassName.parameterizedBy(resourceClassName, valueTypeName)
-
-    // Unsupported params extract `emptyList()`, which doesn't reference `resource`, so use a
-    // parameterless lambda there to avoid an unused-parameter warning.
-    val usesResource = extractionCode.toString().contains("resource")
 
     val initializer =
       CodeBlock.builder()
@@ -181,12 +178,18 @@ object ResourceSearchParamFileSpecGenerator {
       .build()
   }
 
-  private data class ExtractionResult(val typeParam: TypeName, val code: CodeBlock)
+  private data class ExtractionResult(
+    val typeParam: TypeName,
+    val code: CodeBlock,
+    val usesResource: Boolean = true,
+  )
 
   private fun render(
     pattern: SearchParamPattern,
     packageName: String,
     resourceName: String,
+    paramCode: String,
+    expression: String,
   ): ExtractionResult =
     when (pattern) {
       is SearchParamPattern.SimplePath ->
@@ -228,8 +231,15 @@ object ResourceSearchParamFileSpecGenerator {
           ),
         )
       }
-      SearchParamPattern.Unsupported ->
-        ExtractionResult(ClassName("kotlin", "Any"), CodeBlock.of("emptyList()"))
+      SearchParamPattern.Unsupported -> {
+        val message =
+          "Search parameter '$paramCode' has expression '$expression' which is not yet supported."
+        ExtractionResult(
+          typeParam = ClassName("kotlin", "Any"),
+          code = CodeBlock.of("throw %T(%S)", ClassName("kotlin", "NotImplementedError"), message),
+          usesResource = false,
+        )
+      }
     }
 }
 

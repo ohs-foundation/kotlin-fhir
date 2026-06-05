@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -50,7 +51,11 @@ public object MessageDefinitionSearchParams {
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(MessageDefinition.useContext.value.ofType(CodeableConcept))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context' has expression '(MessageDefinition.useContext.value.ofType(CodeableConcept))' which is not yet supported."
+        )
+      },
     )
 
   public val contextQuantity: SearchParam<MessageDefinition, Any> =
@@ -58,7 +63,11 @@ public object MessageDefinitionSearchParams {
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(MessageDefinition.useContext.value.ofType(Quantity))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context-quantity' has expression '(MessageDefinition.useContext.value.ofType(Quantity))' which is not yet supported."
+        )
+      },
     )
 
   public val contextType: SearchParam<MessageDefinition, Coding> =
@@ -106,7 +115,11 @@ public object MessageDefinitionSearchParams {
       name = "event",
       type = SearchParamType.fromCode("token"),
       expression = "MessageDefinition.event.ofType(Coding)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'event' has expression 'MessageDefinition.event.ofType(Coding)' which is not yet supported."
+        )
+      },
     )
 
   public val focus: SearchParam<MessageDefinition, Any> =

@@ -181,6 +181,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -224,7 +225,11 @@ public object ObservationSearchParams {
       name = "code-value-concept",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'code-value-concept' has expression 'Observation' which is not yet supported."
+        )
+      },
     )
 
   public val codeValueDate: SearchParam<Observation, Any> =
@@ -232,7 +237,11 @@ public object ObservationSearchParams {
       name = "code-value-date",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'code-value-date' has expression 'Observation' which is not yet supported."
+        )
+      },
     )
 
   public val codeValueQuantity: SearchParam<Observation, Any> =
@@ -240,7 +249,11 @@ public object ObservationSearchParams {
       name = "code-value-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'code-value-quantity' has expression 'Observation' which is not yet supported."
+        )
+      },
     )
 
   public val codeValueString: SearchParam<Observation, Any> =
@@ -248,7 +261,11 @@ public object ObservationSearchParams {
       name = "code-value-string",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'code-value-string' has expression 'Observation' which is not yet supported."
+        )
+      },
     )
 
   public val comboCode: SearchParam<Observation, CodeableConcept> =
@@ -288,7 +305,11 @@ public object ObservationSearchParams {
       name = "combo-value-concept",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.value.ofType(CodeableConcept)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'combo-value-concept' has expression 'Observation.value.ofType(CodeableConcept)' which is not yet supported."
+        )
+      },
     )
 
   public val comboValueQuantity: SearchParam<Observation, Any> =
@@ -296,7 +317,11 @@ public object ObservationSearchParams {
       name = "combo-value-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "Observation.value.ofType(Quantity)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'combo-value-quantity' has expression 'Observation.value.ofType(Quantity)' which is not yet supported."
+        )
+      },
     )
 
   public val componentCode: SearchParam<Observation, CodeableConcept> =
@@ -336,7 +361,11 @@ public object ObservationSearchParams {
       name = "component-value-canonical",
       type = SearchParamType.fromCode("uri"),
       expression = "Observation.component.value.ofType(canonical)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'component-value-canonical' has expression 'Observation.component.value.ofType(canonical)' which is not yet supported."
+        )
+      },
     )
 
   public val componentValueConcept: SearchParam<Observation, Any> =
@@ -344,7 +373,11 @@ public object ObservationSearchParams {
       name = "component-value-concept",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.component.value.ofType(CodeableConcept)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'component-value-concept' has expression 'Observation.component.value.ofType(CodeableConcept)' which is not yet supported."
+        )
+      },
     )
 
   public val componentValueQuantity: SearchParam<Observation, Any> =
@@ -352,7 +385,11 @@ public object ObservationSearchParams {
       name = "component-value-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "Observation.component.value.ofType(Quantity)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'component-value-quantity' has expression 'Observation.component.value.ofType(Quantity)' which is not yet supported."
+        )
+      },
     )
 
   public val componentValueReference: SearchParam<Observation, Any> =
@@ -361,7 +398,11 @@ public object ObservationSearchParams {
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.component.value.ofType(Reference)",
       target = listOf(MolecularSequence::class),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'component-value-reference' has expression 'Observation.component.value.ofType(Reference)' which is not yet supported."
+        )
+      },
     )
 
   public val dataAbsentReason: SearchParam<Observation, CodeableConcept> =
@@ -377,7 +418,11 @@ public object ObservationSearchParams {
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Observation.effective.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'date' has expression 'Observation.effective.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val derivedFrom: SearchParam<Observation, Reference> =
@@ -702,7 +747,11 @@ public object ObservationSearchParams {
       name = "value-canonical",
       type = SearchParamType.fromCode("uri"),
       expression = "Observation.value.ofType(canonical)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'value-canonical' has expression 'Observation.value.ofType(canonical)' which is not yet supported."
+        )
+      },
     )
 
   public val valueConcept: SearchParam<Observation, Any> =
@@ -710,7 +759,11 @@ public object ObservationSearchParams {
       name = "value-concept",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.value.ofType(CodeableConcept)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'value-concept' has expression 'Observation.value.ofType(CodeableConcept)' which is not yet supported."
+        )
+      },
     )
 
   public val valueDate: SearchParam<Observation, Any> =
@@ -718,7 +771,11 @@ public object ObservationSearchParams {
       name = "value-date",
       type = SearchParamType.fromCode("date"),
       expression = "Observation.value.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'value-date' has expression 'Observation.value.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val valueMarkdown: SearchParam<Observation, Any> =
@@ -726,7 +783,11 @@ public object ObservationSearchParams {
       name = "value-markdown",
       type = SearchParamType.fromCode("string"),
       expression = "Observation.value.ofType(markdown)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'value-markdown' has expression 'Observation.value.ofType(markdown)' which is not yet supported."
+        )
+      },
     )
 
   public val valueQuantity: SearchParam<Observation, Any> =
@@ -734,7 +795,11 @@ public object ObservationSearchParams {
       name = "value-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "Observation.value.ofType(Quantity)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'value-quantity' has expression 'Observation.value.ofType(Quantity)' which is not yet supported."
+        )
+      },
     )
 
   public val valueReference: SearchParam<Observation, Any> =
@@ -743,7 +808,11 @@ public object ObservationSearchParams {
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.value.ofType(Reference)",
       target = listOf(MolecularSequence::class),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'value-reference' has expression 'Observation.value.ofType(Reference)' which is not yet supported."
+        )
+      },
     )
 
   /** All search parameters for the Observation resource type. */

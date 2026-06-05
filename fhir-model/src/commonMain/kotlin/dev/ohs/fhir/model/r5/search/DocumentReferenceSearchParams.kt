@@ -187,6 +187,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -569,7 +570,11 @@ public object DocumentReferenceSearchParams {
           TestScript::class,
           ValueSet::class,
         ),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'format-canonical' has expression '(DocumentReference.content.profile.value.ofType(canonical))' which is not yet supported."
+        )
+      },
     )
 
   public val formatCode: SearchParam<DocumentReference, Any> =
@@ -577,7 +582,11 @@ public object DocumentReferenceSearchParams {
       name = "format-code",
       type = SearchParamType.fromCode("token"),
       expression = "(DocumentReference.content.profile.value.ofType(Coding))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'format-code' has expression '(DocumentReference.content.profile.value.ofType(Coding))' which is not yet supported."
+        )
+      },
     )
 
   public val formatUri: SearchParam<DocumentReference, Any> =
@@ -585,7 +594,11 @@ public object DocumentReferenceSearchParams {
       name = "format-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "(DocumentReference.content.profile.value.ofType(uri))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'format-uri' has expression '(DocumentReference.content.profile.value.ofType(uri))' which is not yet supported."
+        )
+      },
     )
 
   public val identifier: SearchParam<DocumentReference, Identifier> =

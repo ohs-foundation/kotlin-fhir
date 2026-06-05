@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -109,7 +110,11 @@ public object PatientSearchParams {
       name = "death-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Patient.deceased.ofType(dateTime))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'death-date' has expression '(Patient.deceased.ofType(dateTime))' which is not yet supported."
+        )
+      },
     )
 
   public val deceased: SearchParam<Patient, Any> =
@@ -117,7 +122,11 @@ public object PatientSearchParams {
       name = "deceased",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.deceased.exists() and Patient.deceased != false",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'deceased' has expression 'Patient.deceased.exists() and Patient.deceased != false' which is not yet supported."
+        )
+      },
     )
 
   public val email: SearchParam<Patient, ContactPoint> =
@@ -212,7 +221,11 @@ public object PatientSearchParams {
       expression =
         "Patient.extension('http://example.org/fhir/StructureDefinition/participation-agreement').value",
       target = listOf(DocumentReference::class),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'part-agree' has expression 'Patient.extension('http://example.org/fhir/StructureDefinition/participation-agreement').value' which is not yet supported."
+        )
+      },
     )
 
   public val phone: SearchParam<Patient, ContactPoint> =

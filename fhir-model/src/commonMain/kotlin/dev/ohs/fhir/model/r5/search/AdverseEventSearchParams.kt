@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r5.ResearchSubject
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -76,7 +77,11 @@ public object AdverseEventSearchParams {
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "AdverseEvent.occurrence.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'date' has expression 'AdverseEvent.occurrence.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val identifier: SearchParam<AdverseEvent, Identifier> =

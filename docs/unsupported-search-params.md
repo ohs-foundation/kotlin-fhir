@@ -4,7 +4,7 @@ Each search parameter exposes an `extractFrom()` function that pulls its value o
 
 These `extractFrom()` bodies are generated from each parameter's FHIRPath expression as native Kotlin, rather than invoking a FHIRPath engine at runtime, for efficiency.
 
-Some expressions aren't supported yet. For those parameters, `extractFrom()` returns `emptyList()` and the type parameter is `Any`; the rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers can read the `expression` string and evaluate it with a FHIRPath engine instead.
+Some expressions aren't supported yet. For those parameters, `extractFrom()` throws `NotImplementedError` and the type parameter is `Any`; the rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers can read the `expression` string and evaluate it with a FHIRPath engine instead.
 
 This page lists the 206 such parameters across R4 / R4B / R5, grouped by the FHIRPath pattern involved. See [Supported FHIRPath patterns](../README.md#supported-fhirpath-patterns) in the README for the patterns that *are* supported.
 

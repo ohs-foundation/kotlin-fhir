@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -116,7 +117,11 @@ public object InsurancePlanSearchParams {
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "name | alias",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'name' has expression 'name | alias' which is not yet supported."
+        )
+      },
     )
 
   public val ownedBy: SearchParam<InsurancePlan, Reference> =

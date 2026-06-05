@@ -181,6 +181,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -223,7 +224,11 @@ public object DetectedIssueSearchParams {
       name = "identified",
       type = SearchParamType.fromCode("date"),
       expression = "DetectedIssue.identified.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'identified' has expression 'DetectedIssue.identified.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val identifier: SearchParam<DetectedIssue, Identifier> =

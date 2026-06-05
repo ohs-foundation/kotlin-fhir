@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -45,7 +46,11 @@ public object ImmunizationSearchParams {
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "(Immunization.occurrence.ofType(dateTime))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'date' has expression '(Immunization.occurrence.ofType(dateTime))' which is not yet supported."
+        )
+      },
     )
 
   public val identifier: SearchParam<Immunization, Identifier> =

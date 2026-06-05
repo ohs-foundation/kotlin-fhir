@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -49,7 +50,11 @@ public object NutritionIntakeSearchParams {
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "NutritionIntake.occurrence.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'date' has expression 'NutritionIntake.occurrence.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val encounter: SearchParam<NutritionIntake, Reference> =

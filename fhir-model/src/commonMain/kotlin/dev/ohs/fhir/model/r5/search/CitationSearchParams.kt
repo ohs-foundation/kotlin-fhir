@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -48,7 +49,11 @@ public object CitationSearchParams {
       name = "classification-type",
       type = SearchParamType.fromCode("token"),
       expression = "(Citation.classification.type)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'classification-type' has expression '(Citation.classification.type)' which is not yet supported."
+        )
+      },
     )
 
   public val classifier: SearchParam<Citation, Any> =
@@ -56,7 +61,11 @@ public object CitationSearchParams {
       name = "classifier",
       type = SearchParamType.fromCode("token"),
       expression = "(Citation.classification.classifier)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'classifier' has expression '(Citation.classification.classifier)' which is not yet supported."
+        )
+      },
     )
 
   public val context: SearchParam<Citation, Any> =
@@ -64,7 +73,11 @@ public object CitationSearchParams {
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(Citation.useContext.value.ofType(CodeableConcept))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context' has expression '(Citation.useContext.value.ofType(CodeableConcept))' which is not yet supported."
+        )
+      },
     )
 
   public val contextQuantity: SearchParam<Citation, Any> =
@@ -72,7 +85,11 @@ public object CitationSearchParams {
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(Citation.useContext.value.ofType(Quantity))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context-quantity' has expression '(Citation.useContext.value.ofType(Quantity))' which is not yet supported."
+        )
+      },
     )
 
   public val contextType: SearchParam<Citation, Coding> =

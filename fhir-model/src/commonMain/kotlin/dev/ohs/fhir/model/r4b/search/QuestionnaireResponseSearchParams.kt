@@ -164,6 +164,7 @@ import dev.ohs.fhir.model.r4b.VerificationResult
 import dev.ohs.fhir.model.r4b.VisionPrescription
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -226,7 +227,11 @@ public object QuestionnaireResponseSearchParams {
       type = SearchParamType.fromCode("reference"),
       expression =
         "QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'item-subject' has expression 'QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)' which is not yet supported."
+        )
+      },
     )
 
   public val partOf: SearchParam<QuestionnaireResponse, Reference> =

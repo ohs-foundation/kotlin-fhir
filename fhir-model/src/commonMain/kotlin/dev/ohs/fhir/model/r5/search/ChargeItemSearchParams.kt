@@ -49,6 +49,7 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.SupplyDelivery
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -126,7 +127,11 @@ public object ChargeItemSearchParams {
       name = "occurrence",
       type = SearchParamType.fromCode("date"),
       expression = "ChargeItem.occurrence.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'occurrence' has expression 'ChargeItem.occurrence.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val patient: SearchParam<ChargeItem, Reference> =

@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -35,7 +36,11 @@ public object BodyStructureSearchParams {
       name = "excluded_structure",
       type = SearchParamType.fromCode("token"),
       expression = "BodyStructure.excludedStructure.structure",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'excluded_structure' has expression 'BodyStructure.excludedStructure.structure' which is not yet supported."
+        )
+      },
     )
 
   public val identifier: SearchParam<BodyStructure, Identifier> =

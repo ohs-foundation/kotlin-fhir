@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -56,7 +57,11 @@ public object DeviceSearchParams {
       name = "code-value-concept",
       type = SearchParamType.fromCode("composite"),
       expression = "Device",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'code-value-concept' has expression 'Device' which is not yet supported."
+        )
+      },
     )
 
   public val definition: SearchParam<Device, Reference> =

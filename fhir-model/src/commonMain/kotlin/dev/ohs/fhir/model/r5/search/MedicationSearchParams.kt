@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -54,7 +55,11 @@ public object MedicationSearchParams {
       name = "form",
       type = SearchParamType.fromCode("token"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'form' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val identifier: SearchParam<Medication, Identifier> =

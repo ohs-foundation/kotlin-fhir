@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -96,7 +97,11 @@ public object LocationSearchParams {
       type = SearchParamType.fromCode("special"),
       expression =
         "Location.extension('http://hl7.org/fhir/StructureDefinition/location-boundary-geojson').value",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'contains' has expression 'Location.extension('http://hl7.org/fhir/StructureDefinition/location-boundary-geojson').value' which is not yet supported."
+        )
+      },
     )
 
   public val endpoint: SearchParam<Location, Reference> =

@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -95,7 +96,11 @@ public object SubstanceSearchParams {
       type = SearchParamType.fromCode("reference"),
       expression = "(Substance.ingredient.substance.ofType(Reference))",
       target = listOf(Substance::class),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'substance-reference' has expression '(Substance.ingredient.substance.ofType(Reference))' which is not yet supported."
+        )
+      },
     )
 
   /** All search parameters for the Substance resource type. */

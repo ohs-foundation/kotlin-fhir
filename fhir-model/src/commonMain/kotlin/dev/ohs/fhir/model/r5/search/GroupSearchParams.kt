@@ -183,6 +183,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -362,7 +363,11 @@ public object GroupSearchParams {
           VerificationResult::class,
           VisionPrescription::class,
         ),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'characteristic-reference' has expression '(Group.characteristic.value.ofType(Reference))' which is not yet supported."
+        )
+      },
     )
 
   public val characteristicValue: SearchParam<Group, Group.Characteristic> =
@@ -463,7 +468,11 @@ public object GroupSearchParams {
       name = "value",
       type = SearchParamType.fromCode("token"),
       expression = "(Group.characteristic.value.ofType(CodeableConcept))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'value' has expression '(Group.characteristic.value.ofType(CodeableConcept))' which is not yet supported."
+        )
+      },
     )
 
   /** All search parameters for the Group resource type. */

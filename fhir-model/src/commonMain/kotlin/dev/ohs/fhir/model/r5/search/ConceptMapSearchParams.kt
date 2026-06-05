@@ -188,6 +188,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -198,7 +199,11 @@ public object ConceptMapSearchParams {
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(ConceptMap.useContext.value.ofType(CodeableConcept))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context' has expression '(ConceptMap.useContext.value.ofType(CodeableConcept))' which is not yet supported."
+        )
+      },
     )
 
   public val contextQuantity: SearchParam<ConceptMap, Any> =
@@ -206,7 +211,11 @@ public object ConceptMapSearchParams {
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(ConceptMap.useContext.value.ofType(Quantity))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'context-quantity' has expression '(ConceptMap.useContext.value.ofType(Quantity))' which is not yet supported."
+        )
+      },
     )
 
   public val contextType: SearchParam<ConceptMap, Coding> =

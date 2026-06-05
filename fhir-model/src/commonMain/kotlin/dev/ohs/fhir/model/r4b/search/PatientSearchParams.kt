@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r4b.RelatedPerson
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -102,7 +103,11 @@ public object PatientSearchParams {
       name = "age",
       type = SearchParamType.fromCode("number"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'age' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val birthOrderBoolean: SearchParam<Patient, Any> =
@@ -110,7 +115,11 @@ public object PatientSearchParams {
       name = "birthOrderBoolean",
       type = SearchParamType.fromCode("token"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'birthOrderBoolean' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val birthdate: SearchParam<Patient, Date> =
@@ -136,7 +145,11 @@ public object PatientSearchParams {
       name = "deceased",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.deceased.exists() and Patient.deceased != false",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'deceased' has expression 'Patient.deceased.exists() and Patient.deceased != false' which is not yet supported."
+        )
+      },
     )
 
   public val email: SearchParam<Patient, ContactPoint> =
@@ -213,7 +226,11 @@ public object PatientSearchParams {
       type = SearchParamType.fromCode("string"),
       expression =
         "Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'mothersMaidenName' has expression 'Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')' which is not yet supported."
+        )
+      },
     )
 
   public val name: SearchParam<Patient, HumanName> =
@@ -240,7 +257,11 @@ public object PatientSearchParams {
       expression =
         "DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement')",
       target = listOf(DocumentReference::class),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'part-agree' has expression 'DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement')' which is not yet supported."
+        )
+      },
     )
 
   public val phone: SearchParam<Patient, ContactPoint> =

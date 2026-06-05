@@ -229,13 +229,13 @@ Each FHIR search parameter exposes a typed `extractFrom()` function that pulls i
 
 `SearchParam<R, T>` carries the metadata for a search parameter plus a typed `extractFrom` function:
 
-| Member       | Type                         | Description                                                                       |
-|:-------------|:-----------------------------|:----------------------------------------------------------------------------------|
-| `name`       | `String`                     | The search parameter name as used in search URLs.                                 |
-| `type`       | `SearchParamType`            | The search parameter type (number, date, string, token, …).                       |
-| `expression` | `String`                     | The FHIRPath expression that extracts values for this param.                      |
-| `target`     | `List<KClass<out Resource>>` | Target resource types for reference search parameters.                            |
-| `extractFrom` | `(resource: R) -> List<T>`  | Pulls the values of type `T` out of a resource of type `R` for this search param. |
+| Member        | Type                         | Description                                                                       |
+|:--------------|:-----------------------------|:----------------------------------------------------------------------------------|
+| `name`        | `String`                     | The search parameter name as used in search URLs.                                 |
+| `type`        | `SearchParamType`            | The search parameter type (number, date, string, token, …).                       |
+| `expression`  | `String`                     | The FHIRPath expression that extracts values for this param.                      |
+| `target`      | `List<KClass<out Resource>>` | Target resource types for reference search parameters.                            |
+| `extractFrom` | `(resource: R) -> List<T>`   | Pulls the values of type `T` out of a resource of type `R` for this search param. |
 
 #### Supported FHIRPath patterns
 
@@ -254,7 +254,7 @@ The following FHIRPath patterns produce a typed `extractFrom()`:
 
 #### Unsupported FHIRPath patterns
 
-Some FHIRPath expressions aren't supported yet. For those parameters, `extractFrom()` returns `emptyList()` and the type parameter is `Any`. The rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers can read the `expression` string and evaluate it with a FHIRPath engine instead.
+Some FHIRPath expressions aren't supported yet. For those parameters, `extractFrom()` throws `NotImplementedError` and the type parameter is `Any`. The rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers can read the `expression` string and evaluate it with a FHIRPath engine instead.
 
 206 such parameters across R4 / R4B / R5 fall into the following categories. See [unsupported-search-params.md](docs/unsupported-search-params.md) for the full per-category list.
 
@@ -561,9 +561,14 @@ import dev.ohs.fhir.model.r4.search.PatientSearchParams
 // Type-safe access to a single parameter:
 val birthdates: List<Date> = PatientSearchParams.birthdate.extractFrom(patient)
 
-// Iterate every parameter (e.g. to build a search index):
+// Iterate every parameter (e.g. to build a search index). Wrap in try/catch
+// because params with unsupported FHIRPath patterns throw NotImplementedError:
 PatientSearchParams.all.forEach { searchParam ->
-    val values = searchParam.extractFrom(patient)
+    val values = try {
+        searchParam.extractFrom(patient)
+    } catch (_: NotImplementedError) {
+        emptyList()
+    }
     // index `searchParam.name` against `values`
 }
 ```

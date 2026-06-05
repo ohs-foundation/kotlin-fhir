@@ -44,6 +44,7 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Task
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -173,7 +174,11 @@ public object ImagingStudySearchParams {
       name = "reason",
       type = SearchParamType.fromCode("token"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'reason' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val referrer: SearchParam<ImagingStudy, Reference> =

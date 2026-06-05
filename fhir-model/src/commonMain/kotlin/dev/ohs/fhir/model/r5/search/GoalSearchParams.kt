@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -117,7 +118,11 @@ public object GoalSearchParams {
       name = "start-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Goal.start.ofType(date))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'start-date' has expression '(Goal.start.ofType(date))' which is not yet supported."
+        )
+      },
     )
 
   public val subject: SearchParam<Goal, Reference> =
@@ -134,7 +139,11 @@ public object GoalSearchParams {
       name = "target-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Goal.target.due.ofType(date))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'target-date' has expression '(Goal.target.due.ofType(date))' which is not yet supported."
+        )
+      },
     )
 
   public val targetMeasure: SearchParam<Goal, CodeableConcept> =

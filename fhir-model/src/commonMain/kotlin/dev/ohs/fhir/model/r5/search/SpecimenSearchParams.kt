@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -62,7 +63,11 @@ public object SpecimenSearchParams {
       name = "collected",
       type = SearchParamType.fromCode("date"),
       expression = "Specimen.collection.collected.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'collected' has expression 'Specimen.collection.collected.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val collector: SearchParam<Specimen, Reference> =

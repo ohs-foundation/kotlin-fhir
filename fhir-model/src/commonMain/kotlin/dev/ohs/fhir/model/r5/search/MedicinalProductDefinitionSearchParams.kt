@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -38,7 +39,11 @@ public object MedicinalProductDefinitionSearchParams {
       name = "characteristic",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.characteristic.value.ofType(Quantity)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'characteristic' has expression 'MedicinalProductDefinition.characteristic.value.ofType(Quantity)' which is not yet supported."
+        )
+      },
     )
 
   public val characteristicType: SearchParam<MedicinalProductDefinition, CodeableConcept> =

@@ -43,6 +43,7 @@ import dev.ohs.fhir.model.r4.ServiceRequest
 import dev.ohs.fhir.model.r4.Specimen
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -54,7 +55,11 @@ public object DiagnosticReportSearchParams {
       type = SearchParamType.fromCode("reference"),
       expression =
         "DiagnosticReport.extension('http://hl7.org/fhir/StructureDefinition/DiagnosticReport-geneticsAssessedCondition')",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'assessed-condition' has expression 'DiagnosticReport.extension('http://hl7.org/fhir/StructureDefinition/DiagnosticReport-geneticsAssessedCondition')' which is not yet supported."
+        )
+      },
     )
 
   public val basedOn: SearchParam<DiagnosticReport, Reference> =

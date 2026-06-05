@@ -47,9 +47,18 @@ class SearchParamAllUsageTest :
       // the spec, not hand listed. extractFrom does the real work: for "email" it filters
       // telecom by system (FHIRPath: Patient.telecom.where(system='email')), a computation
       // that has no equivalent direct field on Patient.
+      //
+      // Some params have FHIRPath patterns we don't translate yet; calling extractFrom on
+      // those throws NotImplementedError, so iterate-all callers need a catch (or pre-filter).
       val index: List<Pair<String, Any?>> =
         PatientSearchParams.all.flatMap { sp ->
-          sp.extractFrom(alice).map { value -> sp.name to value }
+          val values =
+            try {
+              sp.extractFrom(alice)
+            } catch (_: NotImplementedError) {
+              emptyList()
+            }
+          values.map { value -> sp.name to value }
         }
 
       // ---------- SEARCH TIME ----------

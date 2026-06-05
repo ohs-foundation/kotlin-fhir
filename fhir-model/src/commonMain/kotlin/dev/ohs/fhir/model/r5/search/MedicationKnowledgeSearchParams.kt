@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -133,7 +134,11 @@ public object MedicationKnowledgeSearchParams {
       name = "packaging-cost",
       type = SearchParamType.fromCode("quantity"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'packaging-cost' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val packagingCostConcept: SearchParam<MedicationKnowledge, Any> =
@@ -141,7 +146,11 @@ public object MedicationKnowledgeSearchParams {
       name = "packaging-cost-concept",
       type = SearchParamType.fromCode("token"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'packaging-cost-concept' has expression '' which is not yet supported."
+        )
+      },
     )
 
   public val productType: SearchParam<MedicationKnowledge, CodeableConcept> =

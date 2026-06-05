@@ -184,6 +184,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -397,7 +398,11 @@ public object DeviceRequestSearchParams {
       name = "event-date",
       type = SearchParamType.fromCode("date"),
       expression = "(DeviceRequest.occurrence.ofType(dateTime))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'event-date' has expression '(DeviceRequest.occurrence.ofType(dateTime))' which is not yet supported."
+        )
+      },
     )
 
   public val groupIdentifier: SearchParam<DeviceRequest, Identifier> =

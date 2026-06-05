@@ -50,6 +50,7 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -85,7 +86,11 @@ public object ProcedureSearchParams {
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Procedure.occurrence.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'date' has expression 'Procedure.occurrence.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val encounter: SearchParam<Procedure, Reference> =

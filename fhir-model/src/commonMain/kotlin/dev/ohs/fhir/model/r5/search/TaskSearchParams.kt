@@ -183,6 +183,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -774,7 +775,11 @@ public object TaskSearchParams {
           VerificationResult::class,
           VisionPrescription::class,
         ),
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'output' has expression 'Task.output.value.ofType(Reference)' which is not yet supported."
+        )
+      },
     )
 
   public val owner: SearchParam<Task, Reference> =

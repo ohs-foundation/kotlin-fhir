@@ -166,6 +166,7 @@ import dev.ohs.fhir.model.r4b.VerificationResult
 import dev.ohs.fhir.model.r4b.VisionPrescription
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -177,7 +178,11 @@ public object ObservationSearchParams {
       type = SearchParamType.fromCode("string"),
       expression =
         "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'amino-acid-change' has expression 'Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')' which is not yet supported."
+        )
+      },
     )
 
   public val basedOn: SearchParam<Observation, Reference> =
@@ -218,7 +223,11 @@ public object ObservationSearchParams {
       name = "code-value-concept",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'code-value-concept' has expression 'Observation' which is not yet supported."
+        )
+      },
     )
 
   public val codeValueDate: SearchParam<Observation, Any> =
@@ -226,7 +235,11 @@ public object ObservationSearchParams {
       name = "code-value-date",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'code-value-date' has expression 'Observation' which is not yet supported."
+        )
+      },
     )
 
   public val codeValueQuantity: SearchParam<Observation, Any> =
@@ -234,7 +247,11 @@ public object ObservationSearchParams {
       name = "code-value-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'code-value-quantity' has expression 'Observation' which is not yet supported."
+        )
+      },
     )
 
   public val codeValueString: SearchParam<Observation, Any> =
@@ -242,7 +259,11 @@ public object ObservationSearchParams {
       name = "code-value-string",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'code-value-string' has expression 'Observation' which is not yet supported."
+        )
+      },
     )
 
   public val comboCode: SearchParam<Observation, CodeableConcept> =
@@ -401,7 +422,11 @@ public object ObservationSearchParams {
       type = SearchParamType.fromCode("string"),
       expression =
         "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'dna-variant' has expression 'Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')' which is not yet supported."
+        )
+      },
     )
 
   public val encounter: SearchParam<Observation, Reference> =
@@ -570,7 +595,11 @@ public object ObservationSearchParams {
       type = SearchParamType.fromCode("string"),
       expression =
         "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'gene-amino-acid-change' has expression 'Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')' which is not yet supported."
+        )
+      },
     )
 
   public val geneDnavariant: SearchParam<Observation, Any> =
@@ -579,7 +608,11 @@ public object ObservationSearchParams {
       type = SearchParamType.fromCode("string"),
       expression =
         "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'gene-dnavariant' has expression 'Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')' which is not yet supported."
+        )
+      },
     )
 
   public val geneIdentifier: SearchParam<Observation, Any> =
@@ -588,7 +621,11 @@ public object ObservationSearchParams {
       type = SearchParamType.fromCode("token"),
       expression =
         "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsGene')",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'gene-identifier' has expression 'Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsGene')' which is not yet supported."
+        )
+      },
     )
 
   public val hasMember: SearchParam<Observation, Reference> =

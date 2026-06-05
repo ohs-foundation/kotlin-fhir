@@ -182,6 +182,7 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -633,7 +634,11 @@ public object ProvenanceSearchParams {
       name = "when",
       type = SearchParamType.fromCode("date"),
       expression = "(Provenance.occurred.ofType(dateTime))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'when' has expression '(Provenance.occurred.ofType(dateTime))' which is not yet supported."
+        )
+      },
     )
 
   /** All search parameters for the Provenance resource type. */

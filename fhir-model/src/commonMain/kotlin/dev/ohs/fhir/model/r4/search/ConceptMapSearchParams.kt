@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.ValueSet
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -151,7 +152,11 @@ public object ConceptMapSearchParams {
       name = "product",
       type = SearchParamType.fromCode("uri"),
       expression = "ConceptMap.group.element.target.product.property",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'product' has expression 'ConceptMap.group.element.target.product.property' which is not yet supported."
+        )
+      },
     )
 
   public val publisher: SearchParam<ConceptMap, String> =

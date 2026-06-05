@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.DomainResource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -31,7 +32,11 @@ public object DomainResourceSearchParams {
       name = "_text",
       type = SearchParamType.fromCode("special"),
       expression = "",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter '_text' has expression '' which is not yet supported."
+        )
+      },
     )
 
   /** All search parameters for the DomainResource resource type. */

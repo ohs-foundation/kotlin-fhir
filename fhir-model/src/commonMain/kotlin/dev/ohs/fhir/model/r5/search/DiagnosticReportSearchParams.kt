@@ -47,6 +47,7 @@ import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -97,7 +98,11 @@ public object DiagnosticReportSearchParams {
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "DiagnosticReport.effective.ofType(dateTime)",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'date' has expression 'DiagnosticReport.effective.ofType(dateTime)' which is not yet supported."
+        )
+      },
     )
 
   public val encounter: SearchParam<DiagnosticReport, Reference> =

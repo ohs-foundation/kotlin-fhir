@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -103,7 +104,11 @@ public object PractitionerSearchParams {
       name = "death-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Practitioner.deceased.ofType(dateTime))",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'death-date' has expression '(Practitioner.deceased.ofType(dateTime))' which is not yet supported."
+        )
+      },
     )
 
   public val deceased: SearchParam<Practitioner, Any> =
@@ -111,7 +116,11 @@ public object PractitionerSearchParams {
       name = "deceased",
       type = SearchParamType.fromCode("token"),
       expression = "Practitioner.deceased.exists() and Practitioner.deceased != false",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'deceased' has expression 'Practitioner.deceased.exists() and Practitioner.deceased != false' which is not yet supported."
+        )
+      },
     )
 
   public val email: SearchParam<Practitioner, ContactPoint> =

@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
+import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -48,7 +49,11 @@ public object DeviceSearchParams {
       type = SearchParamType.fromCode("token"),
       expression =
         "Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')",
-      extractor = { emptyList() },
+      extractor = {
+        throw NotImplementedError(
+          "Search parameter 'din' has expression 'Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')' which is not yet supported."
+        )
+      },
     )
 
   public val identifier: SearchParam<Device, Identifier> =

@@ -48,17 +48,12 @@ class SearchParamAllUsageTest :
       // telecom by system (FHIRPath: Patient.telecom.where(system='email')), a computation
       // that has no equivalent direct field on Patient.
       //
-      // Some params have FHIRPath patterns we don't translate yet; calling extractFrom on
-      // those throws NotImplementedError, so iterate-all callers need a catch (or pre-filter).
+      // Params whose FHIRPath we don't translate yet are excluded from ALL (they're still
+      // accessible by name on the container, but calling extractFrom on them throws), so
+      // this loop is safe without a catch.
       val index: List<Pair<String, Any?>> =
         PatientSearchParams.all.flatMap { sp ->
-          val values =
-            try {
-              sp.extractFrom(alice)
-            } catch (_: NotImplementedError) {
-              emptyList()
-            }
-          values.map { value -> sp.name to value }
+          sp.extractFrom(alice).map { value -> sp.name to value }
         }
 
       // ---------- SEARCH TIME ----------

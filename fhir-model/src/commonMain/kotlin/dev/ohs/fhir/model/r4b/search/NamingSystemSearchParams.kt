@@ -193,7 +193,17 @@ public object NamingSystemSearchParams {
       extractor = { resource -> resource.uniqueId.map { it.`value` } },
     )
 
-  /** All search parameters for the NamingSystem resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<NamingSystem, *>> = listOf()
+
+  /**
+   * Supported search parameters for the NamingSystem resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<NamingSystem, *>> =
     listOf(
       contact,
@@ -215,5 +225,5 @@ public object NamingSystemSearchParams {
       telecom,
       type,
       `value`,
-    )
+    ) - unsupported.toSet()
 }

@@ -379,7 +379,18 @@ public object ImmunizationRecommendationSearchParams {
       extractor = { resource -> resource.recommendation.flatMap { it.vaccineCode } },
     )
 
-  /** All search parameters for the ImmunizationRecommendation resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: CollectionsList<SearchParam<ImmunizationRecommendation, *>> = listOf()
+
+  /**
+   * Supported search parameters for the ImmunizationRecommendation resource type. Entries in
+   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: CollectionsList<SearchParam<ImmunizationRecommendation, *>> =
-    listOf(date, identifier, information, patient, status, support, targetDisease, vaccineType)
+    listOf(date, identifier, information, patient, status, support, targetDisease, vaccineType) -
+      unsupported.toSet()
 }

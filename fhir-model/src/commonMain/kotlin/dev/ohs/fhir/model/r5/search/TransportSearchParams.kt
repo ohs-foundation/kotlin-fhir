@@ -43,6 +43,16 @@ public object TransportSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  /** All search parameters for the Transport resource type. */
-  public val all: List<SearchParam<Transport, *>> = listOf(identifier, status)
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<Transport, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Transport resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
+  public val all: List<SearchParam<Transport, *>> = listOf(identifier, status) - unsupported.toSet()
 }

@@ -482,7 +482,17 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.supportingInformation },
     )
 
-  /** All search parameters for the Appointment resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: CollectionsList<SearchParam<Appointment, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Appointment resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: CollectionsList<SearchParam<Appointment, *>> =
     listOf(
       actor,
@@ -502,5 +512,5 @@ public object AppointmentSearchParams {
       specialty,
       status,
       supportingInfo,
-    )
+    ) - unsupported.toSet()
 }

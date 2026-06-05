@@ -1109,7 +1109,17 @@ public object LibrarySearchParams {
       extractor = { resource -> listOfNotNull(resource.version) },
     )
 
-  /** All search parameters for the Library resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: CollectionsList<SearchParam<Library, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Library resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: CollectionsList<SearchParam<Library, *>> =
     listOf(
       composedOf,
@@ -1136,5 +1146,5 @@ public object LibrarySearchParams {
       type,
       url,
       version,
-    )
+    ) - unsupported.toSet()
 }

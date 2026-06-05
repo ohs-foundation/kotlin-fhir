@@ -140,7 +140,17 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.referenceSeq?.windowStart) },
     )
 
-  /** All search parameters for the MolecularSequence resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<MolecularSequence, *>> = listOf()
+
+  /**
+   * Supported search parameters for the MolecularSequence resource type. Entries in [unsupported]
+   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<MolecularSequence, *>> =
     listOf(
       chromosome,
@@ -156,5 +166,5 @@ public object MolecularSequenceSearchParams {
       variantStart,
       windowEnd,
       windowStart,
-    )
+    ) - unsupported.toSet()
 }

@@ -530,6 +530,17 @@ public object LinkageSearchParams {
       extractor = { resource -> resource.item.map { it.resource } },
     )
 
-  /** All search parameters for the Linkage resource type. */
-  public val all: CollectionsList<SearchParam<Linkage, *>> = listOf(author, item, source)
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: CollectionsList<SearchParam<Linkage, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Linkage resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
+  public val all: CollectionsList<SearchParam<Linkage, *>> =
+    listOf(author, item, source) - unsupported.toSet()
 }

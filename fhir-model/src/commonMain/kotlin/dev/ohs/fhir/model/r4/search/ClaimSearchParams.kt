@@ -195,7 +195,17 @@ public object ClaimSearchParams {
       extractor = { resource -> listOf(resource.use) },
     )
 
-  /** All search parameters for the Claim resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<Claim, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Claim resource type. Entries in [unsupported] are excluded
+   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<Claim, *>> =
     listOf(
       careTeam,
@@ -215,5 +225,5 @@ public object ClaimSearchParams {
       status,
       subdetailUdi,
       use,
-    )
+    ) - unsupported.toSet()
 }

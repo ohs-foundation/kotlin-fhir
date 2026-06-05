@@ -260,7 +260,17 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.version) },
     )
 
-  /** All search parameters for the StructureDefinition resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<StructureDefinition, *>> = listOf()
+
+  /**
+   * Supported search parameters for the StructureDefinition resource type. Entries in [unsupported]
+   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<StructureDefinition, *>> =
     listOf(
       `abstract`,
@@ -289,5 +299,5 @@ public object StructureDefinitionSearchParams {
       url,
       valueset,
       version,
-    )
+    ) - unsupported.toSet()
 }

@@ -76,7 +76,17 @@ public object SupplyDeliverySearchParams {
       extractor = { resource -> listOfNotNull(resource.supplier) },
     )
 
-  /** All search parameters for the SupplyDelivery resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<SupplyDelivery, *>> = listOf()
+
+  /**
+   * Supported search parameters for the SupplyDelivery resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<SupplyDelivery, *>> =
-    listOf(identifier, patient, `receiver`, status, supplier)
+    listOf(identifier, patient, `receiver`, status, supplier) - unsupported.toSet()
 }

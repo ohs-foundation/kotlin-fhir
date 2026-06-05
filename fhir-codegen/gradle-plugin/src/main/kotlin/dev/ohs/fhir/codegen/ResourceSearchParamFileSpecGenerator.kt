@@ -77,6 +77,16 @@ object ResourceSearchParamFileSpecGenerator {
     val resolver = FhirPathExpressionResolver(elementsByType)
     val dedupedParams = searchParams.distinctBy { it.code }.sortedBy { it.code }
 
+    // Unsupported params still get their own `val` (calling `extractFrom` on them throws). They
+    // are listed explicitly in [unsupported] so the unsupported set is visible at a glance, and
+    // subtracted from [all] so iterate-all use cases (building a search index, etc.) can rely on
+    // every entry in `all` being callable.
+    val unsupportedParams =
+      dedupedParams.filter { sp ->
+        val expr = sp.extractExpressionForResource(resourceName)
+        parseSearchParamExpression(expr, resourceName, resolver) == SearchParamPattern.Unsupported
+      }
+
     val containerObject =
       TypeSpec.objectBuilder(containerObjectName)
         .addModifiers(KModifier.PUBLIC)
@@ -96,26 +106,55 @@ object ResourceSearchParamFileSpecGenerator {
             )
           }
 
-          val allListType =
+          val listType =
             List::class.asClassName()
               .parameterizedBy(searchParamClassName.parameterizedBy(resourceClassName, STAR))
-          val allInit =
+
+          // `unsupported` declared first so `all`'s initializer can reference it. Both use %N so
+          // KotlinPoet backtick-escapes names that are Kotlin keywords (e.g. `class`, `for`).
+          val unsupportedInit =
             CodeBlock.builder()
               .apply {
                 add("listOf(")
-                dedupedParams.forEachIndexed { i, sp ->
+                unsupportedParams.forEachIndexed { i, sp ->
                   if (i > 0) add(", ")
-                  // Use %N so KotlinPoet backtick-escapes names that are Kotlin keywords
-                  // (e.g. a search param coded `class` or `for`).
                   add("%N", sp.code.toPropertyName())
                 }
                 add(")")
               }
               .build()
           addProperty(
-            PropertySpec.builder("all", allListType)
+            PropertySpec.builder("unsupported", listType)
               .addModifiers(KModifier.PUBLIC)
-              .addKdoc("All search parameters for the %L resource type.", resourceName)
+              .addKdoc(
+                "Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on " +
+                  "any of these throws `NotImplementedError`. Listed here so the unsupported " +
+                  "set is visible at a glance, and subtracted from [all]."
+              )
+              .initializer(unsupportedInit)
+              .build()
+          )
+
+          val allInit =
+            CodeBlock.builder()
+              .apply {
+                add("listOf(")
+                dedupedParams.forEachIndexed { i, sp ->
+                  if (i > 0) add(", ")
+                  add("%N", sp.code.toPropertyName())
+                }
+                add(") - unsupported.toSet()")
+              }
+              .build()
+          addProperty(
+            PropertySpec.builder("all", listType)
+              .addModifiers(KModifier.PUBLIC)
+              .addKdoc(
+                "Supported search parameters for the %L resource type. Entries in [unsupported] " +
+                  "are excluded so iterating `all` and calling `extractFrom` on each entry is " +
+                  "safe.",
+                resourceName,
+              )
               .initializer(allInit)
               .build()
           )

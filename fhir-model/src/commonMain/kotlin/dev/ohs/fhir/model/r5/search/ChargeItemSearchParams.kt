@@ -246,7 +246,17 @@ public object ChargeItemSearchParams {
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  /** All search parameters for the ChargeItem resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<ChargeItem, *>> = listOf(occurrence)
+
+  /**
+   * Supported search parameters for the ChargeItem resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<ChargeItem, *>> =
     listOf(
       account,
@@ -267,5 +277,5 @@ public object ChargeItemSearchParams {
       service,
       status,
       subject,
-    )
+    ) - unsupported.toSet()
 }

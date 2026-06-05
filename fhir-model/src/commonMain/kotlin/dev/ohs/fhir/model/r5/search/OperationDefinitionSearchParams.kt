@@ -233,7 +233,18 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.version) },
     )
 
-  /** All search parameters for the OperationDefinition resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<OperationDefinition, *>> =
+    listOf(context, contextQuantity)
+
+  /**
+   * Supported search parameters for the OperationDefinition resource type. Entries in [unsupported]
+   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<OperationDefinition, *>> =
     listOf(
       base,
@@ -259,5 +270,5 @@ public object OperationDefinitionSearchParams {
       type,
       url,
       version,
-    )
+    ) - unsupported.toSet()
 }

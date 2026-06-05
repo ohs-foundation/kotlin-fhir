@@ -110,7 +110,17 @@ public object ResearchSubjectSearchParams {
       extractor = { resource -> resource.progress.mapNotNull { it.subjectState } },
     )
 
-  /** All search parameters for the ResearchSubject resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<ResearchSubject, *>> = listOf()
+
+  /**
+   * Supported search parameters for the ResearchSubject resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<ResearchSubject, *>> =
-    listOf(date, identifier, patient, status, study, subject, subject_state)
+    listOf(date, identifier, patient, status, study, subject, subject_state) - unsupported.toSet()
 }

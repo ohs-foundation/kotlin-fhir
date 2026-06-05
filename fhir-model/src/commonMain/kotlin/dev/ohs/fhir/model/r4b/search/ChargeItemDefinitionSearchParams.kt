@@ -162,7 +162,17 @@ public object ChargeItemDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.version) },
     )
 
-  /** All search parameters for the ChargeItemDefinition resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<ChargeItemDefinition, *>> = listOf()
+
+  /**
+   * Supported search parameters for the ChargeItemDefinition resource type. Entries in
+   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<ChargeItemDefinition, *>> =
     listOf(
       context,
@@ -180,5 +190,5 @@ public object ChargeItemDefinitionSearchParams {
       title,
       url,
       version,
-    )
+    ) - unsupported.toSet()
 }

@@ -134,7 +134,18 @@ public object FlagSearchParams {
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  /** All search parameters for the Flag resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<Flag, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Flag resource type. Entries in [unsupported] are excluded
+   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<Flag, *>> =
-    listOf(author, category, date, encounter, identifier, patient, status, subject)
+    listOf(author, category, date, encounter, identifier, patient, status, subject) -
+      unsupported.toSet()
 }

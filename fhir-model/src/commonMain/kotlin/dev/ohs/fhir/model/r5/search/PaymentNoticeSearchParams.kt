@@ -566,7 +566,18 @@ public object PaymentNoticeSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  /** All search parameters for the PaymentNotice resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: CollectionsList<SearchParam<PaymentNotice, *>> = listOf()
+
+  /**
+   * Supported search parameters for the PaymentNotice resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: CollectionsList<SearchParam<PaymentNotice, *>> =
-    listOf(created, identifier, paymentStatus, reporter, request, response, status)
+    listOf(created, identifier, paymentStatus, reporter, request, response, status) -
+      unsupported.toSet()
 }

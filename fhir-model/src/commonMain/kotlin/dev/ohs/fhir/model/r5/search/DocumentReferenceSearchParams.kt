@@ -888,7 +888,18 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.version) },
     )
 
-  /** All search parameters for the DocumentReference resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: CollectionsList<SearchParam<DocumentReference, *>> =
+    listOf(formatCanonical, formatCode, formatUri)
+
+  /**
+   * Supported search parameters for the DocumentReference resource type. Entries in [unsupported]
+   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: CollectionsList<SearchParam<DocumentReference, *>> =
     listOf(
       attester,
@@ -925,5 +936,5 @@ public object DocumentReferenceSearchParams {
       subject,
       type,
       version,
-    )
+    ) - unsupported.toSet()
 }

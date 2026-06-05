@@ -89,7 +89,18 @@ public object TestReportSearchParams {
       extractor = { resource -> listOf(resource.testScript) },
     )
 
-  /** All search parameters for the TestReport resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<TestReport, *>> = listOf()
+
+  /**
+   * Supported search parameters for the TestReport resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<TestReport, *>> =
-    listOf(identifier, issued, participant, result, status, tester, testscript)
+    listOf(identifier, issued, participant, result, status, tester, testscript) -
+      unsupported.toSet()
 }

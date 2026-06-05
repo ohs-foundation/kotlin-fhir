@@ -95,7 +95,18 @@ public object ObservationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  /** All search parameters for the ObservationDefinition resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<ObservationDefinition, *>> = listOf()
+
+  /**
+   * Supported search parameters for the ObservationDefinition resource type. Entries in
+   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<ObservationDefinition, *>> =
-    listOf(category, code, experimental, identifier, method, status, title, url)
+    listOf(category, code, experimental, identifier, method, status, title, url) -
+      unsupported.toSet()
 }

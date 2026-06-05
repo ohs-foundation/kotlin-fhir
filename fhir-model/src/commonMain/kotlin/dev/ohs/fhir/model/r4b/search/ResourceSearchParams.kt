@@ -167,7 +167,18 @@ public object ResourceSearchParams {
       },
     )
 
-  /** All search parameters for the Resource resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<Resource, *>> =
+    listOf(_content, _filter, _has, _id, _list, _query, _text, _type)
+
+  /**
+   * Supported search parameters for the Resource resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<Resource, *>> =
     listOf(
       _content,
@@ -183,5 +194,5 @@ public object ResourceSearchParams {
       _tag,
       _text,
       _type,
-    )
+    ) - unsupported.toSet()
 }

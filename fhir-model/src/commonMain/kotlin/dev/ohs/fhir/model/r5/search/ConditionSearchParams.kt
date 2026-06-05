@@ -566,7 +566,18 @@ public object ConditionSearchParams {
       extractor = { resource -> listOfNotNull(resource.verificationStatus) },
     )
 
-  /** All search parameters for the Condition resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: CollectionsList<SearchParam<Condition, *>> =
+    listOf(abatementAge, abatementDate, abatementString, onsetAge, onsetDate, onsetInfo)
+
+  /**
+   * Supported search parameters for the Condition resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: CollectionsList<SearchParam<Condition, *>> =
     listOf(
       abatementAge,
@@ -591,5 +602,5 @@ public object ConditionSearchParams {
       stage,
       subject,
       verificationStatus,
-    )
+    ) - unsupported.toSet()
 }

@@ -90,7 +90,18 @@ public object ImmunizationEvaluationSearchParams {
       extractor = { resource -> listOf(resource.targetDisease) },
     )
 
-  /** All search parameters for the ImmunizationEvaluation resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<ImmunizationEvaluation, *>> = listOf()
+
+  /**
+   * Supported search parameters for the ImmunizationEvaluation resource type. Entries in
+   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<ImmunizationEvaluation, *>> =
-    listOf(date, doseStatus, identifier, immunizationEvent, patient, status, targetDisease)
+    listOf(date, doseStatus, identifier, immunizationEvent, patient, status, targetDisease) -
+      unsupported.toSet()
 }

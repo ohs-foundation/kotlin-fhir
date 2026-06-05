@@ -38,6 +38,17 @@ public object MedicinalProductInteractionSearchParams {
       extractor = { resource -> resource.subject },
     )
 
-  /** All search parameters for the MedicinalProductInteraction resource type. */
-  public val all: List<SearchParam<MedicinalProductInteraction, *>> = listOf(subject)
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<MedicinalProductInteraction, *>> = listOf()
+
+  /**
+   * Supported search parameters for the MedicinalProductInteraction resource type. Entries in
+   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
+  public val all: List<SearchParam<MedicinalProductInteraction, *>> =
+    listOf(subject) - unsupported.toSet()
 }

@@ -81,7 +81,18 @@ public object EndpointSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  /** All search parameters for the Endpoint resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<Endpoint, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Endpoint resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<Endpoint, *>> =
-    listOf(connectionType, identifier, name, organization, payloadType, status)
+    listOf(connectionType, identifier, name, organization, payloadType, status) -
+      unsupported.toSet()
 }

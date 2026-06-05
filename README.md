@@ -254,7 +254,7 @@ The following FHIRPath patterns produce a typed `extractFrom()`:
 
 #### Unsupported FHIRPath patterns
 
-Some FHIRPath expressions aren't supported yet. For those parameters, `extractFrom()` throws `NotImplementedError` and the type parameter is `Any`. The rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers can read the `expression` string and evaluate it with a FHIRPath engine instead.
+Some FHIRPath expressions aren't supported yet. For those parameters, `extractFrom()` throws `NotImplementedError` and the type parameter is `Any`. The container's `unsupported` property lists them explicitly, and `all` is computed as the total minus `unsupported` so iterating `all` and calling `extractFrom` is safe. The rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers that want these parameters can read the `expression` string and evaluate it with a FHIRPath engine instead.
 
 206 such parameters across R4 / R4B / R5 fall into the following categories. See [unsupported-search-params.md](docs/unsupported-search-params.md) for the full per-category list.
 
@@ -561,17 +561,14 @@ import dev.ohs.fhir.model.r4.search.PatientSearchParams
 // Type-safe access to a single parameter:
 val birthdates: List<Date> = PatientSearchParams.birthdate.extractFrom(patient)
 
-// Iterate every parameter (e.g. to build a search index). Wrap in try/catch
-// because params with unsupported FHIRPath patterns throw NotImplementedError:
+// Iterate every parameter (e.g. to build a search index):
 PatientSearchParams.all.forEach { searchParam ->
-    val values = try {
-        searchParam.extractFrom(patient)
-    } catch (_: NotImplementedError) {
-        emptyList()
-    }
+    val values = searchParam.extractFrom(patient)
     // index `searchParam.name` against `values`
 }
 ```
+
+`all` only contains parameters whose FHIRPath is supported. The container's `unsupported` property enumerates the excluded ones (e.g. `PatientSearchParams.unsupported`), and each is still accessible directly by name (e.g. `PatientSearchParams.deceased`). Calling `extractFrom` on them throws `NotImplementedError`.
 
 ### Non-JSON Serializers
 

@@ -34,6 +34,16 @@ public object SubstanceSpecificationSearchParams {
       extractor = { resource -> resource.code.mapNotNull { it.code } },
     )
 
-  /** All search parameters for the SubstanceSpecification resource type. */
-  public val all: List<SearchParam<SubstanceSpecification, *>> = listOf(code)
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<SubstanceSpecification, *>> = listOf()
+
+  /**
+   * Supported search parameters for the SubstanceSpecification resource type. Entries in
+   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
+  public val all: List<SearchParam<SubstanceSpecification, *>> = listOf(code) - unsupported.toSet()
 }

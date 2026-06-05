@@ -106,7 +106,17 @@ public object SlotSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  /** All search parameters for the Slot resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<Slot, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Slot resource type. Entries in [unsupported] are excluded
+   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<Slot, *>> =
     listOf(
       appointmentType,
@@ -118,5 +128,5 @@ public object SlotSearchParams {
       specialty,
       start,
       status,
-    )
+    ) - unsupported.toSet()
 }

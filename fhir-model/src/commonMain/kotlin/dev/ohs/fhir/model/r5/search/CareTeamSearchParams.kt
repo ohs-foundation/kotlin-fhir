@@ -121,7 +121,18 @@ public object CareTeamSearchParams {
       extractor = { resource -> listOfNotNull(resource.subject) },
     )
 
-  /** All search parameters for the CareTeam resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<CareTeam, *>> = listOf(date)
+
+  /**
+   * Supported search parameters for the CareTeam resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<CareTeam, *>> =
-    listOf(category, date, identifier, name, participant, patient, status, subject)
+    listOf(category, date, identifier, name, participant, patient, status, subject) -
+      unsupported.toSet()
 }

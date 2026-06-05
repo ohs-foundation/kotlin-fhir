@@ -68,7 +68,17 @@ public object SubstanceDefinitionSearchParams {
       extractor = { resource -> resource.name.map { it.name } },
     )
 
-  /** All search parameters for the SubstanceDefinition resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<SubstanceDefinition, *>> = listOf()
+
+  /**
+   * Supported search parameters for the SubstanceDefinition resource type. Entries in [unsupported]
+   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<SubstanceDefinition, *>> =
-    listOf(classification, code, domain, identifier, name)
+    listOf(classification, code, domain, identifier, name) - unsupported.toSet()
 }

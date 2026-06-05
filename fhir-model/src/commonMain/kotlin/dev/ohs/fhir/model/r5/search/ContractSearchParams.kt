@@ -441,7 +441,17 @@ public object ContractSearchParams {
       extractor = { resource -> listOfNotNull(resource.url) },
     )
 
-  /** All search parameters for the Contract resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: CollectionsList<SearchParam<Contract, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Contract resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: CollectionsList<SearchParam<Contract, *>> =
     listOf(
       authority,
@@ -454,5 +464,5 @@ public object ContractSearchParams {
       status,
       subject,
       url,
-    )
+    ) - unsupported.toSet()
 }

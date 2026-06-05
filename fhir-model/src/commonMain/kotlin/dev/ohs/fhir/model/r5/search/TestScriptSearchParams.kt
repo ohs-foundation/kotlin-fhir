@@ -516,7 +516,18 @@ public object TestScriptSearchParams {
       extractor = { resource -> listOfNotNull(resource.version) },
     )
 
-  /** All search parameters for the TestScript resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: CollectionsList<SearchParam<TestScript, *>> =
+    listOf(context, contextQuantity)
+
+  /**
+   * Supported search parameters for the TestScript resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: CollectionsList<SearchParam<TestScript, *>> =
     listOf(
       context,
@@ -538,5 +549,5 @@ public object TestScriptSearchParams {
       title,
       url,
       version,
-    )
+    ) - unsupported.toSet()
 }

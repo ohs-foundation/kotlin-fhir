@@ -228,7 +228,17 @@ public object DeviceSearchParams {
       extractor = { resource -> resource.version.map { it.`value` } },
     )
 
-  /** All search parameters for the Device resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<Device, *>> = listOf(codeValueConcept)
+
+  /**
+   * Supported search parameters for the Device resource type. Entries in [unsupported] are excluded
+   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<Device, *>> =
     listOf(
       biologicalSourceEvent,
@@ -254,5 +264,5 @@ public object DeviceSearchParams {
       udiDi,
       url,
       version,
-    )
+    ) - unsupported.toSet()
 }

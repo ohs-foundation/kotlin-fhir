@@ -132,7 +132,18 @@ public object NutritionIntakeSearchParams {
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  /** All search parameters for the NutritionIntake resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<NutritionIntake, *>> = listOf(date)
+
+  /**
+   * Supported search parameters for the NutritionIntake resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<NutritionIntake, *>> =
-    listOf(code, date, encounter, identifier, nutrition, patient, source, status, subject)
+    listOf(code, date, encounter, identifier, nutrition, patient, source, status, subject) -
+      unsupported.toSet()
 }

@@ -126,7 +126,17 @@ public object CoverageSearchParams {
       extractor = { resource -> listOfNotNull(resource.type) },
     )
 
-  /** All search parameters for the Coverage resource type. */
+  /**
+   * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
+   * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
+   * subtracted from [all].
+   */
+  public val unsupported: List<SearchParam<Coverage, *>> = listOf()
+
+  /**
+   * Supported search parameters for the Coverage resource type. Entries in [unsupported] are
+   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   */
   public val all: List<SearchParam<Coverage, *>> =
     listOf(
       beneficiary,
@@ -140,5 +150,5 @@ public object CoverageSearchParams {
       status,
       subscriber,
       type,
-    )
+    ) - unsupported.toSet()
 }

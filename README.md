@@ -222,9 +222,12 @@ The following FHIR value sets are excluded from Kotlin enum generation.
 
 ### Search Parameters
 
-The codegen reads `SearchParameter-*.json` files from the FHIR core packages and generates per-resource containers of typed search parameters. This provides compile-time safe, discoverable access to FHIR search parameters.
+Each FHIR search parameter exposes a typed `extract()` function that pulls its value out of a resource. These search parameters live in per-resource container objects in the `search` subpackage of every version (e.g. `dev.ohs.fhir.model.r4.search.PatientSearchParams`). Each container has:
 
-A `SearchParam<R, T>` class is generated in the `search` subpackage of each version package (e.g. `dev.ohs.fhir.model.r4.search`). It carries the metadata for a search parameter and the typed `extract` function:
+- One `val` per search parameter, typed `SearchParam<R, T>` where `R` is the resource type and `T` is the value type.
+- An `all` list of every search parameter for that resource.
+
+`SearchParam<R, T>` carries the metadata for a search parameter plus a typed `extract` function:
 
 | Member       | Type                         | Description                                                                       |
 |:-------------|:-----------------------------|:----------------------------------------------------------------------------------|
@@ -234,77 +237,37 @@ A `SearchParam<R, T>` class is generated in the `search` subpackage of each vers
 | `target`     | `List<KClass<out Resource>>` | Target resource types for reference search parameters.                            |
 | `extract`    | `(resource: R) -> List<T>`   | Pulls the values of type `T` out of a resource of type `R` for this search param. |
 
-The class stores the metadata plus an `extractor` lambda that does the value extraction. For each resource type with search parameters, a `{Resource}SearchParams` container `object` is generated, exposing one `val` per search parameter plus an `all` list. Using `val`s backed by one shared class, rather than a class per parameter, keeps the generated output to a single file per resource. For example, `PatientSearchParams` looks like:
-
-```kotlin
-class SearchParam<R : Resource, T>(
-  val name: String,
-  val type: SearchParamType,
-  val expression: String,
-  val target: List<KClass<out Resource>> = emptyList(),
-  private val extractor: (R) -> List<T>,
-) {
-  fun extract(resource: R): List<T> = extractor(resource)
-}
-
-object PatientSearchParams {
-  val birthdate: SearchParam<Patient, Date> =
-    SearchParam(
-      name = "birthdate",
-      type = SearchParamType.fromCode("date"),
-      expression = "Patient.birthDate",
-      extractor = { resource -> listOfNotNull(resource.birthDate) },
-    )
-
-  val generalPractitioner: SearchParam<Patient, Reference> =
-    SearchParam(
-      name = "general-practitioner",
-      type = SearchParamType.fromCode("reference"),
-      expression = "Patient.generalPractitioner",
-      target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
-      extractor = { resource -> resource.generalPractitioner },
-    )
-  // ... one val per search parameter
-
-  val all: List<SearchParam<Patient, *>> = listOf(birthdate, generalPractitioner, /* ... */)
-}
-
-// Usage:
-PatientSearchParams.birthdate.extract(patient)              // type-safe: List<Date>
-PatientSearchParams.all.forEach { it.extract(patient) }     // iterate all for indexing
-```
-
 #### Supported FHIRPath patterns
 
-The codegen translates the following FHIRPath shapes into Kotlin extraction code:
+The following FHIRPath patterns produce a typed `extract()`:
 
-| Pattern                           | Example expression                            | Generated extraction                                                                                                                                                                                                                                                                     |
-|:----------------------------------|:----------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Simple property                   | `Patient.birthDate`                           | `listOfNotNull(resource.birthDate)`                                                                                                                                                                                                                                                      |
-| Nested path                       | `Patient.address.city`                        | `resource.address.mapNotNull { it.city }`                                                                                                                                                                                                                                                |
-| List property                     | `Patient.identifier`                          | `resource.identifier`                                                                                                                                                                                                                                                                    |
-| Element cast `(X.path as Type)`   | `(Patient.deceased as dateTime)`              | `listOfNotNull((resource.deceased as? Patient.Deceased.DateTime)?.value)`                                                                                                                                                                                                                |
-| Element cast `X.path.as(Type)`    | `Condition.onset.as(dateTime)`                | `listOfNotNull((resource.onset as? Condition.Onset.DateTime)?.value)`                                                                                                                                                                                                                    |
-| Element (no cast)                 | `Patient.deceased`                            | `listOfNotNull(resource.deceased)` — without a cast, the caller gets the `Patient.Deceased` sealed interface itself rather than the underlying `Boolean` or `DateTime`                                                                                                                   |
-| `where(resolve() is Type)` filter | `Account.subject.where(resolve() is Patient)` | `resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }` — substring-matches `Reference.reference` against `Type/`, covering relative and absolute URL forms. Misses URN-form (`urn:uuid:…`), contained (`#id`), and `Reference.type`-only references |
-| `where(field='value')` filter     | `Patient.telecom.where(system='email')`       | `resource.telecom.filter { it.system?.value?.toString() == "email" }`                                                                                                                                                                                                                    |
+| Pattern                           | Example                                       | Notes                                                                                                                                             |
+|:----------------------------------|:----------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------|
+| Simple property                   | `Patient.birthDate`                           |                                                                                                                                                   |
+| Nested path                       | `Patient.address.city`                        |                                                                                                                                                   |
+| List property                     | `Patient.identifier`                          |                                                                                                                                                   |
+| Element cast `(X.path as Type)`   | `(Patient.deceased as dateTime)`              |                                                                                                                                                   |
+| Element cast `X.path.as(Type)`    | `Condition.onset.as(dateTime)`                |                                                                                                                                                   |
+| Element (no cast)                 | `ChargeItem.occurrence`                       | Returns the sealed interface `ChargeItem.Occurrence` itself rather than the underlying `DateTime` / `Period` / `Timing`.                          |
+| `where(resolve() is Type)` filter | `Account.subject.where(resolve() is Patient)` | Substring-matches `Reference.reference` against `Type/`. Misses URN-form (`urn:uuid:…`), contained (`#id`), and `Reference.type`-only references. |
+| `where(field='value')` filter     | `Patient.telecom.where(system='email')`       |                                                                                                                                                   |
 
 #### Unsupported FHIRPath patterns
 
-When a FHIRPath expression doesn't match any of the shapes above, the codegen falls back to a stub: the search parameter's `extract()` returns `emptyList()` and its type parameter is `Any`. The metadata (`name`, `type`, `expression`, `target`) is still populated correctly. Downstream apps that need to support these search parameters can read the `expression` string and evaluate it with a FHIRPath engine.
+Some FHIRPath expressions aren't supported yet. For those parameters, `extract()` returns `emptyList()` and the type parameter is `Any`. The rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers can read the `expression` string and evaluate it with a FHIRPath engine instead.
 
-There are 206 such unsupported search parameters across versions. They fall into the following categories. The "Full list" column links to a per-category section of [unsupported-search-params.md](docs/unsupported-search-params.md) containing every entry (param name, type, target, expression, source JSON file, canonical URL):
+206 such parameters across R4 / R4B / R5 fall into the following categories. See [unsupported-search-params.md](docs/unsupported-search-params.md) for the full per-category list.
 
-| Pattern                                                           | Count | Example                                                                                    | Why it isn't supported                                                                                                 | Full list                                                                                                       |
-|:------------------------------------------------------------------|------:|:-------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
-| `.ofType(Type)` choice narrowing                                  |   118 | `Observation.value.ofType(Quantity)`, `useContext.value.ofType(CodeableConcept)`           | Same intent as the supported `as`-cast form, but a different syntax that the resolver doesn't currently handle.        | [of-type](docs/unsupported-search-params.md#oftype-type-choice-narrowing)                                       |
-| Empty FHIRPath (`expression = ""`)                                |    28 | `Patient.age`, `Resource._id`, `Resource._content`, `MedicationKnowledge.packaging-cost`   | The SearchParameter JSON has no extractable expression — there is nothing to translate.                                | [empty](docs/unsupported-search-params.md#empty-fhirpath-expression)                                            |
-| `.extension('url')` access                                        |    20 | `Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')`   | Fetching a specific extension by URL isn't implemented. Some R5 expressions add a trailing `.value`.                   | [extension](docs/unsupported-search-params.md#extension-url-access)                                             |
-| `composite` type with no component path                           |    13 | `Observation.code-value-concept`, `Device.code-value-concept`                              | Composite expressions are typically just the resource name; resolving them requires combining component params.        | [composite](docs/unsupported-search-params.md#composite-search-parameters-with-no-component-path)               |
-| Boolean logic (`and`, `or`)                                       |     5 | `Patient.deceased.exists() and Patient.deceased != false`                                  | Boolean combinators aren't translated. Only the `Patient/Person/Practitioner.deceased` token params use this.          | [boolean-logic](docs/unsupported-search-params.md#boolean-logic-and-or)                                         |
-| Multi-resource union without resource prefix                      |     3 | `name \| alias` for `InsurancePlan.name`                                                   | When no branch of the union starts with the resource name, the expression-slicing step finds nothing to resolve.       | [union](docs/unsupported-search-params.md#multi-resource-union-without-a-resource-prefix)                       |
-| `where(...)` predicate other than `field='value'` / `resolve()`   |     3 | `QuestionnaireResponse.item.where(extension('…').exists()).answer.value.ofType(Reference)` | The matcher only handles `where(field='value')` and `where(resolve() is Type)`. Function-call predicates fall through. | [where-predicate](docs/unsupported-search-params.md#where-predicates-other-than-fieldvalue-and-resolve-is-type) |
-| Other (parens, indexed access, bare path without resource prefix) |    16 | `(Citation.classification.type)`, `Bundle.entry[0].resource`, `id` for `Resource._id`      | Mixed: leading parens, `[0]` indexing, and bare paths missing the resource prefix all bypass the resolver.             | [other](docs/unsupported-search-params.md#other-patterns-parens-indexed-access-bare-paths)                      |
+| Pattern                                             | Count | Example                                                                                  | Full list                                                                                                       |
+|:----------------------------------------------------|------:|:-----------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
+| `.ofType(Type)` choice narrowing                    |   118 | `Observation.value.ofType(Quantity)`                                                     | [of-type](docs/unsupported-search-params.md#oftype-type-choice-narrowing)                                       |
+| Empty FHIRPath expression                           |    28 | `Patient.age`, `Resource._content`                                                       | [empty](docs/unsupported-search-params.md#empty-fhirpath-expression)                                            |
+| `.extension('url')` access                          |    20 | `Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')` | [extension](docs/unsupported-search-params.md#extension-url-access)                                             |
+| Composite search parameters with no component path  |    13 | `Observation`'s `code-value-quantity`                                                    | [composite](docs/unsupported-search-params.md#composite-search-parameters-with-no-component-path)               |
+| Boolean logic                                       |     5 | `Resource.deceased.exists() and Resource.deceased != false`                              | [boolean-logic](docs/unsupported-search-params.md#boolean-logic)                                                |
+| Multi-resource union without a resource prefix      |     3 | `name \| alias` for `InsurancePlan`'s `name` parameter                                   | [union](docs/unsupported-search-params.md#multi-resource-union-without-a-resource-prefix)                       |
+| Other `where(...)` conditions                       |     3 | `QuestionnaireResponse`'s `item-subject` parameter                                       | [where](docs/unsupported-search-params.md#other-where-conditions)                                               |
+| Other patterns (parens, indexed access, bare paths) |    16 | `(Citation.classification.type)`, `Bundle.entry[0].resource`                             | [other](docs/unsupported-search-params.md#other-patterns-parens-indexed-access-bare-paths)                      |
 
 ## Serialization and deserialization
 
@@ -585,6 +548,23 @@ fun main() {
                 birthDate = Date.Builder().apply { value = FhirDate.fromString("2000-01-01") }
             }
             .build()
+}
+```
+
+### Working with search parameters
+
+Each generated `{Resource}SearchParams` container exposes a typed `extract()` per parameter, plus an `all` list for iterating every parameter on the resource.
+
+```kotlin
+import dev.ohs.fhir.model.r4.search.PatientSearchParams
+
+// Type-safe access to a single parameter:
+val birthdates: List<Date> = PatientSearchParams.birthdate.extract(patient)
+
+// Iterate every parameter (e.g. to build a search index):
+PatientSearchParams.all.forEach { searchParam ->
+    val values = searchParam.extract(patient)
+    // index `searchParam.name` against `values`
 }
 ```
 

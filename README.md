@@ -710,18 +710,6 @@ executed:
    - Conversion to builder: Convert the object into a builder using `toBuilder()` function.
    - Conversion to resource: Build a new FHIR resource object using `build()` function
    - Verification: The reconstructed object from the builder is equal to the original object.
-4. Search parameter test:
-   - Loads the source `SearchParameter-*.json` files as ground truth.
-   - For each concrete resource across R4, R4B, and R5, uses JVM reflection on the
-     generated `{Resource}SearchParams` container object and its `all` property
-     to verify:
-     - Count: `all` contains exactly one entry per search parameter defined for the resource.
-     - Name: each entry's `name` matches the `code` from the JSON definition.
-     - Type: each entry's `type` matches the FHIR search parameter type (e.g., `"date"`).
-     - Expression: the entry's `expression` matches the resource-specific portion of the
-       FHIRPath expression from the JSON definition.
-     - Target: the entry's `target` list matches the `target` resource types from the
-       JSON definition.
 
 [^7]: There are several exceptions. The FHIR specification allows for some variability in data
 representation, which may lead to differences between the original and newly serialized JSON. For

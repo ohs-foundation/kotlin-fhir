@@ -22,19 +22,46 @@ import dev.ohs.fhir.codegen.ResolvedExpression
 import dev.ohs.fhir.codegen.schema.capitalized
 
 /**
- * Resolves the KotlinPoet [ClassName] / [TypeName] used as the type parameter `T` (or for
- * referencing a sealed-element subclass) when rendering a [SearchParamPattern].
+ * Resolves the KotlinPoet [TypeName] used as the type parameter `T` of `SearchParam<R, T>` for a
+ * given [SearchParamPattern], plus the sealed-element subclass referenced by an element-cast
+ * extraction.
  *
  * Owns the rules for mapping a resolved FHIRPath leaf to a model class — handling backbone
  * elements, the special `code` enum case, URL-shaped type codes, and choice-type sealed interfaces.
  */
 internal object SearchParamTypeResolver {
 
+  /** Resolves the [TypeName] used as `T` of `SearchParam<R, T>` for [pattern]. */
+  fun resolve(pattern: SearchParamPattern, packageName: String, resourceName: String): TypeName =
+    when (pattern) {
+      is SearchParamPattern.SimplePath ->
+        forResolvedPath(pattern.resolved, packageName, resourceName)
+      is SearchParamPattern.WhereResolve ->
+        forResolvedPath(pattern.resolved, packageName, resourceName)
+      is SearchParamPattern.ElementNoCast ->
+        buildSealedInterfaceClassName(pattern.resolved, packageName)
+      is SearchParamPattern.ElementCast -> forElementCastTarget(pattern.targetType, packageName)
+      is SearchParamPattern.WhereFilter ->
+        if (pattern.postPath != null) forResolvedPath(pattern.postPath, packageName, resourceName)
+        else ClassName(packageName, pattern.resolved.segments.last().leafTypeCode!!.capitalized())
+      SearchParamPattern.Unsupported -> ClassName("kotlin", "Any")
+    }
+
+  /** Nested sealed-subclass class name for an element cast (e.g. `Observation.Value.Quantity`). */
+  fun elementSubclass(
+    resolved: ResolvedExpression,
+    targetType: String,
+    packageName: String,
+  ): ClassName =
+    buildSealedInterfaceClassName(resolved, packageName).nestedClass(targetType.capitalized())
+
+  // -- private helpers --------------------------------------------------------------------------
+
   /**
    * Type for a simple dotted path or a `where(resolve() is …)` (the filter is dropped). Falls back
    * to `kotlin.Any` for `code`-typed leaves and for type codes containing `/` or `:`.
    */
-  fun forResolvedPath(
+  private fun forResolvedPath(
     resolved: ResolvedExpression,
     packageName: String,
     resourceName: String,
@@ -56,24 +83,12 @@ internal object SearchParamTypeResolver {
   }
 
   /** Type for the target of an element cast. Falls back to `kotlin.Any` for URL-shaped types. */
-  fun forElementCastTarget(targetType: String, packageName: String): TypeName {
+  private fun forElementCastTarget(targetType: String, packageName: String): TypeName {
     if (targetType.contains("/") || targetType.contains(":")) {
       return ClassName("kotlin", "Any")
     }
     return ClassName(packageName, targetType.capitalized())
   }
-
-  /** Sealed interface class name for an element with no cast (e.g. `Patient.Deceased`). */
-  fun forElementNoCast(resolved: ResolvedExpression, packageName: String): ClassName =
-    buildSealedInterfaceClassName(resolved, packageName)
-
-  /** Nested sealed-subclass class name for an element cast (e.g. `Patient.Deceased.DateTime`). */
-  fun elementSubclass(
-    resolved: ResolvedExpression,
-    targetType: String,
-    packageName: String,
-  ): ClassName =
-    buildSealedInterfaceClassName(resolved, packageName).nestedClass(targetType.capitalized())
 }
 
 /**

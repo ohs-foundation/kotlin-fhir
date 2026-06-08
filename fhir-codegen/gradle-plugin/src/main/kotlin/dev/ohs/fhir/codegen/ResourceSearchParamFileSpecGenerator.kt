@@ -23,7 +23,6 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.STAR
-import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.schema.Element
@@ -129,7 +128,7 @@ object ResourceSearchParamFileSpecGenerator {
               .addKdoc(
                 "Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on " +
                   "any of these throws `NotImplementedError`. Listed here so the unsupported " +
-                  "set is visible at a glance, and subtracted from [all]."
+                  "set is visible at a glance, and excluded from [all]."
               )
               .initializer(unsupportedInit)
               .build()
@@ -180,8 +179,15 @@ object ResourceSearchParamFileSpecGenerator {
 
     val resourceExpression = searchParam.extractExpressionForResource(resourceName)
     val pattern = parseSearchParamExpression(resourceExpression, resourceName, resolver)
-    val (valueTypeName, extractionCode, usesResource) =
-      render(pattern, packageName, resourceName, searchParam.code, resourceExpression)
+    val valueTypeName = SearchParamTypeResolver.resolve(pattern, packageName, resourceName)
+    val extractionCode =
+      SearchParamExtractFromFunctionBodyEmitter.emit(
+        pattern,
+        packageName,
+        searchParam.code,
+        resourceExpression,
+      )
+    val usesResource = pattern !is SearchParamPattern.Unsupported
 
     val parameterizedSearchParam =
       searchParamClassName.parameterizedBy(resourceClassName, valueTypeName)
@@ -216,70 +222,6 @@ object ResourceSearchParamFileSpecGenerator {
       .initializer(initializer)
       .build()
   }
-
-  private data class ExtractionResult(
-    val typeParam: TypeName,
-    val code: CodeBlock,
-    val usesResource: Boolean = true,
-  )
-
-  private fun render(
-    pattern: SearchParamPattern,
-    packageName: String,
-    resourceName: String,
-    paramCode: String,
-    expression: String,
-  ): ExtractionResult =
-    when (pattern) {
-      is SearchParamPattern.SimplePath ->
-        ExtractionResult(
-          SearchParamTypeResolver.forResolvedPath(pattern.resolved, packageName, resourceName),
-          SearchParamExtractFromFunctionBodyEmitter.forSegments(pattern.resolved),
-        )
-      is SearchParamPattern.WhereResolve ->
-        ExtractionResult(
-          SearchParamTypeResolver.forResolvedPath(pattern.resolved, packageName, resourceName),
-          SearchParamExtractFromFunctionBodyEmitter.forWhereResolve(pattern.resolved, pattern.targetType),
-        )
-      is SearchParamPattern.ElementNoCast ->
-        ExtractionResult(
-          SearchParamTypeResolver.forElementNoCast(pattern.resolved, packageName),
-          SearchParamExtractFromFunctionBodyEmitter.forSegments(pattern.resolved),
-        )
-      is SearchParamPattern.ElementCast -> {
-        val sealedSubclass =
-          SearchParamTypeResolver.elementSubclass(pattern.resolved, pattern.targetType, packageName)
-        ExtractionResult(
-          SearchParamTypeResolver.forElementCastTarget(pattern.targetType, packageName),
-          SearchParamExtractFromFunctionBodyEmitter.forElementCast(pattern.resolved, sealedSubclass),
-        )
-      }
-      is SearchParamPattern.WhereFilter -> {
-        val elementType = pattern.resolved.segments.last().leafTypeCode!!
-        val typeParam =
-          if (pattern.postPath != null)
-            SearchParamTypeResolver.forResolvedPath(pattern.postPath, packageName, resourceName)
-          else ClassName(packageName, elementType.capitalized())
-        ExtractionResult(
-          typeParam,
-          SearchParamExtractFromFunctionBodyEmitter.forWhereFilter(
-            pattern.resolved,
-            pattern.field,
-            pattern.value,
-            pattern.postPath,
-          ),
-        )
-      }
-      SearchParamPattern.Unsupported -> {
-        val message =
-          "Search parameter '$paramCode' has expression '$expression' which is not yet supported."
-        ExtractionResult(
-          typeParam = ClassName("kotlin", "Any"),
-          code = CodeBlock.of("throw %T(%S)", ClassName("kotlin", "NotImplementedError"), message),
-          usesResource = false,
-        )
-      }
-    }
 }
 
 /**

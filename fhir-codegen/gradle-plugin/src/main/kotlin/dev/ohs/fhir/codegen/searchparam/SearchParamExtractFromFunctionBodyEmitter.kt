@@ -22,22 +22,53 @@ import dev.ohs.fhir.codegen.ResolvedExpression
 import dev.ohs.fhir.codegen.ResolvedSegment
 
 /**
- * Builds the body of a generated `extract(resource): List<T>` for a resolved FHIRPath.
+ * Builds the body of a generated `extractFrom(resource): List<T>` for a [SearchParamPattern].
  *
- * It walks the path one segment at a time, tracking whether the value so far is a single value
- * ([PathExpr.Single]) or a list ([PathExpr.Listed]), and finally coerces it to a `List<T>` with
- * [asList]. Identifiers, types, and strings are emitted via KotlinPoet's `%N` / `%T` / `%S`, so
- * keyword escaping (e.g. a FHIR `class` field) is handled automatically.
+ * Dispatches per pattern: simple/nested paths walk segments to a `List<T>`; element casts narrow
+ * the underlying sealed interface; `where(...)` filters apply the predicate before continuing. The
+ * unsupported pattern emits a `throw NotImplementedError(...)` carrying the param's code and
+ * expression for diagnostics.
  *
- * Each method returns a bare expression; the caller wraps it in the extractor lambda.
+ * Internally walks the path one segment at a time, tracking whether the value so far is a single
+ * value ([PathExpr.Single]) or a list ([PathExpr.Listed]), and finally coerces it to a `List<T>`
+ * with [asList]. Identifiers, types, and strings are emitted via KotlinPoet's `%N` / `%T` / `%S`,
+ * so keyword escaping (e.g. a FHIR `class` field) is handled automatically.
  */
 internal object SearchParamExtractFromFunctionBodyEmitter {
 
+  /** Emits the body of `extractFrom()` for [pattern]. */
+  fun emit(
+    pattern: SearchParamPattern,
+    packageName: String,
+    paramCode: String,
+    expression: String,
+  ): CodeBlock =
+    when (pattern) {
+      is SearchParamPattern.SimplePath -> forSegments(pattern.resolved)
+      is SearchParamPattern.WhereResolve -> forWhereResolve(pattern.resolved, pattern.targetType)
+      is SearchParamPattern.ElementNoCast -> forSegments(pattern.resolved)
+      is SearchParamPattern.ElementCast ->
+        forElementCast(
+          pattern.resolved,
+          SearchParamTypeResolver.elementSubclass(pattern.resolved, pattern.targetType, packageName),
+        )
+      is SearchParamPattern.WhereFilter ->
+        forWhereFilter(pattern.resolved, pattern.field, pattern.value, pattern.postPath)
+      SearchParamPattern.Unsupported ->
+        CodeBlock.of(
+          "throw %T(%S)",
+          ClassName("kotlin", "NotImplementedError"),
+          "Search parameter '$paramCode' has expression '$expression' which is not yet supported.",
+        )
+    }
+
+  // -- per-pattern emitters ---------------------------------------------------------------------
+
   /** A simple dotted path (`Patient.address.city`), or a `where(resolve() is …)` base. */
-  fun forSegments(resolved: ResolvedExpression): CodeBlock = walkToList(resolved.segments)
+  private fun forSegments(resolved: ResolvedExpression): CodeBlock = walkToList(resolved.segments)
 
   /** An element cast `(X.path as Type)` / `X.path.as(Type)` → `(… as? <subclass>)?.value`. */
-  fun forElementCast(resolved: ResolvedExpression, sealedSubclass: ClassName): CodeBlock {
+  private fun forElementCast(resolved: ResolvedExpression, sealedSubclass: ClassName): CodeBlock {
     val segments = resolved.segments
     if (segments.isEmpty()) return EMPTY_LIST
     val leaf = segments.last().propertyName
@@ -57,7 +88,7 @@ internal object SearchParamExtractFromFunctionBodyEmitter {
   }
 
   /** A `path.where(field='value')` filter with an optional post-`where` access path. */
-  fun forWhereFilter(
+  private fun forWhereFilter(
     resolved: ResolvedExpression,
     field: String,
     value: String,
@@ -81,7 +112,7 @@ internal object SearchParamExtractFromFunctionBodyEmitter {
    * absolute (`http://…/Type/id`) URL forms. Misses URN-form (`urn:uuid:…`) and contained (`#id`)
    * references, and references that populate only `Reference.type`.
    */
-  fun forWhereResolve(resolved: ResolvedExpression, targetType: String): CodeBlock =
+  private fun forWhereResolve(resolved: ResolvedExpression, targetType: String): CodeBlock =
     CodeBlock.of(
       "%L.filter { it.reference?.value?.toString()?.contains(%S) == true }",
       filterBase(resolved.segments),

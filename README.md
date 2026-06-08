@@ -44,22 +44,22 @@ Jan 2025.
 The library supports the following
 [target platforms](https://kotlinlang.org/docs/multiplatform-dsl-reference.html#targets):
 
-| Target platform                    | Gradle target  | Artifact suffix  | Support |
-|:-----------------------------------|:---------------|:-----------------|:--------|
-| Kotlin/JVM                         | `jvm`          | `-jvm`           | ✅       |
-| Kotlin/Wasm                        | `wasmJs`       | `-wasm-js`       | ✅       |
-| Kotlin/Wasm                        | `wasmWasi`     | `-wasm-wasi`     | ✅       |
-| Kotlin/JS                          | `js`           | `-js`            | ✅       |
-| Android applications and libraries | `android`      | `-android`       | ✅       |
+| Target platform                    | Gradle target | Artifact suffix | Support |
+|:-----------------------------------|:--------------|:----------------|:--------|
+| Kotlin/JVM                         | `jvm`         | `-jvm`          | ✅       |
+| Kotlin/Wasm                        | `wasmJs`      | `-wasm-js`      | ✅       |
+| Kotlin/Wasm                        | `wasmWasi`    | `-wasm-wasi`    | ✅       |
+| Kotlin/JS                          | `js`          | `-js`           | ✅       |
+| Android applications and libraries | `android`     | `-android`      | ✅       |
 
 The library also supports the following
 [Kotlin/Native targets](https://kotlinlang.org/docs/native-target-support.html):
 
-| Gradle target      | Artifact suffix      | Tier | Support |
-|:-------------------|:---------------------|:-----|:--------|
-| iosSimulatorArm64  | `-iossimulatorarm64` | 1    | ✅       |
-| iosArm64           | `-iosarm64`          | 1    | ✅       |
-| iosX64             | `-iosx64`            | 3    | ✅       |
+| Gradle target     | Artifact suffix      | Tier | Support |
+|:------------------|:---------------------|:-----|:--------|
+| iosSimulatorArm64 | `-iossimulatorarm64` | 1    | ✅       |
+| iosArm64          | `-iosarm64`          | 1    | ✅       |
+| iosX64            | `-iosx64`            | 3    | ✅       |
 
 ## Data model
 
@@ -522,13 +522,7 @@ version. For example, the `Patient` class generated for FHIR R4 can be found in 
 
 #### Creating FHIR resources
 
-To create a new instance of a FHIR resource, the most idiomatic way in Kotlin is to use the
-generated data class constructors directly with named arguments. Since all optional fields have
-default values, you only need to specify the properties you actually use.
-
-Because FHIR's `string` primitive type is mapped to a generated `String` class which clashes with
-`kotlin.String`, you should import it using an alias (e.g., `import dev.ohs.fhir.model.r4.String as
-FhirString`).
+To create a new instance of a FHIR resource, use the generated data class constructors directly with named arguments. Since all optional fields have default values, you only need to specify the properties you actually use.
 
 For example:
 
@@ -537,6 +531,7 @@ import dev.ohs.fhir.model.r4.Date
 import dev.ohs.fhir.model.r4.FhirDate
 import dev.ohs.fhir.model.r4.HumanName
 import dev.ohs.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.String as FhirString
 
 fun main() {
     val patient = Patient(
@@ -550,6 +545,9 @@ fun main() {
     )
 }
 ```
+
+> **Note:** Import the FHIR `String` type with an alias (e.g.
+> `import dev.ohs.fhir.model.r4.String as FhirString`) to avoid clashing with `kotlin.String`.
 
 Alternatively, you can use the nested `Builder` classes to create resources:
 
@@ -657,7 +655,11 @@ val json = Json {
 
 #### Serialization
 
+To serialize a FHIR resource to a JSON string, use `encodeToString()`:
+
 ```kotlin
+import kotlinx.serialization.encodeToString
+
 val serializedPatient = json.encodeToString(patient)
 ```
 
@@ -667,6 +669,7 @@ val serializedPatient = json.encodeToString(patient)
 import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Resource
+import kotlinx.serialization.decodeFromString
 
 val patientJson = """
     {

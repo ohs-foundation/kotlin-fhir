@@ -27,7 +27,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.protobuf.ProtoBuf
 
 /**
- * Tests the custom serializer descriptor indexing (json doesnt use this, so we test with protobuf)
+ * Tests the custom serializer descriptor indexing (json doesn't use this, so we test with protobuf)
  */
 @OptIn(ExperimentalSerializationApi::class)
 class IndexOrderingTest :

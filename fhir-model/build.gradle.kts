@@ -178,11 +178,10 @@ tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
 }
 
-version = "1.0.0-beta03"
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
-    coordinates(mavenGroupId, mavenArtifactId, version.toString())
+    coordinates(mavenGroupId, mavenArtifactId, mavenVersion)
     pom {
         name = "Kotlin FHIR"
         description = "A Kotlin Multiplatform library for FHIR data model"

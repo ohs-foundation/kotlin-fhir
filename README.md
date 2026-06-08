@@ -222,10 +222,11 @@ The following FHIR value sets are excluded from Kotlin enum generation.
 
 ### Search Parameters
 
-Each FHIR search parameter exposes a typed `extractFrom()` function that pulls its value out of a resource. These search parameters live in per-resource container objects in the `search` subpackage of every version (e.g. `dev.ohs.fhir.model.r4.search.PatientSearchParams`). Each container has:
+Search parameters are generated from the `SearchParameter` resource definitions in the FHIR specification packages (e.g. `SearchParameter-*.json` under `third_party/`) and placed in the `search` subpackage of each FHIR version (e.g. `dev.ohs.fhir.model.r4.search`). Each resource type has a `{Resource}SearchParams` object (e.g. `PatientSearchParams`) containing:
 
 - One `val` per search parameter, typed `SearchParam<R, T>` where `R` is the resource type and `T` is the value type.
-- An `all` list of every search parameter for that resource.
+- An `all` list of all supported search parameters.
+- An `unsupported` list of unsupported search parameters.
 
 `SearchParam<R, T>` carries the metadata for a search parameter plus a typed `extractFrom` function:
 
@@ -582,25 +583,6 @@ fun main() {
 }
 ```
 
-### Working with search parameters
-
-Each generated `{Resource}SearchParams` container exposes a typed `extractFrom()` per parameter, plus an `all` list for iterating every parameter on the resource.
-
-```kotlin
-import dev.ohs.fhir.model.r4.search.PatientSearchParams
-
-// Type-safe access to a single parameter:
-val birthdates: List<Date> = PatientSearchParams.birthdate.extractFrom(patient)
-
-// Iterate every parameter (e.g. to build a search index):
-PatientSearchParams.all.forEach { searchParam ->
-    val values = searchParam.extractFrom(patient)
-    // index `searchParam.name` against `values`
-}
-```
-
-`all` only contains parameters whose FHIRPath is supported. The container's `unsupported` property enumerates the excluded ones (e.g. `PatientSearchParams.unsupported`), and each is still accessible directly by name (e.g. `PatientSearchParams.deceased`). Calling `extractFrom` on them throws `NotImplementedError`.
-
 #### Modifying FHIR resources
 
 All generated FHIR classes are immutable Kotlin `data class`es. To modify a resource, use `copy()` with named arguments:
@@ -624,6 +606,37 @@ val updated = patient.toBuilder().apply {
 }.build()
 ```
 
+### Working with search parameters
+
+You can extract search parameter values from resources using the parameters in the generated `{Resource}SearchParams` objects.
+
+To extract a specific parameter:
+
+```kotlin
+import dev.ohs.fhir.model.r4.search.PatientSearchParams
+
+val birthdates: List<Date> = PatientSearchParams.birthdate.extractFrom(patient)
+```
+
+Alternatively, use the more fluent `extract()` extension function on the resource object itself:
+
+```kotlin
+import dev.ohs.fhir.model.r4.search.extract
+
+val birthdates: List<Date> = patient.extract(PatientSearchParams.birthdate)
+```
+
+To iterate over all supported parameters for a given resource type (e.g. to build a search index):
+
+```kotlin
+import dev.ohs.fhir.model.r4.search.PatientSearchParams
+
+PatientSearchParams.all.forEach { searchParam ->
+    val values = searchParam.extractFrom(patient)
+    // ...
+}
+```
+
 ### Serialization and deserialization
 
 Each generated FHIR resource class has its own generated serializer (marked by the `@Serializable`
@@ -635,10 +648,8 @@ annotation). Simply use [kotlinx.serialization](https://github.com/Kotlin/kotlin
 ```kotlin
 import kotlinx.serialization.json.Json
 
+// See https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md#json-configuration
 val json = Json {
-    // Configure Json here
-    // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md#json-configuration
-
     // No effect on FHIR serialization:
     // explicitNulls, encodeDefaults, useAlternativeNames,
     // serializersModule (assuming you don't override FHIR resources), classDiscriminator

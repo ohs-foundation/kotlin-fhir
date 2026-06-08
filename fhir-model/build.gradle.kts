@@ -177,7 +177,7 @@ tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
 }
 
-version = "1.0.0-beta03"
+version = "1.0.0-beta04"
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()

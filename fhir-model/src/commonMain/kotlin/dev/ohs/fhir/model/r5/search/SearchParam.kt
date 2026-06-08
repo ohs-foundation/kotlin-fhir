@@ -40,3 +40,10 @@ public class SearchParam<R : Resource, T>(
   /** Extracts the values for this search parameter from the given [resource]. */
   public fun extractFrom(resource: R): List<T> = extractor(resource)
 }
+
+/**
+ * Extracts the values for [param] from this resource. Equivalent to `param.extractFrom(this)`, but
+ * reads more fluently at the call site (e.g. `patient.extract(PatientSearchParams.birthdate)`).
+ */
+public inline fun <R : Resource, T> R.extract(`param`: SearchParam<R, T>): List<T> =
+  param.extractFrom(this)

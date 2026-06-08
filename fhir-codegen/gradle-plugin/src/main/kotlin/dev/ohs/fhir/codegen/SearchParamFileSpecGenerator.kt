@@ -31,17 +31,23 @@ import com.squareup.kotlinpoet.asClassName
 import kotlin.reflect.KClass
 
 /**
- * Generates a `SearchParam.kt` file with the typed search-parameter class.
+ * Generates a `SearchParam.kt` file with the typed search-parameter class and a top-level
+ * `R.extract(param)` extension.
  *
  * `SearchParam<R, T>` carries the metadata about a FHIR search parameter (name, type, expression,
  * target) plus an `extractor` lambda. Its `extractFrom(resource)` function delegates to the lambda
  * to pull values of type `T` out of a resource of type `R`. Per-resource container objects (e.g.,
  * `PatientSearchParams`) expose one `val` per search parameter, each holding a `SearchParam`
  * instance.
+ *
+ * The top-level `R.extract(param)` extension is `inline` and delegates to
+ * `param.extractFrom(this)`, letting call sites read as
+ * `patient.extract(PatientSearchParams.birthdate)`.
  */
 object SearchParamFileSpecGenerator {
   fun generate(packageName: String): FileSpec {
     val resourceClassName = ClassName(packageName, "Resource")
+    val searchParamClassName = ClassName("$packageName.search", "SearchParam")
     val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
 
     val listOfTargetClasses =
@@ -123,6 +129,25 @@ object SearchParamFileSpecGenerator {
         )
         .build()
 
-    return FileSpec.builder("$packageName.search", "SearchParam").addType(searchParamClass).build()
+    val extractFn =
+      FunSpec.builder("extract")
+        .addModifiers(KModifier.PUBLIC, KModifier.INLINE)
+        .addKdoc(
+          "Extracts the values for [param] from this resource. Equivalent to " +
+            "`param.extractFrom(this)`, but reads more fluently at the call site " +
+            "(e.g. `patient.extract(PatientSearchParams.birthdate)`)."
+        )
+        .addTypeVariable(typeR)
+        .addTypeVariable(typeT)
+        .receiver(typeR)
+        .addParameter("param", searchParamClassName.parameterizedBy(typeR, typeT))
+        .returns(listOfT)
+        .addStatement("return param.extractFrom(this)")
+        .build()
+
+    return FileSpec.builder("$packageName.search", "SearchParam")
+      .addType(searchParamClass)
+      .addFunction(extractFn)
+      .build()
   }
 }

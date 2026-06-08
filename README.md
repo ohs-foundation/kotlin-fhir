@@ -601,7 +601,9 @@ PatientSearchParams.all.forEach { searchParam ->
 
 `all` only contains parameters whose FHIRPath is supported. The container's `unsupported` property enumerates the excluded ones (e.g. `PatientSearchParams.unsupported`), and each is still accessible directly by name (e.g. `PatientSearchParams.deceased`). Calling `extractFrom` on them throws `NotImplementedError`.
 
-### Non-JSON Serializers
+#### Modifying FHIR resources
+
+All generated FHIR classes are immutable Kotlin `data class`es. To modify a resource, use `copy()` with named arguments:
 
 ```kotlin
 val updated = patient.copy(
@@ -624,18 +626,46 @@ val updated = patient.toBuilder().apply {
 
 ### Serialization and deserialization
 
-Each generated FHIR class carries a hand-rolled `KSerializer` via `@Serializable(with = ...)`, so a
-plain [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) `Json` instance can
-encode and decode FHIR resources directly:
+Each generated FHIR resource class has its own generated serializer (marked by the `@Serializable`
+annotation). Simply use [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)'s
+`Json` object to encode and decode FHIR resources:
+
+#### Configuration
+
+```kotlin
+import kotlinx.serialization.json.Json
+
+val json = Json {
+    // Configure Json here
+    // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md#json-configuration
+
+    // No effect on FHIR serialization:
+    // explicitNulls, encodeDefaults, useAlternativeNames,
+    // serializersModule (assuming you don't override FHIR resources), classDiscriminator
+
+    // Safe to use, but may affect serialization:
+    // ignoreUnknownKeys, isLenient, allowComments, allowTrailingComma, prettyPrintIndent,
+    // coerceInputValues, decodeEnumsCaseInsensitive
+
+    // Incompatible with FHIR:
+    // useArrayPolymorphism, namingStrategy
+}
+```
+
+#### Serialization
+
+```kotlin
+val serializedPatient = json.encodeToString(patient)
+```
+
+#### Deserialization
 
 ```kotlin
 import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Resource
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
-val example = """
+val patientJson = """
     {
       "resourceType": "Patient",
       "id": "example",
@@ -651,38 +681,27 @@ val example = """
     }
 """.trimIndent()
 
-val json = Json {
-    // configure Json here
-    // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md#json-configuration
+// Deserialize to a specific type when you know the resource type
+val patient = json.decodeFromString<Patient>(patientJson)
 
-    // These configurations have no effect on FHIR serialization/deserialization by design
-    // explicitNulls, encodeDefaults, useAlternativeNames,
-    // serializersModule (assuming you don't override FHIR resources), classDiscriminator
+// Deserialize to Resource when the type is unknown
+val resource = json.decodeFromString<Resource>(patientJson)
 
-    // These configurations can affect how serialization occurs, but are generally compatible with FHIR
-    // ignoreUnknownKeys, isLenient, allowComments, allowTrailingComma, prettyPrintIndent,
-    // coerceInputValues, decodeEnumsCaseInsensitive
-
-    // Changing these will break FHIR wire compatibility
-    // useArrayPolymorphism, namingStrategy
-}
-
-// if you know the exact FHIR type you can deserialize directly to a Patient instance
-val patient = json.decodeFromString<Patient>(example)
-
-// if you don't know the type (e.g. a FHIR Server response) deserialize as a generic FHIR Resource
-val resource = json.decodeFromString<Resource>(example)
-
-// then dispatch on the result
+// Then handle the resource based on the type
 when (resource) {
     is OperationOutcome -> { /* parse error */ }
     is Patient -> { /* parse patient */ }
     else -> { /* other resource types */ }
 }
-
-// To serialize a FHIR resource simply call encodeToString(instance)
-val serializedPatient = json.encodeToString(patient)
 ```
+
+#### Non-JSON Serializers
+
+The generated models can be serialized to and deserialized from any format [supported](https://github.com/Kotlin/kotlinx.serialization/blob/master/formats/README.md) by
+`kotlinx.serialization`, but only JSON is extensively tested.
+
+> **Note:** Compatibility between serialized Protocol Buffers from this library and
+> [Google's FHIR Protos](https://github.com/google/fhir) has not been tested.
 
 ## Developer Guide
 

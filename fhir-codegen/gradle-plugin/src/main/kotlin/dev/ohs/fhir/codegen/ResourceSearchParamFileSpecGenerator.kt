@@ -29,7 +29,7 @@ import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
 import dev.ohs.fhir.codegen.schema.capitalized
-import dev.ohs.fhir.codegen.searchparam.SearchParamCodeEmitter
+import dev.ohs.fhir.codegen.searchparam.SearchParamExtractFromFunctionBodyEmitter
 import dev.ohs.fhir.codegen.searchparam.SearchParamPattern
 import dev.ohs.fhir.codegen.searchparam.SearchParamTypeResolver
 import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
@@ -49,7 +49,7 @@ import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
  * - [dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression] classifies the expression into a
  *   [SearchParamPattern].
  * - [SearchParamTypeResolver] maps a pattern to the type parameter `T`.
- * - [SearchParamCodeEmitter] emits the Kotlin source string for the extraction.
+ * - [SearchParamExtractFromFunctionBodyEmitter] emits the Kotlin source string for the extraction.
  */
 object ResourceSearchParamFileSpecGenerator {
 
@@ -234,24 +234,24 @@ object ResourceSearchParamFileSpecGenerator {
       is SearchParamPattern.SimplePath ->
         ExtractionResult(
           SearchParamTypeResolver.forResolvedPath(pattern.resolved, packageName, resourceName),
-          SearchParamCodeEmitter.forSegments(pattern.resolved),
+          SearchParamExtractFromFunctionBodyEmitter.forSegments(pattern.resolved),
         )
       is SearchParamPattern.WhereResolve ->
         ExtractionResult(
           SearchParamTypeResolver.forResolvedPath(pattern.resolved, packageName, resourceName),
-          SearchParamCodeEmitter.forWhereResolve(pattern.resolved, pattern.targetType),
+          SearchParamExtractFromFunctionBodyEmitter.forWhereResolve(pattern.resolved, pattern.targetType),
         )
       is SearchParamPattern.ElementNoCast ->
         ExtractionResult(
           SearchParamTypeResolver.forElementNoCast(pattern.resolved, packageName),
-          SearchParamCodeEmitter.forSegments(pattern.resolved),
+          SearchParamExtractFromFunctionBodyEmitter.forSegments(pattern.resolved),
         )
       is SearchParamPattern.ElementCast -> {
         val sealedSubclass =
           SearchParamTypeResolver.elementSubclass(pattern.resolved, pattern.targetType, packageName)
         ExtractionResult(
           SearchParamTypeResolver.forElementCastTarget(pattern.targetType, packageName),
-          SearchParamCodeEmitter.forElementCast(pattern.resolved, sealedSubclass),
+          SearchParamExtractFromFunctionBodyEmitter.forElementCast(pattern.resolved, sealedSubclass),
         )
       }
       is SearchParamPattern.WhereFilter -> {
@@ -262,7 +262,7 @@ object ResourceSearchParamFileSpecGenerator {
           else ClassName(packageName, elementType.capitalized())
         ExtractionResult(
           typeParam,
-          SearchParamCodeEmitter.forWhereFilter(
+          SearchParamExtractFromFunctionBodyEmitter.forWhereFilter(
             pattern.resolved,
             pattern.field,
             pattern.value,

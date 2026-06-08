@@ -31,7 +31,7 @@ import dev.ohs.fhir.codegen.ResolvedSegment
  *
  * Each method returns a bare expression; the caller wraps it in the extractor lambda.
  */
-internal object SearchParamCodeEmitter {
+internal object SearchParamExtractFromFunctionBodyEmitter {
 
   /** A simple dotted path (`Patient.address.city`), or a `where(resolve() is …)` base. */
   fun forSegments(resolved: ResolvedExpression): CodeBlock = walkToList(resolved.segments)

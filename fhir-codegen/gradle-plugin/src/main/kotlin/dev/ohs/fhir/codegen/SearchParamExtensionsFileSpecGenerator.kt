@@ -19,6 +19,7 @@ package dev.ohs.fhir.codegen
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.asClassName
@@ -46,6 +47,7 @@ object SearchParamExtensionsFileSpecGenerator {
 
     val extractFn =
       FunSpec.builder("extract")
+        .addModifiers(KModifier.PUBLIC, KModifier.INLINE)
         .addKdoc(
           "Extracts the values for [param] from this resource. Equivalent to " +
             "`param.extractFrom(this)`, but reads more fluently at the call site " +

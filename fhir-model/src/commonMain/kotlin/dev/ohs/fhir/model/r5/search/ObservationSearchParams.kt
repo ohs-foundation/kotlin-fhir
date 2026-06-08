@@ -842,34 +842,24 @@ public object ObservationSearchParams {
     )
 
   /**
-   * Supported search parameters for the Observation resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Observation resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Observation, *>> =
     listOf(
       basedOn,
       category,
       code,
-      codeValueConcept,
-      codeValueDate,
-      codeValueQuantity,
-      codeValueString,
       comboCode,
       comboCodeValueConcept,
       comboCodeValueQuantity,
       comboDataAbsentReason,
-      comboValueConcept,
-      comboValueQuantity,
       componentCode,
       componentCodeValueConcept,
       componentCodeValueQuantity,
       componentDataAbsentReason,
-      componentValueCanonical,
-      componentValueConcept,
-      componentValueQuantity,
-      componentValueReference,
       dataAbsentReason,
-      date,
       derivedFrom,
       device,
       encounter,
@@ -883,11 +873,5 @@ public object ObservationSearchParams {
       specimen,
       status,
       subject,
-      valueCanonical,
-      valueConcept,
-      valueDate,
-      valueMarkdown,
-      valueQuantity,
-      valueReference,
-    ) - unsupported.toSet()
+    )
 }

@@ -76,9 +76,10 @@ public object SubstanceDefinitionSearchParams {
   public val unsupported: List<SearchParam<SubstanceDefinition, *>> = listOf()
 
   /**
-   * Supported search parameters for the SubstanceDefinition resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the SubstanceDefinition resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<SubstanceDefinition, *>> =
-    listOf(classification, code, domain, identifier, name) - unsupported.toSet()
+    listOf(classification, code, domain, identifier, name)
 }

@@ -161,8 +161,9 @@ public object EvidenceVariableSearchParams {
   public val unsupported: List<SearchParam<EvidenceVariable, *>> = listOf()
 
   /**
-   * Supported search parameters for the EvidenceVariable resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the EvidenceVariable resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<EvidenceVariable, *>> =
     listOf(
@@ -180,5 +181,5 @@ public object EvidenceVariableSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

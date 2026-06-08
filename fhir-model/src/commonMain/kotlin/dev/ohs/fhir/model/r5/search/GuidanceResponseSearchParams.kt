@@ -84,9 +84,10 @@ public object GuidanceResponseSearchParams {
   public val unsupported: List<SearchParam<GuidanceResponse, *>> = listOf()
 
   /**
-   * Supported search parameters for the GuidanceResponse resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the GuidanceResponse resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<GuidanceResponse, *>> =
-    listOf(identifier, patient, request, status, subject) - unsupported.toSet()
+    listOf(identifier, patient, request, status, subject)
 }

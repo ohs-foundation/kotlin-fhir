@@ -254,7 +254,7 @@ The following FHIRPath patterns produce a typed `extractFrom()`:
 
 #### Unsupported FHIRPath patterns
 
-Some FHIRPath expressions aren't supported yet. For those parameters, `extractFrom()` throws `NotImplementedError` and the type parameter is `Any`. The container's `unsupported` property lists them explicitly, and `all` is computed as the total minus `unsupported` so iterating `all` and calling `extractFrom` is safe. The rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers that want these parameters can read the `expression` string and evaluate it with a FHIRPath engine instead.
+Some FHIRPath expressions aren't supported yet. For those parameters, `extractFrom()` throws `NotImplementedError` and the type parameter is `Any`. The container's `unsupported` property lists them explicitly, and `all` excludes them so iterating `all` and calling `extractFrom` is safe. The rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers that want these parameters can read the `expression` string and evaluate it with a FHIRPath engine instead.
 
 206 such parameters across R4 / R4B / R5 fall into the following categories. See [unsupported-search-params.md](docs/unsupported-search-params.md) for the full per-category list.
 

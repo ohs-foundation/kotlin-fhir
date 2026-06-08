@@ -407,9 +407,10 @@ public object MolecularSequenceSearchParams {
   public val unsupported: CollectionsList<SearchParam<MolecularSequence, *>> = listOf()
 
   /**
-   * Supported search parameters for the MolecularSequence resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the MolecularSequence resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: CollectionsList<SearchParam<MolecularSequence, *>> =
-    listOf(focus, identifier, patient, subject, type) - unsupported.toSet()
+    listOf(focus, identifier, patient, subject, type)
 }

@@ -178,8 +178,9 @@ public object EffectEvidenceSynthesisSearchParams {
   public val unsupported: List<SearchParam<EffectEvidenceSynthesis, *>> = listOf()
 
   /**
-   * Supported search parameters for the EffectEvidenceSynthesis resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the EffectEvidenceSynthesis resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<EffectEvidenceSynthesis, *>> =
     listOf(
@@ -199,5 +200,5 @@ public object EffectEvidenceSynthesisSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

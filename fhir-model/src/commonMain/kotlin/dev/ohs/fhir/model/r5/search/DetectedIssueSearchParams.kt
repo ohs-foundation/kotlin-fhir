@@ -459,10 +459,10 @@ public object DetectedIssueSearchParams {
   public val unsupported: CollectionsList<SearchParam<DetectedIssue, *>> = listOf(identified)
 
   /**
-   * Supported search parameters for the DetectedIssue resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the DetectedIssue resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<DetectedIssue, *>> =
-    listOf(author, category, code, identified, identifier, implicated, patient, status, subject) -
-      unsupported.toSet()
+    listOf(author, category, code, identifier, implicated, patient, status, subject)
 }

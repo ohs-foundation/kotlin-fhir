@@ -500,8 +500,9 @@ public object AppointmentSearchParams {
   public val unsupported: CollectionsList<SearchParam<Appointment, *>> = listOf()
 
   /**
-   * Supported search parameters for the Appointment resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Appointment resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Appointment, *>> =
     listOf(
@@ -522,5 +523,5 @@ public object AppointmentSearchParams {
       specialty,
       status,
       supportingInfo,
-    ) - unsupported.toSet()
+    )
 }

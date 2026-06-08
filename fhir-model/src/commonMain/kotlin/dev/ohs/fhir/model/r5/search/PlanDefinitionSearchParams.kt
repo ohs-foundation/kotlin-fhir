@@ -1241,19 +1241,17 @@ public object PlanDefinitionSearchParams {
     listOf(context, contextQuantity, definition)
 
   /**
-   * Supported search parameters for the PlanDefinition resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the PlanDefinition resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<PlanDefinition, *>> =
     listOf(
       composedOf,
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
       date,
-      definition,
       dependsOn,
       derivedFrom,
       description,
@@ -1270,5 +1268,5 @@ public object PlanDefinitionSearchParams {
       type,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

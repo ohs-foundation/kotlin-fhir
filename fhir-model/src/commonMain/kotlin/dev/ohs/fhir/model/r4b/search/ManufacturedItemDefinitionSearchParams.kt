@@ -59,9 +59,10 @@ public object ManufacturedItemDefinitionSearchParams {
   public val unsupported: List<SearchParam<ManufacturedItemDefinition, *>> = listOf()
 
   /**
-   * Supported search parameters for the ManufacturedItemDefinition resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ManufacturedItemDefinition resource type. Iterating `all`
+   * and calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded
+   * from this list.
    */
   public val all: List<SearchParam<ManufacturedItemDefinition, *>> =
-    listOf(doseForm, identifier, ingredient) - unsupported.toSet()
+    listOf(doseForm, identifier, ingredient)
 }

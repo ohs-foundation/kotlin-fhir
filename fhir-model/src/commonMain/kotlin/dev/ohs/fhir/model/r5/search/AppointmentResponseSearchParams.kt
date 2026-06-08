@@ -141,10 +141,10 @@ public object AppointmentResponseSearchParams {
   public val unsupported: List<SearchParam<AppointmentResponse, *>> = listOf()
 
   /**
-   * Supported search parameters for the AppointmentResponse resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the AppointmentResponse resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<AppointmentResponse, *>> =
-    listOf(actor, appointment, group, identifier, location, partStatus, patient, practitioner) -
-      unsupported.toSet()
+    listOf(actor, appointment, group, identifier, location, partStatus, patient, practitioner)
 }

@@ -525,13 +525,12 @@ public object TestScriptSearchParams {
     listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the TestScript resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the TestScript resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<TestScript, *>> =
     listOf(
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -549,5 +548,5 @@ public object TestScriptSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

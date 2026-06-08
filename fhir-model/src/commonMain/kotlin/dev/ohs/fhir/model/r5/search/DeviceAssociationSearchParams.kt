@@ -100,9 +100,10 @@ public object DeviceAssociationSearchParams {
   public val unsupported: List<SearchParam<DeviceAssociation, *>> = listOf()
 
   /**
-   * Supported search parameters for the DeviceAssociation resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the DeviceAssociation resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<DeviceAssociation, *>> =
-    listOf(device, identifier, `operator`, patient, status, subject) - unsupported.toSet()
+    listOf(device, identifier, `operator`, patient, status, subject)
 }

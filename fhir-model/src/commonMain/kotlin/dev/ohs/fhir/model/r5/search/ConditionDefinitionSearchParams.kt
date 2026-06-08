@@ -172,13 +172,12 @@ public object ConditionDefinitionSearchParams {
     listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the ConditionDefinition resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ConditionDefinition resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<ConditionDefinition, *>> =
     listOf(
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -192,5 +191,5 @@ public object ConditionDefinitionSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

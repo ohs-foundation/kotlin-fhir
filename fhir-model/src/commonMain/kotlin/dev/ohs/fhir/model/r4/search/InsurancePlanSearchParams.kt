@@ -165,8 +165,9 @@ public object InsurancePlanSearchParams {
   public val unsupported: List<SearchParam<InsurancePlan, *>> = listOf(name)
 
   /**
-   * Supported search parameters for the InsurancePlan resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the InsurancePlan resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<InsurancePlan, *>> =
     listOf(
@@ -179,10 +180,9 @@ public object InsurancePlanSearchParams {
       administeredBy,
       endpoint,
       identifier,
-      name,
       ownedBy,
       phonetic,
       status,
       type,
-    ) - unsupported.toSet()
+    )
 }

@@ -607,8 +607,9 @@ public object DocumentManifestSearchParams {
   public val unsupported: CollectionsList<SearchParam<DocumentManifest, *>> = listOf()
 
   /**
-   * Supported search parameters for the DocumentManifest resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the DocumentManifest resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<DocumentManifest, *>> =
     listOf(
@@ -625,5 +626,5 @@ public object DocumentManifestSearchParams {
       status,
       subject,
       type,
-    ) - unsupported.toSet()
+    )
 }

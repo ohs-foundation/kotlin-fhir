@@ -220,14 +220,13 @@ public object QuestionnaireSearchParams {
   public val unsupported: List<SearchParam<Questionnaire, *>> = listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the Questionnaire resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Questionnaire resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Questionnaire, *>> =
     listOf(
       comboCode,
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -246,5 +245,5 @@ public object QuestionnaireSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

@@ -129,10 +129,10 @@ public object CareTeamSearchParams {
   public val unsupported: List<SearchParam<CareTeam, *>> = listOf(date)
 
   /**
-   * Supported search parameters for the CareTeam resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the CareTeam resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<CareTeam, *>> =
-    listOf(category, date, identifier, name, participant, patient, status, subject) -
-      unsupported.toSet()
+    listOf(category, identifier, name, participant, patient, status, subject)
 }

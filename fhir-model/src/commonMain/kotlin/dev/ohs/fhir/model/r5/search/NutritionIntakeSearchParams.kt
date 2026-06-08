@@ -140,10 +140,10 @@ public object NutritionIntakeSearchParams {
   public val unsupported: List<SearchParam<NutritionIntake, *>> = listOf(date)
 
   /**
-   * Supported search parameters for the NutritionIntake resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the NutritionIntake resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<NutritionIntake, *>> =
-    listOf(code, date, encounter, identifier, nutrition, patient, source, status, subject) -
-      unsupported.toSet()
+    listOf(code, encounter, identifier, nutrition, patient, source, status, subject)
 }

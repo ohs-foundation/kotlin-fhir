@@ -213,16 +213,13 @@ public object CitationSearchParams {
     listOf(classificationType, classifier, context, contextQuantity)
 
   /**
-   * Supported search parameters for the Citation resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Citation resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Citation, *>> =
     listOf(
       classification,
-      classificationType,
-      classifier,
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -237,5 +234,5 @@ public object CitationSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

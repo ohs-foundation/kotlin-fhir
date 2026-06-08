@@ -176,23 +176,10 @@ public object ResourceSearchParams {
     listOf(_content, _filter, _has, _id, _list, _query, _text, _type)
 
   /**
-   * Supported search parameters for the Resource resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Resource resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Resource, *>> =
-    listOf(
-      _content,
-      _filter,
-      _has,
-      _id,
-      _lastUpdated,
-      _list,
-      _profile,
-      _query,
-      _security,
-      _source,
-      _tag,
-      _text,
-      _type,
-    ) - unsupported.toSet()
+    listOf(_lastUpdated, _profile, _security, _source, _tag)
 }

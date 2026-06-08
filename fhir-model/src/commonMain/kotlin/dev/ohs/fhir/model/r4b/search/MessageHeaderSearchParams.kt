@@ -438,8 +438,9 @@ public object MessageHeaderSearchParams {
   public val unsupported: CollectionsList<SearchParam<MessageHeader, *>> = listOf()
 
   /**
-   * Supported search parameters for the MessageHeader resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the MessageHeader resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<MessageHeader, *>> =
     listOf(
@@ -457,5 +458,5 @@ public object MessageHeaderSearchParams {
       source,
       sourceUri,
       target,
-    ) - unsupported.toSet()
+    )
 }

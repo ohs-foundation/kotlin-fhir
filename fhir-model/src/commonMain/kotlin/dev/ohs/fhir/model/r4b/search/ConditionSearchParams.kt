@@ -506,8 +506,9 @@ public object ConditionSearchParams {
   public val unsupported: CollectionsList<SearchParam<Condition, *>> = listOf()
 
   /**
-   * Supported search parameters for the Condition resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Condition resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Condition, *>> =
     listOf(
@@ -532,5 +533,5 @@ public object ConditionSearchParams {
       stage,
       subject,
       verificationStatus,
-    ) - unsupported.toSet()
+    )
 }

@@ -196,12 +196,12 @@ public object ImmunizationSearchParams {
   public val unsupported: List<SearchParam<Immunization, *>> = listOf(date)
 
   /**
-   * Supported search parameters for the Immunization resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Immunization resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Immunization, *>> =
     listOf(
-      date,
       identifier,
       location,
       lotNumber,
@@ -217,5 +217,5 @@ public object ImmunizationSearchParams {
       statusReason,
       targetDisease,
       vaccineCode,
-    ) - unsupported.toSet()
+    )
 }

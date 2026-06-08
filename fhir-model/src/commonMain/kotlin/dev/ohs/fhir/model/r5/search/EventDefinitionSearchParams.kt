@@ -1212,14 +1212,13 @@ public object EventDefinitionSearchParams {
     listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the EventDefinition resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the EventDefinition resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<EventDefinition, *>> =
     listOf(
       composedOf,
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -1239,5 +1238,5 @@ public object EventDefinitionSearchParams {
       topic,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

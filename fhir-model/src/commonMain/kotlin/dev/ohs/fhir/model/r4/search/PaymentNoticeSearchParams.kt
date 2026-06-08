@@ -535,10 +535,10 @@ public object PaymentNoticeSearchParams {
   public val unsupported: CollectionsList<SearchParam<PaymentNotice, *>> = listOf()
 
   /**
-   * Supported search parameters for the PaymentNotice resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the PaymentNotice resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<PaymentNotice, *>> =
-    listOf(created, identifier, paymentStatus, provider, request, response, status) -
-      unsupported.toSet()
+    listOf(created, identifier, paymentStatus, provider, request, response, status)
 }

@@ -70,9 +70,10 @@ public object BodyStructureSearchParams {
   public val unsupported: List<SearchParam<BodyStructure, *>> = listOf()
 
   /**
-   * Supported search parameters for the BodyStructure resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the BodyStructure resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<BodyStructure, *>> =
-    listOf(identifier, location, morphology, patient) - unsupported.toSet()
+    listOf(identifier, location, morphology, patient)
 }

@@ -160,8 +160,9 @@ public object TerminologyCapabilitiesSearchParams {
   public val unsupported: List<SearchParam<TerminologyCapabilities, *>> = listOf()
 
   /**
-   * Supported search parameters for the TerminologyCapabilities resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the TerminologyCapabilities resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<TerminologyCapabilities, *>> =
     listOf(
@@ -179,5 +180,5 @@ public object TerminologyCapabilitiesSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

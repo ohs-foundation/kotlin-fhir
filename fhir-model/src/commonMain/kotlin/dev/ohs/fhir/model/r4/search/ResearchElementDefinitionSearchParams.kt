@@ -1131,8 +1131,9 @@ public object ResearchElementDefinitionSearchParams {
   public val unsupported: CollectionsList<SearchParam<ResearchElementDefinition, *>> = listOf()
 
   /**
-   * Supported search parameters for the ResearchElementDefinition resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ResearchElementDefinition resource type. Iterating `all`
+   * and calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded
+   * from this list.
    */
   public val all: CollectionsList<SearchParam<ResearchElementDefinition, *>> =
     listOf(
@@ -1158,5 +1159,5 @@ public object ResearchElementDefinitionSearchParams {
       topic,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

@@ -281,8 +281,9 @@ public object ConceptMapSearchParams {
   public val unsupported: List<SearchParam<ConceptMap, *>> = listOf(product)
 
   /**
-   * Supported search parameters for the ConceptMap resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ConceptMap resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<ConceptMap, *>> =
     listOf(
@@ -298,7 +299,6 @@ public object ConceptMapSearchParams {
       jurisdiction,
       name,
       other,
-      product,
       publisher,
       source,
       sourceCode,
@@ -312,5 +312,5 @@ public object ConceptMapSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

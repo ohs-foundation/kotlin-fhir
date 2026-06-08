@@ -162,8 +162,9 @@ public object GoalSearchParams {
   public val unsupported: List<SearchParam<Goal, *>> = listOf(startDate, targetDate)
 
   /**
-   * Supported search parameters for the Goal resource type. Entries in [unsupported] are excluded
-   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Goal resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Goal, *>> =
     listOf(
@@ -174,9 +175,7 @@ public object GoalSearchParams {
       identifier,
       lifecycleStatus,
       patient,
-      startDate,
       subject,
-      targetDate,
       targetMeasure,
-    ) - unsupported.toSet()
+    )
 }

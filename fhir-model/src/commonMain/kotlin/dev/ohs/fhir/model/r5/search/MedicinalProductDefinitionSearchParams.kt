@@ -144,12 +144,12 @@ public object MedicinalProductDefinitionSearchParams {
   public val unsupported: List<SearchParam<MedicinalProductDefinition, *>> = listOf(characteristic)
 
   /**
-   * Supported search parameters for the MedicinalProductDefinition resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the MedicinalProductDefinition resource type. Iterating `all`
+   * and calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded
+   * from this list.
    */
   public val all: List<SearchParam<MedicinalProductDefinition, *>> =
     listOf(
-      characteristic,
       characteristicType,
       contact,
       domain,
@@ -161,5 +161,5 @@ public object MedicinalProductDefinitionSearchParams {
       productClassification,
       status,
       type,
-    ) - unsupported.toSet()
+    )
 }

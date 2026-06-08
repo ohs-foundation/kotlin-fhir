@@ -484,13 +484,13 @@ public object GroupSearchParams {
     listOf(characteristicReference, `value`)
 
   /**
-   * Supported search parameters for the Group resource type. Entries in [unsupported] are excluded
-   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Group resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Group, *>> =
     listOf(
       characteristic,
-      characteristicReference,
       characteristicValue,
       code,
       exclude,
@@ -500,6 +500,5 @@ public object GroupSearchParams {
       membership,
       name,
       type,
-      `value`,
-    ) - unsupported.toSet()
+    )
 }

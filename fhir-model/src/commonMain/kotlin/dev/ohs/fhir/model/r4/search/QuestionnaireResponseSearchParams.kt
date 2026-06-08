@@ -453,8 +453,9 @@ public object QuestionnaireResponseSearchParams {
     listOf(itemSubject)
 
   /**
-   * Supported search parameters for the QuestionnaireResponse resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the QuestionnaireResponse resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: CollectionsList<SearchParam<QuestionnaireResponse, *>> =
     listOf(
@@ -463,12 +464,11 @@ public object QuestionnaireResponseSearchParams {
       basedOn,
       encounter,
       identifier,
-      itemSubject,
       partOf,
       patient,
       questionnaire,
       source,
       status,
       subject,
-    ) - unsupported.toSet()
+    )
 }

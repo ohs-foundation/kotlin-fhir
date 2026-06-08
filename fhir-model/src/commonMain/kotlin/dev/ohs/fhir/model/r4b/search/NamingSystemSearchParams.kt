@@ -201,8 +201,9 @@ public object NamingSystemSearchParams {
   public val unsupported: List<SearchParam<NamingSystem, *>> = listOf()
 
   /**
-   * Supported search parameters for the NamingSystem resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the NamingSystem resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<NamingSystem, *>> =
     listOf(
@@ -225,5 +226,5 @@ public object NamingSystemSearchParams {
       telecom,
       type,
       `value`,
-    ) - unsupported.toSet()
+    )
 }

@@ -77,12 +77,12 @@ object ResourceSearchParamFileSpecGenerator {
     val resolver = FhirPathExpressionResolver(elementsByType)
     val dedupedParams = searchParams.distinctBy { it.code }.sortedBy { it.code }
 
-    // Unsupported params still get their own `val` (calling `extractFrom` on them throws). They
-    // are listed explicitly in [unsupported] so the unsupported set is visible at a glance, and
-    // subtracted from [all] so iterate-all use cases (building a search index, etc.) can rely on
-    // every entry in `all` being callable.
-    val unsupportedParams =
-      dedupedParams.filter { sp ->
+    // Unsupported params still get their own `val` (calling `extractFrom` on them throws), and
+    // are listed explicitly in [unsupported] so the unsupported set is visible at a glance.
+    // [all] enumerates only the supported ones, so iterate-all use cases (building a search
+    // index, etc.) can rely on every entry being callable.
+    val (unsupportedParams, supportedParams) =
+      dedupedParams.partition { sp ->
         val expr = sp.extractExpressionForResource(resourceName)
         parseSearchParamExpression(expr, resourceName, resolver) == SearchParamPattern.Unsupported
       }
@@ -139,20 +139,20 @@ object ResourceSearchParamFileSpecGenerator {
             CodeBlock.builder()
               .apply {
                 add("listOf(")
-                dedupedParams.forEachIndexed { i, sp ->
+                supportedParams.forEachIndexed { i, sp ->
                   if (i > 0) add(", ")
                   add("%N", sp.code.toPropertyName())
                 }
-                add(") - unsupported.toSet()")
+                add(")")
               }
               .build()
           addProperty(
             PropertySpec.builder("all", listType)
               .addModifiers(KModifier.PUBLIC)
               .addKdoc(
-                "Supported search parameters for the %L resource type. Entries in [unsupported] " +
-                  "are excluded so iterating `all` and calling `extractFrom` on each entry is " +
-                  "safe.",
+                "Supported search parameters for the %L resource type. Iterating `all` and " +
+                  "calling `extractFrom` on each entry is safe; see [unsupported] for the " +
+                  "parameters excluded from this list.",
                 resourceName,
               )
               .initializer(allInit)

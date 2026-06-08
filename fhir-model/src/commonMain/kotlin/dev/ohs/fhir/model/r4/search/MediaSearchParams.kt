@@ -183,8 +183,9 @@ public object MediaSearchParams {
   public val unsupported: List<SearchParam<Media, *>> = listOf()
 
   /**
-   * Supported search parameters for the Media resource type. Entries in [unsupported] are excluded
-   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Media resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Media, *>> =
     listOf(
@@ -201,5 +202,5 @@ public object MediaSearchParams {
       subject,
       type,
       view,
-    ) - unsupported.toSet()
+    )
 }

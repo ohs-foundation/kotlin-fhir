@@ -573,8 +573,9 @@ public object ProvenanceSearchParams {
   public val unsupported: CollectionsList<SearchParam<Provenance, *>> = listOf()
 
   /**
-   * Supported search parameters for the Provenance resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Provenance resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Provenance, *>> =
     listOf(
@@ -588,5 +589,5 @@ public object ProvenanceSearchParams {
       signatureType,
       target,
       `when`,
-    ) - unsupported.toSet()
+    )
 }

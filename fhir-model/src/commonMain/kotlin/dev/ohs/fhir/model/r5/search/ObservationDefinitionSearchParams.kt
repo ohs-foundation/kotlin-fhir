@@ -103,10 +103,10 @@ public object ObservationDefinitionSearchParams {
   public val unsupported: List<SearchParam<ObservationDefinition, *>> = listOf()
 
   /**
-   * Supported search parameters for the ObservationDefinition resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ObservationDefinition resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<ObservationDefinition, *>> =
-    listOf(category, code, experimental, identifier, method, status, title, url) -
-      unsupported.toSet()
+    listOf(category, code, experimental, identifier, method, status, title, url)
 }

@@ -530,8 +530,9 @@ public object CommunicationRequestSearchParams {
   public val unsupported: CollectionsList<SearchParam<CommunicationRequest, *>> = listOf(occurrence)
 
   /**
-   * Supported search parameters for the CommunicationRequest resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the CommunicationRequest resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: CollectionsList<SearchParam<CommunicationRequest, *>> =
     listOf(
@@ -543,7 +544,6 @@ public object CommunicationRequestSearchParams {
       identifier,
       informationProvider,
       medium,
-      occurrence,
       patient,
       priority,
       recipient,
@@ -551,5 +551,5 @@ public object CommunicationRequestSearchParams {
       requester,
       status,
       subject,
-    ) - unsupported.toSet()
+    )
 }

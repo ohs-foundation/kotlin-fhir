@@ -299,8 +299,9 @@ public object PatientSearchParams {
     listOf(age, birthOrderBoolean, deceased, mothersMaidenName, partAgree)
 
   /**
-   * Supported search parameters for the Patient resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Patient resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Patient, *>> =
     listOf(
@@ -311,11 +312,8 @@ public object PatientSearchParams {
       addressPostalcode,
       addressState,
       addressUse,
-      age,
-      birthOrderBoolean,
       birthdate,
       deathDate,
-      deceased,
       email,
       family,
       gender,
@@ -324,12 +322,10 @@ public object PatientSearchParams {
       identifier,
       language,
       link,
-      mothersMaidenName,
       name,
       organization,
-      partAgree,
       phone,
       phonetic,
       telecom,
-    ) - unsupported.toSet()
+    )
 }

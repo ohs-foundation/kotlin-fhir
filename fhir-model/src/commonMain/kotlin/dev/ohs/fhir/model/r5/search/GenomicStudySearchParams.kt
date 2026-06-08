@@ -407,9 +407,10 @@ public object GenomicStudySearchParams {
   public val unsupported: CollectionsList<SearchParam<GenomicStudy, *>> = listOf()
 
   /**
-   * Supported search parameters for the GenomicStudy resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the GenomicStudy resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<GenomicStudy, *>> =
-    listOf(focus, identifier, patient, status, subject) - unsupported.toSet()
+    listOf(focus, identifier, patient, status, subject)
 }

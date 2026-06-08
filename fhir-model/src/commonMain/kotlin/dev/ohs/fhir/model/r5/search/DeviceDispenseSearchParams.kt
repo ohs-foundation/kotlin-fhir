@@ -85,9 +85,10 @@ public object DeviceDispenseSearchParams {
   public val unsupported: List<SearchParam<DeviceDispense, *>> = listOf()
 
   /**
-   * Supported search parameters for the DeviceDispense resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the DeviceDispense resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<DeviceDispense, *>> =
-    listOf(code, identifier, patient, status, subject) - unsupported.toSet()
+    listOf(code, identifier, patient, status, subject)
 }

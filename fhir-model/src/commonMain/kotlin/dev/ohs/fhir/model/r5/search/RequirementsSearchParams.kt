@@ -191,14 +191,13 @@ public object RequirementsSearchParams {
   public val unsupported: List<SearchParam<Requirements, *>> = listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the Requirements resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Requirements resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Requirements, *>> =
     listOf(
       actor,
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -213,5 +212,5 @@ public object RequirementsSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

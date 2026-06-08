@@ -1117,8 +1117,9 @@ public object LibrarySearchParams {
   public val unsupported: CollectionsList<SearchParam<Library, *>> = listOf()
 
   /**
-   * Supported search parameters for the Library resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Library resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Library, *>> =
     listOf(
@@ -1146,5 +1147,5 @@ public object LibrarySearchParams {
       type,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

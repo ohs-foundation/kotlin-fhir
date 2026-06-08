@@ -154,13 +154,12 @@ public object ExampleScenarioSearchParams {
   public val unsupported: List<SearchParam<ExampleScenario, *>> = listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the ExampleScenario resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ExampleScenario resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<ExampleScenario, *>> =
     listOf(
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -172,5 +171,5 @@ public object ExampleScenarioSearchParams {
       status,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

@@ -119,8 +119,9 @@ public object EvidenceReportSearchParams {
   public val unsupported: List<SearchParam<EvidenceReport, *>> = listOf()
 
   /**
-   * Supported search parameters for the EvidenceReport resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the EvidenceReport resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<EvidenceReport, *>> =
     listOf(
@@ -133,5 +134,5 @@ public object EvidenceReportSearchParams {
       publisher,
       status,
       url,
-    ) - unsupported.toSet()
+    )
 }

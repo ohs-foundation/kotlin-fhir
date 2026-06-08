@@ -175,8 +175,9 @@ public object RequestGroupSearchParams {
   public val unsupported: List<SearchParam<RequestGroup, *>> = listOf()
 
   /**
-   * Supported search parameters for the RequestGroup resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the RequestGroup resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<RequestGroup, *>> =
     listOf(
@@ -194,5 +195,5 @@ public object RequestGroupSearchParams {
       priority,
       status,
       subject,
-    ) - unsupported.toSet()
+    )
 }

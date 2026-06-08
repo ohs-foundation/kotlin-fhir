@@ -155,8 +155,9 @@ public object PackagedProductDefinitionSearchParams {
   public val unsupported: List<SearchParam<PackagedProductDefinition, *>> = listOf()
 
   /**
-   * Supported search parameters for the PackagedProductDefinition resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the PackagedProductDefinition resource type. Iterating `all`
+   * and calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded
+   * from this list.
    */
   public val all: List<SearchParam<PackagedProductDefinition, *>> =
     listOf(
@@ -171,5 +172,5 @@ public object PackagedProductDefinitionSearchParams {
       `package`,
       packageFor,
       status,
-    ) - unsupported.toSet()
+    )
 }

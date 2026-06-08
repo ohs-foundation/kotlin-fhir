@@ -656,8 +656,9 @@ public object CompositionSearchParams {
   public val unsupported: CollectionsList<SearchParam<Composition, *>> = listOf()
 
   /**
-   * Supported search parameters for the Composition resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Composition resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Composition, *>> =
     listOf(
@@ -679,5 +680,5 @@ public object CompositionSearchParams {
       subject,
       title,
       type,
-    ) - unsupported.toSet()
+    )
 }

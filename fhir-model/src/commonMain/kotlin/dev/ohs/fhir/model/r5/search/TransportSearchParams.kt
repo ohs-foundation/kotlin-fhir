@@ -51,8 +51,9 @@ public object TransportSearchParams {
   public val unsupported: List<SearchParam<Transport, *>> = listOf()
 
   /**
-   * Supported search parameters for the Transport resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Transport resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
-  public val all: List<SearchParam<Transport, *>> = listOf(identifier, status) - unsupported.toSet()
+  public val all: List<SearchParam<Transport, *>> = listOf(identifier, status)
 }

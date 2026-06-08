@@ -131,8 +131,9 @@ public object ScheduleSearchParams {
   public val unsupported: List<SearchParam<Schedule, *>> = listOf()
 
   /**
-   * Supported search parameters for the Schedule resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Schedule resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Schedule, *>> =
     listOf(
@@ -145,5 +146,5 @@ public object ScheduleSearchParams {
       serviceType,
       serviceTypeReference,
       specialty,
-    ) - unsupported.toSet()
+    )
 }

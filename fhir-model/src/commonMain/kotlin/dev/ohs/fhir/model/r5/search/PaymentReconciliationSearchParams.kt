@@ -131,8 +131,9 @@ public object PaymentReconciliationSearchParams {
   public val unsupported: List<SearchParam<PaymentReconciliation, *>> = listOf()
 
   /**
-   * Supported search parameters for the PaymentReconciliation resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the PaymentReconciliation resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<PaymentReconciliation, *>> =
     listOf(
@@ -146,5 +147,5 @@ public object PaymentReconciliationSearchParams {
       request,
       requestor,
       status,
-    ) - unsupported.toSet()
+    )
 }

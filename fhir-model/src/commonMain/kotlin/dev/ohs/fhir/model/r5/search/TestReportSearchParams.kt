@@ -97,10 +97,10 @@ public object TestReportSearchParams {
   public val unsupported: List<SearchParam<TestReport, *>> = listOf()
 
   /**
-   * Supported search parameters for the TestReport resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the TestReport resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<TestReport, *>> =
-    listOf(identifier, issued, participant, result, status, tester, testscript) -
-      unsupported.toSet()
+    listOf(identifier, issued, participant, result, status, tester, testscript)
 }

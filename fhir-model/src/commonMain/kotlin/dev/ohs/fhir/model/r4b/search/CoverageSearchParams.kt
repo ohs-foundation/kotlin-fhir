@@ -134,8 +134,9 @@ public object CoverageSearchParams {
   public val unsupported: List<SearchParam<Coverage, *>> = listOf()
 
   /**
-   * Supported search parameters for the Coverage resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Coverage resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Coverage, *>> =
     listOf(
@@ -150,5 +151,5 @@ public object CoverageSearchParams {
       status,
       subscriber,
       type,
-    ) - unsupported.toSet()
+    )
 }

@@ -484,9 +484,9 @@ public object LinkageSearchParams {
   public val unsupported: CollectionsList<SearchParam<Linkage, *>> = listOf()
 
   /**
-   * Supported search parameters for the Linkage resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Linkage resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
-  public val all: CollectionsList<SearchParam<Linkage, *>> =
-    listOf(author, item, source) - unsupported.toSet()
+  public val all: CollectionsList<SearchParam<Linkage, *>> = listOf(author, item, source)
 }

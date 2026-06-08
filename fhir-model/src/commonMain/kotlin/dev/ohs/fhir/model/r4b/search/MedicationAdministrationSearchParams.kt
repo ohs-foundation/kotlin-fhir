@@ -178,8 +178,9 @@ public object MedicationAdministrationSearchParams {
   public val unsupported: List<SearchParam<MedicationAdministration, *>> = listOf()
 
   /**
-   * Supported search parameters for the MedicationAdministration resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the MedicationAdministration resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<MedicationAdministration, *>> =
     listOf(
@@ -196,5 +197,5 @@ public object MedicationAdministrationSearchParams {
       request,
       status,
       subject,
-    ) - unsupported.toSet()
+    )
 }

@@ -575,14 +575,12 @@ public object ConditionSearchParams {
     listOf(abatementAge, abatementDate, abatementString, onsetAge, onsetDate, onsetInfo)
 
   /**
-   * Supported search parameters for the Condition resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Condition resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Condition, *>> =
     listOf(
-      abatementAge,
-      abatementDate,
-      abatementString,
       bodySite,
       category,
       clinicalStatus,
@@ -591,9 +589,6 @@ public object ConditionSearchParams {
       evidence,
       evidenceDetail,
       identifier,
-      onsetAge,
-      onsetDate,
-      onsetInfo,
       participantActor,
       participantFunction,
       patient,
@@ -602,5 +597,5 @@ public object ConditionSearchParams {
       stage,
       subject,
       verificationStatus,
-    ) - unsupported.toSet()
+    )
 }

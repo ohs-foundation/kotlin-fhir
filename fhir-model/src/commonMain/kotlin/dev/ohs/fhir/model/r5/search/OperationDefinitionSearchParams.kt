@@ -242,15 +242,14 @@ public object OperationDefinitionSearchParams {
     listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the OperationDefinition resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the OperationDefinition resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<OperationDefinition, *>> =
     listOf(
       base,
       code,
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -270,5 +269,5 @@ public object OperationDefinitionSearchParams {
       type,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

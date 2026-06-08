@@ -380,9 +380,10 @@ public object BasicSearchParams {
   public val unsupported: CollectionsList<SearchParam<Basic, *>> = listOf()
 
   /**
-   * Supported search parameters for the Basic resource type. Entries in [unsupported] are excluded
-   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Basic resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Basic, *>> =
-    listOf(author, code, created, identifier, patient, subject) - unsupported.toSet()
+    listOf(author, code, created, identifier, patient, subject)
 }

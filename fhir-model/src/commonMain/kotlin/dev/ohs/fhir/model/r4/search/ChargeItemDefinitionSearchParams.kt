@@ -170,8 +170,9 @@ public object ChargeItemDefinitionSearchParams {
   public val unsupported: List<SearchParam<ChargeItemDefinition, *>> = listOf()
 
   /**
-   * Supported search parameters for the ChargeItemDefinition resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ChargeItemDefinition resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<ChargeItemDefinition, *>> =
     listOf(
@@ -190,5 +191,5 @@ public object ChargeItemDefinitionSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

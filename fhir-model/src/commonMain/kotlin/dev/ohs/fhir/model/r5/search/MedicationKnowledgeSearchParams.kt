@@ -186,8 +186,9 @@ public object MedicationKnowledgeSearchParams {
     listOf(packagingCost, packagingCostConcept)
 
   /**
-   * Supported search parameters for the MedicationKnowledge resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the MedicationKnowledge resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<MedicationKnowledge, *>> =
     listOf(
@@ -202,10 +203,8 @@ public object MedicationKnowledgeSearchParams {
       monitoringProgramType,
       monograph,
       monographType,
-      packagingCost,
-      packagingCostConcept,
       productType,
       sourceCost,
       status,
-    ) - unsupported.toSet()
+    )
 }

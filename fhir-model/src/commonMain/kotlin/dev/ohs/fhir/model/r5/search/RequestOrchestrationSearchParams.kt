@@ -561,8 +561,9 @@ public object RequestOrchestrationSearchParams {
     listOf(participant)
 
   /**
-   * Supported search parameters for the RequestOrchestration resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the RequestOrchestration resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: CollectionsList<SearchParam<RequestOrchestration, *>> =
     listOf(
@@ -576,10 +577,9 @@ public object RequestOrchestrationSearchParams {
       instantiatesCanonical,
       instantiatesUri,
       intent,
-      participant,
       patient,
       priority,
       status,
       subject,
-    ) - unsupported.toSet()
+    )
 }

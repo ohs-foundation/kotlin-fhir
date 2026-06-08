@@ -252,13 +252,12 @@ public object CapabilityStatementSearchParams {
     listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the CapabilityStatement resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the CapabilityStatement resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<CapabilityStatement, *>> =
     listOf(
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -281,5 +280,5 @@ public object CapabilityStatementSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

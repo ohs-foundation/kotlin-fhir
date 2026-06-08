@@ -231,8 +231,9 @@ public object ImagingStudySearchParams {
   public val unsupported: List<SearchParam<ImagingStudy, *>> = listOf(reason)
 
   /**
-   * Supported search parameters for the ImagingStudy resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ImagingStudy resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<ImagingStudy, *>> =
     listOf(
@@ -247,11 +248,10 @@ public object ImagingStudySearchParams {
       modality,
       patient,
       performer,
-      reason,
       referrer,
       series,
       started,
       status,
       subject,
-    ) - unsupported.toSet()
+    )
 }

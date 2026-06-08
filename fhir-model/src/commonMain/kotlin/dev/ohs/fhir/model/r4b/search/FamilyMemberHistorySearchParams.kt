@@ -127,8 +127,9 @@ public object FamilyMemberHistorySearchParams {
   public val unsupported: List<SearchParam<FamilyMemberHistory, *>> = listOf()
 
   /**
-   * Supported search parameters for the FamilyMemberHistory resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the FamilyMemberHistory resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<FamilyMemberHistory, *>> =
     listOf(
@@ -141,5 +142,5 @@ public object FamilyMemberHistorySearchParams {
       relationship,
       sex,
       status,
-    ) - unsupported.toSet()
+    )
 }

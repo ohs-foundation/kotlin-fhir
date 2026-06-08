@@ -806,8 +806,9 @@ public object TaskSearchParams {
   public val unsupported: CollectionsList<SearchParam<Task, *>> = listOf()
 
   /**
-   * Supported search parameters for the Task resource type. Entries in [unsupported] are excluded
-   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Task resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Task, *>> =
     listOf(
@@ -830,5 +831,5 @@ public object TaskSearchParams {
       requester,
       status,
       subject,
-    ) - unsupported.toSet()
+    )
 }

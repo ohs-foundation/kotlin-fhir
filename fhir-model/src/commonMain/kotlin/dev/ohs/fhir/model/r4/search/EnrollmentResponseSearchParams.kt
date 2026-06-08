@@ -62,9 +62,9 @@ public object EnrollmentResponseSearchParams {
   public val unsupported: List<SearchParam<EnrollmentResponse, *>> = listOf()
 
   /**
-   * Supported search parameters for the EnrollmentResponse resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the EnrollmentResponse resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
-  public val all: List<SearchParam<EnrollmentResponse, *>> =
-    listOf(identifier, request, status) - unsupported.toSet()
+  public val all: List<SearchParam<EnrollmentResponse, *>> = listOf(identifier, request, status)
 }

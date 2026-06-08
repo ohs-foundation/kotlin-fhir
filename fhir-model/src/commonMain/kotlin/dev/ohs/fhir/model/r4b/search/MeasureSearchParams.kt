@@ -1101,8 +1101,9 @@ public object MeasureSearchParams {
   public val unsupported: CollectionsList<SearchParam<Measure, *>> = listOf()
 
   /**
-   * Supported search parameters for the Measure resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Measure resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Measure, *>> =
     listOf(
@@ -1128,5 +1129,5 @@ public object MeasureSearchParams {
       topic,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

@@ -113,10 +113,10 @@ public object SpecimenDefinitionSearchParams {
   public val unsupported: List<SearchParam<SpecimenDefinition, *>> = listOf()
 
   /**
-   * Supported search parameters for the SpecimenDefinition resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the SpecimenDefinition resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<SpecimenDefinition, *>> =
-    listOf(container, experimental, identifier, isDerived, status, title, type, typeTested, url) -
-      unsupported.toSet()
+    listOf(container, experimental, identifier, isDerived, status, title, type, typeTested, url)
 }

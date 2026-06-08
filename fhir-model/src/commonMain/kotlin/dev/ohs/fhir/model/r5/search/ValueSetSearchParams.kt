@@ -721,14 +721,13 @@ public object ValueSetSearchParams {
     listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the ValueSet resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ValueSet resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<ValueSet, *>> =
     listOf(
       code,
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -748,5 +747,5 @@ public object ValueSetSearchParams {
       topic,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

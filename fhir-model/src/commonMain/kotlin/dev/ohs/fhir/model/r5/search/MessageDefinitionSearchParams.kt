@@ -212,20 +212,18 @@ public object MessageDefinitionSearchParams {
     listOf(context, contextQuantity, event)
 
   /**
-   * Supported search parameters for the MessageDefinition resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the MessageDefinition resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<MessageDefinition, *>> =
     listOf(
       category,
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
       date,
       description,
-      event,
       focus,
       identifier,
       jurisdiction,
@@ -236,5 +234,5 @@ public object MessageDefinitionSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

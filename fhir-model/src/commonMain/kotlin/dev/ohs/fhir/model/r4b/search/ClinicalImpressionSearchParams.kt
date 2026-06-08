@@ -445,8 +445,9 @@ public object ClinicalImpressionSearchParams {
   public val unsupported: CollectionsList<SearchParam<ClinicalImpression, *>> = listOf()
 
   /**
-   * Supported search parameters for the ClinicalImpression resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ClinicalImpression resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: CollectionsList<SearchParam<ClinicalImpression, *>> =
     listOf(
@@ -463,5 +464,5 @@ public object ClinicalImpressionSearchParams {
       status,
       subject,
       supportingInfo,
-    ) - unsupported.toSet()
+    )
 }

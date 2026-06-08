@@ -51,9 +51,9 @@ public object FormularyItemSearchParams {
   public val unsupported: List<SearchParam<FormularyItem, *>> = listOf()
 
   /**
-   * Supported search parameters for the FormularyItem resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the FormularyItem resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
-  public val all: List<SearchParam<FormularyItem, *>> =
-    listOf(code, identifier) - unsupported.toSet()
+  public val all: List<SearchParam<FormularyItem, *>> = listOf(code, identifier)
 }

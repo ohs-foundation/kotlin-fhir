@@ -124,10 +124,10 @@ public object SupplyRequestSearchParams {
   public val unsupported: List<SearchParam<SupplyRequest, *>> = listOf()
 
   /**
-   * Supported search parameters for the SupplyRequest resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the SupplyRequest resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<SupplyRequest, *>> =
-    listOf(category, date, identifier, patient, requester, status, subject, supplier) -
-      unsupported.toSet()
+    listOf(category, date, identifier, patient, requester, status, subject, supplier)
 }

@@ -71,9 +71,9 @@ public object DeviceUsageSearchParams {
   public val unsupported: List<SearchParam<DeviceUsage, *>> = listOf()
 
   /**
-   * Supported search parameters for the DeviceUsage resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the DeviceUsage resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
-  public val all: List<SearchParam<DeviceUsage, *>> =
-    listOf(device, identifier, patient, status) - unsupported.toSet()
+  public val all: List<SearchParam<DeviceUsage, *>> = listOf(device, identifier, patient, status)
 }

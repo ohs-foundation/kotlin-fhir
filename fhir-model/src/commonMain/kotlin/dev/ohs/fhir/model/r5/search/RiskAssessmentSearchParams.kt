@@ -150,20 +150,10 @@ public object RiskAssessmentSearchParams {
   public val unsupported: List<SearchParam<RiskAssessment, *>> = listOf(date, probability)
 
   /**
-   * Supported search parameters for the RiskAssessment resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the RiskAssessment resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<RiskAssessment, *>> =
-    listOf(
-      condition,
-      date,
-      encounter,
-      identifier,
-      method,
-      patient,
-      performer,
-      probability,
-      risk,
-      subject,
-    ) - unsupported.toSet()
+    listOf(condition, encounter, identifier, method, patient, performer, risk, subject)
 }

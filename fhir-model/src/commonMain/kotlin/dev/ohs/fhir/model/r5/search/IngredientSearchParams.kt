@@ -178,8 +178,9 @@ public object IngredientSearchParams {
     )
 
   /**
-   * Supported search parameters for the Ingredient resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Ingredient resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Ingredient, *>> =
     listOf(
@@ -189,12 +190,8 @@ public object IngredientSearchParams {
       manufacturer,
       role,
       status,
-      strengthConcentrationQuantity,
-      strengthConcentrationRatio,
-      strengthPresentationQuantity,
-      strengthPresentationRatio,
       substance,
       substanceCode,
       substanceDefinition,
-    ) - unsupported.toSet()
+    )
 }

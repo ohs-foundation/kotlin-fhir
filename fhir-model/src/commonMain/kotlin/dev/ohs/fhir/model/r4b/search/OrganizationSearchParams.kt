@@ -147,8 +147,9 @@ public object OrganizationSearchParams {
   public val unsupported: List<SearchParam<Organization, *>> = listOf()
 
   /**
-   * Supported search parameters for the Organization resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Organization resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Organization, *>> =
     listOf(
@@ -165,5 +166,5 @@ public object OrganizationSearchParams {
       partof,
       phonetic,
       type,
-    ) - unsupported.toSet()
+    )
 }

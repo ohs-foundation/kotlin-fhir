@@ -172,13 +172,12 @@ public object GraphDefinitionSearchParams {
   public val unsupported: List<SearchParam<GraphDefinition, *>> = listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the GraphDefinition resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the GraphDefinition resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<GraphDefinition, *>> =
     listOf(
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -192,5 +191,5 @@ public object GraphDefinitionSearchParams {
       status,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

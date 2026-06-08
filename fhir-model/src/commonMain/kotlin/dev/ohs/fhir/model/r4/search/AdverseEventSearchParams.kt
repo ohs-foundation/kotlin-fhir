@@ -164,8 +164,9 @@ public object AdverseEventSearchParams {
   public val unsupported: List<SearchParam<AdverseEvent, *>> = listOf()
 
   /**
-   * Supported search parameters for the AdverseEvent resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the AdverseEvent resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<AdverseEvent, *>> =
     listOf(
@@ -181,5 +182,5 @@ public object AdverseEventSearchParams {
       study,
       subject,
       substance,
-    ) - unsupported.toSet()
+    )
 }

@@ -23,5 +23,5 @@ import kotlin.collections.List
  * Extracts the values for [param] from this resource. Equivalent to `param.extractFrom(this)`, but
  * reads more fluently at the call site (e.g. `patient.extract(PatientSearchParams.birthdate)`).
  */
-public fun <R : Resource, T> R.extract(`param`: SearchParam<R, T>): List<T> =
+public inline fun <R : Resource, T> R.extract(`param`: SearchParam<R, T>): List<T> =
   param.extractFrom(this)

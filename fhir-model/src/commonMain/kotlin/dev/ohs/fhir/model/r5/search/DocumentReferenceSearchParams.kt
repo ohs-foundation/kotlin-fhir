@@ -897,8 +897,9 @@ public object DocumentReferenceSearchParams {
     listOf(formatCanonical, formatCode, formatUri)
 
   /**
-   * Supported search parameters for the DocumentReference resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the DocumentReference resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: CollectionsList<SearchParam<DocumentReference, *>> =
     listOf(
@@ -918,9 +919,6 @@ public object DocumentReferenceSearchParams {
       eventCode,
       eventReference,
       facility,
-      formatCanonical,
-      formatCode,
-      formatUri,
       identifier,
       language,
       location,
@@ -936,5 +934,5 @@ public object DocumentReferenceSearchParams {
       subject,
       type,
       version,
-    ) - unsupported.toSet()
+    )
 }

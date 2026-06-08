@@ -449,8 +449,9 @@ public object ContractSearchParams {
   public val unsupported: CollectionsList<SearchParam<Contract, *>> = listOf()
 
   /**
-   * Supported search parameters for the Contract resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Contract resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Contract, *>> =
     listOf(
@@ -464,5 +465,5 @@ public object ContractSearchParams {
       status,
       subject,
       url,
-    ) - unsupported.toSet()
+    )
 }

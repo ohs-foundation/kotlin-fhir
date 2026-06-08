@@ -236,14 +236,14 @@ public object DeviceSearchParams {
   public val unsupported: List<SearchParam<Device, *>> = listOf(codeValueConcept)
 
   /**
-   * Supported search parameters for the Device resource type. Entries in [unsupported] are excluded
-   * so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Device resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Device, *>> =
     listOf(
       biologicalSourceEvent,
       code,
-      codeValueConcept,
       definition,
       deviceName,
       expirationDate,
@@ -264,5 +264,5 @@ public object DeviceSearchParams {
       udiDi,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

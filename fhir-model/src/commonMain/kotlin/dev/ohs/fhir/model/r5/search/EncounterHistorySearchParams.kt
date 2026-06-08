@@ -86,9 +86,10 @@ public object EncounterHistorySearchParams {
   public val unsupported: List<SearchParam<EncounterHistory, *>> = listOf()
 
   /**
-   * Supported search parameters for the EncounterHistory resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the EncounterHistory resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<EncounterHistory, *>> =
-    listOf(encounter, identifier, patient, status, subject) - unsupported.toSet()
+    listOf(encounter, identifier, patient, status, subject)
 }

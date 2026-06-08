@@ -178,8 +178,9 @@ public object RiskEvidenceSynthesisSearchParams {
   public val unsupported: List<SearchParam<RiskEvidenceSynthesis, *>> = listOf()
 
   /**
-   * Supported search parameters for the RiskEvidenceSynthesis resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the RiskEvidenceSynthesis resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<RiskEvidenceSynthesis, *>> =
     listOf(
@@ -199,5 +200,5 @@ public object RiskEvidenceSynthesisSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

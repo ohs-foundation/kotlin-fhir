@@ -480,8 +480,9 @@ public object ConsentSearchParams {
   public val unsupported: CollectionsList<SearchParam<Consent, *>> = listOf()
 
   /**
-   * Supported search parameters for the Consent resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Consent resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<Consent, *>> =
     listOf(
@@ -500,5 +501,5 @@ public object ConsentSearchParams {
       securityLabel,
       sourceReference,
       status,
-    ) - unsupported.toSet()
+    )
 }

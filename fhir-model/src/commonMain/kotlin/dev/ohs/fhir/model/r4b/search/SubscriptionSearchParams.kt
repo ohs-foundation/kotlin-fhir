@@ -85,9 +85,10 @@ public object SubscriptionSearchParams {
   public val unsupported: List<SearchParam<Subscription, *>> = listOf()
 
   /**
-   * Supported search parameters for the Subscription resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Subscription resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Subscription, *>> =
-    listOf(contact, criteria, payload, status, type, url) - unsupported.toSet()
+    listOf(contact, criteria, payload, status, type, url)
 }

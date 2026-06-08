@@ -213,8 +213,9 @@ public object CodeSystemSearchParams {
   public val unsupported: List<SearchParam<CodeSystem, *>> = listOf()
 
   /**
-   * Supported search parameters for the CodeSystem resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the CodeSystem resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<CodeSystem, *>> =
     listOf(
@@ -238,5 +239,5 @@ public object CodeSystemSearchParams {
       title,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

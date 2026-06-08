@@ -89,10 +89,10 @@ public object EndpointSearchParams {
   public val unsupported: List<SearchParam<Endpoint, *>> = listOf()
 
   /**
-   * Supported search parameters for the Endpoint resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Endpoint resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Endpoint, *>> =
-    listOf(connectionType, identifier, name, organization, payloadType, status) -
-      unsupported.toSet()
+    listOf(connectionType, identifier, name, organization, payloadType, status)
 }

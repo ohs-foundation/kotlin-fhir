@@ -1220,14 +1220,13 @@ public object ActivityDefinitionSearchParams {
     listOf(context, contextQuantity)
 
   /**
-   * Supported search parameters for the ActivityDefinition resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ActivityDefinition resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: CollectionsList<SearchParam<ActivityDefinition, *>> =
     listOf(
       composedOf,
-      context,
-      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
@@ -1248,5 +1247,5 @@ public object ActivityDefinitionSearchParams {
       topic,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

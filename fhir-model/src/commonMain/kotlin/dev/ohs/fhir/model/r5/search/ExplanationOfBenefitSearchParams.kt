@@ -207,8 +207,9 @@ public object ExplanationOfBenefitSearchParams {
   public val unsupported: List<SearchParam<ExplanationOfBenefit, *>> = listOf()
 
   /**
-   * Supported search parameters for the ExplanationOfBenefit resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the ExplanationOfBenefit resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<ExplanationOfBenefit, *>> =
     listOf(
@@ -229,5 +230,5 @@ public object ExplanationOfBenefitSearchParams {
       provider,
       status,
       subdetailUdi,
-    ) - unsupported.toSet()
+    )
 }

@@ -160,8 +160,9 @@ public object CompartmentDefinitionSearchParams {
   public val unsupported: List<SearchParam<CompartmentDefinition, *>> = listOf()
 
   /**
-   * Supported search parameters for the CompartmentDefinition resource type. Entries in
-   * [unsupported] are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the CompartmentDefinition resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<CompartmentDefinition, *>> =
     listOf(
@@ -179,5 +180,5 @@ public object CompartmentDefinitionSearchParams {
       status,
       url,
       version,
-    ) - unsupported.toSet()
+    )
 }

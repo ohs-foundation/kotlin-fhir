@@ -201,8 +201,9 @@ public object RelatedPersonSearchParams {
   public val unsupported: List<SearchParam<RelatedPerson, *>> = listOf()
 
   /**
-   * Supported search parameters for the RelatedPerson resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the RelatedPerson resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<RelatedPerson, *>> =
     listOf(
@@ -225,5 +226,5 @@ public object RelatedPersonSearchParams {
       phonetic,
       relationship,
       telecom,
-    ) - unsupported.toSet()
+    )
 }

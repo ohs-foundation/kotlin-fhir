@@ -455,15 +455,15 @@ public object MessageHeaderSearchParams {
   public val unsupported: CollectionsList<SearchParam<MessageHeader, *>> = listOf(event)
 
   /**
-   * Supported search parameters for the MessageHeader resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the MessageHeader resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: CollectionsList<SearchParam<MessageHeader, *>> =
     listOf(
       author,
       code,
       destination,
-      event,
       focus,
       `receiver`,
       responseId,
@@ -471,5 +471,5 @@ public object MessageHeaderSearchParams {
       sender,
       source,
       target,
-    ) - unsupported.toSet()
+    )
 }

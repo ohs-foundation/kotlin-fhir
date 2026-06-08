@@ -223,8 +223,9 @@ public object ProcedureSearchParams {
   public val unsupported: List<SearchParam<Procedure, *>> = listOf()
 
   /**
-   * Supported search parameters for the Procedure resource type. Entries in [unsupported] are
-   * excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the Procedure resource type. Iterating `all` and calling
+   * `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from this
+   * list.
    */
   public val all: List<SearchParam<Procedure, *>> =
     listOf(
@@ -244,5 +245,5 @@ public object ProcedureSearchParams {
       reasonReference,
       status,
       subject,
-    ) - unsupported.toSet()
+    )
 }

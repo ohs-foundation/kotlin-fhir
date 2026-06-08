@@ -182,8 +182,9 @@ public object AllergyIntoleranceSearchParams {
   public val unsupported: List<SearchParam<AllergyIntolerance, *>> = listOf()
 
   /**
-   * Supported search parameters for the AllergyIntolerance resource type. Entries in [unsupported]
-   * are excluded so iterating `all` and calling `extractFrom` on each entry is safe.
+   * Supported search parameters for the AllergyIntolerance resource type. Iterating `all` and
+   * calling `extractFrom` on each entry is safe; see [unsupported] for the parameters excluded from
+   * this list.
    */
   public val all: List<SearchParam<AllergyIntolerance, *>> =
     listOf(
@@ -202,5 +203,5 @@ public object AllergyIntoleranceSearchParams {
       severity,
       type,
       verificationStatus,
-    ) - unsupported.toSet()
+    )
 }

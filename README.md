@@ -6,9 +6,9 @@
 [![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-wasm-wasi?color=yellow&label=wasm-wasi)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-wasm-wasi)
 [![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-js?color=yellow&label=js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-js)
 [![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-android?color=yellow&label=android)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-android)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosx64?color=yellow&label=ios-x64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosx64)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosarm64?color=yellow&label=ios-arm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosarm64)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iossimulatorarm64?color=yellow&label=ios-simulator)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iossimulatorarm64)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iossimulatorarm64?color=yellow&label=iossimulatorarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iossimulatorarm64)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosarm64?color=yellow&label=iosarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosarm64)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosx64?color=yellow&label=iosx64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosx64)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Kotlin FHIR is a lean and fast implementation of the
@@ -44,30 +44,22 @@ Jan 2025.
 The library supports the following
 [target platforms](https://kotlinlang.org/docs/multiplatform-dsl-reference.html#targets):
 
-| Target platform                    | Target          | Artifact suffix | Support |
-|:-----------------------------------|:----------------|:----------------|:--------|
-| Kotlin/JVM                         | `jvm`           | `-jvm`          | ✅       |
-| Kotlin/Wasm                        | `wasmJs`        | `-wasm-js`      | ✅       |
-| Kotlin/Wasm                        | `wasmWasi`      | `-wasm-wasi`    | ✅       |
-| Kotlin/JS                          | `js`            | `-js`           | ✅       |
-| Android applications and libraries | `androidTarget` | `-android`      | ✅       |
+| Target platform                    | Gradle target  | Artifact suffix  | Support |
+|:-----------------------------------|:---------------|:-----------------|:--------|
+| Kotlin/JVM                         | `jvm`          | `-jvm`           | ✅       |
+| Kotlin/Wasm                        | `wasmJs`       | `-wasm-js`       | ✅       |
+| Kotlin/Wasm                        | `wasmWasi`     | `-wasm-wasi`     | ✅       |
+| Kotlin/JS                          | `js`           | `-js`            | ✅       |
+| Android applications and libraries | `android`      | `-android`       | ✅       |
 
-as well as a subset of
-[tier 1 Kotlin/Native targets](https://kotlinlang.org/docs/native-target-support.html#tier-1), detailed below:
+The library also supports the following
+[Kotlin/Native targets](https://kotlinlang.org/docs/native-target-support.html):
 
-| Gradle target name | Artifact suffix      | Support |
-|:-------------------|:---------------------|:--------|
-| macosX64           | `-macosx64`          | ⛔       |
-| macosArm64         | `-macosarm64`        | ⛔       |
-| iosSimulatorArm64  | `-iossimulatorarm64` | ✅       |
-| iosX64             | `-iosx64`            | ✅       |
-| iosArm64           | `-iosarm64`          | ✅       |
-
-The library does not support `macos` targets in the tier 1 list, or any
-[tier2](https://kotlinlang.org/docs/native-target-support.html#tier-2) and
-[tier3](https://kotlinlang.org/docs/native-target-support.html#tier-3) Kotlin/Native targets. This
-reflects their limited usage currently rather than technical difficulty. Please contact the team if
-you require support for these platforms.
+| Gradle target      | Artifact suffix      | Tier | Support |
+|:-------------------|:---------------------|:-----|:--------|
+| iosSimulatorArm64  | `-iossimulatorarm64` | 1    | ✅       |
+| iosArm64           | `-iosarm64`          | 1    | ✅       |
+| iosX64             | `-iosx64`            | 3    | ✅       |
 
 ## Data model
 

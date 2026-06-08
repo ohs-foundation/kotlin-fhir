@@ -744,7 +744,7 @@ public object NamingSystemSearchParams {
   /**
    * Search parameters whose FHIRPath isn't supported yet. Calling `extractFrom` on any of these
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
-   * subtracted from [all].
+   * excluded from [all].
    */
   public val unsupported: CollectionsList<SearchParam<NamingSystem, *>> =
     listOf(context, contextQuantity)

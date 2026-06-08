@@ -39,7 +39,7 @@ public object QuestionnaireSearchParams {
   public val code: SearchParam<Questionnaire, Coding> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Questionnaire.item.code",
       extractor = { resource -> resource.item.flatMap { it.code } },
     )
@@ -47,7 +47,7 @@ public object QuestionnaireSearchParams {
   public val context: SearchParam<Questionnaire, CodeableConcept> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(Questionnaire.useContext.value as CodeableConcept)",
       extractor = { resource ->
         resource.useContext.mapNotNull {
@@ -59,7 +59,7 @@ public object QuestionnaireSearchParams {
   public val contextQuantity: SearchParam<Questionnaire, Quantity> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(Questionnaire.useContext.value as Quantity)",
       extractor = { resource ->
         resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
@@ -69,7 +69,7 @@ public object QuestionnaireSearchParams {
   public val contextType: SearchParam<Questionnaire, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Questionnaire.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -77,7 +77,7 @@ public object QuestionnaireSearchParams {
   public val contextTypeQuantity: SearchParam<Questionnaire, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Questionnaire.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -85,7 +85,7 @@ public object QuestionnaireSearchParams {
   public val contextTypeValue: SearchParam<Questionnaire, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Questionnaire.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -93,7 +93,7 @@ public object QuestionnaireSearchParams {
   public val date: SearchParam<Questionnaire, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Questionnaire.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -101,7 +101,7 @@ public object QuestionnaireSearchParams {
   public val definition: SearchParam<Questionnaire, Uri> =
     SearchParam(
       name = "definition",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Questionnaire.item.definition",
       extractor = { resource -> resource.item.mapNotNull { it.definition } },
     )
@@ -109,7 +109,7 @@ public object QuestionnaireSearchParams {
   public val description: SearchParam<Questionnaire, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Questionnaire.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -117,7 +117,7 @@ public object QuestionnaireSearchParams {
   public val effective: SearchParam<Questionnaire, Period> =
     SearchParam(
       name = "effective",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Questionnaire.effectivePeriod",
       extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
     )
@@ -125,7 +125,7 @@ public object QuestionnaireSearchParams {
   public val identifier: SearchParam<Questionnaire, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Questionnaire.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -133,7 +133,7 @@ public object QuestionnaireSearchParams {
   public val jurisdiction: SearchParam<Questionnaire, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Questionnaire.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -141,7 +141,7 @@ public object QuestionnaireSearchParams {
   public val name: SearchParam<Questionnaire, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Questionnaire.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -149,7 +149,7 @@ public object QuestionnaireSearchParams {
   public val publisher: SearchParam<Questionnaire, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Questionnaire.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -157,7 +157,7 @@ public object QuestionnaireSearchParams {
   public val status: SearchParam<Questionnaire, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Questionnaire.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -165,7 +165,7 @@ public object QuestionnaireSearchParams {
   public val subjectType: SearchParam<Questionnaire, Any> =
     SearchParam(
       name = "subject-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Questionnaire.subjectType",
       extractor = { resource -> resource.subjectType },
     )
@@ -173,7 +173,7 @@ public object QuestionnaireSearchParams {
   public val title: SearchParam<Questionnaire, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Questionnaire.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -181,7 +181,7 @@ public object QuestionnaireSearchParams {
   public val url: SearchParam<Questionnaire, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Questionnaire.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -189,7 +189,7 @@ public object QuestionnaireSearchParams {
   public val version: SearchParam<Questionnaire, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Questionnaire.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

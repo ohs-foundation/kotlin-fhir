@@ -34,7 +34,7 @@ public object BodyStructureSearchParams {
   public val excluded_structure: SearchParam<BodyStructure, Any> =
     SearchParam(
       name = "excluded_structure",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BodyStructure.excludedStructure.structure",
       extractor = {
         throw NotImplementedError(
@@ -46,7 +46,7 @@ public object BodyStructureSearchParams {
   public val identifier: SearchParam<BodyStructure, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BodyStructure.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -54,7 +54,7 @@ public object BodyStructureSearchParams {
   public val included_structure: SearchParam<BodyStructure, CodeableConcept> =
     SearchParam(
       name = "included_structure",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BodyStructure.includedStructure.structure",
       extractor = { resource -> resource.includedStructure.map { it.structure } },
     )
@@ -62,7 +62,7 @@ public object BodyStructureSearchParams {
   public val morphology: SearchParam<BodyStructure, CodeableConcept> =
     SearchParam(
       name = "morphology",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BodyStructure.morphology",
       extractor = { resource -> listOfNotNull(resource.morphology) },
     )
@@ -70,7 +70,7 @@ public object BodyStructureSearchParams {
   public val patient: SearchParam<BodyStructure, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "BodyStructure.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },

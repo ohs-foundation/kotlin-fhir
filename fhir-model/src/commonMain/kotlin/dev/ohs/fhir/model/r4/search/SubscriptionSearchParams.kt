@@ -32,7 +32,7 @@ public object SubscriptionSearchParams {
   public val contact: SearchParam<Subscription, ContactPoint> =
     SearchParam(
       name = "contact",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.contact",
       extractor = { resource -> resource.contact },
     )
@@ -40,7 +40,7 @@ public object SubscriptionSearchParams {
   public val criteria: SearchParam<Subscription, String> =
     SearchParam(
       name = "criteria",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Subscription.criteria",
       extractor = { resource -> listOf(resource.criteria) },
     )
@@ -48,7 +48,7 @@ public object SubscriptionSearchParams {
   public val payload: SearchParam<Subscription, Any> =
     SearchParam(
       name = "payload",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.channel.payload",
       extractor = { resource -> listOfNotNull(resource.channel.payload) },
     )
@@ -56,7 +56,7 @@ public object SubscriptionSearchParams {
   public val status: SearchParam<Subscription, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -64,7 +64,7 @@ public object SubscriptionSearchParams {
   public val type: SearchParam<Subscription, Any> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.channel.type",
       extractor = { resource -> listOf(resource.channel.type) },
     )
@@ -72,7 +72,7 @@ public object SubscriptionSearchParams {
   public val url: SearchParam<Subscription, Url> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Subscription.channel.endpoint",
       extractor = { resource -> listOfNotNull(resource.channel.endpoint) },
     )

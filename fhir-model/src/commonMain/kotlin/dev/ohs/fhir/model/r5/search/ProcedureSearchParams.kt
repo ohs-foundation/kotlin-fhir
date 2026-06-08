@@ -59,7 +59,7 @@ public object ProcedureSearchParams {
   public val basedOn: SearchParam<Procedure, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.basedOn",
       target = listOf(ServiceRequest::class, CarePlan::class),
       extractor = { resource -> resource.basedOn },
@@ -68,7 +68,7 @@ public object ProcedureSearchParams {
   public val category: SearchParam<Procedure, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Procedure.category",
       extractor = { resource -> resource.category },
     )
@@ -76,7 +76,7 @@ public object ProcedureSearchParams {
   public val code: SearchParam<Procedure, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Procedure.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -84,7 +84,7 @@ public object ProcedureSearchParams {
   public val date: SearchParam<Procedure, Any> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Procedure.occurrence.ofType(dateTime)",
       extractor = {
         throw NotImplementedError(
@@ -96,7 +96,7 @@ public object ProcedureSearchParams {
   public val encounter: SearchParam<Procedure, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -105,7 +105,7 @@ public object ProcedureSearchParams {
   public val identifier: SearchParam<Procedure, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Procedure.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -113,7 +113,7 @@ public object ProcedureSearchParams {
   public val instantiatesCanonical: SearchParam<Procedure, Canonical> =
     SearchParam(
       name = "instantiates-canonical",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.instantiatesCanonical",
       target =
         listOf(
@@ -129,7 +129,7 @@ public object ProcedureSearchParams {
   public val instantiatesUri: SearchParam<Procedure, Uri> =
     SearchParam(
       name = "instantiates-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Procedure.instantiatesUri",
       extractor = { resource -> resource.instantiatesUri },
     )
@@ -137,7 +137,7 @@ public object ProcedureSearchParams {
   public val location: SearchParam<Procedure, Reference> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.location",
       target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
@@ -146,7 +146,7 @@ public object ProcedureSearchParams {
   public val partOf: SearchParam<Procedure, Reference> =
     SearchParam(
       name = "part-of",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.partOf",
       target = listOf(Procedure::class, Observation::class, MedicationAdministration::class),
       extractor = { resource -> resource.partOf },
@@ -155,7 +155,7 @@ public object ProcedureSearchParams {
   public val patient: SearchParam<Procedure, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -168,7 +168,7 @@ public object ProcedureSearchParams {
   public val performer: SearchParam<Procedure, Reference> =
     SearchParam(
       name = "performer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.performer.actor",
       target =
         listOf(
@@ -187,7 +187,7 @@ public object ProcedureSearchParams {
   public val reasonCode: SearchParam<Procedure, CodeableConcept> =
     SearchParam(
       name = "reason-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Procedure.reason.concept",
       extractor = { resource -> resource.reason.mapNotNull { it.concept } },
     )
@@ -195,7 +195,7 @@ public object ProcedureSearchParams {
   public val reasonReference: SearchParam<Procedure, Reference> =
     SearchParam(
       name = "reason-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.reason.reference",
       target =
         listOf(
@@ -211,7 +211,7 @@ public object ProcedureSearchParams {
   public val report: SearchParam<Procedure, Reference> =
     SearchParam(
       name = "report",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.report",
       target = listOf(Composition::class, DocumentReference::class, DiagnosticReport::class),
       extractor = { resource -> resource.report },
@@ -220,7 +220,7 @@ public object ProcedureSearchParams {
   public val status: SearchParam<Procedure, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Procedure.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -228,7 +228,7 @@ public object ProcedureSearchParams {
   public val subject: SearchParam<Procedure, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Procedure.subject",
       target =
         listOf(

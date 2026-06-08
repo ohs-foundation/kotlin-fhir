@@ -38,7 +38,7 @@ public object AllergyIntoleranceSearchParams {
   public val asserter: SearchParam<AllergyIntolerance, Reference> =
     SearchParam(
       name = "asserter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AllergyIntolerance.asserter",
       target =
         listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class),
@@ -48,7 +48,7 @@ public object AllergyIntoleranceSearchParams {
   public val category: SearchParam<AllergyIntolerance, Any> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.category",
       extractor = { resource -> resource.category },
     )
@@ -56,7 +56,7 @@ public object AllergyIntoleranceSearchParams {
   public val clinicalStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
     SearchParam(
       name = "clinical-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.clinicalStatus",
       extractor = { resource -> listOfNotNull(resource.clinicalStatus) },
     )
@@ -64,7 +64,7 @@ public object AllergyIntoleranceSearchParams {
   public val code: SearchParam<AllergyIntolerance, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -72,7 +72,7 @@ public object AllergyIntoleranceSearchParams {
   public val criticality: SearchParam<AllergyIntolerance, Any> =
     SearchParam(
       name = "criticality",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.criticality",
       extractor = { resource -> listOfNotNull(resource.criticality) },
     )
@@ -80,7 +80,7 @@ public object AllergyIntoleranceSearchParams {
   public val date: SearchParam<AllergyIntolerance, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "AllergyIntolerance.recordedDate",
       extractor = { resource -> listOfNotNull(resource.recordedDate) },
     )
@@ -88,7 +88,7 @@ public object AllergyIntoleranceSearchParams {
   public val identifier: SearchParam<AllergyIntolerance, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -96,7 +96,7 @@ public object AllergyIntoleranceSearchParams {
   public val lastDate: SearchParam<AllergyIntolerance, DateTime> =
     SearchParam(
       name = "last-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "AllergyIntolerance.lastOccurrence",
       extractor = { resource -> listOfNotNull(resource.lastOccurrence) },
     )
@@ -104,7 +104,7 @@ public object AllergyIntoleranceSearchParams {
   public val manifestation: SearchParam<AllergyIntolerance, CodeableConcept> =
     SearchParam(
       name = "manifestation",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.reaction.manifestation",
       extractor = { resource -> resource.reaction.flatMap { it.manifestation } },
     )
@@ -112,7 +112,7 @@ public object AllergyIntoleranceSearchParams {
   public val onset: SearchParam<AllergyIntolerance, DateTime> =
     SearchParam(
       name = "onset",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "AllergyIntolerance.reaction.onset",
       extractor = { resource -> resource.reaction.mapNotNull { it.onset } },
     )
@@ -120,7 +120,7 @@ public object AllergyIntoleranceSearchParams {
   public val patient: SearchParam<AllergyIntolerance, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AllergyIntolerance.patient",
       target = listOf(Patient::class, Group::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -129,7 +129,7 @@ public object AllergyIntoleranceSearchParams {
   public val recorder: SearchParam<AllergyIntolerance, Reference> =
     SearchParam(
       name = "recorder",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AllergyIntolerance.recorder",
       target =
         listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class),
@@ -139,7 +139,7 @@ public object AllergyIntoleranceSearchParams {
   public val route: SearchParam<AllergyIntolerance, CodeableConcept> =
     SearchParam(
       name = "route",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.reaction.exposureRoute",
       extractor = { resource -> resource.reaction.mapNotNull { it.exposureRoute } },
     )
@@ -147,7 +147,7 @@ public object AllergyIntoleranceSearchParams {
   public val severity: SearchParam<AllergyIntolerance, Any> =
     SearchParam(
       name = "severity",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.reaction.severity",
       extractor = { resource -> resource.reaction.mapNotNull { it.severity } },
     )
@@ -155,7 +155,7 @@ public object AllergyIntoleranceSearchParams {
   public val type: SearchParam<AllergyIntolerance, Any> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )
@@ -163,7 +163,7 @@ public object AllergyIntoleranceSearchParams {
   public val verificationStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
     SearchParam(
       name = "verification-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AllergyIntolerance.verificationStatus",
       extractor = { resource -> listOfNotNull(resource.verificationStatus) },
     )

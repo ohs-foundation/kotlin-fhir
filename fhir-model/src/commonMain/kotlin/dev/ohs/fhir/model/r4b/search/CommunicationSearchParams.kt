@@ -174,7 +174,7 @@ public object CommunicationSearchParams {
   public val basedOn: SearchParam<Communication, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Communication.basedOn",
       target =
         listOf(
@@ -325,7 +325,7 @@ public object CommunicationSearchParams {
   public val category: SearchParam<Communication, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Communication.category",
       extractor = { resource -> resource.category },
     )
@@ -333,7 +333,7 @@ public object CommunicationSearchParams {
   public val encounter: SearchParam<Communication, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Communication.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -342,7 +342,7 @@ public object CommunicationSearchParams {
   public val identifier: SearchParam<Communication, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Communication.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -350,7 +350,7 @@ public object CommunicationSearchParams {
   public val instantiatesCanonical: SearchParam<Communication, Canonical> =
     SearchParam(
       name = "instantiates-canonical",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Communication.instantiatesCanonical",
       target =
         listOf(
@@ -366,7 +366,7 @@ public object CommunicationSearchParams {
   public val instantiatesUri: SearchParam<Communication, Uri> =
     SearchParam(
       name = "instantiates-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Communication.instantiatesUri",
       extractor = { resource -> resource.instantiatesUri },
     )
@@ -374,7 +374,7 @@ public object CommunicationSearchParams {
   public val medium: SearchParam<Communication, CodeableConcept> =
     SearchParam(
       name = "medium",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Communication.medium",
       extractor = { resource -> resource.medium },
     )
@@ -382,7 +382,7 @@ public object CommunicationSearchParams {
   public val partOf: SearchParam<Communication, Reference> =
     SearchParam(
       name = "part-of",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Communication.partOf",
       target =
         listOf(
@@ -533,7 +533,7 @@ public object CommunicationSearchParams {
   public val patient: SearchParam<Communication, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Communication.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -546,7 +546,7 @@ public object CommunicationSearchParams {
   public val received: SearchParam<Communication, DateTime> =
     SearchParam(
       name = "received",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Communication.received",
       extractor = { resource -> listOfNotNull(resource.received) },
     )
@@ -554,7 +554,7 @@ public object CommunicationSearchParams {
   public val recipient: SearchParam<Communication, Reference> =
     SearchParam(
       name = "recipient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Communication.recipient",
       target =
         listOf(
@@ -574,7 +574,7 @@ public object CommunicationSearchParams {
   public val sender: SearchParam<Communication, Reference> =
     SearchParam(
       name = "sender",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Communication.sender",
       target =
         listOf(
@@ -592,7 +592,7 @@ public object CommunicationSearchParams {
   public val sent: SearchParam<Communication, DateTime> =
     SearchParam(
       name = "sent",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Communication.sent",
       extractor = { resource -> listOfNotNull(resource.sent) },
     )
@@ -600,7 +600,7 @@ public object CommunicationSearchParams {
   public val status: SearchParam<Communication, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Communication.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -608,7 +608,7 @@ public object CommunicationSearchParams {
   public val subject: SearchParam<Communication, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Communication.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },

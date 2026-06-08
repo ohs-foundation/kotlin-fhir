@@ -54,7 +54,7 @@ public object ChargeItemSearchParams {
   public val account: SearchParam<ChargeItem, Reference> =
     SearchParam(
       name = "account",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ChargeItem.account",
       target = listOf(Account::class),
       extractor = { resource -> resource.account },
@@ -63,7 +63,7 @@ public object ChargeItemSearchParams {
   public val code: SearchParam<ChargeItem, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ChargeItem.code",
       extractor = { resource -> listOf(resource.code) },
     )
@@ -71,7 +71,7 @@ public object ChargeItemSearchParams {
   public val context: SearchParam<ChargeItem, Reference> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ChargeItem.context",
       target = listOf(EpisodeOfCare::class, Encounter::class),
       extractor = { resource -> listOfNotNull(resource.context) },
@@ -80,7 +80,7 @@ public object ChargeItemSearchParams {
   public val enteredDate: SearchParam<ChargeItem, DateTime> =
     SearchParam(
       name = "entered-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ChargeItem.enteredDate",
       extractor = { resource -> listOfNotNull(resource.enteredDate) },
     )
@@ -88,7 +88,7 @@ public object ChargeItemSearchParams {
   public val enterer: SearchParam<ChargeItem, Reference> =
     SearchParam(
       name = "enterer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ChargeItem.enterer",
       target =
         listOf(
@@ -105,7 +105,7 @@ public object ChargeItemSearchParams {
   public val factorOverride: SearchParam<ChargeItem, Decimal> =
     SearchParam(
       name = "factor-override",
-      type = SearchParamType.fromCode("number"),
+      type = SearchParamType.Number,
       expression = "ChargeItem.factorOverride",
       extractor = { resource -> listOfNotNull(resource.factorOverride) },
     )
@@ -113,7 +113,7 @@ public object ChargeItemSearchParams {
   public val identifier: SearchParam<ChargeItem, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ChargeItem.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -121,7 +121,7 @@ public object ChargeItemSearchParams {
   public val occurrence: SearchParam<ChargeItem, ChargeItem.Occurrence> =
     SearchParam(
       name = "occurrence",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ChargeItem.occurrence",
       extractor = { resource -> listOfNotNull(resource.occurrence) },
     )
@@ -129,7 +129,7 @@ public object ChargeItemSearchParams {
   public val patient: SearchParam<ChargeItem, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ChargeItem.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -142,7 +142,7 @@ public object ChargeItemSearchParams {
   public val performerActor: SearchParam<ChargeItem, Reference> =
     SearchParam(
       name = "performer-actor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ChargeItem.performer.actor",
       target =
         listOf(
@@ -160,7 +160,7 @@ public object ChargeItemSearchParams {
   public val performerFunction: SearchParam<ChargeItem, CodeableConcept> =
     SearchParam(
       name = "performer-function",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ChargeItem.performer.function",
       extractor = { resource -> resource.performer.mapNotNull { it.function } },
     )
@@ -168,7 +168,7 @@ public object ChargeItemSearchParams {
   public val performingOrganization: SearchParam<ChargeItem, Reference> =
     SearchParam(
       name = "performing-organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ChargeItem.performingOrganization",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.performingOrganization) },
@@ -177,7 +177,7 @@ public object ChargeItemSearchParams {
   public val priceOverride: SearchParam<ChargeItem, Money> =
     SearchParam(
       name = "price-override",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "ChargeItem.priceOverride",
       extractor = { resource -> listOfNotNull(resource.priceOverride) },
     )
@@ -185,7 +185,7 @@ public object ChargeItemSearchParams {
   public val quantity: SearchParam<ChargeItem, Quantity> =
     SearchParam(
       name = "quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "ChargeItem.quantity",
       extractor = { resource -> listOfNotNull(resource.quantity) },
     )
@@ -193,7 +193,7 @@ public object ChargeItemSearchParams {
   public val requestingOrganization: SearchParam<ChargeItem, Reference> =
     SearchParam(
       name = "requesting-organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ChargeItem.requestingOrganization",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.requestingOrganization) },
@@ -202,7 +202,7 @@ public object ChargeItemSearchParams {
   public val service: SearchParam<ChargeItem, Reference> =
     SearchParam(
       name = "service",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ChargeItem.service",
       target =
         listOf(
@@ -221,7 +221,7 @@ public object ChargeItemSearchParams {
   public val subject: SearchParam<ChargeItem, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ChargeItem.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },

@@ -34,7 +34,7 @@ public object InventoryItemSearchParams {
   public val code: SearchParam<InventoryItem, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InventoryItem.code",
       extractor = { resource -> resource.code },
     )
@@ -42,7 +42,7 @@ public object InventoryItemSearchParams {
   public val identifier: SearchParam<InventoryItem, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InventoryItem.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -50,7 +50,7 @@ public object InventoryItemSearchParams {
   public val status: SearchParam<InventoryItem, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InventoryItem.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -58,7 +58,7 @@ public object InventoryItemSearchParams {
   public val subject: SearchParam<InventoryItem, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "InventoryItem.instance.subject",
       target = listOf(Organization::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.instance?.subject) },

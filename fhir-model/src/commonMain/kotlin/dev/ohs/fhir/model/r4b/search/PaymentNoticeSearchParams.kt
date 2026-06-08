@@ -172,7 +172,7 @@ public object PaymentNoticeSearchParams {
   public val created: SearchParam<PaymentNotice, DateTime> =
     SearchParam(
       name = "created",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "PaymentNotice.created",
       extractor = { resource -> listOf(resource.created) },
     )
@@ -180,7 +180,7 @@ public object PaymentNoticeSearchParams {
   public val identifier: SearchParam<PaymentNotice, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "PaymentNotice.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -188,7 +188,7 @@ public object PaymentNoticeSearchParams {
   public val paymentStatus: SearchParam<PaymentNotice, CodeableConcept> =
     SearchParam(
       name = "payment-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "PaymentNotice.paymentStatus",
       extractor = { resource -> listOfNotNull(resource.paymentStatus) },
     )
@@ -196,7 +196,7 @@ public object PaymentNoticeSearchParams {
   public val provider: SearchParam<PaymentNotice, Reference> =
     SearchParam(
       name = "provider",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PaymentNotice.provider",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.provider) },
@@ -205,7 +205,7 @@ public object PaymentNoticeSearchParams {
   public val request: SearchParam<PaymentNotice, Reference> =
     SearchParam(
       name = "request",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PaymentNotice.request",
       target =
         listOf(
@@ -356,7 +356,7 @@ public object PaymentNoticeSearchParams {
   public val response: SearchParam<PaymentNotice, Reference> =
     SearchParam(
       name = "response",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PaymentNotice.response",
       target =
         listOf(
@@ -507,7 +507,7 @@ public object PaymentNoticeSearchParams {
   public val status: SearchParam<PaymentNotice, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "PaymentNotice.status",
       extractor = { resource -> listOf(resource.status) },
     )

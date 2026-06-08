@@ -34,7 +34,7 @@ public object MedicinalProductAuthorizationSearchParams {
   public val country: SearchParam<MedicinalProductAuthorization, CodeableConcept> =
     SearchParam(
       name = "country",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductAuthorization.country",
       extractor = { resource -> resource.country },
     )
@@ -42,7 +42,7 @@ public object MedicinalProductAuthorizationSearchParams {
   public val holder: SearchParam<MedicinalProductAuthorization, Reference> =
     SearchParam(
       name = "holder",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicinalProductAuthorization.holder",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.holder) },
@@ -51,7 +51,7 @@ public object MedicinalProductAuthorizationSearchParams {
   public val identifier: SearchParam<MedicinalProductAuthorization, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductAuthorization.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -59,7 +59,7 @@ public object MedicinalProductAuthorizationSearchParams {
   public val status: SearchParam<MedicinalProductAuthorization, CodeableConcept> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductAuthorization.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -67,7 +67,7 @@ public object MedicinalProductAuthorizationSearchParams {
   public val subject: SearchParam<MedicinalProductAuthorization, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicinalProductAuthorization.subject",
       target = listOf(MedicinalProductPackaged::class, MedicinalProduct::class),
       extractor = { resource -> listOfNotNull(resource.subject) },

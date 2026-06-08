@@ -38,7 +38,7 @@ public object LocationSearchParams {
   public val address: SearchParam<Location, Address> =
     SearchParam(
       name = "address",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Location.address",
       extractor = { resource -> listOfNotNull(resource.address) },
     )
@@ -46,7 +46,7 @@ public object LocationSearchParams {
   public val addressCity: SearchParam<Location, String> =
     SearchParam(
       name = "address-city",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Location.address.city",
       extractor = { resource -> listOfNotNull(resource.address?.city) },
     )
@@ -54,7 +54,7 @@ public object LocationSearchParams {
   public val addressCountry: SearchParam<Location, String> =
     SearchParam(
       name = "address-country",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Location.address.country",
       extractor = { resource -> listOfNotNull(resource.address?.country) },
     )
@@ -62,7 +62,7 @@ public object LocationSearchParams {
   public val addressPostalcode: SearchParam<Location, String> =
     SearchParam(
       name = "address-postalcode",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Location.address.postalCode",
       extractor = { resource -> listOfNotNull(resource.address?.postalCode) },
     )
@@ -70,7 +70,7 @@ public object LocationSearchParams {
   public val addressState: SearchParam<Location, String> =
     SearchParam(
       name = "address-state",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Location.address.state",
       extractor = { resource -> listOfNotNull(resource.address?.state) },
     )
@@ -78,7 +78,7 @@ public object LocationSearchParams {
   public val addressUse: SearchParam<Location, Any> =
     SearchParam(
       name = "address-use",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Location.address.use",
       extractor = { resource -> listOfNotNull(resource.address?.use) },
     )
@@ -86,7 +86,7 @@ public object LocationSearchParams {
   public val characteristic: SearchParam<Location, CodeableConcept> =
     SearchParam(
       name = "characteristic",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Location.characteristic",
       extractor = { resource -> resource.characteristic },
     )
@@ -94,7 +94,7 @@ public object LocationSearchParams {
   public val contains: SearchParam<Location, Any> =
     SearchParam(
       name = "contains",
-      type = SearchParamType.fromCode("special"),
+      type = SearchParamType.Special,
       expression =
         "Location.extension('http://hl7.org/fhir/StructureDefinition/location-boundary-geojson').value",
       extractor = {
@@ -107,7 +107,7 @@ public object LocationSearchParams {
   public val endpoint: SearchParam<Location, Reference> =
     SearchParam(
       name = "endpoint",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Location.endpoint",
       target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
@@ -116,7 +116,7 @@ public object LocationSearchParams {
   public val identifier: SearchParam<Location, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Location.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -124,7 +124,7 @@ public object LocationSearchParams {
   public val name: SearchParam<Location, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Location.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -132,7 +132,7 @@ public object LocationSearchParams {
   public val near: SearchParam<Location, Location.Position> =
     SearchParam(
       name = "near",
-      type = SearchParamType.fromCode("special"),
+      type = SearchParamType.Special,
       expression = "Location.position",
       extractor = { resource -> listOfNotNull(resource.position) },
     )
@@ -140,7 +140,7 @@ public object LocationSearchParams {
   public val operationalStatus: SearchParam<Location, Coding> =
     SearchParam(
       name = "operational-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Location.operationalStatus",
       extractor = { resource -> listOfNotNull(resource.operationalStatus) },
     )
@@ -148,7 +148,7 @@ public object LocationSearchParams {
   public val organization: SearchParam<Location, Reference> =
     SearchParam(
       name = "organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Location.managingOrganization",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
@@ -157,7 +157,7 @@ public object LocationSearchParams {
   public val partof: SearchParam<Location, Reference> =
     SearchParam(
       name = "partof",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Location.partOf",
       target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.partOf) },
@@ -166,7 +166,7 @@ public object LocationSearchParams {
   public val status: SearchParam<Location, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Location.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -174,7 +174,7 @@ public object LocationSearchParams {
   public val type: SearchParam<Location, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Location.type",
       extractor = { resource -> resource.type },
     )

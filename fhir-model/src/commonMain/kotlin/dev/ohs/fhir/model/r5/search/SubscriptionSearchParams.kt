@@ -43,7 +43,7 @@ public object SubscriptionSearchParams {
   public val contact: SearchParam<Subscription, ContactPoint> =
     SearchParam(
       name = "contact",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.contact",
       extractor = { resource -> resource.contact },
     )
@@ -51,7 +51,7 @@ public object SubscriptionSearchParams {
   public val contentLevel: SearchParam<Subscription, Any> =
     SearchParam(
       name = "content-level",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.content",
       extractor = { resource -> listOfNotNull(resource.content) },
     )
@@ -59,7 +59,7 @@ public object SubscriptionSearchParams {
   public val filterValue: SearchParam<Subscription, String> =
     SearchParam(
       name = "filter-value",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Subscription.filterBy.value",
       extractor = { resource -> resource.filterBy.map { it.`value` } },
     )
@@ -67,7 +67,7 @@ public object SubscriptionSearchParams {
   public val identifier: SearchParam<Subscription, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -75,7 +75,7 @@ public object SubscriptionSearchParams {
   public val name: SearchParam<Subscription, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Subscription.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -83,7 +83,7 @@ public object SubscriptionSearchParams {
   public val owner: SearchParam<Subscription, Reference> =
     SearchParam(
       name = "owner",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Subscription.managingEntity",
       target =
         listOf(
@@ -101,7 +101,7 @@ public object SubscriptionSearchParams {
   public val payload: SearchParam<Subscription, Any> =
     SearchParam(
       name = "payload",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.contentType",
       extractor = { resource -> listOfNotNull(resource.contentType) },
     )
@@ -109,7 +109,7 @@ public object SubscriptionSearchParams {
   public val status: SearchParam<Subscription, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -117,7 +117,7 @@ public object SubscriptionSearchParams {
   public val topic: SearchParam<Subscription, Canonical> =
     SearchParam(
       name = "topic",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Subscription.topic",
       extractor = { resource -> listOf(resource.topic) },
     )
@@ -125,7 +125,7 @@ public object SubscriptionSearchParams {
   public val type: SearchParam<Subscription, Coding> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Subscription.channelType",
       extractor = { resource -> listOf(resource.channelType) },
     )
@@ -133,7 +133,7 @@ public object SubscriptionSearchParams {
   public val url: SearchParam<Subscription, Url> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Subscription.endpoint",
       extractor = { resource -> listOfNotNull(resource.endpoint) },
     )

@@ -179,7 +179,7 @@ public object DeviceRequestSearchParams {
   public val authoredOn: SearchParam<DeviceRequest, DateTime> =
     SearchParam(
       name = "authored-on",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "DeviceRequest.authoredOn",
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
@@ -187,7 +187,7 @@ public object DeviceRequestSearchParams {
   public val basedOn: SearchParam<DeviceRequest, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceRequest.basedOn",
       target =
         listOf(
@@ -343,7 +343,7 @@ public object DeviceRequestSearchParams {
   public val code: SearchParam<DeviceRequest, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(DeviceRequest.code as CodeableConcept)",
       extractor = { resource ->
         listOfNotNull((resource.code as? DeviceRequest.Code.CodeableConcept)?.value)
@@ -353,7 +353,7 @@ public object DeviceRequestSearchParams {
   public val device: SearchParam<DeviceRequest, Reference> =
     SearchParam(
       name = "device",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "(DeviceRequest.code as Reference)",
       target = listOf(Device::class),
       extractor = { resource ->
@@ -364,7 +364,7 @@ public object DeviceRequestSearchParams {
   public val encounter: SearchParam<DeviceRequest, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceRequest.encounter",
       target = listOf(Encounter::class, EpisodeOfCare::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -373,7 +373,7 @@ public object DeviceRequestSearchParams {
   public val eventDate: SearchParam<DeviceRequest, DateTime> =
     SearchParam(
       name = "event-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "(DeviceRequest.occurrence as dateTime)",
       extractor = { resource ->
         listOfNotNull((resource.occurrence as? DeviceRequest.Occurrence.DateTime)?.value)
@@ -383,7 +383,7 @@ public object DeviceRequestSearchParams {
   public val groupIdentifier: SearchParam<DeviceRequest, Identifier> =
     SearchParam(
       name = "group-identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceRequest.groupIdentifier",
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
@@ -391,7 +391,7 @@ public object DeviceRequestSearchParams {
   public val identifier: SearchParam<DeviceRequest, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceRequest.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -399,7 +399,7 @@ public object DeviceRequestSearchParams {
   public val instantiatesCanonical: SearchParam<DeviceRequest, Canonical> =
     SearchParam(
       name = "instantiates-canonical",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceRequest.instantiatesCanonical",
       target = listOf(PlanDefinition::class, ActivityDefinition::class),
       extractor = { resource -> resource.instantiatesCanonical },
@@ -408,7 +408,7 @@ public object DeviceRequestSearchParams {
   public val instantiatesUri: SearchParam<DeviceRequest, Uri> =
     SearchParam(
       name = "instantiates-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "DeviceRequest.instantiatesUri",
       extractor = { resource -> resource.instantiatesUri },
     )
@@ -416,7 +416,7 @@ public object DeviceRequestSearchParams {
   public val insurance: SearchParam<DeviceRequest, Reference> =
     SearchParam(
       name = "insurance",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceRequest.insurance",
       target = listOf(ClaimResponse::class, Coverage::class),
       extractor = { resource -> resource.insurance },
@@ -425,7 +425,7 @@ public object DeviceRequestSearchParams {
   public val intent: SearchParam<DeviceRequest, Any> =
     SearchParam(
       name = "intent",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceRequest.intent",
       extractor = { resource -> listOf(resource.intent) },
     )
@@ -433,7 +433,7 @@ public object DeviceRequestSearchParams {
   public val patient: SearchParam<DeviceRequest, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceRequest.subject.where(resolve() is Patient)",
       target = listOf(Patient::class, Group::class),
       extractor = { resource ->
@@ -446,7 +446,7 @@ public object DeviceRequestSearchParams {
   public val performer: SearchParam<DeviceRequest, Reference> =
     SearchParam(
       name = "performer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceRequest.performer",
       target =
         listOf(
@@ -465,7 +465,7 @@ public object DeviceRequestSearchParams {
   public val priorRequest: SearchParam<DeviceRequest, Reference> =
     SearchParam(
       name = "prior-request",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceRequest.priorRequest",
       target =
         listOf(
@@ -621,7 +621,7 @@ public object DeviceRequestSearchParams {
   public val requester: SearchParam<DeviceRequest, Reference> =
     SearchParam(
       name = "requester",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceRequest.requester",
       target =
         listOf(Practitioner::class, Organization::class, Device::class, PractitionerRole::class),
@@ -631,7 +631,7 @@ public object DeviceRequestSearchParams {
   public val status: SearchParam<DeviceRequest, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceRequest.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -639,7 +639,7 @@ public object DeviceRequestSearchParams {
   public val subject: SearchParam<DeviceRequest, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceRequest.subject",
       target = listOf(Group::class, Device::class, Patient::class, Location::class),
       extractor = { resource -> listOf(resource.subject) },

@@ -40,7 +40,7 @@ public object NutritionIntakeSearchParams {
   public val code: SearchParam<NutritionIntake, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionIntake.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -48,7 +48,7 @@ public object NutritionIntakeSearchParams {
   public val date: SearchParam<NutritionIntake, Any> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "NutritionIntake.occurrence.ofType(dateTime)",
       extractor = {
         throw NotImplementedError(
@@ -60,7 +60,7 @@ public object NutritionIntakeSearchParams {
   public val encounter: SearchParam<NutritionIntake, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "NutritionIntake.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -69,7 +69,7 @@ public object NutritionIntakeSearchParams {
   public val identifier: SearchParam<NutritionIntake, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionIntake.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -77,7 +77,7 @@ public object NutritionIntakeSearchParams {
   public val nutrition: SearchParam<NutritionIntake, CodeableConcept> =
     SearchParam(
       name = "nutrition",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionIntake.consumedItem.nutritionProduct.concept",
       extractor = { resource ->
         resource.consumedItem.map { it.nutritionProduct }.mapNotNull { it.concept }
@@ -87,7 +87,7 @@ public object NutritionIntakeSearchParams {
   public val patient: SearchParam<NutritionIntake, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "NutritionIntake.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -100,7 +100,7 @@ public object NutritionIntakeSearchParams {
   public val source: SearchParam<NutritionIntake, Reference> =
     SearchParam(
       name = "source",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "(NutritionIntake.reported as Reference)",
       target =
         listOf(
@@ -118,7 +118,7 @@ public object NutritionIntakeSearchParams {
   public val status: SearchParam<NutritionIntake, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionIntake.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -126,7 +126,7 @@ public object NutritionIntakeSearchParams {
   public val subject: SearchParam<NutritionIntake, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "NutritionIntake.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },

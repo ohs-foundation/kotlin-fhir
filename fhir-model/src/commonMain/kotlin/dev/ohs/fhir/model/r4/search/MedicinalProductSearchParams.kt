@@ -31,7 +31,7 @@ public object MedicinalProductSearchParams {
   public val identifier: SearchParam<MedicinalProduct, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProduct.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -39,7 +39,7 @@ public object MedicinalProductSearchParams {
   public val name: SearchParam<MedicinalProduct, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "MedicinalProduct.name.productName",
       extractor = { resource -> resource.name.map { it.productName } },
     )
@@ -47,7 +47,7 @@ public object MedicinalProductSearchParams {
   public val nameLanguage: SearchParam<MedicinalProduct, CodeableConcept> =
     SearchParam(
       name = "name-language",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProduct.name.countryLanguage.language",
       extractor = { resource -> resource.name.flatMap { it.countryLanguage }.map { it.language } },
     )

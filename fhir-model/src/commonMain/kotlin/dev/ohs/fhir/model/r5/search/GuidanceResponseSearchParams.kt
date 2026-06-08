@@ -33,7 +33,7 @@ public object GuidanceResponseSearchParams {
   public val identifier: SearchParam<GuidanceResponse, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GuidanceResponse.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -41,7 +41,7 @@ public object GuidanceResponseSearchParams {
   public val patient: SearchParam<GuidanceResponse, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "GuidanceResponse.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -54,7 +54,7 @@ public object GuidanceResponseSearchParams {
   public val request: SearchParam<GuidanceResponse, Identifier> =
     SearchParam(
       name = "request",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GuidanceResponse.requestIdentifier",
       extractor = { resource -> listOfNotNull(resource.requestIdentifier) },
     )
@@ -62,7 +62,7 @@ public object GuidanceResponseSearchParams {
   public val status: SearchParam<GuidanceResponse, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GuidanceResponse.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -70,7 +70,7 @@ public object GuidanceResponseSearchParams {
   public val subject: SearchParam<GuidanceResponse, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "GuidanceResponse.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },

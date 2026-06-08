@@ -44,7 +44,7 @@ public object RegulatedAuthorizationSearchParams {
   public val case: SearchParam<RegulatedAuthorization, Identifier> =
     SearchParam(
       name = "case",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RegulatedAuthorization.case.identifier",
       extractor = { resource -> listOfNotNull(resource.case?.identifier) },
     )
@@ -52,7 +52,7 @@ public object RegulatedAuthorizationSearchParams {
   public val caseType: SearchParam<RegulatedAuthorization, CodeableConcept> =
     SearchParam(
       name = "case-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RegulatedAuthorization.case.type",
       extractor = { resource -> listOfNotNull(resource.case?.type) },
     )
@@ -60,7 +60,7 @@ public object RegulatedAuthorizationSearchParams {
   public val holder: SearchParam<RegulatedAuthorization, Reference> =
     SearchParam(
       name = "holder",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RegulatedAuthorization.holder",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.holder) },
@@ -69,7 +69,7 @@ public object RegulatedAuthorizationSearchParams {
   public val identifier: SearchParam<RegulatedAuthorization, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RegulatedAuthorization.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -77,7 +77,7 @@ public object RegulatedAuthorizationSearchParams {
   public val region: SearchParam<RegulatedAuthorization, CodeableConcept> =
     SearchParam(
       name = "region",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RegulatedAuthorization.region",
       extractor = { resource -> resource.region },
     )
@@ -85,7 +85,7 @@ public object RegulatedAuthorizationSearchParams {
   public val status: SearchParam<RegulatedAuthorization, CodeableConcept> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RegulatedAuthorization.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -93,7 +93,7 @@ public object RegulatedAuthorizationSearchParams {
   public val subject: SearchParam<RegulatedAuthorization, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RegulatedAuthorization.subject",
       target =
         listOf(

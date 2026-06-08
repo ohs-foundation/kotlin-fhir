@@ -38,7 +38,7 @@ public object NamingSystemSearchParams {
   public val contact: SearchParam<NamingSystem, String> =
     SearchParam(
       name = "contact",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "NamingSystem.contact.name",
       extractor = { resource -> resource.contact.mapNotNull { it.name } },
     )
@@ -46,7 +46,7 @@ public object NamingSystemSearchParams {
   public val context: SearchParam<NamingSystem, CodeableConcept> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(NamingSystem.useContext.value as CodeableConcept)",
       extractor = { resource ->
         resource.useContext.mapNotNull {
@@ -58,7 +58,7 @@ public object NamingSystemSearchParams {
   public val contextQuantity: SearchParam<NamingSystem, Quantity> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(NamingSystem.useContext.value as Quantity)",
       extractor = { resource ->
         resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
@@ -68,7 +68,7 @@ public object NamingSystemSearchParams {
   public val contextType: SearchParam<NamingSystem, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NamingSystem.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -76,7 +76,7 @@ public object NamingSystemSearchParams {
   public val contextTypeQuantity: SearchParam<NamingSystem, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "NamingSystem.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -84,7 +84,7 @@ public object NamingSystemSearchParams {
   public val contextTypeValue: SearchParam<NamingSystem, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "NamingSystem.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -92,7 +92,7 @@ public object NamingSystemSearchParams {
   public val date: SearchParam<NamingSystem, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "NamingSystem.date",
       extractor = { resource -> listOf(resource.date) },
     )
@@ -100,7 +100,7 @@ public object NamingSystemSearchParams {
   public val description: SearchParam<NamingSystem, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "NamingSystem.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -108,7 +108,7 @@ public object NamingSystemSearchParams {
   public val idType: SearchParam<NamingSystem, Any> =
     SearchParam(
       name = "id-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NamingSystem.uniqueId.type",
       extractor = { resource -> resource.uniqueId.map { it.type } },
     )
@@ -116,7 +116,7 @@ public object NamingSystemSearchParams {
   public val jurisdiction: SearchParam<NamingSystem, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NamingSystem.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -124,7 +124,7 @@ public object NamingSystemSearchParams {
   public val kind: SearchParam<NamingSystem, Any> =
     SearchParam(
       name = "kind",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NamingSystem.kind",
       extractor = { resource -> listOf(resource.kind) },
     )
@@ -132,7 +132,7 @@ public object NamingSystemSearchParams {
   public val name: SearchParam<NamingSystem, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "NamingSystem.name",
       extractor = { resource -> listOf(resource.name) },
     )
@@ -140,7 +140,7 @@ public object NamingSystemSearchParams {
   public val period: SearchParam<NamingSystem, Period> =
     SearchParam(
       name = "period",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "NamingSystem.uniqueId.period",
       extractor = { resource -> resource.uniqueId.mapNotNull { it.period } },
     )
@@ -148,7 +148,7 @@ public object NamingSystemSearchParams {
   public val publisher: SearchParam<NamingSystem, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "NamingSystem.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -156,7 +156,7 @@ public object NamingSystemSearchParams {
   public val responsible: SearchParam<NamingSystem, String> =
     SearchParam(
       name = "responsible",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "NamingSystem.responsible",
       extractor = { resource -> listOfNotNull(resource.responsible) },
     )
@@ -164,7 +164,7 @@ public object NamingSystemSearchParams {
   public val status: SearchParam<NamingSystem, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NamingSystem.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -172,7 +172,7 @@ public object NamingSystemSearchParams {
   public val telecom: SearchParam<NamingSystem, ContactPoint> =
     SearchParam(
       name = "telecom",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NamingSystem.contact.telecom",
       extractor = { resource -> resource.contact.flatMap { it.telecom } },
     )
@@ -180,7 +180,7 @@ public object NamingSystemSearchParams {
   public val type: SearchParam<NamingSystem, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NamingSystem.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )
@@ -188,7 +188,7 @@ public object NamingSystemSearchParams {
   public val `value`: SearchParam<NamingSystem, String> =
     SearchParam(
       name = "value",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "NamingSystem.uniqueId.value",
       extractor = { resource -> resource.uniqueId.map { it.`value` } },
     )

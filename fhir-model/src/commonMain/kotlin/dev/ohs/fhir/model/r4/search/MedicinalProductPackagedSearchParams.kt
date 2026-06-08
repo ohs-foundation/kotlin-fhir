@@ -31,7 +31,7 @@ public object MedicinalProductPackagedSearchParams {
   public val identifier: SearchParam<MedicinalProductPackaged, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductPackaged.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -39,7 +39,7 @@ public object MedicinalProductPackagedSearchParams {
   public val subject: SearchParam<MedicinalProductPackaged, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicinalProductPackaged.subject",
       target = listOf(MedicinalProduct::class),
       extractor = { resource -> resource.subject },

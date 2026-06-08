@@ -196,7 +196,7 @@ public object DocumentReferenceSearchParams {
   public val attester: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "attester",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.attester.party",
       target =
         listOf(
@@ -212,7 +212,7 @@ public object DocumentReferenceSearchParams {
   public val author: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.author",
       target =
         listOf(
@@ -230,7 +230,7 @@ public object DocumentReferenceSearchParams {
   public val basedOn: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.basedOn",
       target =
         listOf(
@@ -257,7 +257,7 @@ public object DocumentReferenceSearchParams {
   public val bodysite: SearchParam<DocumentReference, CodeableConcept> =
     SearchParam(
       name = "bodysite",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.bodySite.concept",
       extractor = { resource -> resource.bodySite.mapNotNull { it.concept } },
     )
@@ -265,7 +265,7 @@ public object DocumentReferenceSearchParams {
   public val bodysiteReference: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "bodysite-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.bodySite.reference",
       target = listOf(BodyStructure::class),
       extractor = { resource -> resource.bodySite.mapNotNull { it.reference } },
@@ -274,7 +274,7 @@ public object DocumentReferenceSearchParams {
   public val category: SearchParam<DocumentReference, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.category",
       extractor = { resource -> resource.category },
     )
@@ -282,7 +282,7 @@ public object DocumentReferenceSearchParams {
   public val contenttype: SearchParam<DocumentReference, Any> =
     SearchParam(
       name = "contenttype",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.content.attachment.contentType",
       extractor = { resource ->
         resource.content.map { it.attachment }.mapNotNull { it.contentType }
@@ -292,7 +292,7 @@ public object DocumentReferenceSearchParams {
   public val context: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.context",
       target = listOf(Appointment::class, Encounter::class, EpisodeOfCare::class),
       extractor = { resource -> resource.context },
@@ -301,7 +301,7 @@ public object DocumentReferenceSearchParams {
   public val creation: SearchParam<DocumentReference, DateTime> =
     SearchParam(
       name = "creation",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "DocumentReference.content.attachment.creation",
       extractor = { resource -> resource.content.map { it.attachment }.mapNotNull { it.creation } },
     )
@@ -309,7 +309,7 @@ public object DocumentReferenceSearchParams {
   public val custodian: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "custodian",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.custodian",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.custodian) },
@@ -318,7 +318,7 @@ public object DocumentReferenceSearchParams {
   public val date: SearchParam<DocumentReference, Instant> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "DocumentReference.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -326,7 +326,7 @@ public object DocumentReferenceSearchParams {
   public val description: SearchParam<DocumentReference, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "DocumentReference.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -334,7 +334,7 @@ public object DocumentReferenceSearchParams {
   public val docStatus: SearchParam<DocumentReference, Any> =
     SearchParam(
       name = "doc-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.docStatus",
       extractor = { resource -> listOfNotNull(resource.docStatus) },
     )
@@ -342,7 +342,7 @@ public object DocumentReferenceSearchParams {
   public val eventCode: SearchParam<DocumentReference, CodeableConcept> =
     SearchParam(
       name = "event-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.event.concept",
       extractor = { resource -> resource.event.mapNotNull { it.concept } },
     )
@@ -350,7 +350,7 @@ public object DocumentReferenceSearchParams {
   public val eventReference: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "event-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.event.reference",
       target =
         listOf(
@@ -519,7 +519,7 @@ public object DocumentReferenceSearchParams {
   public val facility: SearchParam<DocumentReference, CodeableConcept> =
     SearchParam(
       name = "facility",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.facilityType",
       extractor = { resource -> listOfNotNull(resource.facilityType) },
     )
@@ -527,7 +527,7 @@ public object DocumentReferenceSearchParams {
   public val formatCanonical: SearchParam<DocumentReference, Any> =
     SearchParam(
       name = "format-canonical",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "(DocumentReference.content.profile.value.ofType(canonical))",
       target =
         listOf(
@@ -580,7 +580,7 @@ public object DocumentReferenceSearchParams {
   public val formatCode: SearchParam<DocumentReference, Any> =
     SearchParam(
       name = "format-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(DocumentReference.content.profile.value.ofType(Coding))",
       extractor = {
         throw NotImplementedError(
@@ -592,7 +592,7 @@ public object DocumentReferenceSearchParams {
   public val formatUri: SearchParam<DocumentReference, Any> =
     SearchParam(
       name = "format-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "(DocumentReference.content.profile.value.ofType(uri))",
       extractor = {
         throw NotImplementedError(
@@ -604,7 +604,7 @@ public object DocumentReferenceSearchParams {
   public val identifier: SearchParam<DocumentReference, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -612,7 +612,7 @@ public object DocumentReferenceSearchParams {
   public val language: SearchParam<DocumentReference, Any> =
     SearchParam(
       name = "language",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.content.attachment.language",
       extractor = { resource -> resource.content.map { it.attachment }.mapNotNull { it.language } },
     )
@@ -620,7 +620,7 @@ public object DocumentReferenceSearchParams {
   public val location: SearchParam<DocumentReference, Url> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "DocumentReference.content.attachment.url",
       extractor = { resource -> resource.content.map { it.attachment }.mapNotNull { it.url } },
     )
@@ -628,7 +628,7 @@ public object DocumentReferenceSearchParams {
   public val modality: SearchParam<DocumentReference, CodeableConcept> =
     SearchParam(
       name = "modality",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.modality",
       extractor = { resource -> resource.modality },
     )
@@ -636,7 +636,7 @@ public object DocumentReferenceSearchParams {
   public val patient: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -649,7 +649,7 @@ public object DocumentReferenceSearchParams {
   public val period: SearchParam<DocumentReference, Period> =
     SearchParam(
       name = "period",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "DocumentReference.period",
       extractor = { resource -> listOfNotNull(resource.period) },
     )
@@ -657,7 +657,7 @@ public object DocumentReferenceSearchParams {
   public val relatesto: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "relatesto",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.relatesTo.target",
       target = listOf(DocumentReference::class),
       extractor = { resource -> resource.relatesTo.map { it.target } },
@@ -666,7 +666,7 @@ public object DocumentReferenceSearchParams {
   public val relation: SearchParam<DocumentReference, CodeableConcept> =
     SearchParam(
       name = "relation",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.relatesTo.code",
       extractor = { resource -> resource.relatesTo.map { it.code } },
     )
@@ -674,7 +674,7 @@ public object DocumentReferenceSearchParams {
   public val relationship: SearchParam<DocumentReference, DocumentReference.RelatesTo> =
     SearchParam(
       name = "relationship",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "DocumentReference.relatesTo",
       extractor = { resource -> resource.relatesTo },
     )
@@ -682,7 +682,7 @@ public object DocumentReferenceSearchParams {
   public val securityLabel: SearchParam<DocumentReference, CodeableConcept> =
     SearchParam(
       name = "security-label",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.securityLabel",
       extractor = { resource -> resource.securityLabel },
     )
@@ -690,7 +690,7 @@ public object DocumentReferenceSearchParams {
   public val setting: SearchParam<DocumentReference, CodeableConcept> =
     SearchParam(
       name = "setting",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.practiceSetting",
       extractor = { resource -> listOfNotNull(resource.practiceSetting) },
     )
@@ -698,7 +698,7 @@ public object DocumentReferenceSearchParams {
   public val status: SearchParam<DocumentReference, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -706,7 +706,7 @@ public object DocumentReferenceSearchParams {
   public val subject: SearchParam<DocumentReference, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentReference.subject",
       target =
         listOf(
@@ -875,7 +875,7 @@ public object DocumentReferenceSearchParams {
   public val type: SearchParam<DocumentReference, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentReference.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )
@@ -883,7 +883,7 @@ public object DocumentReferenceSearchParams {
   public val version: SearchParam<DocumentReference, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "DocumentReference.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

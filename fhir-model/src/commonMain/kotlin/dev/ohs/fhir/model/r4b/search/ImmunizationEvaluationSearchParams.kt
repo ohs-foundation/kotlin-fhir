@@ -35,7 +35,7 @@ public object ImmunizationEvaluationSearchParams {
   public val date: SearchParam<ImmunizationEvaluation, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ImmunizationEvaluation.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -43,7 +43,7 @@ public object ImmunizationEvaluationSearchParams {
   public val doseStatus: SearchParam<ImmunizationEvaluation, CodeableConcept> =
     SearchParam(
       name = "dose-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImmunizationEvaluation.doseStatus",
       extractor = { resource -> listOf(resource.doseStatus) },
     )
@@ -51,7 +51,7 @@ public object ImmunizationEvaluationSearchParams {
   public val identifier: SearchParam<ImmunizationEvaluation, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImmunizationEvaluation.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -59,7 +59,7 @@ public object ImmunizationEvaluationSearchParams {
   public val immunizationEvent: SearchParam<ImmunizationEvaluation, Reference> =
     SearchParam(
       name = "immunization-event",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImmunizationEvaluation.immunizationEvent",
       target = listOf(Immunization::class),
       extractor = { resource -> listOf(resource.immunizationEvent) },
@@ -68,7 +68,7 @@ public object ImmunizationEvaluationSearchParams {
   public val patient: SearchParam<ImmunizationEvaluation, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImmunizationEvaluation.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -77,7 +77,7 @@ public object ImmunizationEvaluationSearchParams {
   public val status: SearchParam<ImmunizationEvaluation, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImmunizationEvaluation.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -85,7 +85,7 @@ public object ImmunizationEvaluationSearchParams {
   public val targetDisease: SearchParam<ImmunizationEvaluation, CodeableConcept> =
     SearchParam(
       name = "target-disease",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImmunizationEvaluation.targetDisease",
       extractor = { resource -> listOf(resource.targetDisease) },
     )

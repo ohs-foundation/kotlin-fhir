@@ -173,7 +173,7 @@ public object LinkageSearchParams {
   public val author: SearchParam<Linkage, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Linkage.author",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.author) },
@@ -182,7 +182,7 @@ public object LinkageSearchParams {
   public val item: SearchParam<Linkage, Reference> =
     SearchParam(
       name = "item",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Linkage.item.resource",
       target =
         listOf(
@@ -338,7 +338,7 @@ public object LinkageSearchParams {
   public val source: SearchParam<Linkage, Reference> =
     SearchParam(
       name = "source",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Linkage.item.resource",
       target =
         listOf(

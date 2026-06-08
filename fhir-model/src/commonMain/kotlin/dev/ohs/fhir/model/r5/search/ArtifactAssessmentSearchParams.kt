@@ -30,7 +30,7 @@ public object ArtifactAssessmentSearchParams {
   public val date: SearchParam<ArtifactAssessment, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ArtifactAssessment.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -38,7 +38,7 @@ public object ArtifactAssessmentSearchParams {
   public val identifier: SearchParam<ArtifactAssessment, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ArtifactAssessment.identifier",
       extractor = { resource -> resource.identifier },
     )

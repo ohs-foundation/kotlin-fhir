@@ -174,7 +174,7 @@ public object ConsentSearchParams {
   public val action: SearchParam<Consent, CodeableConcept> =
     SearchParam(
       name = "action",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.provision.action",
       extractor = { resource -> resource.provision?.action ?: emptyList() },
     )
@@ -182,7 +182,7 @@ public object ConsentSearchParams {
   public val actor: SearchParam<Consent, Reference> =
     SearchParam(
       name = "actor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.provision.actor.reference",
       target =
         listOf(
@@ -201,7 +201,7 @@ public object ConsentSearchParams {
   public val category: SearchParam<Consent, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.category",
       extractor = { resource -> resource.category },
     )
@@ -209,7 +209,7 @@ public object ConsentSearchParams {
   public val consentor: SearchParam<Consent, Reference> =
     SearchParam(
       name = "consentor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.performer",
       target =
         listOf(
@@ -225,7 +225,7 @@ public object ConsentSearchParams {
   public val `data`: SearchParam<Consent, Reference> =
     SearchParam(
       name = "data",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.provision.data.reference",
       target =
         listOf(
@@ -376,7 +376,7 @@ public object ConsentSearchParams {
   public val date: SearchParam<Consent, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Consent.dateTime",
       extractor = { resource -> listOfNotNull(resource.dateTime) },
     )
@@ -384,7 +384,7 @@ public object ConsentSearchParams {
   public val identifier: SearchParam<Consent, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -392,7 +392,7 @@ public object ConsentSearchParams {
   public val organization: SearchParam<Consent, Reference> =
     SearchParam(
       name = "organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.organization",
       target = listOf(Organization::class),
       extractor = { resource -> resource.organization },
@@ -401,7 +401,7 @@ public object ConsentSearchParams {
   public val patient: SearchParam<Consent, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.patient) },
@@ -410,7 +410,7 @@ public object ConsentSearchParams {
   public val period: SearchParam<Consent, Period> =
     SearchParam(
       name = "period",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Consent.provision.period",
       extractor = { resource -> listOfNotNull(resource.provision?.period) },
     )
@@ -418,7 +418,7 @@ public object ConsentSearchParams {
   public val purpose: SearchParam<Consent, Coding> =
     SearchParam(
       name = "purpose",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.provision.purpose",
       extractor = { resource -> resource.provision?.purpose ?: emptyList() },
     )
@@ -426,7 +426,7 @@ public object ConsentSearchParams {
   public val scope: SearchParam<Consent, CodeableConcept> =
     SearchParam(
       name = "scope",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.scope",
       extractor = { resource -> listOf(resource.scope) },
     )
@@ -434,7 +434,7 @@ public object ConsentSearchParams {
   public val securityLabel: SearchParam<Consent, Coding> =
     SearchParam(
       name = "security-label",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.provision.securityLabel",
       extractor = { resource -> resource.provision?.securityLabel ?: emptyList() },
     )
@@ -442,7 +442,7 @@ public object ConsentSearchParams {
   public val sourceReference: SearchParam<Consent, Consent.Source> =
     SearchParam(
       name = "source-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.source",
       target =
         listOf(
@@ -457,7 +457,7 @@ public object ConsentSearchParams {
   public val status: SearchParam<Consent, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.status",
       extractor = { resource -> listOf(resource.status) },
     )

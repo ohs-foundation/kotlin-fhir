@@ -174,7 +174,7 @@ public object DocumentManifestSearchParams {
   public val author: SearchParam<DocumentManifest, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentManifest.author",
       target =
         listOf(
@@ -191,7 +191,7 @@ public object DocumentManifestSearchParams {
   public val created: SearchParam<DocumentManifest, DateTime> =
     SearchParam(
       name = "created",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "DocumentManifest.created",
       extractor = { resource -> listOfNotNull(resource.created) },
     )
@@ -199,7 +199,7 @@ public object DocumentManifestSearchParams {
   public val description: SearchParam<DocumentManifest, String> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "DocumentManifest.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -207,7 +207,7 @@ public object DocumentManifestSearchParams {
   public val identifier: SearchParam<DocumentManifest, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentManifest.masterIdentifier",
       extractor = { resource -> listOfNotNull(resource.masterIdentifier) },
     )
@@ -215,7 +215,7 @@ public object DocumentManifestSearchParams {
   public val item: SearchParam<DocumentManifest, Reference> =
     SearchParam(
       name = "item",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentManifest.content",
       target =
         listOf(
@@ -366,7 +366,7 @@ public object DocumentManifestSearchParams {
   public val patient: SearchParam<DocumentManifest, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentManifest.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -379,7 +379,7 @@ public object DocumentManifestSearchParams {
   public val recipient: SearchParam<DocumentManifest, Reference> =
     SearchParam(
       name = "recipient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentManifest.recipient",
       target =
         listOf(
@@ -395,7 +395,7 @@ public object DocumentManifestSearchParams {
   public val relatedId: SearchParam<DocumentManifest, Identifier> =
     SearchParam(
       name = "related-id",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentManifest.related.identifier",
       extractor = { resource -> resource.related.mapNotNull { it.identifier } },
     )
@@ -403,7 +403,7 @@ public object DocumentManifestSearchParams {
   public val relatedRef: SearchParam<DocumentManifest, Reference> =
     SearchParam(
       name = "related-ref",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentManifest.related.ref",
       target =
         listOf(
@@ -554,7 +554,7 @@ public object DocumentManifestSearchParams {
   public val source: SearchParam<DocumentManifest, Uri> =
     SearchParam(
       name = "source",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "DocumentManifest.source",
       extractor = { resource -> listOfNotNull(resource.source) },
     )
@@ -562,7 +562,7 @@ public object DocumentManifestSearchParams {
   public val status: SearchParam<DocumentManifest, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentManifest.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -570,7 +570,7 @@ public object DocumentManifestSearchParams {
   public val subject: SearchParam<DocumentManifest, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DocumentManifest.subject",
       target = listOf(Practitioner::class, Group::class, Device::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
@@ -579,7 +579,7 @@ public object DocumentManifestSearchParams {
   public val type: SearchParam<DocumentManifest, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DocumentManifest.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )

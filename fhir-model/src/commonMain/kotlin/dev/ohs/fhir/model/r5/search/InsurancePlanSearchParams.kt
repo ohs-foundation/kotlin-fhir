@@ -36,7 +36,7 @@ public object InsurancePlanSearchParams {
   public val address: SearchParam<InsurancePlan, Address> =
     SearchParam(
       name = "address",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "InsurancePlan.contact.address",
       extractor = { resource -> resource.contact.mapNotNull { it.address } },
     )
@@ -44,7 +44,7 @@ public object InsurancePlanSearchParams {
   public val addressCity: SearchParam<InsurancePlan, String> =
     SearchParam(
       name = "address-city",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "InsurancePlan.contact.address.city",
       extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.city } },
     )
@@ -52,7 +52,7 @@ public object InsurancePlanSearchParams {
   public val addressCountry: SearchParam<InsurancePlan, String> =
     SearchParam(
       name = "address-country",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "InsurancePlan.contact.address.country",
       extractor = { resource ->
         resource.contact.mapNotNull { it.address }.mapNotNull { it.country }
@@ -62,7 +62,7 @@ public object InsurancePlanSearchParams {
   public val addressPostalcode: SearchParam<InsurancePlan, String> =
     SearchParam(
       name = "address-postalcode",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "InsurancePlan.contact.address.postalCode",
       extractor = { resource ->
         resource.contact.mapNotNull { it.address }.mapNotNull { it.postalCode }
@@ -72,7 +72,7 @@ public object InsurancePlanSearchParams {
   public val addressState: SearchParam<InsurancePlan, String> =
     SearchParam(
       name = "address-state",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "InsurancePlan.contact.address.state",
       extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.state } },
     )
@@ -80,7 +80,7 @@ public object InsurancePlanSearchParams {
   public val addressUse: SearchParam<InsurancePlan, Any> =
     SearchParam(
       name = "address-use",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InsurancePlan.contact.address.use",
       extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.use } },
     )
@@ -88,7 +88,7 @@ public object InsurancePlanSearchParams {
   public val administeredBy: SearchParam<InsurancePlan, Reference> =
     SearchParam(
       name = "administered-by",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "InsurancePlan.administeredBy",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.administeredBy) },
@@ -97,7 +97,7 @@ public object InsurancePlanSearchParams {
   public val endpoint: SearchParam<InsurancePlan, Reference> =
     SearchParam(
       name = "endpoint",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "InsurancePlan.endpoint",
       target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
@@ -106,7 +106,7 @@ public object InsurancePlanSearchParams {
   public val identifier: SearchParam<InsurancePlan, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InsurancePlan.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -114,7 +114,7 @@ public object InsurancePlanSearchParams {
   public val name: SearchParam<InsurancePlan, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "InsurancePlan.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -122,7 +122,7 @@ public object InsurancePlanSearchParams {
   public val ownedBy: SearchParam<InsurancePlan, Reference> =
     SearchParam(
       name = "owned-by",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "InsurancePlan.ownedBy",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.ownedBy) },
@@ -131,7 +131,7 @@ public object InsurancePlanSearchParams {
   public val phonetic: SearchParam<InsurancePlan, String> =
     SearchParam(
       name = "phonetic",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "InsurancePlan.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -139,7 +139,7 @@ public object InsurancePlanSearchParams {
   public val status: SearchParam<InsurancePlan, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InsurancePlan.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -147,7 +147,7 @@ public object InsurancePlanSearchParams {
   public val type: SearchParam<InsurancePlan, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InsurancePlan.type",
       extractor = { resource -> resource.type },
     )

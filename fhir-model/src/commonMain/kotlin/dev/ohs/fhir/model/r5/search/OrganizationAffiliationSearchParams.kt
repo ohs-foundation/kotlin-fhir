@@ -38,7 +38,7 @@ public object OrganizationAffiliationSearchParams {
   public val active: SearchParam<OrganizationAffiliation, Boolean> =
     SearchParam(
       name = "active",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "OrganizationAffiliation.active",
       extractor = { resource -> listOfNotNull(resource.active) },
     )
@@ -46,7 +46,7 @@ public object OrganizationAffiliationSearchParams {
   public val date: SearchParam<OrganizationAffiliation, Period> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "OrganizationAffiliation.period",
       extractor = { resource -> listOfNotNull(resource.period) },
     )
@@ -54,7 +54,7 @@ public object OrganizationAffiliationSearchParams {
   public val email: SearchParam<OrganizationAffiliation, ContactPoint> =
     SearchParam(
       name = "email",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "OrganizationAffiliation.contact.telecom.where(system='email')",
       extractor = { resource ->
         resource.contact.flatMap { it.telecom }.filter { it.system?.value?.toString() == "email" }
@@ -64,7 +64,7 @@ public object OrganizationAffiliationSearchParams {
   public val endpoint: SearchParam<OrganizationAffiliation, Reference> =
     SearchParam(
       name = "endpoint",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "OrganizationAffiliation.endpoint",
       target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
@@ -73,7 +73,7 @@ public object OrganizationAffiliationSearchParams {
   public val identifier: SearchParam<OrganizationAffiliation, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "OrganizationAffiliation.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -81,7 +81,7 @@ public object OrganizationAffiliationSearchParams {
   public val location: SearchParam<OrganizationAffiliation, Reference> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "OrganizationAffiliation.location",
       target = listOf(Location::class),
       extractor = { resource -> resource.location },
@@ -90,7 +90,7 @@ public object OrganizationAffiliationSearchParams {
   public val network: SearchParam<OrganizationAffiliation, Reference> =
     SearchParam(
       name = "network",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "OrganizationAffiliation.network",
       target = listOf(Organization::class),
       extractor = { resource -> resource.network },
@@ -99,7 +99,7 @@ public object OrganizationAffiliationSearchParams {
   public val participatingOrganization: SearchParam<OrganizationAffiliation, Reference> =
     SearchParam(
       name = "participating-organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "OrganizationAffiliation.participatingOrganization",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.participatingOrganization) },
@@ -108,7 +108,7 @@ public object OrganizationAffiliationSearchParams {
   public val phone: SearchParam<OrganizationAffiliation, ContactPoint> =
     SearchParam(
       name = "phone",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "OrganizationAffiliation.contact.telecom.where(system='phone')",
       extractor = { resource ->
         resource.contact.flatMap { it.telecom }.filter { it.system?.value?.toString() == "phone" }
@@ -118,7 +118,7 @@ public object OrganizationAffiliationSearchParams {
   public val primaryOrganization: SearchParam<OrganizationAffiliation, Reference> =
     SearchParam(
       name = "primary-organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "OrganizationAffiliation.organization",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.organization) },
@@ -127,7 +127,7 @@ public object OrganizationAffiliationSearchParams {
   public val role: SearchParam<OrganizationAffiliation, CodeableConcept> =
     SearchParam(
       name = "role",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "OrganizationAffiliation.code",
       extractor = { resource -> resource.code },
     )
@@ -135,7 +135,7 @@ public object OrganizationAffiliationSearchParams {
   public val service: SearchParam<OrganizationAffiliation, Reference> =
     SearchParam(
       name = "service",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "OrganizationAffiliation.healthcareService",
       target = listOf(HealthcareService::class),
       extractor = { resource -> resource.healthcareService },
@@ -144,7 +144,7 @@ public object OrganizationAffiliationSearchParams {
   public val specialty: SearchParam<OrganizationAffiliation, CodeableConcept> =
     SearchParam(
       name = "specialty",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "OrganizationAffiliation.specialty",
       extractor = { resource -> resource.specialty },
     )
@@ -152,7 +152,7 @@ public object OrganizationAffiliationSearchParams {
   public val telecom: SearchParam<OrganizationAffiliation, ContactPoint> =
     SearchParam(
       name = "telecom",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "OrganizationAffiliation.contact.telecom",
       extractor = { resource -> resource.contact.flatMap { it.telecom } },
     )

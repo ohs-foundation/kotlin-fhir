@@ -32,7 +32,7 @@ public object BundleSearchParams {
   public val composition: SearchParam<Bundle, Any> =
     SearchParam(
       name = "composition",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Bundle.entry[0].resource",
       extractor = {
         throw NotImplementedError(
@@ -44,7 +44,7 @@ public object BundleSearchParams {
   public val identifier: SearchParam<Bundle, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Bundle.identifier",
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
@@ -52,7 +52,7 @@ public object BundleSearchParams {
   public val message: SearchParam<Bundle, Any> =
     SearchParam(
       name = "message",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Bundle.entry[0].resource",
       extractor = {
         throw NotImplementedError(
@@ -64,7 +64,7 @@ public object BundleSearchParams {
   public val timestamp: SearchParam<Bundle, Instant> =
     SearchParam(
       name = "timestamp",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Bundle.timestamp",
       extractor = { resource -> listOfNotNull(resource.timestamp) },
     )
@@ -72,7 +72,7 @@ public object BundleSearchParams {
   public val type: SearchParam<Bundle, Any> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Bundle.type",
       extractor = { resource -> listOf(resource.type) },
     )

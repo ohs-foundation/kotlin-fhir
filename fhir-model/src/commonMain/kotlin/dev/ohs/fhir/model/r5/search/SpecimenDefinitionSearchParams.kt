@@ -34,7 +34,7 @@ public object SpecimenDefinitionSearchParams {
   public val container: SearchParam<SpecimenDefinition, CodeableConcept> =
     SearchParam(
       name = "container",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.typeTested.container.type",
       extractor = { resource ->
         resource.typeTested.mapNotNull { it.container }.mapNotNull { it.type }
@@ -44,7 +44,7 @@ public object SpecimenDefinitionSearchParams {
   public val experimental: SearchParam<SpecimenDefinition, Boolean> =
     SearchParam(
       name = "experimental",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.experimental",
       extractor = { resource -> listOfNotNull(resource.experimental) },
     )
@@ -52,7 +52,7 @@ public object SpecimenDefinitionSearchParams {
   public val identifier: SearchParam<SpecimenDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.identifier",
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
@@ -60,7 +60,7 @@ public object SpecimenDefinitionSearchParams {
   public val isDerived: SearchParam<SpecimenDefinition, Boolean> =
     SearchParam(
       name = "is-derived",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.typeTested.isDerived",
       extractor = { resource -> resource.typeTested.mapNotNull { it.isDerived } },
     )
@@ -68,7 +68,7 @@ public object SpecimenDefinitionSearchParams {
   public val status: SearchParam<SpecimenDefinition, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -76,7 +76,7 @@ public object SpecimenDefinitionSearchParams {
   public val title: SearchParam<SpecimenDefinition, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "SpecimenDefinition.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -84,7 +84,7 @@ public object SpecimenDefinitionSearchParams {
   public val type: SearchParam<SpecimenDefinition, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.typeCollected",
       extractor = { resource -> listOfNotNull(resource.typeCollected) },
     )
@@ -92,7 +92,7 @@ public object SpecimenDefinitionSearchParams {
   public val typeTested: SearchParam<SpecimenDefinition, CodeableConcept> =
     SearchParam(
       name = "type-tested",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.typeTested.type",
       extractor = { resource -> resource.typeTested.mapNotNull { it.type } },
     )
@@ -100,7 +100,7 @@ public object SpecimenDefinitionSearchParams {
   public val url: SearchParam<SpecimenDefinition, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "SpecimenDefinition.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )

@@ -39,7 +39,7 @@ public object GraphDefinitionSearchParams {
   public val context: SearchParam<GraphDefinition, Any> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(GraphDefinition.useContext.value.ofType(CodeableConcept))",
       extractor = {
         throw NotImplementedError(
@@ -51,7 +51,7 @@ public object GraphDefinitionSearchParams {
   public val contextQuantity: SearchParam<GraphDefinition, Any> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(GraphDefinition.useContext.value.ofType(Quantity))",
       extractor = {
         throw NotImplementedError(
@@ -63,7 +63,7 @@ public object GraphDefinitionSearchParams {
   public val contextType: SearchParam<GraphDefinition, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GraphDefinition.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -71,7 +71,7 @@ public object GraphDefinitionSearchParams {
   public val contextTypeQuantity: SearchParam<GraphDefinition, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "GraphDefinition.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -79,7 +79,7 @@ public object GraphDefinitionSearchParams {
   public val contextTypeValue: SearchParam<GraphDefinition, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "GraphDefinition.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -87,7 +87,7 @@ public object GraphDefinitionSearchParams {
   public val date: SearchParam<GraphDefinition, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "GraphDefinition.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -95,7 +95,7 @@ public object GraphDefinitionSearchParams {
   public val description: SearchParam<GraphDefinition, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "GraphDefinition.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -103,7 +103,7 @@ public object GraphDefinitionSearchParams {
   public val identifier: SearchParam<GraphDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GraphDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -111,7 +111,7 @@ public object GraphDefinitionSearchParams {
   public val jurisdiction: SearchParam<GraphDefinition, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GraphDefinition.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -119,7 +119,7 @@ public object GraphDefinitionSearchParams {
   public val name: SearchParam<GraphDefinition, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "GraphDefinition.name",
       extractor = { resource -> listOf(resource.name) },
     )
@@ -127,7 +127,7 @@ public object GraphDefinitionSearchParams {
   public val publisher: SearchParam<GraphDefinition, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "GraphDefinition.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -135,7 +135,7 @@ public object GraphDefinitionSearchParams {
   public val start: SearchParam<GraphDefinition, Id> =
     SearchParam(
       name = "start",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GraphDefinition.start",
       extractor = { resource -> listOfNotNull(resource.start) },
     )
@@ -143,7 +143,7 @@ public object GraphDefinitionSearchParams {
   public val status: SearchParam<GraphDefinition, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GraphDefinition.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -151,7 +151,7 @@ public object GraphDefinitionSearchParams {
   public val url: SearchParam<GraphDefinition, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "GraphDefinition.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -159,7 +159,7 @@ public object GraphDefinitionSearchParams {
   public val version: SearchParam<GraphDefinition, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GraphDefinition.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

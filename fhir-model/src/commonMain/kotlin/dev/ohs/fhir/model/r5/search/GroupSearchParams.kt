@@ -192,7 +192,7 @@ public object GroupSearchParams {
   public val characteristic: SearchParam<Group, CodeableConcept> =
     SearchParam(
       name = "characteristic",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Group.characteristic.code",
       extractor = { resource -> resource.characteristic.map { it.code } },
     )
@@ -200,7 +200,7 @@ public object GroupSearchParams {
   public val characteristicReference: SearchParam<Group, Any> =
     SearchParam(
       name = "characteristic-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "(Group.characteristic.value.ofType(Reference))",
       target =
         listOf(
@@ -373,7 +373,7 @@ public object GroupSearchParams {
   public val characteristicValue: SearchParam<Group, Group.Characteristic> =
     SearchParam(
       name = "characteristic-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Group.characteristic",
       extractor = { resource -> resource.characteristic },
     )
@@ -381,7 +381,7 @@ public object GroupSearchParams {
   public val code: SearchParam<Group, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Group.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -389,7 +389,7 @@ public object GroupSearchParams {
   public val exclude: SearchParam<Group, Boolean> =
     SearchParam(
       name = "exclude",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Group.characteristic.exclude",
       extractor = { resource -> resource.characteristic.map { it.exclude } },
     )
@@ -397,7 +397,7 @@ public object GroupSearchParams {
   public val identifier: SearchParam<Group, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Group.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -405,7 +405,7 @@ public object GroupSearchParams {
   public val managingEntity: SearchParam<Group, Reference> =
     SearchParam(
       name = "managing-entity",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Group.managingEntity",
       target =
         listOf(
@@ -420,7 +420,7 @@ public object GroupSearchParams {
   public val member: SearchParam<Group, Reference> =
     SearchParam(
       name = "member",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Group.member.entity",
       target =
         listOf(
@@ -442,7 +442,7 @@ public object GroupSearchParams {
   public val membership: SearchParam<Group, Any> =
     SearchParam(
       name = "membership",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Group.membership",
       extractor = { resource -> listOf(resource.membership) },
     )
@@ -450,7 +450,7 @@ public object GroupSearchParams {
   public val name: SearchParam<Group, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Group.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -458,7 +458,7 @@ public object GroupSearchParams {
   public val type: SearchParam<Group, Any> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Group.type",
       extractor = { resource -> listOf(resource.type) },
     )
@@ -466,7 +466,7 @@ public object GroupSearchParams {
   public val `value`: SearchParam<Group, Any> =
     SearchParam(
       name = "value",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(Group.characteristic.value.ofType(CodeableConcept))",
       extractor = {
         throw NotImplementedError(

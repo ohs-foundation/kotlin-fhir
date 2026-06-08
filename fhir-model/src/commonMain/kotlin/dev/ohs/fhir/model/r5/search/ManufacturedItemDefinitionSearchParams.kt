@@ -32,7 +32,7 @@ public object ManufacturedItemDefinitionSearchParams {
   public val doseForm: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
     SearchParam(
       name = "dose-form",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ManufacturedItemDefinition.manufacturedDoseForm",
       extractor = { resource -> listOf(resource.manufacturedDoseForm) },
     )
@@ -40,7 +40,7 @@ public object ManufacturedItemDefinitionSearchParams {
   public val identifier: SearchParam<ManufacturedItemDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ManufacturedItemDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -48,7 +48,7 @@ public object ManufacturedItemDefinitionSearchParams {
   public val ingredient: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
     SearchParam(
       name = "ingredient",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ManufacturedItemDefinition.ingredient",
       extractor = { resource -> resource.ingredient },
     )
@@ -56,7 +56,7 @@ public object ManufacturedItemDefinitionSearchParams {
   public val name: SearchParam<ManufacturedItemDefinition, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ManufacturedItemDefinition.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -64,7 +64,7 @@ public object ManufacturedItemDefinitionSearchParams {
   public val status: SearchParam<ManufacturedItemDefinition, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ManufacturedItemDefinition.status",
       extractor = { resource -> listOf(resource.status) },
     )

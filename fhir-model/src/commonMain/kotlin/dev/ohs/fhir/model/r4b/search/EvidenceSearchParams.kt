@@ -38,7 +38,7 @@ public object EvidenceSearchParams {
   public val context: SearchParam<Evidence, CodeableConcept> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(Evidence.useContext.value as CodeableConcept)",
       extractor = { resource ->
         resource.useContext.mapNotNull {
@@ -50,7 +50,7 @@ public object EvidenceSearchParams {
   public val contextQuantity: SearchParam<Evidence, Quantity> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(Evidence.useContext.value as Quantity)",
       extractor = { resource ->
         resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
@@ -60,7 +60,7 @@ public object EvidenceSearchParams {
   public val contextType: SearchParam<Evidence, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Evidence.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -68,7 +68,7 @@ public object EvidenceSearchParams {
   public val contextTypeQuantity: SearchParam<Evidence, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Evidence.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -76,7 +76,7 @@ public object EvidenceSearchParams {
   public val contextTypeValue: SearchParam<Evidence, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Evidence.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -84,7 +84,7 @@ public object EvidenceSearchParams {
   public val date: SearchParam<Evidence, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Evidence.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -92,7 +92,7 @@ public object EvidenceSearchParams {
   public val description: SearchParam<Evidence, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Evidence.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -100,7 +100,7 @@ public object EvidenceSearchParams {
   public val identifier: SearchParam<Evidence, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Evidence.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -108,7 +108,7 @@ public object EvidenceSearchParams {
   public val publisher: SearchParam<Evidence, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Evidence.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -116,7 +116,7 @@ public object EvidenceSearchParams {
   public val status: SearchParam<Evidence, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Evidence.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -124,7 +124,7 @@ public object EvidenceSearchParams {
   public val title: SearchParam<Evidence, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Evidence.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -132,7 +132,7 @@ public object EvidenceSearchParams {
   public val url: SearchParam<Evidence, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Evidence.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -140,7 +140,7 @@ public object EvidenceSearchParams {
   public val version: SearchParam<Evidence, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Evidence.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

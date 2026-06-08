@@ -190,7 +190,7 @@ public object ObservationSearchParams {
   public val basedOn: SearchParam<Observation, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.basedOn",
       target =
         listOf(
@@ -207,7 +207,7 @@ public object ObservationSearchParams {
   public val category: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.category",
       extractor = { resource -> resource.category },
     )
@@ -215,7 +215,7 @@ public object ObservationSearchParams {
   public val code: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.code",
       extractor = { resource -> listOf(resource.code) },
     )
@@ -223,7 +223,7 @@ public object ObservationSearchParams {
   public val codeValueConcept: SearchParam<Observation, Any> =
     SearchParam(
       name = "code-value-concept",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Observation",
       extractor = {
         throw NotImplementedError(
@@ -235,7 +235,7 @@ public object ObservationSearchParams {
   public val codeValueDate: SearchParam<Observation, Any> =
     SearchParam(
       name = "code-value-date",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Observation",
       extractor = {
         throw NotImplementedError(
@@ -247,7 +247,7 @@ public object ObservationSearchParams {
   public val codeValueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "code-value-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Observation",
       extractor = {
         throw NotImplementedError(
@@ -259,7 +259,7 @@ public object ObservationSearchParams {
   public val codeValueString: SearchParam<Observation, Any> =
     SearchParam(
       name = "code-value-string",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Observation",
       extractor = {
         throw NotImplementedError(
@@ -271,7 +271,7 @@ public object ObservationSearchParams {
   public val comboCode: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "combo-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.code",
       extractor = { resource -> listOf(resource.code) },
     )
@@ -279,7 +279,7 @@ public object ObservationSearchParams {
   public val comboCodeValueConcept: SearchParam<Observation, Observation.Component> =
     SearchParam(
       name = "combo-code-value-concept",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Observation.component",
       extractor = { resource -> resource.component },
     )
@@ -287,7 +287,7 @@ public object ObservationSearchParams {
   public val comboCodeValueQuantity: SearchParam<Observation, Observation.Component> =
     SearchParam(
       name = "combo-code-value-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Observation.component",
       extractor = { resource -> resource.component },
     )
@@ -295,7 +295,7 @@ public object ObservationSearchParams {
   public val comboDataAbsentReason: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "combo-data-absent-reason",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.dataAbsentReason",
       extractor = { resource -> listOfNotNull(resource.dataAbsentReason) },
     )
@@ -303,7 +303,7 @@ public object ObservationSearchParams {
   public val comboValueConcept: SearchParam<Observation, Any> =
     SearchParam(
       name = "combo-value-concept",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.value.ofType(CodeableConcept)",
       extractor = {
         throw NotImplementedError(
@@ -315,7 +315,7 @@ public object ObservationSearchParams {
   public val comboValueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "combo-value-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "Observation.value.ofType(Quantity)",
       extractor = {
         throw NotImplementedError(
@@ -327,7 +327,7 @@ public object ObservationSearchParams {
   public val componentCode: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "component-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.component.code",
       extractor = { resource -> resource.component.map { it.code } },
     )
@@ -335,7 +335,7 @@ public object ObservationSearchParams {
   public val componentCodeValueConcept: SearchParam<Observation, Observation.Component> =
     SearchParam(
       name = "component-code-value-concept",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Observation.component",
       extractor = { resource -> resource.component },
     )
@@ -343,7 +343,7 @@ public object ObservationSearchParams {
   public val componentCodeValueQuantity: SearchParam<Observation, Observation.Component> =
     SearchParam(
       name = "component-code-value-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Observation.component",
       extractor = { resource -> resource.component },
     )
@@ -351,7 +351,7 @@ public object ObservationSearchParams {
   public val componentDataAbsentReason: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "component-data-absent-reason",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.component.dataAbsentReason",
       extractor = { resource -> resource.component.mapNotNull { it.dataAbsentReason } },
     )
@@ -359,7 +359,7 @@ public object ObservationSearchParams {
   public val componentValueCanonical: SearchParam<Observation, Any> =
     SearchParam(
       name = "component-value-canonical",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Observation.component.value.ofType(canonical)",
       extractor = {
         throw NotImplementedError(
@@ -371,7 +371,7 @@ public object ObservationSearchParams {
   public val componentValueConcept: SearchParam<Observation, Any> =
     SearchParam(
       name = "component-value-concept",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.component.value.ofType(CodeableConcept)",
       extractor = {
         throw NotImplementedError(
@@ -383,7 +383,7 @@ public object ObservationSearchParams {
   public val componentValueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "component-value-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "Observation.component.value.ofType(Quantity)",
       extractor = {
         throw NotImplementedError(
@@ -395,7 +395,7 @@ public object ObservationSearchParams {
   public val componentValueReference: SearchParam<Observation, Any> =
     SearchParam(
       name = "component-value-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.component.value.ofType(Reference)",
       target = listOf(MolecularSequence::class),
       extractor = {
@@ -408,7 +408,7 @@ public object ObservationSearchParams {
   public val dataAbsentReason: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "data-absent-reason",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.dataAbsentReason",
       extractor = { resource -> listOfNotNull(resource.dataAbsentReason) },
     )
@@ -416,7 +416,7 @@ public object ObservationSearchParams {
   public val date: SearchParam<Observation, Any> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Observation.effective.ofType(dateTime)",
       extractor = {
         throw NotImplementedError(
@@ -428,7 +428,7 @@ public object ObservationSearchParams {
   public val derivedFrom: SearchParam<Observation, Reference> =
     SearchParam(
       name = "derived-from",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.derivedFrom",
       target =
         listOf(
@@ -446,7 +446,7 @@ public object ObservationSearchParams {
   public val device: SearchParam<Observation, Reference> =
     SearchParam(
       name = "device",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.device",
       target = listOf(Device::class, DeviceMetric::class),
       extractor = { resource -> listOfNotNull(resource.device) },
@@ -455,7 +455,7 @@ public object ObservationSearchParams {
   public val encounter: SearchParam<Observation, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -464,7 +464,7 @@ public object ObservationSearchParams {
   public val focus: SearchParam<Observation, Reference> =
     SearchParam(
       name = "focus",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.focus",
       target =
         listOf(
@@ -633,7 +633,7 @@ public object ObservationSearchParams {
   public val hasMember: SearchParam<Observation, Reference> =
     SearchParam(
       name = "has-member",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.hasMember",
       target = listOf(Observation::class, MolecularSequence::class, QuestionnaireResponse::class),
       extractor = { resource -> resource.hasMember },
@@ -642,7 +642,7 @@ public object ObservationSearchParams {
   public val identifier: SearchParam<Observation, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -650,7 +650,7 @@ public object ObservationSearchParams {
   public val method: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "method",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.method",
       extractor = { resource -> listOfNotNull(resource.method) },
     )
@@ -658,7 +658,7 @@ public object ObservationSearchParams {
   public val partOf: SearchParam<Observation, Reference> =
     SearchParam(
       name = "part-of",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.partOf",
       target =
         listOf(
@@ -676,7 +676,7 @@ public object ObservationSearchParams {
   public val patient: SearchParam<Observation, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -689,7 +689,7 @@ public object ObservationSearchParams {
   public val performer: SearchParam<Observation, Reference> =
     SearchParam(
       name = "performer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.performer",
       target =
         listOf(
@@ -706,7 +706,7 @@ public object ObservationSearchParams {
   public val specimen: SearchParam<Observation, Reference> =
     SearchParam(
       name = "specimen",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.specimen",
       target = listOf(Group::class, Specimen::class),
       extractor = { resource -> listOfNotNull(resource.specimen) },
@@ -715,7 +715,7 @@ public object ObservationSearchParams {
   public val status: SearchParam<Observation, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -723,7 +723,7 @@ public object ObservationSearchParams {
   public val subject: SearchParam<Observation, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.subject",
       target =
         listOf(
@@ -745,7 +745,7 @@ public object ObservationSearchParams {
   public val valueCanonical: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-canonical",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Observation.value.ofType(canonical)",
       extractor = {
         throw NotImplementedError(
@@ -757,7 +757,7 @@ public object ObservationSearchParams {
   public val valueConcept: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-concept",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Observation.value.ofType(CodeableConcept)",
       extractor = {
         throw NotImplementedError(
@@ -769,7 +769,7 @@ public object ObservationSearchParams {
   public val valueDate: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Observation.value.ofType(dateTime)",
       extractor = {
         throw NotImplementedError(
@@ -781,7 +781,7 @@ public object ObservationSearchParams {
   public val valueMarkdown: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-markdown",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Observation.value.ofType(markdown)",
       extractor = {
         throw NotImplementedError(
@@ -793,7 +793,7 @@ public object ObservationSearchParams {
   public val valueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "Observation.value.ofType(Quantity)",
       extractor = {
         throw NotImplementedError(
@@ -805,7 +805,7 @@ public object ObservationSearchParams {
   public val valueReference: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Observation.value.ofType(Reference)",
       target = listOf(MolecularSequence::class),
       extractor = {

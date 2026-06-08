@@ -31,7 +31,7 @@ public object NutritionProductSearchParams {
   public val code: SearchParam<NutritionProduct, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionProduct.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -39,7 +39,7 @@ public object NutritionProductSearchParams {
   public val identifier: SearchParam<NutritionProduct, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionProduct.instance.identifier",
       extractor = { resource -> resource.instance.flatMap { it.identifier } },
     )
@@ -47,7 +47,7 @@ public object NutritionProductSearchParams {
   public val lotNumber: SearchParam<NutritionProduct, String> =
     SearchParam(
       name = "lot-number",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionProduct.instance.lotNumber",
       extractor = { resource -> resource.instance.mapNotNull { it.lotNumber } },
     )
@@ -55,7 +55,7 @@ public object NutritionProductSearchParams {
   public val serialNumber: SearchParam<NutritionProduct, Identifier> =
     SearchParam(
       name = "serial-number",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionProduct.instance.identifier",
       extractor = { resource -> resource.instance.flatMap { it.identifier } },
     )
@@ -63,7 +63,7 @@ public object NutritionProductSearchParams {
   public val status: SearchParam<NutritionProduct, CodeableConcept> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionProduct.category",
       extractor = { resource -> resource.category },
     )

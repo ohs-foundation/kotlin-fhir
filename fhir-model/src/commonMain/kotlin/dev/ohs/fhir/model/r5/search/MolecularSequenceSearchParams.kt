@@ -188,7 +188,7 @@ public object MolecularSequenceSearchParams {
   public val focus: SearchParam<MolecularSequence, Reference> =
     SearchParam(
       name = "focus",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MolecularSequence.focus",
       target =
         listOf(
@@ -357,7 +357,7 @@ public object MolecularSequenceSearchParams {
   public val identifier: SearchParam<MolecularSequence, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MolecularSequence.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -365,7 +365,7 @@ public object MolecularSequenceSearchParams {
   public val patient: SearchParam<MolecularSequence, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MolecularSequence.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -378,7 +378,7 @@ public object MolecularSequenceSearchParams {
   public val subject: SearchParam<MolecularSequence, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MolecularSequence.subject",
       target =
         listOf(
@@ -394,7 +394,7 @@ public object MolecularSequenceSearchParams {
   public val type: SearchParam<MolecularSequence, Any> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MolecularSequence.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )

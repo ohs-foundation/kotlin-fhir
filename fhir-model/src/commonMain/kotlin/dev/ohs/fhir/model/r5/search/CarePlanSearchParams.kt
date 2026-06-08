@@ -62,7 +62,7 @@ public object CarePlanSearchParams {
   public val activityReference: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "activity-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.activity.plannedActivityReference",
       target =
         listOf(
@@ -84,7 +84,7 @@ public object CarePlanSearchParams {
   public val basedOn: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.basedOn",
       target =
         listOf(
@@ -99,7 +99,7 @@ public object CarePlanSearchParams {
   public val careTeam: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "care-team",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.careTeam",
       target = listOf(CareTeam::class),
       extractor = { resource -> resource.careTeam },
@@ -108,7 +108,7 @@ public object CarePlanSearchParams {
   public val category: SearchParam<CarePlan, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CarePlan.category",
       extractor = { resource -> resource.category },
     )
@@ -116,7 +116,7 @@ public object CarePlanSearchParams {
   public val condition: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "condition",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.addresses.reference",
       target = listOf(Condition::class),
       extractor = { resource -> resource.addresses.mapNotNull { it.reference } },
@@ -125,7 +125,7 @@ public object CarePlanSearchParams {
   public val custodian: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "custodian",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.custodian",
       target =
         listOf(
@@ -143,7 +143,7 @@ public object CarePlanSearchParams {
   public val date: SearchParam<CarePlan, Period> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "CarePlan.period",
       extractor = { resource -> listOfNotNull(resource.period) },
     )
@@ -151,7 +151,7 @@ public object CarePlanSearchParams {
   public val encounter: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -160,7 +160,7 @@ public object CarePlanSearchParams {
   public val goal: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "goal",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.goal",
       target = listOf(Goal::class),
       extractor = { resource -> resource.goal },
@@ -169,7 +169,7 @@ public object CarePlanSearchParams {
   public val identifier: SearchParam<CarePlan, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CarePlan.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -177,7 +177,7 @@ public object CarePlanSearchParams {
   public val instantiatesCanonical: SearchParam<CarePlan, Canonical> =
     SearchParam(
       name = "instantiates-canonical",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.instantiatesCanonical",
       target =
         listOf(
@@ -193,7 +193,7 @@ public object CarePlanSearchParams {
   public val instantiatesUri: SearchParam<CarePlan, Uri> =
     SearchParam(
       name = "instantiates-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "CarePlan.instantiatesUri",
       extractor = { resource -> resource.instantiatesUri },
     )
@@ -201,7 +201,7 @@ public object CarePlanSearchParams {
   public val intent: SearchParam<CarePlan, Any> =
     SearchParam(
       name = "intent",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CarePlan.intent",
       extractor = { resource -> listOf(resource.intent) },
     )
@@ -209,7 +209,7 @@ public object CarePlanSearchParams {
   public val partOf: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "part-of",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.partOf",
       target = listOf(CarePlan::class),
       extractor = { resource -> resource.partOf },
@@ -218,7 +218,7 @@ public object CarePlanSearchParams {
   public val patient: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -231,7 +231,7 @@ public object CarePlanSearchParams {
   public val replaces: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "replaces",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.replaces",
       target = listOf(CarePlan::class),
       extractor = { resource -> resource.replaces },
@@ -240,7 +240,7 @@ public object CarePlanSearchParams {
   public val status: SearchParam<CarePlan, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CarePlan.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -248,7 +248,7 @@ public object CarePlanSearchParams {
   public val subject: SearchParam<CarePlan, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CarePlan.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },

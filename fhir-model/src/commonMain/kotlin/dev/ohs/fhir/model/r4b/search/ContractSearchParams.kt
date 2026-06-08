@@ -172,7 +172,7 @@ public object ContractSearchParams {
   public val authority: SearchParam<Contract, Reference> =
     SearchParam(
       name = "authority",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Contract.authority",
       target = listOf(Organization::class),
       extractor = { resource -> resource.authority },
@@ -181,7 +181,7 @@ public object ContractSearchParams {
   public val domain: SearchParam<Contract, Reference> =
     SearchParam(
       name = "domain",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Contract.domain",
       target = listOf(Location::class),
       extractor = { resource -> resource.domain },
@@ -190,7 +190,7 @@ public object ContractSearchParams {
   public val identifier: SearchParam<Contract, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Contract.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -198,7 +198,7 @@ public object ContractSearchParams {
   public val instantiates: SearchParam<Contract, Uri> =
     SearchParam(
       name = "instantiates",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Contract.instantiatesUri",
       extractor = { resource -> listOfNotNull(resource.instantiatesUri) },
     )
@@ -206,7 +206,7 @@ public object ContractSearchParams {
   public val issued: SearchParam<Contract, DateTime> =
     SearchParam(
       name = "issued",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Contract.issued",
       extractor = { resource -> listOfNotNull(resource.issued) },
     )
@@ -214,7 +214,7 @@ public object ContractSearchParams {
   public val patient: SearchParam<Contract, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Contract.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -225,7 +225,7 @@ public object ContractSearchParams {
   public val signer: SearchParam<Contract, Reference> =
     SearchParam(
       name = "signer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Contract.signer.party",
       target =
         listOf(
@@ -241,7 +241,7 @@ public object ContractSearchParams {
   public val status: SearchParam<Contract, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Contract.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -249,7 +249,7 @@ public object ContractSearchParams {
   public val subject: SearchParam<Contract, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Contract.subject",
       target =
         listOf(
@@ -400,7 +400,7 @@ public object ContractSearchParams {
   public val url: SearchParam<Contract, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Contract.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )

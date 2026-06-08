@@ -36,7 +36,7 @@ public object VisionPrescriptionSearchParams {
   public val datewritten: SearchParam<VisionPrescription, DateTime> =
     SearchParam(
       name = "datewritten",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "VisionPrescription.dateWritten",
       extractor = { resource -> listOf(resource.dateWritten) },
     )
@@ -44,7 +44,7 @@ public object VisionPrescriptionSearchParams {
   public val encounter: SearchParam<VisionPrescription, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "VisionPrescription.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -53,7 +53,7 @@ public object VisionPrescriptionSearchParams {
   public val identifier: SearchParam<VisionPrescription, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "VisionPrescription.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -61,7 +61,7 @@ public object VisionPrescriptionSearchParams {
   public val patient: SearchParam<VisionPrescription, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "VisionPrescription.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -70,7 +70,7 @@ public object VisionPrescriptionSearchParams {
   public val prescriber: SearchParam<VisionPrescription, Reference> =
     SearchParam(
       name = "prescriber",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "VisionPrescription.prescriber",
       target = listOf(PractitionerRole::class, Practitioner::class),
       extractor = { resource -> listOf(resource.prescriber) },
@@ -79,7 +79,7 @@ public object VisionPrescriptionSearchParams {
   public val status: SearchParam<VisionPrescription, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "VisionPrescription.status",
       extractor = { resource -> listOf(resource.status) },
     )

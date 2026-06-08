@@ -39,7 +39,7 @@ public object AppointmentResponseSearchParams {
   public val actor: SearchParam<AppointmentResponse, Reference> =
     SearchParam(
       name = "actor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AppointmentResponse.actor",
       target =
         listOf(
@@ -57,7 +57,7 @@ public object AppointmentResponseSearchParams {
   public val appointment: SearchParam<AppointmentResponse, Reference> =
     SearchParam(
       name = "appointment",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AppointmentResponse.appointment",
       target = listOf(Appointment::class),
       extractor = { resource -> listOf(resource.appointment) },
@@ -66,7 +66,7 @@ public object AppointmentResponseSearchParams {
   public val identifier: SearchParam<AppointmentResponse, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AppointmentResponse.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -74,7 +74,7 @@ public object AppointmentResponseSearchParams {
   public val location: SearchParam<AppointmentResponse, Reference> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AppointmentResponse.actor.where(resolve() is Location)",
       target = listOf(Location::class),
       extractor = { resource ->
@@ -87,7 +87,7 @@ public object AppointmentResponseSearchParams {
   public val partStatus: SearchParam<AppointmentResponse, Any> =
     SearchParam(
       name = "part-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AppointmentResponse.participantStatus",
       extractor = { resource -> listOf(resource.participantStatus) },
     )
@@ -95,7 +95,7 @@ public object AppointmentResponseSearchParams {
   public val patient: SearchParam<AppointmentResponse, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AppointmentResponse.actor.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -108,7 +108,7 @@ public object AppointmentResponseSearchParams {
   public val practitioner: SearchParam<AppointmentResponse, Reference> =
     SearchParam(
       name = "practitioner",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AppointmentResponse.actor.where(resolve() is Practitioner)",
       target = listOf(Practitioner::class),
       extractor = { resource ->

@@ -39,7 +39,7 @@ public object ResearchStudySearchParams {
   public val category: SearchParam<ResearchStudy, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ResearchStudy.category",
       extractor = { resource -> resource.category },
     )
@@ -47,7 +47,7 @@ public object ResearchStudySearchParams {
   public val date: SearchParam<ResearchStudy, Period> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ResearchStudy.period",
       extractor = { resource -> listOfNotNull(resource.period) },
     )
@@ -55,7 +55,7 @@ public object ResearchStudySearchParams {
   public val focus: SearchParam<ResearchStudy, CodeableConcept> =
     SearchParam(
       name = "focus",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ResearchStudy.focus",
       extractor = { resource -> resource.focus },
     )
@@ -63,7 +63,7 @@ public object ResearchStudySearchParams {
   public val identifier: SearchParam<ResearchStudy, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ResearchStudy.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -71,7 +71,7 @@ public object ResearchStudySearchParams {
   public val keyword: SearchParam<ResearchStudy, CodeableConcept> =
     SearchParam(
       name = "keyword",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ResearchStudy.keyword",
       extractor = { resource -> resource.keyword },
     )
@@ -79,7 +79,7 @@ public object ResearchStudySearchParams {
   public val location: SearchParam<ResearchStudy, CodeableConcept> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ResearchStudy.location",
       extractor = { resource -> resource.location },
     )
@@ -87,7 +87,7 @@ public object ResearchStudySearchParams {
   public val partof: SearchParam<ResearchStudy, Reference> =
     SearchParam(
       name = "partof",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ResearchStudy.partOf",
       target = listOf(ResearchStudy::class),
       extractor = { resource -> resource.partOf },
@@ -96,7 +96,7 @@ public object ResearchStudySearchParams {
   public val principalinvestigator: SearchParam<ResearchStudy, Reference> =
     SearchParam(
       name = "principalinvestigator",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ResearchStudy.principalInvestigator",
       target = listOf(Practitioner::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.principalInvestigator) },
@@ -105,7 +105,7 @@ public object ResearchStudySearchParams {
   public val protocol: SearchParam<ResearchStudy, Reference> =
     SearchParam(
       name = "protocol",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ResearchStudy.protocol",
       target = listOf(PlanDefinition::class),
       extractor = { resource -> resource.protocol },
@@ -114,7 +114,7 @@ public object ResearchStudySearchParams {
   public val site: SearchParam<ResearchStudy, Reference> =
     SearchParam(
       name = "site",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ResearchStudy.site",
       target = listOf(Location::class),
       extractor = { resource -> resource.site },
@@ -123,7 +123,7 @@ public object ResearchStudySearchParams {
   public val sponsor: SearchParam<ResearchStudy, Reference> =
     SearchParam(
       name = "sponsor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ResearchStudy.sponsor",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.sponsor) },
@@ -132,7 +132,7 @@ public object ResearchStudySearchParams {
   public val status: SearchParam<ResearchStudy, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ResearchStudy.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -140,7 +140,7 @@ public object ResearchStudySearchParams {
   public val title: SearchParam<ResearchStudy, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ResearchStudy.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )

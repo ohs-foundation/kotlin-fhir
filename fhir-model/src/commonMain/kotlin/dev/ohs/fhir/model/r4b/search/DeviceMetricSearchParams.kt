@@ -33,7 +33,7 @@ public object DeviceMetricSearchParams {
   public val category: SearchParam<DeviceMetric, Any> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceMetric.category",
       extractor = { resource -> listOf(resource.category) },
     )
@@ -41,7 +41,7 @@ public object DeviceMetricSearchParams {
   public val identifier: SearchParam<DeviceMetric, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceMetric.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -49,7 +49,7 @@ public object DeviceMetricSearchParams {
   public val parent: SearchParam<DeviceMetric, Reference> =
     SearchParam(
       name = "parent",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceMetric.parent",
       target = listOf(Device::class),
       extractor = { resource -> listOfNotNull(resource.parent) },
@@ -58,7 +58,7 @@ public object DeviceMetricSearchParams {
   public val source: SearchParam<DeviceMetric, Reference> =
     SearchParam(
       name = "source",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceMetric.source",
       target = listOf(Device::class),
       extractor = { resource -> listOfNotNull(resource.source) },
@@ -67,7 +67,7 @@ public object DeviceMetricSearchParams {
   public val type: SearchParam<DeviceMetric, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceMetric.type",
       extractor = { resource -> listOf(resource.type) },
     )

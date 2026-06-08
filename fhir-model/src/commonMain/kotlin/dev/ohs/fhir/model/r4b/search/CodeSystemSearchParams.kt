@@ -39,7 +39,7 @@ public object CodeSystemSearchParams {
   public val code: SearchParam<CodeSystem, Any> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CodeSystem.concept.code",
       extractor = { resource -> resource.concept.map { it.code } },
     )
@@ -47,7 +47,7 @@ public object CodeSystemSearchParams {
   public val contentMode: SearchParam<CodeSystem, Any> =
     SearchParam(
       name = "content-mode",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CodeSystem.content",
       extractor = { resource -> listOf(resource.content) },
     )
@@ -55,7 +55,7 @@ public object CodeSystemSearchParams {
   public val context: SearchParam<CodeSystem, CodeableConcept> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(CodeSystem.useContext.value as CodeableConcept)",
       extractor = { resource ->
         resource.useContext.mapNotNull {
@@ -67,7 +67,7 @@ public object CodeSystemSearchParams {
   public val contextQuantity: SearchParam<CodeSystem, Quantity> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(CodeSystem.useContext.value as Quantity)",
       extractor = { resource ->
         resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
@@ -77,7 +77,7 @@ public object CodeSystemSearchParams {
   public val contextType: SearchParam<CodeSystem, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CodeSystem.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -85,7 +85,7 @@ public object CodeSystemSearchParams {
   public val contextTypeQuantity: SearchParam<CodeSystem, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "CodeSystem.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -93,7 +93,7 @@ public object CodeSystemSearchParams {
   public val contextTypeValue: SearchParam<CodeSystem, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "CodeSystem.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -101,7 +101,7 @@ public object CodeSystemSearchParams {
   public val date: SearchParam<CodeSystem, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "CodeSystem.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -109,7 +109,7 @@ public object CodeSystemSearchParams {
   public val description: SearchParam<CodeSystem, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "CodeSystem.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -117,7 +117,7 @@ public object CodeSystemSearchParams {
   public val identifier: SearchParam<CodeSystem, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CodeSystem.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -125,7 +125,7 @@ public object CodeSystemSearchParams {
   public val jurisdiction: SearchParam<CodeSystem, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CodeSystem.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -133,7 +133,7 @@ public object CodeSystemSearchParams {
   public val language: SearchParam<CodeSystem, Any> =
     SearchParam(
       name = "language",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CodeSystem.concept.designation.language",
       extractor = { resource ->
         resource.concept.flatMap { it.designation }.mapNotNull { it.language }
@@ -143,7 +143,7 @@ public object CodeSystemSearchParams {
   public val name: SearchParam<CodeSystem, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "CodeSystem.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -151,7 +151,7 @@ public object CodeSystemSearchParams {
   public val publisher: SearchParam<CodeSystem, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "CodeSystem.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -159,7 +159,7 @@ public object CodeSystemSearchParams {
   public val status: SearchParam<CodeSystem, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CodeSystem.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -167,7 +167,7 @@ public object CodeSystemSearchParams {
   public val supplements: SearchParam<CodeSystem, Canonical> =
     SearchParam(
       name = "supplements",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CodeSystem.supplements",
       target = listOf(CodeSystem::class),
       extractor = { resource -> listOfNotNull(resource.supplements) },
@@ -176,7 +176,7 @@ public object CodeSystemSearchParams {
   public val system: SearchParam<CodeSystem, Uri> =
     SearchParam(
       name = "system",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "CodeSystem.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -184,7 +184,7 @@ public object CodeSystemSearchParams {
   public val title: SearchParam<CodeSystem, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "CodeSystem.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -192,7 +192,7 @@ public object CodeSystemSearchParams {
   public val url: SearchParam<CodeSystem, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "CodeSystem.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -200,7 +200,7 @@ public object CodeSystemSearchParams {
   public val version: SearchParam<CodeSystem, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CodeSystem.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

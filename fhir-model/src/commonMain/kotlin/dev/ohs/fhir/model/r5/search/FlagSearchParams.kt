@@ -45,7 +45,7 @@ public object FlagSearchParams {
   public val author: SearchParam<Flag, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Flag.author",
       target =
         listOf(
@@ -62,7 +62,7 @@ public object FlagSearchParams {
   public val category: SearchParam<Flag, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Flag.category",
       extractor = { resource -> resource.category },
     )
@@ -70,7 +70,7 @@ public object FlagSearchParams {
   public val date: SearchParam<Flag, Period> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Flag.period",
       extractor = { resource -> listOfNotNull(resource.period) },
     )
@@ -78,7 +78,7 @@ public object FlagSearchParams {
   public val encounter: SearchParam<Flag, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Flag.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -87,7 +87,7 @@ public object FlagSearchParams {
   public val identifier: SearchParam<Flag, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Flag.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -95,7 +95,7 @@ public object FlagSearchParams {
   public val patient: SearchParam<Flag, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Flag.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -108,7 +108,7 @@ public object FlagSearchParams {
   public val status: SearchParam<Flag, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Flag.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -116,7 +116,7 @@ public object FlagSearchParams {
   public val subject: SearchParam<Flag, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Flag.subject",
       target =
         listOf(

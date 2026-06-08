@@ -41,7 +41,7 @@ public object AccountSearchParams {
   public val identifier: SearchParam<Account, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Account.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -49,7 +49,7 @@ public object AccountSearchParams {
   public val name: SearchParam<Account, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Account.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -57,7 +57,7 @@ public object AccountSearchParams {
   public val owner: SearchParam<Account, Reference> =
     SearchParam(
       name = "owner",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Account.owner",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.owner) },
@@ -66,7 +66,7 @@ public object AccountSearchParams {
   public val patient: SearchParam<Account, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Account.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -77,7 +77,7 @@ public object AccountSearchParams {
   public val period: SearchParam<Account, Period> =
     SearchParam(
       name = "period",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Account.servicePeriod",
       extractor = { resource -> listOfNotNull(resource.servicePeriod) },
     )
@@ -85,7 +85,7 @@ public object AccountSearchParams {
   public val status: SearchParam<Account, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Account.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -93,7 +93,7 @@ public object AccountSearchParams {
   public val subject: SearchParam<Account, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Account.subject",
       target =
         listOf(
@@ -111,7 +111,7 @@ public object AccountSearchParams {
   public val type: SearchParam<Account, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Account.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )

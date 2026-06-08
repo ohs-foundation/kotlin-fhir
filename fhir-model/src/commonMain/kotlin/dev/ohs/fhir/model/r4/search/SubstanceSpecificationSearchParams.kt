@@ -29,7 +29,7 @@ public object SubstanceSpecificationSearchParams {
   public val code: SearchParam<SubstanceSpecification, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SubstanceSpecification.code.code",
       extractor = { resource -> resource.code.mapNotNull { it.code } },
     )

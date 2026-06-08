@@ -35,7 +35,7 @@ public object TestReportSearchParams {
   public val identifier: SearchParam<TestReport, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "TestReport.identifier",
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
@@ -43,7 +43,7 @@ public object TestReportSearchParams {
   public val issued: SearchParam<TestReport, DateTime> =
     SearchParam(
       name = "issued",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "TestReport.issued",
       extractor = { resource -> listOfNotNull(resource.issued) },
     )
@@ -51,7 +51,7 @@ public object TestReportSearchParams {
   public val participant: SearchParam<TestReport, Uri> =
     SearchParam(
       name = "participant",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "TestReport.participant.uri",
       extractor = { resource -> resource.participant.map { it.uri } },
     )
@@ -59,7 +59,7 @@ public object TestReportSearchParams {
   public val result: SearchParam<TestReport, Any> =
     SearchParam(
       name = "result",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "TestReport.result",
       extractor = { resource -> listOf(resource.result) },
     )
@@ -67,7 +67,7 @@ public object TestReportSearchParams {
   public val tester: SearchParam<TestReport, String> =
     SearchParam(
       name = "tester",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "TestReport.tester",
       extractor = { resource -> listOfNotNull(resource.tester) },
     )
@@ -75,7 +75,7 @@ public object TestReportSearchParams {
   public val testscript: SearchParam<TestReport, Reference> =
     SearchParam(
       name = "testscript",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "TestReport.testScript",
       target = listOf(TestScript::class),
       extractor = { resource -> listOf(resource.testScript) },

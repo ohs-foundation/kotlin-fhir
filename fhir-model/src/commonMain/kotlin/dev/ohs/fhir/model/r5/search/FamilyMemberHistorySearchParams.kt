@@ -41,7 +41,7 @@ public object FamilyMemberHistorySearchParams {
   public val code: SearchParam<FamilyMemberHistory, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "FamilyMemberHistory.condition.code",
       extractor = { resource -> resource.condition.map { it.code } },
     )
@@ -49,7 +49,7 @@ public object FamilyMemberHistorySearchParams {
   public val date: SearchParam<FamilyMemberHistory, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "FamilyMemberHistory.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -57,7 +57,7 @@ public object FamilyMemberHistorySearchParams {
   public val identifier: SearchParam<FamilyMemberHistory, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "FamilyMemberHistory.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -65,7 +65,7 @@ public object FamilyMemberHistorySearchParams {
   public val instantiatesCanonical: SearchParam<FamilyMemberHistory, Canonical> =
     SearchParam(
       name = "instantiates-canonical",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "FamilyMemberHistory.instantiatesCanonical",
       target =
         listOf(
@@ -81,7 +81,7 @@ public object FamilyMemberHistorySearchParams {
   public val instantiatesUri: SearchParam<FamilyMemberHistory, Uri> =
     SearchParam(
       name = "instantiates-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "FamilyMemberHistory.instantiatesUri",
       extractor = { resource -> resource.instantiatesUri },
     )
@@ -89,7 +89,7 @@ public object FamilyMemberHistorySearchParams {
   public val patient: SearchParam<FamilyMemberHistory, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "FamilyMemberHistory.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -98,7 +98,7 @@ public object FamilyMemberHistorySearchParams {
   public val relationship: SearchParam<FamilyMemberHistory, CodeableConcept> =
     SearchParam(
       name = "relationship",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "FamilyMemberHistory.relationship",
       extractor = { resource -> listOf(resource.relationship) },
     )
@@ -106,7 +106,7 @@ public object FamilyMemberHistorySearchParams {
   public val sex: SearchParam<FamilyMemberHistory, CodeableConcept> =
     SearchParam(
       name = "sex",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "FamilyMemberHistory.sex",
       extractor = { resource -> listOfNotNull(resource.sex) },
     )
@@ -114,7 +114,7 @@ public object FamilyMemberHistorySearchParams {
   public val status: SearchParam<FamilyMemberHistory, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "FamilyMemberHistory.status",
       extractor = { resource -> listOf(resource.status) },
     )

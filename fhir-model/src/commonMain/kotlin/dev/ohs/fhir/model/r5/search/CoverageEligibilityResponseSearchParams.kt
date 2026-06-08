@@ -38,7 +38,7 @@ public object CoverageEligibilityResponseSearchParams {
   public val created: SearchParam<CoverageEligibilityResponse, DateTime> =
     SearchParam(
       name = "created",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "CoverageEligibilityResponse.created",
       extractor = { resource -> listOf(resource.created) },
     )
@@ -46,7 +46,7 @@ public object CoverageEligibilityResponseSearchParams {
   public val disposition: SearchParam<CoverageEligibilityResponse, String> =
     SearchParam(
       name = "disposition",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "CoverageEligibilityResponse.disposition",
       extractor = { resource -> listOfNotNull(resource.disposition) },
     )
@@ -54,7 +54,7 @@ public object CoverageEligibilityResponseSearchParams {
   public val identifier: SearchParam<CoverageEligibilityResponse, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CoverageEligibilityResponse.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -62,7 +62,7 @@ public object CoverageEligibilityResponseSearchParams {
   public val insurer: SearchParam<CoverageEligibilityResponse, Reference> =
     SearchParam(
       name = "insurer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CoverageEligibilityResponse.insurer",
       target = listOf(Organization::class),
       extractor = { resource -> listOf(resource.insurer) },
@@ -71,7 +71,7 @@ public object CoverageEligibilityResponseSearchParams {
   public val outcome: SearchParam<CoverageEligibilityResponse, Any> =
     SearchParam(
       name = "outcome",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CoverageEligibilityResponse.outcome",
       extractor = { resource -> listOf(resource.outcome) },
     )
@@ -79,7 +79,7 @@ public object CoverageEligibilityResponseSearchParams {
   public val patient: SearchParam<CoverageEligibilityResponse, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CoverageEligibilityResponse.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -88,7 +88,7 @@ public object CoverageEligibilityResponseSearchParams {
   public val request: SearchParam<CoverageEligibilityResponse, Reference> =
     SearchParam(
       name = "request",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CoverageEligibilityResponse.request",
       target = listOf(CoverageEligibilityRequest::class),
       extractor = { resource -> listOf(resource.request) },
@@ -97,7 +97,7 @@ public object CoverageEligibilityResponseSearchParams {
   public val requestor: SearchParam<CoverageEligibilityResponse, Reference> =
     SearchParam(
       name = "requestor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CoverageEligibilityResponse.requestor",
       target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
       extractor = { resource -> listOfNotNull(resource.requestor) },
@@ -106,7 +106,7 @@ public object CoverageEligibilityResponseSearchParams {
   public val status: SearchParam<CoverageEligibilityResponse, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CoverageEligibilityResponse.status",
       extractor = { resource -> listOf(resource.status) },
     )

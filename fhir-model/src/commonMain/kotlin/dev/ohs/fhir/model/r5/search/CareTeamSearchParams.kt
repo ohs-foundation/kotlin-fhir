@@ -40,7 +40,7 @@ public object CareTeamSearchParams {
   public val category: SearchParam<CareTeam, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CareTeam.category",
       extractor = { resource -> resource.category },
     )
@@ -48,7 +48,7 @@ public object CareTeamSearchParams {
   public val date: SearchParam<CareTeam, Any> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression =
         "AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn",
       extractor = {
@@ -61,7 +61,7 @@ public object CareTeamSearchParams {
   public val identifier: SearchParam<CareTeam, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CareTeam.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -69,7 +69,7 @@ public object CareTeamSearchParams {
   public val name: SearchParam<CareTeam, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "CareTeam.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -77,7 +77,7 @@ public object CareTeamSearchParams {
   public val participant: SearchParam<CareTeam, Reference> =
     SearchParam(
       name = "participant",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CareTeam.participant.member",
       target =
         listOf(
@@ -94,7 +94,7 @@ public object CareTeamSearchParams {
   public val patient: SearchParam<CareTeam, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CareTeam.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -107,7 +107,7 @@ public object CareTeamSearchParams {
   public val status: SearchParam<CareTeam, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CareTeam.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -115,7 +115,7 @@ public object CareTeamSearchParams {
   public val subject: SearchParam<CareTeam, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CareTeam.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },

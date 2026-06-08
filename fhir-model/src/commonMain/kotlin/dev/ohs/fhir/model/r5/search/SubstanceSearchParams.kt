@@ -36,7 +36,7 @@ public object SubstanceSearchParams {
   public val category: SearchParam<Substance, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Substance.category",
       extractor = { resource -> resource.category },
     )
@@ -44,7 +44,7 @@ public object SubstanceSearchParams {
   public val code: SearchParam<Substance, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Substance.code.concept",
       extractor = { resource -> listOfNotNull(resource.code.concept) },
     )
@@ -52,7 +52,7 @@ public object SubstanceSearchParams {
   public val codeReference: SearchParam<Substance, Reference> =
     SearchParam(
       name = "code-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Substance.code.reference",
       target = listOf(SubstanceDefinition::class),
       extractor = { resource -> listOfNotNull(resource.code.reference) },
@@ -61,7 +61,7 @@ public object SubstanceSearchParams {
   public val expiry: SearchParam<Substance, DateTime> =
     SearchParam(
       name = "expiry",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Substance.expiry",
       extractor = { resource -> listOfNotNull(resource.expiry) },
     )
@@ -69,7 +69,7 @@ public object SubstanceSearchParams {
   public val identifier: SearchParam<Substance, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Substance.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -77,7 +77,7 @@ public object SubstanceSearchParams {
   public val quantity: SearchParam<Substance, Quantity> =
     SearchParam(
       name = "quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "Substance.quantity",
       extractor = { resource -> listOfNotNull(resource.quantity) },
     )
@@ -85,7 +85,7 @@ public object SubstanceSearchParams {
   public val status: SearchParam<Substance, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Substance.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -93,7 +93,7 @@ public object SubstanceSearchParams {
   public val substanceReference: SearchParam<Substance, Any> =
     SearchParam(
       name = "substance-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "(Substance.ingredient.substance.ofType(Reference))",
       target = listOf(Substance::class),
       extractor = {

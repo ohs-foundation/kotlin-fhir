@@ -30,7 +30,7 @@ public object ManufacturedItemDefinitionSearchParams {
   public val doseForm: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
     SearchParam(
       name = "dose-form",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ManufacturedItemDefinition.manufacturedDoseForm",
       extractor = { resource -> listOf(resource.manufacturedDoseForm) },
     )
@@ -38,7 +38,7 @@ public object ManufacturedItemDefinitionSearchParams {
   public val identifier: SearchParam<ManufacturedItemDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ManufacturedItemDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -46,7 +46,7 @@ public object ManufacturedItemDefinitionSearchParams {
   public val ingredient: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
     SearchParam(
       name = "ingredient",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ManufacturedItemDefinition.ingredient",
       extractor = { resource -> resource.ingredient },
     )

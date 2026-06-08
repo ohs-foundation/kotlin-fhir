@@ -38,7 +38,7 @@ public object ActorDefinitionSearchParams {
   public val context: SearchParam<ActorDefinition, Any> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(ActorDefinition.useContext.value.ofType(CodeableConcept))",
       extractor = {
         throw NotImplementedError(
@@ -50,7 +50,7 @@ public object ActorDefinitionSearchParams {
   public val contextQuantity: SearchParam<ActorDefinition, Any> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(ActorDefinition.useContext.value.ofType(Quantity))",
       extractor = {
         throw NotImplementedError(
@@ -62,7 +62,7 @@ public object ActorDefinitionSearchParams {
   public val contextType: SearchParam<ActorDefinition, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ActorDefinition.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -70,7 +70,7 @@ public object ActorDefinitionSearchParams {
   public val contextTypeQuantity: SearchParam<ActorDefinition, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "ActorDefinition.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -78,7 +78,7 @@ public object ActorDefinitionSearchParams {
   public val contextTypeValue: SearchParam<ActorDefinition, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "ActorDefinition.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -86,7 +86,7 @@ public object ActorDefinitionSearchParams {
   public val date: SearchParam<ActorDefinition, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ActorDefinition.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -94,7 +94,7 @@ public object ActorDefinitionSearchParams {
   public val description: SearchParam<ActorDefinition, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ActorDefinition.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -102,7 +102,7 @@ public object ActorDefinitionSearchParams {
   public val identifier: SearchParam<ActorDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ActorDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -110,7 +110,7 @@ public object ActorDefinitionSearchParams {
   public val jurisdiction: SearchParam<ActorDefinition, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ActorDefinition.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -118,7 +118,7 @@ public object ActorDefinitionSearchParams {
   public val publisher: SearchParam<ActorDefinition, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ActorDefinition.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -126,7 +126,7 @@ public object ActorDefinitionSearchParams {
   public val status: SearchParam<ActorDefinition, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ActorDefinition.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -134,7 +134,7 @@ public object ActorDefinitionSearchParams {
   public val title: SearchParam<ActorDefinition, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ActorDefinition.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -142,7 +142,7 @@ public object ActorDefinitionSearchParams {
   public val type: SearchParam<ActorDefinition, Any> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ActorDefinition.type",
       extractor = { resource -> listOf(resource.type) },
     )
@@ -150,7 +150,7 @@ public object ActorDefinitionSearchParams {
   public val url: SearchParam<ActorDefinition, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "ActorDefinition.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -158,7 +158,7 @@ public object ActorDefinitionSearchParams {
   public val version: SearchParam<ActorDefinition, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ActorDefinition.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

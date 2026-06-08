@@ -189,7 +189,7 @@ public object VerificationResultSearchParams {
   public val attestationMethod: SearchParam<VerificationResult, CodeableConcept> =
     SearchParam(
       name = "attestation-method",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "VerificationResult.attestation.communicationMethod",
       extractor = { resource -> listOfNotNull(resource.attestation?.communicationMethod) },
     )
@@ -197,7 +197,7 @@ public object VerificationResultSearchParams {
   public val attestationOnbehalfof: SearchParam<VerificationResult, Reference> =
     SearchParam(
       name = "attestation-onbehalfof",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "VerificationResult.attestation.onBehalfOf",
       target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
       extractor = { resource -> listOfNotNull(resource.attestation?.onBehalfOf) },
@@ -206,7 +206,7 @@ public object VerificationResultSearchParams {
   public val attestationWho: SearchParam<VerificationResult, Reference> =
     SearchParam(
       name = "attestation-who",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "VerificationResult.attestation.who",
       target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
       extractor = { resource -> listOfNotNull(resource.attestation?.who) },
@@ -215,7 +215,7 @@ public object VerificationResultSearchParams {
   public val primarysourceDate: SearchParam<VerificationResult, DateTime> =
     SearchParam(
       name = "primarysource-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "VerificationResult.primarySource.validationDate",
       extractor = { resource -> resource.primarySource.mapNotNull { it.validationDate } },
     )
@@ -223,7 +223,7 @@ public object VerificationResultSearchParams {
   public val primarysourceType: SearchParam<VerificationResult, CodeableConcept> =
     SearchParam(
       name = "primarysource-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "VerificationResult.primarySource.type",
       extractor = { resource -> resource.primarySource.flatMap { it.type } },
     )
@@ -231,7 +231,7 @@ public object VerificationResultSearchParams {
   public val primarysourceWho: SearchParam<VerificationResult, Reference> =
     SearchParam(
       name = "primarysource-who",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "VerificationResult.primarySource.who",
       target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
       extractor = { resource -> resource.primarySource.mapNotNull { it.who } },
@@ -240,7 +240,7 @@ public object VerificationResultSearchParams {
   public val status: SearchParam<VerificationResult, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "VerificationResult.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -248,7 +248,7 @@ public object VerificationResultSearchParams {
   public val statusDate: SearchParam<VerificationResult, DateTime> =
     SearchParam(
       name = "status-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "VerificationResult.statusDate",
       extractor = { resource -> listOfNotNull(resource.statusDate) },
     )
@@ -256,7 +256,7 @@ public object VerificationResultSearchParams {
   public val target: SearchParam<VerificationResult, Reference> =
     SearchParam(
       name = "target",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "VerificationResult.target",
       target =
         listOf(
@@ -425,7 +425,7 @@ public object VerificationResultSearchParams {
   public val validatorOrganization: SearchParam<VerificationResult, Reference> =
     SearchParam(
       name = "validator-organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "VerificationResult.validator.organization",
       target = listOf(Organization::class),
       extractor = { resource -> resource.validator.map { it.organization } },

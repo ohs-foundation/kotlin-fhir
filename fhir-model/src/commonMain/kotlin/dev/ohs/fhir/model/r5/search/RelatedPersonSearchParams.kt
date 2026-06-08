@@ -39,7 +39,7 @@ public object RelatedPersonSearchParams {
   public val active: SearchParam<RelatedPerson, Boolean> =
     SearchParam(
       name = "active",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RelatedPerson.active",
       extractor = { resource -> listOfNotNull(resource.active) },
     )
@@ -47,7 +47,7 @@ public object RelatedPersonSearchParams {
   public val address: SearchParam<RelatedPerson, Address> =
     SearchParam(
       name = "address",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RelatedPerson.address",
       extractor = { resource -> resource.address },
     )
@@ -55,7 +55,7 @@ public object RelatedPersonSearchParams {
   public val addressCity: SearchParam<RelatedPerson, String> =
     SearchParam(
       name = "address-city",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RelatedPerson.address.city",
       extractor = { resource -> resource.address.mapNotNull { it.city } },
     )
@@ -63,7 +63,7 @@ public object RelatedPersonSearchParams {
   public val addressCountry: SearchParam<RelatedPerson, String> =
     SearchParam(
       name = "address-country",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RelatedPerson.address.country",
       extractor = { resource -> resource.address.mapNotNull { it.country } },
     )
@@ -71,7 +71,7 @@ public object RelatedPersonSearchParams {
   public val addressPostalcode: SearchParam<RelatedPerson, String> =
     SearchParam(
       name = "address-postalcode",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RelatedPerson.address.postalCode",
       extractor = { resource -> resource.address.mapNotNull { it.postalCode } },
     )
@@ -79,7 +79,7 @@ public object RelatedPersonSearchParams {
   public val addressState: SearchParam<RelatedPerson, String> =
     SearchParam(
       name = "address-state",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RelatedPerson.address.state",
       extractor = { resource -> resource.address.mapNotNull { it.state } },
     )
@@ -87,7 +87,7 @@ public object RelatedPersonSearchParams {
   public val addressUse: SearchParam<RelatedPerson, Any> =
     SearchParam(
       name = "address-use",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RelatedPerson.address.use",
       extractor = { resource -> resource.address.mapNotNull { it.use } },
     )
@@ -95,7 +95,7 @@ public object RelatedPersonSearchParams {
   public val birthdate: SearchParam<RelatedPerson, Date> =
     SearchParam(
       name = "birthdate",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "RelatedPerson.birthDate",
       extractor = { resource -> listOfNotNull(resource.birthDate) },
     )
@@ -103,7 +103,7 @@ public object RelatedPersonSearchParams {
   public val email: SearchParam<RelatedPerson, ContactPoint> =
     SearchParam(
       name = "email",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RelatedPerson.telecom.where(system='email')",
       extractor = { resource ->
         resource.telecom.filter { it.system?.value?.toString() == "email" }
@@ -113,7 +113,7 @@ public object RelatedPersonSearchParams {
   public val family: SearchParam<RelatedPerson, String> =
     SearchParam(
       name = "family",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RelatedPerson.name.family",
       extractor = { resource -> resource.name.mapNotNull { it.family } },
     )
@@ -121,7 +121,7 @@ public object RelatedPersonSearchParams {
   public val gender: SearchParam<RelatedPerson, Any> =
     SearchParam(
       name = "gender",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RelatedPerson.gender",
       extractor = { resource -> listOfNotNull(resource.gender) },
     )
@@ -129,7 +129,7 @@ public object RelatedPersonSearchParams {
   public val given: SearchParam<RelatedPerson, String> =
     SearchParam(
       name = "given",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RelatedPerson.name.given",
       extractor = { resource -> resource.name.flatMap { it.given } },
     )
@@ -137,7 +137,7 @@ public object RelatedPersonSearchParams {
   public val identifier: SearchParam<RelatedPerson, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RelatedPerson.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -145,7 +145,7 @@ public object RelatedPersonSearchParams {
   public val name: SearchParam<RelatedPerson, HumanName> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RelatedPerson.name",
       extractor = { resource -> resource.name },
     )
@@ -153,7 +153,7 @@ public object RelatedPersonSearchParams {
   public val patient: SearchParam<RelatedPerson, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RelatedPerson.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -162,7 +162,7 @@ public object RelatedPersonSearchParams {
   public val phone: SearchParam<RelatedPerson, ContactPoint> =
     SearchParam(
       name = "phone",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RelatedPerson.telecom.where(system='phone')",
       extractor = { resource ->
         resource.telecom.filter { it.system?.value?.toString() == "phone" }
@@ -172,7 +172,7 @@ public object RelatedPersonSearchParams {
   public val phonetic: SearchParam<RelatedPerson, HumanName> =
     SearchParam(
       name = "phonetic",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RelatedPerson.name",
       extractor = { resource -> resource.name },
     )
@@ -180,7 +180,7 @@ public object RelatedPersonSearchParams {
   public val relationship: SearchParam<RelatedPerson, CodeableConcept> =
     SearchParam(
       name = "relationship",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RelatedPerson.relationship",
       extractor = { resource -> resource.relationship },
     )
@@ -188,7 +188,7 @@ public object RelatedPersonSearchParams {
   public val telecom: SearchParam<RelatedPerson, ContactPoint> =
     SearchParam(
       name = "telecom",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RelatedPerson.telecom",
       extractor = { resource -> resource.telecom },
     )

@@ -35,7 +35,7 @@ public object BiologicallyDerivedProductSearchParams {
   public val biologicalSourceEvent: SearchParam<BiologicallyDerivedProduct, Identifier> =
     SearchParam(
       name = "biological-source-event",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BiologicallyDerivedProduct.biologicalSourceEvent",
       extractor = { resource -> listOfNotNull(resource.biologicalSourceEvent) },
     )
@@ -43,7 +43,7 @@ public object BiologicallyDerivedProductSearchParams {
   public val code: SearchParam<BiologicallyDerivedProduct, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BiologicallyDerivedProduct.productCode",
       extractor = { resource -> listOfNotNull(resource.productCode) },
     )
@@ -51,7 +51,7 @@ public object BiologicallyDerivedProductSearchParams {
   public val collector: SearchParam<BiologicallyDerivedProduct, Reference> =
     SearchParam(
       name = "collector",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "BiologicallyDerivedProduct.collection.collector",
       target = listOf(PractitionerRole::class, Practitioner::class),
       extractor = { resource -> listOfNotNull(resource.collection?.collector) },
@@ -60,7 +60,7 @@ public object BiologicallyDerivedProductSearchParams {
   public val identifier: SearchParam<BiologicallyDerivedProduct, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BiologicallyDerivedProduct.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -68,7 +68,7 @@ public object BiologicallyDerivedProductSearchParams {
   public val productCategory: SearchParam<BiologicallyDerivedProduct, Coding> =
     SearchParam(
       name = "product-category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BiologicallyDerivedProduct.productCategory",
       extractor = { resource -> listOfNotNull(resource.productCategory) },
     )
@@ -76,7 +76,7 @@ public object BiologicallyDerivedProductSearchParams {
   public val productStatus: SearchParam<BiologicallyDerivedProduct, Coding> =
     SearchParam(
       name = "product-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BiologicallyDerivedProduct.productStatus",
       extractor = { resource -> listOfNotNull(resource.productStatus) },
     )
@@ -84,7 +84,7 @@ public object BiologicallyDerivedProductSearchParams {
   public val request: SearchParam<BiologicallyDerivedProduct, Reference> =
     SearchParam(
       name = "request",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "BiologicallyDerivedProduct.request",
       target = listOf(ServiceRequest::class),
       extractor = { resource -> resource.request },
@@ -93,7 +93,7 @@ public object BiologicallyDerivedProductSearchParams {
   public val serialNumber: SearchParam<BiologicallyDerivedProduct, Identifier> =
     SearchParam(
       name = "serial-number",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BiologicallyDerivedProduct.identifier",
       extractor = { resource -> resource.identifier },
     )

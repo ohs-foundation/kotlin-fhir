@@ -32,7 +32,7 @@ public object EnrollmentRequestSearchParams {
   public val identifier: SearchParam<EnrollmentRequest, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EnrollmentRequest.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -40,7 +40,7 @@ public object EnrollmentRequestSearchParams {
   public val patient: SearchParam<EnrollmentRequest, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EnrollmentRequest.candidate",
       target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.candidate) },
@@ -49,7 +49,7 @@ public object EnrollmentRequestSearchParams {
   public val status: SearchParam<EnrollmentRequest, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EnrollmentRequest.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -57,7 +57,7 @@ public object EnrollmentRequestSearchParams {
   public val subject: SearchParam<EnrollmentRequest, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EnrollmentRequest.candidate",
       target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.candidate) },

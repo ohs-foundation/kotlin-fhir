@@ -173,7 +173,7 @@ public object ConditionSearchParams {
   public val abatementAge: SearchParam<Condition, Age> =
     SearchParam(
       name = "abatement-age",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "Condition.abatement.as(Age)",
       extractor = { resource ->
         listOfNotNull((resource.abatement as? Condition.Abatement.Age)?.value)
@@ -183,7 +183,7 @@ public object ConditionSearchParams {
   public val abatementDate: SearchParam<Condition, DateTime> =
     SearchParam(
       name = "abatement-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Condition.abatement.as(dateTime)",
       extractor = { resource ->
         listOfNotNull((resource.abatement as? Condition.Abatement.DateTime)?.value)
@@ -193,7 +193,7 @@ public object ConditionSearchParams {
   public val abatementString: SearchParam<Condition, String> =
     SearchParam(
       name = "abatement-string",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Condition.abatement.as(string)",
       extractor = { resource ->
         listOfNotNull((resource.abatement as? Condition.Abatement.String)?.value)
@@ -203,7 +203,7 @@ public object ConditionSearchParams {
   public val asserter: SearchParam<Condition, Reference> =
     SearchParam(
       name = "asserter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Condition.asserter",
       target =
         listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class),
@@ -213,7 +213,7 @@ public object ConditionSearchParams {
   public val bodySite: SearchParam<Condition, CodeableConcept> =
     SearchParam(
       name = "body-site",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Condition.bodySite",
       extractor = { resource -> resource.bodySite },
     )
@@ -221,7 +221,7 @@ public object ConditionSearchParams {
   public val category: SearchParam<Condition, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Condition.category",
       extractor = { resource -> resource.category },
     )
@@ -229,7 +229,7 @@ public object ConditionSearchParams {
   public val clinicalStatus: SearchParam<Condition, CodeableConcept> =
     SearchParam(
       name = "clinical-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Condition.clinicalStatus",
       extractor = { resource -> listOfNotNull(resource.clinicalStatus) },
     )
@@ -237,7 +237,7 @@ public object ConditionSearchParams {
   public val code: SearchParam<Condition, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Condition.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -245,7 +245,7 @@ public object ConditionSearchParams {
   public val encounter: SearchParam<Condition, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Condition.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -254,7 +254,7 @@ public object ConditionSearchParams {
   public val evidence: SearchParam<Condition, CodeableConcept> =
     SearchParam(
       name = "evidence",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Condition.evidence.code",
       extractor = { resource -> resource.evidence.flatMap { it.code } },
     )
@@ -262,7 +262,7 @@ public object ConditionSearchParams {
   public val evidenceDetail: SearchParam<Condition, Reference> =
     SearchParam(
       name = "evidence-detail",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Condition.evidence.detail",
       target =
         listOf(
@@ -413,7 +413,7 @@ public object ConditionSearchParams {
   public val identifier: SearchParam<Condition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Condition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -421,7 +421,7 @@ public object ConditionSearchParams {
   public val onsetAge: SearchParam<Condition, Age> =
     SearchParam(
       name = "onset-age",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "Condition.onset.as(Age)",
       extractor = { resource -> listOfNotNull((resource.onset as? Condition.Onset.Age)?.value) },
     )
@@ -429,7 +429,7 @@ public object ConditionSearchParams {
   public val onsetDate: SearchParam<Condition, DateTime> =
     SearchParam(
       name = "onset-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Condition.onset.as(dateTime)",
       extractor = { resource ->
         listOfNotNull((resource.onset as? Condition.Onset.DateTime)?.value)
@@ -439,7 +439,7 @@ public object ConditionSearchParams {
   public val onsetInfo: SearchParam<Condition, String> =
     SearchParam(
       name = "onset-info",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Condition.onset.as(string)",
       extractor = { resource -> listOfNotNull((resource.onset as? Condition.Onset.String)?.value) },
     )
@@ -447,7 +447,7 @@ public object ConditionSearchParams {
   public val patient: SearchParam<Condition, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Condition.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -460,7 +460,7 @@ public object ConditionSearchParams {
   public val recordedDate: SearchParam<Condition, DateTime> =
     SearchParam(
       name = "recorded-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Condition.recordedDate",
       extractor = { resource -> listOfNotNull(resource.recordedDate) },
     )
@@ -468,7 +468,7 @@ public object ConditionSearchParams {
   public val severity: SearchParam<Condition, CodeableConcept> =
     SearchParam(
       name = "severity",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Condition.severity",
       extractor = { resource -> listOfNotNull(resource.severity) },
     )
@@ -476,7 +476,7 @@ public object ConditionSearchParams {
   public val stage: SearchParam<Condition, CodeableConcept> =
     SearchParam(
       name = "stage",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Condition.stage.summary",
       extractor = { resource -> resource.stage.mapNotNull { it.summary } },
     )
@@ -484,7 +484,7 @@ public object ConditionSearchParams {
   public val subject: SearchParam<Condition, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Condition.subject",
       target = listOf(Organization::class),
       extractor = { resource -> listOf(resource.subject) },
@@ -493,7 +493,7 @@ public object ConditionSearchParams {
   public val verificationStatus: SearchParam<Condition, CodeableConcept> =
     SearchParam(
       name = "verification-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Condition.verificationStatus",
       extractor = { resource -> listOfNotNull(resource.verificationStatus) },
     )

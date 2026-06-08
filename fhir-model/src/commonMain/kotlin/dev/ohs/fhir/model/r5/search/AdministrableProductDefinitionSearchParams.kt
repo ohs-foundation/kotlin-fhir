@@ -35,7 +35,7 @@ public object AdministrableProductDefinitionSearchParams {
   public val device: SearchParam<AdministrableProductDefinition, Reference> =
     SearchParam(
       name = "device",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AdministrableProductDefinition.device",
       target = listOf(DeviceDefinition::class),
       extractor = { resource -> listOfNotNull(resource.device) },
@@ -44,7 +44,7 @@ public object AdministrableProductDefinitionSearchParams {
   public val doseForm: SearchParam<AdministrableProductDefinition, CodeableConcept> =
     SearchParam(
       name = "dose-form",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdministrableProductDefinition.administrableDoseForm",
       extractor = { resource -> listOfNotNull(resource.administrableDoseForm) },
     )
@@ -52,7 +52,7 @@ public object AdministrableProductDefinitionSearchParams {
   public val formOf: SearchParam<AdministrableProductDefinition, Reference> =
     SearchParam(
       name = "form-of",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AdministrableProductDefinition.formOf",
       target = listOf(MedicinalProductDefinition::class),
       extractor = { resource -> resource.formOf },
@@ -61,7 +61,7 @@ public object AdministrableProductDefinitionSearchParams {
   public val identifier: SearchParam<AdministrableProductDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdministrableProductDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -69,7 +69,7 @@ public object AdministrableProductDefinitionSearchParams {
   public val ingredient: SearchParam<AdministrableProductDefinition, CodeableConcept> =
     SearchParam(
       name = "ingredient",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdministrableProductDefinition.ingredient",
       extractor = { resource -> resource.ingredient },
     )
@@ -77,7 +77,7 @@ public object AdministrableProductDefinitionSearchParams {
   public val manufacturedItem: SearchParam<AdministrableProductDefinition, Reference> =
     SearchParam(
       name = "manufactured-item",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AdministrableProductDefinition.producedFrom",
       target = listOf(ManufacturedItemDefinition::class),
       extractor = { resource -> resource.producedFrom },
@@ -86,7 +86,7 @@ public object AdministrableProductDefinitionSearchParams {
   public val route: SearchParam<AdministrableProductDefinition, CodeableConcept> =
     SearchParam(
       name = "route",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdministrableProductDefinition.routeOfAdministration.code",
       extractor = { resource -> resource.routeOfAdministration.map { it.code } },
     )
@@ -94,7 +94,7 @@ public object AdministrableProductDefinitionSearchParams {
   public val status: SearchParam<AdministrableProductDefinition, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdministrableProductDefinition.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -102,7 +102,7 @@ public object AdministrableProductDefinitionSearchParams {
   public val targetSpecies: SearchParam<AdministrableProductDefinition, CodeableConcept> =
     SearchParam(
       name = "target-species",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdministrableProductDefinition.routeOfAdministration.targetSpecies.code",
       extractor = { resource ->
         resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }

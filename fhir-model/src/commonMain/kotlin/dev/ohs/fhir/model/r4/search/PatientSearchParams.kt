@@ -45,7 +45,7 @@ public object PatientSearchParams {
   public val active: SearchParam<Patient, Boolean> =
     SearchParam(
       name = "active",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Patient.active",
       extractor = { resource -> listOfNotNull(resource.active) },
     )
@@ -53,7 +53,7 @@ public object PatientSearchParams {
   public val address: SearchParam<Patient, Address> =
     SearchParam(
       name = "address",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Patient.address",
       extractor = { resource -> resource.address },
     )
@@ -61,7 +61,7 @@ public object PatientSearchParams {
   public val addressCity: SearchParam<Patient, String> =
     SearchParam(
       name = "address-city",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Patient.address.city",
       extractor = { resource -> resource.address.mapNotNull { it.city } },
     )
@@ -69,7 +69,7 @@ public object PatientSearchParams {
   public val addressCountry: SearchParam<Patient, String> =
     SearchParam(
       name = "address-country",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Patient.address.country",
       extractor = { resource -> resource.address.mapNotNull { it.country } },
     )
@@ -77,7 +77,7 @@ public object PatientSearchParams {
   public val addressPostalcode: SearchParam<Patient, String> =
     SearchParam(
       name = "address-postalcode",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Patient.address.postalCode",
       extractor = { resource -> resource.address.mapNotNull { it.postalCode } },
     )
@@ -85,7 +85,7 @@ public object PatientSearchParams {
   public val addressState: SearchParam<Patient, String> =
     SearchParam(
       name = "address-state",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Patient.address.state",
       extractor = { resource -> resource.address.mapNotNull { it.state } },
     )
@@ -93,7 +93,7 @@ public object PatientSearchParams {
   public val addressUse: SearchParam<Patient, Any> =
     SearchParam(
       name = "address-use",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Patient.address.use",
       extractor = { resource -> resource.address.mapNotNull { it.use } },
     )
@@ -101,7 +101,7 @@ public object PatientSearchParams {
   public val age: SearchParam<Patient, Any> =
     SearchParam(
       name = "age",
-      type = SearchParamType.fromCode("number"),
+      type = SearchParamType.Number,
       expression = "",
       extractor = {
         throw NotImplementedError(
@@ -113,7 +113,7 @@ public object PatientSearchParams {
   public val birthOrderBoolean: SearchParam<Patient, Any> =
     SearchParam(
       name = "birthOrderBoolean",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "",
       extractor = {
         throw NotImplementedError(
@@ -125,7 +125,7 @@ public object PatientSearchParams {
   public val birthdate: SearchParam<Patient, Date> =
     SearchParam(
       name = "birthdate",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Patient.birthDate",
       extractor = { resource -> listOfNotNull(resource.birthDate) },
     )
@@ -133,7 +133,7 @@ public object PatientSearchParams {
   public val deathDate: SearchParam<Patient, DateTime> =
     SearchParam(
       name = "death-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "(Patient.deceased as dateTime)",
       extractor = { resource ->
         listOfNotNull((resource.deceased as? Patient.Deceased.DateTime)?.value)
@@ -143,7 +143,7 @@ public object PatientSearchParams {
   public val deceased: SearchParam<Patient, Any> =
     SearchParam(
       name = "deceased",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Patient.deceased.exists() and Patient.deceased != false",
       extractor = {
         throw NotImplementedError(
@@ -155,7 +155,7 @@ public object PatientSearchParams {
   public val email: SearchParam<Patient, ContactPoint> =
     SearchParam(
       name = "email",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Patient.telecom.where(system='email')",
       extractor = { resource ->
         resource.telecom.filter { it.system?.value?.toString() == "email" }
@@ -165,7 +165,7 @@ public object PatientSearchParams {
   public val family: SearchParam<Patient, String> =
     SearchParam(
       name = "family",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Patient.name.family",
       extractor = { resource -> resource.name.mapNotNull { it.family } },
     )
@@ -173,7 +173,7 @@ public object PatientSearchParams {
   public val gender: SearchParam<Patient, Any> =
     SearchParam(
       name = "gender",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Patient.gender",
       extractor = { resource -> listOfNotNull(resource.gender) },
     )
@@ -181,7 +181,7 @@ public object PatientSearchParams {
   public val generalPractitioner: SearchParam<Patient, Reference> =
     SearchParam(
       name = "general-practitioner",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Patient.generalPractitioner",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
       extractor = { resource -> resource.generalPractitioner },
@@ -190,7 +190,7 @@ public object PatientSearchParams {
   public val given: SearchParam<Patient, String> =
     SearchParam(
       name = "given",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Patient.name.given",
       extractor = { resource -> resource.name.flatMap { it.given } },
     )
@@ -198,7 +198,7 @@ public object PatientSearchParams {
   public val identifier: SearchParam<Patient, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Patient.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -206,7 +206,7 @@ public object PatientSearchParams {
   public val language: SearchParam<Patient, CodeableConcept> =
     SearchParam(
       name = "language",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Patient.communication.language",
       extractor = { resource -> resource.communication.map { it.language } },
     )
@@ -214,7 +214,7 @@ public object PatientSearchParams {
   public val link: SearchParam<Patient, Reference> =
     SearchParam(
       name = "link",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Patient.link.other",
       target = listOf(Patient::class, RelatedPerson::class),
       extractor = { resource -> resource.link.map { it.other } },
@@ -223,7 +223,7 @@ public object PatientSearchParams {
   public val mothersMaidenName: SearchParam<Patient, Any> =
     SearchParam(
       name = "mothersMaidenName",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression =
         "Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-extensions-Patient-mothersMaidenName')",
       extractor = {
@@ -236,7 +236,7 @@ public object PatientSearchParams {
   public val name: SearchParam<Patient, HumanName> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Patient.name",
       extractor = { resource -> resource.name },
     )
@@ -244,7 +244,7 @@ public object PatientSearchParams {
   public val organization: SearchParam<Patient, Reference> =
     SearchParam(
       name = "organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Patient.managingOrganization",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
@@ -253,7 +253,7 @@ public object PatientSearchParams {
   public val partAgree: SearchParam<Patient, Any> =
     SearchParam(
       name = "part-agree",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression =
         "DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement')",
       target = listOf(DocumentReference::class),
@@ -267,7 +267,7 @@ public object PatientSearchParams {
   public val phone: SearchParam<Patient, ContactPoint> =
     SearchParam(
       name = "phone",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Patient.telecom.where(system='phone')",
       extractor = { resource ->
         resource.telecom.filter { it.system?.value?.toString() == "phone" }
@@ -277,7 +277,7 @@ public object PatientSearchParams {
   public val phonetic: SearchParam<Patient, HumanName> =
     SearchParam(
       name = "phonetic",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Patient.name",
       extractor = { resource -> resource.name },
     )
@@ -285,7 +285,7 @@ public object PatientSearchParams {
   public val telecom: SearchParam<Patient, ContactPoint> =
     SearchParam(
       name = "telecom",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Patient.telecom",
       extractor = { resource -> resource.telecom },
     )

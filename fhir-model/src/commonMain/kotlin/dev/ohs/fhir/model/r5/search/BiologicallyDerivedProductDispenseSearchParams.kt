@@ -34,7 +34,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
   public val identifier: SearchParam<BiologicallyDerivedProductDispense, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BiologicallyDerivedProductDispense.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -42,7 +42,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
   public val patient: SearchParam<BiologicallyDerivedProductDispense, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "BiologicallyDerivedProductDispense.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -51,7 +51,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
   public val performer: SearchParam<BiologicallyDerivedProductDispense, Reference> =
     SearchParam(
       name = "performer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "BiologicallyDerivedProductDispense.performer.actor",
       target = listOf(Practitioner::class),
       extractor = { resource -> resource.performer.map { it.actor } },
@@ -60,7 +60,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
   public val product: SearchParam<BiologicallyDerivedProductDispense, Reference> =
     SearchParam(
       name = "product",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "BiologicallyDerivedProductDispense.product",
       target = listOf(BiologicallyDerivedProduct::class),
       extractor = { resource -> listOf(resource.product) },
@@ -69,7 +69,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
   public val status: SearchParam<BiologicallyDerivedProductDispense, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BiologicallyDerivedProductDispense.status",
       extractor = { resource -> listOf(resource.status) },
     )

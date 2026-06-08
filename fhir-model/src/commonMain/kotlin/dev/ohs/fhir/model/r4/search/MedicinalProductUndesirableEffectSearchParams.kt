@@ -31,7 +31,7 @@ public object MedicinalProductUndesirableEffectSearchParams {
   public val subject: SearchParam<MedicinalProductUndesirableEffect, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicinalProductUndesirableEffect.subject",
       target = listOf(Medication::class, MedicinalProduct::class),
       extractor = { resource -> resource.subject },

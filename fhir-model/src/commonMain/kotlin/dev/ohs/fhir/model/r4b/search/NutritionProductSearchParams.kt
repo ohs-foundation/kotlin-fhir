@@ -30,7 +30,7 @@ public object NutritionProductSearchParams {
   public val identifier: SearchParam<NutritionProduct, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionProduct.instance.identifier",
       extractor = { resource -> resource.instance?.identifier ?: emptyList() },
     )
@@ -38,7 +38,7 @@ public object NutritionProductSearchParams {
   public val status: SearchParam<NutritionProduct, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "NutritionProduct.status",
       extractor = { resource -> listOf(resource.status) },
     )

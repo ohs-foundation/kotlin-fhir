@@ -38,7 +38,7 @@ public object EpisodeOfCareSearchParams {
   public val careManager: SearchParam<EpisodeOfCare, Reference> =
     SearchParam(
       name = "care-manager",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EpisodeOfCare.careManager.where(resolve() is Practitioner)",
       target = listOf(Practitioner::class),
       extractor = { resource ->
@@ -51,7 +51,7 @@ public object EpisodeOfCareSearchParams {
   public val condition: SearchParam<EpisodeOfCare, Reference> =
     SearchParam(
       name = "condition",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EpisodeOfCare.diagnosis.condition",
       target = listOf(Condition::class),
       extractor = { resource -> resource.diagnosis.map { it.condition } },
@@ -60,7 +60,7 @@ public object EpisodeOfCareSearchParams {
   public val date: SearchParam<EpisodeOfCare, Period> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "EpisodeOfCare.period",
       extractor = { resource -> listOfNotNull(resource.period) },
     )
@@ -68,7 +68,7 @@ public object EpisodeOfCareSearchParams {
   public val identifier: SearchParam<EpisodeOfCare, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EpisodeOfCare.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -76,7 +76,7 @@ public object EpisodeOfCareSearchParams {
   public val incomingReferral: SearchParam<EpisodeOfCare, Reference> =
     SearchParam(
       name = "incoming-referral",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EpisodeOfCare.referralRequest",
       target = listOf(ServiceRequest::class),
       extractor = { resource -> resource.referralRequest },
@@ -85,7 +85,7 @@ public object EpisodeOfCareSearchParams {
   public val organization: SearchParam<EpisodeOfCare, Reference> =
     SearchParam(
       name = "organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EpisodeOfCare.managingOrganization",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
@@ -94,7 +94,7 @@ public object EpisodeOfCareSearchParams {
   public val patient: SearchParam<EpisodeOfCare, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EpisodeOfCare.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -103,7 +103,7 @@ public object EpisodeOfCareSearchParams {
   public val status: SearchParam<EpisodeOfCare, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EpisodeOfCare.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -111,7 +111,7 @@ public object EpisodeOfCareSearchParams {
   public val type: SearchParam<EpisodeOfCare, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EpisodeOfCare.type",
       extractor = { resource -> resource.type },
     )

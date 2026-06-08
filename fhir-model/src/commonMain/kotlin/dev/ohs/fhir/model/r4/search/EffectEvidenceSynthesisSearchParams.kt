@@ -39,7 +39,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val context: SearchParam<EffectEvidenceSynthesis, CodeableConcept> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(EffectEvidenceSynthesis.useContext.value as CodeableConcept)",
       extractor = { resource ->
         resource.useContext.mapNotNull {
@@ -51,7 +51,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val contextQuantity: SearchParam<EffectEvidenceSynthesis, Quantity> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(EffectEvidenceSynthesis.useContext.value as Quantity)",
       extractor = { resource ->
         resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
@@ -61,7 +61,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val contextType: SearchParam<EffectEvidenceSynthesis, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EffectEvidenceSynthesis.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -69,7 +69,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val contextTypeQuantity: SearchParam<EffectEvidenceSynthesis, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "EffectEvidenceSynthesis.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -77,7 +77,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val contextTypeValue: SearchParam<EffectEvidenceSynthesis, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "EffectEvidenceSynthesis.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -85,7 +85,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val date: SearchParam<EffectEvidenceSynthesis, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "EffectEvidenceSynthesis.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -93,7 +93,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val description: SearchParam<EffectEvidenceSynthesis, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "EffectEvidenceSynthesis.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -101,7 +101,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val effective: SearchParam<EffectEvidenceSynthesis, Period> =
     SearchParam(
       name = "effective",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "EffectEvidenceSynthesis.effectivePeriod",
       extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
     )
@@ -109,7 +109,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val identifier: SearchParam<EffectEvidenceSynthesis, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EffectEvidenceSynthesis.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -117,7 +117,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val jurisdiction: SearchParam<EffectEvidenceSynthesis, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EffectEvidenceSynthesis.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -125,7 +125,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val name: SearchParam<EffectEvidenceSynthesis, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "EffectEvidenceSynthesis.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -133,7 +133,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val publisher: SearchParam<EffectEvidenceSynthesis, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "EffectEvidenceSynthesis.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -141,7 +141,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val status: SearchParam<EffectEvidenceSynthesis, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EffectEvidenceSynthesis.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -149,7 +149,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val title: SearchParam<EffectEvidenceSynthesis, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "EffectEvidenceSynthesis.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -157,7 +157,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val url: SearchParam<EffectEvidenceSynthesis, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "EffectEvidenceSynthesis.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -165,7 +165,7 @@ public object EffectEvidenceSynthesisSearchParams {
   public val version: SearchParam<EffectEvidenceSynthesis, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EffectEvidenceSynthesis.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

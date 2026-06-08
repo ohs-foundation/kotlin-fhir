@@ -34,7 +34,7 @@ public object DeviceDispenseSearchParams {
   public val code: SearchParam<DeviceDispense, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceDispense.device.concept",
       extractor = { resource -> listOfNotNull(resource.device.concept) },
     )
@@ -42,7 +42,7 @@ public object DeviceDispenseSearchParams {
   public val identifier: SearchParam<DeviceDispense, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceDispense.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -50,7 +50,7 @@ public object DeviceDispenseSearchParams {
   public val patient: SearchParam<DeviceDispense, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceDispense.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -63,7 +63,7 @@ public object DeviceDispenseSearchParams {
   public val status: SearchParam<DeviceDispense, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceDispense.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -71,7 +71,7 @@ public object DeviceDispenseSearchParams {
   public val subject: SearchParam<DeviceDispense, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceDispense.subject",
       target = listOf(Practitioner::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },

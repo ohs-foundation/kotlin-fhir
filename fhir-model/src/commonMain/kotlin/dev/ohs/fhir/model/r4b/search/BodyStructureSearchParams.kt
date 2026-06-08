@@ -32,7 +32,7 @@ public object BodyStructureSearchParams {
   public val identifier: SearchParam<BodyStructure, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BodyStructure.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -40,7 +40,7 @@ public object BodyStructureSearchParams {
   public val location: SearchParam<BodyStructure, CodeableConcept> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BodyStructure.location",
       extractor = { resource -> listOfNotNull(resource.location) },
     )
@@ -48,7 +48,7 @@ public object BodyStructureSearchParams {
   public val morphology: SearchParam<BodyStructure, CodeableConcept> =
     SearchParam(
       name = "morphology",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "BodyStructure.morphology",
       extractor = { resource -> listOfNotNull(resource.morphology) },
     )
@@ -56,7 +56,7 @@ public object BodyStructureSearchParams {
   public val patient: SearchParam<BodyStructure, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "BodyStructure.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },

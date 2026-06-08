@@ -37,7 +37,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val characteristic: SearchParam<MedicinalProductDefinition, Any> =
     SearchParam(
       name = "characteristic",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.characteristic.value.ofType(Quantity)",
       extractor = {
         throw NotImplementedError(
@@ -49,7 +49,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val characteristicType: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SearchParam(
       name = "characteristic-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.characteristic.type",
       extractor = { resource -> resource.characteristic.map { it.type } },
     )
@@ -57,7 +57,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val contact: SearchParam<MedicinalProductDefinition, Reference> =
     SearchParam(
       name = "contact",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicinalProductDefinition.contact.contact",
       target = listOf(Organization::class, PractitionerRole::class),
       extractor = { resource -> resource.contact.map { it.contact } },
@@ -66,7 +66,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val domain: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SearchParam(
       name = "domain",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.domain",
       extractor = { resource -> listOfNotNull(resource.domain) },
     )
@@ -74,7 +74,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val identifier: SearchParam<MedicinalProductDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -82,7 +82,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val ingredient: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SearchParam(
       name = "ingredient",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.ingredient",
       extractor = { resource -> resource.ingredient },
     )
@@ -90,7 +90,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val masterFile: SearchParam<MedicinalProductDefinition, Reference> =
     SearchParam(
       name = "master-file",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicinalProductDefinition.masterFile",
       target = listOf(DocumentReference::class),
       extractor = { resource -> resource.masterFile },
@@ -99,7 +99,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val name: SearchParam<MedicinalProductDefinition, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "MedicinalProductDefinition.name.productName",
       extractor = { resource -> resource.name.map { it.productName } },
     )
@@ -107,7 +107,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val nameLanguage: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SearchParam(
       name = "name-language",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.name.usage.language",
       extractor = { resource -> resource.name.flatMap { it.usage }.map { it.language } },
     )
@@ -115,7 +115,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val productClassification: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SearchParam(
       name = "product-classification",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.classification",
       extractor = { resource -> resource.classification },
     )
@@ -123,7 +123,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val status: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -131,7 +131,7 @@ public object MedicinalProductDefinitionSearchParams {
   public val type: SearchParam<MedicinalProductDefinition, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )

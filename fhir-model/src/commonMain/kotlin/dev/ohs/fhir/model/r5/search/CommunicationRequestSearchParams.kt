@@ -191,7 +191,7 @@ public object CommunicationRequestSearchParams {
   public val authored: SearchParam<CommunicationRequest, DateTime> =
     SearchParam(
       name = "authored",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "CommunicationRequest.authoredOn",
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
@@ -199,7 +199,7 @@ public object CommunicationRequestSearchParams {
   public val basedOn: SearchParam<CommunicationRequest, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CommunicationRequest.basedOn",
       target =
         listOf(
@@ -368,7 +368,7 @@ public object CommunicationRequestSearchParams {
   public val category: SearchParam<CommunicationRequest, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CommunicationRequest.category",
       extractor = { resource -> resource.category },
     )
@@ -376,7 +376,7 @@ public object CommunicationRequestSearchParams {
   public val encounter: SearchParam<CommunicationRequest, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CommunicationRequest.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -385,7 +385,7 @@ public object CommunicationRequestSearchParams {
   public val groupIdentifier: SearchParam<CommunicationRequest, Identifier> =
     SearchParam(
       name = "group-identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CommunicationRequest.groupIdentifier",
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
@@ -393,7 +393,7 @@ public object CommunicationRequestSearchParams {
   public val identifier: SearchParam<CommunicationRequest, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CommunicationRequest.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -401,7 +401,7 @@ public object CommunicationRequestSearchParams {
   public val informationProvider: SearchParam<CommunicationRequest, Reference> =
     SearchParam(
       name = "information-provider",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CommunicationRequest.informationProvider",
       target =
         listOf(
@@ -420,7 +420,7 @@ public object CommunicationRequestSearchParams {
   public val medium: SearchParam<CommunicationRequest, CodeableConcept> =
     SearchParam(
       name = "medium",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CommunicationRequest.medium",
       extractor = { resource -> resource.medium },
     )
@@ -428,7 +428,7 @@ public object CommunicationRequestSearchParams {
   public val occurrence: SearchParam<CommunicationRequest, Any> =
     SearchParam(
       name = "occurrence",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "CommunicationRequest.occurrence.ofType(dateTime)",
       extractor = {
         throw NotImplementedError(
@@ -440,7 +440,7 @@ public object CommunicationRequestSearchParams {
   public val patient: SearchParam<CommunicationRequest, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CommunicationRequest.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -453,7 +453,7 @@ public object CommunicationRequestSearchParams {
   public val priority: SearchParam<CommunicationRequest, Any> =
     SearchParam(
       name = "priority",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CommunicationRequest.priority",
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
@@ -461,7 +461,7 @@ public object CommunicationRequestSearchParams {
   public val recipient: SearchParam<CommunicationRequest, Reference> =
     SearchParam(
       name = "recipient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CommunicationRequest.recipient",
       target =
         listOf(
@@ -482,7 +482,7 @@ public object CommunicationRequestSearchParams {
   public val replaces: SearchParam<CommunicationRequest, Reference> =
     SearchParam(
       name = "replaces",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CommunicationRequest.replaces",
       target = listOf(CommunicationRequest::class),
       extractor = { resource -> resource.replaces },
@@ -491,7 +491,7 @@ public object CommunicationRequestSearchParams {
   public val requester: SearchParam<CommunicationRequest, Reference> =
     SearchParam(
       name = "requester",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CommunicationRequest.requester",
       target =
         listOf(
@@ -508,7 +508,7 @@ public object CommunicationRequestSearchParams {
   public val status: SearchParam<CommunicationRequest, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CommunicationRequest.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -516,7 +516,7 @@ public object CommunicationRequestSearchParams {
   public val subject: SearchParam<CommunicationRequest, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CommunicationRequest.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },

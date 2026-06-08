@@ -36,7 +36,7 @@ public object SubscriptionTopicSearchParams {
   public val date: SearchParam<SubscriptionTopic, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "SubscriptionTopic.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -44,7 +44,7 @@ public object SubscriptionTopicSearchParams {
   public val derivedOrSelf: SearchParam<SubscriptionTopic, Uri> =
     SearchParam(
       name = "derived-or-self",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "SubscriptionTopic.url",
       extractor = { resource -> listOf(resource.url) },
     )
@@ -52,7 +52,7 @@ public object SubscriptionTopicSearchParams {
   public val effective: SearchParam<SubscriptionTopic, Period> =
     SearchParam(
       name = "effective",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "SubscriptionTopic.effectivePeriod",
       extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
     )
@@ -60,7 +60,7 @@ public object SubscriptionTopicSearchParams {
   public val event: SearchParam<SubscriptionTopic, CodeableConcept> =
     SearchParam(
       name = "event",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SubscriptionTopic.eventTrigger.event",
       extractor = { resource -> resource.eventTrigger.map { it.event } },
     )
@@ -68,7 +68,7 @@ public object SubscriptionTopicSearchParams {
   public val identifier: SearchParam<SubscriptionTopic, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SubscriptionTopic.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -76,7 +76,7 @@ public object SubscriptionTopicSearchParams {
   public val resource: SearchParam<SubscriptionTopic, Uri> =
     SearchParam(
       name = "resource",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "SubscriptionTopic.resourceTrigger.resource",
       extractor = { resource -> resource.resourceTrigger.map { it.resource } },
     )
@@ -84,7 +84,7 @@ public object SubscriptionTopicSearchParams {
   public val status: SearchParam<SubscriptionTopic, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SubscriptionTopic.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -92,7 +92,7 @@ public object SubscriptionTopicSearchParams {
   public val title: SearchParam<SubscriptionTopic, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "SubscriptionTopic.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -100,7 +100,7 @@ public object SubscriptionTopicSearchParams {
   public val triggerDescription: SearchParam<SubscriptionTopic, Markdown> =
     SearchParam(
       name = "trigger-description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "SubscriptionTopic.resourceTrigger.description",
       extractor = { resource -> resource.resourceTrigger.mapNotNull { it.description } },
     )
@@ -108,7 +108,7 @@ public object SubscriptionTopicSearchParams {
   public val url: SearchParam<SubscriptionTopic, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "SubscriptionTopic.url",
       extractor = { resource -> listOf(resource.url) },
     )
@@ -116,7 +116,7 @@ public object SubscriptionTopicSearchParams {
   public val version: SearchParam<SubscriptionTopic, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SubscriptionTopic.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

@@ -40,7 +40,7 @@ public object PersonSearchParams {
   public val address: SearchParam<Person, Address> =
     SearchParam(
       name = "address",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Person.address",
       extractor = { resource -> resource.address },
     )
@@ -48,7 +48,7 @@ public object PersonSearchParams {
   public val addressCity: SearchParam<Person, String> =
     SearchParam(
       name = "address-city",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Person.address.city",
       extractor = { resource -> resource.address.mapNotNull { it.city } },
     )
@@ -56,7 +56,7 @@ public object PersonSearchParams {
   public val addressCountry: SearchParam<Person, String> =
     SearchParam(
       name = "address-country",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Person.address.country",
       extractor = { resource -> resource.address.mapNotNull { it.country } },
     )
@@ -64,7 +64,7 @@ public object PersonSearchParams {
   public val addressPostalcode: SearchParam<Person, String> =
     SearchParam(
       name = "address-postalcode",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Person.address.postalCode",
       extractor = { resource -> resource.address.mapNotNull { it.postalCode } },
     )
@@ -72,7 +72,7 @@ public object PersonSearchParams {
   public val addressState: SearchParam<Person, String> =
     SearchParam(
       name = "address-state",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Person.address.state",
       extractor = { resource -> resource.address.mapNotNull { it.state } },
     )
@@ -80,7 +80,7 @@ public object PersonSearchParams {
   public val addressUse: SearchParam<Person, Any> =
     SearchParam(
       name = "address-use",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Person.address.use",
       extractor = { resource -> resource.address.mapNotNull { it.use } },
     )
@@ -88,7 +88,7 @@ public object PersonSearchParams {
   public val birthdate: SearchParam<Person, Date> =
     SearchParam(
       name = "birthdate",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Person.birthDate",
       extractor = { resource -> listOfNotNull(resource.birthDate) },
     )
@@ -96,7 +96,7 @@ public object PersonSearchParams {
   public val email: SearchParam<Person, ContactPoint> =
     SearchParam(
       name = "email",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Person.telecom.where(system='email')",
       extractor = { resource ->
         resource.telecom.filter { it.system?.value?.toString() == "email" }
@@ -106,7 +106,7 @@ public object PersonSearchParams {
   public val gender: SearchParam<Person, Any> =
     SearchParam(
       name = "gender",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Person.gender",
       extractor = { resource -> listOfNotNull(resource.gender) },
     )
@@ -114,7 +114,7 @@ public object PersonSearchParams {
   public val identifier: SearchParam<Person, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Person.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -122,7 +122,7 @@ public object PersonSearchParams {
   public val link: SearchParam<Person, Reference> =
     SearchParam(
       name = "link",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Person.link.target",
       target = listOf(Practitioner::class, Patient::class, Person::class, RelatedPerson::class),
       extractor = { resource -> resource.link.map { it.target } },
@@ -131,7 +131,7 @@ public object PersonSearchParams {
   public val name: SearchParam<Person, HumanName> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Person.name",
       extractor = { resource -> resource.name },
     )
@@ -139,7 +139,7 @@ public object PersonSearchParams {
   public val organization: SearchParam<Person, Reference> =
     SearchParam(
       name = "organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Person.managingOrganization",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
@@ -148,7 +148,7 @@ public object PersonSearchParams {
   public val patient: SearchParam<Person, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Person.link.target.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -161,7 +161,7 @@ public object PersonSearchParams {
   public val phone: SearchParam<Person, ContactPoint> =
     SearchParam(
       name = "phone",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Person.telecom.where(system='phone')",
       extractor = { resource ->
         resource.telecom.filter { it.system?.value?.toString() == "phone" }
@@ -171,7 +171,7 @@ public object PersonSearchParams {
   public val phonetic: SearchParam<Person, HumanName> =
     SearchParam(
       name = "phonetic",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Person.name",
       extractor = { resource -> resource.name },
     )
@@ -179,7 +179,7 @@ public object PersonSearchParams {
   public val practitioner: SearchParam<Person, Reference> =
     SearchParam(
       name = "practitioner",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Person.link.target.where(resolve() is Practitioner)",
       target = listOf(Practitioner::class),
       extractor = { resource ->
@@ -192,7 +192,7 @@ public object PersonSearchParams {
   public val relatedperson: SearchParam<Person, Reference> =
     SearchParam(
       name = "relatedperson",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Person.link.target.where(resolve() is RelatedPerson)",
       target = listOf(RelatedPerson::class),
       extractor = { resource ->
@@ -205,7 +205,7 @@ public object PersonSearchParams {
   public val telecom: SearchParam<Person, ContactPoint> =
     SearchParam(
       name = "telecom",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Person.telecom",
       extractor = { resource -> resource.telecom },
     )

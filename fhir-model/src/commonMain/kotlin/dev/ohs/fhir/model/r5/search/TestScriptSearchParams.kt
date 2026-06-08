@@ -196,7 +196,7 @@ public object TestScriptSearchParams {
   public val context: SearchParam<TestScript, Any> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(TestScript.useContext.value.ofType(CodeableConcept))",
       extractor = {
         throw NotImplementedError(
@@ -208,7 +208,7 @@ public object TestScriptSearchParams {
   public val contextQuantity: SearchParam<TestScript, Any> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(TestScript.useContext.value.ofType(Quantity))",
       extractor = {
         throw NotImplementedError(
@@ -220,7 +220,7 @@ public object TestScriptSearchParams {
   public val contextType: SearchParam<TestScript, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "TestScript.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -228,7 +228,7 @@ public object TestScriptSearchParams {
   public val contextTypeQuantity: SearchParam<TestScript, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "TestScript.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -236,7 +236,7 @@ public object TestScriptSearchParams {
   public val contextTypeValue: SearchParam<TestScript, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "TestScript.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -244,7 +244,7 @@ public object TestScriptSearchParams {
   public val date: SearchParam<TestScript, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "TestScript.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -252,7 +252,7 @@ public object TestScriptSearchParams {
   public val description: SearchParam<TestScript, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "TestScript.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -260,7 +260,7 @@ public object TestScriptSearchParams {
   public val identifier: SearchParam<TestScript, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "TestScript.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -268,7 +268,7 @@ public object TestScriptSearchParams {
   public val jurisdiction: SearchParam<TestScript, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "TestScript.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -276,7 +276,7 @@ public object TestScriptSearchParams {
   public val name: SearchParam<TestScript, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "TestScript.name",
       extractor = { resource -> listOf(resource.name) },
     )
@@ -284,7 +284,7 @@ public object TestScriptSearchParams {
   public val publisher: SearchParam<TestScript, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "TestScript.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -292,7 +292,7 @@ public object TestScriptSearchParams {
   public val scopeArtifact: SearchParam<TestScript, Canonical> =
     SearchParam(
       name = "scope-artifact",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "TestScript.scope.artifact",
       target =
         listOf(
@@ -461,7 +461,7 @@ public object TestScriptSearchParams {
   public val scopeArtifactConformance: SearchParam<TestScript, TestScript.Scope> =
     SearchParam(
       name = "scope-artifact-conformance",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "TestScript.scope",
       extractor = { resource -> resource.scope },
     )
@@ -469,7 +469,7 @@ public object TestScriptSearchParams {
   public val scopeArtifactPhase: SearchParam<TestScript, TestScript.Scope> =
     SearchParam(
       name = "scope-artifact-phase",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "TestScript.scope",
       extractor = { resource -> resource.scope },
     )
@@ -477,7 +477,7 @@ public object TestScriptSearchParams {
   public val status: SearchParam<TestScript, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "TestScript.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -485,7 +485,7 @@ public object TestScriptSearchParams {
   public val testscriptCapability: SearchParam<TestScript, String> =
     SearchParam(
       name = "testscript-capability",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "TestScript.metadata.capability.description",
       extractor = { resource ->
         (resource.metadata?.capability ?: emptyList()).mapNotNull { it.description }
@@ -495,7 +495,7 @@ public object TestScriptSearchParams {
   public val title: SearchParam<TestScript, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "TestScript.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -503,7 +503,7 @@ public object TestScriptSearchParams {
   public val url: SearchParam<TestScript, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "TestScript.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -511,7 +511,7 @@ public object TestScriptSearchParams {
   public val version: SearchParam<TestScript, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "TestScript.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

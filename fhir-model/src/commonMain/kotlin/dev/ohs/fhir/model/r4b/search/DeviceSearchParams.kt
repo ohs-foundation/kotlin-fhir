@@ -38,7 +38,7 @@ public object DeviceSearchParams {
   public val deviceName: SearchParam<Device, String> =
     SearchParam(
       name = "device-name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Device.deviceName.name",
       extractor = { resource -> resource.deviceName.map { it.name } },
     )
@@ -46,7 +46,7 @@ public object DeviceSearchParams {
   public val din: SearchParam<Device, Any> =
     SearchParam(
       name = "din",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression =
         "Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')",
       extractor = {
@@ -59,7 +59,7 @@ public object DeviceSearchParams {
   public val identifier: SearchParam<Device, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Device.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -67,7 +67,7 @@ public object DeviceSearchParams {
   public val location: SearchParam<Device, Reference> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Device.location",
       target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
@@ -76,7 +76,7 @@ public object DeviceSearchParams {
   public val manufacturer: SearchParam<Device, String> =
     SearchParam(
       name = "manufacturer",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Device.manufacturer",
       extractor = { resource -> listOfNotNull(resource.manufacturer) },
     )
@@ -84,7 +84,7 @@ public object DeviceSearchParams {
   public val model: SearchParam<Device, String> =
     SearchParam(
       name = "model",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Device.modelNumber",
       extractor = { resource -> listOfNotNull(resource.modelNumber) },
     )
@@ -92,7 +92,7 @@ public object DeviceSearchParams {
   public val organization: SearchParam<Device, Reference> =
     SearchParam(
       name = "organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Device.owner",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.owner) },
@@ -101,7 +101,7 @@ public object DeviceSearchParams {
   public val patient: SearchParam<Device, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Device.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.patient) },
@@ -110,7 +110,7 @@ public object DeviceSearchParams {
   public val status: SearchParam<Device, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Device.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -118,7 +118,7 @@ public object DeviceSearchParams {
   public val type: SearchParam<Device, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Device.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )
@@ -126,7 +126,7 @@ public object DeviceSearchParams {
   public val udiCarrier: SearchParam<Device, String> =
     SearchParam(
       name = "udi-carrier",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Device.udiCarrier.carrierHRF",
       extractor = { resource -> resource.udiCarrier.mapNotNull { it.carrierHRF } },
     )
@@ -134,7 +134,7 @@ public object DeviceSearchParams {
   public val udiDi: SearchParam<Device, String> =
     SearchParam(
       name = "udi-di",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Device.udiCarrier.deviceIdentifier",
       extractor = { resource -> resource.udiCarrier.mapNotNull { it.deviceIdentifier } },
     )
@@ -142,7 +142,7 @@ public object DeviceSearchParams {
   public val url: SearchParam<Device, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Device.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )

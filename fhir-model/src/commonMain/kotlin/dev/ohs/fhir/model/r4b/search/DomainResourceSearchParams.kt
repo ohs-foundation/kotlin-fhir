@@ -30,7 +30,7 @@ public object DomainResourceSearchParams {
   public val _text: SearchParam<DomainResource, Any> =
     SearchParam(
       name = "_text",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "",
       extractor = {
         throw NotImplementedError(

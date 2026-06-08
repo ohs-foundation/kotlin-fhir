@@ -178,7 +178,7 @@ public object TaskSearchParams {
   public val authoredOn: SearchParam<Task, DateTime> =
     SearchParam(
       name = "authored-on",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Task.authoredOn",
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
@@ -186,7 +186,7 @@ public object TaskSearchParams {
   public val basedOn: SearchParam<Task, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Task.basedOn",
       target =
         listOf(
@@ -342,7 +342,7 @@ public object TaskSearchParams {
   public val businessStatus: SearchParam<Task, CodeableConcept> =
     SearchParam(
       name = "business-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Task.businessStatus",
       extractor = { resource -> listOfNotNull(resource.businessStatus) },
     )
@@ -350,7 +350,7 @@ public object TaskSearchParams {
   public val code: SearchParam<Task, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Task.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -358,7 +358,7 @@ public object TaskSearchParams {
   public val encounter: SearchParam<Task, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Task.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -367,7 +367,7 @@ public object TaskSearchParams {
   public val focus: SearchParam<Task, Reference> =
     SearchParam(
       name = "focus",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Task.focus",
       target =
         listOf(
@@ -523,7 +523,7 @@ public object TaskSearchParams {
   public val groupIdentifier: SearchParam<Task, Identifier> =
     SearchParam(
       name = "group-identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Task.groupIdentifier",
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
@@ -531,7 +531,7 @@ public object TaskSearchParams {
   public val identifier: SearchParam<Task, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Task.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -539,7 +539,7 @@ public object TaskSearchParams {
   public val intent: SearchParam<Task, Any> =
     SearchParam(
       name = "intent",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Task.intent",
       extractor = { resource -> listOf(resource.intent) },
     )
@@ -547,7 +547,7 @@ public object TaskSearchParams {
   public val modified: SearchParam<Task, DateTime> =
     SearchParam(
       name = "modified",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Task.lastModified",
       extractor = { resource -> listOfNotNull(resource.lastModified) },
     )
@@ -555,7 +555,7 @@ public object TaskSearchParams {
   public val owner: SearchParam<Task, Reference> =
     SearchParam(
       name = "owner",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Task.owner",
       target =
         listOf(
@@ -574,7 +574,7 @@ public object TaskSearchParams {
   public val partOf: SearchParam<Task, Reference> =
     SearchParam(
       name = "part-of",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Task.partOf",
       target = listOf(Task::class),
       extractor = { resource -> resource.partOf },
@@ -583,7 +583,7 @@ public object TaskSearchParams {
   public val patient: SearchParam<Task, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Task.for.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -596,7 +596,7 @@ public object TaskSearchParams {
   public val performer: SearchParam<Task, CodeableConcept> =
     SearchParam(
       name = "performer",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Task.performerType",
       extractor = { resource -> resource.performerType },
     )
@@ -604,7 +604,7 @@ public object TaskSearchParams {
   public val period: SearchParam<Task, Period> =
     SearchParam(
       name = "period",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Task.executionPeriod",
       extractor = { resource -> listOfNotNull(resource.executionPeriod) },
     )
@@ -612,7 +612,7 @@ public object TaskSearchParams {
   public val priority: SearchParam<Task, Any> =
     SearchParam(
       name = "priority",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Task.priority",
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
@@ -620,7 +620,7 @@ public object TaskSearchParams {
   public val requester: SearchParam<Task, Reference> =
     SearchParam(
       name = "requester",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Task.requester",
       target =
         listOf(
@@ -637,7 +637,7 @@ public object TaskSearchParams {
   public val status: SearchParam<Task, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Task.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -645,7 +645,7 @@ public object TaskSearchParams {
   public val subject: SearchParam<Task, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Task.for",
       target =
         listOf(

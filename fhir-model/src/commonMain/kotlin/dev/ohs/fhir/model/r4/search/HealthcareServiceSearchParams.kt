@@ -36,7 +36,7 @@ public object HealthcareServiceSearchParams {
   public val active: SearchParam<HealthcareService, Boolean> =
     SearchParam(
       name = "active",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "HealthcareService.active",
       extractor = { resource -> listOfNotNull(resource.active) },
     )
@@ -44,7 +44,7 @@ public object HealthcareServiceSearchParams {
   public val characteristic: SearchParam<HealthcareService, CodeableConcept> =
     SearchParam(
       name = "characteristic",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "HealthcareService.characteristic",
       extractor = { resource -> resource.characteristic },
     )
@@ -52,7 +52,7 @@ public object HealthcareServiceSearchParams {
   public val coverageArea: SearchParam<HealthcareService, Reference> =
     SearchParam(
       name = "coverage-area",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "HealthcareService.coverageArea",
       target = listOf(Location::class),
       extractor = { resource -> resource.coverageArea },
@@ -61,7 +61,7 @@ public object HealthcareServiceSearchParams {
   public val endpoint: SearchParam<HealthcareService, Reference> =
     SearchParam(
       name = "endpoint",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "HealthcareService.endpoint",
       target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
@@ -70,7 +70,7 @@ public object HealthcareServiceSearchParams {
   public val identifier: SearchParam<HealthcareService, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "HealthcareService.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -78,7 +78,7 @@ public object HealthcareServiceSearchParams {
   public val location: SearchParam<HealthcareService, Reference> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "HealthcareService.location",
       target = listOf(Location::class),
       extractor = { resource -> resource.location },
@@ -87,7 +87,7 @@ public object HealthcareServiceSearchParams {
   public val name: SearchParam<HealthcareService, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "HealthcareService.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -95,7 +95,7 @@ public object HealthcareServiceSearchParams {
   public val organization: SearchParam<HealthcareService, Reference> =
     SearchParam(
       name = "organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "HealthcareService.providedBy",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.providedBy) },
@@ -104,7 +104,7 @@ public object HealthcareServiceSearchParams {
   public val program: SearchParam<HealthcareService, CodeableConcept> =
     SearchParam(
       name = "program",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "HealthcareService.program",
       extractor = { resource -> resource.program },
     )
@@ -112,7 +112,7 @@ public object HealthcareServiceSearchParams {
   public val serviceCategory: SearchParam<HealthcareService, CodeableConcept> =
     SearchParam(
       name = "service-category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "HealthcareService.category",
       extractor = { resource -> resource.category },
     )
@@ -120,7 +120,7 @@ public object HealthcareServiceSearchParams {
   public val serviceType: SearchParam<HealthcareService, CodeableConcept> =
     SearchParam(
       name = "service-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "HealthcareService.type",
       extractor = { resource -> resource.type },
     )
@@ -128,7 +128,7 @@ public object HealthcareServiceSearchParams {
   public val specialty: SearchParam<HealthcareService, CodeableConcept> =
     SearchParam(
       name = "specialty",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "HealthcareService.specialty",
       extractor = { resource -> resource.specialty },
     )

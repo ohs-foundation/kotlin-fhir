@@ -35,7 +35,7 @@ public object EndpointSearchParams {
   public val connectionType: SearchParam<Endpoint, Coding> =
     SearchParam(
       name = "connection-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Endpoint.connectionType",
       extractor = { resource -> listOf(resource.connectionType) },
     )
@@ -43,7 +43,7 @@ public object EndpointSearchParams {
   public val identifier: SearchParam<Endpoint, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Endpoint.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -51,7 +51,7 @@ public object EndpointSearchParams {
   public val name: SearchParam<Endpoint, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Endpoint.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -59,7 +59,7 @@ public object EndpointSearchParams {
   public val organization: SearchParam<Endpoint, Reference> =
     SearchParam(
       name = "organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Endpoint.managingOrganization",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
@@ -68,7 +68,7 @@ public object EndpointSearchParams {
   public val payloadType: SearchParam<Endpoint, CodeableConcept> =
     SearchParam(
       name = "payload-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Endpoint.payloadType",
       extractor = { resource -> resource.payloadType },
     )
@@ -76,7 +76,7 @@ public object EndpointSearchParams {
   public val status: SearchParam<Endpoint, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Endpoint.status",
       extractor = { resource -> listOf(resource.status) },
     )

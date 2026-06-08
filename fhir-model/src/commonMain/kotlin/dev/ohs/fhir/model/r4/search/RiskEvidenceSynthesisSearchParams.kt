@@ -39,7 +39,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val context: SearchParam<RiskEvidenceSynthesis, CodeableConcept> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(RiskEvidenceSynthesis.useContext.value as CodeableConcept)",
       extractor = { resource ->
         resource.useContext.mapNotNull {
@@ -51,7 +51,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val contextQuantity: SearchParam<RiskEvidenceSynthesis, Quantity> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(RiskEvidenceSynthesis.useContext.value as Quantity)",
       extractor = { resource ->
         resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
@@ -61,7 +61,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val contextType: SearchParam<RiskEvidenceSynthesis, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RiskEvidenceSynthesis.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -69,7 +69,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val contextTypeQuantity: SearchParam<RiskEvidenceSynthesis, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "RiskEvidenceSynthesis.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -77,7 +77,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val contextTypeValue: SearchParam<RiskEvidenceSynthesis, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "RiskEvidenceSynthesis.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -85,7 +85,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val date: SearchParam<RiskEvidenceSynthesis, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "RiskEvidenceSynthesis.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -93,7 +93,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val description: SearchParam<RiskEvidenceSynthesis, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RiskEvidenceSynthesis.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -101,7 +101,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val effective: SearchParam<RiskEvidenceSynthesis, Period> =
     SearchParam(
       name = "effective",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "RiskEvidenceSynthesis.effectivePeriod",
       extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
     )
@@ -109,7 +109,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val identifier: SearchParam<RiskEvidenceSynthesis, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RiskEvidenceSynthesis.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -117,7 +117,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val jurisdiction: SearchParam<RiskEvidenceSynthesis, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RiskEvidenceSynthesis.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -125,7 +125,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val name: SearchParam<RiskEvidenceSynthesis, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RiskEvidenceSynthesis.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -133,7 +133,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val publisher: SearchParam<RiskEvidenceSynthesis, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RiskEvidenceSynthesis.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -141,7 +141,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val status: SearchParam<RiskEvidenceSynthesis, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RiskEvidenceSynthesis.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -149,7 +149,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val title: SearchParam<RiskEvidenceSynthesis, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "RiskEvidenceSynthesis.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -157,7 +157,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val url: SearchParam<RiskEvidenceSynthesis, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "RiskEvidenceSynthesis.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -165,7 +165,7 @@ public object RiskEvidenceSynthesisSearchParams {
   public val version: SearchParam<RiskEvidenceSynthesis, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RiskEvidenceSynthesis.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

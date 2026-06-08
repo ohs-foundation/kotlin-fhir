@@ -175,7 +175,7 @@ public object DetectedIssueSearchParams {
   public val author: SearchParam<DetectedIssue, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DetectedIssue.author",
       target = listOf(Practitioner::class, Device::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.author) },
@@ -184,7 +184,7 @@ public object DetectedIssueSearchParams {
   public val code: SearchParam<DetectedIssue, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DetectedIssue.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -192,7 +192,7 @@ public object DetectedIssueSearchParams {
   public val identified: SearchParam<DetectedIssue, DetectedIssue.Identified> =
     SearchParam(
       name = "identified",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "DetectedIssue.identified",
       extractor = { resource -> listOfNotNull(resource.identified) },
     )
@@ -200,7 +200,7 @@ public object DetectedIssueSearchParams {
   public val identifier: SearchParam<DetectedIssue, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DetectedIssue.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -208,7 +208,7 @@ public object DetectedIssueSearchParams {
   public val implicated: SearchParam<DetectedIssue, Reference> =
     SearchParam(
       name = "implicated",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DetectedIssue.implicated",
       target =
         listOf(
@@ -364,7 +364,7 @@ public object DetectedIssueSearchParams {
   public val patient: SearchParam<DetectedIssue, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DetectedIssue.patient",
       target = listOf(Patient::class, Group::class),
       extractor = { resource -> listOfNotNull(resource.patient) },

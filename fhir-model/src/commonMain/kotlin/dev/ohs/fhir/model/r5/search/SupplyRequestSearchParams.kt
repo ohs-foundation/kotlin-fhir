@@ -42,7 +42,7 @@ public object SupplyRequestSearchParams {
   public val category: SearchParam<SupplyRequest, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SupplyRequest.category",
       extractor = { resource -> listOfNotNull(resource.category) },
     )
@@ -50,7 +50,7 @@ public object SupplyRequestSearchParams {
   public val date: SearchParam<SupplyRequest, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "SupplyRequest.authoredOn",
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
@@ -58,7 +58,7 @@ public object SupplyRequestSearchParams {
   public val identifier: SearchParam<SupplyRequest, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SupplyRequest.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -66,7 +66,7 @@ public object SupplyRequestSearchParams {
   public val patient: SearchParam<SupplyRequest, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "SupplyRequest.deliverFor",
       target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.deliverFor) },
@@ -75,7 +75,7 @@ public object SupplyRequestSearchParams {
   public val requester: SearchParam<SupplyRequest, Reference> =
     SearchParam(
       name = "requester",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "SupplyRequest.requester",
       target =
         listOf(
@@ -93,7 +93,7 @@ public object SupplyRequestSearchParams {
   public val status: SearchParam<SupplyRequest, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SupplyRequest.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -101,7 +101,7 @@ public object SupplyRequestSearchParams {
   public val subject: SearchParam<SupplyRequest, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "SupplyRequest.deliverTo",
       target = listOf(Organization::class, RelatedPerson::class, Location::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.deliverTo) },
@@ -110,7 +110,7 @@ public object SupplyRequestSearchParams {
   public val supplier: SearchParam<SupplyRequest, Reference> =
     SearchParam(
       name = "supplier",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "SupplyRequest.supplier",
       target = listOf(HealthcareService::class, Organization::class),
       extractor = { resource -> resource.supplier },

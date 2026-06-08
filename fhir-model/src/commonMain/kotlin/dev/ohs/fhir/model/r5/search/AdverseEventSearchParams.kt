@@ -51,7 +51,7 @@ public object AdverseEventSearchParams {
   public val actuality: SearchParam<AdverseEvent, Any> =
     SearchParam(
       name = "actuality",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdverseEvent.actuality",
       extractor = { resource -> listOf(resource.actuality) },
     )
@@ -59,7 +59,7 @@ public object AdverseEventSearchParams {
   public val category: SearchParam<AdverseEvent, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdverseEvent.category",
       extractor = { resource -> resource.category },
     )
@@ -67,7 +67,7 @@ public object AdverseEventSearchParams {
   public val code: SearchParam<AdverseEvent, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdverseEvent.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -75,7 +75,7 @@ public object AdverseEventSearchParams {
   public val date: SearchParam<AdverseEvent, Any> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "AdverseEvent.occurrence.ofType(dateTime)",
       extractor = {
         throw NotImplementedError(
@@ -87,7 +87,7 @@ public object AdverseEventSearchParams {
   public val identifier: SearchParam<AdverseEvent, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdverseEvent.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -95,7 +95,7 @@ public object AdverseEventSearchParams {
   public val location: SearchParam<AdverseEvent, Reference> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AdverseEvent.location",
       target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
@@ -104,7 +104,7 @@ public object AdverseEventSearchParams {
   public val patient: SearchParam<AdverseEvent, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AdverseEvent.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -117,7 +117,7 @@ public object AdverseEventSearchParams {
   public val recorder: SearchParam<AdverseEvent, Reference> =
     SearchParam(
       name = "recorder",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AdverseEvent.recorder",
       target =
         listOf(
@@ -133,7 +133,7 @@ public object AdverseEventSearchParams {
   public val resultingeffect: SearchParam<AdverseEvent, Reference> =
     SearchParam(
       name = "resultingeffect",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AdverseEvent.resultingEffect",
       target = listOf(Observation::class, Condition::class),
       extractor = { resource -> resource.resultingEffect },
@@ -142,7 +142,7 @@ public object AdverseEventSearchParams {
   public val seriousness: SearchParam<AdverseEvent, CodeableConcept> =
     SearchParam(
       name = "seriousness",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdverseEvent.seriousness",
       extractor = { resource -> listOfNotNull(resource.seriousness) },
     )
@@ -150,7 +150,7 @@ public object AdverseEventSearchParams {
   public val status: SearchParam<AdverseEvent, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AdverseEvent.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -158,7 +158,7 @@ public object AdverseEventSearchParams {
   public val study: SearchParam<AdverseEvent, Reference> =
     SearchParam(
       name = "study",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AdverseEvent.study",
       target = listOf(ResearchStudy::class),
       extractor = { resource -> resource.study },
@@ -167,7 +167,7 @@ public object AdverseEventSearchParams {
   public val subject: SearchParam<AdverseEvent, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AdverseEvent.subject",
       target =
         listOf(
@@ -183,7 +183,7 @@ public object AdverseEventSearchParams {
   public val substance: SearchParam<AdverseEvent, Reference> =
     SearchParam(
       name = "substance",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "(AdverseEvent.suspectEntity.instance as Reference)",
       target =
         listOf(

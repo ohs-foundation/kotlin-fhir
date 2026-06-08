@@ -193,7 +193,7 @@ public object RequestOrchestrationSearchParams {
   public val author: SearchParam<RequestOrchestration, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestOrchestration.author",
       target = listOf(Device::class, PractitionerRole::class, Practitioner::class),
       extractor = { resource -> listOfNotNull(resource.author) },
@@ -202,7 +202,7 @@ public object RequestOrchestrationSearchParams {
   public val authored: SearchParam<RequestOrchestration, DateTime> =
     SearchParam(
       name = "authored",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "RequestOrchestration.authoredOn",
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
@@ -210,7 +210,7 @@ public object RequestOrchestrationSearchParams {
   public val basedOn: SearchParam<RequestOrchestration, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestOrchestration.basedOn",
       target =
         listOf(
@@ -379,7 +379,7 @@ public object RequestOrchestrationSearchParams {
   public val code: SearchParam<RequestOrchestration, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestOrchestration.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -387,7 +387,7 @@ public object RequestOrchestrationSearchParams {
   public val encounter: SearchParam<RequestOrchestration, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestOrchestration.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -396,7 +396,7 @@ public object RequestOrchestrationSearchParams {
   public val groupIdentifier: SearchParam<RequestOrchestration, Identifier> =
     SearchParam(
       name = "group-identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestOrchestration.groupIdentifier",
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
@@ -404,7 +404,7 @@ public object RequestOrchestrationSearchParams {
   public val identifier: SearchParam<RequestOrchestration, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestOrchestration.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -412,7 +412,7 @@ public object RequestOrchestrationSearchParams {
   public val instantiatesCanonical: SearchParam<RequestOrchestration, Canonical> =
     SearchParam(
       name = "instantiates-canonical",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestOrchestration.instantiatesCanonical",
       target =
         listOf(
@@ -461,7 +461,7 @@ public object RequestOrchestrationSearchParams {
   public val instantiatesUri: SearchParam<RequestOrchestration, Uri> =
     SearchParam(
       name = "instantiates-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "RequestOrchestration.instantiatesUri",
       extractor = { resource -> resource.instantiatesUri },
     )
@@ -469,7 +469,7 @@ public object RequestOrchestrationSearchParams {
   public val intent: SearchParam<RequestOrchestration, Any> =
     SearchParam(
       name = "intent",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestOrchestration.intent",
       extractor = { resource -> listOf(resource.intent) },
     )
@@ -477,7 +477,7 @@ public object RequestOrchestrationSearchParams {
   public val participant: SearchParam<RequestOrchestration, Any> =
     SearchParam(
       name = "participant",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestOrchestration.action.participant.actor.ofType(Reference)",
       target =
         listOf(
@@ -505,7 +505,7 @@ public object RequestOrchestrationSearchParams {
   public val patient: SearchParam<RequestOrchestration, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestOrchestration.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -518,7 +518,7 @@ public object RequestOrchestrationSearchParams {
   public val priority: SearchParam<RequestOrchestration, Any> =
     SearchParam(
       name = "priority",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestOrchestration.priority",
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
@@ -526,7 +526,7 @@ public object RequestOrchestrationSearchParams {
   public val status: SearchParam<RequestOrchestration, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestOrchestration.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -534,7 +534,7 @@ public object RequestOrchestrationSearchParams {
   public val subject: SearchParam<RequestOrchestration, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestOrchestration.subject",
       target =
         listOf(

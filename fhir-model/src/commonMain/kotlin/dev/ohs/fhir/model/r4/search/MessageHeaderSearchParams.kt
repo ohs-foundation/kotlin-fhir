@@ -177,7 +177,7 @@ public object MessageHeaderSearchParams {
   public val author: SearchParam<MessageHeader, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MessageHeader.author",
       target = listOf(Practitioner::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.author) },
@@ -186,7 +186,7 @@ public object MessageHeaderSearchParams {
   public val code: SearchParam<MessageHeader, Any> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MessageHeader.response.code",
       extractor = { resource -> listOfNotNull(resource.response?.code) },
     )
@@ -194,7 +194,7 @@ public object MessageHeaderSearchParams {
   public val destination: SearchParam<MessageHeader, String> =
     SearchParam(
       name = "destination",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "MessageHeader.destination.name",
       extractor = { resource -> resource.destination.mapNotNull { it.name } },
     )
@@ -202,7 +202,7 @@ public object MessageHeaderSearchParams {
   public val destinationUri: SearchParam<MessageHeader, Url> =
     SearchParam(
       name = "destination-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "MessageHeader.destination.endpoint",
       extractor = { resource -> resource.destination.map { it.endpoint } },
     )
@@ -210,7 +210,7 @@ public object MessageHeaderSearchParams {
   public val enterer: SearchParam<MessageHeader, Reference> =
     SearchParam(
       name = "enterer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MessageHeader.enterer",
       target = listOf(Practitioner::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.enterer) },
@@ -219,7 +219,7 @@ public object MessageHeaderSearchParams {
   public val event: SearchParam<MessageHeader, MessageHeader.Event> =
     SearchParam(
       name = "event",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MessageHeader.event",
       extractor = { resource -> listOf(resource.event) },
     )
@@ -227,7 +227,7 @@ public object MessageHeaderSearchParams {
   public val focus: SearchParam<MessageHeader, Reference> =
     SearchParam(
       name = "focus",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MessageHeader.focus",
       target =
         listOf(
@@ -383,7 +383,7 @@ public object MessageHeaderSearchParams {
   public val `receiver`: SearchParam<MessageHeader, Reference> =
     SearchParam(
       name = "receiver",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MessageHeader.destination.receiver",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
       extractor = { resource -> resource.destination.mapNotNull { it.`receiver` } },
@@ -392,7 +392,7 @@ public object MessageHeaderSearchParams {
   public val responseId: SearchParam<MessageHeader, Id> =
     SearchParam(
       name = "response-id",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MessageHeader.response.identifier",
       extractor = { resource -> listOfNotNull(resource.response?.identifier) },
     )
@@ -400,7 +400,7 @@ public object MessageHeaderSearchParams {
   public val responsible: SearchParam<MessageHeader, Reference> =
     SearchParam(
       name = "responsible",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MessageHeader.responsible",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.responsible) },
@@ -409,7 +409,7 @@ public object MessageHeaderSearchParams {
   public val sender: SearchParam<MessageHeader, Reference> =
     SearchParam(
       name = "sender",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MessageHeader.sender",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.sender) },
@@ -418,7 +418,7 @@ public object MessageHeaderSearchParams {
   public val source: SearchParam<MessageHeader, String> =
     SearchParam(
       name = "source",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "MessageHeader.source.name",
       extractor = { resource -> listOfNotNull(resource.source.name) },
     )
@@ -426,7 +426,7 @@ public object MessageHeaderSearchParams {
   public val sourceUri: SearchParam<MessageHeader, Url> =
     SearchParam(
       name = "source-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "MessageHeader.source.endpoint",
       extractor = { resource -> listOf(resource.source.endpoint) },
     )
@@ -434,7 +434,7 @@ public object MessageHeaderSearchParams {
   public val target: SearchParam<MessageHeader, Reference> =
     SearchParam(
       name = "target",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MessageHeader.destination.target",
       target = listOf(Device::class),
       extractor = { resource -> resource.destination.mapNotNull { it.target } },

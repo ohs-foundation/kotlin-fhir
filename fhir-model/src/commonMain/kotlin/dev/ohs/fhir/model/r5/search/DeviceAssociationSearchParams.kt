@@ -35,7 +35,7 @@ public object DeviceAssociationSearchParams {
   public val device: SearchParam<DeviceAssociation, Reference> =
     SearchParam(
       name = "device",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceAssociation.device",
       target = listOf(Device::class),
       extractor = { resource -> listOf(resource.device) },
@@ -44,7 +44,7 @@ public object DeviceAssociationSearchParams {
   public val identifier: SearchParam<DeviceAssociation, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceAssociation.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -52,7 +52,7 @@ public object DeviceAssociationSearchParams {
   public val `operator`: SearchParam<DeviceAssociation, Reference> =
     SearchParam(
       name = "operator",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceAssociation.operation.operator",
       target = listOf(RelatedPerson::class, Practitioner::class, Patient::class),
       extractor = { resource -> resource.operation.flatMap { it.`operator` } },
@@ -61,7 +61,7 @@ public object DeviceAssociationSearchParams {
   public val patient: SearchParam<DeviceAssociation, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceAssociation.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -74,7 +74,7 @@ public object DeviceAssociationSearchParams {
   public val status: SearchParam<DeviceAssociation, CodeableConcept> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceAssociation.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -82,7 +82,7 @@ public object DeviceAssociationSearchParams {
   public val subject: SearchParam<DeviceAssociation, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceAssociation.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->

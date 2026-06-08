@@ -42,7 +42,7 @@ public object RequestGroupSearchParams {
   public val author: SearchParam<RequestGroup, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestGroup.author",
       target = listOf(Practitioner::class, Device::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.author) },
@@ -51,7 +51,7 @@ public object RequestGroupSearchParams {
   public val authored: SearchParam<RequestGroup, DateTime> =
     SearchParam(
       name = "authored",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "RequestGroup.authoredOn",
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
@@ -59,7 +59,7 @@ public object RequestGroupSearchParams {
   public val code: SearchParam<RequestGroup, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestGroup.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -67,7 +67,7 @@ public object RequestGroupSearchParams {
   public val encounter: SearchParam<RequestGroup, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestGroup.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -76,7 +76,7 @@ public object RequestGroupSearchParams {
   public val groupIdentifier: SearchParam<RequestGroup, Identifier> =
     SearchParam(
       name = "group-identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestGroup.groupIdentifier",
       extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
     )
@@ -84,7 +84,7 @@ public object RequestGroupSearchParams {
   public val identifier: SearchParam<RequestGroup, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestGroup.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -92,7 +92,7 @@ public object RequestGroupSearchParams {
   public val instantiatesCanonical: SearchParam<RequestGroup, Canonical> =
     SearchParam(
       name = "instantiates-canonical",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestGroup.instantiatesCanonical",
       extractor = { resource -> resource.instantiatesCanonical },
     )
@@ -100,7 +100,7 @@ public object RequestGroupSearchParams {
   public val instantiatesUri: SearchParam<RequestGroup, Uri> =
     SearchParam(
       name = "instantiates-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "RequestGroup.instantiatesUri",
       extractor = { resource -> resource.instantiatesUri },
     )
@@ -108,7 +108,7 @@ public object RequestGroupSearchParams {
   public val intent: SearchParam<RequestGroup, Any> =
     SearchParam(
       name = "intent",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestGroup.intent",
       extractor = { resource -> listOf(resource.intent) },
     )
@@ -116,7 +116,7 @@ public object RequestGroupSearchParams {
   public val participant: SearchParam<RequestGroup, Reference> =
     SearchParam(
       name = "participant",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestGroup.action.participant",
       target =
         listOf(
@@ -132,7 +132,7 @@ public object RequestGroupSearchParams {
   public val patient: SearchParam<RequestGroup, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestGroup.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -145,7 +145,7 @@ public object RequestGroupSearchParams {
   public val priority: SearchParam<RequestGroup, Any> =
     SearchParam(
       name = "priority",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestGroup.priority",
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
@@ -153,7 +153,7 @@ public object RequestGroupSearchParams {
   public val status: SearchParam<RequestGroup, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RequestGroup.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -161,7 +161,7 @@ public object RequestGroupSearchParams {
   public val subject: SearchParam<RequestGroup, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RequestGroup.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },

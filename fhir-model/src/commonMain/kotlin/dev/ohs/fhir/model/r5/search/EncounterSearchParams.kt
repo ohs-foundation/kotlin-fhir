@@ -57,7 +57,7 @@ public object EncounterSearchParams {
   public val account: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "account",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.account",
       target = listOf(Account::class),
       extractor = { resource -> resource.account },
@@ -66,7 +66,7 @@ public object EncounterSearchParams {
   public val appointment: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "appointment",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.appointment",
       target = listOf(Appointment::class),
       extractor = { resource -> resource.appointment },
@@ -75,7 +75,7 @@ public object EncounterSearchParams {
   public val basedOn: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.basedOn",
       target =
         listOf(
@@ -90,7 +90,7 @@ public object EncounterSearchParams {
   public val careteam: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "careteam",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.careTeam",
       target = listOf(CareTeam::class),
       extractor = { resource -> resource.careTeam },
@@ -99,7 +99,7 @@ public object EncounterSearchParams {
   public val `class`: SearchParam<Encounter, CodeableConcept> =
     SearchParam(
       name = "class",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Encounter.class",
       extractor = { resource -> resource.`class` },
     )
@@ -107,7 +107,7 @@ public object EncounterSearchParams {
   public val date: SearchParam<Encounter, Period> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Encounter.actualPeriod",
       extractor = { resource -> listOfNotNull(resource.actualPeriod) },
     )
@@ -115,7 +115,7 @@ public object EncounterSearchParams {
   public val dateStart: SearchParam<Encounter, DateTime> =
     SearchParam(
       name = "date-start",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Encounter.actualPeriod.start",
       extractor = { resource -> listOfNotNull(resource.actualPeriod?.start) },
     )
@@ -123,7 +123,7 @@ public object EncounterSearchParams {
   public val diagnosisCode: SearchParam<Encounter, CodeableConcept> =
     SearchParam(
       name = "diagnosis-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Encounter.diagnosis.condition.concept",
       extractor = { resource ->
         resource.diagnosis.flatMap { it.condition }.mapNotNull { it.concept }
@@ -133,7 +133,7 @@ public object EncounterSearchParams {
   public val diagnosisReference: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "diagnosis-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.diagnosis.condition.reference",
       target = listOf(Condition::class),
       extractor = { resource ->
@@ -144,7 +144,7 @@ public object EncounterSearchParams {
   public val endDate: SearchParam<Encounter, DateTime> =
     SearchParam(
       name = "end-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Encounter.actualPeriod.end",
       extractor = { resource -> listOfNotNull(resource.actualPeriod?.end) },
     )
@@ -152,7 +152,7 @@ public object EncounterSearchParams {
   public val episodeOfCare: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "episode-of-care",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.episodeOfCare",
       target = listOf(EpisodeOfCare::class),
       extractor = { resource -> resource.episodeOfCare },
@@ -161,7 +161,7 @@ public object EncounterSearchParams {
   public val identifier: SearchParam<Encounter, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Encounter.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -169,7 +169,7 @@ public object EncounterSearchParams {
   public val length: SearchParam<Encounter, Duration> =
     SearchParam(
       name = "length",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "Encounter.length",
       extractor = { resource -> listOfNotNull(resource.length) },
     )
@@ -177,7 +177,7 @@ public object EncounterSearchParams {
   public val location: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.location.location",
       target = listOf(Location::class),
       extractor = { resource -> resource.location.map { it.location } },
@@ -186,7 +186,7 @@ public object EncounterSearchParams {
   public val locationPeriod: SearchParam<Encounter, Encounter.Location> =
     SearchParam(
       name = "location-period",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Encounter.location",
       extractor = { resource -> resource.location },
     )
@@ -194,7 +194,7 @@ public object EncounterSearchParams {
   public val partOf: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "part-of",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.partOf",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.partOf) },
@@ -203,7 +203,7 @@ public object EncounterSearchParams {
   public val participant: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "participant",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.participant.actor",
       target =
         listOf(
@@ -221,7 +221,7 @@ public object EncounterSearchParams {
   public val participantType: SearchParam<Encounter, CodeableConcept> =
     SearchParam(
       name = "participant-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Encounter.participant.type",
       extractor = { resource -> resource.participant.flatMap { it.type } },
     )
@@ -229,7 +229,7 @@ public object EncounterSearchParams {
   public val patient: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -242,7 +242,7 @@ public object EncounterSearchParams {
   public val practitioner: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "practitioner",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.participant.actor.where(resolve() is Practitioner)",
       target = listOf(Practitioner::class),
       extractor = { resource ->
@@ -255,7 +255,7 @@ public object EncounterSearchParams {
   public val reasonCode: SearchParam<Encounter, CodeableConcept> =
     SearchParam(
       name = "reason-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Encounter.reason.value.concept",
       extractor = { resource -> resource.reason.flatMap { it.`value` }.mapNotNull { it.concept } },
     )
@@ -263,7 +263,7 @@ public object EncounterSearchParams {
   public val reasonReference: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "reason-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.reason.value.reference",
       target =
         listOf(
@@ -279,7 +279,7 @@ public object EncounterSearchParams {
   public val serviceProvider: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "service-provider",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.serviceProvider",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.serviceProvider) },
@@ -288,7 +288,7 @@ public object EncounterSearchParams {
   public val specialArrangement: SearchParam<Encounter, CodeableConcept> =
     SearchParam(
       name = "special-arrangement",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Encounter.specialArrangement",
       extractor = { resource -> resource.specialArrangement },
     )
@@ -296,7 +296,7 @@ public object EncounterSearchParams {
   public val status: SearchParam<Encounter, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Encounter.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -304,7 +304,7 @@ public object EncounterSearchParams {
   public val subject: SearchParam<Encounter, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Encounter.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
@@ -313,7 +313,7 @@ public object EncounterSearchParams {
   public val subjectStatus: SearchParam<Encounter, CodeableConcept> =
     SearchParam(
       name = "subject-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Encounter.subjectStatus",
       extractor = { resource -> listOfNotNull(resource.subjectStatus) },
     )
@@ -321,7 +321,7 @@ public object EncounterSearchParams {
   public val type: SearchParam<Encounter, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Encounter.type",
       extractor = { resource -> resource.type },
     )

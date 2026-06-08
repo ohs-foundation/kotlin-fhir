@@ -37,7 +37,7 @@ public object PackagedProductDefinitionSearchParams {
   public val biological: SearchParam<PackagedProductDefinition, Reference> =
     SearchParam(
       name = "biological",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PackagedProductDefinition.packaging.containedItem.item.reference",
       target =
         listOf(
@@ -57,7 +57,7 @@ public object PackagedProductDefinitionSearchParams {
   public val containedItem: SearchParam<PackagedProductDefinition, Reference> =
     SearchParam(
       name = "contained-item",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PackagedProductDefinition.packaging.containedItem.item.reference",
       target =
         listOf(
@@ -77,7 +77,7 @@ public object PackagedProductDefinitionSearchParams {
   public val device: SearchParam<PackagedProductDefinition, Reference> =
     SearchParam(
       name = "device",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PackagedProductDefinition.packaging.containedItem.item.reference",
       target =
         listOf(
@@ -97,7 +97,7 @@ public object PackagedProductDefinitionSearchParams {
   public val identifier: SearchParam<PackagedProductDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "PackagedProductDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -105,7 +105,7 @@ public object PackagedProductDefinitionSearchParams {
   public val manufacturedItem: SearchParam<PackagedProductDefinition, Reference> =
     SearchParam(
       name = "manufactured-item",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PackagedProductDefinition.packaging.containedItem.item.reference",
       target =
         listOf(
@@ -125,7 +125,7 @@ public object PackagedProductDefinitionSearchParams {
   public val medication: SearchParam<PackagedProductDefinition, Reference> =
     SearchParam(
       name = "medication",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PackagedProductDefinition.packaging.containedItem.item.reference",
       target =
         listOf(
@@ -145,7 +145,7 @@ public object PackagedProductDefinitionSearchParams {
   public val name: SearchParam<PackagedProductDefinition, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "PackagedProductDefinition.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -153,7 +153,7 @@ public object PackagedProductDefinitionSearchParams {
   public val nutrition: SearchParam<PackagedProductDefinition, Reference> =
     SearchParam(
       name = "nutrition",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PackagedProductDefinition.packaging.containedItem.item.reference",
       target =
         listOf(
@@ -173,7 +173,7 @@ public object PackagedProductDefinitionSearchParams {
   public val `package`: SearchParam<PackagedProductDefinition, Reference> =
     SearchParam(
       name = "package",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PackagedProductDefinition.packaging.containedItem.item.reference",
       target =
         listOf(
@@ -193,7 +193,7 @@ public object PackagedProductDefinitionSearchParams {
   public val packageFor: SearchParam<PackagedProductDefinition, Reference> =
     SearchParam(
       name = "package-for",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "PackagedProductDefinition.packageFor",
       target = listOf(MedicinalProductDefinition::class),
       extractor = { resource -> resource.packageFor },
@@ -202,7 +202,7 @@ public object PackagedProductDefinitionSearchParams {
   public val status: SearchParam<PackagedProductDefinition, CodeableConcept> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "PackagedProductDefinition.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )

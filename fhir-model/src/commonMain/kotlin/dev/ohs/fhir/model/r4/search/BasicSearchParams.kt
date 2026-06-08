@@ -176,7 +176,7 @@ public object BasicSearchParams {
   public val author: SearchParam<Basic, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Basic.author",
       target =
         listOf(
@@ -192,7 +192,7 @@ public object BasicSearchParams {
   public val code: SearchParam<Basic, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Basic.code",
       extractor = { resource -> listOf(resource.code) },
     )
@@ -200,7 +200,7 @@ public object BasicSearchParams {
   public val created: SearchParam<Basic, Date> =
     SearchParam(
       name = "created",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Basic.created",
       extractor = { resource -> listOfNotNull(resource.created) },
     )
@@ -208,7 +208,7 @@ public object BasicSearchParams {
   public val identifier: SearchParam<Basic, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Basic.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -216,7 +216,7 @@ public object BasicSearchParams {
   public val patient: SearchParam<Basic, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Basic.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -229,7 +229,7 @@ public object BasicSearchParams {
   public val subject: SearchParam<Basic, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Basic.subject",
       target =
         listOf(

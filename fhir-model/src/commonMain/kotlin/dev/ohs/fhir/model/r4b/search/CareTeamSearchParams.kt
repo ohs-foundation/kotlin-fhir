@@ -40,7 +40,7 @@ public object CareTeamSearchParams {
   public val category: SearchParam<CareTeam, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CareTeam.category",
       extractor = { resource -> resource.category },
     )
@@ -48,7 +48,7 @@ public object CareTeamSearchParams {
   public val date: SearchParam<CareTeam, Period> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "CareTeam.period",
       extractor = { resource -> listOfNotNull(resource.period) },
     )
@@ -56,7 +56,7 @@ public object CareTeamSearchParams {
   public val encounter: SearchParam<CareTeam, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CareTeam.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -65,7 +65,7 @@ public object CareTeamSearchParams {
   public val identifier: SearchParam<CareTeam, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CareTeam.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -73,7 +73,7 @@ public object CareTeamSearchParams {
   public val participant: SearchParam<CareTeam, Reference> =
     SearchParam(
       name = "participant",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CareTeam.participant.member",
       target =
         listOf(
@@ -90,7 +90,7 @@ public object CareTeamSearchParams {
   public val patient: SearchParam<CareTeam, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CareTeam.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -103,7 +103,7 @@ public object CareTeamSearchParams {
   public val status: SearchParam<CareTeam, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "CareTeam.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -111,7 +111,7 @@ public object CareTeamSearchParams {
   public val subject: SearchParam<CareTeam, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "CareTeam.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },

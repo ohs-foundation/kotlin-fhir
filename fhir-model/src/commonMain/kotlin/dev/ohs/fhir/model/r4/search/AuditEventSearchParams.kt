@@ -179,7 +179,7 @@ public object AuditEventSearchParams {
   public val action: SearchParam<AuditEvent, Any> =
     SearchParam(
       name = "action",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AuditEvent.action",
       extractor = { resource -> listOfNotNull(resource.action) },
     )
@@ -187,7 +187,7 @@ public object AuditEventSearchParams {
   public val address: SearchParam<AuditEvent, String> =
     SearchParam(
       name = "address",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "AuditEvent.agent.network.address",
       extractor = { resource -> resource.agent.mapNotNull { it.network }.mapNotNull { it.address } },
     )
@@ -195,7 +195,7 @@ public object AuditEventSearchParams {
   public val agent: SearchParam<AuditEvent, Reference> =
     SearchParam(
       name = "agent",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AuditEvent.agent.who",
       target =
         listOf(
@@ -212,7 +212,7 @@ public object AuditEventSearchParams {
   public val agentName: SearchParam<AuditEvent, String> =
     SearchParam(
       name = "agent-name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "AuditEvent.agent.name",
       extractor = { resource -> resource.agent.mapNotNull { it.name } },
     )
@@ -220,7 +220,7 @@ public object AuditEventSearchParams {
   public val agentRole: SearchParam<AuditEvent, CodeableConcept> =
     SearchParam(
       name = "agent-role",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AuditEvent.agent.role",
       extractor = { resource -> resource.agent.flatMap { it.role } },
     )
@@ -228,7 +228,7 @@ public object AuditEventSearchParams {
   public val altid: SearchParam<AuditEvent, String> =
     SearchParam(
       name = "altid",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AuditEvent.agent.altId",
       extractor = { resource -> resource.agent.mapNotNull { it.altId } },
     )
@@ -236,7 +236,7 @@ public object AuditEventSearchParams {
   public val date: SearchParam<AuditEvent, Instant> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "AuditEvent.recorded",
       extractor = { resource -> listOf(resource.recorded) },
     )
@@ -244,7 +244,7 @@ public object AuditEventSearchParams {
   public val entity: SearchParam<AuditEvent, Reference> =
     SearchParam(
       name = "entity",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AuditEvent.entity.what",
       target =
         listOf(
@@ -400,7 +400,7 @@ public object AuditEventSearchParams {
   public val entityName: SearchParam<AuditEvent, String> =
     SearchParam(
       name = "entity-name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "AuditEvent.entity.name",
       extractor = { resource -> resource.entity.mapNotNull { it.name } },
     )
@@ -408,7 +408,7 @@ public object AuditEventSearchParams {
   public val entityRole: SearchParam<AuditEvent, Coding> =
     SearchParam(
       name = "entity-role",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AuditEvent.entity.role",
       extractor = { resource -> resource.entity.mapNotNull { it.role } },
     )
@@ -416,7 +416,7 @@ public object AuditEventSearchParams {
   public val entityType: SearchParam<AuditEvent, Coding> =
     SearchParam(
       name = "entity-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AuditEvent.entity.type",
       extractor = { resource -> resource.entity.mapNotNull { it.type } },
     )
@@ -424,7 +424,7 @@ public object AuditEventSearchParams {
   public val outcome: SearchParam<AuditEvent, Any> =
     SearchParam(
       name = "outcome",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AuditEvent.outcome",
       extractor = { resource -> listOfNotNull(resource.outcome) },
     )
@@ -432,7 +432,7 @@ public object AuditEventSearchParams {
   public val patient: SearchParam<AuditEvent, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AuditEvent.agent.who.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -445,7 +445,7 @@ public object AuditEventSearchParams {
   public val policy: SearchParam<AuditEvent, Uri> =
     SearchParam(
       name = "policy",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "AuditEvent.agent.policy",
       extractor = { resource -> resource.agent.flatMap { it.policy } },
     )
@@ -453,7 +453,7 @@ public object AuditEventSearchParams {
   public val site: SearchParam<AuditEvent, String> =
     SearchParam(
       name = "site",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AuditEvent.source.site",
       extractor = { resource -> listOfNotNull(resource.source.site) },
     )
@@ -461,7 +461,7 @@ public object AuditEventSearchParams {
   public val source: SearchParam<AuditEvent, Reference> =
     SearchParam(
       name = "source",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "AuditEvent.source.observer",
       target =
         listOf(
@@ -478,7 +478,7 @@ public object AuditEventSearchParams {
   public val subtype: SearchParam<AuditEvent, Coding> =
     SearchParam(
       name = "subtype",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AuditEvent.subtype",
       extractor = { resource -> resource.subtype },
     )
@@ -486,7 +486,7 @@ public object AuditEventSearchParams {
   public val type: SearchParam<AuditEvent, Coding> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "AuditEvent.type",
       extractor = { resource -> listOf(resource.type) },
     )

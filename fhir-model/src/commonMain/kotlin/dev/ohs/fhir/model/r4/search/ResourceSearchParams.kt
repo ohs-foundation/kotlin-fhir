@@ -34,7 +34,7 @@ public object ResourceSearchParams {
   public val _content: SearchParam<Resource, Any> =
     SearchParam(
       name = "_content",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "",
       extractor = {
         throw NotImplementedError(
@@ -46,7 +46,7 @@ public object ResourceSearchParams {
   public val _filter: SearchParam<Resource, Any> =
     SearchParam(
       name = "_filter",
-      type = SearchParamType.fromCode("special"),
+      type = SearchParamType.Special,
       expression = "",
       extractor = {
         throw NotImplementedError(
@@ -58,7 +58,7 @@ public object ResourceSearchParams {
   public val _id: SearchParam<Resource, Any> =
     SearchParam(
       name = "_id",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "id",
       extractor = {
         throw NotImplementedError(
@@ -70,7 +70,7 @@ public object ResourceSearchParams {
   public val _lastUpdated: SearchParam<Resource, Instant> =
     SearchParam(
       name = "_lastUpdated",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Resource.meta.lastUpdated",
       extractor = { resource -> listOfNotNull(resource.meta?.lastUpdated) },
     )
@@ -78,7 +78,7 @@ public object ResourceSearchParams {
   public val _profile: SearchParam<Resource, Canonical> =
     SearchParam(
       name = "_profile",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Resource.meta.profile",
       extractor = { resource -> resource.meta?.profile ?: emptyList() },
     )
@@ -86,7 +86,7 @@ public object ResourceSearchParams {
   public val _query: SearchParam<Resource, Any> =
     SearchParam(
       name = "_query",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "",
       extractor = {
         throw NotImplementedError(
@@ -98,7 +98,7 @@ public object ResourceSearchParams {
   public val _security: SearchParam<Resource, Coding> =
     SearchParam(
       name = "_security",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Resource.meta.security",
       extractor = { resource -> resource.meta?.security ?: emptyList() },
     )
@@ -106,7 +106,7 @@ public object ResourceSearchParams {
   public val _source: SearchParam<Resource, Uri> =
     SearchParam(
       name = "_source",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Resource.meta.source",
       extractor = { resource -> listOfNotNull(resource.meta?.source) },
     )
@@ -114,7 +114,7 @@ public object ResourceSearchParams {
   public val _tag: SearchParam<Resource, Coding> =
     SearchParam(
       name = "_tag",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Resource.meta.tag",
       extractor = { resource -> resource.meta?.tag ?: emptyList() },
     )

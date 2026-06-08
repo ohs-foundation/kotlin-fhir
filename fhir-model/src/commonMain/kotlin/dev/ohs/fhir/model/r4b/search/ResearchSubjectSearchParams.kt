@@ -34,7 +34,7 @@ public object ResearchSubjectSearchParams {
   public val date: SearchParam<ResearchSubject, Period> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ResearchSubject.period",
       extractor = { resource -> listOfNotNull(resource.period) },
     )
@@ -42,7 +42,7 @@ public object ResearchSubjectSearchParams {
   public val identifier: SearchParam<ResearchSubject, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ResearchSubject.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -50,7 +50,7 @@ public object ResearchSubjectSearchParams {
   public val individual: SearchParam<ResearchSubject, Reference> =
     SearchParam(
       name = "individual",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ResearchSubject.individual",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.individual) },
@@ -59,7 +59,7 @@ public object ResearchSubjectSearchParams {
   public val patient: SearchParam<ResearchSubject, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ResearchSubject.individual",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.individual) },
@@ -68,7 +68,7 @@ public object ResearchSubjectSearchParams {
   public val status: SearchParam<ResearchSubject, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ResearchSubject.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -76,7 +76,7 @@ public object ResearchSubjectSearchParams {
   public val study: SearchParam<ResearchSubject, Reference> =
     SearchParam(
       name = "study",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ResearchSubject.study",
       target = listOf(ResearchStudy::class),
       extractor = { resource -> listOf(resource.study) },

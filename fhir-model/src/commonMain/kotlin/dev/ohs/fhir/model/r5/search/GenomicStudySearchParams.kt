@@ -188,7 +188,7 @@ public object GenomicStudySearchParams {
   public val focus: SearchParam<GenomicStudy, Reference> =
     SearchParam(
       name = "focus",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "GenomicStudy.analysis.focus",
       target =
         listOf(
@@ -357,7 +357,7 @@ public object GenomicStudySearchParams {
   public val identifier: SearchParam<GenomicStudy, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GenomicStudy.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -365,7 +365,7 @@ public object GenomicStudySearchParams {
   public val patient: SearchParam<GenomicStudy, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "GenomicStudy.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -378,7 +378,7 @@ public object GenomicStudySearchParams {
   public val status: SearchParam<GenomicStudy, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "GenomicStudy.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -386,7 +386,7 @@ public object GenomicStudySearchParams {
   public val subject: SearchParam<GenomicStudy, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "GenomicStudy.subject",
       target =
         listOf(

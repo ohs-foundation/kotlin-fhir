@@ -46,7 +46,7 @@ public object MediaSearchParams {
   public val basedOn: SearchParam<Media, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Media.basedOn",
       target = listOf(CarePlan::class, ServiceRequest::class),
       extractor = { resource -> resource.basedOn },
@@ -55,7 +55,7 @@ public object MediaSearchParams {
   public val created: SearchParam<Media, Media.Created> =
     SearchParam(
       name = "created",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Media.created",
       extractor = { resource -> listOfNotNull(resource.created) },
     )
@@ -63,7 +63,7 @@ public object MediaSearchParams {
   public val device: SearchParam<Media, Reference> =
     SearchParam(
       name = "device",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Media.device",
       target = listOf(Device::class, DeviceMetric::class),
       extractor = { resource -> listOfNotNull(resource.device) },
@@ -72,7 +72,7 @@ public object MediaSearchParams {
   public val encounter: SearchParam<Media, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Media.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -81,7 +81,7 @@ public object MediaSearchParams {
   public val identifier: SearchParam<Media, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Media.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -89,7 +89,7 @@ public object MediaSearchParams {
   public val modality: SearchParam<Media, CodeableConcept> =
     SearchParam(
       name = "modality",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Media.modality",
       extractor = { resource -> listOfNotNull(resource.modality) },
     )
@@ -97,7 +97,7 @@ public object MediaSearchParams {
   public val `operator`: SearchParam<Media, Reference> =
     SearchParam(
       name = "operator",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Media.operator",
       target =
         listOf(
@@ -115,7 +115,7 @@ public object MediaSearchParams {
   public val patient: SearchParam<Media, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Media.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -128,7 +128,7 @@ public object MediaSearchParams {
   public val site: SearchParam<Media, CodeableConcept> =
     SearchParam(
       name = "site",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Media.bodySite",
       extractor = { resource -> listOfNotNull(resource.bodySite) },
     )
@@ -136,7 +136,7 @@ public object MediaSearchParams {
   public val status: SearchParam<Media, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Media.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -144,7 +144,7 @@ public object MediaSearchParams {
   public val subject: SearchParam<Media, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Media.subject",
       target =
         listOf(
@@ -162,7 +162,7 @@ public object MediaSearchParams {
   public val type: SearchParam<Media, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Media.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )
@@ -170,7 +170,7 @@ public object MediaSearchParams {
   public val view: SearchParam<Media, CodeableConcept> =
     SearchParam(
       name = "view",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Media.view",
       extractor = { resource -> listOfNotNull(resource.view) },
     )

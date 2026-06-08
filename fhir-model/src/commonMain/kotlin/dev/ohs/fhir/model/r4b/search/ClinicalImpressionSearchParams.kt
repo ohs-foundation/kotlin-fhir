@@ -172,7 +172,7 @@ public object ClinicalImpressionSearchParams {
   public val assessor: SearchParam<ClinicalImpression, Reference> =
     SearchParam(
       name = "assessor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClinicalImpression.assessor",
       target = listOf(Practitioner::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.assessor) },
@@ -181,7 +181,7 @@ public object ClinicalImpressionSearchParams {
   public val date: SearchParam<ClinicalImpression, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ClinicalImpression.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -189,7 +189,7 @@ public object ClinicalImpressionSearchParams {
   public val encounter: SearchParam<ClinicalImpression, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClinicalImpression.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -198,7 +198,7 @@ public object ClinicalImpressionSearchParams {
   public val findingCode: SearchParam<ClinicalImpression, CodeableConcept> =
     SearchParam(
       name = "finding-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ClinicalImpression.finding.itemCodeableConcept",
       extractor = { resource -> resource.finding.mapNotNull { it.itemCodeableConcept } },
     )
@@ -206,7 +206,7 @@ public object ClinicalImpressionSearchParams {
   public val findingRef: SearchParam<ClinicalImpression, Reference> =
     SearchParam(
       name = "finding-ref",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClinicalImpression.finding.itemReference",
       target = listOf(Condition::class, Observation::class, Media::class),
       extractor = { resource -> resource.finding.mapNotNull { it.itemReference } },
@@ -215,7 +215,7 @@ public object ClinicalImpressionSearchParams {
   public val identifier: SearchParam<ClinicalImpression, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ClinicalImpression.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -223,7 +223,7 @@ public object ClinicalImpressionSearchParams {
   public val investigation: SearchParam<ClinicalImpression, Reference> =
     SearchParam(
       name = "investigation",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClinicalImpression.investigation.item",
       target =
         listOf(
@@ -241,7 +241,7 @@ public object ClinicalImpressionSearchParams {
   public val patient: SearchParam<ClinicalImpression, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClinicalImpression.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -254,7 +254,7 @@ public object ClinicalImpressionSearchParams {
   public val previous: SearchParam<ClinicalImpression, Reference> =
     SearchParam(
       name = "previous",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClinicalImpression.previous",
       target = listOf(ClinicalImpression::class),
       extractor = { resource -> listOfNotNull(resource.previous) },
@@ -263,7 +263,7 @@ public object ClinicalImpressionSearchParams {
   public val problem: SearchParam<ClinicalImpression, Reference> =
     SearchParam(
       name = "problem",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClinicalImpression.problem",
       target = listOf(Condition::class, AllergyIntolerance::class),
       extractor = { resource -> resource.problem },
@@ -272,7 +272,7 @@ public object ClinicalImpressionSearchParams {
   public val status: SearchParam<ClinicalImpression, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ClinicalImpression.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -280,7 +280,7 @@ public object ClinicalImpressionSearchParams {
   public val subject: SearchParam<ClinicalImpression, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClinicalImpression.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
@@ -289,7 +289,7 @@ public object ClinicalImpressionSearchParams {
   public val supportingInfo: SearchParam<ClinicalImpression, Reference> =
     SearchParam(
       name = "supporting-info",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClinicalImpression.supportingInfo",
       target =
         listOf(

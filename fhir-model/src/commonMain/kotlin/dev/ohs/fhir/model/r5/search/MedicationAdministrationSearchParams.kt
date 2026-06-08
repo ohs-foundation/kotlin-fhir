@@ -45,7 +45,7 @@ public object MedicationAdministrationSearchParams {
   public val code: SearchParam<MedicationAdministration, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicationAdministration.medication.concept",
       extractor = { resource -> listOfNotNull(resource.medication.concept) },
     )
@@ -53,7 +53,7 @@ public object MedicationAdministrationSearchParams {
   public val date: SearchParam<MedicationAdministration, Any> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "MedicationAdministration.occurence.ofType(dateTime)",
       extractor = {
         throw NotImplementedError(
@@ -65,7 +65,7 @@ public object MedicationAdministrationSearchParams {
   public val device: SearchParam<MedicationAdministration, Reference> =
     SearchParam(
       name = "device",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicationAdministration.device.reference",
       target = listOf(Device::class),
       extractor = { resource -> resource.device.mapNotNull { it.reference } },
@@ -74,7 +74,7 @@ public object MedicationAdministrationSearchParams {
   public val encounter: SearchParam<MedicationAdministration, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicationAdministration.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -83,7 +83,7 @@ public object MedicationAdministrationSearchParams {
   public val identifier: SearchParam<MedicationAdministration, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicationAdministration.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -91,7 +91,7 @@ public object MedicationAdministrationSearchParams {
   public val medication: SearchParam<MedicationAdministration, Reference> =
     SearchParam(
       name = "medication",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicationAdministration.medication.reference",
       target = listOf(Medication::class),
       extractor = { resource -> listOfNotNull(resource.medication.reference) },
@@ -100,7 +100,7 @@ public object MedicationAdministrationSearchParams {
   public val patient: SearchParam<MedicationAdministration, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicationAdministration.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -113,7 +113,7 @@ public object MedicationAdministrationSearchParams {
   public val performer: SearchParam<MedicationAdministration, Reference> =
     SearchParam(
       name = "performer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicationAdministration.performer.actor.reference",
       target =
         listOf(
@@ -129,7 +129,7 @@ public object MedicationAdministrationSearchParams {
   public val performerDeviceCode: SearchParam<MedicationAdministration, CodeableConcept> =
     SearchParam(
       name = "performer-device-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicationAdministration.performer.actor.concept",
       extractor = { resource -> resource.performer.map { it.actor }.mapNotNull { it.concept } },
     )
@@ -137,7 +137,7 @@ public object MedicationAdministrationSearchParams {
   public val reasonGiven: SearchParam<MedicationAdministration, Reference> =
     SearchParam(
       name = "reason-given",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicationAdministration.reason.reference",
       target = listOf(Observation::class, DiagnosticReport::class, Condition::class),
       extractor = { resource -> resource.reason.mapNotNull { it.reference } },
@@ -146,7 +146,7 @@ public object MedicationAdministrationSearchParams {
   public val reasonGivenCode: SearchParam<MedicationAdministration, CodeableConcept> =
     SearchParam(
       name = "reason-given-code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicationAdministration.reason.concept",
       extractor = { resource -> resource.reason.mapNotNull { it.concept } },
     )
@@ -154,7 +154,7 @@ public object MedicationAdministrationSearchParams {
   public val reasonNotGiven: SearchParam<MedicationAdministration, CodeableConcept> =
     SearchParam(
       name = "reason-not-given",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicationAdministration.statusReason",
       extractor = { resource -> resource.statusReason },
     )
@@ -162,7 +162,7 @@ public object MedicationAdministrationSearchParams {
   public val request: SearchParam<MedicationAdministration, Reference> =
     SearchParam(
       name = "request",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicationAdministration.request",
       target = listOf(MedicationRequest::class),
       extractor = { resource -> listOfNotNull(resource.request) },
@@ -171,7 +171,7 @@ public object MedicationAdministrationSearchParams {
   public val status: SearchParam<MedicationAdministration, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicationAdministration.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -179,7 +179,7 @@ public object MedicationAdministrationSearchParams {
   public val subject: SearchParam<MedicationAdministration, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MedicationAdministration.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },

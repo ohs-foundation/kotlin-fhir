@@ -178,7 +178,7 @@ public object QuestionnaireResponseSearchParams {
   public val author: SearchParam<QuestionnaireResponse, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "QuestionnaireResponse.author",
       target =
         listOf(
@@ -195,7 +195,7 @@ public object QuestionnaireResponseSearchParams {
   public val authored: SearchParam<QuestionnaireResponse, DateTime> =
     SearchParam(
       name = "authored",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "QuestionnaireResponse.authored",
       extractor = { resource -> listOfNotNull(resource.authored) },
     )
@@ -203,7 +203,7 @@ public object QuestionnaireResponseSearchParams {
   public val basedOn: SearchParam<QuestionnaireResponse, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "QuestionnaireResponse.basedOn",
       target = listOf(CarePlan::class, ServiceRequest::class),
       extractor = { resource -> resource.basedOn },
@@ -212,7 +212,7 @@ public object QuestionnaireResponseSearchParams {
   public val encounter: SearchParam<QuestionnaireResponse, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "QuestionnaireResponse.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -221,7 +221,7 @@ public object QuestionnaireResponseSearchParams {
   public val identifier: SearchParam<QuestionnaireResponse, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "QuestionnaireResponse.identifier",
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
@@ -229,7 +229,7 @@ public object QuestionnaireResponseSearchParams {
   public val itemSubject: SearchParam<QuestionnaireResponse, Any> =
     SearchParam(
       name = "item-subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression =
         "QuestionnaireResponse.item.where(hasExtension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject')).answer.value.ofType(Reference)",
       extractor = {
@@ -242,7 +242,7 @@ public object QuestionnaireResponseSearchParams {
   public val partOf: SearchParam<QuestionnaireResponse, Reference> =
     SearchParam(
       name = "part-of",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "QuestionnaireResponse.partOf",
       target = listOf(Observation::class, Procedure::class),
       extractor = { resource -> resource.partOf },
@@ -251,7 +251,7 @@ public object QuestionnaireResponseSearchParams {
   public val patient: SearchParam<QuestionnaireResponse, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "QuestionnaireResponse.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -264,7 +264,7 @@ public object QuestionnaireResponseSearchParams {
   public val questionnaire: SearchParam<QuestionnaireResponse, Canonical> =
     SearchParam(
       name = "questionnaire",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "QuestionnaireResponse.questionnaire",
       target = listOf(Questionnaire::class),
       extractor = { resource -> listOfNotNull(resource.questionnaire) },
@@ -273,7 +273,7 @@ public object QuestionnaireResponseSearchParams {
   public val source: SearchParam<QuestionnaireResponse, Reference> =
     SearchParam(
       name = "source",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "QuestionnaireResponse.source",
       target =
         listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class),
@@ -283,7 +283,7 @@ public object QuestionnaireResponseSearchParams {
   public val status: SearchParam<QuestionnaireResponse, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "QuestionnaireResponse.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -291,7 +291,7 @@ public object QuestionnaireResponseSearchParams {
   public val subject: SearchParam<QuestionnaireResponse, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "QuestionnaireResponse.subject",
       target =
         listOf(

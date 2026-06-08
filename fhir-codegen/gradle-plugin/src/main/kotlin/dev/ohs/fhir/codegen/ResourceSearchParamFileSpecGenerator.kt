@@ -191,7 +191,7 @@ object ResourceSearchParamFileSpecGenerator {
         .add("%T(\n", searchParamClassName)
         .indent()
         .add("name = %S,\n", searchParam.code)
-        .add("type = %T.fromCode(%S),\n", searchParamTypeClassName, searchParam.type)
+        .add("type = %T.%L,\n", searchParamTypeClassName, searchParam.type.capitalized())
         .add("expression = %S,\n", resourceExpression)
         .apply {
           if (searchParam.target.isNotEmpty()) {

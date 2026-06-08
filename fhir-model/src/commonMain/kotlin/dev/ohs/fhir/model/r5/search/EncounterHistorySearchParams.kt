@@ -34,7 +34,7 @@ public object EncounterHistorySearchParams {
   public val encounter: SearchParam<EncounterHistory, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EncounterHistory.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -43,7 +43,7 @@ public object EncounterHistorySearchParams {
   public val identifier: SearchParam<EncounterHistory, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EncounterHistory.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -51,7 +51,7 @@ public object EncounterHistorySearchParams {
   public val patient: SearchParam<EncounterHistory, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EncounterHistory.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -64,7 +64,7 @@ public object EncounterHistorySearchParams {
   public val status: SearchParam<EncounterHistory, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "EncounterHistory.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -72,7 +72,7 @@ public object EncounterHistorySearchParams {
   public val subject: SearchParam<EncounterHistory, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "EncounterHistory.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },

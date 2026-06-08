@@ -42,7 +42,7 @@ public object ScheduleSearchParams {
   public val active: SearchParam<Schedule, Boolean> =
     SearchParam(
       name = "active",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Schedule.active",
       extractor = { resource -> listOfNotNull(resource.active) },
     )
@@ -50,7 +50,7 @@ public object ScheduleSearchParams {
   public val actor: SearchParam<Schedule, Reference> =
     SearchParam(
       name = "actor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Schedule.actor",
       target =
         listOf(
@@ -69,7 +69,7 @@ public object ScheduleSearchParams {
   public val date: SearchParam<Schedule, Period> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Schedule.planningHorizon",
       extractor = { resource -> listOfNotNull(resource.planningHorizon) },
     )
@@ -77,7 +77,7 @@ public object ScheduleSearchParams {
   public val identifier: SearchParam<Schedule, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Schedule.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -85,7 +85,7 @@ public object ScheduleSearchParams {
   public val name: SearchParam<Schedule, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Schedule.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -93,7 +93,7 @@ public object ScheduleSearchParams {
   public val serviceCategory: SearchParam<Schedule, CodeableConcept> =
     SearchParam(
       name = "service-category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Schedule.serviceCategory",
       extractor = { resource -> resource.serviceCategory },
     )
@@ -101,7 +101,7 @@ public object ScheduleSearchParams {
   public val serviceType: SearchParam<Schedule, CodeableConcept> =
     SearchParam(
       name = "service-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Schedule.serviceType.concept",
       extractor = { resource -> resource.serviceType.mapNotNull { it.concept } },
     )
@@ -109,7 +109,7 @@ public object ScheduleSearchParams {
   public val serviceTypeReference: SearchParam<Schedule, Reference> =
     SearchParam(
       name = "service-type-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Schedule.serviceType.reference",
       target = listOf(HealthcareService::class),
       extractor = { resource -> resource.serviceType.mapNotNull { it.reference } },
@@ -118,7 +118,7 @@ public object ScheduleSearchParams {
   public val specialty: SearchParam<Schedule, CodeableConcept> =
     SearchParam(
       name = "specialty",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Schedule.specialty",
       extractor = { resource -> resource.specialty },
     )

@@ -190,7 +190,7 @@ public object DetectedIssueSearchParams {
   public val author: SearchParam<DetectedIssue, Reference> =
     SearchParam(
       name = "author",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DetectedIssue.author",
       target =
         listOf(
@@ -206,7 +206,7 @@ public object DetectedIssueSearchParams {
   public val category: SearchParam<DetectedIssue, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DetectedIssue.category",
       extractor = { resource -> resource.category },
     )
@@ -214,7 +214,7 @@ public object DetectedIssueSearchParams {
   public val code: SearchParam<DetectedIssue, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DetectedIssue.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -222,7 +222,7 @@ public object DetectedIssueSearchParams {
   public val identified: SearchParam<DetectedIssue, Any> =
     SearchParam(
       name = "identified",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "DetectedIssue.identified.ofType(dateTime)",
       extractor = {
         throw NotImplementedError(
@@ -234,7 +234,7 @@ public object DetectedIssueSearchParams {
   public val identifier: SearchParam<DetectedIssue, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DetectedIssue.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -242,7 +242,7 @@ public object DetectedIssueSearchParams {
   public val implicated: SearchParam<DetectedIssue, Reference> =
     SearchParam(
       name = "implicated",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DetectedIssue.implicated",
       target =
         listOf(
@@ -411,7 +411,7 @@ public object DetectedIssueSearchParams {
   public val patient: SearchParam<DetectedIssue, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DetectedIssue.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -424,7 +424,7 @@ public object DetectedIssueSearchParams {
   public val status: SearchParam<DetectedIssue, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DetectedIssue.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -432,7 +432,7 @@ public object DetectedIssueSearchParams {
   public val subject: SearchParam<DetectedIssue, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DetectedIssue.subject",
       target =
         listOf(

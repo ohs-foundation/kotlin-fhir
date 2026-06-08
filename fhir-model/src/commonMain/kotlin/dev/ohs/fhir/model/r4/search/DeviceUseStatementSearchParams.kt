@@ -33,7 +33,7 @@ public object DeviceUseStatementSearchParams {
   public val device: SearchParam<DeviceUseStatement, Reference> =
     SearchParam(
       name = "device",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceUseStatement.device",
       target = listOf(Device::class),
       extractor = { resource -> listOf(resource.device) },
@@ -42,7 +42,7 @@ public object DeviceUseStatementSearchParams {
   public val identifier: SearchParam<DeviceUseStatement, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceUseStatement.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -50,7 +50,7 @@ public object DeviceUseStatementSearchParams {
   public val patient: SearchParam<DeviceUseStatement, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceUseStatement.subject",
       target = listOf(Patient::class, Group::class),
       extractor = { resource -> listOf(resource.subject) },
@@ -59,7 +59,7 @@ public object DeviceUseStatementSearchParams {
   public val subject: SearchParam<DeviceUseStatement, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceUseStatement.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },

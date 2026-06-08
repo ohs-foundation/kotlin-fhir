@@ -179,7 +179,7 @@ public object ListSearchParams {
   public val code: SearchParam<R4List, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "List.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -187,7 +187,7 @@ public object ListSearchParams {
   public val date: SearchParam<R4List, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "List.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -195,7 +195,7 @@ public object ListSearchParams {
   public val emptyReason: SearchParam<R4List, CodeableConcept> =
     SearchParam(
       name = "empty-reason",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "List.emptyReason",
       extractor = { resource -> listOfNotNull(resource.emptyReason) },
     )
@@ -203,7 +203,7 @@ public object ListSearchParams {
   public val encounter: SearchParam<R4List, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "List.encounter",
       target = listOf(Encounter::class, EpisodeOfCare::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -212,7 +212,7 @@ public object ListSearchParams {
   public val identifier: SearchParam<R4List, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "List.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -220,7 +220,7 @@ public object ListSearchParams {
   public val item: SearchParam<R4List, Reference> =
     SearchParam(
       name = "item",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "List.entry.item",
       target =
         listOf(
@@ -376,7 +376,7 @@ public object ListSearchParams {
   public val notes: SearchParam<R4List, Markdown> =
     SearchParam(
       name = "notes",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "List.note.text",
       extractor = { resource -> resource.note.map { it.text } },
     )
@@ -384,7 +384,7 @@ public object ListSearchParams {
   public val patient: SearchParam<R4List, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "List.subject.where(resolve() is Patient)",
       target = listOf(Patient::class, Group::class),
       extractor = { resource ->
@@ -397,7 +397,7 @@ public object ListSearchParams {
   public val source: SearchParam<R4List, Reference> =
     SearchParam(
       name = "source",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "List.source",
       target = listOf(Practitioner::class, Device::class, Patient::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.source) },
@@ -406,7 +406,7 @@ public object ListSearchParams {
   public val status: SearchParam<R4List, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "List.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -414,7 +414,7 @@ public object ListSearchParams {
   public val subject: SearchParam<R4List, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "List.subject",
       target = listOf(Group::class, Device::class, Patient::class, Location::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
@@ -423,7 +423,7 @@ public object ListSearchParams {
   public val title: SearchParam<R4List, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "List.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )

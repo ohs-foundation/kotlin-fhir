@@ -40,7 +40,7 @@ public object RiskAssessmentSearchParams {
   public val condition: SearchParam<RiskAssessment, Reference> =
     SearchParam(
       name = "condition",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RiskAssessment.condition",
       target = listOf(Condition::class),
       extractor = { resource -> listOfNotNull(resource.condition) },
@@ -49,7 +49,7 @@ public object RiskAssessmentSearchParams {
   public val date: SearchParam<RiskAssessment, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "(RiskAssessment.occurrence as dateTime)",
       extractor = { resource ->
         listOfNotNull((resource.occurrence as? RiskAssessment.Occurrence.DateTime)?.value)
@@ -59,7 +59,7 @@ public object RiskAssessmentSearchParams {
   public val encounter: SearchParam<RiskAssessment, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RiskAssessment.encounter",
       target = listOf(Encounter::class, EpisodeOfCare::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -68,7 +68,7 @@ public object RiskAssessmentSearchParams {
   public val identifier: SearchParam<RiskAssessment, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RiskAssessment.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -76,7 +76,7 @@ public object RiskAssessmentSearchParams {
   public val method: SearchParam<RiskAssessment, CodeableConcept> =
     SearchParam(
       name = "method",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RiskAssessment.method",
       extractor = { resource -> listOfNotNull(resource.method) },
     )
@@ -84,7 +84,7 @@ public object RiskAssessmentSearchParams {
   public val patient: SearchParam<RiskAssessment, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RiskAssessment.subject.where(resolve() is Patient)",
       target = listOf(Patient::class, Group::class),
       extractor = { resource ->
@@ -97,7 +97,7 @@ public object RiskAssessmentSearchParams {
   public val performer: SearchParam<RiskAssessment, Reference> =
     SearchParam(
       name = "performer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RiskAssessment.performer",
       target = listOf(Practitioner::class, Device::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.performer) },
@@ -106,7 +106,7 @@ public object RiskAssessmentSearchParams {
   public val probability: SearchParam<RiskAssessment, RiskAssessment.Prediction.Probability> =
     SearchParam(
       name = "probability",
-      type = SearchParamType.fromCode("number"),
+      type = SearchParamType.Number,
       expression = "RiskAssessment.prediction.probability",
       extractor = { resource -> resource.prediction.mapNotNull { it.probability } },
     )
@@ -114,7 +114,7 @@ public object RiskAssessmentSearchParams {
   public val risk: SearchParam<RiskAssessment, CodeableConcept> =
     SearchParam(
       name = "risk",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "RiskAssessment.prediction.qualitativeRisk",
       extractor = { resource -> resource.prediction.mapNotNull { it.qualitativeRisk } },
     )
@@ -122,7 +122,7 @@ public object RiskAssessmentSearchParams {
   public val subject: SearchParam<RiskAssessment, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "RiskAssessment.subject",
       target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },

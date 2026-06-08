@@ -191,7 +191,7 @@ public object ProvenanceSearchParams {
   public val activity: SearchParam<Provenance, CodeableConcept> =
     SearchParam(
       name = "activity",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Provenance.activity",
       extractor = { resource -> listOfNotNull(resource.activity) },
     )
@@ -199,7 +199,7 @@ public object ProvenanceSearchParams {
   public val agent: SearchParam<Provenance, Reference> =
     SearchParam(
       name = "agent",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Provenance.agent.who",
       target =
         listOf(
@@ -217,7 +217,7 @@ public object ProvenanceSearchParams {
   public val agentRole: SearchParam<Provenance, CodeableConcept> =
     SearchParam(
       name = "agent-role",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Provenance.agent.role",
       extractor = { resource -> resource.agent.flatMap { it.role } },
     )
@@ -225,7 +225,7 @@ public object ProvenanceSearchParams {
   public val agentType: SearchParam<Provenance, CodeableConcept> =
     SearchParam(
       name = "agent-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Provenance.agent.type",
       extractor = { resource -> resource.agent.mapNotNull { it.type } },
     )
@@ -233,7 +233,7 @@ public object ProvenanceSearchParams {
   public val basedOn: SearchParam<Provenance, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Provenance.basedOn",
       target =
         listOf(
@@ -251,7 +251,7 @@ public object ProvenanceSearchParams {
   public val encounter: SearchParam<Provenance, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Provenance.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -260,7 +260,7 @@ public object ProvenanceSearchParams {
   public val entity: SearchParam<Provenance, Reference> =
     SearchParam(
       name = "entity",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Provenance.entity.what",
       target =
         listOf(
@@ -429,7 +429,7 @@ public object ProvenanceSearchParams {
   public val location: SearchParam<Provenance, Reference> =
     SearchParam(
       name = "location",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Provenance.location",
       target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.location) },
@@ -438,7 +438,7 @@ public object ProvenanceSearchParams {
   public val patient: SearchParam<Provenance, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Provenance.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOfNotNull(resource.patient) },
@@ -447,7 +447,7 @@ public object ProvenanceSearchParams {
   public val recorded: SearchParam<Provenance, Instant> =
     SearchParam(
       name = "recorded",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Provenance.recorded",
       extractor = { resource -> listOfNotNull(resource.recorded) },
     )
@@ -455,7 +455,7 @@ public object ProvenanceSearchParams {
   public val signatureType: SearchParam<Provenance, Coding> =
     SearchParam(
       name = "signature-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Provenance.signature.type",
       extractor = { resource -> resource.signature.flatMap { it.type } },
     )
@@ -463,7 +463,7 @@ public object ProvenanceSearchParams {
   public val target: SearchParam<Provenance, Reference> =
     SearchParam(
       name = "target",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Provenance.target",
       target =
         listOf(
@@ -632,7 +632,7 @@ public object ProvenanceSearchParams {
   public val `when`: SearchParam<Provenance, Any> =
     SearchParam(
       name = "when",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "(Provenance.occurred.ofType(dateTime))",
       extractor = {
         throw NotImplementedError(

@@ -37,7 +37,7 @@ public object InventoryReportSearchParams {
   public val identifier: SearchParam<InventoryReport, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InventoryReport.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -45,7 +45,7 @@ public object InventoryReportSearchParams {
   public val item: SearchParam<InventoryReport, CodeableConcept> =
     SearchParam(
       name = "item",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InventoryReport.inventoryListing.item.item.concept",
       extractor = { resource ->
         resource.inventoryListing.flatMap { it.item }.map { it.item }.mapNotNull { it.concept }
@@ -55,7 +55,7 @@ public object InventoryReportSearchParams {
   public val itemReference: SearchParam<InventoryReport, Reference> =
     SearchParam(
       name = "item-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "InventoryReport.inventoryListing.item.item.reference",
       target =
         listOf(
@@ -73,7 +73,7 @@ public object InventoryReportSearchParams {
   public val status: SearchParam<InventoryReport, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "InventoryReport.status",
       extractor = { resource -> listOf(resource.status) },
     )

@@ -189,7 +189,7 @@ public object TestPlanSearchParams {
   public val identifier: SearchParam<TestPlan, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "TestPlan.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -197,7 +197,7 @@ public object TestPlanSearchParams {
   public val scope: SearchParam<TestPlan, Reference> =
     SearchParam(
       name = "scope",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "TestPlan.scope",
       target =
         listOf(
@@ -366,7 +366,7 @@ public object TestPlanSearchParams {
   public val status: SearchParam<TestPlan, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "TestPlan.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -374,7 +374,7 @@ public object TestPlanSearchParams {
   public val url: SearchParam<TestPlan, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "TestPlan.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )

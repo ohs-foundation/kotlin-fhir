@@ -36,7 +36,7 @@ public object SupplyDeliverySearchParams {
   public val identifier: SearchParam<SupplyDelivery, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SupplyDelivery.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -44,7 +44,7 @@ public object SupplyDeliverySearchParams {
   public val patient: SearchParam<SupplyDelivery, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "SupplyDelivery.patient",
       target = listOf(Patient::class, Group::class),
       extractor = { resource -> listOfNotNull(resource.patient) },
@@ -53,7 +53,7 @@ public object SupplyDeliverySearchParams {
   public val `receiver`: SearchParam<SupplyDelivery, Reference> =
     SearchParam(
       name = "receiver",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "SupplyDelivery.receiver",
       target = listOf(Practitioner::class, PractitionerRole::class),
       extractor = { resource -> resource.`receiver` },
@@ -62,7 +62,7 @@ public object SupplyDeliverySearchParams {
   public val status: SearchParam<SupplyDelivery, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SupplyDelivery.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -70,7 +70,7 @@ public object SupplyDeliverySearchParams {
   public val supplier: SearchParam<SupplyDelivery, Reference> =
     SearchParam(
       name = "supplier",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "SupplyDelivery.supplier",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.supplier) },

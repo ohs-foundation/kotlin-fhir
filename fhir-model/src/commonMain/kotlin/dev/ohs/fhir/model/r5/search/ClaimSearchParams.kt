@@ -41,7 +41,7 @@ public object ClaimSearchParams {
   public val careTeam: SearchParam<Claim, Reference> =
     SearchParam(
       name = "care-team",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.careTeam.provider",
       target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
       extractor = { resource -> resource.careTeam.map { it.provider } },
@@ -50,7 +50,7 @@ public object ClaimSearchParams {
   public val created: SearchParam<Claim, DateTime> =
     SearchParam(
       name = "created",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Claim.created",
       extractor = { resource -> listOf(resource.created) },
     )
@@ -58,7 +58,7 @@ public object ClaimSearchParams {
   public val detailUdi: SearchParam<Claim, Reference> =
     SearchParam(
       name = "detail-udi",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.item.detail.udi",
       target = listOf(Device::class),
       extractor = { resource -> resource.item.flatMap { it.detail }.flatMap { it.udi } },
@@ -67,7 +67,7 @@ public object ClaimSearchParams {
   public val encounter: SearchParam<Claim, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.item.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> resource.item.flatMap { it.encounter } },
@@ -76,7 +76,7 @@ public object ClaimSearchParams {
   public val enterer: SearchParam<Claim, Reference> =
     SearchParam(
       name = "enterer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.enterer",
       target =
         listOf(RelatedPerson::class, PractitionerRole::class, Practitioner::class, Patient::class),
@@ -86,7 +86,7 @@ public object ClaimSearchParams {
   public val facility: SearchParam<Claim, Reference> =
     SearchParam(
       name = "facility",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.facility",
       target = listOf(Organization::class, Location::class),
       extractor = { resource -> listOfNotNull(resource.facility) },
@@ -95,7 +95,7 @@ public object ClaimSearchParams {
   public val identifier: SearchParam<Claim, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Claim.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -103,7 +103,7 @@ public object ClaimSearchParams {
   public val insurer: SearchParam<Claim, Reference> =
     SearchParam(
       name = "insurer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.insurer",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.insurer) },
@@ -112,7 +112,7 @@ public object ClaimSearchParams {
   public val itemUdi: SearchParam<Claim, Reference> =
     SearchParam(
       name = "item-udi",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.item.udi",
       target = listOf(Device::class),
       extractor = { resource -> resource.item.flatMap { it.udi } },
@@ -121,7 +121,7 @@ public object ClaimSearchParams {
   public val patient: SearchParam<Claim, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -130,7 +130,7 @@ public object ClaimSearchParams {
   public val payee: SearchParam<Claim, Reference> =
     SearchParam(
       name = "payee",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.payee.party",
       target =
         listOf(
@@ -146,7 +146,7 @@ public object ClaimSearchParams {
   public val priority: SearchParam<Claim, CodeableConcept> =
     SearchParam(
       name = "priority",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Claim.priority",
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
@@ -154,7 +154,7 @@ public object ClaimSearchParams {
   public val procedureUdi: SearchParam<Claim, Reference> =
     SearchParam(
       name = "procedure-udi",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.procedure.udi",
       target = listOf(Device::class),
       extractor = { resource -> resource.procedure.flatMap { it.udi } },
@@ -163,7 +163,7 @@ public object ClaimSearchParams {
   public val provider: SearchParam<Claim, Reference> =
     SearchParam(
       name = "provider",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.provider",
       target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
       extractor = { resource -> listOfNotNull(resource.provider) },
@@ -172,7 +172,7 @@ public object ClaimSearchParams {
   public val status: SearchParam<Claim, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Claim.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -180,7 +180,7 @@ public object ClaimSearchParams {
   public val subdetailUdi: SearchParam<Claim, Reference> =
     SearchParam(
       name = "subdetail-udi",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Claim.item.detail.subDetail.udi",
       target = listOf(Device::class),
       extractor = { resource ->
@@ -191,7 +191,7 @@ public object ClaimSearchParams {
   public val use: SearchParam<Claim, Any> =
     SearchParam(
       name = "use",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Claim.use",
       extractor = { resource -> listOf(resource.use) },
     )

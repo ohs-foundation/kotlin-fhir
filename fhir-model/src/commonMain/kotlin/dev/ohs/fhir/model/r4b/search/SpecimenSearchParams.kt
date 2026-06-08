@@ -39,7 +39,7 @@ public object SpecimenSearchParams {
   public val accession: SearchParam<Specimen, Identifier> =
     SearchParam(
       name = "accession",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Specimen.accessionIdentifier",
       extractor = { resource -> listOfNotNull(resource.accessionIdentifier) },
     )
@@ -47,7 +47,7 @@ public object SpecimenSearchParams {
   public val bodysite: SearchParam<Specimen, CodeableConcept> =
     SearchParam(
       name = "bodysite",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Specimen.collection.bodySite",
       extractor = { resource -> listOfNotNull(resource.collection?.bodySite) },
     )
@@ -55,7 +55,7 @@ public object SpecimenSearchParams {
   public val collected: SearchParam<Specimen, Specimen.Collection.Collected> =
     SearchParam(
       name = "collected",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Specimen.collection.collected",
       extractor = { resource -> listOfNotNull(resource.collection?.collected) },
     )
@@ -63,7 +63,7 @@ public object SpecimenSearchParams {
   public val collector: SearchParam<Specimen, Reference> =
     SearchParam(
       name = "collector",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Specimen.collection.collector",
       target = listOf(Practitioner::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.collection?.collector) },
@@ -72,7 +72,7 @@ public object SpecimenSearchParams {
   public val container: SearchParam<Specimen, CodeableConcept> =
     SearchParam(
       name = "container",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Specimen.container.type",
       extractor = { resource -> resource.container.mapNotNull { it.type } },
     )
@@ -80,7 +80,7 @@ public object SpecimenSearchParams {
   public val containerId: SearchParam<Specimen, Identifier> =
     SearchParam(
       name = "container-id",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Specimen.container.identifier",
       extractor = { resource -> resource.container.flatMap { it.identifier } },
     )
@@ -88,7 +88,7 @@ public object SpecimenSearchParams {
   public val identifier: SearchParam<Specimen, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Specimen.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -96,7 +96,7 @@ public object SpecimenSearchParams {
   public val parent: SearchParam<Specimen, Reference> =
     SearchParam(
       name = "parent",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Specimen.parent",
       target = listOf(Specimen::class),
       extractor = { resource -> resource.parent },
@@ -105,7 +105,7 @@ public object SpecimenSearchParams {
   public val patient: SearchParam<Specimen, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Specimen.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -118,7 +118,7 @@ public object SpecimenSearchParams {
   public val status: SearchParam<Specimen, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Specimen.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )
@@ -126,7 +126,7 @@ public object SpecimenSearchParams {
   public val subject: SearchParam<Specimen, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Specimen.subject",
       target =
         listOf(Group::class, Device::class, Patient::class, Substance::class, Location::class),
@@ -136,7 +136,7 @@ public object SpecimenSearchParams {
   public val type: SearchParam<Specimen, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Specimen.type",
       extractor = { resource -> listOfNotNull(resource.type) },
     )

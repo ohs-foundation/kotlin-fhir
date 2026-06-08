@@ -176,7 +176,7 @@ public object ImmunizationRecommendationSearchParams {
   public val date: SearchParam<ImmunizationRecommendation, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ImmunizationRecommendation.date",
       extractor = { resource -> listOf(resource.date) },
     )
@@ -184,7 +184,7 @@ public object ImmunizationRecommendationSearchParams {
   public val identifier: SearchParam<ImmunizationRecommendation, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImmunizationRecommendation.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -192,7 +192,7 @@ public object ImmunizationRecommendationSearchParams {
   public val information: SearchParam<ImmunizationRecommendation, Reference> =
     SearchParam(
       name = "information",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImmunizationRecommendation.recommendation.supportingPatientInformation",
       target =
         listOf(
@@ -350,7 +350,7 @@ public object ImmunizationRecommendationSearchParams {
   public val patient: SearchParam<ImmunizationRecommendation, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImmunizationRecommendation.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -359,7 +359,7 @@ public object ImmunizationRecommendationSearchParams {
   public val status: SearchParam<ImmunizationRecommendation, CodeableConcept> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImmunizationRecommendation.recommendation.forecastStatus",
       extractor = { resource -> resource.recommendation.map { it.forecastStatus } },
     )
@@ -367,7 +367,7 @@ public object ImmunizationRecommendationSearchParams {
   public val support: SearchParam<ImmunizationRecommendation, Reference> =
     SearchParam(
       name = "support",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImmunizationRecommendation.recommendation.supportingImmunization",
       target = listOf(Immunization::class, ImmunizationEvaluation::class),
       extractor = { resource -> resource.recommendation.flatMap { it.supportingImmunization } },
@@ -376,7 +376,7 @@ public object ImmunizationRecommendationSearchParams {
   public val targetDisease: SearchParam<ImmunizationRecommendation, CodeableConcept> =
     SearchParam(
       name = "target-disease",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImmunizationRecommendation.recommendation.targetDisease",
       extractor = { resource -> resource.recommendation.mapNotNull { it.targetDisease } },
     )
@@ -384,7 +384,7 @@ public object ImmunizationRecommendationSearchParams {
   public val vaccineType: SearchParam<ImmunizationRecommendation, CodeableConcept> =
     SearchParam(
       name = "vaccine-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImmunizationRecommendation.recommendation.vaccineCode",
       extractor = { resource -> resource.recommendation.flatMap { it.vaccineCode } },
     )

@@ -33,7 +33,7 @@ public object DeviceDefinitionSearchParams {
   public val deviceName: SearchParam<DeviceDefinition, String> =
     SearchParam(
       name = "device-name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "DeviceDefinition.deviceName.name",
       extractor = { resource -> resource.deviceName.map { it.name } },
     )
@@ -41,7 +41,7 @@ public object DeviceDefinitionSearchParams {
   public val identifier: SearchParam<DeviceDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -49,7 +49,7 @@ public object DeviceDefinitionSearchParams {
   public val manufacturer: SearchParam<DeviceDefinition, Reference> =
     SearchParam(
       name = "manufacturer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceDefinition.manufacturer",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.manufacturer) },
@@ -58,7 +58,7 @@ public object DeviceDefinitionSearchParams {
   public val organization: SearchParam<DeviceDefinition, Reference> =
     SearchParam(
       name = "organization",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "DeviceDefinition.owner",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.owner) },
@@ -67,7 +67,7 @@ public object DeviceDefinitionSearchParams {
   public val specification: SearchParam<DeviceDefinition, CodeableConcept> =
     SearchParam(
       name = "specification",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceDefinition.conformsTo.specification",
       extractor = { resource -> resource.conformsTo.map { it.specification } },
     )
@@ -75,7 +75,7 @@ public object DeviceDefinitionSearchParams {
   public val specificationVersion: SearchParam<DeviceDefinition, DeviceDefinition.ConformsTo> =
     SearchParam(
       name = "specification-version",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "DeviceDefinition.conformsTo",
       extractor = { resource -> resource.conformsTo },
     )
@@ -83,7 +83,7 @@ public object DeviceDefinitionSearchParams {
   public val type: SearchParam<DeviceDefinition, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "DeviceDefinition.conformsTo.category",
       extractor = { resource -> resource.conformsTo.mapNotNull { it.category } },
     )

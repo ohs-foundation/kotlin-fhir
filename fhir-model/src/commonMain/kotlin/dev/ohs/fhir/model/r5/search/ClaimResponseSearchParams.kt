@@ -39,7 +39,7 @@ public object ClaimResponseSearchParams {
   public val created: SearchParam<ClaimResponse, DateTime> =
     SearchParam(
       name = "created",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ClaimResponse.created",
       extractor = { resource -> listOf(resource.created) },
     )
@@ -47,7 +47,7 @@ public object ClaimResponseSearchParams {
   public val disposition: SearchParam<ClaimResponse, String> =
     SearchParam(
       name = "disposition",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ClaimResponse.disposition",
       extractor = { resource -> listOfNotNull(resource.disposition) },
     )
@@ -55,7 +55,7 @@ public object ClaimResponseSearchParams {
   public val identifier: SearchParam<ClaimResponse, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ClaimResponse.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -63,7 +63,7 @@ public object ClaimResponseSearchParams {
   public val insurer: SearchParam<ClaimResponse, Reference> =
     SearchParam(
       name = "insurer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClaimResponse.insurer",
       target = listOf(Organization::class),
       extractor = { resource -> listOfNotNull(resource.insurer) },
@@ -72,7 +72,7 @@ public object ClaimResponseSearchParams {
   public val outcome: SearchParam<ClaimResponse, Any> =
     SearchParam(
       name = "outcome",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ClaimResponse.outcome",
       extractor = { resource -> listOf(resource.outcome) },
     )
@@ -80,7 +80,7 @@ public object ClaimResponseSearchParams {
   public val patient: SearchParam<ClaimResponse, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClaimResponse.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -89,7 +89,7 @@ public object ClaimResponseSearchParams {
   public val paymentDate: SearchParam<ClaimResponse, Date> =
     SearchParam(
       name = "payment-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ClaimResponse.payment.date",
       extractor = { resource -> listOfNotNull(resource.payment?.date) },
     )
@@ -97,7 +97,7 @@ public object ClaimResponseSearchParams {
   public val request: SearchParam<ClaimResponse, Reference> =
     SearchParam(
       name = "request",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClaimResponse.request",
       target = listOf(Claim::class),
       extractor = { resource -> listOfNotNull(resource.request) },
@@ -106,7 +106,7 @@ public object ClaimResponseSearchParams {
   public val requestor: SearchParam<ClaimResponse, Reference> =
     SearchParam(
       name = "requestor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ClaimResponse.requestor",
       target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
       extractor = { resource -> listOfNotNull(resource.requestor) },
@@ -115,7 +115,7 @@ public object ClaimResponseSearchParams {
   public val status: SearchParam<ClaimResponse, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ClaimResponse.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -123,7 +123,7 @@ public object ClaimResponseSearchParams {
   public val use: SearchParam<ClaimResponse, Any> =
     SearchParam(
       name = "use",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ClaimResponse.use",
       extractor = { resource -> listOf(resource.use) },
     )

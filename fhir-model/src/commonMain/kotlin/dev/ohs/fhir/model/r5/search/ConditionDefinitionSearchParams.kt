@@ -38,7 +38,7 @@ public object ConditionDefinitionSearchParams {
   public val context: SearchParam<ConditionDefinition, Any> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(ConditionDefinition.useContext.value.ofType(CodeableConcept))",
       extractor = {
         throw NotImplementedError(
@@ -50,7 +50,7 @@ public object ConditionDefinitionSearchParams {
   public val contextQuantity: SearchParam<ConditionDefinition, Any> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(ConditionDefinition.useContext.value.ofType(Quantity))",
       extractor = {
         throw NotImplementedError(
@@ -62,7 +62,7 @@ public object ConditionDefinitionSearchParams {
   public val contextType: SearchParam<ConditionDefinition, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ConditionDefinition.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -70,7 +70,7 @@ public object ConditionDefinitionSearchParams {
   public val contextTypeQuantity: SearchParam<ConditionDefinition, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "ConditionDefinition.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -78,7 +78,7 @@ public object ConditionDefinitionSearchParams {
   public val contextTypeValue: SearchParam<ConditionDefinition, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "ConditionDefinition.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -86,7 +86,7 @@ public object ConditionDefinitionSearchParams {
   public val date: SearchParam<ConditionDefinition, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ConditionDefinition.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -94,7 +94,7 @@ public object ConditionDefinitionSearchParams {
   public val description: SearchParam<ConditionDefinition, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ConditionDefinition.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -102,7 +102,7 @@ public object ConditionDefinitionSearchParams {
   public val identifier: SearchParam<ConditionDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ConditionDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -110,7 +110,7 @@ public object ConditionDefinitionSearchParams {
   public val jurisdiction: SearchParam<ConditionDefinition, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ConditionDefinition.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -118,7 +118,7 @@ public object ConditionDefinitionSearchParams {
   public val name: SearchParam<ConditionDefinition, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ConditionDefinition.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -126,7 +126,7 @@ public object ConditionDefinitionSearchParams {
   public val publisher: SearchParam<ConditionDefinition, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ConditionDefinition.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -134,7 +134,7 @@ public object ConditionDefinitionSearchParams {
   public val status: SearchParam<ConditionDefinition, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ConditionDefinition.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -142,7 +142,7 @@ public object ConditionDefinitionSearchParams {
   public val title: SearchParam<ConditionDefinition, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ConditionDefinition.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -150,7 +150,7 @@ public object ConditionDefinitionSearchParams {
   public val url: SearchParam<ConditionDefinition, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "ConditionDefinition.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -158,7 +158,7 @@ public object ConditionDefinitionSearchParams {
   public val version: SearchParam<ConditionDefinition, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ConditionDefinition.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

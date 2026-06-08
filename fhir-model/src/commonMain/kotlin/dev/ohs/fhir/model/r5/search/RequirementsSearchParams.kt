@@ -40,7 +40,7 @@ public object RequirementsSearchParams {
   public val actor: SearchParam<Requirements, Canonical> =
     SearchParam(
       name = "actor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Requirements.actor",
       target = listOf(ActorDefinition::class),
       extractor = { resource -> resource.actor },
@@ -49,7 +49,7 @@ public object RequirementsSearchParams {
   public val context: SearchParam<Requirements, Any> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(Requirements.useContext.value.ofType(CodeableConcept))",
       extractor = {
         throw NotImplementedError(
@@ -61,7 +61,7 @@ public object RequirementsSearchParams {
   public val contextQuantity: SearchParam<Requirements, Any> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(Requirements.useContext.value.ofType(Quantity))",
       extractor = {
         throw NotImplementedError(
@@ -73,7 +73,7 @@ public object RequirementsSearchParams {
   public val contextType: SearchParam<Requirements, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Requirements.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -81,7 +81,7 @@ public object RequirementsSearchParams {
   public val contextTypeQuantity: SearchParam<Requirements, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Requirements.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -89,7 +89,7 @@ public object RequirementsSearchParams {
   public val contextTypeValue: SearchParam<Requirements, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Requirements.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -97,7 +97,7 @@ public object RequirementsSearchParams {
   public val date: SearchParam<Requirements, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Requirements.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -105,7 +105,7 @@ public object RequirementsSearchParams {
   public val derivedFrom: SearchParam<Requirements, Canonical> =
     SearchParam(
       name = "derived-from",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Requirements.derivedFrom",
       target = listOf(Requirements::class),
       extractor = { resource -> resource.derivedFrom },
@@ -114,7 +114,7 @@ public object RequirementsSearchParams {
   public val description: SearchParam<Requirements, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Requirements.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -122,7 +122,7 @@ public object RequirementsSearchParams {
   public val identifier: SearchParam<Requirements, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Requirements.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -130,7 +130,7 @@ public object RequirementsSearchParams {
   public val jurisdiction: SearchParam<Requirements, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Requirements.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -138,7 +138,7 @@ public object RequirementsSearchParams {
   public val name: SearchParam<Requirements, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Requirements.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -146,7 +146,7 @@ public object RequirementsSearchParams {
   public val publisher: SearchParam<Requirements, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Requirements.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -154,7 +154,7 @@ public object RequirementsSearchParams {
   public val status: SearchParam<Requirements, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Requirements.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -162,7 +162,7 @@ public object RequirementsSearchParams {
   public val title: SearchParam<Requirements, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Requirements.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -170,7 +170,7 @@ public object RequirementsSearchParams {
   public val url: SearchParam<Requirements, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Requirements.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -178,7 +178,7 @@ public object RequirementsSearchParams {
   public val version: SearchParam<Requirements, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Requirements.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

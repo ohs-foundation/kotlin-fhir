@@ -30,7 +30,7 @@ public object FormularyItemSearchParams {
   public val code: SearchParam<FormularyItem, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "FormularyItem.code",
       extractor = { resource -> listOfNotNull(resource.code) },
     )
@@ -38,7 +38,7 @@ public object FormularyItemSearchParams {
   public val identifier: SearchParam<FormularyItem, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "FormularyItem.identifier",
       extractor = { resource -> resource.identifier },
     )

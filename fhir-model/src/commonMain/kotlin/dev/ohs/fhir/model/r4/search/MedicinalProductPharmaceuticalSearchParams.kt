@@ -30,7 +30,7 @@ public object MedicinalProductPharmaceuticalSearchParams {
   public val identifier: SearchParam<MedicinalProductPharmaceutical, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductPharmaceutical.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -38,7 +38,7 @@ public object MedicinalProductPharmaceuticalSearchParams {
   public val route: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
     SearchParam(
       name = "route",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductPharmaceutical.routeOfAdministration.code",
       extractor = { resource -> resource.routeOfAdministration.map { it.code } },
     )
@@ -46,7 +46,7 @@ public object MedicinalProductPharmaceuticalSearchParams {
   public val targetSpecies: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
     SearchParam(
       name = "target-species",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MedicinalProductPharmaceutical.routeOfAdministration.targetSpecies.code",
       extractor = { resource ->
         resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }

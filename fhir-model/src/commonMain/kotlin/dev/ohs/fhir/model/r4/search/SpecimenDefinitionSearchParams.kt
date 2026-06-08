@@ -30,7 +30,7 @@ public object SpecimenDefinitionSearchParams {
   public val container: SearchParam<SpecimenDefinition, CodeableConcept> =
     SearchParam(
       name = "container",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.typeTested.container.type",
       extractor = { resource ->
         resource.typeTested.mapNotNull { it.container }.mapNotNull { it.type }
@@ -40,7 +40,7 @@ public object SpecimenDefinitionSearchParams {
   public val identifier: SearchParam<SpecimenDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.identifier",
       extractor = { resource -> listOfNotNull(resource.identifier) },
     )
@@ -48,7 +48,7 @@ public object SpecimenDefinitionSearchParams {
   public val type: SearchParam<SpecimenDefinition, CodeableConcept> =
     SearchParam(
       name = "type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SpecimenDefinition.typeCollected",
       extractor = { resource -> listOfNotNull(resource.typeCollected) },
     )

@@ -184,7 +184,7 @@ public object ImplementationGuideSearchParams {
   public val context: SearchParam<ImplementationGuide, CodeableConcept> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(ImplementationGuide.useContext.value as CodeableConcept)",
       extractor = { resource ->
         resource.useContext.mapNotNull {
@@ -196,7 +196,7 @@ public object ImplementationGuideSearchParams {
   public val contextQuantity: SearchParam<ImplementationGuide, Quantity> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(ImplementationGuide.useContext.value as Quantity)",
       extractor = { resource ->
         resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
@@ -206,7 +206,7 @@ public object ImplementationGuideSearchParams {
   public val contextType: SearchParam<ImplementationGuide, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImplementationGuide.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -214,7 +214,7 @@ public object ImplementationGuideSearchParams {
   public val contextTypeQuantity: SearchParam<ImplementationGuide, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "ImplementationGuide.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -222,7 +222,7 @@ public object ImplementationGuideSearchParams {
   public val contextTypeValue: SearchParam<ImplementationGuide, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "ImplementationGuide.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -230,7 +230,7 @@ public object ImplementationGuideSearchParams {
   public val date: SearchParam<ImplementationGuide, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ImplementationGuide.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -238,7 +238,7 @@ public object ImplementationGuideSearchParams {
   public val dependsOn: SearchParam<ImplementationGuide, Canonical> =
     SearchParam(
       name = "depends-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImplementationGuide.dependsOn.uri",
       target = listOf(ImplementationGuide::class),
       extractor = { resource -> resource.dependsOn.map { it.uri } },
@@ -247,7 +247,7 @@ public object ImplementationGuideSearchParams {
   public val description: SearchParam<ImplementationGuide, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ImplementationGuide.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -255,7 +255,7 @@ public object ImplementationGuideSearchParams {
   public val experimental: SearchParam<ImplementationGuide, Boolean> =
     SearchParam(
       name = "experimental",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImplementationGuide.experimental",
       extractor = { resource -> listOfNotNull(resource.experimental) },
     )
@@ -263,7 +263,7 @@ public object ImplementationGuideSearchParams {
   public val global: SearchParam<ImplementationGuide, Canonical> =
     SearchParam(
       name = "global",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImplementationGuide.global.profile",
       target = listOf(StructureDefinition::class),
       extractor = { resource -> resource.global.map { it.profile } },
@@ -272,7 +272,7 @@ public object ImplementationGuideSearchParams {
   public val jurisdiction: SearchParam<ImplementationGuide, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImplementationGuide.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -280,7 +280,7 @@ public object ImplementationGuideSearchParams {
   public val name: SearchParam<ImplementationGuide, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ImplementationGuide.name",
       extractor = { resource -> listOf(resource.name) },
     )
@@ -288,7 +288,7 @@ public object ImplementationGuideSearchParams {
   public val publisher: SearchParam<ImplementationGuide, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ImplementationGuide.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -296,7 +296,7 @@ public object ImplementationGuideSearchParams {
   public val resource: SearchParam<ImplementationGuide, Reference> =
     SearchParam(
       name = "resource",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImplementationGuide.definition.resource.reference",
       target =
         listOf(
@@ -454,7 +454,7 @@ public object ImplementationGuideSearchParams {
   public val status: SearchParam<ImplementationGuide, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImplementationGuide.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -462,7 +462,7 @@ public object ImplementationGuideSearchParams {
   public val title: SearchParam<ImplementationGuide, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ImplementationGuide.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -470,7 +470,7 @@ public object ImplementationGuideSearchParams {
   public val url: SearchParam<ImplementationGuide, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "ImplementationGuide.url",
       extractor = { resource -> listOf(resource.url) },
     )
@@ -478,7 +478,7 @@ public object ImplementationGuideSearchParams {
   public val version: SearchParam<ImplementationGuide, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImplementationGuide.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

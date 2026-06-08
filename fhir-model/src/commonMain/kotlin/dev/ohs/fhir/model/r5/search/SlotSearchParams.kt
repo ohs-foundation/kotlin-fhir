@@ -35,7 +35,7 @@ public object SlotSearchParams {
   public val appointmentType: SearchParam<Slot, CodeableConcept> =
     SearchParam(
       name = "appointment-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Slot.appointmentType",
       extractor = { resource -> resource.appointmentType },
     )
@@ -43,7 +43,7 @@ public object SlotSearchParams {
   public val identifier: SearchParam<Slot, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Slot.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -51,7 +51,7 @@ public object SlotSearchParams {
   public val schedule: SearchParam<Slot, Reference> =
     SearchParam(
       name = "schedule",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Slot.schedule",
       target = listOf(Schedule::class),
       extractor = { resource -> listOf(resource.schedule) },
@@ -60,7 +60,7 @@ public object SlotSearchParams {
   public val serviceCategory: SearchParam<Slot, CodeableConcept> =
     SearchParam(
       name = "service-category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Slot.serviceCategory",
       extractor = { resource -> resource.serviceCategory },
     )
@@ -68,7 +68,7 @@ public object SlotSearchParams {
   public val serviceType: SearchParam<Slot, CodeableConcept> =
     SearchParam(
       name = "service-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Slot.serviceType.concept",
       extractor = { resource -> resource.serviceType.mapNotNull { it.concept } },
     )
@@ -76,7 +76,7 @@ public object SlotSearchParams {
   public val serviceTypeReference: SearchParam<Slot, Reference> =
     SearchParam(
       name = "service-type-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Slot.serviceType.reference",
       target = listOf(HealthcareService::class),
       extractor = { resource -> resource.serviceType.mapNotNull { it.reference } },
@@ -85,7 +85,7 @@ public object SlotSearchParams {
   public val specialty: SearchParam<Slot, CodeableConcept> =
     SearchParam(
       name = "specialty",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Slot.specialty",
       extractor = { resource -> resource.specialty },
     )
@@ -93,7 +93,7 @@ public object SlotSearchParams {
   public val start: SearchParam<Slot, Instant> =
     SearchParam(
       name = "start",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Slot.start",
       extractor = { resource -> listOf(resource.start) },
     )
@@ -101,7 +101,7 @@ public object SlotSearchParams {
   public val status: SearchParam<Slot, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Slot.status",
       extractor = { resource -> listOf(resource.status) },
     )

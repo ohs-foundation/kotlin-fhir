@@ -36,7 +36,7 @@ public object PractitionerSearchParams {
   public val active: SearchParam<Practitioner, Boolean> =
     SearchParam(
       name = "active",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Practitioner.active",
       extractor = { resource -> listOfNotNull(resource.active) },
     )
@@ -44,7 +44,7 @@ public object PractitionerSearchParams {
   public val address: SearchParam<Practitioner, Address> =
     SearchParam(
       name = "address",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Practitioner.address",
       extractor = { resource -> resource.address },
     )
@@ -52,7 +52,7 @@ public object PractitionerSearchParams {
   public val addressCity: SearchParam<Practitioner, String> =
     SearchParam(
       name = "address-city",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Practitioner.address.city",
       extractor = { resource -> resource.address.mapNotNull { it.city } },
     )
@@ -60,7 +60,7 @@ public object PractitionerSearchParams {
   public val addressCountry: SearchParam<Practitioner, String> =
     SearchParam(
       name = "address-country",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Practitioner.address.country",
       extractor = { resource -> resource.address.mapNotNull { it.country } },
     )
@@ -68,7 +68,7 @@ public object PractitionerSearchParams {
   public val addressPostalcode: SearchParam<Practitioner, String> =
     SearchParam(
       name = "address-postalcode",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Practitioner.address.postalCode",
       extractor = { resource -> resource.address.mapNotNull { it.postalCode } },
     )
@@ -76,7 +76,7 @@ public object PractitionerSearchParams {
   public val addressState: SearchParam<Practitioner, String> =
     SearchParam(
       name = "address-state",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Practitioner.address.state",
       extractor = { resource -> resource.address.mapNotNull { it.state } },
     )
@@ -84,7 +84,7 @@ public object PractitionerSearchParams {
   public val addressUse: SearchParam<Practitioner, Any> =
     SearchParam(
       name = "address-use",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Practitioner.address.use",
       extractor = { resource -> resource.address.mapNotNull { it.use } },
     )
@@ -92,7 +92,7 @@ public object PractitionerSearchParams {
   public val communication: SearchParam<Practitioner, CodeableConcept> =
     SearchParam(
       name = "communication",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Practitioner.communication",
       extractor = { resource -> resource.communication },
     )
@@ -100,7 +100,7 @@ public object PractitionerSearchParams {
   public val email: SearchParam<Practitioner, ContactPoint> =
     SearchParam(
       name = "email",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Practitioner.telecom.where(system='email')",
       extractor = { resource ->
         resource.telecom.filter { it.system?.value?.toString() == "email" }
@@ -110,7 +110,7 @@ public object PractitionerSearchParams {
   public val family: SearchParam<Practitioner, String> =
     SearchParam(
       name = "family",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Practitioner.name.family",
       extractor = { resource -> resource.name.mapNotNull { it.family } },
     )
@@ -118,7 +118,7 @@ public object PractitionerSearchParams {
   public val gender: SearchParam<Practitioner, Any> =
     SearchParam(
       name = "gender",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Practitioner.gender",
       extractor = { resource -> listOfNotNull(resource.gender) },
     )
@@ -126,7 +126,7 @@ public object PractitionerSearchParams {
   public val given: SearchParam<Practitioner, String> =
     SearchParam(
       name = "given",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Practitioner.name.given",
       extractor = { resource -> resource.name.flatMap { it.given } },
     )
@@ -134,7 +134,7 @@ public object PractitionerSearchParams {
   public val identifier: SearchParam<Practitioner, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Practitioner.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -142,7 +142,7 @@ public object PractitionerSearchParams {
   public val name: SearchParam<Practitioner, HumanName> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Practitioner.name",
       extractor = { resource -> resource.name },
     )
@@ -150,7 +150,7 @@ public object PractitionerSearchParams {
   public val phone: SearchParam<Practitioner, ContactPoint> =
     SearchParam(
       name = "phone",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Practitioner.telecom.where(system='phone')",
       extractor = { resource ->
         resource.telecom.filter { it.system?.value?.toString() == "phone" }
@@ -160,7 +160,7 @@ public object PractitionerSearchParams {
   public val phonetic: SearchParam<Practitioner, HumanName> =
     SearchParam(
       name = "phonetic",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Practitioner.name",
       extractor = { resource -> resource.name },
     )
@@ -168,7 +168,7 @@ public object PractitionerSearchParams {
   public val telecom: SearchParam<Practitioner, ContactPoint> =
     SearchParam(
       name = "telecom",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Practitioner.telecom",
       extractor = { resource -> resource.telecom },
     )

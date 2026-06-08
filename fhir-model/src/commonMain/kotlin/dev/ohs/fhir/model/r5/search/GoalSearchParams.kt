@@ -44,7 +44,7 @@ public object GoalSearchParams {
   public val achievementStatus: SearchParam<Goal, CodeableConcept> =
     SearchParam(
       name = "achievement-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Goal.achievementStatus",
       extractor = { resource -> listOfNotNull(resource.achievementStatus) },
     )
@@ -52,7 +52,7 @@ public object GoalSearchParams {
   public val addresses: SearchParam<Goal, Reference> =
     SearchParam(
       name = "addresses",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Goal.addresses",
       target =
         listOf(
@@ -71,7 +71,7 @@ public object GoalSearchParams {
   public val category: SearchParam<Goal, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Goal.category",
       extractor = { resource -> resource.category },
     )
@@ -79,7 +79,7 @@ public object GoalSearchParams {
   public val description: SearchParam<Goal, CodeableConcept> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Goal.description",
       extractor = { resource -> listOf(resource.description) },
     )
@@ -87,7 +87,7 @@ public object GoalSearchParams {
   public val identifier: SearchParam<Goal, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Goal.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -95,7 +95,7 @@ public object GoalSearchParams {
   public val lifecycleStatus: SearchParam<Goal, Any> =
     SearchParam(
       name = "lifecycle-status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Goal.lifecycleStatus",
       extractor = { resource -> listOf(resource.lifecycleStatus) },
     )
@@ -103,7 +103,7 @@ public object GoalSearchParams {
   public val patient: SearchParam<Goal, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Goal.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -116,7 +116,7 @@ public object GoalSearchParams {
   public val startDate: SearchParam<Goal, Any> =
     SearchParam(
       name = "start-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "(Goal.start.ofType(date))",
       extractor = {
         throw NotImplementedError(
@@ -128,7 +128,7 @@ public object GoalSearchParams {
   public val subject: SearchParam<Goal, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Goal.subject",
       target = listOf(Organization::class, Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
@@ -137,7 +137,7 @@ public object GoalSearchParams {
   public val targetDate: SearchParam<Goal, Any> =
     SearchParam(
       name = "target-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "(Goal.target.due.ofType(date))",
       extractor = {
         throw NotImplementedError(
@@ -149,7 +149,7 @@ public object GoalSearchParams {
   public val targetMeasure: SearchParam<Goal, CodeableConcept> =
     SearchParam(
       name = "target-measure",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Goal.target.measure",
       extractor = { resource -> resource.target.mapNotNull { it.measure } },
     )

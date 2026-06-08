@@ -43,7 +43,7 @@ public object ExplanationOfBenefitSearchParams {
   public val careTeam: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "care-team",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.careTeam.provider",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
       extractor = { resource -> resource.careTeam.map { it.provider } },
@@ -52,7 +52,7 @@ public object ExplanationOfBenefitSearchParams {
   public val claim: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "claim",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.claim",
       target = listOf(Claim::class),
       extractor = { resource -> listOfNotNull(resource.claim) },
@@ -61,7 +61,7 @@ public object ExplanationOfBenefitSearchParams {
   public val coverage: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "coverage",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.insurance.coverage",
       target = listOf(Coverage::class),
       extractor = { resource -> resource.insurance.map { it.coverage } },
@@ -70,7 +70,7 @@ public object ExplanationOfBenefitSearchParams {
   public val created: SearchParam<ExplanationOfBenefit, DateTime> =
     SearchParam(
       name = "created",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ExplanationOfBenefit.created",
       extractor = { resource -> listOf(resource.created) },
     )
@@ -78,7 +78,7 @@ public object ExplanationOfBenefitSearchParams {
   public val detailUdi: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "detail-udi",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.item.detail.udi",
       target = listOf(Device::class),
       extractor = { resource -> resource.item.flatMap { it.detail }.flatMap { it.udi } },
@@ -87,7 +87,7 @@ public object ExplanationOfBenefitSearchParams {
   public val disposition: SearchParam<ExplanationOfBenefit, String> =
     SearchParam(
       name = "disposition",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ExplanationOfBenefit.disposition",
       extractor = { resource -> listOfNotNull(resource.disposition) },
     )
@@ -95,7 +95,7 @@ public object ExplanationOfBenefitSearchParams {
   public val encounter: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.item.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> resource.item.flatMap { it.encounter } },
@@ -104,7 +104,7 @@ public object ExplanationOfBenefitSearchParams {
   public val enterer: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "enterer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.enterer",
       target = listOf(Practitioner::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.enterer) },
@@ -113,7 +113,7 @@ public object ExplanationOfBenefitSearchParams {
   public val facility: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "facility",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.facility",
       target = listOf(Location::class),
       extractor = { resource -> listOfNotNull(resource.facility) },
@@ -122,7 +122,7 @@ public object ExplanationOfBenefitSearchParams {
   public val identifier: SearchParam<ExplanationOfBenefit, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ExplanationOfBenefit.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -130,7 +130,7 @@ public object ExplanationOfBenefitSearchParams {
   public val itemUdi: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "item-udi",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.item.udi",
       target = listOf(Device::class),
       extractor = { resource -> resource.item.flatMap { it.udi } },
@@ -139,7 +139,7 @@ public object ExplanationOfBenefitSearchParams {
   public val patient: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.patient",
       target = listOf(Patient::class),
       extractor = { resource -> listOf(resource.patient) },
@@ -148,7 +148,7 @@ public object ExplanationOfBenefitSearchParams {
   public val payee: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "payee",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.payee.party",
       target =
         listOf(
@@ -164,7 +164,7 @@ public object ExplanationOfBenefitSearchParams {
   public val procedureUdi: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "procedure-udi",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.procedure.udi",
       target = listOf(Device::class),
       extractor = { resource -> resource.procedure.flatMap { it.udi } },
@@ -173,7 +173,7 @@ public object ExplanationOfBenefitSearchParams {
   public val provider: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "provider",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.provider",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
       extractor = { resource -> listOf(resource.provider) },
@@ -182,7 +182,7 @@ public object ExplanationOfBenefitSearchParams {
   public val status: SearchParam<ExplanationOfBenefit, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ExplanationOfBenefit.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -190,7 +190,7 @@ public object ExplanationOfBenefitSearchParams {
   public val subdetailUdi: SearchParam<ExplanationOfBenefit, Reference> =
     SearchParam(
       name = "subdetail-udi",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ExplanationOfBenefit.item.detail.subDetail.udi",
       target = listOf(Device::class),
       extractor = { resource ->

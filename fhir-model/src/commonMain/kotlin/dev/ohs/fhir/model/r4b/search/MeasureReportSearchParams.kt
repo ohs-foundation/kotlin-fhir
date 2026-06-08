@@ -173,7 +173,7 @@ public object MeasureReportSearchParams {
   public val date: SearchParam<MeasureReport, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "MeasureReport.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -181,7 +181,7 @@ public object MeasureReportSearchParams {
   public val evaluatedResource: SearchParam<MeasureReport, Reference> =
     SearchParam(
       name = "evaluated-resource",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MeasureReport.evaluatedResource",
       target =
         listOf(
@@ -332,7 +332,7 @@ public object MeasureReportSearchParams {
   public val identifier: SearchParam<MeasureReport, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MeasureReport.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -340,7 +340,7 @@ public object MeasureReportSearchParams {
   public val measure: SearchParam<MeasureReport, Canonical> =
     SearchParam(
       name = "measure",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MeasureReport.measure",
       target = listOf(Measure::class),
       extractor = { resource -> listOf(resource.measure) },
@@ -349,7 +349,7 @@ public object MeasureReportSearchParams {
   public val patient: SearchParam<MeasureReport, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MeasureReport.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -362,7 +362,7 @@ public object MeasureReportSearchParams {
   public val period: SearchParam<MeasureReport, Period> =
     SearchParam(
       name = "period",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "MeasureReport.period",
       extractor = { resource -> listOf(resource.period) },
     )
@@ -370,7 +370,7 @@ public object MeasureReportSearchParams {
   public val reporter: SearchParam<MeasureReport, Reference> =
     SearchParam(
       name = "reporter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MeasureReport.reporter",
       target =
         listOf(Practitioner::class, Organization::class, PractitionerRole::class, Location::class),
@@ -380,7 +380,7 @@ public object MeasureReportSearchParams {
   public val status: SearchParam<MeasureReport, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "MeasureReport.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -388,7 +388,7 @@ public object MeasureReportSearchParams {
   public val subject: SearchParam<MeasureReport, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "MeasureReport.subject",
       target =
         listOf(

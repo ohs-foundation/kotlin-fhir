@@ -168,7 +168,7 @@ public object VerificationResultSearchParams {
   public val target: SearchParam<VerificationResult, Reference> =
     SearchParam(
       name = "target",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "VerificationResult.target",
       target =
         listOf(

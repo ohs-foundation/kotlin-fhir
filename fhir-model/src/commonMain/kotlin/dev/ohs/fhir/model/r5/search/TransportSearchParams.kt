@@ -30,7 +30,7 @@ public object TransportSearchParams {
   public val identifier: SearchParam<Transport, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Transport.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -38,7 +38,7 @@ public object TransportSearchParams {
   public val status: SearchParam<Transport, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Transport.status",
       extractor = { resource -> listOfNotNull(resource.status) },
     )

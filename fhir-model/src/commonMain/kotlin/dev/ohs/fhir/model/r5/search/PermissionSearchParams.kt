@@ -29,7 +29,7 @@ public object PermissionSearchParams {
   public val status: SearchParam<Permission, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Permission.status",
       extractor = { resource -> listOf(resource.status) },
     )

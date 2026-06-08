@@ -53,7 +53,7 @@ public object ServiceRequestSearchParams {
   public val authored: SearchParam<ServiceRequest, DateTime> =
     SearchParam(
       name = "authored",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ServiceRequest.authoredOn",
       extractor = { resource -> listOfNotNull(resource.authoredOn) },
     )
@@ -61,7 +61,7 @@ public object ServiceRequestSearchParams {
   public val basedOn: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.basedOn",
       target = listOf(ServiceRequest::class, CarePlan::class, MedicationRequest::class),
       extractor = { resource -> resource.basedOn },
@@ -70,7 +70,7 @@ public object ServiceRequestSearchParams {
   public val bodySite: SearchParam<ServiceRequest, CodeableConcept> =
     SearchParam(
       name = "body-site",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ServiceRequest.bodySite",
       extractor = { resource -> resource.bodySite },
     )
@@ -78,7 +78,7 @@ public object ServiceRequestSearchParams {
   public val bodyStructure: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "body-structure",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.bodyStructure",
       target = listOf(BodyStructure::class),
       extractor = { resource -> listOfNotNull(resource.bodyStructure) },
@@ -87,7 +87,7 @@ public object ServiceRequestSearchParams {
   public val category: SearchParam<ServiceRequest, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ServiceRequest.category",
       extractor = { resource -> resource.category },
     )
@@ -95,7 +95,7 @@ public object ServiceRequestSearchParams {
   public val codeConcept: SearchParam<ServiceRequest, CodeableConcept> =
     SearchParam(
       name = "code-concept",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ServiceRequest.code.concept",
       extractor = { resource -> listOfNotNull(resource.code?.concept) },
     )
@@ -103,7 +103,7 @@ public object ServiceRequestSearchParams {
   public val codeReference: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "code-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.code.reference",
       target = listOf(ActivityDefinition::class, PlanDefinition::class),
       extractor = { resource -> listOfNotNull(resource.code?.reference) },
@@ -112,7 +112,7 @@ public object ServiceRequestSearchParams {
   public val encounter: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -121,7 +121,7 @@ public object ServiceRequestSearchParams {
   public val identifier: SearchParam<ServiceRequest, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ServiceRequest.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -129,7 +129,7 @@ public object ServiceRequestSearchParams {
   public val instantiatesCanonical: SearchParam<ServiceRequest, Canonical> =
     SearchParam(
       name = "instantiates-canonical",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.instantiatesCanonical",
       target = listOf(ActivityDefinition::class, PlanDefinition::class),
       extractor = { resource -> resource.instantiatesCanonical },
@@ -138,7 +138,7 @@ public object ServiceRequestSearchParams {
   public val instantiatesUri: SearchParam<ServiceRequest, Uri> =
     SearchParam(
       name = "instantiates-uri",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "ServiceRequest.instantiatesUri",
       extractor = { resource -> resource.instantiatesUri },
     )
@@ -146,7 +146,7 @@ public object ServiceRequestSearchParams {
   public val intent: SearchParam<ServiceRequest, Any> =
     SearchParam(
       name = "intent",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ServiceRequest.intent",
       extractor = { resource -> listOf(resource.intent) },
     )
@@ -154,7 +154,7 @@ public object ServiceRequestSearchParams {
   public val occurrence: SearchParam<ServiceRequest, Any> =
     SearchParam(
       name = "occurrence",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ServiceRequest.occurrence.ofType(dateTime)",
       extractor = {
         throw NotImplementedError(
@@ -166,7 +166,7 @@ public object ServiceRequestSearchParams {
   public val patient: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -179,7 +179,7 @@ public object ServiceRequestSearchParams {
   public val performer: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "performer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.performer",
       target =
         listOf(
@@ -198,7 +198,7 @@ public object ServiceRequestSearchParams {
   public val performerType: SearchParam<ServiceRequest, CodeableConcept> =
     SearchParam(
       name = "performer-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ServiceRequest.performerType",
       extractor = { resource -> listOfNotNull(resource.performerType) },
     )
@@ -206,7 +206,7 @@ public object ServiceRequestSearchParams {
   public val priority: SearchParam<ServiceRequest, Any> =
     SearchParam(
       name = "priority",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ServiceRequest.priority",
       extractor = { resource -> listOfNotNull(resource.priority) },
     )
@@ -214,7 +214,7 @@ public object ServiceRequestSearchParams {
   public val replaces: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "replaces",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.replaces",
       target = listOf(ServiceRequest::class),
       extractor = { resource -> resource.replaces },
@@ -223,7 +223,7 @@ public object ServiceRequestSearchParams {
   public val requester: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "requester",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.requester",
       target =
         listOf(
@@ -240,7 +240,7 @@ public object ServiceRequestSearchParams {
   public val requisition: SearchParam<ServiceRequest, Identifier> =
     SearchParam(
       name = "requisition",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ServiceRequest.requisition",
       extractor = { resource -> listOfNotNull(resource.requisition) },
     )
@@ -248,7 +248,7 @@ public object ServiceRequestSearchParams {
   public val specimen: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "specimen",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.specimen",
       target = listOf(Specimen::class),
       extractor = { resource -> resource.specimen },
@@ -257,7 +257,7 @@ public object ServiceRequestSearchParams {
   public val status: SearchParam<ServiceRequest, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ServiceRequest.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -265,7 +265,7 @@ public object ServiceRequestSearchParams {
   public val subject: SearchParam<ServiceRequest, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ServiceRequest.subject",
       target = listOf(Device::class, Group::class, Location::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },

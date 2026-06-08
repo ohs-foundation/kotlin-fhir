@@ -194,7 +194,7 @@ public object ConsentSearchParams {
   public val action: SearchParam<Consent, CodeableConcept> =
     SearchParam(
       name = "action",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.provision.action",
       extractor = { resource -> resource.provision.flatMap { it.action } },
     )
@@ -202,7 +202,7 @@ public object ConsentSearchParams {
   public val actor: SearchParam<Consent, Reference> =
     SearchParam(
       name = "actor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.provision.actor.reference",
       target =
         listOf(
@@ -223,7 +223,7 @@ public object ConsentSearchParams {
   public val category: SearchParam<Consent, CodeableConcept> =
     SearchParam(
       name = "category",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.category",
       extractor = { resource -> resource.category },
     )
@@ -231,7 +231,7 @@ public object ConsentSearchParams {
   public val controller: SearchParam<Consent, Reference> =
     SearchParam(
       name = "controller",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.controller",
       target =
         listOf(HealthcareService::class, Organization::class, Practitioner::class, Patient::class),
@@ -241,7 +241,7 @@ public object ConsentSearchParams {
   public val `data`: SearchParam<Consent, Reference> =
     SearchParam(
       name = "data",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.provision.data.reference",
       target =
         listOf(
@@ -410,7 +410,7 @@ public object ConsentSearchParams {
   public val date: SearchParam<Consent, Date> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Consent.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -418,7 +418,7 @@ public object ConsentSearchParams {
   public val grantee: SearchParam<Consent, Reference> =
     SearchParam(
       name = "grantee",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.grantee",
       target =
         listOf(
@@ -436,7 +436,7 @@ public object ConsentSearchParams {
   public val identifier: SearchParam<Consent, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -444,7 +444,7 @@ public object ConsentSearchParams {
   public val manager: SearchParam<Consent, Reference> =
     SearchParam(
       name = "manager",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.manager",
       target =
         listOf(HealthcareService::class, Organization::class, Practitioner::class, Patient::class),
@@ -454,7 +454,7 @@ public object ConsentSearchParams {
   public val patient: SearchParam<Consent, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -467,7 +467,7 @@ public object ConsentSearchParams {
   public val period: SearchParam<Consent, Period> =
     SearchParam(
       name = "period",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Consent.provision.period",
       extractor = { resource -> resource.provision.mapNotNull { it.period } },
     )
@@ -475,7 +475,7 @@ public object ConsentSearchParams {
   public val purpose: SearchParam<Consent, Coding> =
     SearchParam(
       name = "purpose",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.provision.purpose",
       extractor = { resource -> resource.provision.flatMap { it.purpose } },
     )
@@ -483,7 +483,7 @@ public object ConsentSearchParams {
   public val securityLabel: SearchParam<Consent, Coding> =
     SearchParam(
       name = "security-label",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.provision.securityLabel",
       extractor = { resource -> resource.provision.flatMap { it.securityLabel } },
     )
@@ -491,7 +491,7 @@ public object ConsentSearchParams {
   public val sourceReference: SearchParam<Consent, Reference> =
     SearchParam(
       name = "source-reference",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.sourceReference",
       target =
         listOf(
@@ -506,7 +506,7 @@ public object ConsentSearchParams {
   public val status: SearchParam<Consent, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -514,7 +514,7 @@ public object ConsentSearchParams {
   public val subject: SearchParam<Consent, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Consent.subject",
       target = listOf(Practitioner::class, Group::class, Patient::class),
       extractor = { resource -> listOfNotNull(resource.subject) },
@@ -523,7 +523,7 @@ public object ConsentSearchParams {
   public val verified: SearchParam<Consent, Boolean> =
     SearchParam(
       name = "verified",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Consent.verification.verified",
       extractor = { resource -> resource.verification.map { it.verified } },
     )
@@ -531,7 +531,7 @@ public object ConsentSearchParams {
   public val verifiedDate: SearchParam<Consent, DateTime> =
     SearchParam(
       name = "verified-date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Consent.verification.verificationDate",
       extractor = { resource -> resource.verification.flatMap { it.verificationDate } },
     )

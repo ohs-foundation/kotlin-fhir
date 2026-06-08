@@ -31,7 +31,7 @@ public object SubstanceDefinitionSearchParams {
   public val classification: SearchParam<SubstanceDefinition, CodeableConcept> =
     SearchParam(
       name = "classification",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SubstanceDefinition.classification",
       extractor = { resource -> resource.classification },
     )
@@ -39,7 +39,7 @@ public object SubstanceDefinitionSearchParams {
   public val code: SearchParam<SubstanceDefinition, CodeableConcept> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SubstanceDefinition.code.code",
       extractor = { resource -> resource.code.mapNotNull { it.code } },
     )
@@ -47,7 +47,7 @@ public object SubstanceDefinitionSearchParams {
   public val domain: SearchParam<SubstanceDefinition, CodeableConcept> =
     SearchParam(
       name = "domain",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SubstanceDefinition.domain",
       extractor = { resource -> listOfNotNull(resource.domain) },
     )
@@ -55,7 +55,7 @@ public object SubstanceDefinitionSearchParams {
   public val identifier: SearchParam<SubstanceDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "SubstanceDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -63,7 +63,7 @@ public object SubstanceDefinitionSearchParams {
   public val name: SearchParam<SubstanceDefinition, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "SubstanceDefinition.name.name",
       extractor = { resource -> resource.name.map { it.name } },
     )

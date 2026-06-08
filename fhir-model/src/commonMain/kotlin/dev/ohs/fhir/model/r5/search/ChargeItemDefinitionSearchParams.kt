@@ -39,7 +39,7 @@ public object ChargeItemDefinitionSearchParams {
   public val context: SearchParam<ChargeItemDefinition, Any> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(ChargeItemDefinition.useContext.value.ofType(CodeableConcept))",
       extractor = {
         throw NotImplementedError(
@@ -51,7 +51,7 @@ public object ChargeItemDefinitionSearchParams {
   public val contextQuantity: SearchParam<ChargeItemDefinition, Any> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(ChargeItemDefinition.useContext.value.ofType(Quantity))",
       extractor = {
         throw NotImplementedError(
@@ -63,7 +63,7 @@ public object ChargeItemDefinitionSearchParams {
   public val contextType: SearchParam<ChargeItemDefinition, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ChargeItemDefinition.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -71,7 +71,7 @@ public object ChargeItemDefinitionSearchParams {
   public val contextTypeQuantity: SearchParam<ChargeItemDefinition, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "ChargeItemDefinition.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -79,7 +79,7 @@ public object ChargeItemDefinitionSearchParams {
   public val contextTypeValue: SearchParam<ChargeItemDefinition, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "ChargeItemDefinition.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -87,7 +87,7 @@ public object ChargeItemDefinitionSearchParams {
   public val date: SearchParam<ChargeItemDefinition, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ChargeItemDefinition.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -95,7 +95,7 @@ public object ChargeItemDefinitionSearchParams {
   public val description: SearchParam<ChargeItemDefinition, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ChargeItemDefinition.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -103,7 +103,7 @@ public object ChargeItemDefinitionSearchParams {
   public val effective: SearchParam<ChargeItemDefinition, Period> =
     SearchParam(
       name = "effective",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ChargeItemDefinition.applicability.effectivePeriod",
       extractor = { resource -> resource.applicability.mapNotNull { it.effectivePeriod } },
     )
@@ -111,7 +111,7 @@ public object ChargeItemDefinitionSearchParams {
   public val identifier: SearchParam<ChargeItemDefinition, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ChargeItemDefinition.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -119,7 +119,7 @@ public object ChargeItemDefinitionSearchParams {
   public val jurisdiction: SearchParam<ChargeItemDefinition, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ChargeItemDefinition.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -127,7 +127,7 @@ public object ChargeItemDefinitionSearchParams {
   public val publisher: SearchParam<ChargeItemDefinition, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ChargeItemDefinition.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -135,7 +135,7 @@ public object ChargeItemDefinitionSearchParams {
   public val status: SearchParam<ChargeItemDefinition, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ChargeItemDefinition.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -143,7 +143,7 @@ public object ChargeItemDefinitionSearchParams {
   public val title: SearchParam<ChargeItemDefinition, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "ChargeItemDefinition.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -151,7 +151,7 @@ public object ChargeItemDefinitionSearchParams {
   public val url: SearchParam<ChargeItemDefinition, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "ChargeItemDefinition.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -159,7 +159,7 @@ public object ChargeItemDefinitionSearchParams {
   public val version: SearchParam<ChargeItemDefinition, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ChargeItemDefinition.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

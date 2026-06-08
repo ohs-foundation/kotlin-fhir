@@ -179,7 +179,7 @@ public object MeasureSearchParams {
   public val composedOf: SearchParam<Measure, Canonical> =
     SearchParam(
       name = "composed-of",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Measure.relatedArtifact.where(type='composed-of').resource",
       target =
         listOf(
@@ -334,7 +334,7 @@ public object MeasureSearchParams {
   public val context: SearchParam<Measure, CodeableConcept> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(Measure.useContext.value as CodeableConcept)",
       extractor = { resource ->
         resource.useContext.mapNotNull {
@@ -346,7 +346,7 @@ public object MeasureSearchParams {
   public val contextQuantity: SearchParam<Measure, Quantity> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(Measure.useContext.value as Quantity)",
       extractor = { resource ->
         resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
@@ -356,7 +356,7 @@ public object MeasureSearchParams {
   public val contextType: SearchParam<Measure, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Measure.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -364,7 +364,7 @@ public object MeasureSearchParams {
   public val contextTypeQuantity: SearchParam<Measure, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Measure.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -372,7 +372,7 @@ public object MeasureSearchParams {
   public val contextTypeValue: SearchParam<Measure, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "Measure.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -380,7 +380,7 @@ public object MeasureSearchParams {
   public val date: SearchParam<Measure, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Measure.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -388,7 +388,7 @@ public object MeasureSearchParams {
   public val dependsOn: SearchParam<Measure, Canonical> =
     SearchParam(
       name = "depends-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Measure.relatedArtifact.where(type='depends-on').resource",
       target =
         listOf(
@@ -543,7 +543,7 @@ public object MeasureSearchParams {
   public val derivedFrom: SearchParam<Measure, Canonical> =
     SearchParam(
       name = "derived-from",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Measure.relatedArtifact.where(type='derived-from').resource",
       target =
         listOf(
@@ -698,7 +698,7 @@ public object MeasureSearchParams {
   public val description: SearchParam<Measure, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Measure.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -706,7 +706,7 @@ public object MeasureSearchParams {
   public val effective: SearchParam<Measure, Period> =
     SearchParam(
       name = "effective",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "Measure.effectivePeriod",
       extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
     )
@@ -714,7 +714,7 @@ public object MeasureSearchParams {
   public val identifier: SearchParam<Measure, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Measure.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -722,7 +722,7 @@ public object MeasureSearchParams {
   public val jurisdiction: SearchParam<Measure, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Measure.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -730,7 +730,7 @@ public object MeasureSearchParams {
   public val name: SearchParam<Measure, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Measure.name",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
@@ -738,7 +738,7 @@ public object MeasureSearchParams {
   public val predecessor: SearchParam<Measure, Canonical> =
     SearchParam(
       name = "predecessor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Measure.relatedArtifact.where(type='predecessor').resource",
       target =
         listOf(
@@ -893,7 +893,7 @@ public object MeasureSearchParams {
   public val publisher: SearchParam<Measure, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Measure.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -901,7 +901,7 @@ public object MeasureSearchParams {
   public val status: SearchParam<Measure, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Measure.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -909,7 +909,7 @@ public object MeasureSearchParams {
   public val successor: SearchParam<Measure, Canonical> =
     SearchParam(
       name = "successor",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "Measure.relatedArtifact.where(type='successor').resource",
       target =
         listOf(
@@ -1064,7 +1064,7 @@ public object MeasureSearchParams {
   public val title: SearchParam<Measure, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "Measure.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -1072,7 +1072,7 @@ public object MeasureSearchParams {
   public val topic: SearchParam<Measure, CodeableConcept> =
     SearchParam(
       name = "topic",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Measure.topic",
       extractor = { resource -> resource.topic },
     )
@@ -1080,7 +1080,7 @@ public object MeasureSearchParams {
   public val url: SearchParam<Measure, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "Measure.url",
       extractor = { resource -> listOfNotNull(resource.url) },
     )
@@ -1088,7 +1088,7 @@ public object MeasureSearchParams {
   public val version: SearchParam<Measure, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "Measure.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

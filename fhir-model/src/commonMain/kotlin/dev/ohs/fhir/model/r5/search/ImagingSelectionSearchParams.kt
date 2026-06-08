@@ -52,7 +52,7 @@ public object ImagingSelectionSearchParams {
   public val basedOn: SearchParam<ImagingSelection, Reference> =
     SearchParam(
       name = "based-on",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingSelection.basedOn",
       target =
         listOf(
@@ -68,7 +68,7 @@ public object ImagingSelectionSearchParams {
   public val bodySite: SearchParam<ImagingSelection, CodeableConcept> =
     SearchParam(
       name = "body-site",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingSelection.bodySite.concept",
       extractor = { resource -> listOfNotNull(resource.bodySite?.concept) },
     )
@@ -76,7 +76,7 @@ public object ImagingSelectionSearchParams {
   public val bodyStructure: SearchParam<ImagingSelection, Reference> =
     SearchParam(
       name = "body-structure",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingSelection.bodySite.reference",
       target = listOf(BodyStructure::class),
       extractor = { resource -> listOfNotNull(resource.bodySite?.reference) },
@@ -85,7 +85,7 @@ public object ImagingSelectionSearchParams {
   public val code: SearchParam<ImagingSelection, Any> =
     SearchParam(
       name = "code",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingSelection.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -93,7 +93,7 @@ public object ImagingSelectionSearchParams {
   public val derivedFrom: SearchParam<ImagingSelection, Reference> =
     SearchParam(
       name = "derived-from",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingSelection.derivedFrom",
       target = listOf(ImagingStudy::class, DocumentReference::class),
       extractor = { resource -> resource.derivedFrom },
@@ -102,7 +102,7 @@ public object ImagingSelectionSearchParams {
   public val identifier: SearchParam<ImagingSelection, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingSelection.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -110,7 +110,7 @@ public object ImagingSelectionSearchParams {
   public val issued: SearchParam<ImagingSelection, Instant> =
     SearchParam(
       name = "issued",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ImagingSelection.issued",
       extractor = { resource -> listOfNotNull(resource.issued) },
     )
@@ -118,7 +118,7 @@ public object ImagingSelectionSearchParams {
   public val patient: SearchParam<ImagingSelection, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingSelection.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
@@ -131,7 +131,7 @@ public object ImagingSelectionSearchParams {
   public val status: SearchParam<ImagingSelection, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingSelection.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -139,7 +139,7 @@ public object ImagingSelectionSearchParams {
   public val studyUid: SearchParam<ImagingSelection, Id> =
     SearchParam(
       name = "study-uid",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingSelection.studyUid",
       extractor = { resource -> listOfNotNull(resource.studyUid) },
     )
@@ -147,7 +147,7 @@ public object ImagingSelectionSearchParams {
   public val subject: SearchParam<ImagingSelection, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingSelection.subject",
       target =
         listOf(

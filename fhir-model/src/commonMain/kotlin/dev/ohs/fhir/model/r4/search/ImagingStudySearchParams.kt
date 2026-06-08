@@ -50,7 +50,7 @@ public object ImagingStudySearchParams {
   public val basedon: SearchParam<ImagingStudy, Reference> =
     SearchParam(
       name = "basedon",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingStudy.basedOn",
       target =
         listOf(
@@ -66,7 +66,7 @@ public object ImagingStudySearchParams {
   public val bodysite: SearchParam<ImagingStudy, Coding> =
     SearchParam(
       name = "bodysite",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingStudy.series.bodySite",
       extractor = { resource -> resource.series.mapNotNull { it.bodySite } },
     )
@@ -74,7 +74,7 @@ public object ImagingStudySearchParams {
   public val dicomClass: SearchParam<ImagingStudy, Coding> =
     SearchParam(
       name = "dicom-class",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingStudy.series.instance.sopClass",
       extractor = { resource -> resource.series.flatMap { it.instance }.map { it.sopClass } },
     )
@@ -82,7 +82,7 @@ public object ImagingStudySearchParams {
   public val encounter: SearchParam<ImagingStudy, Reference> =
     SearchParam(
       name = "encounter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingStudy.encounter",
       target = listOf(Encounter::class),
       extractor = { resource -> listOfNotNull(resource.encounter) },
@@ -91,7 +91,7 @@ public object ImagingStudySearchParams {
   public val endpoint: SearchParam<ImagingStudy, Reference> =
     SearchParam(
       name = "endpoint",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingStudy.endpoint",
       target = listOf(Endpoint::class),
       extractor = { resource -> resource.endpoint },
@@ -100,7 +100,7 @@ public object ImagingStudySearchParams {
   public val identifier: SearchParam<ImagingStudy, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingStudy.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -108,7 +108,7 @@ public object ImagingStudySearchParams {
   public val instance: SearchParam<ImagingStudy, Id> =
     SearchParam(
       name = "instance",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingStudy.series.instance.uid",
       extractor = { resource -> resource.series.flatMap { it.instance }.map { it.uid } },
     )
@@ -116,7 +116,7 @@ public object ImagingStudySearchParams {
   public val interpreter: SearchParam<ImagingStudy, Reference> =
     SearchParam(
       name = "interpreter",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingStudy.interpreter",
       target = listOf(Practitioner::class, PractitionerRole::class),
       extractor = { resource -> resource.interpreter },
@@ -125,7 +125,7 @@ public object ImagingStudySearchParams {
   public val modality: SearchParam<ImagingStudy, Coding> =
     SearchParam(
       name = "modality",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingStudy.series.modality",
       extractor = { resource -> resource.series.map { it.modality } },
     )
@@ -133,7 +133,7 @@ public object ImagingStudySearchParams {
   public val patient: SearchParam<ImagingStudy, Reference> =
     SearchParam(
       name = "patient",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingStudy.subject.where(resolve() is Patient)",
       target = listOf(Patient::class, Group::class),
       extractor = { resource ->
@@ -146,7 +146,7 @@ public object ImagingStudySearchParams {
   public val performer: SearchParam<ImagingStudy, Reference> =
     SearchParam(
       name = "performer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingStudy.series.performer.actor",
       target =
         listOf(
@@ -164,7 +164,7 @@ public object ImagingStudySearchParams {
   public val reason: SearchParam<ImagingStudy, CodeableConcept> =
     SearchParam(
       name = "reason",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingStudy.reasonCode",
       extractor = { resource -> resource.reasonCode },
     )
@@ -172,7 +172,7 @@ public object ImagingStudySearchParams {
   public val referrer: SearchParam<ImagingStudy, Reference> =
     SearchParam(
       name = "referrer",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingStudy.referrer",
       target = listOf(Practitioner::class, PractitionerRole::class),
       extractor = { resource -> listOfNotNull(resource.referrer) },
@@ -181,7 +181,7 @@ public object ImagingStudySearchParams {
   public val series: SearchParam<ImagingStudy, Id> =
     SearchParam(
       name = "series",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingStudy.series.uid",
       extractor = { resource -> resource.series.map { it.uid } },
     )
@@ -189,7 +189,7 @@ public object ImagingStudySearchParams {
   public val started: SearchParam<ImagingStudy, DateTime> =
     SearchParam(
       name = "started",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "ImagingStudy.started",
       extractor = { resource -> listOfNotNull(resource.started) },
     )
@@ -197,7 +197,7 @@ public object ImagingStudySearchParams {
   public val status: SearchParam<ImagingStudy, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "ImagingStudy.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -205,7 +205,7 @@ public object ImagingStudySearchParams {
   public val subject: SearchParam<ImagingStudy, Reference> =
     SearchParam(
       name = "subject",
-      type = SearchParamType.fromCode("reference"),
+      type = SearchParamType.Reference,
       expression = "ImagingStudy.subject",
       target = listOf(Group::class, Device::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },

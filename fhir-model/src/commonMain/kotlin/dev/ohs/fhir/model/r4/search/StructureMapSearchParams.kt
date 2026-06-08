@@ -38,7 +38,7 @@ public object StructureMapSearchParams {
   public val context: SearchParam<StructureMap, CodeableConcept> =
     SearchParam(
       name = "context",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "(StructureMap.useContext.value as CodeableConcept)",
       extractor = { resource ->
         resource.useContext.mapNotNull {
@@ -50,7 +50,7 @@ public object StructureMapSearchParams {
   public val contextQuantity: SearchParam<StructureMap, Quantity> =
     SearchParam(
       name = "context-quantity",
-      type = SearchParamType.fromCode("quantity"),
+      type = SearchParamType.Quantity,
       expression = "(StructureMap.useContext.value as Quantity)",
       extractor = { resource ->
         resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
@@ -60,7 +60,7 @@ public object StructureMapSearchParams {
   public val contextType: SearchParam<StructureMap, Coding> =
     SearchParam(
       name = "context-type",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "StructureMap.useContext.code",
       extractor = { resource -> resource.useContext.map { it.code } },
     )
@@ -68,7 +68,7 @@ public object StructureMapSearchParams {
   public val contextTypeQuantity: SearchParam<StructureMap, UsageContext> =
     SearchParam(
       name = "context-type-quantity",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "StructureMap.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -76,7 +76,7 @@ public object StructureMapSearchParams {
   public val contextTypeValue: SearchParam<StructureMap, UsageContext> =
     SearchParam(
       name = "context-type-value",
-      type = SearchParamType.fromCode("composite"),
+      type = SearchParamType.Composite,
       expression = "StructureMap.useContext",
       extractor = { resource -> resource.useContext },
     )
@@ -84,7 +84,7 @@ public object StructureMapSearchParams {
   public val date: SearchParam<StructureMap, DateTime> =
     SearchParam(
       name = "date",
-      type = SearchParamType.fromCode("date"),
+      type = SearchParamType.Date,
       expression = "StructureMap.date",
       extractor = { resource -> listOfNotNull(resource.date) },
     )
@@ -92,7 +92,7 @@ public object StructureMapSearchParams {
   public val description: SearchParam<StructureMap, Markdown> =
     SearchParam(
       name = "description",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "StructureMap.description",
       extractor = { resource -> listOfNotNull(resource.description) },
     )
@@ -100,7 +100,7 @@ public object StructureMapSearchParams {
   public val identifier: SearchParam<StructureMap, Identifier> =
     SearchParam(
       name = "identifier",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "StructureMap.identifier",
       extractor = { resource -> resource.identifier },
     )
@@ -108,7 +108,7 @@ public object StructureMapSearchParams {
   public val jurisdiction: SearchParam<StructureMap, CodeableConcept> =
     SearchParam(
       name = "jurisdiction",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "StructureMap.jurisdiction",
       extractor = { resource -> resource.jurisdiction },
     )
@@ -116,7 +116,7 @@ public object StructureMapSearchParams {
   public val name: SearchParam<StructureMap, String> =
     SearchParam(
       name = "name",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "StructureMap.name",
       extractor = { resource -> listOf(resource.name) },
     )
@@ -124,7 +124,7 @@ public object StructureMapSearchParams {
   public val publisher: SearchParam<StructureMap, String> =
     SearchParam(
       name = "publisher",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "StructureMap.publisher",
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
@@ -132,7 +132,7 @@ public object StructureMapSearchParams {
   public val status: SearchParam<StructureMap, Any> =
     SearchParam(
       name = "status",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "StructureMap.status",
       extractor = { resource -> listOf(resource.status) },
     )
@@ -140,7 +140,7 @@ public object StructureMapSearchParams {
   public val title: SearchParam<StructureMap, String> =
     SearchParam(
       name = "title",
-      type = SearchParamType.fromCode("string"),
+      type = SearchParamType.String,
       expression = "StructureMap.title",
       extractor = { resource -> listOfNotNull(resource.title) },
     )
@@ -148,7 +148,7 @@ public object StructureMapSearchParams {
   public val url: SearchParam<StructureMap, Uri> =
     SearchParam(
       name = "url",
-      type = SearchParamType.fromCode("uri"),
+      type = SearchParamType.Uri,
       expression = "StructureMap.url",
       extractor = { resource -> listOf(resource.url) },
     )
@@ -156,7 +156,7 @@ public object StructureMapSearchParams {
   public val version: SearchParam<StructureMap, String> =
     SearchParam(
       name = "version",
-      type = SearchParamType.fromCode("token"),
+      type = SearchParamType.Token,
       expression = "StructureMap.version",
       extractor = { resource -> listOfNotNull(resource.version) },
     )

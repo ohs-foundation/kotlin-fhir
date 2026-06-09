@@ -148,7 +148,11 @@ class FhirModelConventionsPlugin : Plugin<Project> {
 
       // Avoid implicit task dependency failures when spotless/codegen and compilation run together
       tasks.configureEach { task ->
-        if (task.name.contains("compile", ignoreCase = true) && task.name.contains("Kotlin")) {
+        val name = task.name
+        if (
+          (name.contains("compile", ignoreCase = true) && name.contains("Kotlin")) ||
+            name.contains("sourcesJar", ignoreCase = true)
+        ) {
           task.dependsOn("codegen")
         }
       }

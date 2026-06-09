@@ -16,9 +16,9 @@
 
 package dev.ohs.fhir.model.test
 
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.serializer
@@ -60,30 +60,34 @@ class PolymorphicSerializationTest :
       context("$fhirVersionName Resource Type Serialization") {
         test("Polymorphic Resource serialization writes resourceType") {
           val id = "patient-01"
-          testJson
-            .encodeToString(resourceSerializer, createPatient(id))
-            .shouldBe(createPatientJson(id))
+          assertEquals(
+            createPatientJson(id),
+            testJson.encodeToString(resourceSerializer, createPatient(id)),
+          )
         }
 
         test("Concrete Patient serialization writes resourceType") {
           val id = "patient-01"
-          testJson
-            .encodeToString(patientSerializer, createPatient(id))
-            .shouldBe(createPatientJson(id))
+          assertEquals(
+            createPatientJson(id),
+            testJson.encodeToString(patientSerializer, createPatient(id)),
+          )
         }
 
         test("Polymorphic Resource deserialization ingests resourceType") {
           val id = "patient-01"
-          testJson
-            .decodeFromString(resourceSerializer, createPatientJson(id))
-            .shouldBe(createPatient(id))
+          assertEquals(
+            createPatient(id),
+            testJson.decodeFromString(resourceSerializer, createPatientJson(id)),
+          )
         }
 
         test("Concrete Patient deserialization ingests resourceType") {
           val id = "patient-01"
-          testJson
-            .decodeFromString(patientSerializer, createPatientJson(id))
-            .shouldBe(createPatient(id))
+          assertEquals(
+            createPatient(id),
+            testJson.decodeFromString(patientSerializer, createPatientJson(id)),
+          )
         }
 
         // Missing-discriminator: JSON with no `resourceType` must be rejected on the polymorphic
@@ -92,7 +96,7 @@ class PolymorphicSerializationTest :
         // enforce it).
         test("Polymorphic decode rejects JSON without resourceType") {
           val id = "patient-01"
-          shouldThrow<SerializationException> {
+          assertFailsWith<SerializationException> {
             testJson.decodeFromString(resourceSerializer, createPatientJsonWithoutResourceType(id))
           }
         }

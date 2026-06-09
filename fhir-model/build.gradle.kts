@@ -74,7 +74,6 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(libs.kotest.assertions.json)
                 implementation(libs.kotest.framework.engine)
                 implementation(libs.kotlin.test)
                 implementation(libs.kotlinx.serialization.json)

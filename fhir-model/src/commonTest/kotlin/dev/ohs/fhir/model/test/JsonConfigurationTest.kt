@@ -18,12 +18,11 @@ package dev.ohs.fhir.model.test
 
 import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Resource
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.string.shouldContain
-import io.kotest.matchers.string.shouldNotContain
-import io.kotest.matchers.string.shouldStartWith
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 
@@ -39,14 +38,14 @@ class JsonConfigurationTest :
     test("prettyPrint=false produces compact polymorphic JSON with resourceType first") {
       val patient = Patient(id = "patient-01")
       val json = Json { prettyPrint = false }.encodeToString<Resource>(patient)
-      json.shouldBe("""{"resourceType":"Patient","id":"patient-01"}""")
+      assertEquals("""{"resourceType":"Patient","id":"patient-01"}""", json)
     }
 
     test("prettyPrint=false standalone serializer also emits resourceType first") {
       val patient = Patient(id = "patient-01")
       val s = Json { prettyPrint = false }.encodeToString(Patient.serializer(), patient)
-      s.shouldStartWith("""{"resourceType":"Patient",""")
-      s.shouldContain(""""id":"patient-01"""")
+      assertTrue(s.startsWith("""{"resourceType":"Patient","""))
+      assertTrue(s.contains(""""id":"patient-01""""))
     }
 
     test("encodeDefaults=true does not change wire shape") {
@@ -55,7 +54,7 @@ class JsonConfigurationTest :
       val patient = Patient(id = "patient-01")
       val withDefault = Json { encodeDefaults = false }.encodeToString<Resource>(patient)
       val withDefaultsOn = Json { encodeDefaults = true }.encodeToString<Resource>(patient)
-      withDefaultsOn.shouldBe(withDefault)
+      assertEquals(withDefault, withDefaultsOn)
     }
 
     test("explicitNulls=false does not change wire shape") {
@@ -64,7 +63,7 @@ class JsonConfigurationTest :
       val patient = Patient(id = "patient-01")
       val withNullsOn = Json { explicitNulls = true }.encodeToString<Resource>(patient)
       val withNullsOff = Json { explicitNulls = false }.encodeToString<Resource>(patient)
-      withNullsOff.shouldBe(withNullsOn)
+      assertEquals(withNullsOn, withNullsOff)
     }
 
     test("custom Json.classDiscriminator is overridden by @JsonClassDiscriminator on descriptor") {
@@ -79,8 +78,8 @@ class JsonConfigurationTest :
             classDiscriminator = "kind"
           }
           .encodeToString<Resource>(patient)
-      json.shouldContain(""""resourceType":"Patient"""")
-      json.shouldNotContain(""""kind":"Patient"""")
+      assertTrue(json.contains(""""resourceType":"Patient""""))
+      assertFalse(json.contains(""""kind":"Patient""""))
     }
 
     test("ignoreUnknownKeys=true allows decoding unknown fields") {
@@ -97,7 +96,7 @@ class JsonConfigurationTest :
           .trimIndent()
       val decoded =
         Json { ignoreUnknownKeys = true }.decodeFromString<Resource>(withExtra) as Patient
-      decoded.id?.shouldBe("patient-01")
+      assertEquals("patient-01", decoded.id)
     }
 
     test("default Json (ignoreUnknownKeys=false) rejects unknown fields") {
@@ -110,7 +109,7 @@ class JsonConfigurationTest :
         }
         """
           .trimIndent()
-      shouldThrow<SerializationException> { testJson.decodeFromString<Resource>(withExtra) }
+      assertFailsWith<SerializationException> { testJson.decodeFromString<Resource>(withExtra) }
     }
 
     test("isLenient=true accepts unquoted resourceType discriminator") {
@@ -125,7 +124,7 @@ class JsonConfigurationTest :
         """
           .trimIndent()
       val decoded = Json { isLenient = true }.decodeFromString<Resource>(lenient) as Patient
-      decoded.id?.shouldBe("patient-01")
+      assertEquals("patient-01", decoded.id)
     }
 
     test("polymorphic round-trip preserves equality under non-default config") {
@@ -138,7 +137,7 @@ class JsonConfigurationTest :
       }
       val s = json.encodeToString<Resource>(original)
       val decoded = json.decodeFromString<Resource>(s) as Patient
-      decoded.id.shouldBe(original.id)
+      assertEquals(original.id, decoded.id)
     }
 
     test("resourceType-not-leading still decodes") {
@@ -153,6 +152,6 @@ class JsonConfigurationTest :
         """
           .trimIndent()
       val decoded: Resource = testJson.decodeFromString<Resource>(midObject)
-      (decoded as Patient).id?.shouldBe("patient-01")
+      assertEquals("patient-01", (decoded as Patient).id)
     }
   })

@@ -22,7 +22,7 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource as R4Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
+import kotlin.test.assertEquals
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.protobuf.ProtoBuf
 
@@ -47,34 +47,34 @@ class IndexOrderingTest :
     test("standalone JSON round-trip preserves required fields") {
       val encoded = testJson.encodeToString(bodyStructureWithPatient())
       val decoded = testJson.decodeFromString(encoded) as BodyStructure
-      decoded.patient.reference?.value.shouldBe("Patient/example")
+      assertEquals("Patient/example", decoded.patient.reference?.value)
     }
 
     test("standalone ProtoBuf round-trip preserves required fields") {
       val original = bodyStructureWithPatient()
       val bytes = proto.encodeToByteArray(BodyStructure.serializer(), original)
       val decoded = proto.decodeFromByteArray(BodyStructure.serializer(), bytes)
-      decoded.patient.reference?.value.shouldBe("Patient/example")
+      assertEquals("Patient/example", decoded.patient.reference?.value)
     }
 
     test("polymorphic JSON round-trip preserves required fields") {
       val original = bodyStructureWithPatient()
       val encoded = testJson.encodeToString<R4Resource>(original)
       val decoded = testJson.decodeFromString<R4Resource>(encoded) as BodyStructure
-      decoded.patient.reference?.value.shouldBe("Patient/example")
+      assertEquals("Patient/example", decoded.patient.reference?.value)
     }
 
     test("polymorphic ProtoBuf round-trip preserves required fields") {
       val original = bodyStructureWithPatient()
       val bytes = proto.encodeToByteArray(R4Resource.serializer(), original)
       val decoded = proto.decodeFromByteArray(R4Resource.serializer(), bytes) as BodyStructure
-      decoded.patient.reference?.value.shouldBe("Patient/example")
+      assertEquals("Patient/example", decoded.patient.reference?.value)
     }
 
     test("standalone path: Patient round-trips through ProtoBuf") {
       val original = simplePatient()
       val bytes = proto.encodeToByteArray(Patient.serializer(), original)
       val decoded = proto.decodeFromByteArray(Patient.serializer(), bytes)
-      decoded.id.shouldBe(original.id)
+      assertEquals(original.id, decoded.id)
     }
   })

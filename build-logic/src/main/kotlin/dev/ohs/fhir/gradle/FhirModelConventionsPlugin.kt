@@ -91,11 +91,7 @@ class FhirModelConventionsPlugin : Plugin<Project> {
         androidTarget { compilerOptions { jvmTarget.set(JvmTarget.JVM_1_8) } }
         iosSimulatorArm64()
         iosArm64()
-        iosX64 {
-          binaries {
-            framework { baseName = "KotlinFhir$fhirVersionLabel" }
-          }
-        }
+        iosX64 { binaries { framework { baseName = "KotlinFhir$fhirVersionLabel" } } }
 
         val commonMain = sourceSets.getByName("commonMain")
         // Explicitly set source dirs to avoid "redeclaration" errors with build/generated

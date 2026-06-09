@@ -132,7 +132,7 @@ class FhirModelConventionsPlugin : Plugin<Project> {
           pom.developers { developers ->
             developers.developer { developer ->
               developer.id.set("ohs-foundation")
-              developer.name.set("Open Heath Stack Foundation")
+              developer.name.set("Open Health Stack Foundation")
               developer.url.set("https://ohs.dev/")
             }
           }

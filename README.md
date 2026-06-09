@@ -1,14 +1,9 @@
 # Kotlin FHIR
 
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model?color=yellow&label=fhir-model)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-jvm?color=yellow&label=jvm)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-jvm)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-wasm-js?color=yellow&label=wasm-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-wasm-js)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-wasm-wasi?color=yellow&label=wasm-wasi)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-wasm-wasi)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-js?color=yellow&label=js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-js)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-android?color=yellow&label=android)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-android)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iossimulatorarm64?color=yellow&label=iossimulatorarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iossimulatorarm64)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosarm64?color=yellow&label=iosarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosarm64)
-[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosx64?color=yellow&label=iosx64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosx64)
+[![fhir-model (R4, R4B, R5)](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model?color=blue&label=fhir-model)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model)
+[![FHIR R4](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4?color=green&label=fhir-model-r4)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4)
+[![FHIR R4B](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b?color=orange&label=fhir-model-r4b)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b)
+[![FHIR R5](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5?color=purple&label=fhir-model-r5)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Kotlin FHIR is a lean and fast implementation of the
@@ -432,7 +427,13 @@ Kotlin code is generated for StructureDefinitions in the following FHIR packages
 
 To put all this together, the
 [FHIR codegen](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen) in the Gradle
-binary plugin generates, for each FHIR resource type:
+binary plugin[^codegen] generates, for each FHIR resource type:
+
+[^codegen]: The codegen is structured as a Gradle
+[composite build](https://docs.gradle.org/current/userguide/composite_builds.html)
+(`includeBuild`) rather than `buildSrc` because it needs the `kotlinx-serialization` compiler
+plugin (to deserialize FHIR spec JSON) and runtime dependencies (`bignum`, `kotlinx-datetime`,
+KotlinPoet) that `buildSrc` cannot cleanly support.
 
 - the model class (the primary class) in the root package e.g. `dev.ohs.fhir.model.r4`, and
 - a hand-rolled streaming `KSerializer` per type (e.g. `PatientSerializer`, plus one per
@@ -474,7 +475,30 @@ repositories {
 }
 ```
 
-Next, follow the instructions for your specific project type.
+The library publishes separate artifacts for each FHIR version, so you only need to depend on the
+version(s) you use:
+
+| Artifact                      | Description                      |
+|:------------------------------|:---------------------------------|
+| `dev.ohs.fhir:fhir-model-r4`  | FHIR R4 data model only          |
+| `dev.ohs.fhir:fhir-model-r4b` | FHIR R4B data model only         |
+| `dev.ohs.fhir:fhir-model-r5`  | FHIR R5 data model only          |
+| `dev.ohs.fhir:fhir-model`     | FHIR R4, R4B, and R5 data models |
+
+<details>
+<summary><b>View Target Platform Artifact Matrix</b></summary>
+<br/>
+
+| FHIR Version    | Artifact ID      | Root (Multiplatform)                                                                                                                                                              | JVM                                                                                                                                                                                           | Wasm-JS                                                                                                                                                                                                       | Wasm-Wasi                                                                                                                                                                                                             | JS                                                                                                                                                                                        | Android                                                                                                                                                                                                       | iOS Simulator                                                                                                                                                                                                                                     | iOS Device                                                                                                                                                                                                          | iOS Simulator (Intel)                                                                                                                                                                                        |
+|:----------------|:-----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **R4, R4B, R5** | `fhir-model`     | [![KMP](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model?color=blue&label=fhir-model)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model)               | [![JVM](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-jvm?color=blue&label=fhir-model-jvm)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-jvm)               | [![Wasm-JS](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-wasm-js?color=blue&label=fhir-model-wasm-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-wasm-js)               | [![Wasm-Wasi](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-wasm-wasi?color=blue&label=fhir-model-wasm-wasi)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-wasm-wasi)               | [![JS](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-js?color=blue&label=fhir-model-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-js)               | [![Android](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-android?color=blue&label=fhir-model-android)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-android)               | [![iOS Simulator](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iossimulatorarm64?color=blue&label=fhir-model-iossimulatorarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iossimulatorarm64)               | [![iOS Device](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosarm64?color=blue&label=fhir-model-iosarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosarm64)               | [![iOS Intel](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosx64?color=blue&label=fhir-model-iosx64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosx64)               |
+| **R4**          | `fhir-model-r4`  | [![KMP](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4?color=green&label=fhir-model-r4)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4)     | [![JVM](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4-jvm?color=green&label=fhir-model-r4-jvm)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4-jvm)     | [![Wasm-JS](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4-wasm-js?color=green&label=fhir-model-r4-wasm-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4-wasm-js)     | [![Wasm-Wasi](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4-wasm-wasi?color=green&label=fhir-model-r4-wasm-wasi)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4-wasm-wasi)     | [![JS](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4-js?color=green&label=fhir-model-r4-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4-js)     | [![Android](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4-android?color=green&label=fhir-model-r4-android)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4-android)     | [![iOS Simulator](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4-iossimulatorarm64?color=green&label=fhir-model-r4-iossimulatorarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4-iossimulatorarm64)     | [![iOS Device](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4-iosarm64?color=green&label=fhir-model-r4-iosarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4-iosarm64)     | [![iOS Intel](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4-iosx64?color=green&label=fhir-model-r4-iosx64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4-iosx64)     |
+| **R4B**         | `fhir-model-r4b` | [![KMP](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b?color=orange&label=fhir-model-r4b)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b) | [![JVM](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b-jvm?color=orange&label=fhir-model-r4b-jvm)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b-jvm) | [![Wasm-JS](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b-wasm-js?color=orange&label=fhir-model-r4b-wasm-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b-wasm-js) | [![Wasm-Wasi](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b-wasm-wasi?color=orange&label=fhir-model-r4b-wasm-wasi)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b-wasm-wasi) | [![JS](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b-js?color=orange&label=fhir-model-r4b-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b-js) | [![Android](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b-android?color=orange&label=fhir-model-r4b-android)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b-android) | [![iOS Simulator](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b-iossimulatorarm64?color=orange&label=fhir-model-r4b-iossimulatorarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b-iossimulatorarm64) | [![iOS Device](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b-iosarm64?color=orange&label=fhir-model-r4b-iosarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b-iosarm64) | [![iOS Intel](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b-iosx64?color=orange&label=fhir-model-r4b-iosx64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b-iosx64) |
+| **R5**          | `fhir-model-r5`  | [![KMP](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5?color=purple&label=fhir-model-r5)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5)    | [![JVM](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5-jvm?color=purple&label=fhir-model-r5-jvm)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5-jvm)    | [![Wasm-JS](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5-wasm-js?color=purple&label=fhir-model-r5-wasm-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5-wasm-js)    | [![Wasm-Wasi](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5-wasm-wasi?color=purple&label=fhir-model-r5-wasm-wasi)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5-wasm-wasi)    | [![JS](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5-js?color=purple&label=fhir-model-r5-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5-js)    | [![Android](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5-android?color=purple&label=fhir-model-r5-android)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5-android)    | [![iOS Simulator](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5-iossimulatorarm64?color=purple&label=fhir-model-r5-iossimulatorarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5-iossimulatorarm64)    | [![iOS Device](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5-iosarm64?color=purple&label=fhir-model-r5-iosarm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5-iosarm64)    | [![iOS Intel](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5-iosx64?color=purple&label=fhir-model-r5-iosx64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5-iosx64)    |
+
+</details>
+
+To add the dependency, follow the instructions below for your specific project type:
 
 #### Kotlin Multiplatform Projects
 
@@ -487,7 +511,11 @@ the `kotlin` block of the module's `build.gradle.kts` file (e.g., `composeApp/bu
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("dev.ohs.fhir:fhir-model:1.0.0-beta04")
+            // Use only the FHIR version(s) you need:
+            implementation("dev.ohs.fhir:fhir-model-r4:1.0.0-beta04")
+
+            // Or include all versions at once:
+            // implementation("dev.ohs.fhir:fhir-model:1.0.0-beta04")
         }
     }
 }
@@ -498,11 +526,36 @@ kotlin {
 For Android projects, add the dependency to the `dependency` block in the module's
 `build.gradle.kts` file (e.g., `app/build.gradle.kts`).
 
-```
+```kotlin
 // e.g., app/build.gradle.kts
 dependencies {
-    implementation("dev.ohs.fhir:fhir-model:1.0.0-beta04")
+    implementation("dev.ohs.fhir:fhir-model-r4:1.0.0-beta04")
 }
+```
+
+#### Java and Kotlin JVM projects
+
+For JVM-only projects (Java or Kotlin), add the dependency to your build configuration.
+
+**Gradle:**
+
+```kotlin
+// e.g., build.gradle.kts
+dependencies {
+    // Gradle's variant-aware resolution automatically fetches the JVM target variant
+    implementation("dev.ohs.fhir:fhir-model-r4:1.0.0-beta04")
+}
+```
+
+**Maven:**
+
+```xml
+<!-- e.g., pom.xml -->
+<dependency>
+    <groupId>dev.ohs.fhir</groupId>
+    <artifactId>fhir-model-r4-jvm</artifactId>
+    <version>1.0.0-beta04</version>
+</dependency>
 ```
 
 ### Working with FHIR resources
@@ -717,15 +770,18 @@ This section is for developers who want to contribute to the library.
 
 You can run the codegen locally to generate FHIR models for all supported FHIR versions at once[^6]:
 
-[^6]: To generate FHIR models for specific versions, run `./gradlew <FHIR_VERSION>` where
-`<FHIR_VERSION>`∈ {`r4`, `r4b`, `r5`}. The generated code will be located in the
-`fhir-model/build/generated/<FHIR_VERSION>` subdirectory.
+[^6]: To generate FHIR models for a specific version, run
+`./gradlew :fhir-model-<FHIR_VERSION>:codegen` where `<FHIR_VERSION>`∈ {`r4`, `r4b`, `r5`}.
 
 ```bash
+# Generate models for a specific FHIR version:
+./gradlew :fhir-model-r4:codegen
+
+# Or generate all FHIR versions at once:
 ./gradlew codegen
 ```
 
-This will sync all generated code into the `fhir-model/src/commonMain/kotlin` directory and apply
+This will sync all generated code into each module's `src/commonMain/kotlin` directory and apply
 consistent formatting using the [`spotless`](https://github.com/diffplug/spotless) plugin.
 
 > **Note:** The library is designed for use as a dependency. Directly copying generated code into
@@ -770,8 +826,8 @@ However, in all of these cases, semantic equivalence is maintained.
 These tests are set up to run on JVM and as Android unit tests. To run them locally:
 
 ```shell
-./gradlew :fhir-model:jvmTest
-./gradlew :fhir-model:testDebugUnitTest
+./gradlew jvmTest
+./gradlew testDebugUnitTest
 ```
 
 ### Publishing
@@ -785,7 +841,7 @@ To publish artifacts to your local Maven repository (`~/.m2/repository`) for loc
 testing, run:
 
 ```bash
-./gradlew :fhir-model:publishToMavenLocal
+./gradlew publishToMavenLocal
 ```
 
 #### Maven Central
@@ -820,7 +876,7 @@ signing.secretKeyRingFile=/path/to/secring.gpg
 Then run:
 
 ```bash
-./gradlew :fhir-model:publishToMavenCentral
+./gradlew publishToMavenCentral
 ```
 
 ##### Publishing to Maven Central using GitHub Actions

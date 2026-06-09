@@ -24,8 +24,8 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
 
 // Make sure codegen is run before formatting
 tasks.named("spotlessKotlin") {
-    dependsOn(":fhir-model:codegen")
+    dependsOn(":fhir-model-r4:codegen", ":fhir-model-r4b:codegen", ":fhir-model-r5:codegen")
 }
 tasks.named("spotlessFlexmark") {
-    dependsOn(":fhir-model:codegen")
+    dependsOn(":fhir-model-r4:codegen", ":fhir-model-r4b:codegen", ":fhir-model-r5:codegen")
 }

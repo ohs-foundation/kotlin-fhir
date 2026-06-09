@@ -14,5 +14,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "kotlin-fhir"
-include(":fhir-model")
+includeBuild("build-logic")
 includeBuild("fhir-codegen")
+include(":fhir-model")
+include(":fhir-model-r4")
+include(":fhir-model-r4b")
+include(":fhir-model-r5")

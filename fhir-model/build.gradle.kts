@@ -1,12 +1,8 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
-val basePackage: String by project
 val mavenGroupId: String by project
-val mavenArtifactId: String by project
 val mavenVersion: String by project
-val androidNamespace: String by project
 
 plugins {
     alias(libs.plugins.android.library)
@@ -15,59 +11,14 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.maven.publish)
-    id("fhir-codegen")
     `maven-publish`
-}
-
-// Run `./gradlew r4` to generate FHIR models for R4 in `fhir-model/build/generated/r4`
-val codegenTaskR4 = fhirCodegenExtension.newTask("r4") {
-    description = "Generate FHIR models for R4"
-    this.corePackageFiles.from(
-        File(project.rootDir, "third_party/hl7.fhir.r4.core/package").listFiles()
-    )
-    this.expansionPackageFiles.from(
-        File(project.rootDir, "third_party/hl7.fhir.r4.expansions/package").listFiles()
-    )
-    this.packageName.set("$basePackage.r4")
-}
-
-// Run `./gradlew r4b` to generate FHIR models for R4B in `fhir-model/build/generated/r4b`
-val codegenTaskR4B = fhirCodegenExtension.newTask("r4b") {
-    description = "Generate FHIR models for R4B"
-    this.corePackageFiles.from(
-        File(project.rootDir, "third_party/hl7.fhir.r4b.core/package").listFiles()
-    )
-    this.expansionPackageFiles.from(
-        File(project.rootDir, "third_party/hl7.fhir.r4b.expansions/package").listFiles()
-    )
-    this.packageName.set("$basePackage.r4b")
-}
-
-// Run `./gradlew r5` to generate FHIR models for R5 in `fhir-model/build/generated/r5`
-val codegenTaskR5 = fhirCodegenExtension.newTask("r5") {
-    description = "Generate FHIR models for R5"
-    this.corePackageFiles.from(
-        File(project.rootDir, "third_party/hl7.fhir.r5.core/package").listFiles()
-    )
-    this.expansionPackageFiles.from(
-        File(project.rootDir, "third_party/hl7.fhir.r5.expansions/package").listFiles()
-    )
-    this.packageName.set("$basePackage.r5")
-}
-
-// Run `./gradlew codegen` to generate all FHIR models in the main source set
-val codegen = tasks.register<Sync>("codegen") {
-    description = "Generate FHIR models for R4, R4B and R5, and sync all versions into the main source set."
-    from(codegenTaskR4, codegenTaskR4B, codegenTaskR5)
-    into(project.layout.projectDirectory.dir("src/commonMain/kotlin"))
-    finalizedBy(":spotlessApply")
 }
 
 kotlin {
     jvmToolchain(21)
 
     jvm()
-    @OptIn(ExperimentalWasmDsl::class) wasmJs {
+    wasmJs {
         browser {
             val rootDirPath = project.rootDir.path
             val projectDirPath = project.projectDir.path
@@ -82,7 +33,7 @@ kotlin {
             }
         }
     }
-    @OptIn(ExperimentalWasmDsl::class) wasmWasi {
+    wasmWasi {
         nodejs()
         binaries.library()
     }
@@ -95,6 +46,8 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }
+    iosSimulatorArm64()
+    iosArm64()
     iosX64 {
         binaries {
             framework {
@@ -110,19 +63,13 @@ kotlin {
             }
         }
     }
-    iosArm64()
-    iosSimulatorArm64()
 
     sourceSets {
         val commonMain by getting {
-            // Explicitly define the source directory `src/commonMain/kotlin` in order to ignore
-            // `build/generated` which would generate "redeclaration" error after the `codegen` sync
-            // task above.
-            kotlin.setSrcDirs(listOf(file("src/commonMain/kotlin")))
             dependencies {
-                api(libs.bignum)
-                api(libs.kotlinx.datetime)
-                implementation(libs.kotlinx.serialization.json)
+                api(project(":fhir-model-r4"))
+                api(project(":fhir-model-r4b"))
+                api(project(":fhir-model-r5"))
             }
         }
         val commonTest by getting {
@@ -155,7 +102,7 @@ kotlin {
 }
 
 android {
-    namespace = androidNamespace
+    namespace = "dev.ohs.fhir"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -181,10 +128,10 @@ tasks.named<Test>("jvmTest") {
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
-    coordinates(mavenGroupId, mavenArtifactId, mavenVersion)
+    coordinates(mavenGroupId, "fhir-model", mavenVersion)
     pom {
         name = "Kotlin FHIR"
-        description = "A Kotlin Multiplatform library for FHIR data model"
+        description = "A Kotlin Multiplatform library for FHIR data models (R4, R4B, and R5)"
         inceptionYear = "2025"
         url = "https://github.com/ohs-foundation/kotlin-fhir"
         licenses {

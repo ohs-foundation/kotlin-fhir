@@ -74,7 +74,6 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(libs.kotest.assertions.json)
                 implementation(libs.kotest.framework.engine)
                 implementation(libs.kotlin.test)
                 implementation(libs.kotlinx.serialization.json)
@@ -83,7 +82,6 @@ kotlin {
         }
         val androidMain by getting
         val androidUnitTest by getting {
-            dependsOn(commonTest)
             dependencies {
                 implementation(libs.kotest.runner.junit5)
             }
@@ -144,7 +142,7 @@ mavenPublishing {
         developers {
             developer {
                 id = "ohs-foundation"
-                name = "Open Heath Stack Foundation"
+                name = "Open Health Stack Foundation"
                 url = "https://ohs.dev/"
             }
         }

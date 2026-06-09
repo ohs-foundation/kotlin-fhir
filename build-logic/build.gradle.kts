@@ -23,7 +23,7 @@ configure<GradlePluginDevelopmentExtension> {
     plugins {
         create("fhirModelConventions") {
             id = "fhir-model-conventions"
-            implementationClass = "dev.ohs.fhir.build.FhirModelConventionsPlugin"
+            implementationClass = "dev.ohs.fhir.gradle.FhirModelConventionsPlugin"
         }
     }
 }

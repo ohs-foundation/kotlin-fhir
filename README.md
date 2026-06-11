@@ -854,10 +854,10 @@ To run the tests locally:
 ./gradlew jvmTest  # JVM only for faster iteration
 ```
 
-#### Continuous Integration
+### Continuous Integration
 
 The [CI pipeline](.github/workflows/ci.yml) (GitHub Actions) runs tests across six platform
-targets on every push and pull request. The full CI matrix is:
+targets on every push and pull request:
 
 | CI Job                | Gradle Task             | Runner          | Tests                | Environment              |
 |:----------------------|:------------------------|:----------------|:---------------------|:-------------------------|

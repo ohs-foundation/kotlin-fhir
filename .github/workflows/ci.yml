@@ -8,6 +8,10 @@ on:
     branches: [ "main" ]
   workflow_call:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -36,6 +40,7 @@ jobs:
             os: macos-latest
             android: false
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
 
     steps:
       - name: Check out code
@@ -92,6 +97,7 @@ jobs:
           --no-daemon
           --no-parallel
           --no-configuration-cache
+          --build-cache
           -Dorg.gradle.jvmargs="-Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
           -Dorg.gradle.workers.max=1
           -Dkotlin.daemon.enabled=false

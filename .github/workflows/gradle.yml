@@ -62,6 +62,13 @@ jobs:
 
       - name: Run tests
         env:
-          GRADLE_OPTS: -Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8
-          KOTLIN_DAEMON_JVMARGS: -Xmx4g -XX:+UseG1GC
-        run: ./gradlew ${{ matrix.target }} --stacktrace -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" -Dkotlin.daemon.jvmargs="-Xmx4g -XX:+UseG1GC" -Dorg.gradle.workers.max=2
+          GRADLE_OPTS: -Xmx5g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8
+        run: >-
+          ./gradlew ${{ matrix.target }}
+          --stacktrace
+          --no-daemon
+          --no-parallel
+          --no-configuration-cache
+          -Dorg.gradle.jvmargs="-Xmx5g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
+          -Dorg.gradle.workers.max=1
+          -Dkotlin.daemon.enabled=false

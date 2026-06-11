@@ -797,8 +797,12 @@ consistent formatting using the [`spotless`](https://github.com/diffplug/spotles
 
 ### Testing
 
-The library includes comprehensive test suites for the example resources published in the following
-packages:
+Tests are organized into two categories:
+
+#### Example-based tests
+
+These tests validate the library against the full set of official HL7 FHIR example resources
+(~500 MB of JSON, ~10 000 resources across three FHIR versions):
 
 - [hl7.fhir.r4.examples](https://simplifier.net/packages/hl7.fhir.r4.examples) (5309 examples)
 - [hl7.fhir.r4b.examples](https://simplifier.net/packages/hl7.fhir.r4b.examples) (2840 examples)
@@ -830,25 +834,18 @@ notation instead of scientific notation (e.g. 1000000000000000000 instead of 1E1
 serialization process normalizes these variations, resulting in potentially different JSON output.
 However, in all of these cases, semantic equivalence is maintained.
 
-In addition to these three test suites that run against all FHIR examples, the library includes
-focused tests for specific behaviors, listed in the matrix below for the full list.
+Example-based tests require loading the HL7 example packages from the local filesystem. They
+only run on **JVM** and **Android**, which can access the filesystem directly.
 
-#### Target Platform Test Support
+#### Unit tests
 
-Due to runtime sandboxing, targets running on the browser (JS, WasmJs), Node (WasmWasi), or
-simulators (iOS/Native) cannot access the local filesystem to load the full HL7 FHIR examples suite
-(~500MB of JSON). The three example-based test suites above therefore only run on JVM and Android,
-while the remaining tests run on all platforms.
+These tests use inline test data and do not require filesystem access. They run on **all
+platforms**.
 
-| Test Class                              | Verification Focus                                               | JVM & Android |    JS, Wasm & Native     |
-|:----------------------------------------|:-----------------------------------------------------------------|:-------------:|:------------------------:|
-| **`EqualityTest`**                      | Structural equality of all 10k+ FHIR package examples            |       ✅       | ❌ (No filesystem access) |
-| **`SerializationRoundTripTest`**        | Full round-trip JSON serialization of all examples               |       ✅       | ❌ (No filesystem access) |
-| **`BuilderRoundTripTest`**              | `toBuilder()` structural equality check on all examples          |       ✅       | ❌ (No filesystem access) |
-| **`JsonConfigurationTest`**             | Custom Json configuration behaviors (leniency, pretty print)     |       ✅       |            ✅             |
-| **`PolymorphicSerializationTest`**      | Polymorphic type serialization & missing-discriminator rejection |       ✅       |            ✅             |
-| **`IndexOrderingTest`**                 | Serializer descriptor field index mapping integrity (ProtoBuf)   |       ✅       |            ✅             |
-| **`FhirDateTest` / `FhirDateTimeTest`** | Custom date and date-time validation and parsing                 |       ✅       |            ✅             |
+- **`JsonConfigurationTest`** — Custom Json configuration behaviors (leniency, pretty print)
+- **`PolymorphicSerializationTest`** — Polymorphic type serialization & missing-discriminator rejection
+- **`IndexOrderingTest`** — Serializer descriptor field index mapping integrity (ProtoBuf)
+- **`FhirDateTest` / `FhirDateTimeTest`** — Custom date and date-time validation and parsing
 
 To run the tests locally:
 
@@ -856,6 +853,24 @@ To run the tests locally:
 ./gradlew check    # all targets
 ./gradlew jvmTest  # JVM only for faster iteration
 ```
+
+#### Continuous Integration
+
+The [CI pipeline](.github/workflows/ci.yml) (GitHub Actions) runs tests across six platform
+targets on every push and pull request. The full CI matrix is:
+
+| CI Job                    | Gradle Task            | Runner          | Tests                                        |
+|:--------------------------|:-----------------------|:----------------|:---------------------------------------------|
+| **JVM**                   | `jvmTest`              | Ubuntu (Linux)  | Example-based + unit tests + JVM‑only tests  |
+| **Wasm JS (Browser)**     | `wasmJsBrowserTest`    | Ubuntu (Linux)  | Unit tests (compiled to Wasm, run in Chrome)  |
+| **Wasm WASI (Node)**      | `wasmWasiNodeTest`     | Ubuntu (Linux)  | Unit tests (compiled to Wasm, run in Node)    |
+| **JS (Browser)**          | `jsBrowserTest`        | Ubuntu (Linux)  | Unit tests (run via headless Chrome)          |
+| **Android**               | `testDebugUnitTest`    | Ubuntu (Linux)  | Example-based + unit tests (JVM 1.8 target)  |
+| **iOS (Simulator)**       | `iosSimulatorArm64Test`| macOS           | Unit tests (compiled to native ARM64)         |
+
+> [!NOTE]
+> Only the debug Android build variant is tested because debug and release produce identical Kotlin
+> library output.
 
 ### Publishing
 

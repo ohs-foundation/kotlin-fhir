@@ -47,6 +47,17 @@ jobs:
         if: runner.os == 'Linux'
         uses: android-actions/setup-android@v3
 
+      - name: Add swap space
+        if: runner.os == 'Linux'
+        run: |
+          sudo swapoff -a || true
+          sudo rm -f /swapfile /mnt/swapfile
+          sudo dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192
+          sudo chmod 600 /mnt/swapfile
+          sudo mkswap /mnt/swapfile
+          sudo swapon /mnt/swapfile
+          free -h
+
       - name: Cache Kotlin/Native
         if: runner.os == 'macOS'
         uses: actions/cache@v4
@@ -62,13 +73,13 @@ jobs:
 
       - name: Run tests
         env:
-          GRADLE_OPTS: -Xmx5g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8
+          GRADLE_OPTS: -Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8
         run: >-
           ./gradlew ${{ matrix.target }}
           --stacktrace
           --no-daemon
           --no-parallel
           --no-configuration-cache
-          -Dorg.gradle.jvmargs="-Xmx5g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
+          -Dorg.gradle.jvmargs="-Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
           -Dorg.gradle.workers.max=1
           -Dkotlin.daemon.enabled=false

@@ -118,7 +118,7 @@ if (androidEnabled) {
         }
         testOptions {
             unitTests.all {
-                val test = this as @Suppress("UNRESOLVED_REFERENCE") org.gradle.api.tasks.testing.Test
+                val test = it as @Suppress("UNRESOLVED_REFERENCE") org.gradle.api.tasks.testing.Test
                 // Allow tests to access third_party
                 test.systemProperty("projectRootDir", project.rootDir.absolutePath)
                 test.maxHeapSize = "4g"

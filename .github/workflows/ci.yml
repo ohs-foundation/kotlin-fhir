@@ -19,16 +19,22 @@ jobs:
         include:
           - target: jvmTest
             os: ubuntu-latest
+            android: false
           - target: wasmJsBrowserTest
             os: ubuntu-latest
+            android: false
           - target: wasmWasiNodeTest
             os: ubuntu-latest
+            android: false
           - target: jsBrowserTest
             os: ubuntu-latest
+            android: false
           - target: testDebugUnitTest
             os: ubuntu-latest
+            android: true
           - target: iosSimulatorArm64Test
             os: macos-latest
+            android: false
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -48,7 +54,7 @@ jobs:
           java-version: 21
 
       - name: Set up Android SDK
-        if: runner.os == 'Linux'
+        if: matrix.android
         run: |
           yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
           ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" > /dev/null
@@ -89,3 +95,4 @@ jobs:
           -Dorg.gradle.jvmargs="-Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
           -Dorg.gradle.workers.max=1
           -Dkotlin.daemon.enabled=false
+          -Pfhir.android.enabled=${{ matrix.android }}

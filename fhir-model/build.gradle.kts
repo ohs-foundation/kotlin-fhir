@@ -5,7 +5,7 @@ val mavenGroupId: String by project
 val mavenVersion: String by project
 
 plugins {
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.android.library) apply false
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotest)
     alias(libs.plugins.kotlin.multiplatform)
@@ -13,6 +13,9 @@ plugins {
     alias(libs.plugins.maven.publish)
     `maven-publish`
 }
+
+val androidEnabled = providers.gradleProperty("fhir.android.enabled").orNull?.toBoolean() != false
+if (androidEnabled) pluginManager.apply(libs.plugins.android.library.get().pluginId)
 
 kotlin {
     jvmToolchain(21)
@@ -41,9 +44,11 @@ kotlin {
         browser()
         binaries.library()
     }
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
+    if (androidEnabled) {
+        androidTarget {
+            compilerOptions {
+                jvmTarget.set(JvmTarget.JVM_1_8)
+            }
         }
     }
     iosSimulatorArm64()
@@ -80,10 +85,12 @@ kotlin {
                 implementation(libs.kotlinx.serialization.protobuf)
             }
         }
-        val androidMain by getting
-        val androidUnitTest by getting {
-            dependencies {
-                implementation(libs.kotest.runner.junit5)
+        if (androidEnabled) {
+            val androidMain by getting
+            val androidUnitTest by getting {
+                dependencies {
+                    implementation(libs.kotest.runner.junit5)
+                }
             }
         }
         val jvmMain by getting
@@ -99,19 +106,22 @@ kotlin {
     }
 }
 
-android {
-    namespace = "dev.ohs.fhir"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    testOptions {
-        unitTests.all { test ->
-            // Allow tests to access third_party
-            test.systemProperty("projectRootDir", project.rootDir.absolutePath)
-            test.maxHeapSize = "4g"
-            test.useJUnitPlatform()
+if (androidEnabled) {
+    configure<com.android.build.gradle.LibraryExtension> {
+        namespace = "dev.ohs.fhir"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        defaultConfig {
+            minSdk = libs.versions.android.minSdk.get().toInt()
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+        testOptions {
+            unitTests.all {
+                val test = this as @Suppress("UNRESOLVED_REFERENCE") org.gradle.api.tasks.testing.Test
+                // Allow tests to access third_party
+                test.systemProperty("projectRootDir", project.rootDir.absolutePath)
+                test.maxHeapSize = "4g"
+                test.useJUnitPlatform()
+            }
         }
     }
 }

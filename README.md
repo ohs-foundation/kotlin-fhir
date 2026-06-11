@@ -842,7 +842,7 @@ only run on **JVM** and **Android**, which can access the filesystem directly.
 These tests use inline test data and do not require filesystem access. They run on **all
 platforms**.
 
-- **`JsonConfigurationTest`** — Custom Json configuration behaviors (leniency, pretty print)
+- **`JsonConfigurationTest`** — Custom JSON configuration behaviors (leniency, pretty print)
 - **`PolymorphicSerializationTest`** — Polymorphic type serialization & missing-discriminator rejection
 - **`IndexOrderingTest`** — Serializer descriptor field index mapping integrity (ProtoBuf)
 - **`FhirDateTest` / `FhirDateTimeTest`** — Custom date and date-time validation and parsing
@@ -859,14 +859,14 @@ To run the tests locally:
 The [CI pipeline](.github/workflows/ci.yml) (GitHub Actions) runs tests across six platform
 targets on every push and pull request. The full CI matrix is:
 
-| CI Job                    | Gradle Task            | Runner          | Tests                                        |
-|:--------------------------|:-----------------------|:----------------|:---------------------------------------------|
-| **JVM**                   | `jvmTest`              | Ubuntu (Linux)  | Example-based + unit tests + JVM‑only tests  |
-| **Wasm JS (Browser)**     | `wasmJsBrowserTest`    | Ubuntu (Linux)  | Unit tests (compiled to Wasm, run in Chrome)  |
-| **Wasm WASI (Node)**      | `wasmWasiNodeTest`     | Ubuntu (Linux)  | Unit tests (compiled to Wasm, run in Node)    |
-| **JS (Browser)**          | `jsBrowserTest`        | Ubuntu (Linux)  | Unit tests (run via headless Chrome)          |
-| **Android**               | `testDebugUnitTest`    | Ubuntu (Linux)  | Example-based + unit tests (JVM 1.8 target)  |
-| **iOS (Simulator)**       | `iosSimulatorArm64Test`| macOS           | Unit tests (compiled to native ARM64)         |
+| CI Job                | Gradle Task             | Runner          | Tests                | Environment              |
+|:----------------------|:------------------------|:----------------|:---------------------|:-------------------------|
+| **JVM**               | `jvmTest`               | `ubuntu-latest` | Example-based + Unit | JVM 21                   |
+| **Wasm JS (Browser)** | `wasmJsBrowserTest`     | `ubuntu-latest` | Unit                 | Wasm in headless Chrome  |
+| **Wasm WASI (Node)**  | `wasmWasiNodeTest`      | `ubuntu-latest` | Unit                 | Wasm in Node             |
+| **JS (Browser)**      | `jsBrowserTest`         | `ubuntu-latest` | Unit                 | JS in headless Chrome    |
+| **Android**           | `testDebugUnitTest`     | `ubuntu-latest` | Example-based + Unit | JVM 1.8 (Android target) |
+| **iOS (Simulator)**   | `iosSimulatorArm64Test` | `macos-latest`  | Unit                 | Native ARM64 (simulator) |
 
 > [!NOTE]
 > Only the debug Android build variant is tested because debug and release produce identical Kotlin

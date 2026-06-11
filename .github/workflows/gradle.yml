@@ -61,4 +61,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Run tests
-        run: ./gradlew ${{ matrix.target }} --stacktrace
+        env:
+          GRADLE_OPTS: -Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8
+          KOTLIN_DAEMON_JVMARGS: -Xmx4g -XX:+UseG1GC
+        run: ./gradlew ${{ matrix.target }} --stacktrace -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" -Dkotlin.daemon.jvmargs="-Xmx4g -XX:+UseG1GC" -Dorg.gradle.workers.max=2

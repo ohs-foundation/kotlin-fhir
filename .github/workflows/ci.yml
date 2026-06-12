@@ -90,7 +90,7 @@ jobs:
 
       - name: Run tests
         env:
-          GRADLE_OPTS: -Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8
+          GRADLE_OPTS: -Xmx4g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8
         run: >-
           ./gradlew ${{ matrix.target }}
           --stacktrace
@@ -98,7 +98,6 @@ jobs:
           --no-parallel
           --no-configuration-cache
           --build-cache
-          -Dorg.gradle.jvmargs="-Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
           -Dorg.gradle.workers.max=1
           -Dkotlin.daemon.enabled=false
           -Pfhir.android.enabled=${{ matrix.android }}

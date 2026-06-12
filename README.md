@@ -24,15 +24,14 @@ Kotlin FHIR is a lean and fast implementation of the
 [^1]: No dependencies on logging, XML, or networking libraries or any platform-specific
 dependencies. Only essential Kotlin Multiplatform dependencies are included, e.g.,
 [`kotlinx.serialization`](https://github.com/Kotlin/kotlinx.serialization),
-[`kotlix.datetime`](https://github.com/Kotlin/kotlinx-datetime), and
+[`kotlinx.datetime`](https://github.com/Kotlin/kotlinx-datetime), and
 [Kotlin Multiplatform BigNum](https://github.com/ionspin/kotlin-multiplatform-bignum).
 
 [^2]: Using [KotlinPoet](https://square.github.io/kotlinpoet/).
 
 [^3]: It is also possible to serialize to other formats
 [`kotlinx.serialization`](https://github.com/Kotlin/kotlinx.serialization) supports, such as
-[protocol buffers](https://protobuf.dev/). However, there is no XML or Turtle support as of
-Jan 2025.
+[protocol buffers](https://protobuf.dev/). However, there is no XML or Turtle support.
 
 ## Supported platforms
 
@@ -106,11 +105,13 @@ follows:
 | System.Time                                                                 | kotlinx.datetime.LocalTime                                                  |
 | System.DateTime                                                             | FhirDateTime                                                                |
 
-> **Note:** [Kotlin Multiplatform BigNum](https://github.com/ionspin/kotlin-multiplatform-bignum)
+> [!NOTE]
+> [Kotlin Multiplatform BigNum](https://github.com/ionspin/kotlin-multiplatform-bignum)
 > library's `BigDecimal` is used to preserve and respect the precision of decimal values as required
 > by the specification. See the notes section in [Datatypes](https://hl7.org/fhir/datatypes.html).
->
-> **Note:**  The `System.Date` and `System.DateTime` types are mapped to sealed interfaces
+
+> [!NOTE]
+> The `System.Date` and `System.DateTime` types are mapped to sealed interfaces
 > `FhirDate` and `FhirDateTime` specifically generated to handle partial dates in FHIR. They are
 > implemented using `LocalDate`, `LocalDateTime` and `UtcOffset` classes in the `kotlinx-datetime`
 > library.
@@ -175,8 +176,10 @@ inherits from `DomainResource`, which inherits from `Resource`.
 
 ### Mapping FHIR ValueSets to Kotlin Enums
 
-Kotlin enums classes are generated for value sets referenced by elements via [binding](https://hl7.org/fhir/R5/terminologies.html#binding).
-The constants in the generated enum classes are derived from the `code` property of the expanded `CodeSystem` concepts in the [expansion packages](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/). The
+Kotlin enums classes are generated for value sets referenced by elements via
+[binding](https://hl7.org/fhir/R5/terminologies.html#binding). The constants in the generated enum
+classes are derived from the `code` property of the expanded `CodeSystem` concepts in the
+[expansion packages](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/). The
 value sets that are not bound to elements are excluded from code generation.
 
 #### Shared vs. Local Enums
@@ -188,7 +191,11 @@ value sets that are not bound to elements are excluded from code generation.
 
 #### Enum Naming and Content
 
-The enum constants are derived from `ValueSet` definitions in the expansion packages for [R4](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4.expansions/package), [R4B](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4b.expansions/package), and [R5](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r5.expansions/package).
+The enum constants are derived from `ValueSet` definitions in the expansion packages for
+[R4](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4.expansions/package),
+[R4B](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4b.expansions/package),
+and
+[R5](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r5.expansions/package).
 Each `ValueSet` includes codes from one or more `CodeSystem` resources it references.
 
 | FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
@@ -197,7 +204,7 @@ Each `ValueSet` includes codes from one or more `CodeSystem` resources it refere
 | ValueSet (e.g. `ResourceType`)                                             | Kotlin class (e.g. `enum class ResourceType`)                                  |
 
 To comply with Kotlin’s enum naming convention—which requires names to start with a letter and avoid special characters—each code is transformed using a set of formatting rules.
-This includes handling numeric codes,special characters, and FHIR URLs. After all transformations, the final name is converted to PascalCase to match Kotlin style guidelines.
+This includes handling numeric codes, special characters, and FHIR URLs. After all transformations, the final name is converted to PascalCase to match Kotlin style guidelines.
 
 | Rule # |                                          Description                                          |                                                           Example Input                                                           |     Example Output     |
 |--------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|------------------------|
@@ -431,7 +438,8 @@ Kotlin code is generated for StructureDefinitions in the following FHIR packages
 - [hl7.fhir.r4b.core](https://simplifier.net/packages/hl7.fhir.r4b.core)
 - [hl7.fhir.r5.core](https://simplifier.net/packages/hl7.fhir.r5.core)
 
-> **Note:** The following are **NOT** included in the generated code:
+> [!NOTE]
+> The following are **NOT** included in the generated code:
 > - [Logical](https://hl7.org/fhir/R4/valueset-structure-definition-kind.html) StructureDefinitions,
 > such as [Definition](https://hl7.org/fhir/R4/definition.html),
 > [Request](https://hl7.org/fhir/R4/request.html), and [Event](https://hl7.org/fhir/R4/event.html)
@@ -480,9 +488,8 @@ mentioned [earlier](#mapping-fhir-primitive-data-types-to-kotlin).
 
 ### Adding the library dependency to your project
 
-To use the Kotlin FHIR model in your project, you need to add the Kotlin FHIR library dependency to
-your project. To do that, first make sure to include the `mavenCentral()`[^5] repository in the
-`build.gradle.kts` file in your project root.
+To use the Kotlin FHIR model in your project, first make sure `mavenCentral()`[^5] is listed in
+your repositories:
 
 [^5]: Early versions of this library (up to `1.0.0-beta02`) were published under the group ID
 `com.google.fhir` on [Google Maven](https://maven.google.com/web/index.html?q=fhir-model).
@@ -495,17 +502,11 @@ repositories {
 }
 ```
 
-The library publishes separate artifacts for each FHIR version, so you only need to depend on the
-version(s) you use:
+Then pick the right artifact along two axes:
 
-| Artifact                      | Description                      |
-|:------------------------------|:---------------------------------|
-| `dev.ohs.fhir:fhir-model-r4`  | FHIR R4 data model only          |
-| `dev.ohs.fhir:fhir-model-r4b` | FHIR R4B data model only         |
-| `dev.ohs.fhir:fhir-model-r5`  | FHIR R5 data model only          |
-| `dev.ohs.fhir:fhir-model`     | FHIR R4, R4B, and R5 data models |
-
-To add the dependency, follow the instructions below for your specific project type:
+1. **FHIR version** — depend on only the version(s) you need: `fhir-model-r4`, `fhir-model-r4b`,
+   `fhir-model-r5`, or `fhir-model` for all three.
+2. **Target platform** — choose the setup that matches your project type (see sections below).
 
 #### Kotlin Multiplatform Projects
 
@@ -530,7 +531,7 @@ kotlin {
 
 #### Android projects
 
-For Android projects, add the dependency to the `dependency` block in the module's
+For Android projects, add the dependency to the `dependency` block in the Android module's
 `build.gradle.kts` file (e.g., `app/build.gradle.kts`).
 
 ```kotlin
@@ -542,7 +543,8 @@ dependencies {
 
 #### Java and Kotlin JVM projects
 
-For JVM-only projects (Java or Kotlin), add the dependency to your build configuration.
+For JVM-only projects (Java or Kotlin), add the dependency to your build configuration depending on
+the build system you use:
 
 **Gradle:**
 
@@ -582,7 +584,9 @@ version. For example, the `Patient` class generated for FHIR R4 can be found in 
 
 #### Creating FHIR resources
 
-To create a new instance of a FHIR resource, use the generated data class constructors directly with named arguments. Since all optional fields have default values, you only need to specify the properties you actually use.
+To create a new instance of a FHIR resource, use the generated data class constructors directly with
+named arguments. Since all optional fields have default values, you only need to specify the
+properties you actually use.
 
 For example:
 
@@ -606,7 +610,8 @@ fun main() {
 }
 ```
 
-> **Note:** Import the FHIR `String` type with an alias (e.g.
+> [!TIP]
+> Import the FHIR `String` type with an alias (e.g.
 > `import dev.ohs.fhir.model.r4.String as FhirString`) to avoid clashing with `kotlin.String`.
 
 Alternatively, you can use the nested `Builder` classes to create resources:
@@ -635,7 +640,8 @@ fun main() {
 
 #### Modifying FHIR resources
 
-All generated FHIR classes are immutable Kotlin `data class`es. To modify a resource, use `copy()` with named arguments:
+All generated FHIR classes are immutable Kotlin `data class`es. To modify a resource, use `copy()`
+with named arguments:
 
 ```kotlin
 val updated = patient.copy(
@@ -658,7 +664,8 @@ val updated = patient.toBuilder().apply {
 
 ### Working with search parameters
 
-You can extract search parameter values from resources using the parameters in the generated `{Resource}SearchParams` objects.
+You can extract search parameter values from resources using the parameters in the generated
+`{Resource}SearchParams` objects.
 
 To extract a specific parameter:
 
@@ -766,7 +773,8 @@ when (resource) {
 The generated models can be serialized to and deserialized from any format [supported](https://github.com/Kotlin/kotlinx.serialization/blob/master/formats/README.md) by
 `kotlinx.serialization`, but only JSON is extensively tested.
 
-> **Note:** Compatibility between serialized Protocol Buffers from this library and
+> [!NOTE]
+> Compatibility between serialized Protocol Buffers from this library and
 > [Google's FHIR Protos](https://github.com/google/fhir) has not been tested.
 
 ## Developer Guide
@@ -791,7 +799,8 @@ You can run the codegen locally to generate FHIR models for all supported FHIR v
 This will sync all generated code into each module's `src/commonMain/kotlin` directory and apply
 consistent formatting using the [`spotless`](https://github.com/diffplug/spotless) plugin.
 
-> **Note:** The library is designed for use as a dependency. Directly copying generated code into
+> [!NOTE]
+> The library is designed for use as a dependency. Directly copying generated code into
 > your project is generally discouraged as it can lead to maintenance issues and conflicts with
 > future updates.
 

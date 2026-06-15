@@ -10,13 +10,6 @@ plugins {
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     ratchetFrom = "origin/main"
 
-    // Generated files start with no copyright header. When Spotless runs, it tries to parse a year
-    // from the (empty) header of these files to preserve it, causing warning spam. To avoid this,
-    // we resolve the year at build time and pass it statically to Spotless for generated files.
-    val currentYear = java.time.LocalDate.now().year.toString()
-    val licenseHeaderTemplate = file("license-header.txt").readText()
-    val generatedLicenseHeader = licenseHeaderTemplate.replace("\$YEAR", currentYear)
-
     kotlin {
         target("**/*.kt")
         targetExclude("**/fhir-model-r*/**/*.kt")
@@ -25,11 +18,19 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
             "license-header.txt",
         )
     }
+
+    // Due to the ratchetFrom setting, Spotless always tries to parse the existing copyright year
+    // before updating it to a range (e.g. 2025-2026). However, generated code do not have the
+    // copyright header initially. To avoid warnings, a statically resolved year is used.
+    val currentYear = java.time.LocalDate.now().year.toString()
+    val licenseHeaderTemplate = file("license-header.txt").readText()
+    val generatedLicenseHeader = licenseHeaderTemplate.replace("\$YEAR", currentYear)
     format("generatedKotlin", com.diffplug.gradle.spotless.KotlinExtension::class.java) {
         target("fhir-model-r4/src/**/*.kt", "fhir-model-r4b/src/**/*.kt", "fhir-model-r5/src/**/*.kt")
         ktfmt().googleStyle()
         licenseHeader(generatedLicenseHeader)
     }
+
     flexmark {
         target("**/*.md")
         flexmark()

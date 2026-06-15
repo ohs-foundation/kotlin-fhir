@@ -20,7 +20,7 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     }
 
     // Due to the ratchetFrom setting, Spotless always tries to parse the existing copyright year
-    // before updating it to a range (e.g. 2025-2026). However, generated code do not have the
+    // before updating it to a range (e.g. 2025-2026). However, generated files do not have the
     // copyright header initially. To avoid warnings, a statically resolved year is used.
     val currentYear = java.time.LocalDate.now().year.toString()
     val licenseHeaderTemplate = file("license-header.txt").readText()

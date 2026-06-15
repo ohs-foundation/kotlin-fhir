@@ -80,7 +80,6 @@ tasks.register("verifyCodegen") {
             listOf("git", "diff", "--exit-code", "--") + generatedDirs
         ).directory(rootDir).redirectErrorStream(true).start()
 
-
         val diffOutput = diffProcess.inputStream.bufferedReader().readText()
         val diffExitCode = diffProcess.waitFor()
 

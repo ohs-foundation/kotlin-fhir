@@ -496,7 +496,7 @@ public object ConditionSearchParams {
       name = "subject",
       type = SearchParamType.Reference,
       expression = "Condition.subject",
-      target = listOf(Organization::class),
+      target = listOf(Group::class, Patient::class),
       extractor = { resource -> listOf(resource.subject) },
     )
 

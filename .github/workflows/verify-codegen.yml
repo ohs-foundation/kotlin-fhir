@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   verify-codegen:
-    name: Match committed files
+    name: Output matches committed code
     runs-on: ubuntu-latest
     timeout-minutes: 45
 

@@ -187,6 +187,7 @@ abstract class FhirCodegenTask : DefaultTask() {
             it.isFile && it.name.matches("SearchParameter-.*\\.json".toRegex())
           }
         }
+        .sortedBy { it.name }
         .map { json.decodeFromString<SearchParameterDefinition>(it.readText(Charsets.UTF_8)) }
         .flatMap { searchParam -> searchParam.base.map { resource -> resource to searchParam } }
         .groupBy({ it.first }, { it.second })

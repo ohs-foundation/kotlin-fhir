@@ -1,0 +1,6 @@
+# Mark codegen-generated FHIR model sources as generated so they collapse
+# in pull request diffs and are excluded from language statistics.
+fhir-model-r4/src/commonMain/kotlin/** linguist-generated=true
+fhir-model-r4b/src/commonMain/kotlin/** linguist-generated=true
+fhir-model-r5/src/commonMain/kotlin/** linguist-generated=true
+

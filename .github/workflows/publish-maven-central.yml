@@ -1,10 +1,10 @@
-name: Publish
+name: Publish to Maven Central
 on:
   release:
     types: [released, prereleased]
 jobs:
-  publish:
-    name: Release build and publish
+  publish-release:
+    name: Publish release to Maven Central
     runs-on: macOS-latest
     steps:
       - name: Check out code

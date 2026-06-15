@@ -1,4 +1,4 @@
-name: CI
+name: Run Tests
 
 on:
   push:
@@ -16,7 +16,8 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  run-tests:
+    name: Run tests (${{ matrix.target }})
     strategy:
       fail-fast: false
       matrix:

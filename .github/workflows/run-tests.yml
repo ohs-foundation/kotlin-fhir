@@ -27,7 +27,7 @@ jobs:
             os: ubuntu-latest
             android: false
           - target: wasmJsBrowserTest
-            name: WasmJS
+            name: Wasm
             os: ubuntu-latest
             android: false
           - target: wasmWasiNodeTest

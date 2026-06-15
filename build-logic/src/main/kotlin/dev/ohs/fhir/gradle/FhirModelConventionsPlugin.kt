@@ -43,7 +43,7 @@ class FhirModelConventionsPlugin : Plugin<Project> {
       // ~/.gradle/gradle.properties to avoid requiring Android SDK for non-Android builds (e.g. to
       // speed up builds in GitHub CI).
       val androidEnabled =
-        providers.gradleProperty("fhir.android.enabled").orNull?.toBoolean() != false
+        providers.gradleProperty("fhir.android.enabled").orNull?.toBoolean() ?: true
 
       // Apply plugins
       if (androidEnabled) pluginManager.apply("com.android.library")

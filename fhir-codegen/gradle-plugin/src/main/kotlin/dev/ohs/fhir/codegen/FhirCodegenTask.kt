@@ -184,7 +184,11 @@ abstract class FhirCodegenTask : DefaultTask() {
         .asSequence()
         .flatMap { file ->
           file.walkTopDown().filter {
-            it.isFile && it.name.matches("SearchParameter-.*\\.json".toRegex())
+            it.isFile &&
+              it.name.matches("SearchParameter-.*\\.json".toRegex()) &&
+              // Exclude example search parameters (like 'part-agree' or 'example-constraint')
+              // from the FHIR spec core packages as they are not standard API parameters.
+              !it.name.startsWith("SearchParameter-example")
           }
         }
         .sortedBy { it.name }

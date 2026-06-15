@@ -44,19 +44,6 @@ public object BundleSearchParams {
       },
     )
 
-  public val exampleConstraint: SearchParam<Bundle, Any> =
-    SearchParam(
-      name = "example-constraint",
-      type = SearchParamType.Reference,
-      expression = "Bundle.entry[0].resource",
-      target = listOf(Composition::class),
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'example-constraint' has expression 'Bundle.entry[0].resource' which is not yet supported."
-        )
-      },
-    )
-
   public val identifier: SearchParam<Bundle, Identifier> =
     SearchParam(
       name = "identifier",
@@ -99,8 +86,7 @@ public object BundleSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Bundle, *>> =
-    listOf(composition, exampleConstraint, message)
+  public val unsupported: List<SearchParam<Bundle, *>> = listOf(composition, message)
 
   /**
    * Supported search parameters for the Bundle resource type. Iterating `all` and calling

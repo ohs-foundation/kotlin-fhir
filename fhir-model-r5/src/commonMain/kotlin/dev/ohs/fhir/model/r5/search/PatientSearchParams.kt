@@ -23,7 +23,6 @@ import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.ContactPoint
 import dev.ohs.fhir.model.r5.Date
-import dev.ohs.fhir.model.r5.DocumentReference
 import dev.ohs.fhir.model.r5.HumanName
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
@@ -214,20 +213,6 @@ public object PatientSearchParams {
       extractor = { resource -> listOfNotNull(resource.managingOrganization) },
     )
 
-  public val partAgree: SearchParam<Patient, Any> =
-    SearchParam(
-      name = "part-agree",
-      type = SearchParamType.Reference,
-      expression =
-        "Patient.extension('http://example.org/fhir/StructureDefinition/participation-agreement').value",
-      target = listOf(DocumentReference::class),
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'part-agree' has expression 'Patient.extension('http://example.org/fhir/StructureDefinition/participation-agreement').value' which is not yet supported."
-        )
-      },
-    )
-
   public val phone: SearchParam<Patient, ContactPoint> =
     SearchParam(
       name = "phone",
@@ -259,7 +244,7 @@ public object PatientSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Patient, *>> = listOf(deathDate, deceased, partAgree)
+  public val unsupported: List<SearchParam<Patient, *>> = listOf(deathDate, deceased)
 
   /**
    * Supported search parameters for the Patient resource type. Iterating `all` and calling

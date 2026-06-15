@@ -186,12 +186,13 @@ abstract class FhirCodegenTask : DefaultTask() {
           file.walkTopDown().filter {
             it.isFile &&
               it.name.matches("SearchParameter-.*\\.json".toRegex()) &&
-              // Exclude example search parameters from the FHIR spec core packages as they are not
-              // standard parameters.
-              !it.name.startsWith("SearchParameter-example")
+              // Exclude example search parameters (not standard parameters).
+              !it.name.startsWith("SearchParameter-example") &&
+              // Exclude redundant Resource-filter definition, which has a type mismatch bug in R4B.
+              // We use SearchParameter-filter.json instead.
+              it.name != "SearchParameter-Resource-filter.json"
           }
         }
-        .sortedWith(compareBy<java.io.File> { it.name.length }.thenBy { it.name })
         .map { json.decodeFromString<SearchParameterDefinition>(it.readText(Charsets.UTF_8)) }
         .flatMap { searchParam -> searchParam.base.map { resource -> resource to searchParam } }
         .groupBy({ it.first }, { it.second })

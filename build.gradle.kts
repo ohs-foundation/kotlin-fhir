@@ -77,8 +77,9 @@ tasks.register("verifyCodegen") {
 
         // Check for uncommitted changes in the generated directories
         val diffProcess = ProcessBuilder(
-            listOf("git", "diff", "--stat", "--exit-code", "--") + generatedDirs
+            listOf("git", "diff", "--exit-code", "--") + generatedDirs
         ).directory(rootDir).redirectErrorStream(true).start()
+
 
         val diffOutput = diffProcess.inputStream.bufferedReader().readText()
         val diffExitCode = diffProcess.waitFor()

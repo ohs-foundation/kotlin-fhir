@@ -186,12 +186,12 @@ abstract class FhirCodegenTask : DefaultTask() {
           file.walkTopDown().filter {
             it.isFile &&
               it.name.matches("SearchParameter-.*\\.json".toRegex()) &&
-              // Exclude example search parameters (like 'part-agree' or 'example-constraint')
-              // from the FHIR spec core packages as they are not standard API parameters.
+              // Exclude example search parameters from the FHIR spec core packages as they are not
+              // standard parameters.
               !it.name.startsWith("SearchParameter-example")
           }
         }
-        .sortedBy { it.name }
+        .sortedWith(compareBy<java.io.File> { it.name.length }.thenBy { it.name })
         .map { json.decodeFromString<SearchParameterDefinition>(it.readText(Charsets.UTF_8)) }
         .flatMap { searchParam -> searchParam.base.map { resource -> resource to searchParam } }
         .groupBy({ it.first }, { it.second })

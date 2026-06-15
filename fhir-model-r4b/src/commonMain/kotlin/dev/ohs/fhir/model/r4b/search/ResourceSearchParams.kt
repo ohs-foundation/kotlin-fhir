@@ -46,7 +46,7 @@ public object ResourceSearchParams {
   public val _filter: SearchParam<Resource, Any> =
     SearchParam(
       name = "_filter",
-      type = SearchParamType.Token,
+      type = SearchParamType.Special,
       expression = "",
       extractor = {
         throw NotImplementedError(

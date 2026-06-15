@@ -16,7 +16,7 @@ plugins {
 
 // Can be disabled via command line (-Pfhir.android.enabled=false) or in ~/.gradle/gradle.properties
 // to avoid requiring Android SDK for non-Android builds (e.g. to speed up builds in GitHub CI).
-val androidEnabled = providers.gradleProperty("fhir.android.enabled").orNull?.toBoolean() != false
+val androidEnabled = providers.gradleProperty("fhir.android.enabled").orNull?.toBoolean() ?: true
 if (androidEnabled) pluginManager.apply(libs.plugins.android.library.get().pluginId)
 
 kotlin {

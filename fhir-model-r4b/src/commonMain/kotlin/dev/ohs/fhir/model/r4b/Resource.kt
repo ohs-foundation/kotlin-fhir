@@ -71,6 +71,12 @@ public abstract class Resource {
   public abstract fun toBuilder(): Builder
 
   public abstract class Builder {
+    /**
+     * The logical id of the resource, as used in the URL for the resource. Once assigned, this
+     * value never changes.
+     */
+    public abstract var id: String?
+
     public abstract fun build(): Resource
   }
 }

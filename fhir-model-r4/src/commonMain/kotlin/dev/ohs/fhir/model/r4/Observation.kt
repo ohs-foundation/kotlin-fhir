@@ -1028,7 +1028,7 @@ public data class Observation(
      * The only time that a resource does not have an id is when it is being submitted to the server
      * using a create operation.
      */
-    public var id: kotlin.String? = null
+    override var id: kotlin.String? = null
 
     /**
      * The metadata about the resource. This is content that is maintained by the infrastructure.

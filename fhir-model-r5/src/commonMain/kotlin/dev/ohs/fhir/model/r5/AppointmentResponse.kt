@@ -260,7 +260,7 @@ public data class AppointmentResponse(
      * like the create and conditional update. Otherwise, the use of the resouce id depends on the
      * given use case.
      */
-    public var id: String? = null
+    override var id: String? = null
 
     /**
      * The metadata about the resource. This is content that is maintained by the infrastructure.

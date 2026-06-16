@@ -104,6 +104,9 @@ private class BuilderSupportGenerator(
               overrideBaseBuilder = true,
               overrideBaseProperties = false,
               open = false,
+              // `id` is abstract on Resource.Builder (see addBuilderForResource); concrete resource
+              // builders inherit it and must override their backing `id` property.
+              overridesResourceId = true,
             )
             addToBuilderFunction(
               structureDefinition.rootElements,
@@ -170,9 +173,27 @@ private class BuilderSupportGenerator(
   }
 
   private fun addBuilderForResource() {
+    val builder = TypeSpec.classBuilder("Builder").addModifiers(KModifier.ABSTRACT)
+    // Expose `id` as a settable, polymorphic property on the abstract base builder so callers can
+    // set it without knowing the concrete resource type (e.g. `resource.toBuilder().apply { id =
+    // … }.build()`). Concrete builders already back this field; they override it (see
+    // `overridesResourceId` in addBuilderClass).
+    structureDefinition.rootElements
+      .firstOrNull { it.getElementName() == "id" }
+      ?.let { idElement ->
+        val propertyInfo =
+          PropertyMapper(PropertyMapper.MappingContext.BUILDER, baseClassName, valueSetMap)
+            .mapToProperty(idElement)
+        builder.addProperty(
+          PropertySpec.builder(propertyInfo.name, propertyInfo.typeName)
+            .mutable()
+            .addModifiers(KModifier.ABSTRACT)
+            .addKdoc("%L", idElement.definition.sanitizeKDoc())
+            .build()
+        )
+      }
     typeSpecBuilder.addType(
-      TypeSpec.classBuilder("Builder")
-        .addModifiers(KModifier.ABSTRACT)
+      builder
         .addFunction(
           FunSpec.builder("build").returns(baseClassName).addModifiers(KModifier.ABSTRACT).build()
         )
@@ -212,6 +233,7 @@ private class BuilderSupportGenerator(
     overrideBaseBuilder: Boolean,
     overrideBaseProperties: Boolean,
     open: Boolean,
+    overridesResourceId: Boolean = false,
   ) =
     typeSpecBuilder.addType(
       TypeSpec.classBuilder(baseClassName.nestedClass("Builder"))
@@ -229,6 +251,7 @@ private class BuilderSupportGenerator(
             elements,
             override = overrideBaseProperties,
             open = open,
+            overridesResourceId = overridesResourceId,
           )
         }
         .addFunction(
@@ -289,19 +312,27 @@ private class BuilderSupportGenerator(
     elements: List<Element>,
     override: Boolean,
     open: Boolean,
+    overridesResourceId: Boolean = false,
   ) {
     val propertyMapper =
       PropertyMapper(PropertyMapper.MappingContext.BUILDER, baseClassName, valueSetMap)
     val constructorBuilder = FunSpec.constructorBuilder()
     elements.forEach { element ->
       val propertyInfo = propertyMapper.mapToProperty(element)
+      // Concrete resource builders inherit an abstract `id` from Resource.Builder, so their backing
+      // `id` property overrides it. (`path != base.path` confirms `id` is inherited, never declared
+      // locally.)
+      val isInheritedResourceId =
+        overridesResourceId &&
+          element.getElementName() == "id" &&
+          element.path != element.base?.path
       val property =
         PropertySpec.builder(propertyInfo.name, propertyInfo.typeName)
           .mutable()
           .apply {
             initializer(propertyInfo.defaultValue ?: propertyInfo.name)
             val modifiers = buildList {
-              if (override) add(KModifier.OVERRIDE)
+              if (override || isInheritedResourceId) add(KModifier.OVERRIDE)
               if (open) add(KModifier.OPEN)
             }
             if (modifiers.isNotEmpty()) addModifiers(modifiers)

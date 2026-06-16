@@ -27,7 +27,6 @@ import kotlin.test.assertEquals
 /** A map from the test case name to the reason why the test case is skipped in R4. */
 private val skippedR4TestCaseNameToReasonMap =
   mapOf(
-    "ActivityDefinition-administer-zika-virus-exposure-assessment.json" to "Invalid resources",
     "ImplementationGuide-fhir.json" to "Invalid resources",
     "Questionnaire-qs1.json" to "Invalid resources",
     "ig-r4.json" to "Invalid resources",
@@ -39,7 +38,6 @@ private val skippedR4BTestCaseNameToReasonMap =
     "Bundle-valuesets.json" to "Invalid resources",
     "CodeSystem-catalogType.json" to "Invalid resources",
     "ValueSet-catalogType.json" to "Invalid resources",
-    "ActivityDefinition-administer-zika-virus-exposure-assessment.json" to "Invalid resources",
   )
 
 /** A map from the test case name to the reason why the test case is skipped in R5. */

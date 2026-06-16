@@ -34,15 +34,6 @@ import kotlinx.serialization.serializer
 /** A map from the test case name to the reason why the test case is skipped in R4. */
 private val skippedR4TestCaseNameToReasonMap =
   mapOf(
-    "Bundle-terminologies.json" to "Hanging",
-    "CodeSystem-v2-0003.json" to "Hanging",
-    "Bundle-valueset-expansions.json" to "Hanging",
-    "Bundle-resources.json" to "Java heap space",
-    "Bundle-dataelements.json" to "Java heap space",
-    "CodeSystem-v3-ManagedParticipationStatus.json" to "Java heap space",
-    "ValueSet-v3-hl7PublishingSubSection.json" to "Instant with trailing 0s",
-    "Observation-decimal.json" to "Scientific notation",
-    "ActivityDefinition-administer-zika-virus-exposure-assessment.json" to "Invalid resources",
     "ImplementationGuide-fhir.json" to "Invalid resources",
     "Questionnaire-qs1.json" to "Invalid resources",
     "ig-r4.json" to "Invalid resources",
@@ -51,24 +42,16 @@ private val skippedR4TestCaseNameToReasonMap =
 /** A map from the test case name to the reason why the test case is skipped in R4B. */
 private val skippedR4BTestCaseNameToReasonMap =
   mapOf(
-    "Bundle-resources.json" to "Java heap space",
-    "Observation-decimal.json" to "Scientific notation",
     "Bundle-valuesets.json" to "Invalid resources",
     "CodeSystem-catalogType.json" to "Invalid resources",
     "ValueSet-catalogType.json" to "Invalid resources",
-    "ActivityDefinition-administer-zika-virus-exposure-assessment.json" to "Invalid resources",
   )
 
 /** A map from the test case name to the reason why the test case is skipped in R5. */
 private val skippedR5CaseNameToReasonMap =
   mapOf(
-    "Bundle-searchParams.json" to "Hanging",
-    "Bundle-resources.json" to "Java heap space",
-    "ArtifactAssessment-example-certainty-rating.json" to "Trailing 0 in milliseconds",
-    "Citation-citation-example-research-doi.json" to "Trailing 0 in milliseconds",
-    "Observation-decimal.json" to "Scientific notation",
     "ChargeItemDefinition-ebm.json" to
-      "Unknown code 'text/CQL' for enum ExpressionLanguage; codes are case-sensitive",
+      "Unknown code 'text/CQL' for enum ExpressionLanguage; codes are case-sensitive"
   )
 
 private val plainJson = Json { prettyPrint = true }
@@ -166,6 +149,46 @@ class SerializationRoundTripTest :
           }
         }
       }
+
+    context("removeTrailingZerosInFractionalSeconds") {
+      test("entirely zero fractional seconds are stripped") {
+        assertEquals(
+          "2026-06-16T09:40:48Z",
+          "2026-06-16T09:40:48.000Z".removeTrailingZerosInFractionalSeconds(),
+        )
+        assertEquals(
+          "2026-06-16T09:40:48+01:00",
+          "2026-06-16T09:40:48.000+01:00".removeTrailingZerosInFractionalSeconds(),
+        )
+        assertEquals(
+          "2026-06-16T09:40:48-05:00",
+          "2026-06-16T09:40:48.000-05:00".removeTrailingZerosInFractionalSeconds(),
+        )
+      }
+
+      test("trailing zeros in fractional seconds are trimmed") {
+        assertEquals(
+          "2026-06-16T09:40:48.12Z",
+          "2026-06-16T09:40:48.1200Z".removeTrailingZerosInFractionalSeconds(),
+        )
+        assertEquals(
+          "2026-06-16T09:40:48.12+01:00",
+          "2026-06-16T09:40:48.1200+01:00".removeTrailingZerosInFractionalSeconds(),
+        )
+        assertEquals(
+          "2026-06-16T09:40:48.12-05:00",
+          "2026-06-16T09:40:48.1200-05:00".removeTrailingZerosInFractionalSeconds(),
+        )
+      }
+
+      test("decimal numbers are not modified") {
+        assertEquals(
+          "0.0000000000000000000001",
+          "0.0000000000000000000001".removeTrailingZerosInFractionalSeconds(),
+        )
+        assertEquals("1.0000000", "1.0000000".removeTrailingZerosInFractionalSeconds())
+      }
+    }
   })
 
 private data class SerializationRoundTripTestSuite(
@@ -178,9 +201,9 @@ private data class SerializationRoundTripTestSuite(
 private fun assertEqualsIgnoringZeros(exampleJson: String, reserializedString: String) {
   val expected =
     exampleJson
-      .removeZeroMilliseconds()
+      .removeTrailingZerosInFractionalSeconds()
       .replace("+00:00", "Z") // Unify UTC offset representation for Z
-  val actual = reserializedString.removeZeroMilliseconds()
+  val actual = reserializedString.removeTrailingZerosInFractionalSeconds()
   val expectedJson = plainJson.parseToJsonElement(expected)
   val actualJson = plainJson.parseToJsonElement(actual)
   assertJsonEquals(expectedJson, actualJson)
@@ -225,13 +248,12 @@ private fun assertJsonEquals(expected: JsonElement, actual: JsonElement) {
   }
 }
 
-private val zeroMillisecondsPlusRegex = "\\.000\\+".toRegex()
-private val zeroMillisecondsMinusRegex = "\\.000-".toRegex()
-private val zeroMillisecondsZRegex = "\\.000Z".toRegex()
-private val longZeroMillisecondsZRegex = "\\.0000000".toRegex()
+// Matches trailing zeros in fractional seconds, e.g. ".1200Z" -> ".12Z" (preserves the non-zero
+// digits before the trailing zeros)
+private val trailingZerosInFractionalSeconds = "(\\.\\d*?[1-9])0+(?=[Z+\\-])".toRegex()
 
-private fun String.removeZeroMilliseconds(): String =
-  replace(zeroMillisecondsPlusRegex, "+")
-    .replace(zeroMillisecondsMinusRegex, "-")
-    .replace(zeroMillisecondsZRegex, "Z")
-    .replace(longZeroMillisecondsZRegex, "")
+// Matches fractional seconds that are entirely zeros, e.g. ".000Z" -> "Z"
+private val zeroFractionalSeconds = "\\.0+(?=[Z+\\-])".toRegex()
+
+private fun String.removeTrailingZerosInFractionalSeconds(): String =
+  replace(trailingZerosInFractionalSeconds, "$1").replace(zeroFractionalSeconds, "")

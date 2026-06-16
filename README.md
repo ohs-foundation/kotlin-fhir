@@ -109,7 +109,7 @@ follows:
 > [Kotlin Multiplatform BigNum](https://github.com/ionspin/kotlin-multiplatform-bignum)
 > library's `BigDecimal` is used to preserve and respect the precision of decimal values as required
 > by the specification. See the notes section in [Datatypes](https://hl7.org/fhir/datatypes.html).
-
+>
 > [!NOTE]
 > The `System.Date` and `System.DateTime` types are mapped to sealed interfaces
 > `FhirDate` and `FhirDateTime` specifically generated to handle partial dates in FHIR. They are
@@ -295,7 +295,7 @@ types are represented by two JSON properties (e.g.
 in [R4](https://hl7.org/fhir/R4/json.html#primitive)). As a result, the Kotlin data class of any
 FHIR resource or element containing primitive data types cannot be directly mapped to JSON.
 
-To address this, the library generates one hand-rolled `KSerializer` per FHIR type (e.g.
+To address this, the library generates a custom `KSerializer` per FHIR type (e.g.
 `PatientSerializer`). Each serializer describes the flat FHIR JSON wire shape via
 `buildClassSerialDescriptor` — one descriptor slot per wire key, including the `_field` sidecar
 keys for primitive extensions (e.g. `gender` + `_gender`).
@@ -464,17 +464,17 @@ plugin (to deserialize FHIR spec JSON) and runtime dependencies (`bignum`, `kotl
 KotlinPoet) that `buildSrc` cannot cleanly support.
 
 - the model class (the primary class) in the root package e.g. `dev.ohs.fhir.model.r4`, and
-- a hand-rolled streaming `KSerializer` per type (e.g. `PatientSerializer`, plus one per
-  BackboneElement) in the serializer package e.g. `dev.ohs.fhir.model.r4.serializers`. Resource
-  types additionally get a thin `XPolymorphicSerializer` (descriptor without `resourceType`) used
-  by `ResourcePolymorphicSerializer` for class-discriminator dispatch.
+- a custom `KSerializer` per type (e.g. `PatientSerializer`, plus one per BackboneElement) in the
+  serializer package e.g. `dev.ohs.fhir.model.r4.serializers`. Resource types additionally get a
+  thin `XPolymorphicSerializer` (descriptor without `resourceType`) used by
+  `ResourcePolymorphicSerializer` for class-discriminator dispatch.
 
 using
 [`ModelFileSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/ModelFileSpecGenerator.kt)
 and
 [`SerializerFileSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/SerializerFileSpecGenerator.kt),
-respectively. Each generated serializer streams
-against kotlinx's `CompositeEncoder` / `CompositeDecoder` over the flat FHIR JSON wire shape.
+respectively. Each generated serializer encodes and decodes sequentially via kotlinx's
+`CompositeEncoder` / `CompositeDecoder` over the flat FHIR JSON wire shape.
 
 Additionally,
 the [`schema`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/schema) package in
@@ -783,21 +783,32 @@ This section is for developers who want to contribute to the library.
 
 ### Running the codegen locally
 
-You can run the codegen locally to generate FHIR models for all supported FHIR versions at once[^6]:
-
-[^6]: To generate FHIR models for a specific version, run
-`./gradlew :fhir-model-<FHIR_VERSION>:codegen` where `<FHIR_VERSION>`∈ {`r4`, `r4b`, `r5`}.
+You can run the codegen locally to generate FHIR models for all supported FHIR versions at once, or
+for a specific FHIR version:
 
 ```bash
-# Generate models for a specific FHIR version:
-./gradlew :fhir-model-r4:codegen
-
-# Or generate all FHIR versions at once:
+# Generate models for all FHIR versions (R4, R4B, R5) at once:
 ./gradlew codegen
+
+# Generate models for a specific FHIR version (r4, r4b, or r5):
+./gradlew :fhir-model-<FHIR_VERSION>:codegen
 ```
 
 This will sync all generated code into each module's `src/commonMain/kotlin` directory and apply
 consistent formatting using the [`spotless`](https://github.com/diffplug/spotless) plugin.
+
+#### Verifying generated code
+
+Before pushing changes, you can verify that the committed FHIR models are up-to-date with the
+codegen:
+
+```bash
+./gradlew verifyCodegen
+```
+
+This task regenerates the FHIR models and checks if the output differs from the committed code in
+Git. If this task fails, it means there are changes in the generated output that need to be
+committed.
 
 > [!NOTE]
 > The library is designed for use as a dependency. Directly copying generated code into

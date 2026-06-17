@@ -184,11 +184,12 @@ private class BuilderSupportGenerator(
         val propertyInfo =
           PropertyMapper(PropertyMapper.MappingContext.BUILDER, baseClassName, valueSetMap)
             .mapToProperty(idElement)
+        // No KDoc copied from the spec here: the spec text says the id "never changes", which is
+        // true of the immutable resource but contradicts this settable builder property.
         builder.addProperty(
           PropertySpec.builder(propertyInfo.name, propertyInfo.typeName)
             .mutable()
             .addModifiers(KModifier.ABSTRACT)
-            .addKdoc("%L", idElement.definition.sanitizeKDoc())
             .build()
         )
       }

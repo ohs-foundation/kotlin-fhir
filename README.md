@@ -1,10 +1,11 @@
 # Kotlin FHIR
 
+[![tests](https://github.com/ohs-foundation/kotlin-fhir/actions/workflows/run-tests.yml/badge.svg)](https://github.com/ohs-foundation/kotlin-fhir/actions/workflows/run-tests.yml)
 [![fhir-model (R4, R4B, R5)](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model?color=blue&label=fhir-model)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model)
 [![FHIR R4](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4?color=green&label=fhir-model-r4)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4)
 [![FHIR R4B](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b?color=orange&label=fhir-model-r4b)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b)
 [![FHIR R5](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r5?color=purple&label=fhir-model-r5)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r5)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Apache_2.0-lightgrey.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Kotlin FHIR is a lean and fast implementation of the
 [HL7® FHIR®](https://www.hl7.org/fhir/overview.html) data model on

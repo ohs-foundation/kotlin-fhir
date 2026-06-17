@@ -110,7 +110,7 @@ follows:
 > [Kotlin Multiplatform BigNum](https://github.com/ionspin/kotlin-multiplatform-bignum)
 > library's `BigDecimal` is used to preserve and respect the precision of decimal values as required
 > by the specification. See the notes section in [Datatypes](https://hl7.org/fhir/datatypes.html).
->
+
 > [!NOTE]
 > The `System.Date` and `System.DateTime` types are mapped to sealed interfaces
 > `FhirDate` and `FhirDateTime` specifically generated to handle partial dates in FHIR. They are

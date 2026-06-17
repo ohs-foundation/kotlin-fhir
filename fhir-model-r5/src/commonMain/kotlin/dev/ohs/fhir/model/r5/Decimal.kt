@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -86,7 +89,11 @@ public data class Decimal(
     public open var `value`: BigDecimal? = null
 
     public open fun build(): Decimal =
-      Decimal(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      Decimal(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

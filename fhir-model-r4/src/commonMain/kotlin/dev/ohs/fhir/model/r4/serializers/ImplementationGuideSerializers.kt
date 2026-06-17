@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -90,10 +93,14 @@ internal object ImplementationGuideDependsOnSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.DependsOn =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.DependsOn) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImplementationGuide.DependsOn {
@@ -194,10 +201,14 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Global =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Global) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImplementationGuide.Global {
@@ -317,10 +328,14 @@ internal object ImplementationGuideDefinitionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImplementationGuide.Definition {
@@ -452,10 +467,14 @@ internal object ImplementationGuideDefinitionGroupingSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Grouping =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Grouping) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -569,10 +588,14 @@ internal object ImplementationGuideDefinitionResourceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Resource =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Resource) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -786,10 +809,14 @@ internal object ImplementationGuideDefinitionPageSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Page =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Page) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImplementationGuide.Definition.Page {
@@ -923,10 +950,14 @@ internal object ImplementationGuideDefinitionParameterSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Parameter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Parameter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1024,10 +1055,14 @@ internal object ImplementationGuideDefinitionTemplateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Template =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Template) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1156,10 +1191,14 @@ internal object ImplementationGuideManifestSerializer : KSerializer<Implementati
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Manifest =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Manifest) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImplementationGuide.Manifest {
@@ -1309,10 +1348,14 @@ internal object ImplementationGuideManifestResourceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Manifest.Resource =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Manifest.Resource) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1461,10 +1504,14 @@ internal object ImplementationGuideManifestPageSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide.Manifest.Page =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Manifest.Page) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImplementationGuide.Manifest.Page {
@@ -1664,7 +1711,9 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
   }
 
   override fun deserialize(decoder: Decoder): ImplementationGuide =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide) {
     encoder.encodeStructure(descriptor) {

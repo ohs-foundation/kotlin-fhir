@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -75,13 +78,17 @@ internal object MedicinalProductPharmaceuticalCharacteristicsSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProductPharmaceutical.Characteristics =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: MedicinalProductPharmaceutical.Characteristics,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -179,13 +186,17 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProductPharmaceutical.RouteOfAdministration =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: MedicinalProductPharmaceutical.RouteOfAdministration,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -354,13 +365,17 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpecies
   override fun deserialize(
     decoder: Decoder
   ): MedicinalProductPharmaceutical.RouteOfAdministration.TargetSpecies =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: MedicinalProductPharmaceutical.RouteOfAdministration.TargetSpecies,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -475,13 +490,17 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpecies
   override fun deserialize(
     decoder: Decoder
   ): MedicinalProductPharmaceutical.RouteOfAdministration.TargetSpecies.WithdrawalPeriod =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: MedicinalProductPharmaceutical.RouteOfAdministration.TargetSpecies.WithdrawalPeriod,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -629,7 +648,9 @@ internal object MedicinalProductPharmaceuticalSerializer :
   }
 
   override fun deserialize(decoder: Decoder): MedicinalProductPharmaceutical =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductPharmaceutical) {
     encoder.encodeStructure(descriptor) {

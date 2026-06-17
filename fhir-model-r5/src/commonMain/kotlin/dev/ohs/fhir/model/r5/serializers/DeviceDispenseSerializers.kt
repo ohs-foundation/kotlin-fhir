@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -77,10 +80,14 @@ internal object DeviceDispensePerformerSerializer : KSerializer<DeviceDispense.P
     }
 
   override fun deserialize(decoder: Decoder): DeviceDispense.Performer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDispense.Performer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDispense.Performer {
@@ -223,7 +230,9 @@ internal object DeviceDispenseSerializer : KSerializer<DeviceDispense> {
   }
 
   override fun deserialize(decoder: Decoder): DeviceDispense =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDispense) {
     encoder.encodeStructure(descriptor) {

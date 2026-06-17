@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -337,43 +340,47 @@ public data class ConditionDefinition(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, code.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        subtitle = this@with.subtitle?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        severity = this@with.severity?.toBuilder()
-        bodySite = this@with.bodySite?.toBuilder()
-        stage = this@with.stage?.toBuilder()
-        hasSeverity = this@with.hasSeverity?.toBuilder()
-        hasBodySite = this@with.hasBodySite?.toBuilder()
-        hasStage = this@with.hasStage?.toBuilder()
-        definition = this@with.definition.map { it.toBuilder() }.toMutableList()
-        observation = this@with.observation.map { it.toBuilder() }.toMutableList()
-        medication = this@with.medication.map { it.toBuilder() }.toMutableList()
-        precondition = this@with.precondition.map { it.toBuilder() }.toMutableList()
-        team = this@with.team.map { it.toBuilder() }.toMutableList()
-        questionnaire = this@with.questionnaire.map { it.toBuilder() }.toMutableList()
-        plan = this@with.plan.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          code.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          url = this@with.url?.toBuilder()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          version = this@with.version?.toBuilder()
+          versionAlgorithm = this@with.versionAlgorithm
+          name = this@with.name?.toBuilder()
+          title = this@with.title?.toBuilder()
+          subtitle = this@with.subtitle?.toBuilder()
+          experimental = this@with.experimental?.toBuilder()
+          date = this@with.date?.toBuilder()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
+          severity = this@with.severity?.toBuilder()
+          bodySite = this@with.bodySite?.toBuilder()
+          stage = this@with.stage?.toBuilder()
+          hasSeverity = this@with.hasSeverity?.toBuilder()
+          hasBodySite = this@with.hasBodySite?.toBuilder()
+          hasStage = this@with.hasStage?.toBuilder()
+          definition = this@with.definition.map { it.toBuilder() }.toMutableList()
+          observation = this@with.observation.map { it.toBuilder() }.toMutableList()
+          medication = this@with.medication.map { it.toBuilder() }.toMutableList()
+          precondition = this@with.precondition.map { it.toBuilder() }.toMutableList()
+          team = this@with.team.map { it.toBuilder() }.toMutableList()
+          questionnaire = this@with.questionnaire.map { it.toBuilder() }.toMutableList()
+          plan = this@with.plan.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Observations particularly relevant to this condition. */
@@ -653,12 +660,16 @@ public data class ConditionDefinition(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type, code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `value` = this@with.`value`
-        }
+        Builder(
+            type,
+            code.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            `value` = this@with.`value`
+          }
       }
 
     public sealed interface Value {
@@ -791,11 +802,15 @@ public data class ConditionDefinition(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(purpose, reference.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            purpose,
+            reference.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(

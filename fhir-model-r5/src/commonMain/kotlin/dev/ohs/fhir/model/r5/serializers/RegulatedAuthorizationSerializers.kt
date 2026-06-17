@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -86,10 +89,14 @@ internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuth
     }
 
   override fun deserialize(decoder: Decoder): RegulatedAuthorization.Case =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RegulatedAuthorization.Case) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RegulatedAuthorization.Case {
@@ -276,7 +283,9 @@ internal object RegulatedAuthorizationSerializer : KSerializer<RegulatedAuthoriz
   }
 
   override fun deserialize(decoder: Decoder): RegulatedAuthorization =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RegulatedAuthorization) {
     encoder.encodeStructure(descriptor) {

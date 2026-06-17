@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -615,8 +618,7 @@ public data class Invoice(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
-        ChargeItem
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : ChargeItem
 
       public data class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept

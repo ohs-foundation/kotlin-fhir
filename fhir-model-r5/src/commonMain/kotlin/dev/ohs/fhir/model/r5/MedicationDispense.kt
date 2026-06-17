@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -278,42 +281,47 @@ public data class MedicationDispense(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, medication.toBuilder(), subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        notPerformedReason = this@with.notPerformedReason?.toBuilder()
-        statusChanged = this@with.statusChanged?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        supportingInformation =
-          this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        location = this@with.location?.toBuilder()
-        authorizingPrescription =
-          this@with.authorizingPrescription.map { it.toBuilder() }.toMutableList()
-        type = this@with.type?.toBuilder()
-        quantity = this@with.quantity?.toBuilder()
-        daysSupply = this@with.daysSupply?.toBuilder()
-        recorded = this@with.recorded?.toBuilder()
-        whenPrepared = this@with.whenPrepared?.toBuilder()
-        whenHandedOver = this@with.whenHandedOver?.toBuilder()
-        destination = this@with.destination?.toBuilder()
-        `receiver` = this@with.`receiver`.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        renderedDosageInstruction = this@with.renderedDosageInstruction?.toBuilder()
-        dosageInstruction = this@with.dosageInstruction.map { it.toBuilder() }.toMutableList()
-        substitution = this@with.substitution?.toBuilder()
-        eventHistory = this@with.eventHistory.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          medication.toBuilder(),
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          notPerformedReason = this@with.notPerformedReason?.toBuilder()
+          statusChanged = this@with.statusChanged?.toBuilder()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          supportingInformation =
+            this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          location = this@with.location?.toBuilder()
+          authorizingPrescription =
+            this@with.authorizingPrescription.map { it.toBuilder() }.toMutableList()
+          type = this@with.type?.toBuilder()
+          quantity = this@with.quantity?.toBuilder()
+          daysSupply = this@with.daysSupply?.toBuilder()
+          recorded = this@with.recorded?.toBuilder()
+          whenPrepared = this@with.whenPrepared?.toBuilder()
+          whenHandedOver = this@with.whenHandedOver?.toBuilder()
+          destination = this@with.destination?.toBuilder()
+          `receiver` = this@with.`receiver`.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          renderedDosageInstruction = this@with.renderedDosageInstruction?.toBuilder()
+          dosageInstruction = this@with.dosageInstruction.map { it.toBuilder() }.toMutableList()
+          substitution = this@with.substitution?.toBuilder()
+          eventHistory = this@with.eventHistory.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Indicates who or what performed the event. */

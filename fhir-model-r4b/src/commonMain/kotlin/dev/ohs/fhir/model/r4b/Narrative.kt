@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -67,10 +70,14 @@ public data class Narrative(
 ) : Element() {
   public fun toBuilder(): Builder =
     with(this) {
-      Builder(status, div.toBuilder()).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          div.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   public open class Builder(

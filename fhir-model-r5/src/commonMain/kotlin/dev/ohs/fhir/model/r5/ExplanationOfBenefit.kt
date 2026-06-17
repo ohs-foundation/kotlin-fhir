@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -437,7 +440,14 @@ public data class ExplanationOfBenefit(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, type.toBuilder(), use, patient.toBuilder(), created.toBuilder(), outcome)
+      Builder(
+          status,
+          type.toBuilder(),
+          use,
+          patient.toBuilder(),
+          created.toBuilder(),
+          outcome,
+        )
         .apply {
           id = this@with.id
           meta = this@with.meta?.toBuilder()
@@ -685,11 +695,15 @@ public data class ExplanationOfBenefit(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), `when`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type.toBuilder(),
+            `when`,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface When {
@@ -1362,13 +1376,17 @@ public data class ExplanationOfBenefit(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(sequence.toBuilder(), diagnosis).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          onAdmission = this@with.onAdmission?.toBuilder()
-        }
+        Builder(
+            sequence.toBuilder(),
+            diagnosis,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            type = this@with.type.map { it.toBuilder() }.toMutableList()
+            onAdmission = this@with.onAdmission?.toBuilder()
+          }
       }
 
     public sealed interface Diagnosis {
@@ -1526,14 +1544,18 @@ public data class ExplanationOfBenefit(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(sequence.toBuilder(), procedure).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          date = this@with.date?.toBuilder()
-          udi = this@with.udi.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            sequence.toBuilder(),
+            procedure,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            type = this@with.type.map { it.toBuilder() }.toMutableList()
+            date = this@with.date?.toBuilder()
+            udi = this@with.udi.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Procedure {

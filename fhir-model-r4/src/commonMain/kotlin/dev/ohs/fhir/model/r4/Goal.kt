@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -234,29 +237,34 @@ public data class Goal(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(lifecycleStatus, description.toBuilder(), subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        achievementStatus = this@with.achievementStatus?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        priority = this@with.priority?.toBuilder()
-        start = this@with.start
-        target = this@with.target.map { it.toBuilder() }.toMutableList()
-        statusDate = this@with.statusDate?.toBuilder()
-        statusReason = this@with.statusReason?.toBuilder()
-        expressedBy = this@with.expressedBy?.toBuilder()
-        addresses = this@with.addresses.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        outcomeCode = this@with.outcomeCode.map { it.toBuilder() }.toMutableList()
-        outcomeReference = this@with.outcomeReference.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          lifecycleStatus,
+          description.toBuilder(),
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          achievementStatus = this@with.achievementStatus?.toBuilder()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          priority = this@with.priority?.toBuilder()
+          start = this@with.start
+          target = this@with.target.map { it.toBuilder() }.toMutableList()
+          statusDate = this@with.statusDate?.toBuilder()
+          statusReason = this@with.statusReason?.toBuilder()
+          expressedBy = this@with.expressedBy?.toBuilder()
+          addresses = this@with.addresses.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          outcomeCode = this@with.outcomeCode.map { it.toBuilder() }.toMutableList()
+          outcomeReference = this@with.outcomeReference.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Indicates what should be done by when. */

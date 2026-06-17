@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -77,10 +80,14 @@ internal object BiologicallyDerivedProductDispensePerformerSerializer :
     }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProductDispense.Performer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProductDispense.Performer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -214,7 +221,9 @@ internal object BiologicallyDerivedProductDispenseSerializer :
   }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProductDispense =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProductDispense) {
     encoder.encodeStructure(descriptor) {

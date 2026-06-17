@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -95,10 +98,14 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
     }
 
   override fun deserialize(decoder: Decoder): Appointment.Participant =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.Participant) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Appointment.Participant {
@@ -262,10 +269,14 @@ internal object AppointmentRecurrenceTemplateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.RecurrenceTemplate) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Appointment.RecurrenceTemplate {
@@ -560,10 +571,14 @@ internal object AppointmentRecurrenceTemplateWeeklyTemplateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.WeeklyTemplate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.RecurrenceTemplate.WeeklyTemplate) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -730,13 +745,17 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.MonthlyTemplate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Appointment.RecurrenceTemplate.MonthlyTemplate,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -861,10 +880,14 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.YearlyTemplate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.RecurrenceTemplate.YearlyTemplate) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1058,7 +1081,9 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
   }
 
   override fun deserialize(decoder: Decoder): Appointment =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Appointment) {
     encoder.encodeStructure(descriptor) {

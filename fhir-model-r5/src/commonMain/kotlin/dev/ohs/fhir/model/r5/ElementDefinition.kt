@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -281,6 +284,7 @@ public data class ElementDefinition(
    *
    * When pattern[x] is used to constrain a complex object, it means that each property in the
    * pattern must be present in the complex object, and its value must recursively match -- i.e.,
+   *
    * 1. If primitive: it must match exactly the pattern value
    * 2. If a complex object: it must match (recursively) the pattern value
    * 3. If an array: it must match (recursively) the pattern value
@@ -612,10 +616,14 @@ public data class ElementDefinition(
     ) : Element() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(type, path.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              type,
+              path.toBuilder(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public class Builder(
@@ -1059,10 +1067,14 @@ public data class ElementDefinition(
   ) : Element() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(label.toBuilder(), `value`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            label.toBuilder(),
+            `value`,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Value {
@@ -1174,8 +1186,7 @@ public data class ElementDefinition(
 
       public fun asMeta(): Meta? = this as? Meta
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
-        Value
+      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) : Value
 
       public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
@@ -1232,8 +1243,7 @@ public data class ElementDefinition(
 
       public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
-        Value
+      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) : Value
 
       public data class Count(public val `value`: dev.ohs.fhir.model.r5.Count) : Value
 
@@ -1284,11 +1294,9 @@ public data class ElementDefinition(
         public val `value`: dev.ohs.fhir.model.r5.TriggerDefinition
       ) : Value
 
-      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) :
-        Value
+      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) : Value
 
-      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) :
-        Value
+      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) : Value
 
       public data class ExtendedContactDetail(
         public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail
@@ -1527,14 +1535,19 @@ public data class ElementDefinition(
   ) : Element() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(key.toBuilder(), severity, human.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          requirements = this@with.requirements?.toBuilder()
-          suppress = this@with.suppress?.toBuilder()
-          expression = this@with.expression?.toBuilder()
-          source = this@with.source?.toBuilder()
-        }
+        Builder(
+            key.toBuilder(),
+            severity,
+            human.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            requirements = this@with.requirements?.toBuilder()
+            suppress = this@with.suppress?.toBuilder()
+            expression = this@with.expression?.toBuilder()
+            source = this@with.source?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -1742,14 +1755,18 @@ public data class ElementDefinition(
     ) : Element() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(purpose, valueSet.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            documentation = this@with.documentation?.toBuilder()
-            shortDoco = this@with.shortDoco?.toBuilder()
-            usage = this@with.usage.map { it.toBuilder() }.toMutableList()
-            any = this@with.any?.toBuilder()
-          }
+          Builder(
+              purpose,
+              valueSet.toBuilder(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              documentation = this@with.documentation?.toBuilder()
+              shortDoco = this@with.shortDoco?.toBuilder()
+              usage = this@with.usage.map { it.toBuilder() }.toMutableList()
+              any = this@with.any?.toBuilder()
+            }
         }
 
       public class Builder(
@@ -2546,8 +2563,7 @@ public data class ElementDefinition(
 
     public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Fixed
 
-    public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r5.ContactDetail) :
-      Fixed
+    public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r5.ContactDetail) : Fixed
 
     public data class DataRequirement(public val `value`: dev.ohs.fhir.model.r5.DataRequirement) :
       Fixed
@@ -2803,8 +2819,7 @@ public data class ElementDefinition(
 
     public fun asMeta(): Meta? = this as? Meta
 
-    public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
-      Pattern
+    public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) : Pattern
 
     public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Pattern
 
@@ -2861,8 +2876,7 @@ public data class ElementDefinition(
 
     public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Pattern
 
-    public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
-      Pattern
+    public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) : Pattern
 
     public data class Count(public val `value`: dev.ohs.fhir.model.r5.Count) : Pattern
 
@@ -2913,11 +2927,9 @@ public data class ElementDefinition(
       public val `value`: dev.ohs.fhir.model.r5.TriggerDefinition
     ) : Pattern
 
-    public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) :
-      Pattern
+    public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) : Pattern
 
-    public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) :
-      Pattern
+    public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) : Pattern
 
     public data class ExtendedContactDetail(
       public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail
@@ -3450,6 +3462,7 @@ public data class ElementDefinition(
      *
      * When pattern[x] is used to constrain a complex object, it means that each property in the
      * pattern must be present in the complex object, and its value must recursively match -- i.e.,
+     *
      * 1. If primitive: it must match exactly the pattern value
      * 2. If a complex object: it must match (recursively) the pattern value
      * 3. If an array: it must match (recursively) the pattern value

@@ -36,7 +36,10 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
-@OptIn(ExperimentalSerializationApi::class, InternalSerializationApi::class)
+@OptIn(
+  ExperimentalSerializationApi::class,
+  InternalSerializationApi::class,
+)
 internal object BooleanSerializer : KSerializer<R5Boolean> {
   private val extensionListSerializer: KSerializer<List<Extension>> =
     ListSerializer(Extension.serializer())

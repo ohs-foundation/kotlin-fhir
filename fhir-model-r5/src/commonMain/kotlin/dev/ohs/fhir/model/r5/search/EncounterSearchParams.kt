@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5.search
 
@@ -273,7 +276,9 @@ public object EncounterSearchParams {
           ImmunizationRecommendation::class,
           Condition::class,
         ),
-      extractor = { resource -> resource.reason.flatMap { it.`value` }.mapNotNull { it.reference } },
+      extractor = { resource ->
+        resource.reason.flatMap { it.`value` }.mapNotNull { it.reference }
+      },
     )
 
   public val serviceProvider: SearchParam<Encounter, Reference> =

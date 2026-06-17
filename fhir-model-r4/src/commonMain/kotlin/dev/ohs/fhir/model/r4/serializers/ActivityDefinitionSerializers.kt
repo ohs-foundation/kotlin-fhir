@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -95,10 +98,14 @@ internal object ActivityDefinitionParticipantSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ActivityDefinition.Participant =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ActivityDefinition.Participant) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ActivityDefinition.Participant {
@@ -187,10 +194,14 @@ internal object ActivityDefinitionDynamicValueSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ActivityDefinition.DynamicValue =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ActivityDefinition.DynamicValue) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ActivityDefinition.DynamicValue {
@@ -441,7 +452,9 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
   }
 
   override fun deserialize(decoder: Decoder): ActivityDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ActivityDefinition) {
     encoder.encodeStructure(descriptor) {

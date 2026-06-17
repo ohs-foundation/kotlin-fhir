@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -84,7 +87,11 @@ public data class Oid(
     open override var `value`: String? = null
 
     open override fun build(): Oid =
-      Oid(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      Oid(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

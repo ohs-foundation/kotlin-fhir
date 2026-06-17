@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -211,27 +214,31 @@ public data class EncounterHistory(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, `class`.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        subjectStatus = this@with.subjectStatus?.toBuilder()
-        actualPeriod = this@with.actualPeriod?.toBuilder()
-        plannedStartDate = this@with.plannedStartDate?.toBuilder()
-        plannedEndDate = this@with.plannedEndDate?.toBuilder()
-        length = this@with.length?.toBuilder()
-        location = this@with.location.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          `class`.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          type = this@with.type.map { it.toBuilder() }.toMutableList()
+          serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
+          subject = this@with.subject?.toBuilder()
+          subjectStatus = this@with.subjectStatus?.toBuilder()
+          actualPeriod = this@with.actualPeriod?.toBuilder()
+          plannedStartDate = this@with.plannedStartDate?.toBuilder()
+          plannedEndDate = this@with.plannedEndDate?.toBuilder()
+          length = this@with.length?.toBuilder()
+          location = this@with.location.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**

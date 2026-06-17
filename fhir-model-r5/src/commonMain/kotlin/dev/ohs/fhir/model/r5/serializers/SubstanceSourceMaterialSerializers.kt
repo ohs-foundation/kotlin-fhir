@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -73,10 +76,14 @@ internal object SubstanceSourceMaterialFractionDescriptionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.FractionDescription =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.FractionDescription) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -193,10 +200,14 @@ internal object SubstanceSourceMaterialOrganismSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.Organism) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceSourceMaterial.Organism {
@@ -350,10 +361,14 @@ internal object SubstanceSourceMaterialOrganismAuthorSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism.Author =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.Organism.Author) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -461,10 +476,14 @@ internal object SubstanceSourceMaterialOrganismHybridSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism.Hybrid =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.Organism.Hybrid) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -615,13 +634,17 @@ internal object SubstanceSourceMaterialOrganismOrganismGeneralSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism.OrganismGeneral =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SubstanceSourceMaterial.Organism.OrganismGeneral,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -723,10 +746,14 @@ internal object SubstanceSourceMaterialPartDescriptionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.PartDescription =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.PartDescription) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -882,7 +909,9 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
   }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial) {
     encoder.encodeStructure(descriptor) {

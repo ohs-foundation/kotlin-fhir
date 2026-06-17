@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -82,10 +85,14 @@ internal object ProvenanceAgentSerializer : KSerializer<Provenance.Agent> {
     }
 
   override fun deserialize(decoder: Decoder): Provenance.Agent =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Provenance.Agent) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Provenance.Agent {
@@ -183,10 +190,14 @@ internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
     }
 
   override fun deserialize(decoder: Decoder): Provenance.Entity =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Provenance.Entity) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Provenance.Entity {
@@ -324,7 +335,9 @@ internal object ProvenanceSerializer : KSerializer<Provenance> {
   }
 
   override fun deserialize(decoder: Decoder): Provenance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Provenance) {
     encoder.encodeStructure(descriptor) {

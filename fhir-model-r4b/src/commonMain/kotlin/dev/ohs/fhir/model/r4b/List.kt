@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -203,27 +206,31 @@ public data class List(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, mode).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        title = this@with.title?.toBuilder()
-        code = this@with.code?.toBuilder()
-        subject = this@with.subject?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        date = this@with.date?.toBuilder()
-        source = this@with.source?.toBuilder()
-        orderedBy = this@with.orderedBy?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        entry = this@with.entry.map { it.toBuilder() }.toMutableList()
-        emptyReason = this@with.emptyReason?.toBuilder()
-      }
+      Builder(
+          status,
+          mode,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          title = this@with.title?.toBuilder()
+          code = this@with.code?.toBuilder()
+          subject = this@with.subject?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          date = this@with.date?.toBuilder()
+          source = this@with.source?.toBuilder()
+          orderedBy = this@with.orderedBy?.toBuilder()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          entry = this@with.entry.map { it.toBuilder() }.toMutableList()
+          emptyReason = this@with.emptyReason?.toBuilder()
+        }
     }
 
   /** Entries in this list. */

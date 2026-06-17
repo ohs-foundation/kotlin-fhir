@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -264,8 +267,7 @@ public data class Parameters(
 
       public fun asMeta(): Meta? = this as? Meta
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
-        Value
+      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) : Value
 
       public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
@@ -322,8 +324,7 @@ public data class Parameters(
 
       public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
-        Value
+      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) : Value
 
       public data class Count(public val `value`: dev.ohs.fhir.model.r5.Count) : Value
 
@@ -374,11 +375,9 @@ public data class Parameters(
         public val `value`: dev.ohs.fhir.model.r5.TriggerDefinition
       ) : Value
 
-      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) :
-        Value
+      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) : Value
 
-      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) :
-        Value
+      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) : Value
 
       public data class ExtendedContactDetail(
         public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -92,10 +95,14 @@ internal object EvidenceVariableDefinitionSerializer : KSerializer<Evidence.Vari
     }
 
   override fun deserialize(decoder: Decoder): Evidence.VariableDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Evidence.VariableDefinition) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Evidence.VariableDefinition {
@@ -245,10 +252,14 @@ internal object EvidenceStatisticSerializer : KSerializer<Evidence.Statistic> {
     }
 
   override fun deserialize(decoder: Decoder): Evidence.Statistic =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Evidence.Statistic) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Evidence.Statistic {
@@ -451,10 +462,14 @@ internal object EvidenceStatisticSampleSizeSerializer : KSerializer<Evidence.Sta
     }
 
   override fun deserialize(decoder: Decoder): Evidence.Statistic.SampleSize =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Evidence.Statistic.SampleSize) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Evidence.Statistic.SampleSize {
@@ -590,10 +605,14 @@ internal object EvidenceStatisticAttributeEstimateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Evidence.Statistic.AttributeEstimate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Evidence.Statistic.AttributeEstimate) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Evidence.Statistic.AttributeEstimate {
@@ -761,10 +780,14 @@ internal object EvidenceStatisticModelCharacteristicSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Evidence.Statistic.ModelCharacteristic =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Evidence.Statistic.ModelCharacteristic) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -898,13 +921,17 @@ internal object EvidenceStatisticModelCharacteristicVariableSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Evidence.Statistic.ModelCharacteristic.Variable =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Evidence.Statistic.ModelCharacteristic.Variable,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1063,10 +1090,14 @@ internal object EvidenceCertaintySerializer : KSerializer<Evidence.Certainty> {
     }
 
   override fun deserialize(decoder: Decoder): Evidence.Certainty =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Evidence.Certainty) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Evidence.Certainty {
@@ -1285,7 +1316,9 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
   }
 
   override fun deserialize(decoder: Decoder): Evidence =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Evidence) {
     encoder.encodeStructure(descriptor) {

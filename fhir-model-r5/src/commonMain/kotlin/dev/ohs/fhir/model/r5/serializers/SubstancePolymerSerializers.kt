@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -81,10 +84,14 @@ internal object SubstancePolymerMonomerSetSerializer : KSerializer<SubstancePoly
     }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer.MonomerSet =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.MonomerSet) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstancePolymer.MonomerSet {
@@ -189,10 +196,14 @@ internal object SubstancePolymerMonomerSetStartingMaterialSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer.MonomerSet.StartingMaterial =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.MonomerSet.StartingMaterial) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -303,10 +314,14 @@ internal object SubstancePolymerRepeatSerializer : KSerializer<SubstancePolymer.
     }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer.Repeat =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.Repeat) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstancePolymer.Repeat {
@@ -441,10 +456,14 @@ internal object SubstancePolymerRepeatRepeatUnitSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer.Repeat.RepeatUnit =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.Repeat.RepeatUnit) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstancePolymer.Repeat.RepeatUnit {
@@ -606,13 +625,17 @@ internal object SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer
   override fun deserialize(
     decoder: Decoder
   ): SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -730,13 +753,17 @@ internal object SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializ
   override fun deserialize(
     decoder: Decoder
   ): SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -882,7 +909,9 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
   }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer) {
     encoder.encodeStructure(descriptor) {

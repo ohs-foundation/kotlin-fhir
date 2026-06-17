@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -41,8 +44,10 @@ public sealed interface FhirDateTime {
     override fun toString(): String = date.toString()
   }
 
-  public data class DateTime(public val dateTime: LocalDateTime, public val utcOffset: UtcOffset) :
-    FhirDateTime {
+  public data class DateTime(
+    public val dateTime: LocalDateTime,
+    public val utcOffset: UtcOffset,
+  ) : FhirDateTime {
     override fun toString(): String =
       dateTime.format(LocalDateTime.Formats.ISO) + utcOffset.toString()
   }

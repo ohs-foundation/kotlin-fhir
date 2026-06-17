@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -211,8 +214,10 @@ public data class Subscription(
   /**
    * The MIME type to send the payload in - e.g., `application/fhir+xml` or `application/fhir+json`.
    * Note that:
+   *
    * * clients may request notifications in a specific FHIR version by using the [FHIR Version
    *   Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.
+   *
    * * additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are
    *   defined by the Email channel.
    */
@@ -234,30 +239,35 @@ public data class Subscription(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, topic.toBuilder(), channelType.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        end = this@with.end?.toBuilder()
-        managingEntity = this@with.managingEntity?.toBuilder()
-        reason = this@with.reason?.toBuilder()
-        filterBy = this@with.filterBy.map { it.toBuilder() }.toMutableList()
-        endpoint = this@with.endpoint?.toBuilder()
-        parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-        heartbeatPeriod = this@with.heartbeatPeriod?.toBuilder()
-        timeout = this@with.timeout?.toBuilder()
-        contentType = this@with.contentType?.toBuilder()
-        content = this@with.content
-        maxCount = this@with.maxCount?.toBuilder()
-      }
+      Builder(
+          status,
+          topic.toBuilder(),
+          channelType.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          name = this@with.name?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          end = this@with.end?.toBuilder()
+          managingEntity = this@with.managingEntity?.toBuilder()
+          reason = this@with.reason?.toBuilder()
+          filterBy = this@with.filterBy.map { it.toBuilder() }.toMutableList()
+          endpoint = this@with.endpoint?.toBuilder()
+          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
+          heartbeatPeriod = this@with.heartbeatPeriod?.toBuilder()
+          timeout = this@with.timeout?.toBuilder()
+          contentType = this@with.contentType?.toBuilder()
+          content = this@with.content
+          maxCount = this@with.maxCount?.toBuilder()
+        }
     }
 
   /**
@@ -752,8 +762,10 @@ public data class Subscription(
     /**
      * The MIME type to send the payload in - e.g., `application/fhir+xml` or
      * `application/fhir+json`. Note that:
+     *
      * * clients may request notifications in a specific FHIR version by using the [FHIR Version
      *   Parameter](http.html#version-parameter) - e.g., `application/fhir+json; fhirVersion=4.0`.
+     *
      * * additional MIME types can be allowed by channels - e.g., `text/plain` and `text/html` are
      *   defined by the Email channel.
      */

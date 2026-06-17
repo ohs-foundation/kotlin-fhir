@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -768,12 +771,16 @@ public data class Citation(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(relationshipType.toBuilder(), target).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          targetClassifier = this@with.targetClassifier.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            relationshipType.toBuilder(),
+            target,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            targetClassifier = this@with.targetClassifier.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Target {
@@ -1641,12 +1648,16 @@ public data class Citation(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(relationshipType.toBuilder(), target).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            targetClassifier = this@with.targetClassifier.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              relationshipType.toBuilder(),
+              target,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              targetClassifier = this@with.targetClassifier.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public sealed interface Target {
@@ -1660,13 +1671,11 @@ public data class Citation(
 
         public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Target
 
-        public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) :
-          Target
+        public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) : Target
 
         public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Target
 
-        public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) :
-          Target
+        public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Target
 
         public companion object {
           internal fun from(

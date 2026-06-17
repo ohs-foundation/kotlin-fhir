@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -84,7 +87,11 @@ public data class Base64Binary(
     public open var `value`: String? = null
 
     public open fun build(): Base64Binary =
-      Base64Binary(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      Base64Binary(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

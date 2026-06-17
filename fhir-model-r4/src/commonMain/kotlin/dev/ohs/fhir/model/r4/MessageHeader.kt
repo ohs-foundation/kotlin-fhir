@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -207,25 +210,29 @@ public data class MessageHeader(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(event, source.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        destination = this@with.destination.map { it.toBuilder() }.toMutableList()
-        sender = this@with.sender?.toBuilder()
-        enterer = this@with.enterer?.toBuilder()
-        author = this@with.author?.toBuilder()
-        responsible = this@with.responsible?.toBuilder()
-        reason = this@with.reason?.toBuilder()
-        response = this@with.response?.toBuilder()
-        focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-        definition = this@with.definition?.toBuilder()
-      }
+      Builder(
+          event,
+          source.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          destination = this@with.destination.map { it.toBuilder() }.toMutableList()
+          sender = this@with.sender?.toBuilder()
+          enterer = this@with.enterer?.toBuilder()
+          author = this@with.author?.toBuilder()
+          responsible = this@with.responsible?.toBuilder()
+          reason = this@with.reason?.toBuilder()
+          response = this@with.response?.toBuilder()
+          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
+          definition = this@with.definition?.toBuilder()
+        }
     }
 
   /** The destination application which the message is intended for. */
@@ -596,12 +603,16 @@ public data class MessageHeader(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(identifier.toBuilder(), code).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          details = this@with.details?.toBuilder()
-        }
+        Builder(
+            identifier.toBuilder(),
+            code,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            details = this@with.details?.toBuilder()
+          }
       }
 
     public class Builder(

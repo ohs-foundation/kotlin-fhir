@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -76,10 +79,14 @@ internal object EncounterHistoryLocationSerializer : KSerializer<EncounterHistor
     }
 
   override fun deserialize(decoder: Decoder): EncounterHistory.Location =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EncounterHistory.Location) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EncounterHistory.Location {
@@ -206,7 +213,9 @@ internal object EncounterHistorySerializer : KSerializer<EncounterHistory> {
   }
 
   override fun deserialize(decoder: Decoder): EncounterHistory =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EncounterHistory) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -376,13 +379,17 @@ public data class StructureMap(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(url.toBuilder(), mode).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          alias = this@with.alias?.toBuilder()
-          documentation = this@with.documentation?.toBuilder()
-        }
+        Builder(
+            url.toBuilder(),
+            mode,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            alias = this@with.alias?.toBuilder()
+            documentation = this@with.documentation?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -591,13 +598,17 @@ public data class StructureMap(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(name.toBuilder(), mode).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type?.toBuilder()
-            documentation = this@with.documentation?.toBuilder()
-          }
+          Builder(
+              name.toBuilder(),
+              mode,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              type = this@with.type?.toBuilder()
+              documentation = this@with.documentation?.toBuilder()
+            }
         }
 
       public class Builder(
@@ -720,15 +731,19 @@ public data class StructureMap(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(name.toBuilder(), source.map { it.toBuilder() }.toMutableList()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            target = this@with.target.map { it.toBuilder() }.toMutableList()
-            rule = this@with.rule.map { it.toBuilder() }.toMutableList()
-            dependent = this@with.dependent.map { it.toBuilder() }.toMutableList()
-            documentation = this@with.documentation?.toBuilder()
-          }
+          Builder(
+              name.toBuilder(),
+              source.map { it.toBuilder() }.toMutableList(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              target = this@with.target.map { it.toBuilder() }.toMutableList()
+              rule = this@with.rule.map { it.toBuilder() }.toMutableList()
+              dependent = this@with.dependent.map { it.toBuilder() }.toMutableList()
+              documentation = this@with.documentation?.toBuilder()
+            }
         }
 
       /** Source inputs to the mapping. */
@@ -1650,11 +1665,16 @@ public data class StructureMap(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(name.toBuilder(), variable.map { it.toBuilder() }.toMutableList()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
+            Builder(
+                name.toBuilder(),
+                variable.map { it.toBuilder() }.toMutableList(),
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              }
           }
 
         public class Builder(

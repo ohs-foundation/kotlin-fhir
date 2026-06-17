@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -330,11 +333,15 @@ public data class MedicationKnowledge(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), reference.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type.toBuilder(),
+            reference.map { it.toBuilder() }.toMutableList(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(
@@ -571,13 +578,17 @@ public data class MedicationKnowledge(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), cost).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          effectiveDate = this@with.effectiveDate.map { it.toBuilder() }.toMutableList()
-          source = this@with.source?.toBuilder()
-        }
+        Builder(
+            type.toBuilder(),
+            cost,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            effectiveDate = this@with.effectiveDate.map { it.toBuilder() }.toMutableList()
+            source = this@with.source?.toBuilder()
+          }
       }
 
     public sealed interface Cost {
@@ -973,11 +984,16 @@ public data class MedicationKnowledge(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(type.toBuilder(), dosage.map { it.toBuilder() }.toMutableList()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
+            Builder(
+                type.toBuilder(),
+                dosage.map { it.toBuilder() }.toMutableList(),
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              }
           }
 
         public class Builder(
@@ -1727,11 +1743,15 @@ public data class MedicationKnowledge(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(type.toBuilder(), `value`).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              type.toBuilder(),
+              `value`,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public sealed interface Value {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -101,10 +104,14 @@ internal object SpecimenDefinitionTypeTestedSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SpecimenDefinition.TypeTested =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SpecimenDefinition.TypeTested) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SpecimenDefinition.TypeTested {
@@ -289,10 +296,14 @@ internal object SpecimenDefinitionTypeTestedContainerSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SpecimenDefinition.TypeTested.Container =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SpecimenDefinition.TypeTested.Container) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -459,13 +470,17 @@ internal object SpecimenDefinitionTypeTestedContainerAdditiveSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SpecimenDefinition.TypeTested.Container.Additive =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SpecimenDefinition.TypeTested.Container.Additive,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -582,10 +597,14 @@ internal object SpecimenDefinitionTypeTestedHandlingSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SpecimenDefinition.TypeTested.Handling =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SpecimenDefinition.TypeTested.Handling) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -745,7 +764,9 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
   }
 
   override fun deserialize(decoder: Decoder): SpecimenDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SpecimenDefinition) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -184,10 +187,14 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
     }
 
   override fun deserialize(decoder: Decoder): RequestOrchestration.Action =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestOrchestration.Action) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RequestOrchestration.Action {
@@ -692,10 +699,14 @@ internal object RequestOrchestrationActionConditionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RequestOrchestration.Action.Condition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestOrchestration.Action.Condition) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -792,10 +803,14 @@ internal object RequestOrchestrationActionInputSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RequestOrchestration.Action.Input =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestOrchestration.Action.Input) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RequestOrchestration.Action.Input {
@@ -902,10 +917,14 @@ internal object RequestOrchestrationActionOutputSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RequestOrchestration.Action.Output =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestOrchestration.Action.Output) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RequestOrchestration.Action.Output {
@@ -1015,10 +1034,14 @@ internal object RequestOrchestrationActionRelatedActionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RequestOrchestration.Action.RelatedAction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestOrchestration.Action.RelatedAction) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1170,10 +1193,14 @@ internal object RequestOrchestrationActionParticipantSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RequestOrchestration.Action.Participant =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestOrchestration.Action.Participant) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1320,10 +1347,14 @@ internal object RequestOrchestrationActionDynamicValueSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RequestOrchestration.Action.DynamicValue =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestOrchestration.Action.DynamicValue) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1486,7 +1517,9 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
   }
 
   override fun deserialize(decoder: Decoder): RequestOrchestration =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestOrchestration) {
     encoder.encodeStructure(descriptor) {

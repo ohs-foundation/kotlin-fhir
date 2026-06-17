@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -316,37 +319,42 @@ public data class MessageDefinition(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, date.toBuilder(), event).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
-        experimental = this@with.experimental?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        base = this@with.base?.toBuilder()
-        parent = this@with.parent.map { it.toBuilder() }.toMutableList()
-        category = this@with.category
-        focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-        responseRequired = this@with.responseRequired
-        allowedResponse = this@with.allowedResponse.map { it.toBuilder() }.toMutableList()
-        graph = this@with.graph.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          date.toBuilder(),
+          event,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          url = this@with.url?.toBuilder()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          version = this@with.version?.toBuilder()
+          name = this@with.name?.toBuilder()
+          title = this@with.title?.toBuilder()
+          replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
+          experimental = this@with.experimental?.toBuilder()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
+          purpose = this@with.purpose?.toBuilder()
+          copyright = this@with.copyright?.toBuilder()
+          base = this@with.base?.toBuilder()
+          parent = this@with.parent.map { it.toBuilder() }.toMutableList()
+          category = this@with.category
+          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
+          responseRequired = this@with.responseRequired
+          allowedResponse = this@with.allowedResponse.map { it.toBuilder() }.toMutableList()
+          graph = this@with.graph.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**
@@ -421,13 +429,17 @@ public data class MessageDefinition(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(code, min.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          profile = this@with.profile?.toBuilder()
-          max = this@with.max?.toBuilder()
-        }
+        Builder(
+            code,
+            min.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            profile = this@with.profile?.toBuilder()
+            max = this@with.max?.toBuilder()
+          }
       }
 
     public class Builder(

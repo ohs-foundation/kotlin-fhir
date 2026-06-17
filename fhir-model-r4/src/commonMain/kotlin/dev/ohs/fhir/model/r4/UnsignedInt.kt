@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -88,7 +91,11 @@ public data class UnsignedInt(
     open override var `value`: Int? = null
 
     open override fun build(): UnsignedInt =
-      UnsignedInt(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      UnsignedInt(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

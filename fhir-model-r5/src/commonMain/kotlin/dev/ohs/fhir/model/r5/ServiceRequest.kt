@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -369,47 +372,52 @@ public data class ServiceRequest(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, intent, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical =
-          this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-        instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
-        requisition = this@with.requisition?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        priority = this@with.priority
-        doNotPerform = this@with.doNotPerform?.toBuilder()
-        code = this@with.code?.toBuilder()
-        orderDetail = this@with.orderDetail.map { it.toBuilder() }.toMutableList()
-        quantity = this@with.quantity
-        focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        occurrence = this@with.occurrence
-        asNeeded = this@with.asNeeded
-        authoredOn = this@with.authoredOn?.toBuilder()
-        requester = this@with.requester?.toBuilder()
-        performerType = this@with.performerType?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        location = this@with.location.map { it.toBuilder() }.toMutableList()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-        supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-        specimen = this@with.specimen.map { it.toBuilder() }.toMutableList()
-        bodySite = this@with.bodySite.map { it.toBuilder() }.toMutableList()
-        bodyStructure = this@with.bodyStructure?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        patientInstruction = this@with.patientInstruction.map { it.toBuilder() }.toMutableList()
-        relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          intent,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          instantiatesCanonical =
+            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
+          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
+          requisition = this@with.requisition?.toBuilder()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          priority = this@with.priority
+          doNotPerform = this@with.doNotPerform?.toBuilder()
+          code = this@with.code?.toBuilder()
+          orderDetail = this@with.orderDetail.map { it.toBuilder() }.toMutableList()
+          quantity = this@with.quantity
+          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          occurrence = this@with.occurrence
+          asNeeded = this@with.asNeeded
+          authoredOn = this@with.authoredOn?.toBuilder()
+          requester = this@with.requester?.toBuilder()
+          performerType = this@with.performerType?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          location = this@with.location.map { it.toBuilder() }.toMutableList()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
+          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
+          specimen = this@with.specimen.map { it.toBuilder() }.toMutableList()
+          bodySite = this@with.bodySite.map { it.toBuilder() }.toMutableList()
+          bodyStructure = this@with.bodyStructure?.toBuilder()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          patientInstruction = this@with.patientInstruction.map { it.toBuilder() }.toMutableList()
+          relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**
@@ -528,11 +536,15 @@ public data class ServiceRequest(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(code.toBuilder(), `value`).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              code.toBuilder(),
+              `value`,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public sealed interface Value {
@@ -772,8 +784,7 @@ public data class ServiceRequest(
 
       public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Instruction
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
-        Instruction
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Instruction
 
       public companion object {
         internal fun from(

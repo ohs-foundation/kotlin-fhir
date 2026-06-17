@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -634,12 +637,16 @@ public data class Device(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(`value`.toBuilder(), type).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          display = this@with.display?.toBuilder()
-        }
+        Builder(
+            `value`.toBuilder(),
+            type,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            display = this@with.display?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -1038,11 +1045,15 @@ public data class Device(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), `value`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type.toBuilder(),
+            `value`,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Value {

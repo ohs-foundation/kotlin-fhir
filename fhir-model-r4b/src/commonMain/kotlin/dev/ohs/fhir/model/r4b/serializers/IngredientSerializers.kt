@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -79,10 +82,14 @@ internal object IngredientManufacturerSerializer : KSerializer<Ingredient.Manufa
     }
 
   override fun deserialize(decoder: Decoder): Ingredient.Manufacturer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Ingredient.Manufacturer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Ingredient.Manufacturer {
@@ -175,10 +182,14 @@ internal object IngredientSubstanceSerializer : KSerializer<Ingredient.Substance
     }
 
   override fun deserialize(decoder: Decoder): Ingredient.Substance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Ingredient.Substance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Ingredient.Substance {
@@ -284,10 +295,14 @@ internal object IngredientSubstanceStrengthSerializer : KSerializer<Ingredient.S
     }
 
   override fun deserialize(decoder: Decoder): Ingredient.Substance.Strength =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Ingredient.Substance.Strength) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Ingredient.Substance.Strength {
@@ -525,13 +540,17 @@ internal object IngredientSubstanceStrengthReferenceStrengthSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Ingredient.Substance.Strength.ReferenceStrength =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Ingredient.Substance.Strength.ReferenceStrength,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -714,7 +733,9 @@ internal object IngredientSerializer : KSerializer<Ingredient> {
   }
 
   override fun deserialize(decoder: Decoder): Ingredient =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Ingredient) {
     encoder.encodeStructure(descriptor) {

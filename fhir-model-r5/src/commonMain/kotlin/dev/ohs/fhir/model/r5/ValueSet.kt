@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -1089,11 +1092,17 @@ public data class ValueSet(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(`property`.toBuilder(), op, `value`.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
+            Builder(
+                `property`.toBuilder(),
+                op,
+                `value`.toBuilder(),
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              }
           }
 
         public class Builder(
@@ -2008,12 +2017,17 @@ public data class ValueSet(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(code.toBuilder(), `value`).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              subProperty = this@with.subProperty.map { it.toBuilder() }.toMutableList()
-            }
+            Builder(
+                code.toBuilder(),
+                `value`,
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+                subProperty = this@with.subProperty.map { it.toBuilder() }.toMutableList()
+              }
           }
 
         /** A subproperty value for this concept. */
@@ -2063,12 +2077,16 @@ public data class ValueSet(
         ) : BackboneElement() {
           public fun toBuilder(): Builder =
             with(this) {
-              Builder(code.toBuilder(), `value`).apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              }
+              Builder(
+                  code.toBuilder(),
+                  `value`,
+                )
+                .apply {
+                  id = this@with.id
+                  extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                  modifierExtension =
+                    this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+                }
             }
 
           public sealed interface Value {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -85,7 +88,11 @@ public data class Integer64(
     public open var `value`: Long? = null
 
     public open fun build(): Integer64 =
-      Integer64(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      Integer64(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

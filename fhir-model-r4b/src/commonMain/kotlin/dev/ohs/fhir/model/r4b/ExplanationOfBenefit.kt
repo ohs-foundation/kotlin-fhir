@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -1182,14 +1185,18 @@ public data class ExplanationOfBenefit(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(sequence.toBuilder(), diagnosis).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          onAdmission = this@with.onAdmission?.toBuilder()
-          packageCode = this@with.packageCode?.toBuilder()
-        }
+        Builder(
+            sequence.toBuilder(),
+            diagnosis,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            type = this@with.type.map { it.toBuilder() }.toMutableList()
+            onAdmission = this@with.onAdmission?.toBuilder()
+            packageCode = this@with.packageCode?.toBuilder()
+          }
       }
 
     public sealed interface Diagnosis {
@@ -1361,14 +1368,18 @@ public data class ExplanationOfBenefit(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(sequence.toBuilder(), procedure).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          date = this@with.date?.toBuilder()
-          udi = this@with.udi.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            sequence.toBuilder(),
+            procedure,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            type = this@with.type.map { it.toBuilder() }.toMutableList()
+            date = this@with.date?.toBuilder()
+            udi = this@with.udi.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Procedure {
@@ -4319,8 +4330,7 @@ public data class ExplanationOfBenefit(
 
         public fun asMoney(): Money? = this as? Money
 
-        public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) :
-          Used
+        public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) : Used
 
         public data class Money(public val `value`: dev.ohs.fhir.model.r4b.Money) : Used
 

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -214,26 +217,30 @@ public data class DocumentManifest(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, content.map { it.toBuilder() }.toMutableList()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        masterIdentifier = this@with.masterIdentifier?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        type = this@with.type?.toBuilder()
-        subject = this@with.subject?.toBuilder()
-        created = this@with.created?.toBuilder()
-        author = this@with.author.map { it.toBuilder() }.toMutableList()
-        recipient = this@with.recipient.map { it.toBuilder() }.toMutableList()
-        source = this@with.source?.toBuilder()
-        description = this@with.description?.toBuilder()
-        related = this@with.related.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          content.map { it.toBuilder() }.toMutableList(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          masterIdentifier = this@with.masterIdentifier?.toBuilder()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          type = this@with.type?.toBuilder()
+          subject = this@with.subject?.toBuilder()
+          created = this@with.created?.toBuilder()
+          author = this@with.author.map { it.toBuilder() }.toMutableList()
+          recipient = this@with.recipient.map { it.toBuilder() }.toMutableList()
+          source = this@with.source?.toBuilder()
+          description = this@with.description?.toBuilder()
+          related = this@with.related.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Related identifiers or resources associated with the DocumentManifest. */

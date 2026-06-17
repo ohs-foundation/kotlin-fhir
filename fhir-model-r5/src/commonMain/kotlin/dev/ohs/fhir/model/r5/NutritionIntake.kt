@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -233,7 +236,11 @@ public data class NutritionIntake(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, subject.toBuilder(), consumedItem.map { it.toBuilder() }.toMutableList())
+      Builder(
+          status,
+          subject.toBuilder(),
+          consumedItem.map { it.toBuilder() }.toMutableList(),
+        )
         .apply {
           id = this@with.id
           meta = this@with.meta?.toBuilder()

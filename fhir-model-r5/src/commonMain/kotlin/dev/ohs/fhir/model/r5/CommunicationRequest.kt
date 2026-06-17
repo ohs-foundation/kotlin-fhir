@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -266,36 +269,40 @@ public data class CommunicationRequest(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, intent).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
-        groupIdentifier = this@with.groupIdentifier?.toBuilder()
-        statusReason = this@with.statusReason?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        priority = this@with.priority
-        doNotPerform = this@with.doNotPerform?.toBuilder()
-        medium = this@with.medium.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        about = this@with.about.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        payload = this@with.payload.map { it.toBuilder() }.toMutableList()
-        occurrence = this@with.occurrence
-        authoredOn = this@with.authoredOn?.toBuilder()
-        requester = this@with.requester?.toBuilder()
-        recipient = this@with.recipient.map { it.toBuilder() }.toMutableList()
-        informationProvider = this@with.informationProvider.map { it.toBuilder() }.toMutableList()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          intent,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
+          groupIdentifier = this@with.groupIdentifier?.toBuilder()
+          statusReason = this@with.statusReason?.toBuilder()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          priority = this@with.priority
+          doNotPerform = this@with.doNotPerform?.toBuilder()
+          medium = this@with.medium.map { it.toBuilder() }.toMutableList()
+          subject = this@with.subject?.toBuilder()
+          about = this@with.about.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          payload = this@with.payload.map { it.toBuilder() }.toMutableList()
+          occurrence = this@with.occurrence
+          authoredOn = this@with.authoredOn?.toBuilder()
+          requester = this@with.requester?.toBuilder()
+          recipient = this@with.recipient.map { it.toBuilder() }.toMutableList()
+          informationProvider = this@with.informationProvider.map { it.toBuilder() }.toMutableList()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Text, attachment(s), or resource(s) to be communicated to the recipient. */

@@ -185,7 +185,10 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.`internal`.AbstractPolymorphicSerializer
 import kotlinx.serialization.json.JsonClassDiscriminator
 
-@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+@OptIn(
+  InternalSerializationApi::class,
+  ExperimentalSerializationApi::class,
+)
 internal object ResourcePolymorphicSerializer : AbstractPolymorphicSerializer<Resource>() {
   override val baseClass: KClass<Resource> = Resource::class
 

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -207,30 +210,35 @@ public data class DeviceUsage(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, patient.toBuilder(), device.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-        context = this@with.context?.toBuilder()
-        timing = this@with.timing
-        dateAsserted = this@with.dateAsserted?.toBuilder()
-        usageStatus = this@with.usageStatus?.toBuilder()
-        usageReason = this@with.usageReason.map { it.toBuilder() }.toMutableList()
-        adherence = this@with.adherence?.toBuilder()
-        informationSource = this@with.informationSource?.toBuilder()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        bodySite = this@with.bodySite?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          patient.toBuilder(),
+          device.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
+          context = this@with.context?.toBuilder()
+          timing = this@with.timing
+          dateAsserted = this@with.dateAsserted?.toBuilder()
+          usageStatus = this@with.usageStatus?.toBuilder()
+          usageReason = this@with.usageReason.map { it.toBuilder() }.toMutableList()
+          adherence = this@with.adherence?.toBuilder()
+          informationSource = this@with.informationSource?.toBuilder()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          bodySite = this@with.bodySite?.toBuilder()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** This indicates how or if the device is being used. */
@@ -280,11 +288,15 @@ public data class DeviceUsage(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(code.toBuilder(), reason.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            code.toBuilder(),
+            reason.map { it.toBuilder() }.toMutableList(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(

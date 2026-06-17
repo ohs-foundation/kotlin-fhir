@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -87,13 +90,17 @@ internal object MedicinalProductAuthorizationJurisdictionalAuthorizationSerializ
   override fun deserialize(
     decoder: Decoder
   ): MedicinalProductAuthorization.JurisdictionalAuthorization =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: MedicinalProductAuthorization.JurisdictionalAuthorization,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -234,10 +241,14 @@ internal object MedicinalProductAuthorizationProcedureSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProductAuthorization.Procedure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductAuthorization.Procedure) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -428,7 +439,9 @@ internal object MedicinalProductAuthorizationSerializer :
   }
 
   override fun deserialize(decoder: Decoder): MedicinalProductAuthorization =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductAuthorization) {
     encoder.encodeStructure(descriptor) {

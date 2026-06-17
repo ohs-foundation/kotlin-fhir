@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -128,10 +131,14 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
     }
 
   override fun deserialize(decoder: Decoder): StructureMap.Structure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Structure) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureMap.Structure {
@@ -254,10 +261,14 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
     }
 
   override fun deserialize(decoder: Decoder): StructureMap.Group =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureMap.Group {
@@ -397,10 +408,14 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
     }
 
   override fun deserialize(decoder: Decoder): StructureMap.Group.Input =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Input) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureMap.Group.Input {
@@ -535,10 +550,14 @@ internal object StructureMapGroupRuleSerializer : KSerializer<StructureMap.Group
     }
 
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureMap.Group.Rule {
@@ -783,10 +802,14 @@ internal object StructureMapGroupRuleSourceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Source =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule.Source) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureMap.Group.Rule.Source {
@@ -1868,10 +1891,14 @@ internal object StructureMapGroupRuleTargetSerializer :
     }
 
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Target =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule.Target) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureMap.Group.Rule.Target {
@@ -2066,10 +2093,14 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
     }
 
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Target.Parameter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule.Target.Parameter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -2224,10 +2255,14 @@ internal object StructureMapGroupRuleDependentSerializer :
     }
 
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Dependent =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule.Dependent) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureMap.Group.Rule.Dependent {
@@ -2406,7 +2441,9 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
   }
 
   override fun deserialize(decoder: Decoder): StructureMap =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -91,10 +94,14 @@ internal object RiskEvidenceSynthesisSampleSizeSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RiskEvidenceSynthesis.SampleSize =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RiskEvidenceSynthesis.SampleSize) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RiskEvidenceSynthesis.SampleSize {
@@ -217,10 +224,14 @@ internal object RiskEvidenceSynthesisRiskEstimateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RiskEvidenceSynthesis.RiskEstimate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RiskEvidenceSynthesis.RiskEstimate) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RiskEvidenceSynthesis.RiskEstimate {
@@ -385,13 +396,17 @@ internal object RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RiskEvidenceSynthesis.RiskEstimate.PrecisionEstimate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: RiskEvidenceSynthesis.RiskEstimate.PrecisionEstimate,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -525,10 +540,14 @@ internal object RiskEvidenceSynthesisCertaintySerializer :
     }
 
   override fun deserialize(decoder: Decoder): RiskEvidenceSynthesis.Certainty =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RiskEvidenceSynthesis.Certainty) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RiskEvidenceSynthesis.Certainty {
@@ -651,13 +670,17 @@ internal object RiskEvidenceSynthesisCertaintyCertaintySubcomponentSerializer :
   override fun deserialize(
     decoder: Decoder
   ): RiskEvidenceSynthesis.Certainty.CertaintySubcomponent =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: RiskEvidenceSynthesis.Certainty.CertaintySubcomponent,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -863,7 +886,9 @@ internal object RiskEvidenceSynthesisSerializer : KSerializer<RiskEvidenceSynthe
   }
 
   override fun deserialize(decoder: Decoder): RiskEvidenceSynthesis =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RiskEvidenceSynthesis) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -1867,13 +1870,17 @@ public data class PlanDefinition(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(targetId.toBuilder(), relationship).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            endRelationship = this@with.endRelationship
-            offset = this@with.offset
-          }
+          Builder(
+              targetId.toBuilder(),
+              relationship,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              endRelationship = this@with.endRelationship
+              offset = this@with.offset
+            }
         }
 
       public sealed interface Offset {
@@ -2317,8 +2324,7 @@ public data class PlanDefinition(
 
       public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Action.Timing
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
-        Action.Timing
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Action.Timing
 
       public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Action.Timing
 

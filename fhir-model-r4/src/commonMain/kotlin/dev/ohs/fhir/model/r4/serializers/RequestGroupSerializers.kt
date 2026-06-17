@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -146,10 +149,14 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
     }
 
   override fun deserialize(decoder: Decoder): RequestGroup.Action =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestGroup.Action) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RequestGroup.Action {
@@ -529,10 +536,14 @@ internal object RequestGroupActionConditionSerializer : KSerializer<RequestGroup
     }
 
   override fun deserialize(decoder: Decoder): RequestGroup.Action.Condition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestGroup.Action.Condition) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RequestGroup.Action.Condition {
@@ -625,10 +636,14 @@ internal object RequestGroupActionRelatedActionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): RequestGroup.Action.RelatedAction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestGroup.Action.RelatedAction) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): RequestGroup.Action.RelatedAction {
@@ -824,7 +839,9 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
   }
 
   override fun deserialize(decoder: Decoder): RequestGroup =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: RequestGroup) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -102,10 +105,14 @@ internal object ContractContentDefinitionSerializer : KSerializer<Contract.Conte
     }
 
   override fun deserialize(decoder: Decoder): Contract.ContentDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.ContentDefinition) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.ContentDefinition {
@@ -286,10 +293,14 @@ internal object ContractTermSerializer : KSerializer<Contract.Term> {
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term {
@@ -522,10 +533,14 @@ internal object ContractTermSecurityLabelSerializer : KSerializer<Contract.Term.
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term.SecurityLabel =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term.SecurityLabel) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term.SecurityLabel {
@@ -692,10 +707,14 @@ internal object ContractTermOfferSerializer : KSerializer<Contract.Term.Offer> {
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term.Offer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term.Offer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term.Offer {
@@ -898,10 +917,14 @@ internal object ContractTermOfferPartySerializer : KSerializer<Contract.Term.Off
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term.Offer.Party =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term.Offer.Party) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term.Offer.Party {
@@ -1004,10 +1027,14 @@ internal object ContractTermOfferAnswerSerializer : KSerializer<Contract.Term.Of
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term.Offer.Answer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term.Offer.Answer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term.Offer.Answer {
@@ -1304,10 +1331,14 @@ internal object ContractTermAssetSerializer : KSerializer<Contract.Term.Asset> {
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term.Asset =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term.Asset) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term.Asset {
@@ -1571,10 +1602,14 @@ internal object ContractTermAssetContextSerializer : KSerializer<Contract.Term.A
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term.Asset.Context =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term.Asset.Context) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term.Asset.Context {
@@ -1704,10 +1739,14 @@ internal object ContractTermAssetValuedItemSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term.Asset.ValuedItem =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term.Asset.ValuedItem) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term.Asset.ValuedItem {
@@ -2091,10 +2130,14 @@ internal object ContractTermActionSerializer : KSerializer<Contract.Term.Action>
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term.Action =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term.Action) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term.Action {
@@ -2469,10 +2512,14 @@ internal object ContractTermActionSubjectSerializer : KSerializer<Contract.Term.
     }
 
   override fun deserialize(decoder: Decoder): Contract.Term.Action.Subject =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Term.Action.Subject) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Term.Action.Subject {
@@ -2562,10 +2609,14 @@ internal object ContractSignerSerializer : KSerializer<Contract.Signer> {
     }
 
   override fun deserialize(decoder: Decoder): Contract.Signer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Signer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Signer {
@@ -2657,10 +2708,14 @@ internal object ContractFriendlySerializer : KSerializer<Contract.Friendly> {
     }
 
   override fun deserialize(decoder: Decoder): Contract.Friendly =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Friendly) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Friendly {
@@ -2758,10 +2813,14 @@ internal object ContractLegalSerializer : KSerializer<Contract.Legal> {
     }
 
   override fun deserialize(decoder: Decoder): Contract.Legal =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Legal) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Legal {
@@ -2859,10 +2918,14 @@ internal object ContractRuleSerializer : KSerializer<Contract.Rule> {
     }
 
   override fun deserialize(decoder: Decoder): Contract.Rule =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract.Rule) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Contract.Rule {
@@ -3066,7 +3129,9 @@ internal object ContractSerializer : KSerializer<Contract> {
   }
 
   override fun deserialize(decoder: Decoder): Contract =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Contract) {
     encoder.encodeStructure(descriptor) {

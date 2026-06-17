@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -110,10 +113,14 @@ internal object ObservationDefinitionQualifiedValueSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ObservationDefinition.QualifiedValue =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ObservationDefinition.QualifiedValue) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ObservationDefinition.QualifiedValue {
@@ -329,10 +336,14 @@ internal object ObservationDefinitionComponentSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ObservationDefinition.Component =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ObservationDefinition.Component) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ObservationDefinition.Component {
@@ -632,7 +643,9 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
   }
 
   override fun deserialize(decoder: Decoder): ObservationDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ObservationDefinition) {
     encoder.encodeStructure(descriptor) {

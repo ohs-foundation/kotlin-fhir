@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -423,11 +426,15 @@ public data class DeviceDefinition(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(name.toBuilder(), type).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            name.toBuilder(),
+            type,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(
@@ -969,8 +976,7 @@ public data class DeviceDefinition(
 
     public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Manufacturer
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
-      Manufacturer
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Manufacturer
 
     public companion object {
       internal fun from(

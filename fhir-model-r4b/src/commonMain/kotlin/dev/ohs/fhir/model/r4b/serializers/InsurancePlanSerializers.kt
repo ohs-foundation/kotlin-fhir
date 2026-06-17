@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -87,10 +90,14 @@ internal object InsurancePlanContactSerializer : KSerializer<InsurancePlan.Conta
     }
 
   override fun deserialize(decoder: Decoder): InsurancePlan.Contact =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Contact) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InsurancePlan.Contact {
@@ -201,10 +208,14 @@ internal object InsurancePlanCoverageSerializer : KSerializer<InsurancePlan.Cove
     }
 
   override fun deserialize(decoder: Decoder): InsurancePlan.Coverage =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Coverage) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InsurancePlan.Coverage {
@@ -310,10 +321,14 @@ internal object InsurancePlanCoverageBenefitSerializer :
     }
 
   override fun deserialize(decoder: Decoder): InsurancePlan.Coverage.Benefit =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Coverage.Benefit) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InsurancePlan.Coverage.Benefit {
@@ -415,10 +430,14 @@ internal object InsurancePlanCoverageBenefitLimitSerializer :
     }
 
   override fun deserialize(decoder: Decoder): InsurancePlan.Coverage.Benefit.Limit =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Coverage.Benefit.Limit) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InsurancePlan.Coverage.Benefit.Limit {
@@ -525,10 +544,14 @@ internal object InsurancePlanPlanSerializer : KSerializer<InsurancePlan.Plan> {
     }
 
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InsurancePlan.Plan {
@@ -663,10 +686,14 @@ internal object InsurancePlanPlanGeneralCostSerializer :
     }
 
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan.GeneralCost =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan.GeneralCost) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InsurancePlan.Plan.GeneralCost {
@@ -779,10 +806,14 @@ internal object InsurancePlanPlanSpecificCostSerializer :
     }
 
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan.SpecificCost =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan.SpecificCost) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InsurancePlan.Plan.SpecificCost {
@@ -880,10 +911,14 @@ internal object InsurancePlanPlanSpecificCostBenefitSerializer :
     }
 
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan.SpecificCost.Benefit =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan.SpecificCost.Benefit) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -979,10 +1014,14 @@ internal object InsurancePlanPlanSpecificCostBenefitCostSerializer :
     }
 
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan.SpecificCost.Benefit.Cost =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan.SpecificCost.Benefit.Cost) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1147,7 +1186,9 @@ internal object InsurancePlanSerializer : KSerializer<InsurancePlan> {
   }
 
   override fun deserialize(decoder: Decoder): InsurancePlan =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan) {
     encoder.encodeStructure(descriptor) {

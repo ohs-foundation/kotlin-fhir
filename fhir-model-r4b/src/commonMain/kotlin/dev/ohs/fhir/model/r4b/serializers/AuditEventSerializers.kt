@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -108,10 +111,14 @@ internal object AuditEventAgentSerializer : KSerializer<AuditEvent.Agent> {
     }
 
   override fun deserialize(decoder: Decoder): AuditEvent.Agent =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: AuditEvent.Agent) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): AuditEvent.Agent {
@@ -286,10 +293,14 @@ internal object AuditEventAgentNetworkSerializer : KSerializer<AuditEvent.Agent.
     }
 
   override fun deserialize(decoder: Decoder): AuditEvent.Agent.Network =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: AuditEvent.Agent.Network) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): AuditEvent.Agent.Network {
@@ -325,7 +336,8 @@ internal object AuditEventAgentNetworkSerializer : KSerializer<AuditEvent.Agent.
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       address = R4bString.of(address, _address),
-      type = type?.let { Enumeration.of(AuditEvent.AuditEventAgentNetworkType.fromCode(it), _type) },
+      type =
+        type?.let { Enumeration.of(AuditEvent.AuditEventAgentNetworkType.fromCode(it), _type) },
     )
   }
 
@@ -381,10 +393,14 @@ internal object AuditEventSourceSerializer : KSerializer<AuditEvent.Source> {
     }
 
   override fun deserialize(decoder: Decoder): AuditEvent.Source =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: AuditEvent.Source) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): AuditEvent.Source {
@@ -497,10 +513,14 @@ internal object AuditEventEntitySerializer : KSerializer<AuditEvent.Entity> {
     }
 
   override fun deserialize(decoder: Decoder): AuditEvent.Entity =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: AuditEvent.Entity) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): AuditEvent.Entity {
@@ -651,10 +671,14 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
     }
 
   override fun deserialize(decoder: Decoder): AuditEvent.Entity.Detail =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: AuditEvent.Entity.Detail) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): AuditEvent.Entity.Detail {
@@ -808,7 +832,9 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
   }
 
   override fun deserialize(decoder: Decoder): AuditEvent =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: AuditEvent) {
     encoder.encodeStructure(descriptor) {

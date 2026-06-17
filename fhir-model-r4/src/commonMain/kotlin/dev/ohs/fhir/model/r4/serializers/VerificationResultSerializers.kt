@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -97,10 +100,14 @@ internal object VerificationResultPrimarySourceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): VerificationResult.PrimarySource =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult.PrimarySource) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): VerificationResult.PrimarySource {
@@ -245,10 +252,14 @@ internal object VerificationResultAttestationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): VerificationResult.Attestation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult.Attestation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): VerificationResult.Attestation {
@@ -413,10 +424,14 @@ internal object VerificationResultValidatorSerializer : KSerializer<Verification
     }
 
   override fun deserialize(decoder: Decoder): VerificationResult.Validator =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult.Validator) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): VerificationResult.Validator {
@@ -583,7 +598,9 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
   }
 
   override fun deserialize(decoder: Decoder): VerificationResult =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult) {
     encoder.encodeStructure(descriptor) {

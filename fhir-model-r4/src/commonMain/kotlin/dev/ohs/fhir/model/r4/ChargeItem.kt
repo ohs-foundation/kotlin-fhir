@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -277,40 +280,45 @@ public data class ChargeItem(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, code.toBuilder(), subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        definitionUri = this@with.definitionUri.map { it.toBuilder() }.toMutableList()
-        definitionCanonical = this@with.definitionCanonical.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        context = this@with.context?.toBuilder()
-        occurrence = this@with.occurrence
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        performingOrganization = this@with.performingOrganization?.toBuilder()
-        requestingOrganization = this@with.requestingOrganization?.toBuilder()
-        costCenter = this@with.costCenter?.toBuilder()
-        quantity = this@with.quantity?.toBuilder()
-        bodysite = this@with.bodysite.map { it.toBuilder() }.toMutableList()
-        factorOverride = this@with.factorOverride?.toBuilder()
-        priceOverride = this@with.priceOverride?.toBuilder()
-        overrideReason = this@with.overrideReason?.toBuilder()
-        enterer = this@with.enterer?.toBuilder()
-        enteredDate = this@with.enteredDate?.toBuilder()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        service = this@with.service.map { it.toBuilder() }.toMutableList()
-        product = this@with.product
-        account = this@with.account.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        supportingInformation =
-          this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          code.toBuilder(),
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          definitionUri = this@with.definitionUri.map { it.toBuilder() }.toMutableList()
+          definitionCanonical = this@with.definitionCanonical.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          context = this@with.context?.toBuilder()
+          occurrence = this@with.occurrence
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          performingOrganization = this@with.performingOrganization?.toBuilder()
+          requestingOrganization = this@with.requestingOrganization?.toBuilder()
+          costCenter = this@with.costCenter?.toBuilder()
+          quantity = this@with.quantity?.toBuilder()
+          bodysite = this@with.bodysite.map { it.toBuilder() }.toMutableList()
+          factorOverride = this@with.factorOverride?.toBuilder()
+          priceOverride = this@with.priceOverride?.toBuilder()
+          overrideReason = this@with.overrideReason?.toBuilder()
+          enterer = this@with.enterer?.toBuilder()
+          enteredDate = this@with.enteredDate?.toBuilder()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          service = this@with.service.map { it.toBuilder() }.toMutableList()
+          product = this@with.product
+          account = this@with.account.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          supportingInformation =
+            this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Indicates who or what performed or participated in the charged service. */

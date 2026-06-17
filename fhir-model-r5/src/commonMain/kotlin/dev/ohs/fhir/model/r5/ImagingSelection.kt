@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -235,31 +238,35 @@ public data class ImagingSelection(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, code.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        issued = this@with.issued?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        studyUid = this@with.studyUid?.toBuilder()
-        derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-        seriesUid = this@with.seriesUid?.toBuilder()
-        seriesNumber = this@with.seriesNumber?.toBuilder()
-        frameOfReferenceUid = this@with.frameOfReferenceUid?.toBuilder()
-        bodySite = this@with.bodySite?.toBuilder()
-        focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-        instance = this@with.instance.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          code.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          subject = this@with.subject?.toBuilder()
+          issued = this@with.issued?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          studyUid = this@with.studyUid?.toBuilder()
+          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
+          endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
+          seriesUid = this@with.seriesUid?.toBuilder()
+          seriesNumber = this@with.seriesNumber?.toBuilder()
+          frameOfReferenceUid = this@with.frameOfReferenceUid?.toBuilder()
+          bodySite = this@with.bodySite?.toBuilder()
+          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
+          instance = this@with.instance.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Selector of the instances – human or machine. */
@@ -541,11 +548,15 @@ public data class ImagingSelection(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(regionType, coordinate.map { it.toBuilder() }.toMutableList()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              regionType,
+              coordinate.map { it.toBuilder() }.toMutableList(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public class Builder(
@@ -681,11 +692,15 @@ public data class ImagingSelection(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(regionType, coordinate.map { it.toBuilder() }.toMutableList()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              regionType,
+              coordinate.map { it.toBuilder() }.toMutableList(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public class Builder(

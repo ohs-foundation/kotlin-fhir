@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -86,10 +89,14 @@ internal object BiologicallyDerivedProductCollectionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Collection =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Collection) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -232,10 +239,14 @@ internal object BiologicallyDerivedProductPropertySerializer :
     }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): BiologicallyDerivedProduct.Property {
@@ -467,7 +478,9 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
   }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct) {
     encoder.encodeStructure(descriptor) {

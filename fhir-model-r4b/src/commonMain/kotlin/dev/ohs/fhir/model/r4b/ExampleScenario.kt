@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -361,13 +364,17 @@ public data class ExampleScenario(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(actorId.toBuilder(), type).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          description = this@with.description?.toBuilder()
-        }
+        Builder(
+            actorId.toBuilder(),
+            type,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            name = this@with.name?.toBuilder()
+            description = this@with.description?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -502,15 +509,19 @@ public data class ExampleScenario(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(resourceId.toBuilder(), resourceType).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          description = this@with.description?.toBuilder()
-          version = this@with.version.map { it.toBuilder() }.toMutableList()
-          containedInstance = this@with.containedInstance.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            resourceId.toBuilder(),
+            resourceType,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            name = this@with.name?.toBuilder()
+            description = this@with.description?.toBuilder()
+            version = this@with.version.map { it.toBuilder() }.toMutableList()
+            containedInstance = this@with.containedInstance.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     /** A specific version of the resource. */

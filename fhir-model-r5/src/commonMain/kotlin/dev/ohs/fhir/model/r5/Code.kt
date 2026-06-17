@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -86,7 +89,11 @@ public data class Code(
     open override var `value`: kotlin.String? = null
 
     open override fun build(): Code =
-      Code(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      Code(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

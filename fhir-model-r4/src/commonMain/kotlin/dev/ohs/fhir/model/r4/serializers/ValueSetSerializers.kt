@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -100,10 +103,14 @@ internal object ValueSetComposeSerializer : KSerializer<ValueSet.Compose> {
     }
 
   override fun deserialize(decoder: Decoder): ValueSet.Compose =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ValueSet.Compose) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ValueSet.Compose {
@@ -236,10 +243,14 @@ internal object ValueSetComposeIncludeSerializer : KSerializer<ValueSet.Compose.
     }
 
   override fun deserialize(decoder: Decoder): ValueSet.Compose.Include =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ValueSet.Compose.Include) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ValueSet.Compose.Include {
@@ -391,10 +402,14 @@ internal object ValueSetComposeIncludeConceptSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ValueSet.Compose.Include.Concept =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ValueSet.Compose.Include.Concept) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ValueSet.Compose.Include.Concept {
@@ -502,10 +517,14 @@ internal object ValueSetComposeIncludeConceptDesignationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ValueSet.Compose.Include.Concept.Designation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ValueSet.Compose.Include.Concept.Designation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -612,10 +631,14 @@ internal object ValueSetComposeIncludeFilterSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ValueSet.Compose.Include.Filter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ValueSet.Compose.Include.Filter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ValueSet.Compose.Include.Filter {
@@ -739,10 +762,14 @@ internal object ValueSetExpansionSerializer : KSerializer<ValueSet.Expansion> {
     }
 
   override fun deserialize(decoder: Decoder): ValueSet.Expansion =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ValueSet.Expansion) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ValueSet.Expansion {
@@ -895,10 +922,14 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
     }
 
   override fun deserialize(decoder: Decoder): ValueSet.Expansion.Parameter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ValueSet.Expansion.Parameter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ValueSet.Expansion.Parameter {
@@ -1101,10 +1132,14 @@ internal object ValueSetExpansionContainsSerializer : KSerializer<ValueSet.Expan
     }
 
   override fun deserialize(decoder: Decoder): ValueSet.Expansion.Contains =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ValueSet.Expansion.Contains) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ValueSet.Expansion.Contains {
@@ -1332,7 +1367,9 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
   }
 
   override fun deserialize(decoder: Decoder): ValueSet =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ValueSet) {
     encoder.encodeStructure(descriptor) {

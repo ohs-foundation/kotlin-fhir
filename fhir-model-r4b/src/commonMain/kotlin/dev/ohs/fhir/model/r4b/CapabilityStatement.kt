@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -1337,13 +1340,18 @@ public data class CapabilityStatement(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(name.toBuilder(), type).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              definition = this@with.definition?.toBuilder()
-              documentation = this@with.documentation?.toBuilder()
-            }
+            Builder(
+                name.toBuilder(),
+                type,
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+                definition = this@with.definition?.toBuilder()
+                documentation = this@with.documentation?.toBuilder()
+              }
           }
 
         public class Builder(
@@ -2322,11 +2330,15 @@ public data class CapabilityStatement(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(mode, definition.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              mode,
+              definition.toBuilder(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public class Builder(
@@ -2528,12 +2540,16 @@ public data class CapabilityStatement(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(mode, profile.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          documentation = this@with.documentation?.toBuilder()
-        }
+        Builder(
+            mode,
+            profile.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            documentation = this@with.documentation?.toBuilder()
+          }
       }
 
     public class Builder(

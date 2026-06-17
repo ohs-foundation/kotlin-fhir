@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -222,7 +225,11 @@ public data class Endpoint(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, connectionType.map { it.toBuilder() }.toMutableList(), address.toBuilder())
+      Builder(
+          status,
+          connectionType.map { it.toBuilder() }.toMutableList(),
+          address.toBuilder(),
+        )
         .apply {
           id = this@with.id
           meta = this@with.meta?.toBuilder()

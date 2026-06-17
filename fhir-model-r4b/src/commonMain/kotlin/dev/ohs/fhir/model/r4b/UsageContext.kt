@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -61,10 +64,14 @@ public data class UsageContext(
 ) : Element() {
   public fun toBuilder(): Builder =
     with(this) {
-      Builder(code.toBuilder(), `value`).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          code.toBuilder(),
+          `value`,
+        )
+        .apply {
+          id = this@with.id
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   public sealed interface Value {

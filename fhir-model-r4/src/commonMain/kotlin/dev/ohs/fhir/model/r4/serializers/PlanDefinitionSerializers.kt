@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -112,10 +115,14 @@ internal object PlanDefinitionGoalSerializer : KSerializer<PlanDefinition.Goal> 
     }
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Goal =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Goal) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Goal {
@@ -254,10 +261,14 @@ internal object PlanDefinitionGoalTargetSerializer : KSerializer<PlanDefinition.
     }
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Goal.Target =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Goal.Target) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Goal.Target {
@@ -478,10 +489,14 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
     }
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action {
@@ -994,10 +1009,14 @@ internal object PlanDefinitionActionConditionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action.Condition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action.Condition) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action.Condition {
@@ -1093,10 +1112,14 @@ internal object PlanDefinitionActionRelatedActionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action.RelatedAction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action.RelatedAction) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action.RelatedAction {
@@ -1223,10 +1246,14 @@ internal object PlanDefinitionActionParticipantSerializer :
     }
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action.Participant =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action.Participant) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action.Participant {
@@ -1315,10 +1342,14 @@ internal object PlanDefinitionActionDynamicValueSerializer :
     }
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action.DynamicValue =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action.DynamicValue) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action.DynamicValue {
@@ -1523,7 +1554,9 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
   }
 
   override fun deserialize(decoder: Decoder): PlanDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition) {
     encoder.encodeStructure(descriptor) {

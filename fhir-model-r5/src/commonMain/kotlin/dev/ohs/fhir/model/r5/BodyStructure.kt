@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -172,22 +175,26 @@ public data class BodyStructure(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(includedStructure.map { it.toBuilder() }.toMutableList(), patient.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        morphology = this@with.morphology?.toBuilder()
-        excludedStructure = this@with.excludedStructure.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        image = this@with.image.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          includedStructure.map { it.toBuilder() }.toMutableList(),
+          patient.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          active = this@with.active?.toBuilder()
+          morphology = this@with.morphology?.toBuilder()
+          excludedStructure = this@with.excludedStructure.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          image = this@with.image.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** The anatomical location(s) or region(s) of the specimen, lesion, or body structure. */

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -264,28 +267,33 @@ public data class GraphDefinition(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(name.toBuilder(), status, start).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        version = this@with.version?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        profile = this@with.profile?.toBuilder()
-        link = this@with.link.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          name.toBuilder(),
+          status,
+          start,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          url = this@with.url?.toBuilder()
+          version = this@with.version?.toBuilder()
+          experimental = this@with.experimental?.toBuilder()
+          date = this@with.date?.toBuilder()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
+          purpose = this@with.purpose?.toBuilder()
+          profile = this@with.profile?.toBuilder()
+          link = this@with.link.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Links this graph makes rules about. */
@@ -489,13 +497,19 @@ public data class GraphDefinition(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(use, code, rule).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              expression = this@with.expression?.toBuilder()
-              description = this@with.description?.toBuilder()
-            }
+            Builder(
+                use,
+                code,
+                rule,
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+                expression = this@with.expression?.toBuilder()
+                description = this@with.description?.toBuilder()
+              }
           }
 
         public class Builder(

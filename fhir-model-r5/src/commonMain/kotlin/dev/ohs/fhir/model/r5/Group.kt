@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -160,6 +163,7 @@ public data class Group(
   public val type: Enumeration<GroupType>,
   /**
    * Basis for membership in the Group:
+   *
    * * 'definitional': The Group.characteristics specified are both necessary and sufficient to
    *   determine membership. All entities that meet the criteria are considered to be members of the
    *   group, whether referenced by the group or not. If members are present, they are individuals
@@ -205,25 +209,29 @@ public data class Group(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(type, membership).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        code = this@with.code?.toBuilder()
-        name = this@with.name?.toBuilder()
-        description = this@with.description?.toBuilder()
-        quantity = this@with.quantity?.toBuilder()
-        managingEntity = this@with.managingEntity?.toBuilder()
-        characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-        member = this@with.member.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          type,
+          membership,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          active = this@with.active?.toBuilder()
+          code = this@with.code?.toBuilder()
+          name = this@with.name?.toBuilder()
+          description = this@with.description?.toBuilder()
+          quantity = this@with.quantity?.toBuilder()
+          managingEntity = this@with.managingEntity?.toBuilder()
+          characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
+          member = this@with.member.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Identifies traits whose presence r absence is shared by members of the group. */
@@ -291,12 +299,17 @@ public data class Group(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(code.toBuilder(), `value`, exclude.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-        }
+        Builder(
+            code.toBuilder(),
+            `value`,
+            exclude.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            period = this@with.period?.toBuilder()
+          }
       }
 
     public sealed interface Value {
@@ -561,6 +574,7 @@ public data class Group(
     public var type: Enumeration<GroupType>,
     /**
      * Basis for membership in the Group:
+     *
      * * 'definitional': The Group.characteristics specified are both necessary and sufficient to
      *   determine membership. All entities that meet the criteria are considered to be members of
      *   the group, whether referenced by the group or not. If members are present, they are

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -273,45 +276,49 @@ public data class Task(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, intent).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical = this@with.instantiatesCanonical?.toBuilder()
-        instantiatesUri = this@with.instantiatesUri?.toBuilder()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        groupIdentifier = this@with.groupIdentifier?.toBuilder()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        statusReason = this@with.statusReason?.toBuilder()
-        businessStatus = this@with.businessStatus?.toBuilder()
-        priority = this@with.priority
-        code = this@with.code?.toBuilder()
-        description = this@with.description?.toBuilder()
-        focus = this@with.focus?.toBuilder()
-        `for` = this@with.`for`?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        executionPeriod = this@with.executionPeriod?.toBuilder()
-        authoredOn = this@with.authoredOn?.toBuilder()
-        lastModified = this@with.lastModified?.toBuilder()
-        requester = this@with.requester?.toBuilder()
-        performerType = this@with.performerType.map { it.toBuilder() }.toMutableList()
-        owner = this@with.owner?.toBuilder()
-        location = this@with.location?.toBuilder()
-        reasonCode = this@with.reasonCode?.toBuilder()
-        reasonReference = this@with.reasonReference?.toBuilder()
-        insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
-        restriction = this@with.restriction?.toBuilder()
-        input = this@with.input.map { it.toBuilder() }.toMutableList()
-        output = this@with.output.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          intent,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          instantiatesCanonical = this@with.instantiatesCanonical?.toBuilder()
+          instantiatesUri = this@with.instantiatesUri?.toBuilder()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          groupIdentifier = this@with.groupIdentifier?.toBuilder()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          statusReason = this@with.statusReason?.toBuilder()
+          businessStatus = this@with.businessStatus?.toBuilder()
+          priority = this@with.priority
+          code = this@with.code?.toBuilder()
+          description = this@with.description?.toBuilder()
+          focus = this@with.focus?.toBuilder()
+          `for` = this@with.`for`?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          executionPeriod = this@with.executionPeriod?.toBuilder()
+          authoredOn = this@with.authoredOn?.toBuilder()
+          lastModified = this@with.lastModified?.toBuilder()
+          requester = this@with.requester?.toBuilder()
+          performerType = this@with.performerType.map { it.toBuilder() }.toMutableList()
+          owner = this@with.owner?.toBuilder()
+          location = this@with.location?.toBuilder()
+          reasonCode = this@with.reasonCode?.toBuilder()
+          reasonReference = this@with.reasonReference?.toBuilder()
+          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
+          restriction = this@with.restriction?.toBuilder()
+          input = this@with.input.map { it.toBuilder() }.toMutableList()
+          output = this@with.output.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**
@@ -508,11 +515,15 @@ public data class Task(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), `value`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type.toBuilder(),
+            `value`,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Value {
@@ -948,11 +959,15 @@ public data class Task(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), `value`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type.toBuilder(),
+            `value`,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Value {

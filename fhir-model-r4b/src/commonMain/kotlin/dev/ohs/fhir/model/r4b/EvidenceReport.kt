@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -260,32 +263,36 @@ public data class EvidenceReport(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        relatedIdentifier = this@with.relatedIdentifier.map { it.toBuilder() }.toMutableList()
-        citeAs = this@with.citeAs
-        type = this@with.type?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        author = this@with.author.map { it.toBuilder() }.toMutableList()
-        editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-        reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-        endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-        relatesTo = this@with.relatesTo.map { it.toBuilder() }.toMutableList()
-        section = this@with.section.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          url = this@with.url?.toBuilder()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          relatedIdentifier = this@with.relatedIdentifier.map { it.toBuilder() }.toMutableList()
+          citeAs = this@with.citeAs
+          type = this@with.type?.toBuilder()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          author = this@with.author.map { it.toBuilder() }.toMutableList()
+          editor = this@with.editor.map { it.toBuilder() }.toMutableList()
+          reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
+          endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
+          relatesTo = this@with.relatesTo.map { it.toBuilder() }.toMutableList()
+          section = this@with.section.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Specifies the subject or focus of the report. Answers "What is this report about?". */
@@ -404,13 +411,17 @@ public data class EvidenceReport(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(code.toBuilder(), `value`).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            exclude = this@with.exclude?.toBuilder()
-            period = this@with.period?.toBuilder()
-          }
+          Builder(
+              code.toBuilder(),
+              `value`,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              exclude = this@with.exclude?.toBuilder()
+              period = this@with.period?.toBuilder()
+            }
         }
 
       public sealed interface Value {
@@ -641,11 +652,15 @@ public data class EvidenceReport(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(code, target).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            code,
+            target,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Target {

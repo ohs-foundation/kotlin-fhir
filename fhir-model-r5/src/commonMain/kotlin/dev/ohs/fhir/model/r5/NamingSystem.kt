@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -549,15 +552,19 @@ public data class NamingSystem(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type, `value`.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          preferred = this@with.preferred?.toBuilder()
-          comment = this@with.comment?.toBuilder()
-          period = this@with.period?.toBuilder()
-          authoritative = this@with.authoritative?.toBuilder()
-        }
+        Builder(
+            type,
+            `value`.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            preferred = this@with.preferred?.toBuilder()
+            comment = this@with.comment?.toBuilder()
+            period = this@with.period?.toBuilder()
+            authoritative = this@with.authoritative?.toBuilder()
+          }
       }
 
     public class Builder(

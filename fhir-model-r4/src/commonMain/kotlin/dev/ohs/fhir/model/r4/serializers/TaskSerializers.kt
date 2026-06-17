@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -126,10 +129,14 @@ internal object TaskRestrictionSerializer : KSerializer<Task.Restriction> {
     }
 
   override fun deserialize(decoder: Decoder): Task.Restriction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Task.Restriction) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Task.Restriction {
@@ -304,10 +311,14 @@ internal object TaskInputSerializer : KSerializer<Task.Input> {
     }
 
   override fun deserialize(decoder: Decoder): Task.Input =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Task.Input) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Task.Input {
@@ -1238,10 +1249,14 @@ internal object TaskOutputSerializer : KSerializer<Task.Output> {
     }
 
   override fun deserialize(decoder: Decoder): Task.Output =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Task.Output) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Task.Output {
@@ -2177,7 +2192,9 @@ internal object TaskSerializer : KSerializer<Task> {
   }
 
   override fun deserialize(decoder: Decoder): Task =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Task) {
     encoder.encodeStructure(descriptor) {
@@ -2798,5 +2815,7 @@ internal object TaskPolymorphicSerializer : KSerializer<Task> {
   }
 
   override fun deserialize(decoder: Decoder): Task =
-    decoder.decodeStructure(descriptor) { TaskSerializer.deserializeInternal(this, descriptor, 0) }
+    decoder.decodeStructure(descriptor) {
+      TaskSerializer.deserializeInternal(this, descriptor, 0)
+    }
 }

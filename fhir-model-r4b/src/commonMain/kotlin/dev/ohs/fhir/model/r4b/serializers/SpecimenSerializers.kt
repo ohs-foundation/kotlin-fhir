@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -90,10 +93,14 @@ internal object SpecimenCollectionSerializer : KSerializer<Specimen.Collection> 
     }
 
   override fun deserialize(decoder: Decoder): Specimen.Collection =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Specimen.Collection) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Specimen.Collection {
@@ -274,10 +281,14 @@ internal object SpecimenProcessingSerializer : KSerializer<Specimen.Processing> 
     }
 
   override fun deserialize(decoder: Decoder): Specimen.Processing =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Specimen.Processing) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Specimen.Processing {
@@ -417,10 +428,14 @@ internal object SpecimenContainerSerializer : KSerializer<Specimen.Container> {
     }
 
   override fun deserialize(decoder: Decoder): Specimen.Container =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Specimen.Container) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Specimen.Container {
@@ -615,7 +630,9 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
   }
 
   override fun deserialize(decoder: Decoder): Specimen =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Specimen) {
     encoder.encodeStructure(descriptor) {

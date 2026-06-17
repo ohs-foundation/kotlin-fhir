@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -90,10 +93,14 @@ internal object MessageDefinitionFocusSerializer : KSerializer<MessageDefinition
     }
 
   override fun deserialize(decoder: Decoder): MessageDefinition.Focus =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MessageDefinition.Focus) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MessageDefinition.Focus {
@@ -202,10 +209,14 @@ internal object MessageDefinitionAllowedResponseSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MessageDefinition.AllowedResponse =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MessageDefinition.AllowedResponse) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MessageDefinition.AllowedResponse {
@@ -395,7 +406,9 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
   }
 
   override fun deserialize(decoder: Decoder): MessageDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MessageDefinition) {
     encoder.encodeStructure(descriptor) {

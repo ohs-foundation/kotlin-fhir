@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -178,29 +181,33 @@ public data class SupplyRequest(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(item, quantity.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        category = this@with.category?.toBuilder()
-        priority = this@with.priority
-        parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-        occurrence = this@with.occurrence
-        authoredOn = this@with.authoredOn?.toBuilder()
-        requester = this@with.requester?.toBuilder()
-        supplier = this@with.supplier.map { it.toBuilder() }.toMutableList()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        deliverFrom = this@with.deliverFrom?.toBuilder()
-        deliverTo = this@with.deliverTo?.toBuilder()
-      }
+      Builder(
+          item,
+          quantity.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          status = this@with.status
+          category = this@with.category?.toBuilder()
+          priority = this@with.priority
+          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
+          occurrence = this@with.occurrence
+          authoredOn = this@with.authoredOn?.toBuilder()
+          requester = this@with.requester?.toBuilder()
+          supplier = this@with.supplier.map { it.toBuilder() }.toMutableList()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          deliverFrom = this@with.deliverFrom?.toBuilder()
+          deliverTo = this@with.deliverTo?.toBuilder()
+        }
     }
 
   /** Specific parameters for the ordered item. For example, the size of the indicated item. */

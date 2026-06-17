@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -256,40 +259,46 @@ public data class Immunization(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, vaccineCode.toBuilder(), patient.toBuilder(), occurrence).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        statusReason = this@with.statusReason?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        recorded = this@with.recorded?.toBuilder()
-        primarySource = this@with.primarySource?.toBuilder()
-        reportOrigin = this@with.reportOrigin?.toBuilder()
-        location = this@with.location?.toBuilder()
-        manufacturer = this@with.manufacturer?.toBuilder()
-        lotNumber = this@with.lotNumber?.toBuilder()
-        expirationDate = this@with.expirationDate?.toBuilder()
-        site = this@with.site?.toBuilder()
-        route = this@with.route?.toBuilder()
-        doseQuantity = this@with.doseQuantity?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        isSubpotent = this@with.isSubpotent?.toBuilder()
-        subpotentReason = this@with.subpotentReason.map { it.toBuilder() }.toMutableList()
-        education = this@with.education.map { it.toBuilder() }.toMutableList()
-        programEligibility = this@with.programEligibility.map { it.toBuilder() }.toMutableList()
-        fundingSource = this@with.fundingSource?.toBuilder()
-        reaction = this@with.reaction.map { it.toBuilder() }.toMutableList()
-        protocolApplied = this@with.protocolApplied.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          vaccineCode.toBuilder(),
+          patient.toBuilder(),
+          occurrence,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          statusReason = this@with.statusReason?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          recorded = this@with.recorded?.toBuilder()
+          primarySource = this@with.primarySource?.toBuilder()
+          reportOrigin = this@with.reportOrigin?.toBuilder()
+          location = this@with.location?.toBuilder()
+          manufacturer = this@with.manufacturer?.toBuilder()
+          lotNumber = this@with.lotNumber?.toBuilder()
+          expirationDate = this@with.expirationDate?.toBuilder()
+          site = this@with.site?.toBuilder()
+          route = this@with.route?.toBuilder()
+          doseQuantity = this@with.doseQuantity?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          isSubpotent = this@with.isSubpotent?.toBuilder()
+          subpotentReason = this@with.subpotentReason.map { it.toBuilder() }.toMutableList()
+          education = this@with.education.map { it.toBuilder() }.toMutableList()
+          programEligibility = this@with.programEligibility.map { it.toBuilder() }.toMutableList()
+          fundingSource = this@with.fundingSource?.toBuilder()
+          reaction = this@with.reaction.map { it.toBuilder() }.toMutableList()
+          protocolApplied = this@with.protocolApplied.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Indicates who performed the immunization event. */

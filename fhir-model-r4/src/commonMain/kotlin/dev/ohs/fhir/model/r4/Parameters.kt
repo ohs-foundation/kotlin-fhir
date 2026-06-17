@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -259,8 +262,7 @@ public data class Parameters(
 
       public fun asMeta(): Meta? = this as? Meta
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) :
-        Value
+      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) : Value
 
       public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
 
@@ -311,8 +313,7 @@ public data class Parameters(
 
       public data class Coding(public val `value`: dev.ohs.fhir.model.r4.Coding) : Value
 
-      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r4.ContactPoint) :
-        Value
+      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r4.ContactPoint) : Value
 
       public data class Count(public val `value`: dev.ohs.fhir.model.r4.Count) : Value
 
@@ -363,8 +364,7 @@ public data class Parameters(
         public val `value`: dev.ohs.fhir.model.r4.TriggerDefinition
       ) : Value
 
-      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r4.UsageContext) :
-        Value
+      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r4.UsageContext) : Value
 
       public data class Dosage(public val `value`: dev.ohs.fhir.model.r4.Dosage) : Value
 

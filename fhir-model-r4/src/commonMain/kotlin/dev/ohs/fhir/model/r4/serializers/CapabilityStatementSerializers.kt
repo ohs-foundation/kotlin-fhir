@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -91,10 +94,14 @@ internal object CapabilityStatementSoftwareSerializer : KSerializer<CapabilitySt
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Software =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Software) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CapabilityStatement.Software {
@@ -197,10 +204,14 @@ internal object CapabilityStatementImplementationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Implementation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Implementation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CapabilityStatement.Implementation {
@@ -349,10 +360,14 @@ internal object CapabilityStatementRestSerializer : KSerializer<CapabilityStatem
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Rest =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Rest) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CapabilityStatement.Rest {
@@ -538,10 +553,14 @@ internal object CapabilityStatementRestSecuritySerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Rest.Security =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Rest.Security) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CapabilityStatement.Rest.Security {
@@ -725,10 +744,14 @@ internal object CapabilityStatementRestResourceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Rest.Resource =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Rest.Resource) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CapabilityStatement.Rest.Resource {
@@ -1105,10 +1128,14 @@ internal object CapabilityStatementRestResourceInteractionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Rest.Resource.Interaction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Rest.Resource.Interaction) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1209,10 +1236,14 @@ internal object CapabilityStatementRestResourceSearchParamSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Rest.Resource.SearchParam =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Rest.Resource.SearchParam) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1331,10 +1362,14 @@ internal object CapabilityStatementRestResourceOperationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Rest.Resource.Operation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Rest.Resource.Operation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1442,10 +1477,14 @@ internal object CapabilityStatementRestInteractionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Rest.Interaction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Rest.Interaction) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CapabilityStatement.Rest.Interaction {
@@ -1554,10 +1593,14 @@ internal object CapabilityStatementMessagingSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Messaging =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Messaging) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CapabilityStatement.Messaging {
@@ -1688,10 +1731,14 @@ internal object CapabilityStatementMessagingEndpointSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Messaging.Endpoint =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Messaging.Endpoint) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1787,13 +1834,17 @@ internal object CapabilityStatementMessagingSupportedMessageSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Messaging.SupportedMessage =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: CapabilityStatement.Messaging.SupportedMessage,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1891,10 +1942,14 @@ internal object CapabilityStatementDocumentSerializer : KSerializer<CapabilitySt
     }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement.Document =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement.Document) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CapabilityStatement.Document {
@@ -2117,7 +2172,9 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
   }
 
   override fun deserialize(decoder: Decoder): CapabilityStatement =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CapabilityStatement) {
     encoder.encodeStructure(descriptor) {

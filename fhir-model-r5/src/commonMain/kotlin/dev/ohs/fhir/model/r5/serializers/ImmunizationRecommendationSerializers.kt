@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -121,10 +124,14 @@ internal object ImmunizationRecommendationRecommendationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImmunizationRecommendation.Recommendation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImmunizationRecommendation.Recommendation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -359,13 +366,17 @@ internal object ImmunizationRecommendationRecommendationDateCriterionSerializer 
   override fun deserialize(
     decoder: Decoder
   ): ImmunizationRecommendation.Recommendation.DateCriterion =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: ImmunizationRecommendation.Recommendation.DateCriterion,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -485,7 +496,9 @@ internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationR
   }
 
   override fun deserialize(decoder: Decoder): ImmunizationRecommendation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImmunizationRecommendation) {
     encoder.encodeStructure(descriptor) {

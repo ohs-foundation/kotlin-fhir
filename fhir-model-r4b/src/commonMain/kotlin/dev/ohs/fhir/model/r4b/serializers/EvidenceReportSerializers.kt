@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -89,10 +92,14 @@ internal object EvidenceReportSubjectSerializer : KSerializer<EvidenceReport.Sub
     }
 
   override fun deserialize(decoder: Decoder): EvidenceReport.Subject =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceReport.Subject) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EvidenceReport.Subject {
@@ -200,10 +207,14 @@ internal object EvidenceReportSubjectCharacteristicSerializer :
     }
 
   override fun deserialize(decoder: Decoder): EvidenceReport.Subject.Characteristic =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceReport.Subject.Characteristic) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -364,10 +375,14 @@ internal object EvidenceReportRelatesToSerializer : KSerializer<EvidenceReport.R
     }
 
   override fun deserialize(decoder: Decoder): EvidenceReport.RelatesTo =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceReport.RelatesTo) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EvidenceReport.RelatesTo {
@@ -504,10 +519,14 @@ internal object EvidenceReportSectionSerializer : KSerializer<EvidenceReport.Sec
     }
 
   override fun deserialize(decoder: Decoder): EvidenceReport.Section =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceReport.Section) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EvidenceReport.Section {
@@ -790,7 +809,9 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
   }
 
   override fun deserialize(decoder: Decoder): EvidenceReport =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceReport) {
     encoder.encodeStructure(descriptor) {

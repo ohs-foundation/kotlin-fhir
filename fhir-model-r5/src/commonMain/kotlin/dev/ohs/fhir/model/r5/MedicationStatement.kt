@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -268,31 +271,36 @@ public data class MedicationStatement(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, medication.toBuilder(), subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        effective = this@with.effective
-        dateAsserted = this@with.dateAsserted?.toBuilder()
-        informationSource = this@with.informationSource.map { it.toBuilder() }.toMutableList()
-        derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        relatedClinicalInformation =
-          this@with.relatedClinicalInformation.map { it.toBuilder() }.toMutableList()
-        renderedDosageInstruction = this@with.renderedDosageInstruction?.toBuilder()
-        dosage = this@with.dosage.map { it.toBuilder() }.toMutableList()
-        adherence = this@with.adherence?.toBuilder()
-      }
+      Builder(
+          status,
+          medication.toBuilder(),
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          effective = this@with.effective
+          dateAsserted = this@with.dateAsserted?.toBuilder()
+          informationSource = this@with.informationSource.map { it.toBuilder() }.toMutableList()
+          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          relatedClinicalInformation =
+            this@with.relatedClinicalInformation.map { it.toBuilder() }.toMutableList()
+          renderedDosageInstruction = this@with.renderedDosageInstruction?.toBuilder()
+          dosage = this@with.dosage.map { it.toBuilder() }.toMutableList()
+          adherence = this@with.adherence?.toBuilder()
+        }
     }
 
   /** Indicates whether the medication is or is not being consumed or administered. */

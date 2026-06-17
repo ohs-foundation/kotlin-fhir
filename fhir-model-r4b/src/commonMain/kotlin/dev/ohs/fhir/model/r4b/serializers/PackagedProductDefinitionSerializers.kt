@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -85,10 +88,14 @@ internal object PackagedProductDefinitionLegalStatusOfSupplySerializer :
     }
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition.LegalStatusOfSupply =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PackagedProductDefinition.LegalStatusOfSupply) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -226,10 +233,14 @@ internal object PackagedProductDefinitionPackageSerializer :
     }
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition.Package =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PackagedProductDefinition.Package) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PackagedProductDefinition.Package {
@@ -436,13 +447,17 @@ internal object PackagedProductDefinitionPackageShelfLifeStorageSerializer :
     }
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition.Package.ShelfLifeStorage =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: PackagedProductDefinition.Package.ShelfLifeStorage,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -583,10 +598,14 @@ internal object PackagedProductDefinitionPackagePropertySerializer :
     }
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition.Package.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PackagedProductDefinition.Package.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -732,13 +751,17 @@ internal object PackagedProductDefinitionPackageContainedItemSerializer :
     }
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition.Package.ContainedItem =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: PackagedProductDefinition.Package.ContainedItem,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -889,7 +912,9 @@ internal object PackagedProductDefinitionSerializer : KSerializer<PackagedProduc
   }
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PackagedProductDefinition) {
     encoder.encodeStructure(descriptor) {

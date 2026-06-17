@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -88,10 +91,14 @@ internal object ClaimRelatedSerializer : KSerializer<Claim.Related> {
     }
 
   override fun deserialize(decoder: Decoder): Claim.Related =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Related) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.Related {
@@ -185,10 +192,14 @@ internal object ClaimPayeeSerializer : KSerializer<Claim.Payee> {
     }
 
   override fun deserialize(decoder: Decoder): Claim.Payee =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Payee) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.Payee {
@@ -273,10 +284,14 @@ internal object ClaimCareTeamSerializer : KSerializer<Claim.CareTeam> {
     }
 
   override fun deserialize(decoder: Decoder): Claim.CareTeam =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.CareTeam) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.CareTeam {
@@ -402,10 +417,14 @@ internal object ClaimSupportingInfoSerializer : KSerializer<Claim.SupportingInfo
     }
 
   override fun deserialize(decoder: Decoder): Claim.SupportingInfo =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.SupportingInfo) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.SupportingInfo {
@@ -620,10 +639,14 @@ internal object ClaimDiagnosisSerializer : KSerializer<Claim.Diagnosis> {
     }
 
   override fun deserialize(decoder: Decoder): Claim.Diagnosis =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Diagnosis) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.Diagnosis {
@@ -793,10 +816,14 @@ internal object ClaimProcedureSerializer : KSerializer<Claim.Procedure> {
     }
 
   override fun deserialize(decoder: Decoder): Claim.Procedure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Procedure) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.Procedure {
@@ -949,10 +976,14 @@ internal object ClaimInsuranceSerializer : KSerializer<Claim.Insurance> {
     }
 
   override fun deserialize(decoder: Decoder): Claim.Insurance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Insurance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.Insurance {
@@ -1109,10 +1140,14 @@ internal object ClaimAccidentSerializer : KSerializer<Claim.Accident> {
     }
 
   override fun deserialize(decoder: Decoder): Claim.Accident =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Accident) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.Accident {
@@ -1309,10 +1344,14 @@ internal object ClaimItemSerializer : KSerializer<Claim.Item> {
     }
 
   override fun deserialize(decoder: Decoder): Claim.Item =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Item) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.Item {
@@ -1756,10 +1795,14 @@ internal object ClaimItemDetailSerializer : KSerializer<Claim.Item.Detail> {
     }
 
   override fun deserialize(decoder: Decoder): Claim.Item.Detail =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Item.Detail) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.Item.Detail {
@@ -1960,10 +2003,14 @@ internal object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Deta
     }
 
   override fun deserialize(decoder: Decoder): Claim.Item.Detail.SubDetail =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Item.Detail.SubDetail) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Claim.Item.Detail.SubDetail {
@@ -2212,7 +2259,9 @@ internal object ClaimSerializer : KSerializer<Claim> {
   }
 
   override fun deserialize(decoder: Decoder): Claim =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Claim) {
     encoder.encodeStructure(descriptor) {
@@ -2712,5 +2761,7 @@ internal object ClaimPolymorphicSerializer : KSerializer<Claim> {
   }
 
   override fun deserialize(decoder: Decoder): Claim =
-    decoder.decodeStructure(descriptor) { ClaimSerializer.deserializeInternal(this, descriptor, 0) }
+    decoder.decodeStructure(descriptor) {
+      ClaimSerializer.deserializeInternal(this, descriptor, 0)
+    }
 }

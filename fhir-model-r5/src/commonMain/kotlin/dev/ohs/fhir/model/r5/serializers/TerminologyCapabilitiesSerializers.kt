@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -86,10 +89,14 @@ internal object TerminologyCapabilitiesSoftwareSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.Software =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities.Software) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TerminologyCapabilities.Software {
@@ -183,10 +190,14 @@ internal object TerminologyCapabilitiesImplementationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.Implementation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities.Implementation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -294,10 +305,14 @@ internal object TerminologyCapabilitiesCodeSystemSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.CodeSystem =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities.CodeSystem) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TerminologyCapabilities.CodeSystem {
@@ -439,10 +454,14 @@ internal object TerminologyCapabilitiesCodeSystemVersionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.CodeSystem.Version =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities.CodeSystem.Version) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -609,13 +628,17 @@ internal object TerminologyCapabilitiesCodeSystemVersionFilterSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.CodeSystem.Version.Filter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: TerminologyCapabilities.CodeSystem.Version.Filter,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -733,10 +756,14 @@ internal object TerminologyCapabilitiesExpansionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.Expansion =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities.Expansion) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TerminologyCapabilities.Expansion {
@@ -868,10 +895,14 @@ internal object TerminologyCapabilitiesExpansionParameterSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.Expansion.Parameter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities.Expansion.Parameter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -966,10 +997,14 @@ internal object TerminologyCapabilitiesValidateCodeSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.ValidateCode =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities.ValidateCode) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TerminologyCapabilities.ValidateCode {
@@ -1053,10 +1088,14 @@ internal object TerminologyCapabilitiesTranslationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.Translation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities.Translation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TerminologyCapabilities.Translation {
@@ -1140,10 +1179,14 @@ internal object TerminologyCapabilitiesClosureSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities.Closure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities.Closure) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TerminologyCapabilities.Closure {
@@ -1330,7 +1373,9 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
   }
 
   override fun deserialize(decoder: Decoder): TerminologyCapabilities =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TerminologyCapabilities) {
     encoder.encodeStructure(descriptor) {

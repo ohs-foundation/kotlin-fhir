@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -541,14 +544,18 @@ public data class ConceptMap(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(code.toBuilder(), type).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          uri = this@with.uri?.toBuilder()
-          description = this@with.description?.toBuilder()
-          system = this@with.system?.toBuilder()
-        }
+        Builder(
+            code.toBuilder(),
+            type,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            uri = this@with.uri?.toBuilder()
+            description = this@with.description?.toBuilder()
+            system = this@with.system?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -699,13 +706,17 @@ public data class ConceptMap(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(code.toBuilder(), type).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          uri = this@with.uri?.toBuilder()
-          description = this@with.description?.toBuilder()
-        }
+        Builder(
+            code.toBuilder(),
+            type,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            uri = this@with.uri?.toBuilder()
+            description = this@with.description?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -1115,12 +1126,16 @@ public data class ConceptMap(
         ) : BackboneElement() {
           public fun toBuilder(): Builder =
             with(this) {
-              Builder(code.toBuilder(), `value`).apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              }
+              Builder(
+                  code.toBuilder(),
+                  `value`,
+                )
+                .apply {
+                  id = this@with.id
+                  extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                  modifierExtension =
+                    this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+                }
             }
 
           public sealed interface Value {

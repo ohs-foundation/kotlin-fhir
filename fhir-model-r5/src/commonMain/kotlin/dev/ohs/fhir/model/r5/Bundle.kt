@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -103,6 +106,7 @@ public data class Bundle(
    * original time of the Bundle, and SHOULD be populated.
    *
    * Usage:
+   *
    * * document : the date the document was created. Note: the composition may predate the document,
    *   or be associated with multiple documents. The date of the composition - the authoring time -
    *   may be earlier than the document assembly time
@@ -241,11 +245,15 @@ public data class Bundle(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(relation, url.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            relation,
+            url.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(
@@ -640,15 +648,19 @@ public data class Bundle(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(method, url.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            ifNoneMatch = this@with.ifNoneMatch?.toBuilder()
-            ifModifiedSince = this@with.ifModifiedSince?.toBuilder()
-            ifMatch = this@with.ifMatch?.toBuilder()
-            ifNoneExist = this@with.ifNoneExist?.toBuilder()
-          }
+          Builder(
+              method,
+              url.toBuilder(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              ifNoneMatch = this@with.ifNoneMatch?.toBuilder()
+              ifModifiedSince = this@with.ifModifiedSince?.toBuilder()
+              ifMatch = this@with.ifMatch?.toBuilder()
+              ifNoneExist = this@with.ifNoneExist?.toBuilder()
+            }
         }
 
       public class Builder(
@@ -1132,6 +1144,7 @@ public data class Bundle(
      * to track the original time of the Bundle, and SHOULD be populated.
      *
      * Usage:
+     *
      * * document : the date the document was created. Note: the composition may predate the
      *   document, or be associated with multiple documents. The date of the composition - the
      *   authoring time - may be earlier than the document assembly time
@@ -1273,9 +1286,9 @@ public data class Bundle(
       "archives",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a collection of records, documents, or other
-    |      materials of historical interest.
-    """
+      |Refers to a collection of records, documents, or other
+      |      materials of historical interest.
+      """
         .trimMargin(),
     ),
     Author(
@@ -1287,9 +1300,9 @@ public data class Bundle(
       "blocked-by",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies the entity that blocks access to a resource
-    |      following receipt of a legal demand.
-    """
+      |Identifies the entity that blocks access to a resource
+      |      following receipt of a legal demand.
+      """
         .trimMargin(),
     ),
     Bookmark(
@@ -1326,20 +1339,20 @@ public data class Bundle(
       "convertedFrom",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |The document linked to was later converted to the
-    |      document that contains this link relation.  For example, an RFC can
-    |      have a link to the Internet-Draft that became the RFC; in that case,
-    |      the link relation would be "convertedFrom".
-    """
+      |The document linked to was later converted to the
+      |      document that contains this link relation.  For example, an RFC can
+      |      have a link to the Internet-Draft that became the RFC; in that case,
+      |      the link relation would be "convertedFrom".
+      """
         .trimMargin(),
     ),
     Copyright(
       "copyright",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a copyright statement that applies to the
-    |    link's context.
-    """
+      |Refers to a copyright statement that applies to the
+      |    link's context.
+      """
         .trimMargin(),
     ),
     Create_Form(
@@ -1351,94 +1364,94 @@ public data class Bundle(
       "current",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource containing the most recent
-    |      item(s) in a collection of resources.
-    """
+      |Refers to a resource containing the most recent
+      |      item(s) in a collection of resources.
+      """
         .trimMargin(),
     ),
     Describedby(
       "describedby",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource providing information about the
-    |      link's context.
-    """
+      |Refers to a resource providing information about the
+      |      link's context.
+      """
         .trimMargin(),
     ),
     Describes(
       "describes",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |The relationship A 'describes' B asserts that
-    |      resource A provides a description of resource B. There are no
-    |      constraints on the format or representation of either A or B,
-    |      neither are there any further constraints on either resource.
-    """
+      |The relationship A 'describes' B asserts that
+      |      resource A provides a description of resource B. There are no
+      |      constraints on the format or representation of either A or B,
+      |      neither are there any further constraints on either resource.
+      """
         .trimMargin(),
     ),
     Disclosure(
       "disclosure",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a list of patent disclosures made with respect to 
-    |      material for which 'disclosure' relation is specified.
-    """
+      |Refers to a list of patent disclosures made with respect to 
+      |      material for which 'disclosure' relation is specified.
+      """
         .trimMargin(),
     ),
     Dns_Prefetch(
       "dns-prefetch",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Used to indicate an origin that will be used to fetch required 
-    |      resources for the link context, and that the user agent ought to resolve 
-    |      as early as possible.
-    """
+      |Used to indicate an origin that will be used to fetch required 
+      |      resources for the link context, and that the user agent ought to resolve 
+      |      as early as possible.
+      """
         .trimMargin(),
     ),
     Duplicate(
       "duplicate",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource whose available representations
-    |      are byte-for-byte identical with the corresponding representations of
-    |      the context IRI.
-    """
+      |Refers to a resource whose available representations
+      |      are byte-for-byte identical with the corresponding representations of
+      |      the context IRI.
+      """
         .trimMargin(),
     ),
     Edit(
       "edit",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource that can be used to edit the
-    |      link's context.
-    """
+      |Refers to a resource that can be used to edit the
+      |      link's context.
+      """
         .trimMargin(),
     ),
     Edit_Form(
       "edit-form",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |The target IRI points to a resource where a submission form for
-    |      editing associated resource can be obtained.
-    """
+      |The target IRI points to a resource where a submission form for
+      |      editing associated resource can be obtained.
+      """
         .trimMargin(),
     ),
     Edit_Media(
       "edit-media",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource that can be used to edit media
-    |      associated with the link's context.
-    """
+      |Refers to a resource that can be used to edit media
+      |      associated with the link's context.
+      """
         .trimMargin(),
     ),
     Enclosure(
       "enclosure",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies a related resource that is potentially
-    |      large and might require special handling.
-    """
+      |Identifies a related resource that is potentially
+      |      large and might require special handling.
+      """
         .trimMargin(),
     ),
     External(
@@ -1450,9 +1463,9 @@ public data class Bundle(
       "first",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |An IRI that refers to the furthest preceding resource
-    |    in a series of resources.
-    """
+      |An IRI that refers to the furthest preceding resource
+      |    in a series of resources.
+      """
         .trimMargin(),
     ),
     Glossary(
@@ -1469,18 +1482,18 @@ public data class Bundle(
       "hosts",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource hosted by the server indicated by
-    |      the link context.
-    """
+      |Refers to a resource hosted by the server indicated by
+      |      the link context.
+      """
         .trimMargin(),
     ),
     Hub(
       "hub",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a hub that enables registration for
-    |    notification of updates to the context.
-    """
+      |Refers to a hub that enables registration for
+      |    notification of updates to the context.
+      """
         .trimMargin(),
     ),
     Icon(
@@ -1573,18 +1586,18 @@ public data class Bundle(
       "last",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |An IRI that refers to the furthest following resource
-    |      in a series of resources.
-    """
+      |An IRI that refers to the furthest following resource
+      |      in a series of resources.
+      """
         .trimMargin(),
     ),
     Latest_Version(
       "latest-version",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Points to a resource containing the latest (e.g.,
-    |      current) version of the context.
-    """
+      |Points to a resource containing the latest (e.g.,
+      |      current) version of the context.
+      """
         .trimMargin(),
     ),
     License(
@@ -1596,26 +1609,26 @@ public data class Bundle(
       "linkset",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |The link target of a link with the "linkset" relation
-    |      type provides a set of links, including links in which the link
-    |      context of the link participates.
-    |    
-    """
+      |The link target of a link with the "linkset" relation
+      |      type provides a set of links, including links in which the link
+      |      context of the link participates.
+      |    
+      """
         .trimMargin(),
     ),
     Lrdd(
       "lrdd",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to further information about the link's context,
-    |      expressed as a LRDD ("Link-based Resource Descriptor Document")
-    |      resource.  See  for information about
-    |      processing this relation type in host-meta documents. When used
-    |      elsewhere, it refers to additional links and other metadata.
-    |      Multiple instances indicate additional LRDD resources. LRDD
-    |      resources MUST have an "application/xrd+xml" representation, and
-    |      MAY have others.
-    """
+      |Refers to further information about the link's context,
+      |      expressed as a LRDD ("Link-based Resource Descriptor Document")
+      |      resource.  See  for information about
+      |      processing this relation type in host-meta documents. When used
+      |      elsewhere, it refers to additional links and other metadata.
+      |      Multiple instances indicate additional LRDD resources. LRDD
+      |      resources MUST have an "application/xrd+xml" representation, and
+      |      MAY have others.
+      """
         .trimMargin(),
     ),
     Manifest(
@@ -1652,28 +1665,28 @@ public data class Bundle(
       "monitor",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource that can be used to monitor changes in an HTTP resource.
-    |    
-    """
+      |Refers to a resource that can be used to monitor changes in an HTTP resource.
+      |    
+      """
         .trimMargin(),
     ),
     Monitor_Group(
       "monitor-group",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource that can be used to monitor changes in a specified group of HTTP resources.
-    |    
-    """
+      |Refers to a resource that can be used to monitor changes in a specified group of HTTP resources.
+      |    
+      """
         .trimMargin(),
     ),
     Next(
       "next",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Indicates that the link's context is a part of a series, and
-    |      that the next in the series is the link target.
-    |    
-    """
+      |Indicates that the link's context is a part of a series, and
+      |      that the next in the series is the link target.
+      |    
+      """
         .trimMargin(),
     ),
     Next_Archive(
@@ -1735,63 +1748,63 @@ public data class Bundle(
       "preconnect",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Used to indicate an origin that will be used to fetch required 
-    |      resources for the link context. Initiating an early connection, which 
-    |      includes the DNS lookup, TCP handshake, and optional TLS negotiation, 
-    |      allows the user agent to mask the high latency costs of establishing a 
-    |      connection.
-    """
+      |Used to indicate an origin that will be used to fetch required 
+      |      resources for the link context. Initiating an early connection, which 
+      |      includes the DNS lookup, TCP handshake, and optional TLS negotiation, 
+      |      allows the user agent to mask the high latency costs of establishing a 
+      |      connection.
+      """
         .trimMargin(),
     ),
     Predecessor_Version(
       "predecessor-version",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Points to a resource containing the predecessor
-    |      version in the version history.
-    |    
-    """
+      |Points to a resource containing the predecessor
+      |      version in the version history.
+      |    
+      """
         .trimMargin(),
     ),
     Prefetch(
       "prefetch",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |The prefetch link relation type is used to identify a resource 
-    |      that might be required by the next navigation from the link context, and 
-    |      that the user agent ought to fetch, such that the user agent can deliver a 
-    |      faster response once the resource is requested in the future.
-    """
+      |The prefetch link relation type is used to identify a resource 
+      |      that might be required by the next navigation from the link context, and 
+      |      that the user agent ought to fetch, such that the user agent can deliver a 
+      |      faster response once the resource is requested in the future.
+      """
         .trimMargin(),
     ),
     Preload(
       "preload",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource that should be loaded early in the 
-    |      processing of the link's context, without blocking rendering.
-    """
+      |Refers to a resource that should be loaded early in the 
+      |      processing of the link's context, without blocking rendering.
+      """
         .trimMargin(),
     ),
     Prerender(
       "prerender",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Used to identify a resource that might be required by the next 
-    |      navigation from the link context, and that the user agent ought to fetch 
-    |      and execute, such that the user agent can deliver a faster response once 
-    |      the resource is requested in the future.
-    """
+      |Used to identify a resource that might be required by the next 
+      |      navigation from the link context, and that the user agent ought to fetch 
+      |      and execute, such that the user agent can deliver a faster response once 
+      |      the resource is requested in the future.
+      """
         .trimMargin(),
     ),
     Prev(
       "prev",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Indicates that the link's context is a part of a series, and
-    |      that the previous in the series is the link target.
-    |    
-    """
+      |Indicates that the link's context is a part of a series, and
+      |      that the previous in the series is the link target.
+      |    
+      """
         .trimMargin(),
     ),
     Preview(
@@ -1803,9 +1816,9 @@ public data class Bundle(
       "previous",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to the previous resource in an ordered series
-    |      of resources.  Synonym for "prev".
-    """
+      |Refers to the previous resource in an ordered series
+      |      of resources.  Synonym for "prev".
+      """
         .trimMargin(),
     ),
     Prev_Archive(
@@ -1822,20 +1835,20 @@ public data class Bundle(
       "profile",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifying that a resource representation conforms
-    |to a certain profile, without affecting the non-profile semantics
-    |of the resource representation.
-    """
+      |Identifying that a resource representation conforms
+      |to a certain profile, without affecting the non-profile semantics
+      |of the resource representation.
+      """
         .trimMargin(),
     ),
     Publication(
       "publication",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Links to a publication manifest. A manifest represents 
-    |      structured information about a publication, such as informative metadata, 
-    |      a list of resources, and a default reading order.
-    """
+      |Links to a publication manifest. A manifest represents 
+      |      structured information about a publication, such as informative metadata, 
+      |      a list of resources, and a default reading order.
+      """
         .trimMargin(),
     ),
     Related(
@@ -1847,41 +1860,41 @@ public data class Bundle(
       "restconf",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies the root of RESTCONF API as configured on this HTTP server.
-    |      The "restconf" relation defines the root of the API defined in RFC8040.
-    |      Subsequent revisions of RESTCONF will use alternate relation values to support 
-    |      protocol versioning.
-    """
+      |Identifies the root of RESTCONF API as configured on this HTTP server.
+      |      The "restconf" relation defines the root of the API defined in RFC8040.
+      |      Subsequent revisions of RESTCONF will use alternate relation values to support 
+      |      protocol versioning.
+      """
         .trimMargin(),
     ),
     Replies(
       "replies",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies a resource that is a reply to the context
-    |      of the link.
-    |    
-    """
+      |Identifies a resource that is a reply to the context
+      |      of the link.
+      |    
+      """
         .trimMargin(),
     ),
     Ruleinput(
       "ruleinput",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |The resource identified by the link target provides an input value to an 
-    |    instance of a rule, where the resource which represents the rule instance is 
-    |    identified by the link context.
-    |    
-    """
+      |The resource identified by the link target provides an input value to an 
+      |    instance of a rule, where the resource which represents the rule instance is 
+      |    identified by the link context.
+      |    
+      """
         .trimMargin(),
     ),
     Search(
       "search",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource that can be used to search through
-    |      the link's context and related resources.
-    """
+      |Refers to a resource that can be used to search through
+      |      the link's context and related resources.
+      """
         .trimMargin(),
     ),
     Section(
@@ -1893,72 +1906,72 @@ public data class Bundle(
       "self",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Conveys an identifier for the link's context.
-    |    
-    """
+      |Conveys an identifier for the link's context.
+      |    
+      """
         .trimMargin(),
     ),
     Service(
       "service",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Indicates a URI that can be used to retrieve a
-    |      service document.
-    """
+      |Indicates a URI that can be used to retrieve a
+      |      service document.
+      """
         .trimMargin(),
     ),
     Service_Desc(
       "service-desc",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies service description for the context that
-    |      is primarily intended for consumption by machines.
-    """
+      |Identifies service description for the context that
+      |      is primarily intended for consumption by machines.
+      """
         .trimMargin(),
     ),
     Service_Doc(
       "service-doc",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies service documentation for the context that
-    |      is primarily intended for human consumption.
-    """
+      |Identifies service documentation for the context that
+      |      is primarily intended for human consumption.
+      """
         .trimMargin(),
     ),
     Service_Meta(
       "service-meta",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies general metadata for the context that is
-    |      primarily intended for consumption by machines.
-    """
+      |Identifies general metadata for the context that is
+      |      primarily intended for consumption by machines.
+      """
         .trimMargin(),
     ),
     Sponsored(
       "sponsored",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource that is within a context that is 
-    |		sponsored (such as advertising or another compensation agreement).
-    """
+      |Refers to a resource that is within a context that is 
+      |		sponsored (such as advertising or another compensation agreement).
+      """
         .trimMargin(),
     ),
     Start(
       "start",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to the first resource in a collection of
-    |      resources.
-    """
+      |Refers to the first resource in a collection of
+      |      resources.
+      """
         .trimMargin(),
     ),
     Status(
       "status",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies a resource that represents the context's
-    |      status.
-    """
+      |Identifies a resource that represents the context's
+      |      status.
+      """
         .trimMargin(),
     ),
     Stylesheet(
@@ -1970,39 +1983,39 @@ public data class Bundle(
       "subsection",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource serving as a subsection in a
-    |      collection of resources.
-    """
+      |Refers to a resource serving as a subsection in a
+      |      collection of resources.
+      """
         .trimMargin(),
     ),
     Successor_Version(
       "successor-version",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Points to a resource containing the successor version
-    |      in the version history.
-    |    
-    """
+      |Points to a resource containing the successor version
+      |      in the version history.
+      |    
+      """
         .trimMargin(),
     ),
     Sunset(
       "sunset",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies a resource that provides information about
-    |      the context's retirement policy.
-    |    
-    """
+      |Identifies a resource that provides information about
+      |      the context's retirement policy.
+      |    
+      """
         .trimMargin(),
     ),
     Tag(
       "tag",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Gives a tag (identified by the given address) that applies to
-    |      the current document.
-    |    
-    """
+      |Gives a tag (identified by the given address) that applies to
+      |      the current document.
+      |    
+      """
         .trimMargin(),
     ),
     Terms_Of_Service(
@@ -2029,49 +2042,49 @@ public data class Bundle(
       "ugc",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a resource that is within a context that is User Generated Content.
-    |    
-    """
+      |Refers to a resource that is within a context that is User Generated Content.
+      |    
+      """
         .trimMargin(),
     ),
     Up(
       "up",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Refers to a parent document in a hierarchy of
-    |      documents.
-    |    
-    """
+      |Refers to a parent document in a hierarchy of
+      |      documents.
+      |    
+      """
         .trimMargin(),
     ),
     Version_History(
       "version-history",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Points to a resource containing the version history
-    |      for the context.
-    |    
-    """
+      |Points to a resource containing the version history
+      |      for the context.
+      |    
+      """
         .trimMargin(),
     ),
     Via(
       "via",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies a resource that is the source of the
-    |      information in the link's context.
-    |    
-    """
+      |Identifies a resource that is the source of the
+      |      information in the link's context.
+      |    
+      """
         .trimMargin(),
     ),
     Webmention(
       "webmention",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Identifies a target URI that supports the Webmention protocol.
-    |    This allows clients that mention a resource in some form of publishing process
-    |    to contact that endpoint and inform it that this resource has been mentioned.
-    """
+      |Identifies a target URI that supports the Webmention protocol.
+      |    This allows clients that mention a resource in some form of publishing process
+      |    to contact that endpoint and inform it that this resource has been mentioned.
+      """
         .trimMargin(),
     ),
     Working_Copy(
@@ -2083,10 +2096,10 @@ public data class Bundle(
       "working-copy-of",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
       """
-    |Points to the versioned resource from which this
-    |      working copy was obtained.
-    |    
-    """
+      |Points to the versioned resource from which this
+      |      working copy was obtained.
+      |    
+      """
         .trimMargin(),
     );
 

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -82,10 +85,14 @@ internal object BiologicallyDerivedProductCollectionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Collection =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Collection) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -222,10 +229,14 @@ internal object BiologicallyDerivedProductProcessingSerializer :
     }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Processing =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Processing) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -363,10 +374,14 @@ internal object BiologicallyDerivedProductManipulationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Manipulation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Manipulation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -486,10 +501,14 @@ internal object BiologicallyDerivedProductStorageSerializer :
     }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Storage =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Storage) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): BiologicallyDerivedProduct.Storage {
@@ -666,7 +685,9 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
   }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct) {
     encoder.encodeStructure(descriptor) {

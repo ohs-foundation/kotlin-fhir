@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -183,26 +186,31 @@ public data class DeviceUseStatement(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, subject.toBuilder(), device.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-        timing = this@with.timing
-        recordedOn = this@with.recordedOn?.toBuilder()
-        source = this@with.source?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        bodySite = this@with.bodySite?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          subject.toBuilder(),
+          device.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
+          timing = this@with.timing
+          recordedOn = this@with.recordedOn?.toBuilder()
+          source = this@with.source?.toBuilder()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          bodySite = this@with.bodySite?.toBuilder()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   public sealed interface Timing {

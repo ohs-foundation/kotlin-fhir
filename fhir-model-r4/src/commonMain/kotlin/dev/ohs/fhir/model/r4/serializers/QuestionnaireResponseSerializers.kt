@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -102,10 +105,14 @@ internal object QuestionnaireResponseItemSerializer : KSerializer<QuestionnaireR
     }
 
   override fun deserialize(decoder: Decoder): QuestionnaireResponse.Item =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: QuestionnaireResponse.Item) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): QuestionnaireResponse.Item {
@@ -253,10 +260,14 @@ internal object QuestionnaireResponseItemAnswerSerializer :
     }
 
   override fun deserialize(decoder: Decoder): QuestionnaireResponse.Item.Answer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: QuestionnaireResponse.Item.Answer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): QuestionnaireResponse.Item.Answer {
@@ -539,7 +550,9 @@ internal object QuestionnaireResponseSerializer : KSerializer<QuestionnaireRespo
   }
 
   override fun deserialize(decoder: Decoder): QuestionnaireResponse =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: QuestionnaireResponse) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -239,15 +242,19 @@ public data class OperationOutcome(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(severity, code).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          details = this@with.details?.toBuilder()
-          diagnostics = this@with.diagnostics?.toBuilder()
-          location = this@with.location.map { it.toBuilder() }.toMutableList()
-          expression = this@with.expression.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            severity,
+            code,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            details = this@with.details?.toBuilder()
+            diagnostics = this@with.diagnostics?.toBuilder()
+            location = this@with.location.map { it.toBuilder() }.toMutableList()
+            expression = this@with.expression.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(

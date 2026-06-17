@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -353,38 +356,42 @@ public data class Observation(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, code.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        effective = this@with.effective
-        issued = this@with.issued?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`
-        dataAbsentReason = this@with.dataAbsentReason?.toBuilder()
-        interpretation = this@with.interpretation.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        bodySite = this@with.bodySite?.toBuilder()
-        method = this@with.method?.toBuilder()
-        specimen = this@with.specimen?.toBuilder()
-        device = this@with.device?.toBuilder()
-        referenceRange = this@with.referenceRange.map { it.toBuilder() }.toMutableList()
-        hasMember = this@with.hasMember.map { it.toBuilder() }.toMutableList()
-        derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-        component = this@with.component.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          code.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          subject = this@with.subject?.toBuilder()
+          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          effective = this@with.effective
+          issued = this@with.issued?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          `value` = this@with.`value`
+          dataAbsentReason = this@with.dataAbsentReason?.toBuilder()
+          interpretation = this@with.interpretation.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          bodySite = this@with.bodySite?.toBuilder()
+          method = this@with.method?.toBuilder()
+          specimen = this@with.specimen?.toBuilder()
+          device = this@with.device?.toBuilder()
+          referenceRange = this@with.referenceRange.map { it.toBuilder() }.toMutableList()
+          hasMember = this@with.hasMember.map { it.toBuilder() }.toMutableList()
+          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
+          component = this@with.component.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**

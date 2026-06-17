@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -170,22 +173,27 @@ public data class ResearchSubject(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, study.toBuilder(), subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        progress = this@with.progress.map { it.toBuilder() }.toMutableList()
-        period = this@with.period?.toBuilder()
-        assignedComparisonGroup = this@with.assignedComparisonGroup?.toBuilder()
-        actualComparisonGroup = this@with.actualComparisonGroup?.toBuilder()
-        consent = this@with.consent.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          study.toBuilder(),
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          progress = this@with.progress.map { it.toBuilder() }.toMutableList()
+          period = this@with.period?.toBuilder()
+          assignedComparisonGroup = this@with.assignedComparisonGroup?.toBuilder()
+          actualComparisonGroup = this@with.actualComparisonGroup?.toBuilder()
+          consent = this@with.consent.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** The current state (status) of the subject and resons for status change where appropriate. */

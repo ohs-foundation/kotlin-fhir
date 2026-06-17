@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -250,34 +253,40 @@ public data class MedicationAdministration(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, medication.toBuilder(), subject.toBuilder(), occurence).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        statusReason = this@with.statusReason.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        supportingInformation =
-          this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
-        recorded = this@with.recorded?.toBuilder()
-        isSubPotent = this@with.isSubPotent?.toBuilder()
-        subPotentReason = this@with.subPotentReason.map { it.toBuilder() }.toMutableList()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        request = this@with.request?.toBuilder()
-        device = this@with.device.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        dosage = this@with.dosage?.toBuilder()
-        eventHistory = this@with.eventHistory.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          medication.toBuilder(),
+          subject.toBuilder(),
+          occurence,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          statusReason = this@with.statusReason.map { it.toBuilder() }.toMutableList()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          supportingInformation =
+            this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
+          recorded = this@with.recorded?.toBuilder()
+          isSubPotent = this@with.isSubPotent?.toBuilder()
+          subPotentReason = this@with.subPotentReason.map { it.toBuilder() }.toMutableList()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          request = this@with.request?.toBuilder()
+          device = this@with.device.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          dosage = this@with.dosage?.toBuilder()
+          eventHistory = this@with.eventHistory.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**

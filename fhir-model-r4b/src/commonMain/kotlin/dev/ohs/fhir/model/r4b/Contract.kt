@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -452,15 +455,19 @@ public data class Contract(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), publicationStatus).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          subType = this@with.subType?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          publicationDate = this@with.publicationDate?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-        }
+        Builder(
+            type.toBuilder(),
+            publicationStatus,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            subType = this@with.subType?.toBuilder()
+            publisher = this@with.publisher?.toBuilder()
+            publicationDate = this@with.publicationDate?.toBuilder()
+            copyright = this@with.copyright?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -962,11 +969,16 @@ public data class Contract(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(reference.map { it.toBuilder() }.toMutableList(), role.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
+            Builder(
+                reference.map { it.toBuilder() }.toMutableList(),
+                role.toBuilder(),
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              }
           }
 
         public class Builder(
@@ -1707,8 +1719,7 @@ public data class Contract(
             public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
           ) : Entity
 
-          public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
-            Entity
+          public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Entity
 
           public companion object {
             internal fun from(
@@ -2235,8 +2246,7 @@ public data class Contract(
 
         public fun asTiming(): Timing? = this as? Timing
 
-        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
-          Occurrence
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Occurrence
 
         public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Occurrence
 

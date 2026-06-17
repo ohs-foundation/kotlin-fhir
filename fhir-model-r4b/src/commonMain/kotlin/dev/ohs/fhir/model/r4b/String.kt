@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -103,7 +106,11 @@ public open class String(
     public open var `value`: kotlin.String? = null
 
     public open fun build(): String =
-      String(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      String(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

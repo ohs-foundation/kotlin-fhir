@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -90,10 +93,14 @@ internal object CitationSummarySerializer : KSerializer<Citation.Summary> {
     }
 
   override fun deserialize(decoder: Decoder): Citation.Summary =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.Summary) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.Summary {
@@ -182,10 +189,14 @@ internal object CitationClassificationSerializer : KSerializer<Citation.Classifi
     }
 
   override fun deserialize(decoder: Decoder): Citation.Classification =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.Classification) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.Classification {
@@ -269,10 +280,14 @@ internal object CitationStatusDateSerializer : KSerializer<Citation.StatusDate> 
     }
 
   override fun deserialize(decoder: Decoder): Citation.StatusDate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.StatusDate) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.StatusDate {
@@ -447,10 +462,14 @@ internal object CitationCitedArtifactSerializer : KSerializer<Citation.CitedArti
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact {
@@ -723,10 +742,14 @@ internal object CitationCitedArtifactVersionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Version =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Version) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.Version {
@@ -821,10 +844,14 @@ internal object CitationCitedArtifactStatusDateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.StatusDate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.StatusDate) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.StatusDate {
@@ -928,10 +955,14 @@ internal object CitationCitedArtifactTitleSerializer : KSerializer<Citation.Cite
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Title =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Title) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.Title {
@@ -1031,10 +1062,14 @@ internal object CitationCitedArtifactAbstractSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Abstract =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Abstract) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.Abstract {
@@ -1139,10 +1174,14 @@ internal object CitationCitedArtifactPartSerializer : KSerializer<Citation.Cited
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Part =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Part) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.Part {
@@ -1253,10 +1292,14 @@ internal object CitationCitedArtifactRelatesToSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.RelatesTo =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.RelatesTo) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.RelatesTo {
@@ -1452,10 +1495,14 @@ internal object CitationCitedArtifactPublicationFormSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.PublicationForm =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.PublicationForm) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1703,13 +1750,17 @@ internal object CitationCitedArtifactPublicationFormPublishedInSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.PublicationForm.PublishedIn =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Citation.CitedArtifact.PublicationForm.PublishedIn,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1838,10 +1889,14 @@ internal object CitationCitedArtifactWebLocationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.WebLocation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.WebLocation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.WebLocation {
@@ -1944,10 +1999,14 @@ internal object CitationCitedArtifactClassificationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Classification =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Classification) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -2071,10 +2130,14 @@ internal object CitationCitedArtifactContributorshipSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Contributorship =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Contributorship) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -2211,10 +2274,14 @@ internal object CitationCitedArtifactContributorshipEntrySerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Contributorship.Entry =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Contributorship.Entry) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -2419,13 +2486,17 @@ internal object CitationCitedArtifactContributorshipEntryContributionInstanceSer
   override fun deserialize(
     decoder: Decoder
   ): Citation.CitedArtifact.Contributorship.Entry.ContributionInstance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Citation.CitedArtifact.Contributorship.Entry.ContributionInstance,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -2518,13 +2589,17 @@ internal object CitationCitedArtifactContributorshipSummarySerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Contributorship.Summary =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Citation.CitedArtifact.Contributorship.Summary,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -2740,7 +2815,9 @@ internal object CitationSerializer : KSerializer<Citation> {
   }
 
   override fun deserialize(decoder: Decoder): Citation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Citation) {
     encoder.encodeStructure(descriptor) {

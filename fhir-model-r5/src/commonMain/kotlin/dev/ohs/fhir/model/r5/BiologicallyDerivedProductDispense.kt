@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -175,29 +178,34 @@ public data class BiologicallyDerivedProductDispense(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, product.toBuilder(), patient.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        originRelationshipType = this@with.originRelationshipType?.toBuilder()
-        matchStatus = this@with.matchStatus?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        location = this@with.location?.toBuilder()
-        quantity = this@with.quantity?.toBuilder()
-        preparedDate = this@with.preparedDate?.toBuilder()
-        whenHandedOver = this@with.whenHandedOver?.toBuilder()
-        destination = this@with.destination?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        usageInstruction = this@with.usageInstruction?.toBuilder()
-      }
+      Builder(
+          status,
+          product.toBuilder(),
+          patient.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          originRelationshipType = this@with.originRelationshipType?.toBuilder()
+          matchStatus = this@with.matchStatus?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          location = this@with.location?.toBuilder()
+          quantity = this@with.quantity?.toBuilder()
+          preparedDate = this@with.preparedDate?.toBuilder()
+          whenHandedOver = this@with.whenHandedOver?.toBuilder()
+          destination = this@with.destination?.toBuilder()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          usageInstruction = this@with.usageInstruction?.toBuilder()
+        }
     }
 
   /** Indicates who or what performed an action. */

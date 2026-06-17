@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -80,10 +83,14 @@ internal object InvoiceParticipantSerializer : KSerializer<Invoice.Participant> 
     }
 
   override fun deserialize(decoder: Decoder): Invoice.Participant =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Invoice.Participant) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Invoice.Participant {
@@ -176,10 +183,14 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
     }
 
   override fun deserialize(decoder: Decoder): Invoice.LineItem =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Invoice.LineItem) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Invoice.LineItem {
@@ -330,10 +341,14 @@ internal object InvoiceLineItemPriceComponentSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Invoice.LineItem.PriceComponent =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Invoice.LineItem.PriceComponent) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Invoice.LineItem.PriceComponent {
@@ -493,7 +508,9 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
   }
 
   override fun deserialize(decoder: Decoder): Invoice =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Invoice) {
     encoder.encodeStructure(descriptor) {

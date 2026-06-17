@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -221,26 +224,31 @@ public data class Consent(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, scope.toBuilder(), category.map { it.toBuilder() }.toMutableList()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        patient = this@with.patient?.toBuilder()
-        dateTime = this@with.dateTime?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        organization = this@with.organization.map { it.toBuilder() }.toMutableList()
-        source = this@with.source
-        policy = this@with.policy.map { it.toBuilder() }.toMutableList()
-        policyRule = this@with.policyRule?.toBuilder()
-        verification = this@with.verification.map { it.toBuilder() }.toMutableList()
-        provision = this@with.provision?.toBuilder()
-      }
+      Builder(
+          status,
+          scope.toBuilder(),
+          category.map { it.toBuilder() }.toMutableList(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          patient = this@with.patient?.toBuilder()
+          dateTime = this@with.dateTime?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          organization = this@with.organization.map { it.toBuilder() }.toMutableList()
+          source = this@with.source
+          policy = this@with.policy.map { it.toBuilder() }.toMutableList()
+          policyRule = this@with.policyRule?.toBuilder()
+          verification = this@with.verification.map { it.toBuilder() }.toMutableList()
+          provision = this@with.provision?.toBuilder()
+        }
     }
 
   /**
@@ -804,11 +812,15 @@ public data class Consent(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(meaning, reference.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              meaning,
+              reference.toBuilder(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public class Builder(

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -84,10 +87,14 @@ internal object ConditionDefinitionObservationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ConditionDefinition.Observation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConditionDefinition.Observation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConditionDefinition.Observation {
@@ -173,10 +180,14 @@ internal object ConditionDefinitionMedicationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ConditionDefinition.Medication =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConditionDefinition.Medication) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConditionDefinition.Medication {
@@ -265,10 +276,14 @@ internal object ConditionDefinitionPreconditionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ConditionDefinition.Precondition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConditionDefinition.Precondition) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConditionDefinition.Precondition {
@@ -377,10 +392,14 @@ internal object ConditionDefinitionQuestionnaireSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ConditionDefinition.Questionnaire =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConditionDefinition.Questionnaire) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConditionDefinition.Questionnaire {
@@ -475,10 +494,14 @@ internal object ConditionDefinitionPlanSerializer : KSerializer<ConditionDefinit
     }
 
   override fun deserialize(decoder: Decoder): ConditionDefinition.Plan =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConditionDefinition.Plan) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConditionDefinition.Plan {
@@ -670,7 +693,9 @@ internal object ConditionDefinitionSerializer : KSerializer<ConditionDefinition>
   }
 
   override fun deserialize(decoder: Decoder): ConditionDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConditionDefinition) {
     encoder.encodeStructure(descriptor) {

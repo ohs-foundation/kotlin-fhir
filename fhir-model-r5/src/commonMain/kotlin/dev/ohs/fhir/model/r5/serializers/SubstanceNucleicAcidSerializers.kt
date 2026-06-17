@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -93,10 +96,14 @@ internal object SubstanceNucleicAcidSubunitSerializer : KSerializer<SubstanceNuc
     }
 
   override fun deserialize(decoder: Decoder): SubstanceNucleicAcid.Subunit =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceNucleicAcid.Subunit) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceNucleicAcid.Subunit {
@@ -262,10 +269,14 @@ internal object SubstanceNucleicAcidSubunitLinkageSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceNucleicAcid.Subunit.Linkage =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceNucleicAcid.Subunit.Linkage) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceNucleicAcid.Subunit.Linkage {
@@ -384,10 +395,14 @@ internal object SubstanceNucleicAcidSubunitSugarSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceNucleicAcid.Subunit.Sugar =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceNucleicAcid.Subunit.Sugar) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceNucleicAcid.Subunit.Sugar {
@@ -514,7 +529,9 @@ internal object SubstanceNucleicAcidSerializer : KSerializer<SubstanceNucleicAci
   }
 
   override fun deserialize(decoder: Decoder): SubstanceNucleicAcid =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceNucleicAcid) {
     encoder.encodeStructure(descriptor) {

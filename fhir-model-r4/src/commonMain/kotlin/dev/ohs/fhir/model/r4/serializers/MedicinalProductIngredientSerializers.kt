@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -85,10 +88,14 @@ internal object MedicinalProductIngredientSpecifiedSubstanceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProductIngredient.SpecifiedSubstance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductIngredient.SpecifiedSubstance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -215,13 +222,17 @@ internal object MedicinalProductIngredientSpecifiedSubstanceStrengthSerializer :
   override fun deserialize(
     decoder: Decoder
   ): MedicinalProductIngredient.SpecifiedSubstance.Strength =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: MedicinalProductIngredient.SpecifiedSubstance.Strength,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -393,13 +404,17 @@ internal object MedicinalProductIngredientSpecifiedSubstanceStrengthReferenceStr
   override fun deserialize(
     decoder: Decoder
   ): MedicinalProductIngredient.SpecifiedSubstance.Strength.ReferenceStrength =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: MedicinalProductIngredient.SpecifiedSubstance.Strength.ReferenceStrength,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -533,10 +548,14 @@ internal object MedicinalProductIngredientSubstanceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProductIngredient.Substance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductIngredient.Substance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MedicinalProductIngredient.Substance {
@@ -662,7 +681,9 @@ internal object MedicinalProductIngredientSerializer : KSerializer<MedicinalProd
   }
 
   override fun deserialize(decoder: Decoder): MedicinalProductIngredient =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductIngredient) {
     encoder.encodeStructure(descriptor) {

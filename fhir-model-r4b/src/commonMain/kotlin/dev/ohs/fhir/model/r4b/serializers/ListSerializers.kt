@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -81,10 +84,14 @@ internal object ListEntrySerializer : KSerializer<R4bList.Entry> {
     }
 
   override fun deserialize(decoder: Decoder): R4bList.Entry =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: R4bList.Entry) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): R4bList.Entry {
@@ -225,7 +232,9 @@ internal object ListSerializer : KSerializer<R4bList> {
   }
 
   override fun deserialize(decoder: Decoder): R4bList =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: R4bList) {
     encoder.encodeStructure(descriptor) {
@@ -547,5 +556,7 @@ internal object ListPolymorphicSerializer : KSerializer<R4bList> {
   }
 
   override fun deserialize(decoder: Decoder): R4bList =
-    decoder.decodeStructure(descriptor) { ListSerializer.deserializeInternal(this, descriptor, 0) }
+    decoder.decodeStructure(descriptor) {
+      ListSerializer.deserializeInternal(this, descriptor, 0)
+    }
 }

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -88,10 +91,14 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
     }
 
   override fun deserialize(decoder: Decoder): ExampleScenario.Actor =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Actor) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExampleScenario.Actor {
@@ -222,10 +229,14 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
     }
 
   override fun deserialize(decoder: Decoder): ExampleScenario.Instance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Instance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExampleScenario.Instance {
@@ -377,10 +388,14 @@ internal object ExampleScenarioInstanceVersionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExampleScenario.Instance.Version =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Instance.Version) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExampleScenario.Instance.Version {
@@ -477,10 +492,14 @@ internal object ExampleScenarioInstanceContainedInstanceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExampleScenario.Instance.ContainedInstance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Instance.ContainedInstance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -589,10 +608,14 @@ internal object ExampleScenarioProcessSerializer : KSerializer<ExampleScenario.P
     }
 
   override fun deserialize(decoder: Decoder): ExampleScenario.Process =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Process) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExampleScenario.Process {
@@ -732,10 +755,14 @@ internal object ExampleScenarioProcessStepSerializer : KSerializer<ExampleScenar
     }
 
   override fun deserialize(decoder: Decoder): ExampleScenario.Process.Step =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Process.Step) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExampleScenario.Process.Step {
@@ -876,10 +903,14 @@ internal object ExampleScenarioProcessStepOperationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExampleScenario.Process.Step.Operation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Process.Step.Operation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1068,10 +1099,14 @@ internal object ExampleScenarioProcessStepAlternativeSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExampleScenario.Process.Step.Alternative =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Process.Step.Alternative) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1250,7 +1285,9 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
   }
 
   override fun deserialize(decoder: Decoder): ExampleScenario =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario) {
     encoder.encodeStructure(descriptor) {

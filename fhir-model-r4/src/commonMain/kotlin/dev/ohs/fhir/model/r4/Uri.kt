@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -106,7 +109,11 @@ public open class Uri(
     public open var `value`: String? = null
 
     public open fun build(): Uri =
-      Uri(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      Uri(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

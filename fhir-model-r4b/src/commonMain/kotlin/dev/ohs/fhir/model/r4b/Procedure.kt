@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -326,43 +329,47 @@ public data class Procedure(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical =
-          this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-        instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        statusReason = this@with.statusReason?.toBuilder()
-        category = this@with.category?.toBuilder()
-        code = this@with.code?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        performed = this@with.performed
-        recorder = this@with.recorder?.toBuilder()
-        asserter = this@with.asserter?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        location = this@with.location?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        bodySite = this@with.bodySite.map { it.toBuilder() }.toMutableList()
-        outcome = this@with.outcome?.toBuilder()
-        report = this@with.report.map { it.toBuilder() }.toMutableList()
-        complication = this@with.complication.map { it.toBuilder() }.toMutableList()
-        complicationDetail = this@with.complicationDetail.map { it.toBuilder() }.toMutableList()
-        followUp = this@with.followUp.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        focalDevice = this@with.focalDevice.map { it.toBuilder() }.toMutableList()
-        usedReference = this@with.usedReference.map { it.toBuilder() }.toMutableList()
-        usedCode = this@with.usedCode.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          instantiatesCanonical =
+            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
+          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          statusReason = this@with.statusReason?.toBuilder()
+          category = this@with.category?.toBuilder()
+          code = this@with.code?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          performed = this@with.performed
+          recorder = this@with.recorder?.toBuilder()
+          asserter = this@with.asserter?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          location = this@with.location?.toBuilder()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          bodySite = this@with.bodySite.map { it.toBuilder() }.toMutableList()
+          outcome = this@with.outcome?.toBuilder()
+          report = this@with.report.map { it.toBuilder() }.toMutableList()
+          complication = this@with.complication.map { it.toBuilder() }.toMutableList()
+          complicationDetail = this@with.complicationDetail.map { it.toBuilder() }.toMutableList()
+          followUp = this@with.followUp.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          focalDevice = this@with.focalDevice.map { it.toBuilder() }.toMutableList()
+          usedReference = this@with.usedReference.map { it.toBuilder() }.toMutableList()
+          usedCode = this@with.usedCode.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Limited to "real" people rather than equipment. */

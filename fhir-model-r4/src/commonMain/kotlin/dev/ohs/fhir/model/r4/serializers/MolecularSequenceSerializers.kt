@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -93,10 +96,14 @@ internal object MolecularSequenceReferenceSeqSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MolecularSequence.ReferenceSeq =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.ReferenceSeq) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MolecularSequence.ReferenceSeq {
@@ -279,10 +286,14 @@ internal object MolecularSequenceVariantSerializer : KSerializer<MolecularSequen
     }
 
   override fun deserialize(decoder: Decoder): MolecularSequence.Variant =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.Variant) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MolecularSequence.Variant {
@@ -445,10 +456,14 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
     }
 
   override fun deserialize(decoder: Decoder): MolecularSequence.Quality =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.Quality) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MolecularSequence.Quality {
@@ -724,10 +739,14 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
     }
 
   override fun deserialize(decoder: Decoder): MolecularSequence.Quality.Roc =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.Quality.Roc) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MolecularSequence.Quality.Roc {
@@ -934,10 +953,14 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
     }
 
   override fun deserialize(decoder: Decoder): MolecularSequence.Repository =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.Repository) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MolecularSequence.Repository {
@@ -1080,10 +1103,14 @@ internal object MolecularSequenceStructureVariantSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MolecularSequence.StructureVariant =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.StructureVariant) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MolecularSequence.StructureVariant {
@@ -1204,10 +1231,14 @@ internal object MolecularSequenceStructureVariantOuterSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MolecularSequence.StructureVariant.Outer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.StructureVariant.Outer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1303,10 +1334,14 @@ internal object MolecularSequenceStructureVariantInnerSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MolecularSequence.StructureVariant.Inner =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.StructureVariant.Inner) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1459,7 +1494,9 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
   }
 
   override fun deserialize(decoder: Decoder): MolecularSequence =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence) {
     encoder.encodeStructure(descriptor) {

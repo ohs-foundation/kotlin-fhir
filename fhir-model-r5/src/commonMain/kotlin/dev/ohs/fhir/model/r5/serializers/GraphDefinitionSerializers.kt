@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -89,10 +92,14 @@ internal object GraphDefinitionNodeSerializer : KSerializer<GraphDefinition.Node
     }
 
   override fun deserialize(decoder: Decoder): GraphDefinition.Node =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GraphDefinition.Node) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): GraphDefinition.Node {
@@ -226,10 +233,14 @@ internal object GraphDefinitionLinkSerializer : KSerializer<GraphDefinition.Link
     }
 
   override fun deserialize(decoder: Decoder): GraphDefinition.Link =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GraphDefinition.Link) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): GraphDefinition.Link {
@@ -408,10 +419,14 @@ internal object GraphDefinitionLinkCompartmentSerializer :
     }
 
   override fun deserialize(decoder: Decoder): GraphDefinition.Link.Compartment =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GraphDefinition.Link.Compartment) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): GraphDefinition.Link.Compartment {
@@ -605,7 +620,9 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
   }
 
   override fun deserialize(decoder: Decoder): GraphDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GraphDefinition) {
     encoder.encodeStructure(descriptor) {

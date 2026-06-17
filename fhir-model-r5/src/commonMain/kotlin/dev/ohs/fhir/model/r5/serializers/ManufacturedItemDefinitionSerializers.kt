@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -92,10 +95,14 @@ internal object ManufacturedItemDefinitionPropertySerializer :
     }
 
   override fun deserialize(decoder: Decoder): ManufacturedItemDefinition.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ManufacturedItemDefinition.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ManufacturedItemDefinition.Property {
@@ -295,10 +302,14 @@ internal object ManufacturedItemDefinitionComponentSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ManufacturedItemDefinition.Component =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ManufacturedItemDefinition.Component) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ManufacturedItemDefinition.Component {
@@ -447,13 +458,17 @@ internal object ManufacturedItemDefinitionComponentConstituentSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ManufacturedItemDefinition.Component.Constituent =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: ManufacturedItemDefinition.Component.Constituent,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -626,7 +641,9 @@ internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedI
   }
 
   override fun deserialize(decoder: Decoder): ManufacturedItemDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ManufacturedItemDefinition) {
     encoder.encodeStructure(descriptor) {

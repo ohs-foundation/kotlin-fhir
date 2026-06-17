@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -327,47 +330,51 @@ public data class Task(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, intent).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical = this@with.instantiatesCanonical?.toBuilder()
-        instantiatesUri = this@with.instantiatesUri?.toBuilder()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        groupIdentifier = this@with.groupIdentifier?.toBuilder()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        statusReason = this@with.statusReason?.toBuilder()
-        businessStatus = this@with.businessStatus?.toBuilder()
-        priority = this@with.priority
-        doNotPerform = this@with.doNotPerform?.toBuilder()
-        code = this@with.code?.toBuilder()
-        description = this@with.description?.toBuilder()
-        focus = this@with.focus?.toBuilder()
-        `for` = this@with.`for`?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        requestedPeriod = this@with.requestedPeriod?.toBuilder()
-        executionPeriod = this@with.executionPeriod?.toBuilder()
-        authoredOn = this@with.authoredOn?.toBuilder()
-        lastModified = this@with.lastModified?.toBuilder()
-        requester = this@with.requester?.toBuilder()
-        requestedPerformer = this@with.requestedPerformer.map { it.toBuilder() }.toMutableList()
-        owner = this@with.owner?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        location = this@with.location?.toBuilder()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
-        restriction = this@with.restriction?.toBuilder()
-        input = this@with.input.map { it.toBuilder() }.toMutableList()
-        output = this@with.output.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          intent,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          instantiatesCanonical = this@with.instantiatesCanonical?.toBuilder()
+          instantiatesUri = this@with.instantiatesUri?.toBuilder()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          groupIdentifier = this@with.groupIdentifier?.toBuilder()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          statusReason = this@with.statusReason?.toBuilder()
+          businessStatus = this@with.businessStatus?.toBuilder()
+          priority = this@with.priority
+          doNotPerform = this@with.doNotPerform?.toBuilder()
+          code = this@with.code?.toBuilder()
+          description = this@with.description?.toBuilder()
+          focus = this@with.focus?.toBuilder()
+          `for` = this@with.`for`?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          requestedPeriod = this@with.requestedPeriod?.toBuilder()
+          executionPeriod = this@with.executionPeriod?.toBuilder()
+          authoredOn = this@with.authoredOn?.toBuilder()
+          lastModified = this@with.lastModified?.toBuilder()
+          requester = this@with.requester?.toBuilder()
+          requestedPerformer = this@with.requestedPerformer.map { it.toBuilder() }.toMutableList()
+          owner = this@with.owner?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          location = this@with.location?.toBuilder()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
+          restriction = this@with.restriction?.toBuilder()
+          input = this@with.input.map { it.toBuilder() }.toMutableList()
+          output = this@with.output.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** The entity who performed the requested task. */
@@ -695,11 +702,15 @@ public data class Task(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), `value`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type.toBuilder(),
+            `value`,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Value {
@@ -811,8 +822,7 @@ public data class Task(
 
       public fun asMeta(): Meta? = this as? Meta
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
-        Value
+      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) : Value
 
       public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
@@ -869,8 +879,7 @@ public data class Task(
 
       public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
-        Value
+      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) : Value
 
       public data class Count(public val `value`: dev.ohs.fhir.model.r5.Count) : Value
 
@@ -921,11 +930,9 @@ public data class Task(
         public val `value`: dev.ohs.fhir.model.r5.TriggerDefinition
       ) : Value
 
-      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) :
-        Value
+      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) : Value
 
-      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) :
-        Value
+      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) : Value
 
       public data class ExtendedContactDetail(
         public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail
@@ -1162,11 +1169,15 @@ public data class Task(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), `value`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type.toBuilder(),
+            `value`,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Value {
@@ -1278,8 +1289,7 @@ public data class Task(
 
       public fun asMeta(): Meta? = this as? Meta
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
-        Value
+      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) : Value
 
       public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
@@ -1336,8 +1346,7 @@ public data class Task(
 
       public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
-        Value
+      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) : Value
 
       public data class Count(public val `value`: dev.ohs.fhir.model.r5.Count) : Value
 
@@ -1388,11 +1397,9 @@ public data class Task(
         public val `value`: dev.ohs.fhir.model.r5.TriggerDefinition
       ) : Value
 
-      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) :
-        Value
+      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) : Value
 
-      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) :
-        Value
+      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) : Value
 
       public data class ExtendedContactDetail(
         public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -216,26 +219,30 @@ public data class AppointmentResponse(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(appointment.toBuilder(), participantStatus).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        proposedNewTime = this@with.proposedNewTime?.toBuilder()
-        start = this@with.start?.toBuilder()
-        end = this@with.end?.toBuilder()
-        participantType = this@with.participantType.map { it.toBuilder() }.toMutableList()
-        actor = this@with.actor?.toBuilder()
-        comment = this@with.comment?.toBuilder()
-        recurring = this@with.recurring?.toBuilder()
-        occurrenceDate = this@with.occurrenceDate?.toBuilder()
-        recurrenceId = this@with.recurrenceId?.toBuilder()
-      }
+      Builder(
+          appointment.toBuilder(),
+          participantStatus,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          proposedNewTime = this@with.proposedNewTime?.toBuilder()
+          start = this@with.start?.toBuilder()
+          end = this@with.end?.toBuilder()
+          participantType = this@with.participantType.map { it.toBuilder() }.toMutableList()
+          actor = this@with.actor?.toBuilder()
+          comment = this@with.comment?.toBuilder()
+          recurring = this@with.recurring?.toBuilder()
+          occurrenceDate = this@with.occurrenceDate?.toBuilder()
+          recurrenceId = this@with.recurrenceId?.toBuilder()
+        }
     }
 
   public class Builder(

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -375,48 +378,52 @@ public data class ResearchDefinition(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, population.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        shortTitle = this@with.shortTitle?.toBuilder()
-        subtitle = this@with.subtitle?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        subject = this@with.subject
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        comment = this@with.comment.map { it.toBuilder() }.toMutableList()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        usage = this@with.usage?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        effectivePeriod = this@with.effectivePeriod?.toBuilder()
-        topic = this@with.topic.map { it.toBuilder() }.toMutableList()
-        author = this@with.author.map { it.toBuilder() }.toMutableList()
-        editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-        reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-        endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        library = this@with.library.map { it.toBuilder() }.toMutableList()
-        exposure = this@with.exposure?.toBuilder()
-        exposureAlternative = this@with.exposureAlternative?.toBuilder()
-        outcome = this@with.outcome?.toBuilder()
-      }
+      Builder(
+          status,
+          population.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          url = this@with.url?.toBuilder()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          version = this@with.version?.toBuilder()
+          name = this@with.name?.toBuilder()
+          title = this@with.title?.toBuilder()
+          shortTitle = this@with.shortTitle?.toBuilder()
+          subtitle = this@with.subtitle?.toBuilder()
+          experimental = this@with.experimental?.toBuilder()
+          subject = this@with.subject
+          date = this@with.date?.toBuilder()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          comment = this@with.comment.map { it.toBuilder() }.toMutableList()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
+          purpose = this@with.purpose?.toBuilder()
+          usage = this@with.usage?.toBuilder()
+          copyright = this@with.copyright?.toBuilder()
+          approvalDate = this@with.approvalDate?.toBuilder()
+          lastReviewDate = this@with.lastReviewDate?.toBuilder()
+          effectivePeriod = this@with.effectivePeriod?.toBuilder()
+          topic = this@with.topic.map { it.toBuilder() }.toMutableList()
+          author = this@with.author.map { it.toBuilder() }.toMutableList()
+          editor = this@with.editor.map { it.toBuilder() }.toMutableList()
+          reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
+          endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
+          relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
+          library = this@with.library.map { it.toBuilder() }.toMutableList()
+          exposure = this@with.exposure?.toBuilder()
+          exposureAlternative = this@with.exposureAlternative?.toBuilder()
+          outcome = this@with.outcome?.toBuilder()
+        }
     }
 
   public sealed interface Subject {

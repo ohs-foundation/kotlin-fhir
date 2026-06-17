@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -329,11 +332,15 @@ public data class MedicationKnowledge(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), reference.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type.toBuilder(),
+            reference.map { it.toBuilder() }.toMutableList(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(
@@ -1011,11 +1018,15 @@ public data class MedicationKnowledge(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(type.toBuilder(), dosage.map { it.toBuilder() }.toMutableList()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              type.toBuilder(),
+              dosage.map { it.toBuilder() }.toMutableList(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public class Builder(
@@ -1636,8 +1647,7 @@ public data class MedicationKnowledge(
 
       public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) :
-        Value
+      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) : Value
 
       public companion object {
         internal fun from(

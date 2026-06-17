@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -114,10 +117,14 @@ internal object ImagingStudySeriesSerializer : KSerializer<ImagingStudy.Series> 
     }
 
   override fun deserialize(decoder: Decoder): ImagingStudy.Series =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImagingStudy.Series) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImagingStudy.Series {
@@ -307,10 +314,14 @@ internal object ImagingStudySeriesPerformerSerializer : KSerializer<ImagingStudy
     }
 
   override fun deserialize(decoder: Decoder): ImagingStudy.Series.Performer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImagingStudy.Series.Performer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImagingStudy.Series.Performer {
@@ -399,10 +410,14 @@ internal object ImagingStudySeriesInstanceSerializer : KSerializer<ImagingStudy.
     }
 
   override fun deserialize(decoder: Decoder): ImagingStudy.Series.Instance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImagingStudy.Series.Instance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImagingStudy.Series.Instance {
@@ -568,7 +583,9 @@ internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
   }
 
   override fun deserialize(decoder: Decoder): ImagingStudy =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImagingStudy) {
     encoder.encodeStructure(descriptor) {

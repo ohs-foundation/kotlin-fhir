@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -1172,12 +1175,16 @@ public data class PlanDefinition(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(actionId.toBuilder(), relationship).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            offset = this@with.offset
-          }
+          Builder(
+              actionId.toBuilder(),
+              relationship,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              offset = this@with.offset
+            }
         }
 
       public sealed interface Offset {
@@ -1616,8 +1623,7 @@ public data class PlanDefinition(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
-        Definition
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Definition
 
       public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Definition
 

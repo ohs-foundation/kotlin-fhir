@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -387,41 +390,45 @@ public data class TestScript(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(name.toBuilder(), status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        title = this@with.title?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        origin = this@with.origin.map { it.toBuilder() }.toMutableList()
-        destination = this@with.destination.map { it.toBuilder() }.toMutableList()
-        metadata = this@with.metadata?.toBuilder()
-        scope = this@with.scope.map { it.toBuilder() }.toMutableList()
-        fixture = this@with.fixture.map { it.toBuilder() }.toMutableList()
-        profile = this@with.profile.map { it.toBuilder() }.toMutableList()
-        variable = this@with.variable.map { it.toBuilder() }.toMutableList()
-        setup = this@with.setup?.toBuilder()
-        test = this@with.test.map { it.toBuilder() }.toMutableList()
-        teardown = this@with.teardown?.toBuilder()
-      }
+      Builder(
+          name.toBuilder(),
+          status,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          url = this@with.url?.toBuilder()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          version = this@with.version?.toBuilder()
+          versionAlgorithm = this@with.versionAlgorithm
+          title = this@with.title?.toBuilder()
+          experimental = this@with.experimental?.toBuilder()
+          date = this@with.date?.toBuilder()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
+          purpose = this@with.purpose?.toBuilder()
+          copyright = this@with.copyright?.toBuilder()
+          copyrightLabel = this@with.copyrightLabel?.toBuilder()
+          origin = this@with.origin.map { it.toBuilder() }.toMutableList()
+          destination = this@with.destination.map { it.toBuilder() }.toMutableList()
+          metadata = this@with.metadata?.toBuilder()
+          scope = this@with.scope.map { it.toBuilder() }.toMutableList()
+          fixture = this@with.fixture.map { it.toBuilder() }.toMutableList()
+          profile = this@with.profile.map { it.toBuilder() }.toMutableList()
+          variable = this@with.variable.map { it.toBuilder() }.toMutableList()
+          setup = this@with.setup?.toBuilder()
+          test = this@with.test.map { it.toBuilder() }.toMutableList()
+          teardown = this@with.teardown?.toBuilder()
+        }
     }
 
   /** An abstract server used in operations within this test script in the origin element. */

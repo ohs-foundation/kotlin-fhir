@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -320,34 +323,38 @@ public data class GraphDefinition(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(name.toBuilder(), status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        title = this@with.title?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        start = this@with.start?.toBuilder()
-        node = this@with.node.map { it.toBuilder() }.toMutableList()
-        link = this@with.link.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          name.toBuilder(),
+          status,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          url = this@with.url?.toBuilder()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          version = this@with.version?.toBuilder()
+          versionAlgorithm = this@with.versionAlgorithm
+          title = this@with.title?.toBuilder()
+          experimental = this@with.experimental?.toBuilder()
+          date = this@with.date?.toBuilder()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
+          purpose = this@with.purpose?.toBuilder()
+          copyright = this@with.copyright?.toBuilder()
+          copyrightLabel = this@with.copyrightLabel?.toBuilder()
+          start = this@with.start?.toBuilder()
+          node = this@with.node.map { it.toBuilder() }.toMutableList()
+          link = this@with.link.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Potential target for the link. */
@@ -401,13 +408,17 @@ public data class GraphDefinition(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(nodeId.toBuilder(), type).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          profile = this@with.profile?.toBuilder()
-        }
+        Builder(
+            nodeId.toBuilder(),
+            type,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            description = this@with.description?.toBuilder()
+            profile = this@with.profile?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -618,13 +629,18 @@ public data class GraphDefinition(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(use, rule, code).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            expression = this@with.expression?.toBuilder()
-            description = this@with.description?.toBuilder()
-          }
+          Builder(
+              use,
+              rule,
+              code,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              expression = this@with.expression?.toBuilder()
+              description = this@with.description?.toBuilder()
+            }
         }
 
       public class Builder(

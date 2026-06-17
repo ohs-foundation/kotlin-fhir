@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -84,10 +87,14 @@ internal object PermissionJustificationSerializer : KSerializer<Permission.Justi
     }
 
   override fun deserialize(decoder: Decoder): Permission.Justification =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Justification) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Permission.Justification {
@@ -190,10 +197,14 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
     }
 
   override fun deserialize(decoder: Decoder): Permission.Rule =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Rule) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Permission.Rule {
@@ -313,10 +324,14 @@ internal object PermissionRuleDataSerializer : KSerializer<Permission.Rule.Data>
     }
 
   override fun deserialize(decoder: Decoder): Permission.Rule.Data =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Rule.Data) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Permission.Rule.Data {
@@ -428,10 +443,14 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
     }
 
   override fun deserialize(decoder: Decoder): Permission.Rule.Data.Resource =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Rule.Data.Resource) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Permission.Rule.Data.Resource {
@@ -528,10 +547,14 @@ internal object PermissionRuleActivitySerializer : KSerializer<Permission.Rule.A
     }
 
   override fun deserialize(decoder: Decoder): Permission.Rule.Activity =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Rule.Activity) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Permission.Rule.Activity {
@@ -658,7 +681,9 @@ internal object PermissionSerializer : KSerializer<Permission> {
   }
 
   override fun deserialize(decoder: Decoder): Permission =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Permission) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -278,37 +281,41 @@ public data class Encounter(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, `class`.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        statusHistory = this@with.statusHistory.map { it.toBuilder() }.toMutableList()
-        classHistory = this@with.classHistory.map { it.toBuilder() }.toMutableList()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        serviceType = this@with.serviceType?.toBuilder()
-        priority = this@with.priority?.toBuilder()
-        subject = this@with.subject?.toBuilder()
-        episodeOfCare = this@with.episodeOfCare.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        participant = this@with.participant.map { it.toBuilder() }.toMutableList()
-        appointment = this@with.appointment.map { it.toBuilder() }.toMutableList()
-        period = this@with.period?.toBuilder()
-        length = this@with.length?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        diagnosis = this@with.diagnosis.map { it.toBuilder() }.toMutableList()
-        account = this@with.account.map { it.toBuilder() }.toMutableList()
-        hospitalization = this@with.hospitalization?.toBuilder()
-        location = this@with.location.map { it.toBuilder() }.toMutableList()
-        serviceProvider = this@with.serviceProvider?.toBuilder()
-        partOf = this@with.partOf?.toBuilder()
-      }
+      Builder(
+          status,
+          `class`.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          statusHistory = this@with.statusHistory.map { it.toBuilder() }.toMutableList()
+          classHistory = this@with.classHistory.map { it.toBuilder() }.toMutableList()
+          type = this@with.type.map { it.toBuilder() }.toMutableList()
+          serviceType = this@with.serviceType?.toBuilder()
+          priority = this@with.priority?.toBuilder()
+          subject = this@with.subject?.toBuilder()
+          episodeOfCare = this@with.episodeOfCare.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          participant = this@with.participant.map { it.toBuilder() }.toMutableList()
+          appointment = this@with.appointment.map { it.toBuilder() }.toMutableList()
+          period = this@with.period?.toBuilder()
+          length = this@with.length?.toBuilder()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          diagnosis = this@with.diagnosis.map { it.toBuilder() }.toMutableList()
+          account = this@with.account.map { it.toBuilder() }.toMutableList()
+          hospitalization = this@with.hospitalization?.toBuilder()
+          location = this@with.location.map { it.toBuilder() }.toMutableList()
+          serviceProvider = this@with.serviceProvider?.toBuilder()
+          partOf = this@with.partOf?.toBuilder()
+        }
     }
 
   /**
@@ -361,11 +368,15 @@ public data class Encounter(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(status, period.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            status,
+            period.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(

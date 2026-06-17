@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -80,10 +83,14 @@ internal object DetectedIssueEvidenceSerializer : KSerializer<DetectedIssue.Evid
     }
 
   override fun deserialize(decoder: Decoder): DetectedIssue.Evidence =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DetectedIssue.Evidence) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DetectedIssue.Evidence {
@@ -172,10 +179,14 @@ internal object DetectedIssueMitigationSerializer : KSerializer<DetectedIssue.Mi
     }
 
   override fun deserialize(decoder: Decoder): DetectedIssue.Mitigation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DetectedIssue.Mitigation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DetectedIssue.Mitigation {
@@ -330,7 +341,9 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
   }
 
   override fun deserialize(decoder: Decoder): DetectedIssue =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DetectedIssue) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -108,10 +111,14 @@ internal object VisionPrescriptionLensSpecificationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): VisionPrescription.LensSpecification =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: VisionPrescription.LensSpecification) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): VisionPrescription.LensSpecification {
@@ -346,10 +353,14 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
     }
 
   override fun deserialize(decoder: Decoder): VisionPrescription.LensSpecification.Prism =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: VisionPrescription.LensSpecification.Prism) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -483,7 +494,9 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
   }
 
   override fun deserialize(decoder: Decoder): VisionPrescription =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: VisionPrescription) {
     encoder.encodeStructure(descriptor) {

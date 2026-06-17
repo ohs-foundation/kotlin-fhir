@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -81,10 +84,14 @@ internal object ImagingSelectionPerformerSerializer : KSerializer<ImagingSelecti
     }
 
   override fun deserialize(decoder: Decoder): ImagingSelection.Performer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImagingSelection.Performer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImagingSelection.Performer {
@@ -191,10 +198,14 @@ internal object ImagingSelectionInstanceSerializer : KSerializer<ImagingSelectio
     }
 
   override fun deserialize(decoder: Decoder): ImagingSelection.Instance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImagingSelection.Instance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ImagingSelection.Instance {
@@ -363,10 +374,14 @@ internal object ImagingSelectionInstanceImageRegion2DSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImagingSelection.Instance.ImageRegion2D =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImagingSelection.Instance.ImageRegion2D) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -490,10 +505,14 @@ internal object ImagingSelectionInstanceImageRegion3DSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ImagingSelection.Instance.ImageRegion3D =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImagingSelection.Instance.ImageRegion3D) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -667,7 +686,9 @@ internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
   }
 
   override fun deserialize(decoder: Decoder): ImagingSelection =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ImagingSelection) {
     encoder.encodeStructure(descriptor) {

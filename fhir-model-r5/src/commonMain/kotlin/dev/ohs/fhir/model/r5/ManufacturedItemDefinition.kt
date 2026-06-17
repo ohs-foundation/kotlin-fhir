@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -170,24 +173,28 @@ public data class ManufacturedItemDefinition(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, manufacturedDoseForm.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        unitOfPresentation = this@with.unitOfPresentation?.toBuilder()
-        manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-        marketingStatus = this@with.marketingStatus.map { it.toBuilder() }.toMutableList()
-        ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-        `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-        component = this@with.component.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          manufacturedDoseForm.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          name = this@with.name?.toBuilder()
+          unitOfPresentation = this@with.unitOfPresentation?.toBuilder()
+          manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
+          marketingStatus = this@with.marketingStatus.map { it.toBuilder() }.toMutableList()
+          ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
+          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
+          component = this@with.component.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** General characteristics of this item. */

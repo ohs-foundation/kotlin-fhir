@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -90,10 +93,14 @@ internal object InventoryItemNameSerializer : KSerializer<InventoryItem.Name> {
     }
 
   override fun deserialize(decoder: Decoder): InventoryItem.Name =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Name) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InventoryItem.Name {
@@ -193,10 +200,14 @@ internal object InventoryItemResponsibleOrganizationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): InventoryItem.ResponsibleOrganization =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.ResponsibleOrganization) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -285,10 +296,14 @@ internal object InventoryItemDescriptionSerializer : KSerializer<InventoryItem.D
     }
 
   override fun deserialize(decoder: Decoder): InventoryItem.Description =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Description) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InventoryItem.Description {
@@ -381,10 +396,14 @@ internal object InventoryItemAssociationSerializer : KSerializer<InventoryItem.A
     }
 
   override fun deserialize(decoder: Decoder): InventoryItem.Association =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Association) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InventoryItem.Association {
@@ -503,10 +522,14 @@ internal object InventoryItemCharacteristicSerializer : KSerializer<InventoryIte
     }
 
   override fun deserialize(decoder: Decoder): InventoryItem.Characteristic =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Characteristic) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InventoryItem.Characteristic {
@@ -772,10 +795,14 @@ internal object InventoryItemInstanceSerializer : KSerializer<InventoryItem.Inst
     }
 
   override fun deserialize(decoder: Decoder): InventoryItem.Instance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Instance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InventoryItem.Instance {
@@ -967,7 +994,9 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
   }
 
   override fun deserialize(decoder: Decoder): InventoryItem =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem) {
     encoder.encodeStructure(descriptor) {

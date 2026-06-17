@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -97,10 +100,14 @@ internal object PaymentReconciliationAllocationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): PaymentReconciliation.Allocation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PaymentReconciliation.Allocation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PaymentReconciliation.Allocation {
@@ -324,10 +331,14 @@ internal object PaymentReconciliationProcessNoteSerializer :
     }
 
   override fun deserialize(decoder: Decoder): PaymentReconciliation.ProcessNote =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PaymentReconciliation.ProcessNote) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): PaymentReconciliation.ProcessNote {
@@ -487,7 +498,9 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
   }
 
   override fun deserialize(decoder: Decoder): PaymentReconciliation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: PaymentReconciliation) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -107,7 +110,11 @@ public data class Signature(
 ) : Element() {
   public fun toBuilder(): Builder =
     with(this) {
-      Builder(type.map { it.toBuilder() }.toMutableList(), `when`.toBuilder(), who.toBuilder())
+      Builder(
+          type.map { it.toBuilder() }.toMutableList(),
+          `when`.toBuilder(),
+          who.toBuilder(),
+        )
         .apply {
           id = this@with.id
           extension = this@with.extension.map { it.toBuilder() }.toMutableList()

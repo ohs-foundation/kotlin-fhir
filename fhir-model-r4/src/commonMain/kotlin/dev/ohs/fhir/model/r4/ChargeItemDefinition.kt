@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -325,37 +328,41 @@ public data class ChargeItemDefinition(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(url.toBuilder(), status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        title = this@with.title?.toBuilder()
-        derivedFromUri = this@with.derivedFromUri.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        copyright = this@with.copyright?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        effectivePeriod = this@with.effectivePeriod?.toBuilder()
-        code = this@with.code?.toBuilder()
-        instance = this@with.instance.map { it.toBuilder() }.toMutableList()
-        applicability = this@with.applicability.map { it.toBuilder() }.toMutableList()
-        propertyGroup = this@with.propertyGroup.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          url.toBuilder(),
+          status,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          version = this@with.version?.toBuilder()
+          title = this@with.title?.toBuilder()
+          derivedFromUri = this@with.derivedFromUri.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
+          experimental = this@with.experimental?.toBuilder()
+          date = this@with.date?.toBuilder()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
+          copyright = this@with.copyright?.toBuilder()
+          approvalDate = this@with.approvalDate?.toBuilder()
+          lastReviewDate = this@with.lastReviewDate?.toBuilder()
+          effectivePeriod = this@with.effectivePeriod?.toBuilder()
+          code = this@with.code?.toBuilder()
+          instance = this@with.instance.map { it.toBuilder() }.toMutableList()
+          applicability = this@with.applicability.map { it.toBuilder() }.toMutableList()
+          propertyGroup = this@with.propertyGroup.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Expressions that describe applicability criteria for the billing code. */

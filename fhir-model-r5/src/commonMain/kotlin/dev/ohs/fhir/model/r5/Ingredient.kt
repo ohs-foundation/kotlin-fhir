@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -184,23 +187,28 @@ public data class Ingredient(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, role.toBuilder(), substance.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier?.toBuilder()
-        `for` = this@with.`for`.map { it.toBuilder() }.toMutableList()
-        function = this@with.function.map { it.toBuilder() }.toMutableList()
-        group = this@with.group?.toBuilder()
-        allergenicIndicator = this@with.allergenicIndicator?.toBuilder()
-        comment = this@with.comment?.toBuilder()
-        manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          role.toBuilder(),
+          substance.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier?.toBuilder()
+          `for` = this@with.`for`.map { it.toBuilder() }.toMutableList()
+          function = this@with.function.map { it.toBuilder() }.toMutableList()
+          group = this@with.group?.toBuilder()
+          allergenicIndicator = this@with.allergenicIndicator?.toBuilder()
+          comment = this@with.comment?.toBuilder()
+          manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**
@@ -552,13 +560,18 @@ public data class Ingredient(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(substance.toBuilder(), strength).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              measurementPoint = this@with.measurementPoint?.toBuilder()
-              country = this@with.country.map { it.toBuilder() }.toMutableList()
-            }
+            Builder(
+                substance.toBuilder(),
+                strength,
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+                measurementPoint = this@with.measurementPoint?.toBuilder()
+                country = this@with.country.map { it.toBuilder() }.toMutableList()
+              }
           }
 
         public sealed interface Strength {

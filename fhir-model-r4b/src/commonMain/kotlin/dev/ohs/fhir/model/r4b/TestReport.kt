@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -195,25 +198,30 @@ public data class TestReport(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, testScript.toBuilder(), result).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier?.toBuilder()
-        name = this@with.name?.toBuilder()
-        score = this@with.score?.toBuilder()
-        tester = this@with.tester?.toBuilder()
-        issued = this@with.issued?.toBuilder()
-        participant = this@with.participant.map { it.toBuilder() }.toMutableList()
-        setup = this@with.setup?.toBuilder()
-        test = this@with.test.map { it.toBuilder() }.toMutableList()
-        teardown = this@with.teardown?.toBuilder()
-      }
+      Builder(
+          status,
+          testScript.toBuilder(),
+          result,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier?.toBuilder()
+          name = this@with.name?.toBuilder()
+          score = this@with.score?.toBuilder()
+          tester = this@with.tester?.toBuilder()
+          issued = this@with.issued?.toBuilder()
+          participant = this@with.participant.map { it.toBuilder() }.toMutableList()
+          setup = this@with.setup?.toBuilder()
+          test = this@with.test.map { it.toBuilder() }.toMutableList()
+          teardown = this@with.teardown?.toBuilder()
+        }
     }
 
   /** A participant in the test execution, either the execution engine, a client, or a server. */
@@ -265,12 +273,16 @@ public data class TestReport(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type, uri.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          display = this@with.display?.toBuilder()
-        }
+        Builder(
+            type,
+            uri.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            display = this@with.display?.toBuilder()
+          }
       }
 
     public class Builder(

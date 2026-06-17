@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -189,23 +192,29 @@ public data class MeasureReport(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, type, measure.toBuilder(), period.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        date = this@with.date?.toBuilder()
-        reporter = this@with.reporter?.toBuilder()
-        improvementNotation = this@with.improvementNotation?.toBuilder()
-        group = this@with.group.map { it.toBuilder() }.toMutableList()
-        evaluatedResource = this@with.evaluatedResource.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          type,
+          measure.toBuilder(),
+          period.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          subject = this@with.subject?.toBuilder()
+          date = this@with.date?.toBuilder()
+          reporter = this@with.reporter?.toBuilder()
+          improvementNotation = this@with.improvementNotation?.toBuilder()
+          group = this@with.group.map { it.toBuilder() }.toMutableList()
+          evaluatedResource = this@with.evaluatedResource.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** The results of the calculation, one for each population group in the measure. */

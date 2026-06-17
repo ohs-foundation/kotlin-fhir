@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -246,35 +249,39 @@ public data class ClinicalImpression(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        statusReason = this@with.statusReason?.toBuilder()
-        code = this@with.code?.toBuilder()
-        description = this@with.description?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        effective = this@with.effective
-        date = this@with.date?.toBuilder()
-        assessor = this@with.assessor?.toBuilder()
-        previous = this@with.previous?.toBuilder()
-        problem = this@with.problem.map { it.toBuilder() }.toMutableList()
-        investigation = this@with.investigation.map { it.toBuilder() }.toMutableList()
-        protocol = this@with.protocol.map { it.toBuilder() }.toMutableList()
-        summary = this@with.summary?.toBuilder()
-        finding = this@with.finding.map { it.toBuilder() }.toMutableList()
-        prognosisCodeableConcept =
-          this@with.prognosisCodeableConcept.map { it.toBuilder() }.toMutableList()
-        prognosisReference = this@with.prognosisReference.map { it.toBuilder() }.toMutableList()
-        supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          statusReason = this@with.statusReason?.toBuilder()
+          code = this@with.code?.toBuilder()
+          description = this@with.description?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          effective = this@with.effective
+          date = this@with.date?.toBuilder()
+          assessor = this@with.assessor?.toBuilder()
+          previous = this@with.previous?.toBuilder()
+          problem = this@with.problem.map { it.toBuilder() }.toMutableList()
+          investigation = this@with.investigation.map { it.toBuilder() }.toMutableList()
+          protocol = this@with.protocol.map { it.toBuilder() }.toMutableList()
+          summary = this@with.summary?.toBuilder()
+          finding = this@with.finding.map { it.toBuilder() }.toMutableList()
+          prognosisCodeableConcept =
+            this@with.prognosisCodeableConcept.map { it.toBuilder() }.toMutableList()
+          prognosisReference = this@with.prognosisReference.map { it.toBuilder() }.toMutableList()
+          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**

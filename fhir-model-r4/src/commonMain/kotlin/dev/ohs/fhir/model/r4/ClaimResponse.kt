@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -385,7 +388,10 @@ public data class ClaimResponse(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(itemSequence.toBuilder(), adjudication.map { it.toBuilder() }.toMutableList())
+        Builder(
+            itemSequence.toBuilder(),
+            adjudication.map { it.toBuilder() }.toMutableList(),
+          )
           .apply {
             id = this@with.id
             extension = this@with.extension.map { it.toBuilder() }.toMutableList()
@@ -622,7 +628,10 @@ public data class ClaimResponse(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(detailSequence.toBuilder(), adjudication.map { it.toBuilder() }.toMutableList())
+          Builder(
+              detailSequence.toBuilder(),
+              adjudication.map { it.toBuilder() }.toMutableList(),
+            )
             .apply {
               id = this@with.id
               extension = this@with.extension.map { it.toBuilder() }.toMutableList()
@@ -1012,7 +1021,10 @@ public data class ClaimResponse(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(productOrService.toBuilder(), adjudication.map { it.toBuilder() }.toMutableList())
+        Builder(
+            productOrService.toBuilder(),
+            adjudication.map { it.toBuilder() }.toMutableList(),
+          )
           .apply {
             id = this@with.id
             extension = this@with.extension.map { it.toBuilder() }.toMutableList()
@@ -1125,7 +1137,10 @@ public data class ClaimResponse(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(productOrService.toBuilder(), adjudication.map { it.toBuilder() }.toMutableList())
+          Builder(
+              productOrService.toBuilder(),
+              adjudication.map { it.toBuilder() }.toMutableList(),
+            )
             .apply {
               id = this@with.id
               extension = this@with.extension.map { it.toBuilder() }.toMutableList()

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -466,12 +469,16 @@ public data class Provenance(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(role, what.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          agent = this@with.agent.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            role,
+            what.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            agent = this@with.agent.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(

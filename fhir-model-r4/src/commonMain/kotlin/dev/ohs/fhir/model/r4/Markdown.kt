@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -86,7 +89,11 @@ public data class Markdown(
     open override var `value`: kotlin.String? = null
 
     open override fun build(): Markdown =
-      Markdown(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      Markdown(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

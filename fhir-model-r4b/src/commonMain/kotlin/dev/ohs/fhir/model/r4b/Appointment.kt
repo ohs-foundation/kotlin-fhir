@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -262,37 +265,41 @@ public data class Appointment(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, participant.map { it.toBuilder() }.toMutableList()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        cancelationReason = this@with.cancelationReason?.toBuilder()
-        serviceCategory = this@with.serviceCategory.map { it.toBuilder() }.toMutableList()
-        serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
-        specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
-        appointmentType = this@with.appointmentType?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        priority = this@with.priority?.toBuilder()
-        description = this@with.description?.toBuilder()
-        supportingInformation =
-          this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
-        start = this@with.start?.toBuilder()
-        end = this@with.end?.toBuilder()
-        minutesDuration = this@with.minutesDuration?.toBuilder()
-        slot = this@with.slot.map { it.toBuilder() }.toMutableList()
-        created = this@with.created?.toBuilder()
-        comment = this@with.comment?.toBuilder()
-        patientInstruction = this@with.patientInstruction?.toBuilder()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        requestedPeriod = this@with.requestedPeriod.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          participant.map { it.toBuilder() }.toMutableList(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          cancelationReason = this@with.cancelationReason?.toBuilder()
+          serviceCategory = this@with.serviceCategory.map { it.toBuilder() }.toMutableList()
+          serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
+          specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
+          appointmentType = this@with.appointmentType?.toBuilder()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          priority = this@with.priority?.toBuilder()
+          description = this@with.description?.toBuilder()
+          supportingInformation =
+            this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
+          start = this@with.start?.toBuilder()
+          end = this@with.end?.toBuilder()
+          minutesDuration = this@with.minutesDuration?.toBuilder()
+          slot = this@with.slot.map { it.toBuilder() }.toMutableList()
+          created = this@with.created?.toBuilder()
+          comment = this@with.comment?.toBuilder()
+          patientInstruction = this@with.patientInstruction?.toBuilder()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          requestedPeriod = this@with.requestedPeriod.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** List of participants involved in the appointment. */

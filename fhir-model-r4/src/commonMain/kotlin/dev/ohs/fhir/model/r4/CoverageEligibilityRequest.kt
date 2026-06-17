@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -692,8 +695,7 @@ public data class CoverageEligibilityRequest(
           public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
         ) : Diagnosis
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
-          Diagnosis
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Diagnosis
 
         public companion object {
           internal fun from(

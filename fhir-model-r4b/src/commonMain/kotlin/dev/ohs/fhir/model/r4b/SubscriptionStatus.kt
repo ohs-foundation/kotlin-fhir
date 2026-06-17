@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -156,21 +159,25 @@ public data class SubscriptionStatus(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(type, subscription.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        eventsSinceSubscriptionStart = this@with.eventsSinceSubscriptionStart?.toBuilder()
-        notificationEvent = this@with.notificationEvent.map { it.toBuilder() }.toMutableList()
-        topic = this@with.topic?.toBuilder()
-        error = this@with.error.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          type,
+          subscription.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          status = this@with.status
+          eventsSinceSubscriptionStart = this@with.eventsSinceSubscriptionStart?.toBuilder()
+          notificationEvent = this@with.notificationEvent.map { it.toBuilder() }.toMutableList()
+          topic = this@with.topic?.toBuilder()
+          error = this@with.error.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Detailed information about events relevant to this subscription notification. */

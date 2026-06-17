@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -162,23 +165,29 @@ public data class Slot(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(schedule.toBuilder(), status, start.toBuilder(), end.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        serviceCategory = this@with.serviceCategory.map { it.toBuilder() }.toMutableList()
-        serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
-        specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
-        appointmentType = this@with.appointmentType?.toBuilder()
-        overbooked = this@with.overbooked?.toBuilder()
-        comment = this@with.comment?.toBuilder()
-      }
+      Builder(
+          schedule.toBuilder(),
+          status,
+          start.toBuilder(),
+          end.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          serviceCategory = this@with.serviceCategory.map { it.toBuilder() }.toMutableList()
+          serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
+          specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
+          appointmentType = this@with.appointmentType?.toBuilder()
+          overbooked = this@with.overbooked?.toBuilder()
+          comment = this@with.comment?.toBuilder()
+        }
     }
 
   public class Builder(

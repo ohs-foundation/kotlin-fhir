@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -78,10 +81,14 @@ internal object DataRequirementCodeFilterSerializer : KSerializer<DataRequiremen
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement.CodeFilter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement.CodeFilter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement.CodeFilter {
@@ -187,10 +194,14 @@ internal object DataRequirementDateFilterSerializer : KSerializer<DataRequiremen
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement.DateFilter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement.DateFilter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement.DateFilter {
@@ -317,10 +328,14 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement.ValueFilter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement.ValueFilter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement.ValueFilter {
@@ -447,10 +462,14 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement.Sort =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement.Sort) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement.Sort {
@@ -576,10 +595,14 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement {

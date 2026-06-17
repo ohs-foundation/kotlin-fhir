@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -398,6 +401,7 @@ public data class Questionnaire(
      * the URI is shown in Comments, below. If this element is present then the following element
      * values MAY be derived from the Element Definition if the corresponding elements of this
      * Questionnaire resource instance have no value:
+     *
      * * code (ElementDefinition.code)
      * * type (ElementDefinition.type)
      * * required (ElementDefinition.min)
@@ -550,25 +554,29 @@ public data class Questionnaire(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(linkId.toBuilder(), type).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          definition = this@with.definition?.toBuilder()
-          code = this@with.code.map { it.toBuilder() }.toMutableList()
-          prefix = this@with.prefix?.toBuilder()
-          text = this@with.text?.toBuilder()
-          enableWhen = this@with.enableWhen.map { it.toBuilder() }.toMutableList()
-          enableBehavior = this@with.enableBehavior
-          required = this@with.required?.toBuilder()
-          repeats = this@with.repeats?.toBuilder()
-          readOnly = this@with.readOnly?.toBuilder()
-          maxLength = this@with.maxLength?.toBuilder()
-          answerValueSet = this@with.answerValueSet?.toBuilder()
-          answerOption = this@with.answerOption.map { it.toBuilder() }.toMutableList()
-          initial = this@with.initial.map { it.toBuilder() }.toMutableList()
-          item = this@with.item.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            linkId.toBuilder(),
+            type,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            definition = this@with.definition?.toBuilder()
+            code = this@with.code.map { it.toBuilder() }.toMutableList()
+            prefix = this@with.prefix?.toBuilder()
+            text = this@with.text?.toBuilder()
+            enableWhen = this@with.enableWhen.map { it.toBuilder() }.toMutableList()
+            enableBehavior = this@with.enableBehavior
+            required = this@with.required?.toBuilder()
+            repeats = this@with.repeats?.toBuilder()
+            readOnly = this@with.readOnly?.toBuilder()
+            maxLength = this@with.maxLength?.toBuilder()
+            answerValueSet = this@with.answerValueSet?.toBuilder()
+            answerOption = this@with.answerOption.map { it.toBuilder() }.toMutableList()
+            initial = this@with.initial.map { it.toBuilder() }.toMutableList()
+            item = this@with.item.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     /**
@@ -633,11 +641,16 @@ public data class Questionnaire(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(question.toBuilder(), `operator`, answer).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              question.toBuilder(),
+              `operator`,
+              answer,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public sealed interface Answer {
@@ -1218,6 +1231,7 @@ public data class Questionnaire(
        * construction of the URI is shown in Comments, below. If this element is present then the
        * following element values MAY be derived from the Element Definition if the corresponding
        * elements of this Questionnaire resource instance have no value:
+       *
        * * code (ElementDefinition.code)
        * * type (ElementDefinition.type)
        * * required (ElementDefinition.min)

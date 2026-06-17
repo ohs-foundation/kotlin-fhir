@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -93,10 +96,14 @@ internal object AdministrableProductDefinitionPropertySerializer :
     }
 
   override fun deserialize(decoder: Decoder): AdministrableProductDefinition.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: AdministrableProductDefinition.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -289,13 +296,17 @@ internal object AdministrableProductDefinitionRouteOfAdministrationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): AdministrableProductDefinition.RouteOfAdministration =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: AdministrableProductDefinition.RouteOfAdministration,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -464,13 +475,17 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
   override fun deserialize(
     decoder: Decoder
   ): AdministrableProductDefinition.RouteOfAdministration.TargetSpecies =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: AdministrableProductDefinition.RouteOfAdministration.TargetSpecies,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -585,13 +600,17 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
   override fun deserialize(
     decoder: Decoder
   ): AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -749,7 +768,9 @@ internal object AdministrableProductDefinitionSerializer :
   }
 
   override fun deserialize(decoder: Decoder): AdministrableProductDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: AdministrableProductDefinition) {
     encoder.encodeStructure(descriptor) {

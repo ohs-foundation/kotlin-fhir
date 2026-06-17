@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -81,10 +84,14 @@ internal object ListEntrySerializer : KSerializer<R5List.Entry> {
     }
 
   override fun deserialize(decoder: Decoder): R5List.Entry =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: R5List.Entry) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): R5List.Entry {
@@ -225,7 +232,9 @@ internal object ListSerializer : KSerializer<R5List> {
   }
 
   override fun deserialize(decoder: Decoder): R5List =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: R5List) {
     encoder.encodeStructure(descriptor) {
@@ -564,5 +573,7 @@ internal object ListPolymorphicSerializer : KSerializer<R5List> {
   }
 
   override fun deserialize(decoder: Decoder): R5List =
-    decoder.decodeStructure(descriptor) { ListSerializer.deserializeInternal(this, descriptor, 0) }
+    decoder.decodeStructure(descriptor) {
+      ListSerializer.deserializeInternal(this, descriptor, 0)
+    }
 }

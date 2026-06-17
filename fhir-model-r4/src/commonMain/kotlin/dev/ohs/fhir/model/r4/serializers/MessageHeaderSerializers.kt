@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -80,10 +83,14 @@ internal object MessageHeaderDestinationSerializer : KSerializer<MessageHeader.D
     }
 
   override fun deserialize(decoder: Decoder): MessageHeader.Destination =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MessageHeader.Destination) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MessageHeader.Destination {
@@ -194,10 +201,14 @@ internal object MessageHeaderSourceSerializer : KSerializer<MessageHeader.Source
     }
 
   override fun deserialize(decoder: Decoder): MessageHeader.Source =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MessageHeader.Source) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MessageHeader.Source {
@@ -320,10 +331,14 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
     }
 
   override fun deserialize(decoder: Decoder): MessageHeader.Response =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MessageHeader.Response) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MessageHeader.Response {
@@ -464,7 +479,9 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
   }
 
   override fun deserialize(decoder: Decoder): MessageHeader =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MessageHeader) {
     encoder.encodeStructure(descriptor) {

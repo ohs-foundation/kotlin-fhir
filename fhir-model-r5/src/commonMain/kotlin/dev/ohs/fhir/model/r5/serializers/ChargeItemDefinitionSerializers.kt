@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -91,10 +94,14 @@ internal object ChargeItemDefinitionApplicabilitySerializer :
     }
 
   override fun deserialize(decoder: Decoder): ChargeItemDefinition.Applicability =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ChargeItemDefinition.Applicability) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ChargeItemDefinition.Applicability {
@@ -215,10 +222,14 @@ internal object ChargeItemDefinitionPropertyGroupSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ChargeItemDefinition.PropertyGroup =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ChargeItemDefinition.PropertyGroup) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ChargeItemDefinition.PropertyGroup {
@@ -436,7 +447,9 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
   }
 
   override fun deserialize(decoder: Decoder): ChargeItemDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ChargeItemDefinition) {
     encoder.encodeStructure(descriptor) {

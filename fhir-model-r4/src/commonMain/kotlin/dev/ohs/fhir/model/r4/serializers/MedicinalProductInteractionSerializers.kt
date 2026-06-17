@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -71,10 +74,14 @@ internal object MedicinalProductInteractionInteractantSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProductInteraction.Interactant =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductInteraction.Interactant) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -113,7 +120,8 @@ internal object MedicinalProductInteractionInteractantSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = MedicinalProductInteraction.Interactant.Item.from(itemReference, itemCodeableConcept)!!,
+      item =
+        MedicinalProductInteraction.Interactant.Item.from(itemReference, itemCodeableConcept)!!,
     )
   }
 
@@ -205,7 +213,9 @@ internal object MedicinalProductInteractionSerializer : KSerializer<MedicinalPro
   }
 
   override fun deserialize(decoder: Decoder): MedicinalProductInteraction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductInteraction) {
     encoder.encodeStructure(descriptor) {

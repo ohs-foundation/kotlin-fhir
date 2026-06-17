@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -74,15 +77,19 @@ public data class ParameterDefinition(
 ) : Element() {
   public fun toBuilder(): Builder =
     with(this) {
-      Builder(use, type).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        min = this@with.min?.toBuilder()
-        max = this@with.max?.toBuilder()
-        documentation = this@with.documentation?.toBuilder()
-        profile = this@with.profile?.toBuilder()
-      }
+      Builder(
+          use,
+          type,
+        )
+        .apply {
+          id = this@with.id
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          name = this@with.name?.toBuilder()
+          min = this@with.min?.toBuilder()
+          max = this@with.max?.toBuilder()
+          documentation = this@with.documentation?.toBuilder()
+          profile = this@with.profile?.toBuilder()
+        }
     }
 
   public open class Builder(

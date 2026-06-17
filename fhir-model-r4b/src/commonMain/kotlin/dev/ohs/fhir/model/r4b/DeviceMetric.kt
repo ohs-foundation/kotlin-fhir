@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -190,24 +193,28 @@ public data class DeviceMetric(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(type.toBuilder(), category).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        unit = this@with.unit?.toBuilder()
-        source = this@with.source?.toBuilder()
-        parent = this@with.parent?.toBuilder()
-        operationalStatus = this@with.operationalStatus
-        color = this@with.color
-        measurementPeriod = this@with.measurementPeriod?.toBuilder()
-        calibration = this@with.calibration.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          type.toBuilder(),
+          category,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          unit = this@with.unit?.toBuilder()
+          source = this@with.source?.toBuilder()
+          parent = this@with.parent?.toBuilder()
+          operationalStatus = this@with.operationalStatus
+          color = this@with.color
+          measurementPeriod = this@with.measurementPeriod?.toBuilder()
+          calibration = this@with.calibration.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Describes the calibrations that have been performed or that are required to be performed. */

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -80,10 +83,14 @@ internal object DiagnosticReportSupportingInfoSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DiagnosticReport.SupportingInfo =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DiagnosticReport.SupportingInfo) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DiagnosticReport.SupportingInfo {
@@ -168,10 +175,14 @@ internal object DiagnosticReportMediaSerializer : KSerializer<DiagnosticReport.M
     }
 
   override fun deserialize(decoder: Decoder): DiagnosticReport.Media =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DiagnosticReport.Media) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DiagnosticReport.Media {
@@ -335,7 +346,9 @@ internal object DiagnosticReportSerializer : KSerializer<DiagnosticReport> {
   }
 
   override fun deserialize(decoder: Decoder): DiagnosticReport =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DiagnosticReport) {
     encoder.encodeStructure(descriptor) {

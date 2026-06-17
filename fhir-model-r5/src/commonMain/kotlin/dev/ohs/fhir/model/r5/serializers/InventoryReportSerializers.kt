@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -87,10 +90,14 @@ internal object InventoryReportInventoryListingSerializer :
     }
 
   override fun deserialize(decoder: Decoder): InventoryReport.InventoryListing =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryReport.InventoryListing) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): InventoryReport.InventoryListing {
@@ -213,10 +220,14 @@ internal object InventoryReportInventoryListingItemSerializer :
     }
 
   override fun deserialize(decoder: Decoder): InventoryReport.InventoryListing.Item =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryReport.InventoryListing.Item) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -349,7 +360,9 @@ internal object InventoryReportSerializer : KSerializer<InventoryReport> {
   }
 
   override fun deserialize(decoder: Decoder): InventoryReport =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: InventoryReport) {
     encoder.encodeStructure(descriptor) {

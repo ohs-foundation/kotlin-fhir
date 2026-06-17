@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b.search
 
@@ -184,7 +187,9 @@ public object AuditEventSearchParams {
       name = "address",
       type = SearchParamType.String,
       expression = "AuditEvent.agent.network.address",
-      extractor = { resource -> resource.agent.mapNotNull { it.network }.mapNotNull { it.address } },
+      extractor = { resource ->
+        resource.agent.mapNotNull { it.network }.mapNotNull { it.address }
+      },
     )
 
   public val agent: SearchParam<AuditEvent, Reference> =

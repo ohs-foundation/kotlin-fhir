@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -371,45 +374,49 @@ public data class Evidence(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, variableDefinition.map { it.toBuilder() }.toMutableList()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        citeAs = this@with.citeAs
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        author = this@with.author.map { it.toBuilder() }.toMutableList()
-        editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-        reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-        endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        assertion = this@with.assertion?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        synthesisType = this@with.synthesisType?.toBuilder()
-        studyDesign = this@with.studyDesign.map { it.toBuilder() }.toMutableList()
-        statistic = this@with.statistic.map { it.toBuilder() }.toMutableList()
-        certainty = this@with.certainty.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          variableDefinition.map { it.toBuilder() }.toMutableList(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          url = this@with.url?.toBuilder()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          version = this@with.version?.toBuilder()
+          versionAlgorithm = this@with.versionAlgorithm
+          name = this@with.name?.toBuilder()
+          title = this@with.title?.toBuilder()
+          citeAs = this@with.citeAs
+          experimental = this@with.experimental?.toBuilder()
+          date = this@with.date?.toBuilder()
+          approvalDate = this@with.approvalDate?.toBuilder()
+          lastReviewDate = this@with.lastReviewDate?.toBuilder()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          author = this@with.author.map { it.toBuilder() }.toMutableList()
+          editor = this@with.editor.map { it.toBuilder() }.toMutableList()
+          reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
+          endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          purpose = this@with.purpose?.toBuilder()
+          copyright = this@with.copyright?.toBuilder()
+          copyrightLabel = this@with.copyrightLabel?.toBuilder()
+          relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          assertion = this@with.assertion?.toBuilder()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          synthesisType = this@with.synthesisType?.toBuilder()
+          studyDesign = this@with.studyDesign.map { it.toBuilder() }.toMutableList()
+          statistic = this@with.statistic.map { it.toBuilder() }.toMutableList()
+          certainty = this@with.certainty.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Evidence variable such as population, exposure, or outcome. */

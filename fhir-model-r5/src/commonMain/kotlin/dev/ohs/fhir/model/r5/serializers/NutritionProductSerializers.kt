@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -82,10 +85,14 @@ internal object NutritionProductNutrientSerializer : KSerializer<NutritionProduc
     }
 
   override fun deserialize(decoder: Decoder): NutritionProduct.Nutrient =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionProduct.Nutrient) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): NutritionProduct.Nutrient {
@@ -168,10 +175,14 @@ internal object NutritionProductIngredientSerializer : KSerializer<NutritionProd
     }
 
   override fun deserialize(decoder: Decoder): NutritionProduct.Ingredient =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionProduct.Ingredient) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): NutritionProduct.Ingredient {
@@ -263,10 +274,14 @@ internal object NutritionProductCharacteristicSerializer :
     }
 
   override fun deserialize(decoder: Decoder): NutritionProduct.Characteristic =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionProduct.Characteristic) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): NutritionProduct.Characteristic {
@@ -434,10 +449,14 @@ internal object NutritionProductInstanceSerializer : KSerializer<NutritionProduc
     }
 
   override fun deserialize(decoder: Decoder): NutritionProduct.Instance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionProduct.Instance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): NutritionProduct.Instance {
@@ -636,7 +655,9 @@ internal object NutritionProductSerializer : KSerializer<NutritionProduct> {
   }
 
   override fun deserialize(decoder: Decoder): NutritionProduct =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionProduct) {
     encoder.encodeStructure(descriptor) {

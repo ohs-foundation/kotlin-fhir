@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -89,10 +92,14 @@ internal object TestScriptOriginSerializer : KSerializer<TestScript.Origin> {
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Origin =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Origin) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Origin {
@@ -191,10 +198,14 @@ internal object TestScriptDestinationSerializer : KSerializer<TestScript.Destina
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Destination =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Destination) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Destination {
@@ -300,10 +311,14 @@ internal object TestScriptMetadataSerializer : KSerializer<TestScript.Metadata> 
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Metadata =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Metadata) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Metadata {
@@ -396,10 +411,14 @@ internal object TestScriptMetadataLinkSerializer : KSerializer<TestScript.Metada
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Metadata.Link =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Metadata.Link) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Metadata.Link {
@@ -501,10 +520,14 @@ internal object TestScriptMetadataCapabilitySerializer :
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Metadata.Capability =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Metadata.Capability) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Metadata.Capability {
@@ -678,10 +701,14 @@ internal object TestScriptScopeSerializer : KSerializer<TestScript.Scope> {
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Scope =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Scope) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Scope {
@@ -782,10 +809,14 @@ internal object TestScriptFixtureSerializer : KSerializer<TestScript.Fixture> {
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Fixture =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Fixture) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Fixture {
@@ -900,10 +931,14 @@ internal object TestScriptVariableSerializer : KSerializer<TestScript.Variable> 
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Variable =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Variable) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Variable {
@@ -1059,10 +1094,14 @@ internal object TestScriptSetupSerializer : KSerializer<TestScript.Setup> {
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Setup =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Setup) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Setup {
@@ -1149,10 +1188,14 @@ internal object TestScriptSetupActionSerializer : KSerializer<TestScript.Setup.A
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Setup.Action =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Setup.Action) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Setup.Action {
@@ -1275,10 +1318,14 @@ internal object TestScriptSetupActionOperationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Setup.Action.Operation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Setup.Action.Operation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Setup.Action.Operation {
@@ -1545,13 +1592,17 @@ internal object TestScriptSetupActionOperationRequestHeaderSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Setup.Action.Operation.RequestHeader =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: TestScript.Setup.Action.Operation.RequestHeader,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1699,10 +1750,14 @@ internal object TestScriptSetupActionAssertSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Setup.Action.Assert =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Setup.Action.Assert) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Setup.Action.Assert {
@@ -2074,10 +2129,14 @@ internal object TestScriptSetupActionAssertRequirementSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Setup.Action.Assert.Requirement =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Setup.Action.Assert.Requirement) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -2190,10 +2249,14 @@ internal object TestScriptTestSerializer : KSerializer<TestScript.Test> {
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Test =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Test) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Test {
@@ -2302,10 +2365,14 @@ internal object TestScriptTestActionSerializer : KSerializer<TestScript.Test.Act
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Test.Action =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Test.Action) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Test.Action {
@@ -2394,10 +2461,14 @@ internal object TestScriptTeardownSerializer : KSerializer<TestScript.Teardown> 
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Teardown =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Teardown) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Teardown {
@@ -2479,10 +2550,14 @@ internal object TestScriptTeardownActionSerializer : KSerializer<TestScript.Tear
     }
 
   override fun deserialize(decoder: Decoder): TestScript.Teardown.Action =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript.Teardown.Action) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestScript.Teardown.Action {
@@ -2670,7 +2745,9 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
   }
 
   override fun deserialize(decoder: Decoder): TestScript =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestScript) {
     encoder.encodeStructure(descriptor) {

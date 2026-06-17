@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -107,10 +110,14 @@ internal object EvidenceVariableCharacteristicSerializer :
     }
 
   override fun deserialize(decoder: Decoder): EvidenceVariable.Characteristic =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceVariable.Characteristic) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EvidenceVariable.Characteristic {
@@ -340,10 +347,14 @@ internal object EvidenceVariableCharacteristicTimeFromStartSerializer :
     }
 
   override fun deserialize(decoder: Decoder): EvidenceVariable.Characteristic.TimeFromStart =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceVariable.Characteristic.TimeFromStart) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -457,10 +468,14 @@ internal object EvidenceVariableCategorySerializer : KSerializer<EvidenceVariabl
     }
 
   override fun deserialize(decoder: Decoder): EvidenceVariable.Category =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceVariable.Category) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EvidenceVariable.Category {
@@ -673,7 +688,9 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
   }
 
   override fun deserialize(decoder: Decoder): EvidenceVariable =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceVariable) {
     encoder.encodeStructure(descriptor) {

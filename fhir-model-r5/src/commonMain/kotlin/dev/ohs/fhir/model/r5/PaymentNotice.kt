@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -169,24 +172,30 @@ public data class PaymentNotice(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, created.toBuilder(), recipient.toBuilder(), amount.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        request = this@with.request?.toBuilder()
-        response = this@with.response?.toBuilder()
-        reporter = this@with.reporter?.toBuilder()
-        payment = this@with.payment?.toBuilder()
-        paymentDate = this@with.paymentDate?.toBuilder()
-        payee = this@with.payee?.toBuilder()
-        paymentStatus = this@with.paymentStatus?.toBuilder()
-      }
+      Builder(
+          status,
+          created.toBuilder(),
+          recipient.toBuilder(),
+          amount.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          request = this@with.request?.toBuilder()
+          response = this@with.response?.toBuilder()
+          reporter = this@with.reporter?.toBuilder()
+          payment = this@with.payment?.toBuilder()
+          paymentDate = this@with.paymentDate?.toBuilder()
+          payee = this@with.payee?.toBuilder()
+          paymentStatus = this@with.paymentStatus?.toBuilder()
+        }
     }
 
   public class Builder(

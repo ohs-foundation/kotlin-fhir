@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -104,10 +107,14 @@ internal object SubscriptionTopicResourceTriggerSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubscriptionTopic.ResourceTrigger =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionTopic.ResourceTrigger) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubscriptionTopic.ResourceTrigger {
@@ -274,13 +281,17 @@ internal object SubscriptionTopicResourceTriggerQueryCriteriaSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubscriptionTopic.ResourceTrigger.QueryCriteria =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SubscriptionTopic.ResourceTrigger.QueryCriteria,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -423,10 +434,14 @@ internal object SubscriptionTopicEventTriggerSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubscriptionTopic.EventTrigger =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionTopic.EventTrigger) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubscriptionTopic.EventTrigger {
@@ -540,10 +555,14 @@ internal object SubscriptionTopicCanFilterBySerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubscriptionTopic.CanFilterBy =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionTopic.CanFilterBy) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubscriptionTopic.CanFilterBy {
@@ -702,10 +721,14 @@ internal object SubscriptionTopicNotificationShapeSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubscriptionTopic.NotificationShape =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionTopic.NotificationShape) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubscriptionTopic.NotificationShape {
@@ -929,7 +952,9 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
   }
 
   override fun deserialize(decoder: Decoder): SubscriptionTopic =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionTopic) {
     encoder.encodeStructure(descriptor) {

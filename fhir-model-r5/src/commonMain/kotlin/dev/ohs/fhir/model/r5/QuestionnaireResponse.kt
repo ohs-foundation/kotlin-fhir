@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -245,25 +248,29 @@ public data class QuestionnaireResponse(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(questionnaire.toBuilder(), status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        authored = this@with.authored?.toBuilder()
-        author = this@with.author?.toBuilder()
-        source = this@with.source?.toBuilder()
-        item = this@with.item.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          questionnaire.toBuilder(),
+          status,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          subject = this@with.subject?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          authored = this@with.authored?.toBuilder()
+          author = this@with.author?.toBuilder()
+          source = this@with.source?.toBuilder()
+          item = this@with.item.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** A group or question item from the original questionnaire for which answers are provided. */

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -394,46 +397,52 @@ public data class MedicationRequest(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, intent, medication.toBuilder(), subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        priorPrescription = this@with.priorPrescription?.toBuilder()
-        groupIdentifier = this@with.groupIdentifier?.toBuilder()
-        statusReason = this@with.statusReason?.toBuilder()
-        statusChanged = this@with.statusChanged?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        priority = this@with.priority
-        doNotPerform = this@with.doNotPerform?.toBuilder()
-        informationSource = this@with.informationSource.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        supportingInformation =
-          this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
-        authoredOn = this@with.authoredOn?.toBuilder()
-        requester = this@with.requester?.toBuilder()
-        reported = this@with.reported?.toBuilder()
-        performerType = this@with.performerType?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        device = this@with.device.map { it.toBuilder() }.toMutableList()
-        recorder = this@with.recorder?.toBuilder()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        courseOfTherapyType = this@with.courseOfTherapyType?.toBuilder()
-        insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        renderedDosageInstruction = this@with.renderedDosageInstruction?.toBuilder()
-        effectiveDosePeriod = this@with.effectiveDosePeriod?.toBuilder()
-        dosageInstruction = this@with.dosageInstruction.map { it.toBuilder() }.toMutableList()
-        dispenseRequest = this@with.dispenseRequest?.toBuilder()
-        substitution = this@with.substitution?.toBuilder()
-        eventHistory = this@with.eventHistory.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          intent,
+          medication.toBuilder(),
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          priorPrescription = this@with.priorPrescription?.toBuilder()
+          groupIdentifier = this@with.groupIdentifier?.toBuilder()
+          statusReason = this@with.statusReason?.toBuilder()
+          statusChanged = this@with.statusChanged?.toBuilder()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          priority = this@with.priority
+          doNotPerform = this@with.doNotPerform?.toBuilder()
+          informationSource = this@with.informationSource.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          supportingInformation =
+            this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
+          authoredOn = this@with.authoredOn?.toBuilder()
+          requester = this@with.requester?.toBuilder()
+          reported = this@with.reported?.toBuilder()
+          performerType = this@with.performerType?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          device = this@with.device.map { it.toBuilder() }.toMutableList()
+          recorder = this@with.recorder?.toBuilder()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          courseOfTherapyType = this@with.courseOfTherapyType?.toBuilder()
+          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          renderedDosageInstruction = this@with.renderedDosageInstruction?.toBuilder()
+          effectiveDosePeriod = this@with.effectiveDosePeriod?.toBuilder()
+          dosageInstruction = this@with.dosageInstruction.map { it.toBuilder() }.toMutableList()
+          dispenseRequest = this@with.dispenseRequest?.toBuilder()
+          substitution = this@with.substitution?.toBuilder()
+          eventHistory = this@with.eventHistory.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**

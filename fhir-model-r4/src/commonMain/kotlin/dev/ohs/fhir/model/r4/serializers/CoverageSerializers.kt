@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -81,10 +84,14 @@ internal object CoverageClassSerializer : KSerializer<Coverage.Class> {
     }
 
   override fun deserialize(decoder: Decoder): Coverage.Class =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Coverage.Class) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Coverage.Class {
@@ -187,10 +194,14 @@ internal object CoverageCostToBeneficiarySerializer : KSerializer<Coverage.CostT
     }
 
   override fun deserialize(decoder: Decoder): Coverage.CostToBeneficiary =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Coverage.CostToBeneficiary) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Coverage.CostToBeneficiary {
@@ -298,10 +309,14 @@ internal object CoverageCostToBeneficiaryExceptionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Coverage.CostToBeneficiary.Exception =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Coverage.CostToBeneficiary.Exception) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Coverage.CostToBeneficiary.Exception {
@@ -437,7 +452,9 @@ internal object CoverageSerializer : KSerializer<Coverage> {
   }
 
   override fun deserialize(decoder: Decoder): Coverage =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Coverage) {
     encoder.encodeStructure(descriptor) {

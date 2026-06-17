@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -90,10 +93,14 @@ internal object MedicinalProductNameSerializer : KSerializer<MedicinalProduct.Na
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProduct.Name =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProduct.Name) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MedicinalProduct.Name {
@@ -211,10 +218,14 @@ internal object MedicinalProductNameNamePartSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProduct.Name.NamePart =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProduct.Name.NamePart) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MedicinalProduct.Name.NamePart {
@@ -303,10 +314,14 @@ internal object MedicinalProductNameCountryLanguageSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProduct.Name.CountryLanguage =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProduct.Name.CountryLanguage) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -414,13 +429,17 @@ internal object MedicinalProductManufacturingBusinessOperationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProduct.ManufacturingBusinessOperation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: MedicinalProduct.ManufacturingBusinessOperation,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -584,10 +603,14 @@ internal object MedicinalProductSpecialDesignationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProduct.SpecialDesignation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProduct.SpecialDesignation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): MedicinalProduct.SpecialDesignation {
@@ -842,7 +865,9 @@ internal object MedicinalProductSerializer : KSerializer<MedicinalProduct> {
   }
 
   override fun deserialize(decoder: Decoder): MedicinalProduct =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProduct) {
     encoder.encodeStructure(descriptor) {

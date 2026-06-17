@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -168,29 +171,33 @@ public data class GenomicStudy(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        startDate = this@with.startDate?.toBuilder()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        referrer = this@with.referrer?.toBuilder()
-        interpreter = this@with.interpreter.map { it.toBuilder() }.toMutableList()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical = this@with.instantiatesCanonical?.toBuilder()
-        instantiatesUri = this@with.instantiatesUri?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        analysis = this@with.analysis.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          type = this@with.type.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          startDate = this@with.startDate?.toBuilder()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          referrer = this@with.referrer?.toBuilder()
+          interpreter = this@with.interpreter.map { it.toBuilder() }.toMutableList()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          instantiatesCanonical = this@with.instantiatesCanonical?.toBuilder()
+          instantiatesUri = this@with.instantiatesUri?.toBuilder()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          analysis = this@with.analysis.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** The details about a specific analysis that was performed in this GenomicStudy. */

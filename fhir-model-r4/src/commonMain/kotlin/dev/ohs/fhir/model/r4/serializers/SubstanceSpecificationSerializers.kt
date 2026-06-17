@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -89,10 +92,14 @@ internal object SubstanceSpecificationMoietySerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification.Moiety =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSpecification.Moiety) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceSpecification.Moiety {
@@ -259,10 +266,14 @@ internal object SubstanceSpecificationPropertySerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSpecification.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceSpecification.Property {
@@ -455,10 +466,14 @@ internal object SubstanceSpecificationStructureSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification.Structure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSpecification.Structure) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceSpecification.Structure {
@@ -667,10 +682,14 @@ internal object SubstanceSpecificationStructureIsotopeSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification.Structure.Isotope =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSpecification.Structure.Isotope) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -797,13 +816,17 @@ internal object SubstanceSpecificationStructureIsotopeMolecularWeightSerializer 
   override fun deserialize(
     decoder: Decoder
   ): SubstanceSpecification.Structure.Isotope.MolecularWeight =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SubstanceSpecification.Structure.Isotope.MolecularWeight,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -897,13 +920,17 @@ internal object SubstanceSpecificationStructureRepresentationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification.Structure.Representation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SubstanceSpecification.Structure.Representation,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1014,10 +1041,14 @@ internal object SubstanceSpecificationCodeSerializer : KSerializer<SubstanceSpec
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification.Code =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSpecification.Code) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceSpecification.Code {
@@ -1170,10 +1201,14 @@ internal object SubstanceSpecificationNameSerializer : KSerializer<SubstanceSpec
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification.Name =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSpecification.Name) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceSpecification.Name {
@@ -1342,10 +1377,14 @@ internal object SubstanceSpecificationNameOfficialSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification.Name.Official =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSpecification.Name.Official) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceSpecification.Name.Official {
@@ -1460,10 +1499,14 @@ internal object SubstanceSpecificationRelationshipSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification.Relationship =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSpecification.Relationship) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceSpecification.Relationship {
@@ -1763,7 +1806,9 @@ internal object SubstanceSpecificationSerializer : KSerializer<SubstanceSpecific
   }
 
   override fun deserialize(decoder: Decoder): SubstanceSpecification =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSpecification) {
     encoder.encodeStructure(descriptor) {

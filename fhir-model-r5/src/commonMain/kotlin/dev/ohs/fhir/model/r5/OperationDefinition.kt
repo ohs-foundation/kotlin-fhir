@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -324,7 +327,9 @@ public data class OperationDefinition(
    *
    * What http methods can be used for the operation depends on the .affectsState value and whether
    * the input parameters are primitive or complex:
+   *
    * 1. Servers SHALL support POST method for all operations.
+   *
    * 2. Servers SHALL support the GET method when the operation has affectsState = false and all
    *    required parameters for the operation are primitive.
    */
@@ -581,20 +586,26 @@ public data class OperationDefinition(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(name.toBuilder(), use, min.toBuilder(), max.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          scope = this@with.scope.toMutableList()
-          documentation = this@with.documentation?.toBuilder()
-          type = this@with.type
-          allowedType = this@with.allowedType.toMutableList()
-          targetProfile = this@with.targetProfile.map { it.toBuilder() }.toMutableList()
-          searchType = this@with.searchType
-          binding = this@with.binding?.toBuilder()
-          referencedFrom = this@with.referencedFrom.map { it.toBuilder() }.toMutableList()
-          part = this@with.part.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            name.toBuilder(),
+            use,
+            min.toBuilder(),
+            max.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            scope = this@with.scope.toMutableList()
+            documentation = this@with.documentation?.toBuilder()
+            type = this@with.type
+            allowedType = this@with.allowedType.toMutableList()
+            targetProfile = this@with.targetProfile.map { it.toBuilder() }.toMutableList()
+            searchType = this@with.searchType
+            binding = this@with.binding?.toBuilder()
+            referencedFrom = this@with.referencedFrom.map { it.toBuilder() }.toMutableList()
+            part = this@with.part.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     /** Binds to a value set if this parameter is coded (code, Coding, CodeableConcept). */
@@ -655,11 +666,15 @@ public data class OperationDefinition(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(strength, valueSet.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              strength,
+              valueSet.toBuilder(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public class Builder(
@@ -1491,7 +1506,9 @@ public data class OperationDefinition(
      *
      * What http methods can be used for the operation depends on the .affectsState value and
      * whether the input parameters are primitive or complex:
+     *
      * 1. Servers SHALL support POST method for all operations.
+     *
      * 2. Servers SHALL support the GET method when the operation has affectsState = false and all
      *    required parameters for the operation are primitive.
      */

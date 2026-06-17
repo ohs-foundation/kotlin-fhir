@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -343,43 +346,50 @@ public data class Claim(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, type.toBuilder(), use, patient.toBuilder(), created.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        traceNumber = this@with.traceNumber.map { it.toBuilder() }.toMutableList()
-        subType = this@with.subType?.toBuilder()
-        billablePeriod = this@with.billablePeriod?.toBuilder()
-        enterer = this@with.enterer?.toBuilder()
-        insurer = this@with.insurer?.toBuilder()
-        provider = this@with.provider?.toBuilder()
-        priority = this@with.priority?.toBuilder()
-        fundsReserve = this@with.fundsReserve?.toBuilder()
-        related = this@with.related.map { it.toBuilder() }.toMutableList()
-        prescription = this@with.prescription?.toBuilder()
-        originalPrescription = this@with.originalPrescription?.toBuilder()
-        payee = this@with.payee?.toBuilder()
-        referral = this@with.referral?.toBuilder()
-        encounter = this@with.encounter.map { it.toBuilder() }.toMutableList()
-        facility = this@with.facility?.toBuilder()
-        diagnosisRelatedGroup = this@with.diagnosisRelatedGroup?.toBuilder()
-        event = this@with.event.map { it.toBuilder() }.toMutableList()
-        careTeam = this@with.careTeam.map { it.toBuilder() }.toMutableList()
-        supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-        diagnosis = this@with.diagnosis.map { it.toBuilder() }.toMutableList()
-        procedure = this@with.procedure.map { it.toBuilder() }.toMutableList()
-        insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-        accident = this@with.accident?.toBuilder()
-        patientPaid = this@with.patientPaid?.toBuilder()
-        item = this@with.item.map { it.toBuilder() }.toMutableList()
-        total = this@with.total?.toBuilder()
-      }
+      Builder(
+          status,
+          type.toBuilder(),
+          use,
+          patient.toBuilder(),
+          created.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          traceNumber = this@with.traceNumber.map { it.toBuilder() }.toMutableList()
+          subType = this@with.subType?.toBuilder()
+          billablePeriod = this@with.billablePeriod?.toBuilder()
+          enterer = this@with.enterer?.toBuilder()
+          insurer = this@with.insurer?.toBuilder()
+          provider = this@with.provider?.toBuilder()
+          priority = this@with.priority?.toBuilder()
+          fundsReserve = this@with.fundsReserve?.toBuilder()
+          related = this@with.related.map { it.toBuilder() }.toMutableList()
+          prescription = this@with.prescription?.toBuilder()
+          originalPrescription = this@with.originalPrescription?.toBuilder()
+          payee = this@with.payee?.toBuilder()
+          referral = this@with.referral?.toBuilder()
+          encounter = this@with.encounter.map { it.toBuilder() }.toMutableList()
+          facility = this@with.facility?.toBuilder()
+          diagnosisRelatedGroup = this@with.diagnosisRelatedGroup?.toBuilder()
+          event = this@with.event.map { it.toBuilder() }.toMutableList()
+          careTeam = this@with.careTeam.map { it.toBuilder() }.toMutableList()
+          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
+          diagnosis = this@with.diagnosis.map { it.toBuilder() }.toMutableList()
+          procedure = this@with.procedure.map { it.toBuilder() }.toMutableList()
+          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
+          accident = this@with.accident?.toBuilder()
+          patientPaid = this@with.patientPaid?.toBuilder()
+          item = this@with.item.map { it.toBuilder() }.toMutableList()
+          total = this@with.total?.toBuilder()
+        }
     }
 
   /**
@@ -698,11 +708,15 @@ public data class Claim(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type.toBuilder(), `when`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type.toBuilder(),
+            `when`,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface When {
@@ -1246,13 +1260,17 @@ public data class Claim(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(sequence.toBuilder(), diagnosis).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          onAdmission = this@with.onAdmission?.toBuilder()
-        }
+        Builder(
+            sequence.toBuilder(),
+            diagnosis,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            type = this@with.type.map { it.toBuilder() }.toMutableList()
+            onAdmission = this@with.onAdmission?.toBuilder()
+          }
       }
 
     public sealed interface Diagnosis {
@@ -1414,14 +1432,18 @@ public data class Claim(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(sequence.toBuilder(), procedure).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          date = this@with.date?.toBuilder()
-          udi = this@with.udi.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            sequence.toBuilder(),
+            procedure,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            type = this@with.type.map { it.toBuilder() }.toMutableList()
+            date = this@with.date?.toBuilder()
+            udi = this@with.udi.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Procedure {

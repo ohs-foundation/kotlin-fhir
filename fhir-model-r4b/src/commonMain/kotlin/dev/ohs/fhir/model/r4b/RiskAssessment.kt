@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -177,31 +180,35 @@ public data class RiskAssessment(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn?.toBuilder()
-        parent = this@with.parent?.toBuilder()
-        method = this@with.method?.toBuilder()
-        code = this@with.code?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        occurrence = this@with.occurrence
-        condition = this@with.condition?.toBuilder()
-        performer = this@with.performer?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        basis = this@with.basis.map { it.toBuilder() }.toMutableList()
-        prediction = this@with.prediction.map { it.toBuilder() }.toMutableList()
-        mitigation = this@with.mitigation?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn?.toBuilder()
+          parent = this@with.parent?.toBuilder()
+          method = this@with.method?.toBuilder()
+          code = this@with.code?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          occurrence = this@with.occurrence
+          condition = this@with.condition?.toBuilder()
+          performer = this@with.performer?.toBuilder()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          basis = this@with.basis.map { it.toBuilder() }.toMutableList()
+          prediction = this@with.prediction.map { it.toBuilder() }.toMutableList()
+          mitigation = this@with.mitigation?.toBuilder()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Describes the expected outcome for the subject. */

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -196,6 +199,7 @@ public data class StructureDefinition(
    *
    * The name is not expected to be globally unique. The name should be a simple alphanumeric type
    * name to ensure that it is machine-processing friendly.Some Examples:
+   *
    * * O2SatObservation
    * * PresentationReport
    * * Immunization2
@@ -684,11 +688,15 @@ public data class StructureDefinition(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type, expression.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type,
+            expression.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(
@@ -1016,6 +1024,7 @@ public data class StructureDefinition(
      *
      * The name is not expected to be globally unique. The name should be a simple alphanumeric type
      * name to ensure that it is machine-processing friendly.Some Examples:
+     *
      * * O2SatObservation
      * * PresentationReport
      * * Immunization2

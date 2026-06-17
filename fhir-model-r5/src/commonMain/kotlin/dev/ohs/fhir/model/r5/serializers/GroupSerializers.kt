@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -87,10 +90,14 @@ internal object GroupCharacteristicSerializer : KSerializer<Group.Characteristic
     }
 
   override fun deserialize(decoder: Decoder): Group.Characteristic =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Group.Characteristic) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Group.Characteristic {
@@ -246,10 +253,14 @@ internal object GroupMemberSerializer : KSerializer<Group.Member> {
     }
 
   override fun deserialize(decoder: Decoder): Group.Member =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Group.Member) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Group.Member {
@@ -386,7 +397,9 @@ internal object GroupSerializer : KSerializer<Group> {
   }
 
   override fun deserialize(decoder: Decoder): Group =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Group) {
     encoder.encodeStructure(descriptor) {
@@ -728,5 +741,7 @@ internal object GroupPolymorphicSerializer : KSerializer<Group> {
   }
 
   override fun deserialize(decoder: Decoder): Group =
-    decoder.decodeStructure(descriptor) { GroupSerializer.deserializeInternal(this, descriptor, 0) }
+    decoder.decodeStructure(descriptor) {
+      GroupSerializer.deserializeInternal(this, descriptor, 0)
+    }
 }

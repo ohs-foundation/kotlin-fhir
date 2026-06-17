@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -103,10 +106,14 @@ internal object ClinicalUseDefinitionContraindicationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ClinicalUseDefinition.Contraindication =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ClinicalUseDefinition.Contraindication) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -255,13 +262,17 @@ internal object ClinicalUseDefinitionContraindicationOtherTherapySerializer :
     }
 
   override fun deserialize(decoder: Decoder): ClinicalUseDefinition.Contraindication.OtherTherapy =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: ClinicalUseDefinition.Contraindication.OtherTherapy,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -388,10 +399,14 @@ internal object ClinicalUseDefinitionIndicationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ClinicalUseDefinition.Indication =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ClinicalUseDefinition.Indication) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ClinicalUseDefinition.Indication {
@@ -610,10 +625,14 @@ internal object ClinicalUseDefinitionInteractionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ClinicalUseDefinition.Interaction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ClinicalUseDefinition.Interaction) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ClinicalUseDefinition.Interaction {
@@ -725,10 +744,14 @@ internal object ClinicalUseDefinitionInteractionInteractantSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ClinicalUseDefinition.Interaction.Interactant =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ClinicalUseDefinition.Interaction.Interactant) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -841,10 +864,14 @@ internal object ClinicalUseDefinitionUndesirableEffectSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ClinicalUseDefinition.UndesirableEffect =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ClinicalUseDefinition.UndesirableEffect) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -962,10 +989,14 @@ internal object ClinicalUseDefinitionWarningSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ClinicalUseDefinition.Warning =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ClinicalUseDefinition.Warning) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ClinicalUseDefinition.Warning {
@@ -1115,7 +1146,9 @@ internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinit
   }
 
   override fun deserialize(decoder: Decoder): ClinicalUseDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ClinicalUseDefinition) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -113,8 +116,7 @@ public data class VirtualServiceDetail(
 
     public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Address
 
-    public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
-      Address
+    public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) : Address
 
     public data class ExtendedContactDetail(
       public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -83,10 +86,14 @@ internal object HealthcareServiceEligibilitySerializer :
     }
 
   override fun deserialize(decoder: Decoder): HealthcareService.Eligibility =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: HealthcareService.Eligibility) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): HealthcareService.Eligibility {
@@ -187,10 +194,14 @@ internal object HealthcareServiceAvailableTimeSerializer :
     }
 
   override fun deserialize(decoder: Decoder): HealthcareService.AvailableTime =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: HealthcareService.AvailableTime) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): HealthcareService.AvailableTime {
@@ -349,10 +360,14 @@ internal object HealthcareServiceNotAvailableSerializer :
     }
 
   override fun deserialize(decoder: Decoder): HealthcareService.NotAvailable =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: HealthcareService.NotAvailable) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): HealthcareService.NotAvailable {
@@ -556,7 +571,9 @@ internal object HealthcareServiceSerializer : KSerializer<HealthcareService> {
   }
 
   override fun deserialize(decoder: Decoder): HealthcareService =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: HealthcareService) {
     encoder.encodeStructure(descriptor) {

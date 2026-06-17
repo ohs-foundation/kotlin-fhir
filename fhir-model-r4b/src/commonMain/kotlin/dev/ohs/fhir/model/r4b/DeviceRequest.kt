@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -225,38 +228,43 @@ public data class DeviceRequest(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(intent, code, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical =
-          this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-        instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        priorRequest = this@with.priorRequest.map { it.toBuilder() }.toMutableList()
-        groupIdentifier = this@with.groupIdentifier?.toBuilder()
-        status = this@with.status
-        priority = this@with.priority
-        parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        occurrence = this@with.occurrence
-        authoredOn = this@with.authoredOn?.toBuilder()
-        requester = this@with.requester?.toBuilder()
-        performerType = this@with.performerType?.toBuilder()
-        performer = this@with.performer?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-        supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          intent,
+          code,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          instantiatesCanonical =
+            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
+          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          priorRequest = this@with.priorRequest.map { it.toBuilder() }.toMutableList()
+          groupIdentifier = this@with.groupIdentifier?.toBuilder()
+          status = this@with.status
+          priority = this@with.priority
+          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          occurrence = this@with.occurrence
+          authoredOn = this@with.authoredOn?.toBuilder()
+          requester = this@with.requester?.toBuilder()
+          performerType = this@with.performerType?.toBuilder()
+          performer = this@with.performer?.toBuilder()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
+          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Specific parameters for the ordered item. For example, the prism value for lenses. */

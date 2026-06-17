@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -278,6 +281,7 @@ public data class ElementDefinition(
    *
    * When pattern[x] is used to constrain a complex object, it means that each property in the
    * pattern must be present in the complex object, and its value must recursively match -- i.e.,
+   *
    * 1. If primitive: it must match exactly the pattern value
    * 2. If a complex object: it must match (recursively) the pattern value
    * 3. If an array: it must match (recursively) the pattern value.
@@ -567,10 +571,14 @@ public data class ElementDefinition(
     ) : Element() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(type, path.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              type,
+              path.toBuilder(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public class Builder(
@@ -1010,10 +1018,14 @@ public data class ElementDefinition(
   ) : Element() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(label.toBuilder(), `value`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            label.toBuilder(),
+            `value`,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public sealed interface Value {
@@ -1460,14 +1472,19 @@ public data class ElementDefinition(
   ) : Element() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(key.toBuilder(), severity, human.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          requirements = this@with.requirements?.toBuilder()
-          expression = this@with.expression?.toBuilder()
-          xpath = this@with.xpath?.toBuilder()
-          source = this@with.source?.toBuilder()
-        }
+        Builder(
+            key.toBuilder(),
+            severity,
+            human.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            requirements = this@with.requirements?.toBuilder()
+            expression = this@with.expression?.toBuilder()
+            xpath = this@with.xpath?.toBuilder()
+            source = this@with.source?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -1876,8 +1893,7 @@ public data class ElementDefinition(
 
     public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : DefaultValue
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
-      DefaultValue
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : DefaultValue
 
     public data class Code(public val `value`: dev.ohs.fhir.model.r4b.Code) : DefaultValue
 
@@ -1941,8 +1957,7 @@ public data class ElementDefinition(
 
     public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : DefaultValue
 
-    public data class HumanName(public val `value`: dev.ohs.fhir.model.r4b.HumanName) :
-      DefaultValue
+    public data class HumanName(public val `value`: dev.ohs.fhir.model.r4b.HumanName) : DefaultValue
 
     public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) :
       DefaultValue
@@ -1960,14 +1975,12 @@ public data class ElementDefinition(
     public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
       DefaultValue
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
-      DefaultValue
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : DefaultValue
 
     public data class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) :
       DefaultValue
 
-    public data class Signature(public val `value`: dev.ohs.fhir.model.r4b.Signature) :
-      DefaultValue
+    public data class Signature(public val `value`: dev.ohs.fhir.model.r4b.Signature) : DefaultValue
 
     public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : DefaultValue
 
@@ -2793,11 +2806,9 @@ public data class ElementDefinition(
 
     public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : MinValue
 
-    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
-      MinValue
+    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) : MinValue
 
-    public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) :
-      MinValue
+    public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) : MinValue
 
     public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : MinValue
 
@@ -2858,11 +2869,9 @@ public data class ElementDefinition(
 
     public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : MaxValue
 
-    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
-      MaxValue
+    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) : MaxValue
 
-    public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) :
-      MaxValue
+    public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) : MaxValue
 
     public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : MaxValue
 
@@ -3157,6 +3166,7 @@ public data class ElementDefinition(
      *
      * When pattern[x] is used to constrain a complex object, it means that each property in the
      * pattern must be present in the complex object, and its value must recursively match -- i.e.,
+     *
      * 1. If primitive: it must match exactly the pattern value
      * 2. If a complex object: it must match (recursively) the pattern value
      * 3. If an array: it must match (recursively) the pattern value.

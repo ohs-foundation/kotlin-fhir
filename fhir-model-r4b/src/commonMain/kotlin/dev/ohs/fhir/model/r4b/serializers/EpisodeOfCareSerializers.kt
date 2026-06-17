@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -74,10 +77,14 @@ internal object EpisodeOfCareStatusHistorySerializer : KSerializer<EpisodeOfCare
     }
 
   override fun deserialize(decoder: Decoder): EpisodeOfCare.StatusHistory =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EpisodeOfCare.StatusHistory) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EpisodeOfCare.StatusHistory {
@@ -166,10 +173,14 @@ internal object EpisodeOfCareDiagnosisSerializer : KSerializer<EpisodeOfCare.Dia
     }
 
   override fun deserialize(decoder: Decoder): EpisodeOfCare.Diagnosis =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EpisodeOfCare.Diagnosis) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EpisodeOfCare.Diagnosis {
@@ -308,7 +319,9 @@ internal object EpisodeOfCareSerializer : KSerializer<EpisodeOfCare> {
   }
 
   override fun deserialize(decoder: Decoder): EpisodeOfCare =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EpisodeOfCare) {
     encoder.encodeStructure(descriptor) {

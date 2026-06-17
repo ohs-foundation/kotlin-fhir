@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -202,29 +205,33 @@ public data class GuidanceResponse(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(module, status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        requestIdentifier = this@with.requestIdentifier?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        occurrenceDateTime = this@with.occurrenceDateTime?.toBuilder()
-        performer = this@with.performer?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        evaluationMessage = this@with.evaluationMessage.map { it.toBuilder() }.toMutableList()
-        outputParameters = this@with.outputParameters?.toBuilder()
-        result = this@with.result?.toBuilder()
-        dataRequirement = this@with.dataRequirement.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          module,
+          status,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          requestIdentifier = this@with.requestIdentifier?.toBuilder()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          subject = this@with.subject?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          occurrenceDateTime = this@with.occurrenceDateTime?.toBuilder()
+          performer = this@with.performer?.toBuilder()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          evaluationMessage = this@with.evaluationMessage.map { it.toBuilder() }.toMutableList()
+          outputParameters = this@with.outputParameters?.toBuilder()
+          result = this@with.result?.toBuilder()
+          dataRequirement = this@with.dataRequirement.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   public sealed interface Module {

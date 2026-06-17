@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -98,10 +101,14 @@ internal object ConceptMapPropertySerializer : KSerializer<ConceptMap.Property> 
     }
 
   override fun deserialize(decoder: Decoder): ConceptMap.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConceptMap.Property {
@@ -226,10 +233,14 @@ internal object ConceptMapAdditionalAttributeSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ConceptMap.AdditionalAttribute =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.AdditionalAttribute) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConceptMap.AdditionalAttribute {
@@ -352,10 +363,14 @@ internal object ConceptMapGroupSerializer : KSerializer<ConceptMap.Group> {
     }
 
   override fun deserialize(decoder: Decoder): ConceptMap.Group =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConceptMap.Group {
@@ -483,10 +498,14 @@ internal object ConceptMapGroupElementSerializer : KSerializer<ConceptMap.Group.
     }
 
   override fun deserialize(decoder: Decoder): ConceptMap.Group.Element =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group.Element) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConceptMap.Group.Element {
@@ -637,10 +656,14 @@ internal object ConceptMapGroupElementTargetSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ConceptMap.Group.Element.Target =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group.Element.Target) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConceptMap.Group.Element.Target {
@@ -810,10 +833,14 @@ internal object ConceptMapGroupElementTargetPropertySerializer :
     }
 
   override fun deserialize(decoder: Decoder): ConceptMap.Group.Element.Target.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group.Element.Target.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1004,10 +1031,14 @@ internal object ConceptMapGroupElementTargetDependsOnSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ConceptMap.Group.Element.Target.DependsOn =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group.Element.Target.DependsOn) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1178,10 +1209,14 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
     }
 
   override fun deserialize(decoder: Decoder): ConceptMap.Group.Unmapped =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group.Unmapped) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ConceptMap.Group.Unmapped {
@@ -1435,7 +1470,9 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
   }
 
   override fun deserialize(decoder: Decoder): ConceptMap =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap) {
     encoder.encodeStructure(descriptor) {

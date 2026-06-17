@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -91,10 +94,14 @@ internal object EffectEvidenceSynthesisSampleSizeSerializer :
     }
 
   override fun deserialize(decoder: Decoder): EffectEvidenceSynthesis.SampleSize =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EffectEvidenceSynthesis.SampleSize) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EffectEvidenceSynthesis.SampleSize {
@@ -204,10 +211,14 @@ internal object EffectEvidenceSynthesisResultsByExposureSerializer :
     }
 
   override fun deserialize(decoder: Decoder): EffectEvidenceSynthesis.ResultsByExposure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EffectEvidenceSynthesis.ResultsByExposure) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -351,10 +362,14 @@ internal object EffectEvidenceSynthesisEffectEstimateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): EffectEvidenceSynthesis.EffectEstimate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EffectEvidenceSynthesis.EffectEstimate) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -509,13 +524,17 @@ internal object EffectEvidenceSynthesisEffectEstimatePrecisionEstimateSerializer
   override fun deserialize(
     decoder: Decoder
   ): EffectEvidenceSynthesis.EffectEstimate.PrecisionEstimate =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: EffectEvidenceSynthesis.EffectEstimate.PrecisionEstimate,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -649,10 +668,14 @@ internal object EffectEvidenceSynthesisCertaintySerializer :
     }
 
   override fun deserialize(decoder: Decoder): EffectEvidenceSynthesis.Certainty =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EffectEvidenceSynthesis.Certainty) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): EffectEvidenceSynthesis.Certainty {
@@ -775,13 +798,17 @@ internal object EffectEvidenceSynthesisCertaintyCertaintySubcomponentSerializer 
   override fun deserialize(
     decoder: Decoder
   ): EffectEvidenceSynthesis.Certainty.CertaintySubcomponent =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: EffectEvidenceSynthesis.Certainty.CertaintySubcomponent,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -997,7 +1024,9 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
   }
 
   override fun deserialize(decoder: Decoder): EffectEvidenceSynthesis =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: EffectEvidenceSynthesis) {
     encoder.encodeStructure(descriptor) {

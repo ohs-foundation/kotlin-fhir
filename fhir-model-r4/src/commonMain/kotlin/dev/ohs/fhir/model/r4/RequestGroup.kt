@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -202,33 +205,37 @@ public data class RequestGroup(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, intent).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical =
-          this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-        instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
-        groupIdentifier = this@with.groupIdentifier?.toBuilder()
-        priority = this@with.priority
-        code = this@with.code?.toBuilder()
-        subject = this@with.subject?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        authoredOn = this@with.authoredOn?.toBuilder()
-        author = this@with.author?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        action = this@with.action.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          intent,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          instantiatesCanonical =
+            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
+          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
+          groupIdentifier = this@with.groupIdentifier?.toBuilder()
+          priority = this@with.priority
+          code = this@with.code?.toBuilder()
+          subject = this@with.subject?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          authoredOn = this@with.authoredOn?.toBuilder()
+          author = this@with.author?.toBuilder()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          action = this@with.action.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** The actions, if any, produced by the evaluation of the artifact. */
@@ -550,12 +557,16 @@ public data class RequestGroup(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(actionId.toBuilder(), relationship).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            offset = this@with.offset
-          }
+          Builder(
+              actionId.toBuilder(),
+              relationship,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              offset = this@with.offset
+            }
         }
 
       public sealed interface Offset {
@@ -656,15 +667,13 @@ public data class RequestGroup(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
-        Action.Timing
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Action.Timing
 
       public data class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Action.Timing
 
       public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Action.Timing
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
-        Action.Timing
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) : Action.Timing
 
       public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Action.Timing
 

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -235,7 +238,13 @@ public data class PaymentReconciliation(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(type.toBuilder(), status, created.toBuilder(), date.toBuilder(), amount.toBuilder())
+      Builder(
+          type.toBuilder(),
+          status,
+          created.toBuilder(),
+          date.toBuilder(),
+          amount.toBuilder(),
+        )
         .apply {
           id = this@with.id
           meta = this@with.meta?.toBuilder()

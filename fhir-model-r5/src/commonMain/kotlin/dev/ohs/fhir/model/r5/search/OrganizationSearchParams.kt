@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5.search
 
@@ -82,7 +85,9 @@ public object OrganizationSearchParams {
       name = "address-state",
       type = SearchParamType.String,
       expression = "Organization.contact.address.state",
-      extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.state } },
+      extractor = { resource ->
+        resource.contact.mapNotNull { it.address }.mapNotNull { it.state }
+      },
     )
 
   public val addressUse: SearchParam<Organization, Any> =

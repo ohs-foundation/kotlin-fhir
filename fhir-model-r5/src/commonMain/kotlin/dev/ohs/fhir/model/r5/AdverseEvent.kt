@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -271,37 +274,42 @@ public data class AdverseEvent(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, actuality, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        code = this@with.code?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        occurrence = this@with.occurrence
-        detected = this@with.detected?.toBuilder()
-        recordedDate = this@with.recordedDate?.toBuilder()
-        resultingEffect = this@with.resultingEffect.map { it.toBuilder() }.toMutableList()
-        location = this@with.location?.toBuilder()
-        seriousness = this@with.seriousness?.toBuilder()
-        outcome = this@with.outcome.map { it.toBuilder() }.toMutableList()
-        recorder = this@with.recorder?.toBuilder()
-        participant = this@with.participant.map { it.toBuilder() }.toMutableList()
-        study = this@with.study.map { it.toBuilder() }.toMutableList()
-        expectedInResearchStudy = this@with.expectedInResearchStudy?.toBuilder()
-        suspectEntity = this@with.suspectEntity.map { it.toBuilder() }.toMutableList()
-        contributingFactor = this@with.contributingFactor.map { it.toBuilder() }.toMutableList()
-        preventiveAction = this@with.preventiveAction.map { it.toBuilder() }.toMutableList()
-        mitigatingAction = this@with.mitigatingAction.map { it.toBuilder() }.toMutableList()
-        supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          actuality,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          code = this@with.code?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          occurrence = this@with.occurrence
+          detected = this@with.detected?.toBuilder()
+          recordedDate = this@with.recordedDate?.toBuilder()
+          resultingEffect = this@with.resultingEffect.map { it.toBuilder() }.toMutableList()
+          location = this@with.location?.toBuilder()
+          seriousness = this@with.seriousness?.toBuilder()
+          outcome = this@with.outcome.map { it.toBuilder() }.toMutableList()
+          recorder = this@with.recorder?.toBuilder()
+          participant = this@with.participant.map { it.toBuilder() }.toMutableList()
+          study = this@with.study.map { it.toBuilder() }.toMutableList()
+          expectedInResearchStudy = this@with.expectedInResearchStudy?.toBuilder()
+          suspectEntity = this@with.suspectEntity.map { it.toBuilder() }.toMutableList()
+          contributingFactor = this@with.contributingFactor.map { it.toBuilder() }.toMutableList()
+          preventiveAction = this@with.preventiveAction.map { it.toBuilder() }.toMutableList()
+          mitigatingAction = this@with.mitigatingAction.map { it.toBuilder() }.toMutableList()
+          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Indicates who or what participated in the adverse event and how they were involved. */

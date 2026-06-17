@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -85,10 +88,14 @@ internal object ResearchStudyLabelSerializer : KSerializer<ResearchStudy.Label> 
     }
 
   override fun deserialize(decoder: Decoder): ResearchStudy.Label =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.Label) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ResearchStudy.Label {
@@ -182,10 +189,14 @@ internal object ResearchStudyAssociatedPartySerializer :
     }
 
   override fun deserialize(decoder: Decoder): ResearchStudy.AssociatedParty =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.AssociatedParty) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ResearchStudy.AssociatedParty {
@@ -297,10 +308,14 @@ internal object ResearchStudyProgressStatusSerializer : KSerializer<ResearchStud
     }
 
   override fun deserialize(decoder: Decoder): ResearchStudy.ProgressStatus =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.ProgressStatus) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ResearchStudy.ProgressStatus {
@@ -398,10 +413,14 @@ internal object ResearchStudyRecruitmentSerializer : KSerializer<ResearchStudy.R
     }
 
   override fun deserialize(decoder: Decoder): ResearchStudy.Recruitment =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.Recruitment) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ResearchStudy.Recruitment {
@@ -522,10 +541,14 @@ internal object ResearchStudyComparisonGroupSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ResearchStudy.ComparisonGroup =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.ComparisonGroup) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ResearchStudy.ComparisonGroup {
@@ -670,10 +693,14 @@ internal object ResearchStudyObjectiveSerializer : KSerializer<ResearchStudy.Obj
     }
 
   override fun deserialize(decoder: Decoder): ResearchStudy.Objective =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.Objective) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ResearchStudy.Objective {
@@ -776,10 +803,14 @@ internal object ResearchStudyOutcomeMeasureSerializer : KSerializer<ResearchStud
     }
 
   override fun deserialize(decoder: Decoder): ResearchStudy.OutcomeMeasure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.OutcomeMeasure) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ResearchStudy.OutcomeMeasure {
@@ -1009,7 +1040,9 @@ internal object ResearchStudySerializer : KSerializer<ResearchStudy> {
   }
 
   override fun deserialize(decoder: Decoder): ResearchStudy =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy) {
     encoder.encodeStructure(descriptor) {

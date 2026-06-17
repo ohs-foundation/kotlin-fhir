@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -145,6 +148,7 @@ public data class Practitioner(
    * and others use the nickname (alias), old, or other values as appropriate.
    *
    * In general, select the value to be used in the ResourceReference.display based on this:
+   *
    * 1. There is more than 1 name
    * 2. Use = usual
    * 3. Period is current to the date of the usage
@@ -472,6 +476,7 @@ public data class Practitioner(
      * and others use the nickname (alias), old, or other values as appropriate.
      *
      * In general, select the value to be used in the ResourceReference.display based on this:
+     *
      * 1. There is more than 1 name
      * 2. Use = usual
      * 3. Period is current to the date of the usage

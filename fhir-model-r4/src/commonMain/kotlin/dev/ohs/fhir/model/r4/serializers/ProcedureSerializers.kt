@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -81,10 +84,14 @@ internal object ProcedurePerformerSerializer : KSerializer<Procedure.Performer> 
     }
 
   override fun deserialize(decoder: Decoder): Procedure.Performer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Procedure.Performer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Procedure.Performer {
@@ -176,10 +183,14 @@ internal object ProcedureFocalDeviceSerializer : KSerializer<Procedure.FocalDevi
     }
 
   override fun deserialize(decoder: Decoder): Procedure.FocalDevice =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Procedure.FocalDevice) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Procedure.FocalDevice {
@@ -372,7 +383,9 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
   }
 
   override fun deserialize(decoder: Decoder): Procedure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Procedure) {
     encoder.encodeStructure(descriptor) {

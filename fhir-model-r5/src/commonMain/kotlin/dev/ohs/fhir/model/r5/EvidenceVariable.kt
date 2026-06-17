@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -598,14 +601,18 @@ public data class EvidenceVariable(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(type.toBuilder(), `value`).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            method = this@with.method.map { it.toBuilder() }.toMutableList()
-            device = this@with.device?.toBuilder()
-            offset = this@with.offset?.toBuilder()
-          }
+          Builder(
+              type.toBuilder(),
+              `value`,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              method = this@with.method.map { it.toBuilder() }.toMutableList()
+              device = this@with.device?.toBuilder()
+              offset = this@with.offset?.toBuilder()
+            }
         }
 
       public sealed interface Value {
@@ -776,12 +783,16 @@ public data class EvidenceVariable(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(code, characteristic.map { it.toBuilder() }.toMutableList()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            threshold = this@with.threshold?.toBuilder()
-          }
+          Builder(
+              code,
+              characteristic.map { it.toBuilder() }.toMutableList(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              threshold = this@with.threshold?.toBuilder()
+            }
         }
 
       public class Builder(

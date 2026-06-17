@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -396,6 +399,7 @@ public data class SearchParameter(
    * for a parameter on the target resource type.
    *
    * Notes:
+   *
    * * Not all systems will declare chain values. If no chain values are specified at all, then no
    *   presumptions can be made about the degree of chaining support available
    * * A server may use a single chain value of '*' to mean that all reference search types
@@ -1001,6 +1005,7 @@ public data class SearchParameter(
      * for a parameter on the target resource type.
      *
      * Notes:
+     *
      * * Not all systems will declare chain values. If no chain values are specified at all, then no
      *   presumptions can be made about the degree of chaining support available
      * * A server may use a single chain value of '*' to mean that all reference search types

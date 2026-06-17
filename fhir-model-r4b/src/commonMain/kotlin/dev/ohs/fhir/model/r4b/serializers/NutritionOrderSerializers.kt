@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -105,10 +108,14 @@ internal object NutritionOrderOralDietSerializer : KSerializer<NutritionOrder.Or
     }
 
   override fun deserialize(decoder: Decoder): NutritionOrder.OralDiet =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionOrder.OralDiet) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): NutritionOrder.OralDiet {
@@ -242,10 +249,14 @@ internal object NutritionOrderOralDietNutrientSerializer :
     }
 
   override fun deserialize(decoder: Decoder): NutritionOrder.OralDiet.Nutrient =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionOrder.OralDiet.Nutrient) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): NutritionOrder.OralDiet.Nutrient {
@@ -333,10 +344,14 @@ internal object NutritionOrderOralDietTextureSerializer :
     }
 
   override fun deserialize(decoder: Decoder): NutritionOrder.OralDiet.Texture =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionOrder.OralDiet.Texture) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): NutritionOrder.OralDiet.Texture {
@@ -429,10 +444,14 @@ internal object NutritionOrderSupplementSerializer : KSerializer<NutritionOrder.
     }
 
   override fun deserialize(decoder: Decoder): NutritionOrder.Supplement =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionOrder.Supplement) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): NutritionOrder.Supplement {
@@ -567,10 +586,14 @@ internal object NutritionOrderEnteralFormulaSerializer :
     }
 
   override fun deserialize(decoder: Decoder): NutritionOrder.EnteralFormula =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionOrder.EnteralFormula) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): NutritionOrder.EnteralFormula {
@@ -785,10 +808,14 @@ internal object NutritionOrderEnteralFormulaAdministrationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): NutritionOrder.EnteralFormula.Administration =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionOrder.EnteralFormula.Administration) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -989,7 +1016,9 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
   }
 
   override fun deserialize(decoder: Decoder): NutritionOrder =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: NutritionOrder) {
     encoder.encodeStructure(descriptor) {

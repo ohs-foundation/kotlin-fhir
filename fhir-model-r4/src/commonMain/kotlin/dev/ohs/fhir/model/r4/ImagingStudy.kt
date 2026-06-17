@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -228,34 +231,38 @@ public data class ImagingStudy(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        modality = this@with.modality.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        started = this@with.started?.toBuilder()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        referrer = this@with.referrer?.toBuilder()
-        interpreter = this@with.interpreter.map { it.toBuilder() }.toMutableList()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-        numberOfSeries = this@with.numberOfSeries?.toBuilder()
-        numberOfInstances = this@with.numberOfInstances?.toBuilder()
-        procedureReference = this@with.procedureReference?.toBuilder()
-        procedureCode = this@with.procedureCode.map { it.toBuilder() }.toMutableList()
-        location = this@with.location?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        series = this@with.series.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          modality = this@with.modality.map { it.toBuilder() }.toMutableList()
+          encounter = this@with.encounter?.toBuilder()
+          started = this@with.started?.toBuilder()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          referrer = this@with.referrer?.toBuilder()
+          interpreter = this@with.interpreter.map { it.toBuilder() }.toMutableList()
+          endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
+          numberOfSeries = this@with.numberOfSeries?.toBuilder()
+          numberOfInstances = this@with.numberOfInstances?.toBuilder()
+          procedureReference = this@with.procedureReference?.toBuilder()
+          procedureCode = this@with.procedureCode.map { it.toBuilder() }.toMutableList()
+          location = this@with.location?.toBuilder()
+          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
+          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          series = this@with.series.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Each study has one or more series of images or other content. */

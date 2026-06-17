@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -155,21 +158,25 @@ public data class Permission(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, combining).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        asserter = this@with.asserter?.toBuilder()
-        date = this@with.date.map { it.toBuilder() }.toMutableList()
-        validity = this@with.validity?.toBuilder()
-        justification = this@with.justification?.toBuilder()
-        rule = this@with.rule.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          combining,
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          asserter = this@with.asserter?.toBuilder()
+          date = this@with.date.map { it.toBuilder() }.toMutableList()
+          validity = this@with.validity?.toBuilder()
+          justification = this@with.justification?.toBuilder()
+          rule = this@with.rule.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** The asserted justification for using the data. */
@@ -490,11 +497,16 @@ public data class Permission(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(meaning, reference.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
+            Builder(
+                meaning,
+                reference.toBuilder(),
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              }
           }
 
         public class Builder(

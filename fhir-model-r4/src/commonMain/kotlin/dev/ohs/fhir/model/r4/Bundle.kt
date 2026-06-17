@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -102,6 +105,7 @@ public data class Bundle(
    * original time of the Bundle, and SHOULD be populated.
    *
    * Usage:
+   *
    * * document : the date the document was created. Note: the composition may predate the document,
    *   or be associated with multiple documents. The date of the composition - the authoring time -
    *   may be earlier than the document assembly time
@@ -620,15 +624,19 @@ public data class Bundle(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(method, url.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            ifNoneMatch = this@with.ifNoneMatch?.toBuilder()
-            ifModifiedSince = this@with.ifModifiedSince?.toBuilder()
-            ifMatch = this@with.ifMatch?.toBuilder()
-            ifNoneExist = this@with.ifNoneExist?.toBuilder()
-          }
+          Builder(
+              method,
+              url.toBuilder(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              ifNoneMatch = this@with.ifNoneMatch?.toBuilder()
+              ifModifiedSince = this@with.ifModifiedSince?.toBuilder()
+              ifMatch = this@with.ifMatch?.toBuilder()
+              ifNoneExist = this@with.ifNoneExist?.toBuilder()
+            }
         }
 
       public class Builder(
@@ -1107,6 +1115,7 @@ public data class Bundle(
      * to track the original time of the Bundle, and SHOULD be populated.
      *
      * Usage:
+     *
      * * document : the date the document was created. Note: the composition may predate the
      *   document, or be associated with multiple documents. The date of the composition - the
      *   authoring time - may be earlier than the document assembly time

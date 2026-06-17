@@ -31,9 +31,11 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         licenseHeader(generatedLicenseHeader)
     }
 
-    flexmark {
+    format("markdown") {
         target("**/*.md")
-        flexmark()
+        trimTrailingWhitespace()
+        leadingTabsToSpaces()
+        endWithNewline()
     }
 }
 
@@ -44,7 +46,7 @@ tasks.named("spotlessKotlin") {
 tasks.named("spotlessGeneratedKotlin") {
     dependsOn(":fhir-model-r4:codegen", ":fhir-model-r4b:codegen", ":fhir-model-r5:codegen")
 }
-tasks.named("spotlessFlexmark") {
+tasks.named("spotlessMarkdown") {
     dependsOn(":fhir-model-r4:codegen", ":fhir-model-r4b:codegen", ":fhir-model-r5:codegen")
 }
 

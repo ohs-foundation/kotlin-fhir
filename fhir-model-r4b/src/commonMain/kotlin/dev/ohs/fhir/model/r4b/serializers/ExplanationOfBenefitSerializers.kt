@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -92,10 +95,14 @@ internal object ExplanationOfBenefitRelatedSerializer : KSerializer<ExplanationO
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Related =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Related) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Related {
@@ -189,10 +196,14 @@ internal object ExplanationOfBenefitPayeeSerializer : KSerializer<ExplanationOfB
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Payee =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Payee) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Payee {
@@ -278,10 +289,14 @@ internal object ExplanationOfBenefitCareTeamSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.CareTeam =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.CareTeam) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.CareTeam {
@@ -408,10 +423,14 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.SupportingInfo =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.SupportingInfo) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.SupportingInfo {
@@ -629,10 +648,14 @@ internal object ExplanationOfBenefitDiagnosisSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Diagnosis =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Diagnosis) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Diagnosis {
@@ -810,10 +833,14 @@ internal object ExplanationOfBenefitProcedureSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Procedure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Procedure) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Procedure {
@@ -968,10 +995,14 @@ internal object ExplanationOfBenefitInsuranceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Insurance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Insurance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Insurance {
@@ -1091,10 +1122,14 @@ internal object ExplanationOfBenefitAccidentSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Accident =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Accident) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Accident {
@@ -1306,10 +1341,14 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Item =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Item) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Item {
@@ -1777,10 +1816,14 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Item.Adjudication =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Item.Adjudication) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1931,10 +1974,14 @@ internal object ExplanationOfBenefitItemDetailSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Item.Detail =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Item.Detail) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Item.Detail {
@@ -2191,10 +2238,14 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Item.Detail.SubDetail =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Item.Detail.SubDetail) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -2484,10 +2535,14 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.AddItem =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.AddItem) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.AddItem {
@@ -2896,10 +2951,14 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.AddItem.Detail =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.AddItem.Detail) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.AddItem.Detail {
@@ -3114,10 +3173,14 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.AddItem.Detail.SubDetail =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.AddItem.Detail.SubDetail) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -3298,10 +3361,14 @@ internal object ExplanationOfBenefitTotalSerializer : KSerializer<ExplanationOfB
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Total =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Total) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Total {
@@ -3388,10 +3455,14 @@ internal object ExplanationOfBenefitPaymentSerializer : KSerializer<ExplanationO
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Payment =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Payment) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.Payment {
@@ -3517,10 +3588,14 @@ internal object ExplanationOfBenefitProcessNoteSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.ProcessNote =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.ProcessNote) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.ProcessNote {
@@ -3649,10 +3724,14 @@ internal object ExplanationOfBenefitBenefitBalanceSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.BenefitBalance =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.BenefitBalance) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ExplanationOfBenefit.BenefitBalance {
@@ -3804,10 +3883,14 @@ internal object ExplanationOfBenefitBenefitBalanceFinancialSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.BenefitBalance.Financial =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.BenefitBalance.Financial) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -4127,7 +4210,9 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
   }
 
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit) {
     encoder.encodeStructure(descriptor) {

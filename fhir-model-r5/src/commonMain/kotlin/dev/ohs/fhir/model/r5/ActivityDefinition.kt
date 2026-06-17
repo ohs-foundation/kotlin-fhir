@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -951,8 +954,7 @@ public data class ActivityDefinition(
     public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) :
       ActivityDefinition.Timing
 
-    public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) :
-      ActivityDefinition.Timing
+    public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : ActivityDefinition.Timing
 
     public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) :
       ActivityDefinition.Timing

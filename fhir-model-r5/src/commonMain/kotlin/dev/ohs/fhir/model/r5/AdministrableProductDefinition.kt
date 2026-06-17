@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -207,25 +210,29 @@ public data class AdministrableProductDefinition(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, routeOfAdministration.map { it.toBuilder() }.toMutableList()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        formOf = this@with.formOf.map { it.toBuilder() }.toMutableList()
-        administrableDoseForm = this@with.administrableDoseForm?.toBuilder()
-        unitOfPresentation = this@with.unitOfPresentation?.toBuilder()
-        producedFrom = this@with.producedFrom.map { it.toBuilder() }.toMutableList()
-        ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-        device = this@with.device?.toBuilder()
-        description = this@with.description?.toBuilder()
-        `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          routeOfAdministration.map { it.toBuilder() }.toMutableList(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          formOf = this@with.formOf.map { it.toBuilder() }.toMutableList()
+          administrableDoseForm = this@with.administrableDoseForm?.toBuilder()
+          unitOfPresentation = this@with.unitOfPresentation?.toBuilder()
+          producedFrom = this@with.producedFrom.map { it.toBuilder() }.toMutableList()
+          ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
+          device = this@with.device?.toBuilder()
+          description = this@with.description?.toBuilder()
+          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Characteristics e.g. a product's onset of action. */

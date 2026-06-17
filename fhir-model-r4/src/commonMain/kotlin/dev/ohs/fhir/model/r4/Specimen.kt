@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -339,8 +342,7 @@ public data class Specimen(
       public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
         FastingStatus
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
-        FastingStatus
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) : FastingStatus
 
       public companion object {
         internal fun from(

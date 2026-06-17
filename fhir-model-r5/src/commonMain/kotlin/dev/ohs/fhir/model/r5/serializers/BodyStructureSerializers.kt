@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -96,10 +99,14 @@ internal object BodyStructureIncludedStructureSerializer :
     }
 
   override fun deserialize(decoder: Decoder): BodyStructure.IncludedStructure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BodyStructure.IncludedStructure) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): BodyStructure.IncludedStructure {
@@ -270,13 +277,17 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer 
   override fun deserialize(
     decoder: Decoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -442,13 +453,17 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFro
   override fun deserialize(
     decoder: Decoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -581,7 +596,9 @@ internal object BodyStructureSerializer : KSerializer<BodyStructure> {
   }
 
   override fun deserialize(decoder: Decoder): BodyStructure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: BodyStructure) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -82,10 +85,14 @@ internal object ResearchSubjectProgressSerializer : KSerializer<ResearchSubject.
     }
 
   override fun deserialize(decoder: Decoder): ResearchSubject.Progress =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchSubject.Progress) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ResearchSubject.Progress {
@@ -235,7 +242,9 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
   }
 
   override fun deserialize(decoder: Decoder): ResearchSubject =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ResearchSubject) {
     encoder.encodeStructure(descriptor) {

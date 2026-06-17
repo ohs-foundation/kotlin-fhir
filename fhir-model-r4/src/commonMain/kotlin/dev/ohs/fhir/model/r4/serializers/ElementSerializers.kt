@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -52,10 +55,14 @@ internal object ElementSerializer : KSerializer<Element> {
     }
 
   override fun deserialize(decoder: Decoder): Element =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Element) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Element {
@@ -71,7 +78,10 @@ internal object ElementSerializer : KSerializer<Element> {
         else -> throw SerializationException("Unexpected index decoding Element: " + i)
       }
     }
-    return Element(id = id, extension = extension ?: listOf())
+    return Element(
+      id = id,
+      extension = extension ?: listOf(),
+    )
   }
 
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Element) {

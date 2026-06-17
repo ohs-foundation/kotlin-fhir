@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -625,11 +628,15 @@ public data class ImplementationGuide(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(type, profile.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            type,
+            profile.toBuilder(),
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     public class Builder(
@@ -985,6 +992,7 @@ public data class ImplementationGuide(
        * If present, indicates profile(s) the instance is valid against.
        *
        * Examples:
+       *
        * * StructureDefinition -> Any
        * * ValueSet -> expansion
        * * OperationDefinition -> Parameters
@@ -1101,6 +1109,7 @@ public data class ImplementationGuide(
          * If present, indicates profile(s) the instance is valid against.
          *
          * Examples:
+         *
          * * StructureDefinition -> Any
          * * ValueSet -> expansion
          * * OperationDefinition -> Parameters
@@ -1205,13 +1214,18 @@ public data class ImplementationGuide(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(name.toBuilder(), title.toBuilder(), generation).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            source = this@with.source
-            page = this@with.page.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              name.toBuilder(),
+              title.toBuilder(),
+              generation,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              source = this@with.source
+              page = this@with.page.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public sealed interface Source {
@@ -1780,6 +1794,7 @@ public data class ImplementationGuide(
        * If present, indicates profile(s) the instance is valid against.
        *
        * Examples:
+       *
        * * StructureDefinition -> Any
        * * ValueSet -> expansion
        * * OperationDefinition -> Parameters
@@ -1863,6 +1878,7 @@ public data class ImplementationGuide(
          * If present, indicates profile(s) the instance is valid against.
          *
          * Examples:
+         *
          * * StructureDefinition -> Any
          * * ValueSet -> expansion
          * * OperationDefinition -> Parameters

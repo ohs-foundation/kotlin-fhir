@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -249,33 +252,38 @@ public data class FamilyMemberHistory(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, patient.toBuilder(), relationship.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical =
-          this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-        instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-        dataAbsentReason = this@with.dataAbsentReason?.toBuilder()
-        date = this@with.date?.toBuilder()
-        participant = this@with.participant.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        sex = this@with.sex?.toBuilder()
-        born = this@with.born
-        age = this@with.age
-        estimatedAge = this@with.estimatedAge?.toBuilder()
-        deceased = this@with.deceased
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        condition = this@with.condition.map { it.toBuilder() }.toMutableList()
-        procedure = this@with.procedure.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          patient.toBuilder(),
+          relationship.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          instantiatesCanonical =
+            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
+          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
+          dataAbsentReason = this@with.dataAbsentReason?.toBuilder()
+          date = this@with.date?.toBuilder()
+          participant = this@with.participant.map { it.toBuilder() }.toMutableList()
+          name = this@with.name?.toBuilder()
+          sex = this@with.sex?.toBuilder()
+          born = this@with.born
+          age = this@with.age
+          estimatedAge = this@with.estimatedAge?.toBuilder()
+          deceased = this@with.deceased
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          condition = this@with.condition.map { it.toBuilder() }.toMutableList()
+          procedure = this@with.procedure.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**

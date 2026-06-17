@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -376,13 +379,17 @@ public data class StructureMap(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(url.toBuilder(), mode).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          alias = this@with.alias?.toBuilder()
-          documentation = this@with.documentation?.toBuilder()
-        }
+        Builder(
+            url.toBuilder(),
+            mode,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            alias = this@with.alias?.toBuilder()
+            documentation = this@with.documentation?.toBuilder()
+          }
       }
 
     public class Builder(
@@ -591,13 +598,17 @@ public data class StructureMap(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(name.toBuilder(), mode).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type?.toBuilder()
-            documentation = this@with.documentation?.toBuilder()
-          }
+          Builder(
+              name.toBuilder(),
+              mode,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              type = this@with.type?.toBuilder()
+              documentation = this@with.documentation?.toBuilder()
+            }
         }
 
       public class Builder(
@@ -720,15 +731,19 @@ public data class StructureMap(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(name.toBuilder(), source.map { it.toBuilder() }.toMutableList()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            target = this@with.target.map { it.toBuilder() }.toMutableList()
-            rule = this@with.rule.map { it.toBuilder() }.toMutableList()
-            dependent = this@with.dependent.map { it.toBuilder() }.toMutableList()
-            documentation = this@with.documentation?.toBuilder()
-          }
+          Builder(
+              name.toBuilder(),
+              source.map { it.toBuilder() }.toMutableList(),
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              target = this@with.target.map { it.toBuilder() }.toMutableList()
+              rule = this@with.rule.map { it.toBuilder() }.toMutableList()
+              dependent = this@with.dependent.map { it.toBuilder() }.toMutableList()
+              documentation = this@with.documentation?.toBuilder()
+            }
         }
 
       /** Source inputs to the mapping. */
@@ -972,8 +987,7 @@ public data class StructureMap(
           public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
             DefaultValue
 
-          public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) :
-            DefaultValue
+          public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : DefaultValue
 
           public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : DefaultValue
 
@@ -1001,8 +1015,7 @@ public data class StructureMap(
             public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
           ) : DefaultValue
 
-          public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) :
-            DefaultValue
+          public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : DefaultValue
 
           public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r4b.ContactPoint) :
             DefaultValue
@@ -1023,8 +1036,7 @@ public data class StructureMap(
 
           public data class Money(public val `value`: dev.ohs.fhir.model.r4b.Money) : DefaultValue
 
-          public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) :
-            DefaultValue
+          public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : DefaultValue
 
           public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) :
             DefaultValue
@@ -1042,8 +1054,7 @@ public data class StructureMap(
           public data class Signature(public val `value`: dev.ohs.fhir.model.r4b.Signature) :
             DefaultValue
 
-          public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) :
-            DefaultValue
+          public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : DefaultValue
 
           public data class ContactDetail(
             public val `value`: dev.ohs.fhir.model.r4b.ContactDetail
@@ -1074,8 +1085,7 @@ public data class StructureMap(
           public data class UsageContext(public val `value`: dev.ohs.fhir.model.r4b.UsageContext) :
             DefaultValue
 
-          public data class Dosage(public val `value`: dev.ohs.fhir.model.r4b.Dosage) :
-            DefaultValue
+          public data class Dosage(public val `value`: dev.ohs.fhir.model.r4b.Dosage) : DefaultValue
 
           public data class Meta(public val `value`: dev.ohs.fhir.model.r4b.Meta) : DefaultValue
 
@@ -1656,11 +1666,16 @@ public data class StructureMap(
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
-            Builder(name.toBuilder(), variable.map { it.toBuilder() }.toMutableList()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
+            Builder(
+                name.toBuilder(),
+                variable.map { it.toBuilder() }.toMutableList(),
+              )
+              .apply {
+                id = this@with.id
+                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+                modifierExtension =
+                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+              }
           }
 
         public class Builder(

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -571,11 +574,9 @@ public data class EvidenceVariable(
 
       public fun asExpression(): Expression? = this as? Expression
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
-        Definition
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Definition
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
-        Definition
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Definition
 
       public data class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept

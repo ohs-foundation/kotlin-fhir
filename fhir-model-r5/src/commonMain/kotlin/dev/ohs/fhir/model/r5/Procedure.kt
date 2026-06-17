@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -338,43 +341,47 @@ public data class Procedure(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical =
-          this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-        instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        statusReason = this@with.statusReason?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        code = this@with.code?.toBuilder()
-        focus = this@with.focus?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        occurrence = this@with.occurrence
-        recorded = this@with.recorded?.toBuilder()
-        recorder = this@with.recorder?.toBuilder()
-        reported = this@with.reported
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        location = this@with.location?.toBuilder()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        bodySite = this@with.bodySite.map { it.toBuilder() }.toMutableList()
-        outcome = this@with.outcome?.toBuilder()
-        report = this@with.report.map { it.toBuilder() }.toMutableList()
-        complication = this@with.complication.map { it.toBuilder() }.toMutableList()
-        followUp = this@with.followUp.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        focalDevice = this@with.focalDevice.map { it.toBuilder() }.toMutableList()
-        used = this@with.used.map { it.toBuilder() }.toMutableList()
-        supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          subject.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          instantiatesCanonical =
+            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
+          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
+          statusReason = this@with.statusReason?.toBuilder()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          code = this@with.code?.toBuilder()
+          focus = this@with.focus?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          occurrence = this@with.occurrence
+          recorded = this@with.recorded?.toBuilder()
+          recorder = this@with.recorder?.toBuilder()
+          reported = this@with.reported
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          location = this@with.location?.toBuilder()
+          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
+          bodySite = this@with.bodySite.map { it.toBuilder() }.toMutableList()
+          outcome = this@with.outcome?.toBuilder()
+          report = this@with.report.map { it.toBuilder() }.toMutableList()
+          complication = this@with.complication.map { it.toBuilder() }.toMutableList()
+          followUp = this@with.followUp.map { it.toBuilder() }.toMutableList()
+          note = this@with.note.map { it.toBuilder() }.toMutableList()
+          focalDevice = this@with.focalDevice.map { it.toBuilder() }.toMutableList()
+          used = this@with.used.map { it.toBuilder() }.toMutableList()
+          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /** Indicates who or what performed the procedure and how they were involved. */

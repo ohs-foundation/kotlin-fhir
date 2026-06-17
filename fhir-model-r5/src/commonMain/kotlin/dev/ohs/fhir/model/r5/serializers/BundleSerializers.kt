@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -77,10 +80,14 @@ internal object BundleLinkSerializer : KSerializer<Bundle.Link> {
     }
 
   override fun deserialize(decoder: Decoder): Bundle.Link =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Bundle.Link) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Bundle.Link {
@@ -191,10 +198,14 @@ internal object BundleEntrySerializer : KSerializer<Bundle.Entry> {
     }
 
   override fun deserialize(decoder: Decoder): Bundle.Entry =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Bundle.Entry) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Bundle.Entry {
@@ -322,10 +333,14 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
     }
 
   override fun deserialize(decoder: Decoder): Bundle.Entry.Search =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Bundle.Entry.Search) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Bundle.Entry.Search {
@@ -427,10 +442,14 @@ internal object BundleEntryRequestSerializer : KSerializer<Bundle.Entry.Request>
     }
 
   override fun deserialize(decoder: Decoder): Bundle.Entry.Request =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Bundle.Entry.Request) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Bundle.Entry.Request {
@@ -573,10 +592,14 @@ internal object BundleEntryResponseSerializer : KSerializer<Bundle.Entry.Respons
     }
 
   override fun deserialize(decoder: Decoder): Bundle.Entry.Response =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Bundle.Entry.Response) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Bundle.Entry.Response {
@@ -717,7 +740,9 @@ internal object BundleSerializer : KSerializer<Bundle> {
   }
 
   override fun deserialize(decoder: Decoder): Bundle =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Bundle) {
     encoder.encodeStructure(descriptor) {

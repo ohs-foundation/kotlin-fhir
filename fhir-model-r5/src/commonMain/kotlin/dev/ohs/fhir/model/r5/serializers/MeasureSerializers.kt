@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -90,10 +93,14 @@ internal object MeasureTermSerializer : KSerializer<Measure.Term> {
     }
 
   override fun deserialize(decoder: Decoder): Measure.Term =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Measure.Term) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Measure.Term {
@@ -212,10 +219,14 @@ internal object MeasureGroupSerializer : KSerializer<Measure.Group> {
     }
 
   override fun deserialize(decoder: Decoder): Measure.Group =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Measure.Group) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Measure.Group {
@@ -446,10 +457,14 @@ internal object MeasureGroupPopulationSerializer : KSerializer<Measure.Group.Pop
     }
 
   override fun deserialize(decoder: Decoder): Measure.Group.Population =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Measure.Group.Population) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Measure.Group.Population {
@@ -602,10 +617,14 @@ internal object MeasureGroupStratifierSerializer : KSerializer<Measure.Group.Str
     }
 
   override fun deserialize(decoder: Decoder): Measure.Group.Stratifier =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Measure.Group.Stratifier) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Measure.Group.Stratifier {
@@ -746,10 +765,14 @@ internal object MeasureGroupStratifierComponentSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Measure.Group.Stratifier.Component =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Measure.Group.Stratifier.Component) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Measure.Group.Stratifier.Component {
@@ -883,10 +906,14 @@ internal object MeasureSupplementalDataSerializer : KSerializer<Measure.Suppleme
     }
 
   override fun deserialize(decoder: Decoder): Measure.SupplementalData =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Measure.SupplementalData) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Measure.SupplementalData {
@@ -1153,7 +1180,9 @@ internal object MeasureSerializer : KSerializer<Measure> {
   }
 
   override fun deserialize(decoder: Decoder): Measure =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Measure) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -425,51 +428,56 @@ public data class ObservationDefinition(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, code.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier?.toBuilder()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        effectivePeriod = this@with.effectivePeriod?.toBuilder()
-        derivedFromCanonical = this@with.derivedFromCanonical.map { it.toBuilder() }.toMutableList()
-        derivedFromUri = this@with.derivedFromUri.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-        performerType = this@with.performerType?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        permittedDataType = this@with.permittedDataType.toMutableList()
-        multipleResultsAllowed = this@with.multipleResultsAllowed?.toBuilder()
-        bodySite = this@with.bodySite?.toBuilder()
-        method = this@with.method?.toBuilder()
-        specimen = this@with.specimen.map { it.toBuilder() }.toMutableList()
-        device = this@with.device.map { it.toBuilder() }.toMutableList()
-        preferredReportName = this@with.preferredReportName?.toBuilder()
-        permittedUnit = this@with.permittedUnit.map { it.toBuilder() }.toMutableList()
-        qualifiedValue = this@with.qualifiedValue.map { it.toBuilder() }.toMutableList()
-        hasMember = this@with.hasMember.map { it.toBuilder() }.toMutableList()
-        component = this@with.component.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          code.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          url = this@with.url?.toBuilder()
+          identifier = this@with.identifier?.toBuilder()
+          version = this@with.version?.toBuilder()
+          versionAlgorithm = this@with.versionAlgorithm
+          name = this@with.name?.toBuilder()
+          title = this@with.title?.toBuilder()
+          experimental = this@with.experimental?.toBuilder()
+          date = this@with.date?.toBuilder()
+          publisher = this@with.publisher?.toBuilder()
+          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
+          description = this@with.description?.toBuilder()
+          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
+          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
+          purpose = this@with.purpose?.toBuilder()
+          copyright = this@with.copyright?.toBuilder()
+          copyrightLabel = this@with.copyrightLabel?.toBuilder()
+          approvalDate = this@with.approvalDate?.toBuilder()
+          lastReviewDate = this@with.lastReviewDate?.toBuilder()
+          effectivePeriod = this@with.effectivePeriod?.toBuilder()
+          derivedFromCanonical =
+            this@with.derivedFromCanonical.map { it.toBuilder() }.toMutableList()
+          derivedFromUri = this@with.derivedFromUri.map { it.toBuilder() }.toMutableList()
+          subject = this@with.subject.map { it.toBuilder() }.toMutableList()
+          performerType = this@with.performerType?.toBuilder()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          permittedDataType = this@with.permittedDataType.toMutableList()
+          multipleResultsAllowed = this@with.multipleResultsAllowed?.toBuilder()
+          bodySite = this@with.bodySite?.toBuilder()
+          method = this@with.method?.toBuilder()
+          specimen = this@with.specimen.map { it.toBuilder() }.toMutableList()
+          device = this@with.device.map { it.toBuilder() }.toMutableList()
+          preferredReportName = this@with.preferredReportName?.toBuilder()
+          permittedUnit = this@with.permittedUnit.map { it.toBuilder() }.toMutableList()
+          qualifiedValue = this@with.qualifiedValue.map { it.toBuilder() }.toMutableList()
+          hasMember = this@with.hasMember.map { it.toBuilder() }.toMutableList()
+          component = this@with.component.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**

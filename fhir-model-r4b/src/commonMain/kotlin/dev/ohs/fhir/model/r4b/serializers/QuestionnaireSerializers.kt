@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -139,10 +142,14 @@ internal object QuestionnaireItemSerializer : KSerializer<Questionnaire.Item> {
     }
 
   override fun deserialize(decoder: Decoder): Questionnaire.Item =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Questionnaire.Item) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Questionnaire.Item {
@@ -411,10 +418,14 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
     }
 
   override fun deserialize(decoder: Decoder): Questionnaire.Item.EnableWhen =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Questionnaire.Item.EnableWhen) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Questionnaire.Item.EnableWhen {
@@ -661,10 +672,14 @@ internal object QuestionnaireItemAnswerOptionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Questionnaire.Item.AnswerOption =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Questionnaire.Item.AnswerOption) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Questionnaire.Item.AnswerOption {
@@ -851,10 +866,14 @@ internal object QuestionnaireItemInitialSerializer : KSerializer<Questionnaire.I
     }
 
   override fun deserialize(decoder: Decoder): Questionnaire.Item.Initial =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Questionnaire.Item.Initial) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): Questionnaire.Item.Initial {
@@ -1177,7 +1196,9 @@ internal object QuestionnaireSerializer : KSerializer<Questionnaire> {
   }
 
   override fun deserialize(decoder: Decoder): Questionnaire =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: Questionnaire) {
     encoder.encodeStructure(descriptor) {

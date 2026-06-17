@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -102,10 +105,14 @@ internal object DeviceDefinitionUdiDeviceIdentifierSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.UdiDeviceIdentifier =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.UdiDeviceIdentifier) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.UdiDeviceIdentifier {
@@ -254,13 +261,17 @@ internal object DeviceDefinitionUdiDeviceIdentifierMarketDistributionSerializer 
   override fun deserialize(
     decoder: Decoder
   ): DeviceDefinition.UdiDeviceIdentifier.MarketDistribution =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(
     encoder: Encoder,
     `value`: DeviceDefinition.UdiDeviceIdentifier.MarketDistribution,
   ) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -365,10 +376,14 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.RegulatoryIdentifier =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.RegulatoryIdentifier) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -489,10 +504,14 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.DeviceName =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.DeviceName) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.DeviceName {
@@ -584,10 +603,14 @@ internal object DeviceDefinitionClassificationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Classification =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Classification) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Classification {
@@ -691,10 +714,14 @@ internal object DeviceDefinitionConformsToSerializer : KSerializer<DeviceDefinit
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.ConformsTo =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.ConformsTo) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.ConformsTo {
@@ -817,10 +844,14 @@ internal object DeviceDefinitionHasPartSerializer : KSerializer<DeviceDefinition
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.HasPart =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.HasPart) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.HasPart {
@@ -928,10 +959,14 @@ internal object DeviceDefinitionPackagingSerializer : KSerializer<DeviceDefiniti
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Packaging =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Packaging) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Packaging {
@@ -1081,10 +1116,14 @@ internal object DeviceDefinitionPackagingDistributorSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Packaging.Distributor =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Packaging.Distributor) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -1191,10 +1230,14 @@ internal object DeviceDefinitionVersionSerializer : KSerializer<DeviceDefinition
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Version =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Version) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Version {
@@ -1298,10 +1341,14 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Property {
@@ -1463,10 +1510,14 @@ internal object DeviceDefinitionLinkSerializer : KSerializer<DeviceDefinition.Li
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Link =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Link) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Link {
@@ -1552,10 +1603,14 @@ internal object DeviceDefinitionMaterialSerializer : KSerializer<DeviceDefinitio
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Material =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Material) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Material {
@@ -1681,10 +1736,14 @@ internal object DeviceDefinitionGuidelineSerializer : KSerializer<DeviceDefiniti
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Guideline =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Guideline) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Guideline {
@@ -1854,10 +1913,14 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.CorrectiveAction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.CorrectiveAction) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.CorrectiveAction {
@@ -1966,10 +2029,14 @@ internal object DeviceDefinitionChargeItemSerializer : KSerializer<DeviceDefinit
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.ChargeItem =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.ChargeItem) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.ChargeItem {
@@ -2222,7 +2289,9 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
   }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition) {
     encoder.encodeStructure(descriptor) {

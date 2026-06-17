@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -146,10 +149,14 @@ internal object GenomicStudyAnalysisSerializer : KSerializer<GenomicStudy.Analys
     }
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis {
@@ -425,10 +432,14 @@ internal object GenomicStudyAnalysisInputSerializer : KSerializer<GenomicStudy.A
     }
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis.Input =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis.Input) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis.Input {
@@ -539,10 +550,14 @@ internal object GenomicStudyAnalysisOutputSerializer : KSerializer<GenomicStudy.
     }
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis.Output =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis.Output) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis.Output {
@@ -623,10 +638,14 @@ internal object GenomicStudyAnalysisPerformerSerializer :
     }
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis.Performer =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis.Performer) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis.Performer {
@@ -709,10 +728,14 @@ internal object GenomicStudyAnalysisDeviceSerializer : KSerializer<GenomicStudy.
     }
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis.Device =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis.Device) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis.Device {
@@ -850,7 +873,9 @@ internal object GenomicStudySerializer : KSerializer<GenomicStudy> {
   }
 
   override fun deserialize(decoder: Decoder): GenomicStudy =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy) {
     encoder.encodeStructure(descriptor) {

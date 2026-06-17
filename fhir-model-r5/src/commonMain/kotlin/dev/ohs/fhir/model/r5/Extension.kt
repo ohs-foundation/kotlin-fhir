@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r5
 
@@ -267,8 +270,7 @@ public data class Extension(
 
     public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Value
 
-    public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r5.ContactDetail) :
-      Value
+    public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r5.ContactDetail) : Value
 
     public data class DataRequirement(public val `value`: dev.ohs.fhir.model.r5.DataRequirement) :
       Value
@@ -452,6 +454,11 @@ public data class Extension(
     public open var `value`: Value? = null
 
     public open fun build(): Extension =
-      Extension(id = id, extension = extension.map { it.build() }, url = url, `value` = `value`)
+      Extension(
+        id = id,
+        extension = extension.map { it.build() },
+        url = url,
+        `value` = `value`,
+      )
   }
 }

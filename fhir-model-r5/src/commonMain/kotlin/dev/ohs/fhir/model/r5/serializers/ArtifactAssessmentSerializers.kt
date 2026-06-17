@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -107,10 +110,14 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
     }
 
   override fun deserialize(decoder: Decoder): ArtifactAssessment.Content =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ArtifactAssessment.Content) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ArtifactAssessment.Content {
@@ -371,7 +378,9 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
   }
 
   override fun deserialize(decoder: Decoder): ArtifactAssessment =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ArtifactAssessment) {
     encoder.encodeStructure(descriptor) {

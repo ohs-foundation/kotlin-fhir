@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -97,10 +100,14 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
     }
 
   override fun deserialize(decoder: Decoder): CodeSystem.Filter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Filter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CodeSystem.Filter {
@@ -234,10 +241,14 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
     }
 
   override fun deserialize(decoder: Decoder): CodeSystem.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CodeSystem.Property {
@@ -368,10 +379,14 @@ internal object CodeSystemConceptSerializer : KSerializer<CodeSystem.Concept> {
     }
 
   override fun deserialize(decoder: Decoder): CodeSystem.Concept =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Concept) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CodeSystem.Concept {
@@ -512,10 +527,14 @@ internal object CodeSystemConceptDesignationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): CodeSystem.Concept.Designation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Concept.Designation) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CodeSystem.Concept.Designation {
@@ -628,10 +647,14 @@ internal object CodeSystemConceptPropertySerializer : KSerializer<CodeSystem.Con
     }
 
   override fun deserialize(decoder: Decoder): CodeSystem.Concept.Property =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Concept.Property) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): CodeSystem.Concept.Property {
@@ -893,7 +916,9 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
   }
 
   override fun deserialize(decoder: Decoder): CodeSystem =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem) {
     encoder.encodeStructure(descriptor) {

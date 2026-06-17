@@ -10,7 +10,7 @@ kotlinx-datetime = "0.8.0"
 kotlinx-serialization = "1.11.0"
 ksp = "2.3.6"
 maven-publish = "0.36.0"
-spotless = "7.0.1"
+spotless = "8.7.0"
 
 [libraries]
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }

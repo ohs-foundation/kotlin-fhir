@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -75,10 +78,14 @@ internal object SubstanceReferenceInformationGeneSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation.Gene =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation.Gene) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceReferenceInformation.Gene {
@@ -188,10 +195,14 @@ internal object SubstanceReferenceInformationGeneElementSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation.GeneElement =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation.GeneElement) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -296,10 +307,14 @@ internal object SubstanceReferenceInformationClassificationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation.Classification =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation.Classification) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -415,10 +430,14 @@ internal object SubstanceReferenceInformationTargetSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation.Target =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation.Target) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): SubstanceReferenceInformation.Target {
@@ -631,7 +650,9 @@ internal object SubstanceReferenceInformationSerializer :
   }
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation) {
     encoder.encodeStructure(descriptor) {

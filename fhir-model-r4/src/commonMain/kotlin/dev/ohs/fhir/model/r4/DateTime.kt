@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -90,7 +93,11 @@ public data class DateTime(
     public open var `value`: FhirDateTime? = null
 
     public open fun build(): DateTime =
-      DateTime(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      DateTime(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

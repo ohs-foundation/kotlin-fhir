@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -84,10 +87,14 @@ internal object TestPlanDependencySerializer : KSerializer<TestPlan.Dependency> 
     }
 
   override fun deserialize(decoder: Decoder): TestPlan.Dependency =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestPlan.Dependency) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestPlan.Dependency {
@@ -202,10 +209,14 @@ internal object TestPlanTestCaseSerializer : KSerializer<TestPlan.TestCase> {
     }
 
   override fun deserialize(decoder: Decoder): TestPlan.TestCase =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestPlan.TestCase) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestPlan.TestCase {
@@ -348,10 +359,14 @@ internal object TestPlanTestCaseDependencySerializer : KSerializer<TestPlan.Test
     }
 
   override fun deserialize(decoder: Decoder): TestPlan.TestCase.Dependency =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestPlan.TestCase.Dependency) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestPlan.TestCase.Dependency {
@@ -446,10 +461,14 @@ internal object TestPlanTestCaseTestRunSerializer : KSerializer<TestPlan.TestCas
     }
 
   override fun deserialize(decoder: Decoder): TestPlan.TestCase.TestRun =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestPlan.TestCase.TestRun) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestPlan.TestCase.TestRun {
@@ -540,10 +559,14 @@ internal object TestPlanTestCaseTestRunScriptSerializer :
     }
 
   override fun deserialize(decoder: Decoder): TestPlan.TestCase.TestRun.Script =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestPlan.TestCase.TestRun.Script) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestPlan.TestCase.TestRun.Script {
@@ -662,10 +685,14 @@ internal object TestPlanTestCaseTestDataSerializer : KSerializer<TestPlan.TestCa
     }
 
   override fun deserialize(decoder: Decoder): TestPlan.TestCase.TestData =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestPlan.TestCase.TestData) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestPlan.TestCase.TestData {
@@ -790,10 +817,14 @@ internal object TestPlanTestCaseAssertionSerializer : KSerializer<TestPlan.TestC
     }
 
   override fun deserialize(decoder: Decoder): TestPlan.TestCase.Assertion =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestPlan.TestCase.Assertion) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): TestPlan.TestCase.Assertion {
@@ -968,7 +999,9 @@ internal object TestPlanSerializer : KSerializer<TestPlan> {
   }
 
   override fun deserialize(decoder: Decoder): TestPlan =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: TestPlan) {
     encoder.encodeStructure(descriptor) {

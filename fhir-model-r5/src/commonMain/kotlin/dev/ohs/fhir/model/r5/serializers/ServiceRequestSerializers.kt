@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -92,10 +95,14 @@ internal object ServiceRequestOrderDetailSerializer : KSerializer<ServiceRequest
     }
 
   override fun deserialize(decoder: Decoder): ServiceRequest.OrderDetail =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ServiceRequest.OrderDetail) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ServiceRequest.OrderDetail {
@@ -199,10 +206,14 @@ internal object ServiceRequestOrderDetailParameterSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ServiceRequest.OrderDetail.Parameter =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ServiceRequest.OrderDetail.Parameter) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ServiceRequest.OrderDetail.Parameter {
@@ -361,10 +372,14 @@ internal object ServiceRequestPatientInstructionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ServiceRequest.PatientInstruction =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ServiceRequest.PatientInstruction) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ServiceRequest.PatientInstruction {
@@ -611,7 +626,9 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
   }
 
   override fun deserialize(decoder: Decoder): ServiceRequest =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ServiceRequest) {
     encoder.encodeStructure(descriptor) {

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -272,23 +275,27 @@ public data class VisionPrescription(
   ) : BackboneElement() {
     public fun toBuilder(): Builder =
       with(this) {
-        Builder(product.toBuilder(), eye).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          sphere = this@with.sphere?.toBuilder()
-          cylinder = this@with.cylinder?.toBuilder()
-          axis = this@with.axis?.toBuilder()
-          prism = this@with.prism.map { it.toBuilder() }.toMutableList()
-          add = this@with.add?.toBuilder()
-          power = this@with.power?.toBuilder()
-          backCurve = this@with.backCurve?.toBuilder()
-          diameter = this@with.diameter?.toBuilder()
-          duration = this@with.duration?.toBuilder()
-          color = this@with.color?.toBuilder()
-          brand = this@with.brand?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
+        Builder(
+            product.toBuilder(),
+            eye,
+          )
+          .apply {
+            id = this@with.id
+            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            sphere = this@with.sphere?.toBuilder()
+            cylinder = this@with.cylinder?.toBuilder()
+            axis = this@with.axis?.toBuilder()
+            prism = this@with.prism.map { it.toBuilder() }.toMutableList()
+            add = this@with.add?.toBuilder()
+            power = this@with.power?.toBuilder()
+            backCurve = this@with.backCurve?.toBuilder()
+            diameter = this@with.diameter?.toBuilder()
+            duration = this@with.duration?.toBuilder()
+            color = this@with.color?.toBuilder()
+            brand = this@with.brand?.toBuilder()
+            note = this@with.note.map { it.toBuilder() }.toMutableList()
+          }
       }
 
     /** Allows for adjustment on two axis. */
@@ -338,11 +345,15 @@ public data class VisionPrescription(
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
-          Builder(amount.toBuilder(), base).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
+          Builder(
+              amount.toBuilder(),
+              base,
+            )
+            .apply {
+              id = this@with.id
+              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+            }
         }
 
       public class Builder(

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4
 
@@ -258,32 +261,36 @@ public data class DiagnosticReport(
 ) : DomainResource() {
   override fun toBuilder(): Builder =
     with(this) {
-      Builder(status, code.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        effective = this@with.effective
-        issued = this@with.issued?.toBuilder()
-        performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-        resultsInterpreter = this@with.resultsInterpreter.map { it.toBuilder() }.toMutableList()
-        specimen = this@with.specimen.map { it.toBuilder() }.toMutableList()
-        result = this@with.result.map { it.toBuilder() }.toMutableList()
-        imagingStudy = this@with.imagingStudy.map { it.toBuilder() }.toMutableList()
-        media = this@with.media.map { it.toBuilder() }.toMutableList()
-        conclusion = this@with.conclusion?.toBuilder()
-        conclusionCode = this@with.conclusionCode.map { it.toBuilder() }.toMutableList()
-        presentedForm = this@with.presentedForm.map { it.toBuilder() }.toMutableList()
-      }
+      Builder(
+          status,
+          code.toBuilder(),
+        )
+        .apply {
+          id = this@with.id
+          meta = this@with.meta?.toBuilder()
+          implicitRules = this@with.implicitRules?.toBuilder()
+          language = this@with.language?.toBuilder()
+          text = this@with.text?.toBuilder()
+          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
+          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
+          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
+          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
+          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
+          category = this@with.category.map { it.toBuilder() }.toMutableList()
+          subject = this@with.subject?.toBuilder()
+          encounter = this@with.encounter?.toBuilder()
+          effective = this@with.effective
+          issued = this@with.issued?.toBuilder()
+          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
+          resultsInterpreter = this@with.resultsInterpreter.map { it.toBuilder() }.toMutableList()
+          specimen = this@with.specimen.map { it.toBuilder() }.toMutableList()
+          result = this@with.result.map { it.toBuilder() }.toMutableList()
+          imagingStudy = this@with.imagingStudy.map { it.toBuilder() }.toMutableList()
+          media = this@with.media.map { it.toBuilder() }.toMutableList()
+          conclusion = this@with.conclusion?.toBuilder()
+          conclusionCode = this@with.conclusionCode.map { it.toBuilder() }.toMutableList()
+          presentedForm = this@with.presentedForm.map { it.toBuilder() }.toMutableList()
+        }
     }
 
   /**

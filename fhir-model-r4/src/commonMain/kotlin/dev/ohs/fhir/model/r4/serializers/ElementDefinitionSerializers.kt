@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
@@ -125,10 +128,14 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
     }
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Slicing =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Slicing) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Slicing {
@@ -234,10 +241,14 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
     }
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Slicing.Discriminator =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Slicing.Discriminator) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(
@@ -316,10 +327,14 @@ internal object ElementDefinitionBaseSerializer : KSerializer<ElementDefinition.
     }
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Base =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Base) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Base {
@@ -426,10 +441,14 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
     }
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Type =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Type) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Type {
@@ -649,10 +668,14 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
     }
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Example =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Example) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Example {
@@ -1423,10 +1446,14 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
     }
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Constraint =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Constraint) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Constraint {
@@ -1553,10 +1580,14 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
     }
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Binding =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Binding) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Binding {
@@ -1647,10 +1678,14 @@ internal object ElementDefinitionMappingSerializer : KSerializer<ElementDefiniti
     }
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Mapping =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Mapping) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Mapping {
@@ -2125,10 +2160,14 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     }
 
   override fun deserialize(decoder: Decoder): ElementDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition {

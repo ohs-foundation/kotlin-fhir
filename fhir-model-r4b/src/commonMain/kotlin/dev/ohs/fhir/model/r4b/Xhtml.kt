@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 
 package dev.ohs.fhir.model.r4b
 
@@ -83,7 +86,11 @@ public data class Xhtml(
     public open var extension: MutableList<Extension.Builder> = mutableListOf()
 
     public open fun build(): Xhtml =
-      Xhtml(id = id, extension = extension.map { it.build() }, `value` = `value`)
+      Xhtml(
+        id = id,
+        extension = extension.map { it.build() },
+        `value` = `value`,
+      )
   }
 
   public companion object {

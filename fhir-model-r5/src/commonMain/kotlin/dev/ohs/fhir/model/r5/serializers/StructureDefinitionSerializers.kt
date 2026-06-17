@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:Suppress(
+  "RedundantVisibilityModifier",
+  "PropertyName",
+)
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
@@ -91,10 +94,14 @@ internal object StructureDefinitionMappingSerializer : KSerializer<StructureDefi
     }
 
   override fun deserialize(decoder: Decoder): StructureDefinition.Mapping =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureDefinition.Mapping) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureDefinition.Mapping {
@@ -208,10 +215,14 @@ internal object StructureDefinitionContextSerializer : KSerializer<StructureDefi
     }
 
   override fun deserialize(decoder: Decoder): StructureDefinition.Context =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureDefinition.Context) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureDefinition.Context {
@@ -303,10 +314,14 @@ internal object StructureDefinitionSnapshotSerializer : KSerializer<StructureDef
     }
 
   override fun deserialize(decoder: Decoder): StructureDefinition.Snapshot =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureDefinition.Snapshot) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureDefinition.Snapshot {
@@ -389,10 +404,14 @@ internal object StructureDefinitionDifferentialSerializer :
     }
 
   override fun deserialize(decoder: Decoder): StructureDefinition.Differential =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureDefinition.Differential) {
-    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+    encoder.encodeStructure(descriptor) {
+      serializeInternal(this, value)
+    }
   }
 
   private fun deserializeInternal(decoder: CompositeDecoder): StructureDefinition.Differential {
@@ -578,7 +597,9 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
   }
 
   override fun deserialize(decoder: Decoder): StructureDefinition =
-    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
 
   override fun serialize(encoder: Encoder, `value`: StructureDefinition) {
     encoder.encodeStructure(descriptor) {

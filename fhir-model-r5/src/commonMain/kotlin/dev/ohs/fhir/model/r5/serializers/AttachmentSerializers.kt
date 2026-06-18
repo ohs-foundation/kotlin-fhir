@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.Attachment
 import dev.ohs.fhir.model.r5.Base64Binary
 import dev.ohs.fhir.model.r5.Code
@@ -31,6 +30,7 @@ import dev.ohs.fhir.model.r5.Decimal
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.Integer64
 import dev.ohs.fhir.model.r5.PositiveInt
 import dev.ohs.fhir.model.r5.String as R5String
@@ -86,7 +86,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
       element("_width", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
       element("frames", Int.serializer().descriptor, isOptional = true)
       element("_frames", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("duration", BigDecimalSerializer.descriptor, isOptional = true)
+      element("duration", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_duration", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
       element("pages", Int.serializer().descriptor, isOptional = true)
       element("_pages", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
@@ -128,7 +128,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     var _width: Element? = null
     var frames: Int? = null
     var _frames: Element? = null
-    var duration: BigDecimal? = null
+    var duration: FhirDecimal? = null
     var _duration: Element? = null
     var pages: Int? = null
     var _pages: Element? = null
@@ -184,7 +184,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
         24 ->
           duration =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         25 ->
           _duration =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
@@ -264,7 +264,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
       encoder.encodeSerializableElement(descriptor, 23, Hoisted.contentTypeSer, it)
     }
     ((value.duration?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 24, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 24, FhirDecimalSerializer, it)
     }
     (value.duration?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 25, Hoisted.contentTypeSer, it)

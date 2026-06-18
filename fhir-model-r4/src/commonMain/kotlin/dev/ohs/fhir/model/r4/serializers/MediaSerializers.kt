@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4.Annotation
 import dev.ohs.fhir.model.r4.Attachment
 import dev.ohs.fhir.model.r4.Code
@@ -33,6 +32,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirDecimal
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Instant
 import dev.ohs.fhir.model.r4.Media
@@ -130,7 +130,7 @@ internal object MediaSerializer : KSerializer<Media> {
     b.element("_width", Element.serializer().descriptor, isOptional = true)
     b.element("frames", Int.serializer().descriptor, isOptional = true)
     b.element("_frames", Element.serializer().descriptor, isOptional = true)
-    b.element("duration", BigDecimalSerializer.descriptor, isOptional = true)
+    b.element("duration", FhirDecimalSerializer.descriptor, isOptional = true)
     b.element("_duration", Element.serializer().descriptor, isOptional = true)
     b.element("content", Attachment.serializer().descriptor, isOptional = true)
     b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
@@ -190,7 +190,7 @@ internal object MediaSerializer : KSerializer<Media> {
     var _width: Element? = null
     var frames: Int? = null
     var _frames: Element? = null
-    var duration: BigDecimal? = null
+    var duration: FhirDecimal? = null
     var _duration: Element? = null
     var content: Attachment? = null
     var note: List<Annotation>? = null
@@ -282,7 +282,7 @@ internal object MediaSerializer : KSerializer<Media> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         37 ->
           duration =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         38 ->
           _duration =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
@@ -544,7 +544,12 @@ internal object MediaSerializer : KSerializer<Media> {
       )
     }
     ((value.duration?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 37 + descriptorOffset, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        37 + descriptorOffset,
+        FhirDecimalSerializer,
+        it,
+      )
     }
     (value.duration?.toElement())?.let {
       encoder.encodeSerializableElement(

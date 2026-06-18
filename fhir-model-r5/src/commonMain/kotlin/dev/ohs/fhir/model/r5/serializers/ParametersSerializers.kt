@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.Address
 import dev.ohs.fhir.model.r5.Age
 import dev.ohs.fhir.model.r5.Annotation
@@ -51,6 +50,7 @@ import dev.ohs.fhir.model.r5.ExtendedContactDetail
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.HumanName
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
@@ -134,7 +134,7 @@ internal object ParametersParameterSerializer : KSerializer<Parameters.Parameter
       element("_valueDate", Element.serializer().descriptor, isOptional = true)
       element("valueDateTime", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
       element("valueId", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueId", Element.serializer().descriptor, isOptional = true)
@@ -249,7 +249,7 @@ internal object ParametersParameterSerializer : KSerializer<Parameters.Parameter
     var _valueDate: Element? = null
     var valueDateTime: KotlinString? = null
     var _valueDateTime: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueId: KotlinString? = null
     var _valueId: Element? = null
@@ -350,7 +350,7 @@ internal object ParametersParameterSerializer : KSerializer<Parameters.Parameter
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
         17 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         18 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
@@ -739,7 +739,7 @@ internal object ParametersParameterSerializer : KSerializer<Parameters.Parameter
       }
       is Parameters.Parameter.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 17, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 17, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.nameSer, it)

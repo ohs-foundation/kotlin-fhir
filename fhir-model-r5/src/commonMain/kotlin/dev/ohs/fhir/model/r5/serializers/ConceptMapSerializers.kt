@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.Boolean as R5Boolean
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.Code
@@ -38,6 +37,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.Markdown
@@ -826,7 +826,7 @@ internal object ConceptMapGroupElementTargetPropertySerializer :
       element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
       element("valueDateTime", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
       element("valueCode", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueCode", Element.serializer().descriptor, isOptional = true)
@@ -860,7 +860,7 @@ internal object ConceptMapGroupElementTargetPropertySerializer :
     var _valueBoolean: Element? = null
     var valueDateTime: KotlinString? = null
     var _valueDateTime: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueCode: KotlinString? = null
     var _valueCode: Element? = null
@@ -896,7 +896,7 @@ internal object ConceptMapGroupElementTargetPropertySerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
         14 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         15 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
@@ -974,7 +974,7 @@ internal object ConceptMapGroupElementTargetPropertySerializer :
       }
       is ConceptMap.Group.Element.Target.Property.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 14, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 14, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.codeSer, it)

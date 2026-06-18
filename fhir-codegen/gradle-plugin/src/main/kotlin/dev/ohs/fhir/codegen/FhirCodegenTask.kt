@@ -17,12 +17,13 @@
 package dev.ohs.fhir.codegen
 
 import com.squareup.kotlinpoet.ClassName
-import dev.ohs.fhir.codegen.primitives.BigDecimalSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.EnumerationFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeSerializerFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirDecimalFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirDecimalSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.LocalTimeSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
 import dev.ohs.fhir.codegen.schema.StructureDefinition
@@ -164,6 +165,7 @@ abstract class FhirCodegenTask : DefaultTask() {
 
     FhirDateTimeFileSpecGenerator.generate(packageName).writeTo(outputDir)
     FhirDateFileSpecGenerator.generate(packageName).writeTo(outputDir)
+    FhirDecimalFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
     // Generates a wrapper for enum types
     EnumerationFileSpecGenerator.generate(packageName).writeTo(outputDir)
@@ -171,7 +173,7 @@ abstract class FhirCodegenTask : DefaultTask() {
     // Generate custom serializers
     val serializersPackageName = "$packageName.serializers"
     LocalTimeSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
-    BigDecimalSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
+    FhirDecimalSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
     FhirDateSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
     FhirDateTimeSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
 
@@ -200,8 +202,9 @@ abstract class FhirCodegenTask : DefaultTask() {
     SearchParamFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
     // Element lookup used to resolve FHIRPath expressions to Kotlin property access.
-    val elementsByType =
-      structureDefinitions.associate { sd -> sd.name to (sd.snapshot?.element ?: emptyList()) }
+    val elementsByType = structureDefinitions.associate { sd ->
+      sd.name to (sd.snapshot?.element ?: emptyList())
+    }
 
     searchParamsByResource.forEach { (resourceName, params) ->
       ResourceSearchParamFileSpecGenerator.generate(

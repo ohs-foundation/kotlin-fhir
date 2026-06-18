@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4b.Address
 import dev.ohs.fhir.model.r4b.Age
 import dev.ohs.fhir.model.r4b.Annotation
@@ -50,6 +49,7 @@ import dev.ohs.fhir.model.r4b.Expression
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirDecimal
 import dev.ohs.fhir.model.r4b.HumanName
 import dev.ohs.fhir.model.r4b.Id
 import dev.ohs.fhir.model.r4b.Identifier
@@ -243,7 +243,7 @@ internal object TaskInputSerializer : KSerializer<Task.Input> {
       element("_valueDate", Element.serializer().descriptor, isOptional = true)
       element("valueDateTime", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
       element("valueId", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueId", Element.serializer().descriptor, isOptional = true)
@@ -338,7 +338,7 @@ internal object TaskInputSerializer : KSerializer<Task.Input> {
     var _valueDate: Element? = null
     var valueDateTime: KotlinString? = null
     var _valueDateTime: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueId: KotlinString? = null
     var _valueId: Element? = null
@@ -461,7 +461,7 @@ internal object TaskInputSerializer : KSerializer<Task.Input> {
             )
         16 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         17 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(
@@ -869,7 +869,7 @@ internal object TaskInputSerializer : KSerializer<Task.Input> {
       }
       is Task.Input.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 16, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueBase64BinarySer, it)
@@ -1181,7 +1181,7 @@ internal object TaskOutputSerializer : KSerializer<Task.Output> {
       element("_valueDate", Element.serializer().descriptor, isOptional = true)
       element("valueDateTime", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
       element("valueId", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueId", Element.serializer().descriptor, isOptional = true)
@@ -1276,7 +1276,7 @@ internal object TaskOutputSerializer : KSerializer<Task.Output> {
     var _valueDate: Element? = null
     var valueDateTime: KotlinString? = null
     var _valueDateTime: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueId: KotlinString? = null
     var _valueId: Element? = null
@@ -1399,7 +1399,7 @@ internal object TaskOutputSerializer : KSerializer<Task.Output> {
             )
         16 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         17 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(
@@ -1807,7 +1807,7 @@ internal object TaskOutputSerializer : KSerializer<Task.Output> {
       }
       is Task.Output.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 16, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueBase64BinarySer, it)

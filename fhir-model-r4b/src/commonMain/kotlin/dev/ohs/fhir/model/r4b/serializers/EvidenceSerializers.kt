@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4b.Annotation
 import dev.ohs.fhir.model.r4b.Code
 import dev.ohs.fhir.model.r4b.CodeableConcept
@@ -36,6 +35,7 @@ import dev.ohs.fhir.model.r4b.Evidence
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirDecimal
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Meta
@@ -592,7 +592,7 @@ internal object EvidenceStatisticAttributeEstimateSerializer :
       element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
       element("type", CodeableConcept.serializer().descriptor, isOptional = true)
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
-      element("level", BigDecimalSerializer.descriptor, isOptional = true)
+      element("level", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_level", Element.serializer().descriptor, isOptional = true)
       element("range", Range.serializer().descriptor, isOptional = true)
       element(
@@ -624,7 +624,7 @@ internal object EvidenceStatisticAttributeEstimateSerializer :
     var note: List<Annotation>? = null
     var type: CodeableConcept? = null
     var quantity: Quantity? = null
-    var level: BigDecimal? = null
+    var level: FhirDecimal? = null
     var _level: Element? = null
     var range: Range? = null
     var attributeEstimate: List<Evidence.Statistic.AttributeEstimate>? = null
@@ -648,7 +648,7 @@ internal object EvidenceStatisticAttributeEstimateSerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.quantitySer, null)
         8 ->
           level =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         9 ->
           _level =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
@@ -705,7 +705,7 @@ internal object EvidenceStatisticAttributeEstimateSerializer :
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.quantitySer, it)
     }
     ((value.level?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 8, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 8, FhirDecimalSerializer, it)
     }
     (value.level?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.descriptionSer, it)

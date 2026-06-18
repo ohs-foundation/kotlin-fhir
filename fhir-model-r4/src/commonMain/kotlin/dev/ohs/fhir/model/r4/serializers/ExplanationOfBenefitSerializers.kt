@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4.Address
 import dev.ohs.fhir.model.r4.Attachment
 import dev.ohs.fhir.model.r4.Boolean as R4Boolean
@@ -38,6 +37,7 @@ import dev.ohs.fhir.model.r4.ExplanationOfBenefit
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDate
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirDecimal
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Money
@@ -1302,7 +1302,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       element("locationReference", Reference.serializer().descriptor, isOptional = true)
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
@@ -1377,7 +1377,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
     var locationReference: Reference? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var net: Money? = null
     var udi: List<Reference>? = null
@@ -1519,7 +1519,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         26 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         27 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
@@ -1719,7 +1719,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       encoder.encodeSerializableElement(descriptor, 25, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 26, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 26, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 27, Hoisted.sequenceSer, it)
@@ -1810,7 +1810,7 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
       element("category", CodeableConcept.serializer().descriptor, isOptional = true)
       element("reason", CodeableConcept.serializer().descriptor, isOptional = true)
       element("amount", Money.serializer().descriptor, isOptional = true)
-      element("value", BigDecimalSerializer.descriptor, isOptional = true)
+      element("value", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_value", Element.serializer().descriptor, isOptional = true)
     }
 
@@ -1834,7 +1834,7 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
     var category: CodeableConcept? = null
     var reason: CodeableConcept? = null
     var amount: Money? = null
-    var `value`: BigDecimal? = null
+    var `value`: FhirDecimal? = null
     var _value: Element? = null
     while (true) {
       when (val i = decoder.decodeElementIndex(descriptor)) {
@@ -1855,7 +1855,7 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
           amount = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.amountSer, null)
         6 ->
           `value` =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         7 ->
           _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
         CompositeDecoder.DECODE_DONE -> break
@@ -1893,7 +1893,7 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
     }
     (value.amount)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.amountSer, it) }
     ((value.`value`?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 6, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 6, FhirDecimalSerializer, it)
     }
     (value.`value`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueSer, it)
@@ -1946,7 +1946,7 @@ internal object ExplanationOfBenefitItemDetailSerializer :
       )
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
@@ -1996,7 +1996,7 @@ internal object ExplanationOfBenefitItemDetailSerializer :
     var programCode: List<CodeableConcept>? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var net: Money? = null
     var udi: List<Reference>? = null
@@ -2040,7 +2040,7 @@ internal object ExplanationOfBenefitItemDetailSerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         12 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         13 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
@@ -2123,7 +2123,7 @@ internal object ExplanationOfBenefitItemDetailSerializer :
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 12, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 12, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.sequenceSer, it)
@@ -2217,7 +2217,7 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
       )
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
@@ -2262,7 +2262,7 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
     var programCode: List<CodeableConcept>? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var net: Money? = null
     var udi: List<Reference>? = null
@@ -2305,7 +2305,7 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         12 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         13 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
@@ -2384,7 +2384,7 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 12, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 12, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.sequenceSer, it)
@@ -2502,7 +2502,7 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       element("locationReference", Reference.serializer().descriptor, isOptional = true)
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("bodySite", CodeableConcept.serializer().descriptor, isOptional = true)
@@ -2566,7 +2566,7 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
     var locationReference: Reference? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var net: Money? = null
     var bodySite: CodeableConcept? = null
@@ -2663,7 +2663,7 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         21 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         22 ->
           _factor =
             decoder.decodeNullableSerializableElement(
@@ -2831,7 +2831,7 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       encoder.encodeSerializableElement(descriptor, 20, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 21, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 21, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 22, Hoisted.itemSequenceSerInner2, it)
@@ -2924,7 +2924,7 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
       )
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("noteNumber", listSerialDescriptor(Int.serializer().descriptor), isOptional = true)
@@ -2968,7 +2968,7 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
     var modifier: List<CodeableConcept>? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var net: Money? = null
     var noteNumber: List<Int?>? = null
@@ -3003,7 +3003,7 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         7 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         8 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.factorSer, null)
@@ -3073,7 +3073,7 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 7, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 7, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.factorSer, it)
@@ -3153,7 +3153,7 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
       )
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("noteNumber", listSerialDescriptor(Int.serializer().descriptor), isOptional = true)
@@ -3192,7 +3192,7 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
     var modifier: List<CodeableConcept>? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var net: Money? = null
     var noteNumber: List<Int?>? = null
@@ -3226,7 +3226,7 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         7 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         8 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.factorSer, null)
@@ -3292,7 +3292,7 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 7, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 7, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.factorSer, it)

@@ -49,8 +49,8 @@ internal fun lazyDescriptorMemberName(className: ClassName): MemberName =
 
 /**
  * Certain stdlib / external types are serialized via a FHIR-specific custom serializer (e.g.
- * `LocalTime` → `LocalTimeSerializer` which always includes seconds; `BigDecimal` →
- * `BigDecimalSerializer`). Returns the custom serializer's [ClassName] for JSON + proto
+ * `LocalTime` → `LocalTimeSerializer` which always includes seconds; `FhirDecimal` →
+ * `FhirDecimalSerializer`). Returns the custom serializer's [ClassName] for JSON + proto
  * encode/decode, or null for types that use the default kotlinx serializer.
  */
 internal fun customSerializerFor(className: ClassName, parentClass: ClassName): ClassName? {
@@ -58,8 +58,8 @@ internal fun customSerializerFor(className: ClassName, parentClass: ClassName): 
   return when {
     className.packageName == "kotlinx.datetime" && className.simpleName == "LocalTime" ->
       ClassName(pkg, "LocalTimeSerializer")
-    className.packageName == "com.ionspin.kotlin.bignum.decimal" &&
-      className.simpleName == "BigDecimal" -> ClassName(pkg, "BigDecimalSerializer")
+    className.packageName == parentClass.packageName && className.simpleName == "FhirDecimal" ->
+      ClassName(pkg, "FhirDecimalSerializer")
     className.packageName == parentClass.packageName && className.simpleName == "FhirDate" ->
       ClassName(pkg, "FhirDateSerializer")
     className.packageName == parentClass.packageName && className.simpleName == "FhirDateTime" ->

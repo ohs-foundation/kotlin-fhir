@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4b.Bundle
 import dev.ohs.fhir.model.r4b.Code
 import dev.ohs.fhir.model.r4b.Decimal
@@ -30,6 +29,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirDecimal
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Instant
 import dev.ohs.fhir.model.r4b.Meta
@@ -328,7 +328,7 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
       )
       element("mode", KotlinString.serializer().descriptor, isOptional = true)
       element("_mode", Element.serializer().descriptor, isOptional = true)
-      element("score", BigDecimalSerializer.descriptor, isOptional = true)
+      element("score", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_score", Element.serializer().descriptor, isOptional = true)
     }
 
@@ -349,7 +349,7 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
     var modifierExtension: List<Extension>? = null
     var mode: KotlinString? = null
     var _mode: Element? = null
-    var score: BigDecimal? = null
+    var score: FhirDecimal? = null
     var _score: Element? = null
     while (true) {
       when (val i = decoder.decodeElementIndex(descriptor)) {
@@ -364,7 +364,7 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
         4 -> _mode = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.modeSer, null)
         5 ->
           score =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         6 ->
           _score = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.modeSer, null)
         CompositeDecoder.DECODE_DONE -> break
@@ -396,7 +396,7 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modeSer, it)
     }
     ((value.score?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 5, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
     }
     (value.score?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.modeSer, it)

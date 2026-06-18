@@ -44,6 +44,5 @@ expect fun loadExamplesFromFileSystem(
 private fun filterFileName(name: String): Boolean {
   return name.endsWith(".json") &&
     !name.startsWith('.') // filter out `.index.json` file
-    &&
-    name != "package.json"
+    && name != "package.json"
 }

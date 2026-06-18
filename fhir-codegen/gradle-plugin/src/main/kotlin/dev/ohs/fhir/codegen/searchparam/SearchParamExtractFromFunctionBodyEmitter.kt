@@ -50,7 +50,11 @@ internal object SearchParamExtractFromFunctionBodyEmitter {
       is SearchParamPattern.ElementCast ->
         forElementCast(
           pattern.resolved,
-          SearchParamTypeResolver.elementSubclass(pattern.resolved, pattern.targetType, packageName),
+          SearchParamTypeResolver.elementSubclass(
+            pattern.resolved,
+            pattern.targetType,
+            packageName,
+          ),
         )
       is SearchParamPattern.WhereFilter ->
         forWhereFilter(pattern.resolved, pattern.field, pattern.value, pattern.postPath)

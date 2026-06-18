@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4b.Address
 import dev.ohs.fhir.model.r4b.Attachment
 import dev.ohs.fhir.model.r4b.Boolean as R4bBoolean
@@ -37,6 +36,7 @@ import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirDecimal
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Money
@@ -1321,7 +1321,7 @@ internal object ClaimItemSerializer : KSerializer<Claim.Item> {
       element("locationReference", Reference.serializer().descriptor, isOptional = true)
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
@@ -1381,7 +1381,7 @@ internal object ClaimItemSerializer : KSerializer<Claim.Item> {
     var locationReference: Reference? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var net: Money? = null
     var udi: List<Reference>? = null
@@ -1520,7 +1520,7 @@ internal object ClaimItemSerializer : KSerializer<Claim.Item> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         26 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         27 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
@@ -1692,7 +1692,7 @@ internal object ClaimItemSerializer : KSerializer<Claim.Item> {
       encoder.encodeSerializableElement(descriptor, 25, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 26, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 26, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 27, Hoisted.sequenceSer, it)
@@ -1781,7 +1781,7 @@ internal object ClaimItemDetailSerializer : KSerializer<Claim.Item.Detail> {
       )
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
@@ -1818,7 +1818,7 @@ internal object ClaimItemDetailSerializer : KSerializer<Claim.Item.Detail> {
     var programCode: List<CodeableConcept>? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var net: Money? = null
     var udi: List<Reference>? = null
@@ -1859,7 +1859,7 @@ internal object ClaimItemDetailSerializer : KSerializer<Claim.Item.Detail> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         12 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         13 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
@@ -1925,7 +1925,7 @@ internal object ClaimItemDetailSerializer : KSerializer<Claim.Item.Detail> {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 12, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 12, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.sequenceSer, it)
@@ -1996,7 +1996,7 @@ internal object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Deta
       )
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
@@ -2026,7 +2026,7 @@ internal object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Deta
     var programCode: List<CodeableConcept>? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var net: Money? = null
     var udi: List<Reference>? = null
@@ -2066,7 +2066,7 @@ internal object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Deta
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         12 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         13 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
@@ -2128,7 +2128,7 @@ internal object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Deta
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 12, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 12, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.sequenceSer, it)

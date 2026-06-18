@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Decimal
@@ -31,6 +30,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.PositiveInt
 import dev.ohs.fhir.model.r5.Range
@@ -79,9 +79,9 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       element("_count", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
       element("countMax", Int.serializer().descriptor, isOptional = true)
       element("_countMax", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("duration", BigDecimalSerializer.descriptor, isOptional = true)
+      element("duration", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_duration", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("durationMax", BigDecimalSerializer.descriptor, isOptional = true)
+      element("durationMax", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_durationMax", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
       element("durationUnit", String.serializer().descriptor, isOptional = true)
       element(
@@ -97,9 +97,9 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
         lazyDescriptor { Element.serializer().descriptor },
         isOptional = true,
       )
-      element("period", BigDecimalSerializer.descriptor, isOptional = true)
+      element("period", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_period", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("periodMax", BigDecimalSerializer.descriptor, isOptional = true)
+      element("periodMax", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_periodMax", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
       element("periodUnit", String.serializer().descriptor, isOptional = true)
       element("_periodUnit", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
@@ -146,9 +146,9 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     var _count: Element? = null
     var countMax: Int? = null
     var _countMax: Element? = null
-    var duration: BigDecimal? = null
+    var duration: FhirDecimal? = null
     var _duration: Element? = null
-    var durationMax: BigDecimal? = null
+    var durationMax: FhirDecimal? = null
     var _durationMax: Element? = null
     var durationUnit: String? = null
     var _durationUnit: Element? = null
@@ -156,9 +156,9 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     var _frequency: Element? = null
     var frequencyMax: Int? = null
     var _frequencyMax: Element? = null
-    var period: BigDecimal? = null
+    var period: FhirDecimal? = null
     var _period: Element? = null
-    var periodMax: BigDecimal? = null
+    var periodMax: FhirDecimal? = null
     var _periodMax: Element? = null
     var periodUnit: String? = null
     var _periodUnit: Element? = null
@@ -199,13 +199,13 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
         9 ->
           duration =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         10 ->
           _duration =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
         11 ->
           durationMax =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         12 ->
           _durationMax =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
@@ -223,12 +223,12 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
         19 ->
           period =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         20 ->
           _period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
         21 ->
           periodMax =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         22 ->
           _periodMax =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
@@ -323,13 +323,13 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.countSer, it)
     }
     ((value.duration?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 9, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 9, FhirDecimalSerializer, it)
     }
     (value.duration?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.countSer, it)
     }
     ((value.durationMax?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 11, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 11, FhirDecimalSerializer, it)
     }
     (value.durationMax?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.countSer, it)
@@ -349,13 +349,13 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       encoder.encodeSerializableElement(descriptor, 18, Hoisted.countSer, it)
     }
     ((value.period?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 19, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 19, FhirDecimalSerializer, it)
     }
     (value.period?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 20, Hoisted.countSer, it)
     }
     ((value.periodMax?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 21, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 21, FhirDecimalSerializer, it)
     }
     (value.periodMax?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 22, Hoisted.countSer, it)

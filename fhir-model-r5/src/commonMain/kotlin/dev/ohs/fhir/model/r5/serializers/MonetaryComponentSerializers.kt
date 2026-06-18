@@ -22,12 +22,12 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Decimal
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.MonetaryComponent
 import dev.ohs.fhir.model.r5.Money
 import kotlin.OptIn
@@ -61,7 +61,7 @@ internal object MonetaryComponentSerializer : KSerializer<MonetaryComponent> {
       element("type", String.serializer().descriptor, isOptional = true)
       element("_type", Element.serializer().descriptor, isOptional = true)
       element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("amount", Money.serializer().descriptor, isOptional = true)
     }
@@ -83,7 +83,7 @@ internal object MonetaryComponentSerializer : KSerializer<MonetaryComponent> {
     var type: String? = null
     var _type: Element? = null
     var code: CodeableConcept? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var amount: Money? = null
     while (true) {
@@ -97,7 +97,7 @@ internal object MonetaryComponentSerializer : KSerializer<MonetaryComponent> {
         4 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
         5 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         6 ->
           _factor = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         7 ->
@@ -126,7 +126,7 @@ internal object MonetaryComponentSerializer : KSerializer<MonetaryComponent> {
     }
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it) }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 5, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, it)

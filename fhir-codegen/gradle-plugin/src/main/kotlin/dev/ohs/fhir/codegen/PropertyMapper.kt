@@ -176,7 +176,8 @@ internal class PropertyMapper(
         MappingContext.MODEL,
         MappingContext.BUILDER ->
           nestBuilderClass(ClassName(modelClassName.packageName, type.code.capitalized()))
-        MappingContext.WIRE -> FhirPathType.getFromFhirTypeCode(type.code)!!.wireType
+        MappingContext.WIRE ->
+          FhirPathType.getFromFhirTypeCode(type.code)!!.wireType(modelClassName.packageName)
       }
     }
 

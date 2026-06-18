@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package dev.ohs.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
+import dev.ohs.fhir.model.r4.FhirDecimal
 import kotlin.OptIn
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
@@ -32,30 +32,27 @@ import kotlinx.serialization.json.JsonUnquotedLiteral
 import kotlinx.serialization.json.jsonPrimitive
 
 /**
- * Serializer for bignum `BigDecimal` — the in-memory type for FHIR's `decimal` primitive. On the
- * JSON wire the value is emitted as an unquoted number that preserves the original precision
- * (trailing zeros included); on other encoders it falls back to a plain decimal string.
+ * Serializer for `FhirDecimal` — FHIR's `decimal` primitive. Emits the value's exact lexical wire
+ * form (precision and trailing zeros preserved) as an unquoted JSON number, and captures the raw
+ * token verbatim on the way back in.
  */
-internal object BigDecimalSerializer : KSerializer<BigDecimal> {
+internal object FhirDecimalSerializer : KSerializer<FhirDecimal> {
   override val descriptor: SerialDescriptor =
-    PrimitiveSerialDescriptor("FhirBigDecimal", PrimitiveKind.STRING)
+    PrimitiveSerialDescriptor("FhirDecimal", PrimitiveKind.STRING)
 
   @OptIn(ExperimentalSerializationApi::class)
-  override fun serialize(encoder: Encoder, `value`: BigDecimal) {
+  override fun serialize(encoder: Encoder, `value`: FhirDecimal) {
     if (encoder is JsonEncoder) {
-      encoder.encodeSerializableValue(
-        JsonPrimitive.serializer(),
-        JsonUnquotedLiteral(value.toPlainString()),
-      )
+      encoder.encodeSerializableValue(JsonPrimitive.serializer(), JsonUnquotedLiteral(value.wire))
     } else {
-      encoder.encodeString(value.toPlainString())
+      encoder.encodeString(value.wire)
     }
   }
 
-  override fun deserialize(decoder: Decoder): BigDecimal =
+  override fun deserialize(decoder: Decoder): FhirDecimal =
     if (decoder is JsonDecoder) {
-      BigDecimal.parseString(decoder.decodeJsonElement().jsonPrimitive.content)
+      FhirDecimal.fromString(decoder.decodeJsonElement().jsonPrimitive.content)
     } else {
-      BigDecimal.parseString(decoder.decodeString())
+      FhirDecimal.fromString(decoder.decodeString())
     }
 }

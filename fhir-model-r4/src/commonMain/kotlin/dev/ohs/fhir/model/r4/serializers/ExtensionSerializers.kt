@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4.Address
 import dev.ohs.fhir.model.r4.Age
 import dev.ohs.fhir.model.r4.Annotation
@@ -49,6 +48,7 @@ import dev.ohs.fhir.model.r4.Expression
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDate
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirDecimal
 import dev.ohs.fhir.model.r4.HumanName
 import dev.ohs.fhir.model.r4.Id
 import dev.ohs.fhir.model.r4.Identifier
@@ -137,7 +137,7 @@ internal object ExtensionSerializer : KSerializer<Extension> {
         lazyDescriptor { Element.serializer().descriptor },
         isOptional = true,
       )
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element(
         "_valueDecimal",
         lazyDescriptor { Element.serializer().descriptor },
@@ -327,7 +327,7 @@ internal object ExtensionSerializer : KSerializer<Extension> {
     var _valueDate: Element? = null
     var valueDateTime: KotlinString? = null
     var _valueDateTime: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueId: KotlinString? = null
     var _valueId: Element? = null
@@ -447,7 +447,7 @@ internal object ExtensionSerializer : KSerializer<Extension> {
             )
         15 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         16 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(
@@ -853,7 +853,7 @@ internal object ExtensionSerializer : KSerializer<Extension> {
       }
       is Extension.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 15, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 15, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueBase64BinarySer, it)

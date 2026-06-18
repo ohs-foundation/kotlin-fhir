@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.Address
 import dev.ohs.fhir.model.r5.Attachment
 import dev.ohs.fhir.model.r5.Boolean as R5Boolean
@@ -38,6 +37,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Money
@@ -1062,7 +1062,7 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       element("locationReference", Reference.serializer().descriptor, isOptional = true)
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("tax", Money.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
@@ -1137,7 +1137,7 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
     var locationReference: Reference? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var tax: Money? = null
     var net: Money? = null
@@ -1237,7 +1237,7 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         25 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         26 ->
           _factor =
             decoder.decodeNullableSerializableElement(
@@ -1414,7 +1414,7 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       encoder.encodeSerializableElement(descriptor, 24, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 25, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 25, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 26, Hoisted.itemSequenceSerInner2, it)
@@ -1634,7 +1634,7 @@ internal object ClaimResponseAddItemDetailSerializer : KSerializer<ClaimResponse
       )
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("tax", Money.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
@@ -1687,7 +1687,7 @@ internal object ClaimResponseAddItemDetailSerializer : KSerializer<ClaimResponse
     var modifier: List<CodeableConcept>? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var tax: Money? = null
     var net: Money? = null
@@ -1728,7 +1728,7 @@ internal object ClaimResponseAddItemDetailSerializer : KSerializer<ClaimResponse
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         10 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         11 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.factorSer, null)
@@ -1810,7 +1810,7 @@ internal object ClaimResponseAddItemDetailSerializer : KSerializer<ClaimResponse
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 10, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 10, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.factorSer, it)
@@ -1908,7 +1908,7 @@ internal object ClaimResponseAddItemDetailSubDetailSerializer :
       )
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
       element("tax", Money.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
@@ -1956,7 +1956,7 @@ internal object ClaimResponseAddItemDetailSubDetailSerializer :
     var modifier: List<CodeableConcept>? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
     var tax: Money? = null
     var net: Money? = null
@@ -1996,7 +1996,7 @@ internal object ClaimResponseAddItemDetailSubDetailSerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         10 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         11 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.factorSer, null)
@@ -2077,7 +2077,7 @@ internal object ClaimResponseAddItemDetailSubDetailSerializer :
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 10, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 10, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.factorSer, it)

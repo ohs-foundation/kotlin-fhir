@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.Attachment
 import dev.ohs.fhir.model.r5.Boolean as R5Boolean
 import dev.ohs.fhir.model.r5.Canonical
@@ -38,6 +37,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.Markdown
@@ -442,7 +442,7 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
       element("_operator", Element.serializer().descriptor, isOptional = true)
       element("answerBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
       element("_answerBoolean", Element.serializer().descriptor, isOptional = true)
-      element("answerDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("answerDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_answerDecimal", Element.serializer().descriptor, isOptional = true)
       element("answerInteger", Int.serializer().descriptor, isOptional = true)
       element("_answerInteger", Element.serializer().descriptor, isOptional = true)
@@ -480,7 +480,7 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
     var _operator: Element? = null
     var answerBoolean: KotlinBoolean? = null
     var _answerBoolean: Element? = null
-    var answerDecimal: BigDecimal? = null
+    var answerDecimal: FhirDecimal? = null
     var _answerDecimal: Element? = null
     var answerInteger: Int? = null
     var _answerInteger: Element? = null
@@ -518,7 +518,7 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.questionSer, null)
         9 ->
           answerDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         10 ->
           _answerDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.questionSer, null)
@@ -618,7 +618,7 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
       }
       is Questionnaire.Item.EnableWhen.Answer.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 9, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 9, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.questionSer, it)
@@ -887,7 +887,7 @@ internal object QuestionnaireItemInitialSerializer : KSerializer<Questionnaire.I
       )
       element("valueBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
       element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
       element("valueInteger", Int.serializer().descriptor, isOptional = true)
       element("_valueInteger", Element.serializer().descriptor, isOptional = true)
@@ -924,7 +924,7 @@ internal object QuestionnaireItemInitialSerializer : KSerializer<Questionnaire.I
     var modifierExtension: List<Extension>? = null
     var valueBoolean: KotlinBoolean? = null
     var _valueBoolean: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueInteger: Int? = null
     var _valueInteger: Element? = null
@@ -957,7 +957,7 @@ internal object QuestionnaireItemInitialSerializer : KSerializer<Questionnaire.I
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueBooleanSer, null)
         5 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         6 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueBooleanSer, null)
@@ -1055,7 +1055,7 @@ internal object QuestionnaireItemInitialSerializer : KSerializer<Questionnaire.I
       }
       is Questionnaire.Item.Initial.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 5, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueBooleanSer, it)

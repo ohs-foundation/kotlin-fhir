@@ -22,12 +22,12 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.Decimal
 import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirDecimal
 import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
@@ -59,7 +59,7 @@ internal object QuantitySerializer : KSerializer<Quantity> {
         listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
         isOptional = true,
       )
-      element("value", BigDecimalSerializer.descriptor, isOptional = true)
+      element("value", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_value", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
       element("comparator", KotlinString.serializer().descriptor, isOptional = true)
       element("_comparator", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
@@ -85,7 +85,7 @@ internal object QuantitySerializer : KSerializer<Quantity> {
   private fun deserializeInternal(decoder: CompositeDecoder): Quantity {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
-    var `value`: BigDecimal? = null
+    var `value`: FhirDecimal? = null
     var _value: Element? = null
     var comparator: KotlinString? = null
     var _comparator: Element? = null
@@ -103,7 +103,7 @@ internal object QuantitySerializer : KSerializer<Quantity> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           `value` =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         3 ->
           _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
         4 -> comparator = decoder.decodeStringElement(descriptor, i)
@@ -140,7 +140,7 @@ internal object QuantitySerializer : KSerializer<Quantity> {
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     ((value.`value`?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 2, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 2, FhirDecimalSerializer, it)
     }
     (value.`value`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueSer, it)

@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.CodeableConcept
@@ -32,6 +31,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirDecimal
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Integer
 import dev.ohs.fhir.model.r4.Meta
@@ -493,7 +493,7 @@ internal object BiologicallyDerivedProductStorageSerializer :
       )
       element("description", KotlinString.serializer().descriptor, isOptional = true)
       element("_description", Element.serializer().descriptor, isOptional = true)
-      element("temperature", BigDecimalSerializer.descriptor, isOptional = true)
+      element("temperature", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_temperature", Element.serializer().descriptor, isOptional = true)
       element("scale", KotlinString.serializer().descriptor, isOptional = true)
       element("_scale", Element.serializer().descriptor, isOptional = true)
@@ -517,7 +517,7 @@ internal object BiologicallyDerivedProductStorageSerializer :
     var modifierExtension: List<Extension>? = null
     var description: KotlinString? = null
     var _description: Element? = null
-    var temperature: BigDecimal? = null
+    var temperature: FhirDecimal? = null
     var _temperature: Element? = null
     var scale: KotlinString? = null
     var _scale: Element? = null
@@ -537,7 +537,7 @@ internal object BiologicallyDerivedProductStorageSerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
         5 ->
           temperature =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         6 ->
           _temperature =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
@@ -588,7 +588,7 @@ internal object BiologicallyDerivedProductStorageSerializer :
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, it)
     }
     ((value.temperature?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 5, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
     }
     (value.temperature?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)

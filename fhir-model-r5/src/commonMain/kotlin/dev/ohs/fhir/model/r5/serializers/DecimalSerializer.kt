@@ -16,9 +16,9 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.Decimal
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDecimal
 import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
@@ -48,7 +48,7 @@ internal object DecimalSerializer : KSerializer<Decimal> {
     buildClassSerialDescriptor("Decimal") {
       element("id", String.serializer().descriptor)
       element("extension", extensionListSerializer.descriptor)
-      element("value", BigDecimalSerializer.descriptor)
+      element("value", FhirDecimalSerializer.descriptor)
     }
 
   override fun serialize(encoder: Encoder, `value`: Decimal) {
@@ -56,7 +56,7 @@ internal object DecimalSerializer : KSerializer<Decimal> {
       encodeNullableSerializableElement(descriptor, 0, String.serializer(), value.id)
       if (value.extension.isNotEmpty())
         encodeSerializableElement(descriptor, 1, extensionListSerializer, value.extension)
-      encodeNullableSerializableElement(descriptor, 2, BigDecimalSerializer, value.`value`)
+      encodeNullableSerializableElement(descriptor, 2, FhirDecimalSerializer, value.`value`)
     }
   }
 
@@ -64,12 +64,12 @@ internal object DecimalSerializer : KSerializer<Decimal> {
     decoder.decodeStructure(descriptor) {
       var id: String? = null
       var extension: List<Extension> = emptyList()
-      var `value`: BigDecimal? = null
+      var `value`: FhirDecimal? = null
       while (true) {
         when (val index = decodeElementIndex(descriptor)) {
           0 -> id = decodeNullableSerializableElement(descriptor, 0, String.serializer())
           1 -> extension = decodeSerializableElement(descriptor, 1, extensionListSerializer)
-          2 -> `value` = decodeNullableSerializableElement(descriptor, 2, BigDecimalSerializer)
+          2 -> `value` = decodeNullableSerializableElement(descriptor, 2, FhirDecimalSerializer)
           CompositeDecoder.DECODE_DONE -> break
           else ->
             throw SerializationException(

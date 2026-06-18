@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4b.Annotation
 import dev.ohs.fhir.model.r4b.Attachment
 import dev.ohs.fhir.model.r4b.Boolean as R4bBoolean
@@ -38,6 +37,7 @@ import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirDecimal
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Integer
 import dev.ohs.fhir.model.r4b.Markdown
@@ -1005,7 +1005,7 @@ internal object ContractTermOfferAnswerSerializer : KSerializer<Contract.Term.Of
       )
       element("valueBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
       element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
       element("valueInteger", Int.serializer().descriptor, isOptional = true)
       element("_valueInteger", Element.serializer().descriptor, isOptional = true)
@@ -1042,7 +1042,7 @@ internal object ContractTermOfferAnswerSerializer : KSerializer<Contract.Term.Of
     var modifierExtension: List<Extension>? = null
     var valueBoolean: KotlinBoolean? = null
     var _valueBoolean: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueInteger: Int? = null
     var _valueInteger: Element? = null
@@ -1075,7 +1075,7 @@ internal object ContractTermOfferAnswerSerializer : KSerializer<Contract.Term.Of
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueBooleanSer, null)
         5 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         6 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueBooleanSer, null)
@@ -1173,7 +1173,7 @@ internal object ContractTermOfferAnswerSerializer : KSerializer<Contract.Term.Of
       }
       is Contract.Term.Offer.Answer.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 5, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueBooleanSer, it)
@@ -1708,9 +1708,9 @@ internal object ContractTermAssetValuedItemSerializer :
       element("_effectiveTime", Element.serializer().descriptor, isOptional = true)
       element("quantity", Quantity.serializer().descriptor, isOptional = true)
       element("unitPrice", Money.serializer().descriptor, isOptional = true)
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", Element.serializer().descriptor, isOptional = true)
-      element("points", BigDecimalSerializer.descriptor, isOptional = true)
+      element("points", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_points", Element.serializer().descriptor, isOptional = true)
       element("net", Money.serializer().descriptor, isOptional = true)
       element("payment", KotlinString.serializer().descriptor, isOptional = true)
@@ -1759,9 +1759,9 @@ internal object ContractTermAssetValuedItemSerializer :
     var _effectiveTime: Element? = null
     var quantity: Quantity? = null
     var unitPrice: Money? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
-    var points: BigDecimal? = null
+    var points: FhirDecimal? = null
     var _points: Element? = null
     var net: Money? = null
     var payment: KotlinString? = null
@@ -1814,13 +1814,13 @@ internal object ContractTermAssetValuedItemSerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitPriceSer, null)
         10 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         11 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.effectiveTimeSer, null)
         12 ->
           points =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         13 ->
           _points =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.effectiveTimeSer, null)
@@ -1946,13 +1946,13 @@ internal object ContractTermAssetValuedItemSerializer :
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.unitPriceSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 10, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 10, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.effectiveTimeSer, it)
     }
     ((value.points?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 12, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 12, FhirDecimalSerializer, it)
     }
     (value.points?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.effectiveTimeSer, it)

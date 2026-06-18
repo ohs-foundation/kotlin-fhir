@@ -236,10 +236,9 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     // Encode-side index expression: literal `<wireIdx>` for non-resources, `<wireIdx> +
     // descriptorOffset`
     // for resources. Substituted into emit calls via `%L`.
-    val nameToIdx: Map<String, CodeBlock> =
-      nameToCaseLabel.mapValues { (_, i) ->
-        if (parameterized) CodeBlock.of("%L + descriptorOffset", i) else CodeBlock.of("%L", i)
-      }
+    val nameToIdx: Map<String, CodeBlock> = nameToCaseLabel.mapValues { (_, i) ->
+      if (parameterized) CodeBlock.of("%L + descriptorOffset", i) else CodeBlock.of("%L", i)
+    }
     val functions = mutableListOf<FunSpec>()
     // `deserialize(decoder)` streams via `decodeStructure { deserializeInternal(this) }`. The same
     // body

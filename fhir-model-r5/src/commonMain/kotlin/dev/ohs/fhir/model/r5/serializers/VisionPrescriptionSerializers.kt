@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.Annotation
 import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.CodeableConcept
@@ -32,6 +31,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.Meta
@@ -81,9 +81,9 @@ internal object VisionPrescriptionLensSpecificationSerializer :
       element("product", CodeableConcept.serializer().descriptor, isOptional = true)
       element("eye", KotlinString.serializer().descriptor, isOptional = true)
       element("_eye", Element.serializer().descriptor, isOptional = true)
-      element("sphere", BigDecimalSerializer.descriptor, isOptional = true)
+      element("sphere", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_sphere", Element.serializer().descriptor, isOptional = true)
-      element("cylinder", BigDecimalSerializer.descriptor, isOptional = true)
+      element("cylinder", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_cylinder", Element.serializer().descriptor, isOptional = true)
       element("axis", Int.serializer().descriptor, isOptional = true)
       element("_axis", Element.serializer().descriptor, isOptional = true)
@@ -94,13 +94,13 @@ internal object VisionPrescriptionLensSpecificationSerializer :
         ),
         isOptional = true,
       )
-      element("add", BigDecimalSerializer.descriptor, isOptional = true)
+      element("add", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_add", Element.serializer().descriptor, isOptional = true)
-      element("power", BigDecimalSerializer.descriptor, isOptional = true)
+      element("power", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_power", Element.serializer().descriptor, isOptional = true)
-      element("backCurve", BigDecimalSerializer.descriptor, isOptional = true)
+      element("backCurve", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_backCurve", Element.serializer().descriptor, isOptional = true)
-      element("diameter", BigDecimalSerializer.descriptor, isOptional = true)
+      element("diameter", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_diameter", Element.serializer().descriptor, isOptional = true)
       element("duration", Quantity.serializer().descriptor, isOptional = true)
       element("color", KotlinString.serializer().descriptor, isOptional = true)
@@ -128,20 +128,20 @@ internal object VisionPrescriptionLensSpecificationSerializer :
     var product: CodeableConcept? = null
     var eye: KotlinString? = null
     var _eye: Element? = null
-    var sphere: BigDecimal? = null
+    var sphere: FhirDecimal? = null
     var _sphere: Element? = null
-    var cylinder: BigDecimal? = null
+    var cylinder: FhirDecimal? = null
     var _cylinder: Element? = null
     var axis: Int? = null
     var _axis: Element? = null
     var prism: List<VisionPrescription.LensSpecification.Prism>? = null
-    var add: BigDecimal? = null
+    var add: FhirDecimal? = null
     var _add: Element? = null
-    var power: BigDecimal? = null
+    var power: FhirDecimal? = null
     var _power: Element? = null
-    var backCurve: BigDecimal? = null
+    var backCurve: FhirDecimal? = null
     var _backCurve: Element? = null
-    var diameter: BigDecimal? = null
+    var diameter: FhirDecimal? = null
     var _diameter: Element? = null
     var duration: Quantity? = null
     var color: KotlinString? = null
@@ -165,12 +165,12 @@ internal object VisionPrescriptionLensSpecificationSerializer :
         5 -> _eye = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
         6 ->
           sphere =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         7 ->
           _sphere = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
         8 ->
           cylinder =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         9 ->
           _cylinder = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
         10 -> axis = decoder.decodeIntElement(descriptor, i)
@@ -178,22 +178,23 @@ internal object VisionPrescriptionLensSpecificationSerializer :
         12 ->
           prism = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.prismSer, null)
         13 ->
-          add = decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+          add =
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         14 -> _add = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
         15 ->
           power =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         16 ->
           _power = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
         17 ->
           backCurve =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         18 ->
           _backCurve =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
         19 ->
           diameter =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         20 ->
           _diameter = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
         21 ->
@@ -251,13 +252,13 @@ internal object VisionPrescriptionLensSpecificationSerializer :
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.eyeSer, it)
     }
     ((value.sphere?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 6, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 6, FhirDecimalSerializer, it)
     }
     (value.sphere?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.eyeSer, it)
     }
     ((value.cylinder?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 8, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 8, FhirDecimalSerializer, it)
     }
     (value.cylinder?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.eyeSer, it)
@@ -269,25 +270,25 @@ internal object VisionPrescriptionLensSpecificationSerializer :
     if (value.prism.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.prismSer, value.prism)
     ((value.add?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 13, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 13, FhirDecimalSerializer, it)
     }
     (value.add?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.eyeSer, it)
     }
     ((value.power?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 15, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 15, FhirDecimalSerializer, it)
     }
     (value.power?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.eyeSer, it)
     }
     ((value.backCurve?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 17, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 17, FhirDecimalSerializer, it)
     }
     (value.backCurve?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 18, Hoisted.eyeSer, it)
     }
     ((value.diameter?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 19, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 19, FhirDecimalSerializer, it)
     }
     (value.diameter?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 20, Hoisted.eyeSer, it)
@@ -346,7 +347,7 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
         listSerialDescriptor(Extension.serializer().descriptor),
         isOptional = true,
       )
-      element("amount", BigDecimalSerializer.descriptor, isOptional = true)
+      element("amount", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_amount", Element.serializer().descriptor, isOptional = true)
       element("base", KotlinString.serializer().descriptor, isOptional = true)
       element("_base", Element.serializer().descriptor, isOptional = true)
@@ -369,7 +370,7 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var amount: BigDecimal? = null
+    var amount: FhirDecimal? = null
     var _amount: Element? = null
     var base: KotlinString? = null
     var _base: Element? = null
@@ -384,7 +385,7 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           amount =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         4 ->
           _amount =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.amountSer, null)
@@ -419,7 +420,7 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
         value.modifierExtension,
       )
     ((value.amount.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 3, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 3, FhirDecimalSerializer, it)
     }
     (value.amount.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountSer, it)

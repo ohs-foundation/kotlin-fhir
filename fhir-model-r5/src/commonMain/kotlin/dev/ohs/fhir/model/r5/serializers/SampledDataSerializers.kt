@@ -22,12 +22,12 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.Decimal
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.PositiveInt
 import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.SampledData
@@ -62,7 +62,7 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
         isOptional = true,
       )
       element("origin", lazyDescriptor { Quantity.serializer().descriptor }, isOptional = true)
-      element("interval", BigDecimalSerializer.descriptor, isOptional = true)
+      element("interval", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_interval", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
       element("intervalUnit", KotlinString.serializer().descriptor, isOptional = true)
       element(
@@ -70,11 +70,11 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
         lazyDescriptor { Element.serializer().descriptor },
         isOptional = true,
       )
-      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_factor", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("lowerLimit", BigDecimalSerializer.descriptor, isOptional = true)
+      element("lowerLimit", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_lowerLimit", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("upperLimit", BigDecimalSerializer.descriptor, isOptional = true)
+      element("upperLimit", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_upperLimit", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
       element("dimensions", Int.serializer().descriptor, isOptional = true)
       element("_dimensions", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
@@ -101,15 +101,15 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var origin: Quantity? = null
-    var interval: BigDecimal? = null
+    var interval: FhirDecimal? = null
     var _interval: Element? = null
     var intervalUnit: KotlinString? = null
     var _intervalUnit: Element? = null
-    var factor: BigDecimal? = null
+    var factor: FhirDecimal? = null
     var _factor: Element? = null
-    var lowerLimit: BigDecimal? = null
+    var lowerLimit: FhirDecimal? = null
     var _lowerLimit: Element? = null
-    var upperLimit: BigDecimal? = null
+    var upperLimit: FhirDecimal? = null
     var _upperLimit: Element? = null
     var dimensions: Int? = null
     var _dimensions: Element? = null
@@ -129,7 +129,7 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
           origin = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.originSer, null)
         3 ->
           interval =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         4 ->
           _interval =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
@@ -139,19 +139,19 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
         7 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         8 ->
           _factor =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
         9 ->
           lowerLimit =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         10 ->
           _lowerLimit =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
         11 ->
           upperLimit =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         12 ->
           _upperLimit =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
@@ -197,7 +197,7 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     encoder.encodeSerializableElement(descriptor, 2, Hoisted.originSer, value.origin)
     ((value.interval?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 3, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 3, FhirDecimalSerializer, it)
     }
     (value.interval?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.intervalSer, it)
@@ -207,19 +207,19 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.intervalSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 7, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 7, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.intervalSer, it)
     }
     ((value.lowerLimit?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 9, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 9, FhirDecimalSerializer, it)
     }
     (value.lowerLimit?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.intervalSer, it)
     }
     ((value.upperLimit?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 11, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 11, FhirDecimalSerializer, it)
     }
     (value.upperLimit?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.intervalSer, it)

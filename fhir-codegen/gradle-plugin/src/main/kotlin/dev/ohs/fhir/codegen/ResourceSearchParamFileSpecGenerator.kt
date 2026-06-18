@@ -237,8 +237,9 @@ private fun SearchParameterDefinition.extractExpressionForResource(resourceName:
   val expr = expression ?: return ""
   val parts = expr.split("|").map { it.trim() }
   // Find the part that starts with the resource name
-  val resourcePart =
-    parts.firstOrNull { it.startsWith("$resourceName.") || it.startsWith("($resourceName.") }
+  val resourcePart = parts.firstOrNull {
+    it.startsWith("$resourceName.") || it.startsWith("($resourceName.")
+  }
   return resourcePart ?: expr
 }
 

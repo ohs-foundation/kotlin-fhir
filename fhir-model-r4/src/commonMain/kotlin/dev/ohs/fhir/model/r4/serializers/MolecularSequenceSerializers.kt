@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4.Boolean as R4Boolean
 import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.CodeableConcept
@@ -30,6 +29,7 @@ import dev.ohs.fhir.model.r4.Decimal
 import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirDecimal
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Integer
 import dev.ohs.fhir.model.r4.Meta
@@ -432,21 +432,21 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
       element("_end", Element.serializer().descriptor, isOptional = true)
       element("score", Quantity.serializer().descriptor, isOptional = true)
       element("method", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("truthTP", BigDecimalSerializer.descriptor, isOptional = true)
+      element("truthTP", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_truthTP", Element.serializer().descriptor, isOptional = true)
-      element("queryTP", BigDecimalSerializer.descriptor, isOptional = true)
+      element("queryTP", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_queryTP", Element.serializer().descriptor, isOptional = true)
-      element("truthFN", BigDecimalSerializer.descriptor, isOptional = true)
+      element("truthFN", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_truthFN", Element.serializer().descriptor, isOptional = true)
-      element("queryFP", BigDecimalSerializer.descriptor, isOptional = true)
+      element("queryFP", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_queryFP", Element.serializer().descriptor, isOptional = true)
-      element("gtFP", BigDecimalSerializer.descriptor, isOptional = true)
+      element("gtFP", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_gtFP", Element.serializer().descriptor, isOptional = true)
-      element("precision", BigDecimalSerializer.descriptor, isOptional = true)
+      element("precision", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_precision", Element.serializer().descriptor, isOptional = true)
-      element("recall", BigDecimalSerializer.descriptor, isOptional = true)
+      element("recall", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_recall", Element.serializer().descriptor, isOptional = true)
-      element("fScore", BigDecimalSerializer.descriptor, isOptional = true)
+      element("fScore", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_fScore", Element.serializer().descriptor, isOptional = true)
       element(
         "roc",
@@ -479,21 +479,21 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
     var _end: Element? = null
     var score: Quantity? = null
     var method: CodeableConcept? = null
-    var truthTP: BigDecimal? = null
+    var truthTP: FhirDecimal? = null
     var _truthTP: Element? = null
-    var queryTP: BigDecimal? = null
+    var queryTP: FhirDecimal? = null
     var _queryTP: Element? = null
-    var truthFN: BigDecimal? = null
+    var truthFN: FhirDecimal? = null
     var _truthFN: Element? = null
-    var queryFP: BigDecimal? = null
+    var queryFP: FhirDecimal? = null
     var _queryFP: Element? = null
-    var gtFP: BigDecimal? = null
+    var gtFP: FhirDecimal? = null
     var _gtFP: Element? = null
-    var precision: BigDecimal? = null
+    var precision: FhirDecimal? = null
     var _precision: Element? = null
-    var recall: BigDecimal? = null
+    var recall: FhirDecimal? = null
     var _recall: Element? = null
-    var fScore: BigDecimal? = null
+    var fScore: FhirDecimal? = null
     var _fScore: Element? = null
     var roc: MolecularSequence.Quality.Roc? = null
     while (true) {
@@ -532,43 +532,43 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
             )
         12 ->
           truthTP =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         13 ->
           _truthTP = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         14 ->
           queryTP =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         15 ->
           _queryTP = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         16 ->
           truthFN =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         17 ->
           _truthFN = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         18 ->
           queryFP =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         19 ->
           _queryFP = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         20 ->
           gtFP =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         21 ->
           _gtFP = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         22 ->
           precision =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         23 ->
           _precision =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         24 ->
           recall =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         25 ->
           _recall = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         26 ->
           fScore =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         27 ->
           _fScore = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         28 -> roc = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.rocSer, null)
@@ -629,49 +629,49 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.standardSequenceSer, it)
     }
     ((value.truthTP?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 12, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 12, FhirDecimalSerializer, it)
     }
     (value.truthTP?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.typeSer, it)
     }
     ((value.queryTP?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 14, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 14, FhirDecimalSerializer, it)
     }
     (value.queryTP?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 15, Hoisted.typeSer, it)
     }
     ((value.truthFN?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 16, FhirDecimalSerializer, it)
     }
     (value.truthFN?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 17, Hoisted.typeSer, it)
     }
     ((value.queryFP?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 18, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 18, FhirDecimalSerializer, it)
     }
     (value.queryFP?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 19, Hoisted.typeSer, it)
     }
     ((value.gtFP?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 20, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 20, FhirDecimalSerializer, it)
     }
     (value.gtFP?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 21, Hoisted.typeSer, it)
     }
     ((value.precision?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 22, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 22, FhirDecimalSerializer, it)
     }
     (value.precision?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 23, Hoisted.typeSer, it)
     }
     ((value.recall?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 24, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 24, FhirDecimalSerializer, it)
     }
     (value.recall?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 25, Hoisted.typeSer, it)
     }
     ((value.fScore?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 26, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 26, FhirDecimalSerializer, it)
     }
     (value.fScore?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 27, Hoisted.typeSer, it)
@@ -718,7 +718,11 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
       element("_numFP", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
       element("numFN", listSerialDescriptor(Int.serializer().descriptor), isOptional = true)
       element("_numFN", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element("precision", listSerialDescriptor(BigDecimalSerializer.descriptor), isOptional = true)
+      element(
+        "precision",
+        listSerialDescriptor(FhirDecimalSerializer.descriptor),
+        isOptional = true,
+      )
       element(
         "_precision",
         listSerialDescriptor(Element.serializer().descriptor),
@@ -726,7 +730,7 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
       )
       element(
         "sensitivity",
-        listSerialDescriptor(BigDecimalSerializer.descriptor),
+        listSerialDescriptor(FhirDecimalSerializer.descriptor),
         isOptional = true,
       )
       element(
@@ -734,7 +738,7 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
         listSerialDescriptor(Element.serializer().descriptor),
         isOptional = true,
       )
-      element("fMeasure", listSerialDescriptor(BigDecimalSerializer.descriptor), isOptional = true)
+      element("fMeasure", listSerialDescriptor(FhirDecimalSerializer.descriptor), isOptional = true)
       element("_fMeasure", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
     }
 
@@ -761,11 +765,11 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
     var _numFP: List<Element?>? = null
     var numFN: List<Int?>? = null
     var _numFN: List<Element?>? = null
-    var precision: List<BigDecimal?>? = null
+    var precision: List<FhirDecimal?>? = null
     var _precision: List<Element?>? = null
-    var sensitivity: List<BigDecimal?>? = null
+    var sensitivity: List<FhirDecimal?>? = null
     var _sensitivity: List<Element?>? = null
-    var fMeasure: List<BigDecimal?>? = null
+    var fMeasure: List<FhirDecimal?>? = null
     var _fMeasure: List<Element?>? = null
     while (true) {
       when (val i = decoder.decodeElementIndex(descriptor)) {
@@ -919,8 +923,8 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
     public val scoreSer2: KSerializer<List<Element?>> =
       ListSerializer((Hoisted.scoreSerInner2).nullable)
 
-    public val precisionSer: KSerializer<List<BigDecimal?>> =
-      ListSerializer((BigDecimalSerializer).nullable)
+    public val precisionSer: KSerializer<List<FhirDecimal?>> =
+      ListSerializer((FhirDecimalSerializer).nullable)
   }
 }
 

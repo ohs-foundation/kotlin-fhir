@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4.Annotation
 import dev.ohs.fhir.model.r4.Canonical
 import dev.ohs.fhir.model.r4.ChargeItem
@@ -34,6 +33,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirDecimal
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Money
@@ -237,7 +237,7 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
       listSerialDescriptor(CodeableConcept.serializer().descriptor),
       isOptional = true,
     )
-    b.element("factorOverride", BigDecimalSerializer.descriptor, isOptional = true)
+    b.element("factorOverride", FhirDecimalSerializer.descriptor, isOptional = true)
     b.element("_factorOverride", Element.serializer().descriptor, isOptional = true)
     b.element("priceOverride", Money.serializer().descriptor, isOptional = true)
     b.element("overrideReason", KotlinString.serializer().descriptor, isOptional = true)
@@ -310,7 +310,7 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
     var costCenter: Reference? = null
     var quantity: Quantity? = null
     var bodysite: List<CodeableConcept>? = null
-    var factorOverride: BigDecimal? = null
+    var factorOverride: FhirDecimal? = null
     var _factorOverride: Element? = null
     var priceOverride: Money? = null
     var overrideReason: KotlinString? = null
@@ -428,7 +428,7 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.bodysiteSer, null)
         31 ->
           factorOverride =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         32 ->
           _factorOverride =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
@@ -730,7 +730,12 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
         value.bodysite,
       )
     ((value.factorOverride?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 31 + descriptorOffset, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        31 + descriptorOffset,
+        FhirDecimalSerializer,
+        it,
+      )
     }
     (value.factorOverride?.toElement())?.let {
       encoder.encodeSerializableElement(

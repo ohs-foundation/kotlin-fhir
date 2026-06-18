@@ -256,8 +256,8 @@ object PrimitiveClassSerializerFileSpecGenerator {
               ClassName("kotlinx.serialization.builtins", "ByteArraySerializer"),
             ),
         )
-      ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal") ->
-        customSerializerRef(ClassName(serializersPackage, "BigDecimalSerializer"))
+      ClassName(modelPackage, "FhirDecimal") ->
+        customSerializerRef(ClassName(serializersPackage, "FhirDecimalSerializer"))
       ClassName(modelPackage, "FhirDate") ->
         customSerializerRef(ClassName(serializersPackage, "FhirDateSerializer"))
       ClassName(modelPackage, "FhirDateTime") ->

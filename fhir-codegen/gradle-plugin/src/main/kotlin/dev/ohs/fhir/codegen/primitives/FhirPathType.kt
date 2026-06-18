@@ -34,16 +34,15 @@ import kotlinx.datetime.LocalTime
  * - **Kotlin Type on the Wire ([wireType]):** The Kotlin class used to decode/encode the value on
  *   the JSON wire (e.g. FHIRPath DateTime is a `String` on the wire).
  *
- * N.B. The Kotlin type in data class is retrieved by calling [getTypeInModelClass] with the package
- * name.
+ * N.B. Both the in-data-class type and the wire type are retrieved by calling [getTypeInModelClass]
+ * / [wireType] with the package name, since some of them (e.g. `FhirDate`, `FhirDecimal`) are types
+ * generated into the version-specific model package.
  */
-enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wireType: ClassName) {
-  BOOLEAN(
-    uri = "http://hl7.org/fhirpath/System.Boolean",
-    fhirTypeCodes = listOf("boolean"),
-    wireType = Boolean::class.asClassName(),
-  ) {
+enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
+  BOOLEAN(uri = "http://hl7.org/fhirpath/System.Boolean", fhirTypeCodes = listOf("boolean")) {
     override fun getTypeInModelClass(packageName: String) = Boolean::class.asClassName()
+
+    override fun wireType(packageName: String) = Boolean::class.asClassName()
 
     override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
@@ -68,9 +67,10 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wi
   INTEGER(
     uri = "http://hl7.org/fhirpath/System.Integer",
     fhirTypeCodes = listOf("integer", "positiveInt", "unsignedInt"),
-    wireType = Int::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = Int::class.asClassName()
+
+    override fun wireType(packageName: String) = Int::class.asClassName()
 
     override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
@@ -92,12 +92,10 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wi
       codeBlock.add(".value")
     }
   },
-  LONG(
-    uri = "http://hl7.org/fhirpath/System.Long",
-    fhirTypeCodes = listOf("integer64"),
-    wireType = String::class.asClassName(),
-  ) {
+  LONG(uri = "http://hl7.org/fhirpath/System.Long", fhirTypeCodes = listOf("integer64")) {
     override fun getTypeInModelClass(packageName: String) = Long::class.asClassName()
+
+    override fun wireType(packageName: String) = String::class.asClassName()
 
     override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
@@ -119,13 +117,10 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wi
       codeBlock.add(".value?.toString()")
     }
   },
-  DECIMAL(
-    uri = "http://hl7.org/fhirpath/System.Decimal",
-    fhirTypeCodes = listOf("decimal"),
-    wireType = ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal"),
-  ) {
-    override fun getTypeInModelClass(packageName: String) =
-      ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal")
+  DECIMAL(uri = "http://hl7.org/fhirpath/System.Decimal", fhirTypeCodes = listOf("decimal")) {
+    override fun getTypeInModelClass(packageName: String) = ClassName(packageName, "FhirDecimal")
+
+    override fun wireType(packageName: String) = ClassName(packageName, "FhirDecimal")
 
     override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
@@ -163,9 +158,10 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wi
         "uuid",
         "xhtml",
       ),
-    wireType = String::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = String::class.asClassName()
+
+    override fun wireType(packageName: String) = String::class.asClassName()
 
     override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
@@ -187,12 +183,10 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wi
       codeBlock.add(".value")
     }
   },
-  DATE(
-    uri = "http://hl7.org/fhirpath/System.Date",
-    fhirTypeCodes = listOf("date"),
-    wireType = String::class.asClassName(),
-  ) {
+  DATE(uri = "http://hl7.org/fhirpath/System.Date", fhirTypeCodes = listOf("date")) {
     override fun getTypeInModelClass(packageName: String) = ClassName(packageName, "FhirDate")
+
+    override fun wireType(packageName: String) = String::class.asClassName()
 
     override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
@@ -214,12 +208,10 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wi
       codeBlock.add(".value?.toString()")
     }
   },
-  TIME(
-    uri = "http://hl7.org/fhirpath/System.Time",
-    fhirTypeCodes = listOf("time"),
-    wireType = LocalTime::class.asClassName(),
-  ) {
+  TIME(uri = "http://hl7.org/fhirpath/System.Time", fhirTypeCodes = listOf("time")) {
     override fun getTypeInModelClass(packageName: String) = LocalTime::class.asClassName()
+
+    override fun wireType(packageName: String) = LocalTime::class.asClassName()
 
     override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
@@ -244,9 +236,10 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wi
   DATETIME(
     uri = "http://hl7.org/fhirpath/System.DateTime",
     fhirTypeCodes = listOf("dateTime", "instant"),
-    wireType = String::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = ClassName(packageName, "FhirDateTime")
+
+    override fun wireType(packageName: String) = String::class.asClassName()
 
     override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
@@ -274,6 +267,13 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wi
    * custom `FhirDateTime` for FHIR's `dateTime`.
    */
   abstract fun getTypeInModelClass(packageName: String): ClassName
+
+  /**
+   * Returns the Kotlin type used to decode/encode the value on the JSON wire — e.g. `String` for
+   * FHIR's `dateTime`, or the generated `FhirDecimal` for FHIR's `decimal`. [packageName] is needed
+   * for wire types generated into the version-specific model package.
+   */
+  abstract fun wireType(packageName: String): ClassName
 
   /**
    * Appends code to convert a decoded wire-shaped property of this [FhirPathType] to the model
@@ -322,14 +322,16 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wi
      * Whether any [FhirPathType] contains the given [fhirTypeCode] — i.e. the code names a
      * supported FHIR primitive that gets a flat `value` + `_value` pair on the wire.
      */
-    fun containsFhirTypeCode(fhirTypeCode: String) =
-      entries.any { it.fhirTypeCodes.contains(fhirTypeCode) }
+    fun containsFhirTypeCode(fhirTypeCode: String) = entries.any {
+      it.fhirTypeCodes.contains(fhirTypeCode)
+    }
 
     /**
      * Returns the [FhirPathType] for a given FHIR primitive type code, used to pick the wire
      * representation when emitting decode/encode code.
      */
-    fun getFromFhirTypeCode(fhirTypeCode: String) =
-      entries.find { it.fhirTypeCodes.contains(fhirTypeCode) }
+    fun getFromFhirTypeCode(fhirTypeCode: String) = entries.find {
+      it.fhirTypeCodes.contains(fhirTypeCode)
+    }
   }
 }

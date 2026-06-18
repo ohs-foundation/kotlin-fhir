@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r5.Boolean as R5Boolean
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.Code
@@ -37,6 +36,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.Markdown
@@ -1009,7 +1009,7 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
       element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
       element("valueInteger", Int.serializer().descriptor, isOptional = true)
       element("_valueInteger", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
       element("valueUri", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueUri", Element.serializer().descriptor, isOptional = true)
@@ -1042,7 +1042,7 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
     var _valueBoolean: Element? = null
     var valueInteger: Int? = null
     var _valueInteger: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueUri: KotlinString? = null
     var _valueUri: Element? = null
@@ -1075,7 +1075,7 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
         11 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         12 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
@@ -1150,7 +1150,7 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
       }
       is ValueSet.Expansion.Parameter.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 11, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 11, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.nameSer, it)
@@ -1522,7 +1522,7 @@ internal object ValueSetExpansionContainsPropertySerializer :
       element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
       element("valueDateTime", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
       element(
         "subProperty",
@@ -1563,7 +1563,7 @@ internal object ValueSetExpansionContainsPropertySerializer :
     var _valueBoolean: Element? = null
     var valueDateTime: KotlinString? = null
     var _valueDateTime: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var subProperty: List<ValueSet.Expansion.Contains.Property.SubProperty>? = null
     while (true) {
@@ -1602,7 +1602,7 @@ internal object ValueSetExpansionContainsPropertySerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
         16 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         17 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
@@ -1686,7 +1686,7 @@ internal object ValueSetExpansionContainsPropertySerializer :
       }
       is ValueSet.Expansion.Contains.Property.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 16, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.codeSer, it)
@@ -1743,7 +1743,7 @@ internal object ValueSetExpansionContainsPropertySubPropertySerializer :
       element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
       element("valueDateTime", KotlinString.serializer().descriptor, isOptional = true)
       element("_valueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", BigDecimalSerializer.descriptor, isOptional = true)
+      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
     }
 
@@ -1780,7 +1780,7 @@ internal object ValueSetExpansionContainsPropertySubPropertySerializer :
     var _valueBoolean: Element? = null
     var valueDateTime: KotlinString? = null
     var _valueDateTime: Element? = null
-    var valueDecimal: BigDecimal? = null
+    var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     while (true) {
       when (val i = decoder.decodeElementIndex(descriptor)) {
@@ -1818,7 +1818,7 @@ internal object ValueSetExpansionContainsPropertySubPropertySerializer :
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
         16 ->
           valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         17 ->
           _valueDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
@@ -1898,7 +1898,7 @@ internal object ValueSetExpansionContainsPropertySubPropertySerializer :
       }
       is ValueSet.Expansion.Contains.Property.SubProperty.Value.Decimal -> {
         ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 16, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.codeSer, it)

@@ -22,7 +22,6 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import dev.ohs.fhir.model.r4b.Address
 import dev.ohs.fhir.model.r4b.Boolean as R4bBoolean
 import dev.ohs.fhir.model.r4b.Code
@@ -33,6 +32,7 @@ import dev.ohs.fhir.model.r4b.Decimal
 import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
+import dev.ohs.fhir.model.r4b.FhirDecimal
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Meta
@@ -80,11 +80,11 @@ internal object LocationPositionSerializer : KSerializer<Location.Position> {
         listSerialDescriptor(Extension.serializer().descriptor),
         isOptional = true,
       )
-      element("longitude", BigDecimalSerializer.descriptor, isOptional = true)
+      element("longitude", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_longitude", Element.serializer().descriptor, isOptional = true)
-      element("latitude", BigDecimalSerializer.descriptor, isOptional = true)
+      element("latitude", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_latitude", Element.serializer().descriptor, isOptional = true)
-      element("altitude", BigDecimalSerializer.descriptor, isOptional = true)
+      element("altitude", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_altitude", Element.serializer().descriptor, isOptional = true)
     }
 
@@ -103,11 +103,11 @@ internal object LocationPositionSerializer : KSerializer<Location.Position> {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var longitude: BigDecimal? = null
+    var longitude: FhirDecimal? = null
     var _longitude: Element? = null
-    var latitude: BigDecimal? = null
+    var latitude: FhirDecimal? = null
     var _latitude: Element? = null
-    var altitude: BigDecimal? = null
+    var altitude: FhirDecimal? = null
     var _altitude: Element? = null
     while (true) {
       when (val i = decoder.decodeElementIndex(descriptor)) {
@@ -120,19 +120,19 @@ internal object LocationPositionSerializer : KSerializer<Location.Position> {
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           longitude =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         4 ->
           _longitude =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.longitudeSer, null)
         5 ->
           latitude =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         6 ->
           _latitude =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.longitudeSer, null)
         7 ->
           altitude =
-            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         8 ->
           _altitude =
             decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.longitudeSer, null)
@@ -162,19 +162,19 @@ internal object LocationPositionSerializer : KSerializer<Location.Position> {
         value.modifierExtension,
       )
     ((value.longitude.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 3, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 3, FhirDecimalSerializer, it)
     }
     (value.longitude.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.longitudeSer, it)
     }
     ((value.latitude.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 5, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
     }
     (value.latitude.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.longitudeSer, it)
     }
     ((value.altitude?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 7, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 7, FhirDecimalSerializer, it)
     }
     (value.altitude?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.longitudeSer, it)

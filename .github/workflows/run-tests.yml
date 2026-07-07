@@ -24,15 +24,12 @@ jobs:
           - target: jvmTest
             name: JVM
             os: ubuntu-latest
-            android: false
           - target: wasmJsBrowserTest
             name: Wasm
             os: ubuntu-latest
-            android: false
           - target: wasmWasiNodeTest
             name: WASI
             os: ubuntu-latest
-            android: false
           - target: jsBrowserTest
             name: JS
             os: ubuntu-latest
@@ -42,7 +39,6 @@ jobs:
           - target: iosSimulatorArm64Test
             name: iOS Simulator
             os: macos-latest
-            android: false
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
 

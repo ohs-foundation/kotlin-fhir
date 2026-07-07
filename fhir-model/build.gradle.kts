@@ -57,21 +57,7 @@ kotlin {
     }
     iosSimulatorArm64()
     iosArm64()
-    iosX64 {
-        binaries {
-            framework {
-                baseName = "KotlinFhir" // Set the name of your framework
 
-                // EXPORT DEPENDENCIES FOR OBJC INTEROP
-                // If you are using other Kotlin modules as dependencies, you may need
-                // to export them to make them visible to Objective-C/Swift:
-                // export(project(":another-module"))
-
-                // (OPTIONAL) EMBED BITCODE FOR RELEASE BUILDS (usually for iOS)
-                // embedBitcode("release") // This usually goes in a separate release config
-            }
-        }
-    }
 
     sourceSets {
         val commonMain by getting {

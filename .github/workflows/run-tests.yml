@@ -65,7 +65,7 @@ jobs:
           java-version: 21
 
       - name: Set up Android SDK
-        if: matrix.android
+        if: matrix.name == 'Android'
         run: |
           yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
           ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" > /dev/null

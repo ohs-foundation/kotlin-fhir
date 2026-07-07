@@ -40,7 +40,6 @@ jobs:
           - target: testAndroidHostTest
             name: Android
             os: ubuntu-latest
-            android: true
           - target: iosSimulatorArm64Test
             name: iOS Simulator
             os: macos-latest

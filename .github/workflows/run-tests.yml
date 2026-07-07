@@ -36,7 +36,6 @@ jobs:
           - target: jsBrowserTest
             name: JS
             os: ubuntu-latest
-            android: false
           - target: testAndroidHostTest
             name: Android
             os: ubuntu-latest

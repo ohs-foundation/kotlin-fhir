@@ -99,15 +99,17 @@ follows:
 | System.String                                                               | kotlin.String                                                               |
 | System.Integer                                                              | kotlin.Int                                                                  |
 | System.Long                                                                 | kotlin.Long                                                                 |
-| System.Decimal                                                              | com.ionspin.kotlin.bignum.decimal.BigDecimal                                |
+| System.Decimal                                                              | FhirDecimal                                                                 |
 | System.Date                                                                 | FhirDate                                                                    |
 | System.Time                                                                 | kotlinx.datetime.LocalTime                                                  |
 | System.DateTime                                                             | FhirDateTime                                                                |
 
 > [!NOTE]
+> The `System.Decimal` type is mapped to `FhirDecimal`, which wraps the
 > [Kotlin Multiplatform BigNum](https://github.com/ionspin/kotlin-multiplatform-bignum)
-> library's `BigDecimal` is used to preserve and respect the precision of decimal values as required
-> by the specification. See the notes section in [Datatypes](https://hl7.org/fhir/datatypes.html).
+> library's `BigDecimal` for safe arithmetic calculations while preserving the exact original lexical
+> string representation to respect the precision and trailing zero requirements of the FHIR
+> specification. See the notes section in [Datatypes](https://hl7.org/fhir/datatypes.html).
 
 > [!NOTE]
 > The `System.Date` and `System.DateTime` types are mapped to sealed interfaces

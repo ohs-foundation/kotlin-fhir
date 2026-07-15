@@ -32,7 +32,7 @@ import kotlinx.datetime.LocalTime
  *   (e.g. FHIRPath DateTime is represented as FHIRDateTime, an interface generated to handle FHIR's
  *   DateTime semantics).
  * - **Kotlin Type on the Wire ([wireType]):** The Kotlin class used to decode/encode the value on
- *   the JSON wire (e.g. FHIRPath DateTime is a `String` on the wire).
+ *   the JSON wire (e.g. FHIRPath DateTime is a `String` over the wire).
  *
  * N.B. Both the in-data-class type and the wire type are retrieved by calling [getTypeInModelClass]
  * / [wireType] with the package name, since some of them (e.g. `FhirDate`, `FhirDecimal`) are types

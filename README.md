@@ -93,23 +93,23 @@ the `integer.value` element in `StructureDefinition-integer.json` has the FHIRPa
 `System.Integer`) still need to be mapped to Kotlin types in the generated code. The mapping is as
 follows:
 
-| FHIRPath type <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
-|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| System.Boolean                                                              | kotlin.Boolean                                                              |
-| System.String                                                               | kotlin.String                                                               |
-| System.Integer                                                              | kotlin.Int                                                                  |
-| System.Long                                                                 | kotlin.Long                                                                 |
-| System.Decimal                                                              | FhirDecimal                                                                 |
-| System.Date                                                                 | FhirDate                                                                    |
-| System.Time                                                                 | kotlinx.datetime.LocalTime                                                  |
-| System.DateTime                                                             | FhirDateTime                                                                |
+| FHIRPath type <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin Model type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> | Kotlin Wire type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
+|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| System.Boolean                                                              | kotlin.Boolean                                                                    | kotlin.Boolean                                                                   |
+| System.String                                                               | kotlin.String                                                                     | kotlin.String                                                                    |
+| System.Integer                                                              | kotlin.Int                                                                        | kotlin.Int                                                                       |
+| System.Long                                                                 | kotlin.Long                                                                       | kotlin.String                                                                    |
+| System.Decimal                                                              | FhirDecimal                                                                       | FhirDecimal                                                                      |
+| System.Date                                                                 | FhirDate                                                                          | kotlin.String                                                                    |
+| System.Time                                                                 | kotlinx.datetime.LocalTime                                                        | kotlinx.datetime.LocalTime                                                       |
+| System.DateTime                                                             | FhirDateTime                                                                      | kotlin.String                                                                    |
 
 > [!NOTE]
 > The `System.Decimal` type is mapped to `FhirDecimal`, which wraps the
-> [Kotlin Multiplatform BigNum](https://github.com/ionspin/kotlin-multiplatform-bignum)
-> library's `BigDecimal` for safe arithmetic calculations while preserving the exact original lexical
-> string representation to respect the precision and trailing zero requirements of the FHIR
-> specification. See the notes section in [Datatypes](https://hl7.org/fhir/datatypes.html).
+> [Kotlin Multiplatform BigNum](https://github.com/ionspin/kotlin-multiplatform-bignum) library's
+> `BigDecimal` for safe arithmetic calculations and the original string representation for
+> preserving precision as required by the FHIR specification. See the notes section in
+> [Datatypes](https://hl7.org/fhir/datatypes.html).
 
 > [!NOTE]
 > The `System.Date` and `System.DateTime` types are mapped to sealed interfaces

@@ -31,11 +31,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.JsonUnquotedLiteral
 import kotlinx.serialization.json.jsonPrimitive
 
-/**
- * Serializer for `FhirDecimal` — FHIR's `decimal` primitive. Emits the value's exact lexical wire
- * form (precision and trailing zeros preserved) as an unquoted JSON number, and captures the raw
- * token verbatim on the way back in.
- */
+/** Serializer for `FhirDecimal` which outputs unquoted JSON literals. */
 internal object FhirDecimalSerializer : KSerializer<FhirDecimal> {
   override val descriptor: SerialDescriptor =
     PrimitiveSerialDescriptor("FhirDecimal", PrimitiveKind.STRING)

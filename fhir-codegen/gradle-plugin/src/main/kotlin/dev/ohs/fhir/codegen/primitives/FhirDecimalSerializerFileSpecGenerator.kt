@@ -27,17 +27,7 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-/**
- * Generates `FhirDecimalSerializer` — a [kotlinx.serialization.KSerializer] for the `FhirDecimal`
- * model type used by FHIR's `decimal` primitive.
- *
- * FHIR requires decimal precision to be preserved on the wire (`0.010 ≠ 0.01`, exponents kept). The
- * serializer emits [FhirDecimal.wire] — the exact lexical form already validated against the FHIR
- * regex — so nothing is re-derived through floating point. On the JSON path the value is written as
- * an unquoted number via `JsonUnquotedLiteral(value.wire)`; on other encoders it falls back to
- * `encodeString(value.wire)`. Deserialization captures the raw JSON number token verbatim
- * (`jsonPrimitive.content`) and hands it to `FhirDecimal.fromString`, preserving lexical fidelity.
- */
+/** Generates `FhirDecimalSerializer` that serializes `FhirDecimal` to unquoted JSON literals. */
 object FhirDecimalSerializerFileSpecGenerator {
   fun generate(packageName: String): FileSpec {
     val modelPackageName = packageName.removeSuffix(".serializers")
@@ -97,11 +87,7 @@ object FhirDecimalSerializerFileSpecGenerator {
       .addType(
         TypeSpec.objectBuilder("FhirDecimalSerializer")
           .addModifiers(KModifier.INTERNAL)
-          .addKdoc(
-            "Serializer for `FhirDecimal` — FHIR's `decimal` primitive. Emits the value's exact " +
-              "lexical wire form (precision and trailing zeros preserved) as an unquoted JSON " +
-              "number, and captures the raw token verbatim on the way back in."
-          )
+          .addKdoc("Serializer for `FhirDecimal` which outputs unquoted JSON literals.")
           .addSuperinterface(kSerializer.parameterizedBy(fhirDecimal))
           .addProperty(
             PropertySpec.builder("descriptor", serialDescriptor)

@@ -145,7 +145,7 @@ class SerializationRoundTripTest :
                   ?: Enabled.enabled
               }
             ) {
-              assertEqualsIgnoringZeros(json, testSuite.roundTripFunction(json))
+              assertSemanticEquivalence(json, testSuite.roundTripFunction(json))
             }
           }
         }
@@ -199,35 +199,30 @@ private data class SerializationRoundTripTestSuite(
   val roundTripFunction: (String) -> String,
 )
 
-private fun assertEqualsIgnoringZeros(exampleJson: String, reserializedString: String) {
-  val expected =
-    exampleJson
-      .removeTrailingZerosInFractionalSeconds()
-      .replace("+00:00", "Z") // Unify UTC offset representation for Z
-  val actual = reserializedString.removeTrailingZerosInFractionalSeconds()
-  val expectedJson = plainJson.parseToJsonElement(expected)
-  val actualJson = plainJson.parseToJsonElement(actual)
-  assertJsonEquals(expectedJson, actualJson)
+private fun assertSemanticEquivalence(exampleJson: String, reserializedString: String) {
+  val expectedJson = plainJson.parseToJsonElement(exampleJson)
+  val actualJson = plainJson.parseToJsonElement(reserializedString)
+  assertSemanticEquivalence(expectedJson, actualJson)
 }
 
-private fun assertJsonEquals(expected: JsonElement, actual: JsonElement) {
+private fun assertSemanticEquivalence(expected: JsonElement, actual: JsonElement) {
   when (expected) {
     is JsonObject if actual is JsonObject -> {
       assertEquals(expected.keys, actual.keys, "JSON object keys do not match")
       for (key in expected.keys) {
-        assertJsonEquals(expected[key]!!, actual[key]!!)
+        assertSemanticEquivalence(expected[key]!!, actual[key]!!)
       }
     }
 
     is JsonArray if actual is JsonArray -> {
       assertEquals(expected.size, actual.size, "JSON array sizes do not match")
       for (i in expected.indices) {
-        assertJsonEquals(expected[i], actual[i])
+        assertSemanticEquivalence(expected[i], actual[i])
       }
     }
 
     is JsonPrimitive if actual is JsonPrimitive -> {
-      assertEquals(expected.content, actual.content)
+      assertEquals(normalizeDateTime(expected.content), normalizeDateTime(actual.content))
     }
 
     else -> {
@@ -235,6 +230,11 @@ private fun assertJsonEquals(expected: JsonElement, actual: JsonElement) {
     }
   }
 }
+
+private fun normalizeDateTime(content: String): String =
+  content
+    .removeTrailingZerosInFractionalSeconds()
+    .replace("+00:00", "Z") // Unify UTC offset representation for Z
 
 // Matches trailing zeros in fractional seconds, e.g. ".1200Z" -> ".12Z" (preserves the non-zero
 // digits before the trailing zeros)

@@ -47,7 +47,6 @@ class FhirDecimalTest {
 
   private fun roundTrip(value: String) {
     val decimal = FhirDecimal.fromString(value)
-    assertEquals(value, decimal.wire)
     assertEquals(value, decimal.toString())
   }
 
@@ -68,7 +67,7 @@ class FhirDecimalTest {
   @Test
   fun fromBigDecimal_usesPlainStringWire() {
     val decimal = FhirDecimal.fromBigDecimal(BigDecimal.fromInt(100))
-    assertEquals("100", decimal.wire)
+    assertEquals("100", decimal.toString())
     assertEquals(0, decimal.compareTo(FhirDecimal.fromString("100")))
   }
 
@@ -89,6 +88,6 @@ class FhirDecimalTest {
   // --- Scientific notation is preserved verbatim across versions. ---
   @Test
   fun r5_scientificNotation_roundTrips() {
-    assertEquals("1E-22", R5FhirDecimal.fromString("1E-22").wire)
+    assertEquals("1E-22", R5FhirDecimal.fromString("1E-22").toString())
   }
 }

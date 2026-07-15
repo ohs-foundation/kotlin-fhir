@@ -184,7 +184,7 @@ object FhirDecimalFileSpecGenerator {
         .addKdoc(
           "FHIR `decimal` value: a precision-preserving rational number backed by an ionspin " +
             "`BigDecimal`. The wrapped value is kept `internal`; consumers operate on this type " +
-            "through its `BigNumber` arithmetic surface and read [wire] for the exact lexical form."
+            "through its `BigNumber` arithmetic surface and call [toString] for the exact lexical form."
         )
         .addSuperinterface(bigNumber.parameterizedBy(fd))
         // Comparable<Any> (not Comparable<FhirDecimal>) mirrors ionspin's own BigDecimal: a single
@@ -208,6 +208,7 @@ object FhirDecimalFileSpecGenerator {
         )
         .addProperty(
           PropertySpec.builder("wire", string)
+            .addModifiers(KModifier.INTERNAL)
             .addKdoc("The exact lexical form to emit on the wire.")
             .initializer("wire")
             .build()
@@ -358,7 +359,7 @@ object FhirDecimalFileSpecGenerator {
           FunSpec.builder("asBigDecimal")
             .addKdoc(
               "Returns the underlying value as an ionspin `BigDecimal` (loses the preserved [wire]" +
-                " lexical form; for the exact serialized text use [wire])."
+                " lexical form; for the exact serialized text call [toString])."
             )
             .returns(bigDecimal)
             .addStatement("return bigDecimal")

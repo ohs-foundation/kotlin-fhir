@@ -137,7 +137,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       )
     } else if (isFhirPathUri) {
       val kotlinType =
-        FhirPathType.getFromUri(typeCode)!!.getTypeInModelClass(modelClassName.packageName)
+        FhirPathType.getFromUri(typeCode)!!.getDataModelType(modelClassName.packageName)
       val idx = nameToIdx.getValue(propertyName)
       emitPrimitiveOrSerializableEncode(
         codeBlock,
@@ -321,7 +321,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     val elementIdx = nameToIdx["_$choiceFieldBaseName"]
     if (FhirPathType.containsFhirTypeCode(typeCode)) {
       val fhirPathType = FhirPathType.getFromFhirTypeCode(typeCode)!!
-      val primClassName = fhirPathType.wireType(modelClassName.packageName)
+      val wireClassName = fhirPathType.getWireType(modelClassName.packageName)
       // Value expansion
       val valueExpr =
         CodeBlock.builder()
@@ -335,7 +335,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         codeBlock,
         "encoder",
         valueIdx,
-        primClassName,
+        wireClassName,
         valueExpr,
         modelClassName,
         hoister,
@@ -382,10 +382,10 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     val fhirPathType = FhirPathType.getFromFhirTypeCode(typeCode)!!
     val isEnum = element.typeIsEnumeratedCode(codegenContext.valueSetMap)
     val isRequired = element.min == 1 && element.max == "1"
-    val surrClassName: ClassName = fhirPathType.wireType(modelClassName.packageName)
+    val wireClassName: ClassName = fhirPathType.getWireType(modelClassName.packageName)
     val valueIdx = nameToIdx.getValue(propertyName)
     val elementIdx = nameToIdx.getValue("_$propertyName")
-    val valueType: ClassName = if (isEnum) String::class.asClassName() else surrClassName
+    val valueType: ClassName = if (isEnum) String::class.asClassName() else wireClassName
     val valueExpr =
       CodeBlock.builder()
         .apply {
@@ -442,20 +442,20 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     val typeCode = element.type!!.single().code
     val fhirPathType = FhirPathType.getFromFhirTypeCode(typeCode)!!
     val isEnum = element.typeIsEnumeratedCode(codegenContext.valueSetMap)
-    val surrClassName: ClassName = fhirPathType.wireType(modelClassName.packageName)
+    val wireClassName: ClassName = fhirPathType.getWireType(modelClassName.packageName)
     val valueIdx = nameToIdx.getValue(propertyName)
     val elementIdx = nameToIdx.getValue("_$propertyName")
-    val valueInnerType: ClassName = if (isEnum) String::class.asClassName() else surrClassName
+    val valueInnerType: ClassName = if (isEnum) String::class.asClassName() else wireClassName
     val valueInnerSer =
       if (isEnum)
         hoistedSerializerForClass(String::class.asClassName(), modelClassName, hoister, "stringSer")
       else
-        customSerializerFor(surrClassName, modelClassName)?.let { CodeBlock.of("%T", it) }
+        customSerializerFor(wireClassName, modelClassName)?.let { CodeBlock.of("%T", it) }
           ?: hoistedSerializerForClass(
-            surrClassName,
+            wireClassName,
             modelClassName,
             hoister,
-            "${surrClassName.simpleName.lowercase()}Ser",
+            "${wireClassName.simpleName.lowercase()}Ser",
           )
     val listOfNullableType: (ClassName) -> TypeName = { inner ->
       ClassName("kotlin.collections", "List").parameterizedBy(inner.copy(nullable = true))

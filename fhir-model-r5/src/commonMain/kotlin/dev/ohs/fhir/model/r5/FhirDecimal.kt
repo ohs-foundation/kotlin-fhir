@@ -38,13 +38,13 @@ import kotlin.UShort
 /**
  * FHIR `decimal` value: a precision-preserving rational number backed by an ionspin `BigDecimal`.
  * The wrapped value is kept `internal`; consumers operate on this type through its `BigNumber`
- * arithmetic surface and read [wire] for the exact lexical form.
+ * arithmetic surface and call [toString] for the exact lexical form.
  */
 public class FhirDecimal
 private constructor(
   internal val bigDecimal: BigDecimal,
   /** The exact lexical form to emit on the wire. */
-  public val wire: String,
+  internal val wire: String,
 ) : BigNumber<FhirDecimal>, Comparable<Any> {
   override val isNegative: Boolean
     get() = bigDecimal.isNegative
@@ -108,7 +108,7 @@ private constructor(
 
   /**
    * Returns the underlying value as an ionspin `BigDecimal` (loses the preserved [wire] lexical
-   * form; for the exact serialized text use [wire]).
+   * form; for the exact serialized text call [toString]).
    */
   public fun asBigDecimal(): BigDecimal = bigDecimal
 

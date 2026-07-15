@@ -847,11 +847,10 @@ executed:
 
 [^7]: There are several exceptions. The FHIR specification allows for some variability in data
 representation, which may lead to differences between the original and newly serialized JSON. For
-example, additional trailing zeros in decimals and times, non-standard JSON property ordering, the
-use of `+00:00` instead of `Z` for zero UTC offset, and large numbers represented in standard
-notation instead of scientific notation (e.g. 1000000000000000000 instead of 1E18). The
-serialization process normalizes these variations, resulting in potentially different JSON output.
-However, in all of these cases, semantic equivalence is maintained.
+example, non-standard JSON property ordering, additional trailing zeros in datetime and time, and
+the use of `+00:00` instead of `Z` for zero UTC offset. The serialization process normalizes these
+variations, resulting in potentially different JSON output. However, in all of these cases, semantic
+equivalence is maintained.
 
 #### Unit tests
 

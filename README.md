@@ -93,16 +93,16 @@ the `integer.value` element in `StructureDefinition-integer.json` has the FHIRPa
 `System.Integer`) still need to be mapped to Kotlin types in the generated code. The mapping is as
 follows:
 
-| FHIRPath type <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin Model type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> | Kotlin Wire type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
-|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| System.Boolean                                                              | kotlin.Boolean                                                                    | kotlin.Boolean                                                                   |
-| System.String                                                               | kotlin.String                                                                     | kotlin.String                                                                    |
-| System.Integer                                                              | kotlin.Int                                                                        | kotlin.Int                                                                       |
-| System.Long                                                                 | kotlin.Long                                                                       | kotlin.String                                                                    |
-| System.Decimal                                                              | FhirDecimal                                                                       | FhirDecimal                                                                      |
-| System.Date                                                                 | FhirDate                                                                          | kotlin.String                                                                    |
-| System.Time                                                                 | kotlinx.datetime.LocalTime                                                        | kotlinx.datetime.LocalTime                                                       |
-| System.DateTime                                                             | FhirDateTime                                                                      | kotlin.String                                                                    |
+| FHIRPath type <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin data model type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> | Kotlin wire type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
+|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| System.Boolean                                                              | kotlin.Boolean                                                                         | kotlin.Boolean                                                                   |
+| System.String                                                               | kotlin.String                                                                          | kotlin.String                                                                    |
+| System.Integer                                                              | kotlin.Int                                                                             | kotlin.Int                                                                       |
+| System.Long                                                                 | kotlin.Long                                                                            | kotlin.String                                                                    |
+| System.Decimal                                                              | FhirDecimal                                                                            | FhirDecimal                                                                      |
+| System.Date                                                                 | FhirDate                                                                               | kotlin.String                                                                    |
+| System.Time                                                                 | kotlinx.datetime.LocalTime                                                             | kotlinx.datetime.LocalTime                                                       |
+| System.DateTime                                                             | FhirDateTime                                                                           | kotlin.String                                                                    |
 
 > [!NOTE]
 > The `System.Decimal` type is mapped to `FhirDecimal`, which wraps the
@@ -651,7 +651,8 @@ val updated = patient.copy(
 )
 ```
 
-For deeper mutations (e.g. appending to lists or modifying nested elements), use `toBuilder()`:
+For deeper mutations (e.g. appending to lists or modifying nested elements), use `toBuilder()` to
+avoid nesting `copy()` multiple times:
 
 ```kotlin
 val updated = patient.toBuilder().apply {
@@ -662,6 +663,98 @@ val updated = patient.toBuilder().apply {
     )
 }.build()
 ```
+
+### Working with FHIR primitives
+
+To handle FHIR-specific semantics, FHIR primitives like `decimal`, `date`, and `dateTime` map to
+specialized Kotlin helper classes instead of Kotlin standard library types.
+
+#### Working with decimals (`FhirDecimal`)
+
+The FHIR `decimal` type is mapped to `FhirDecimal` class, which implements `BigNumber<FhirDecimal>`
+and `Comparable<Any>` and wraps a Kotlin Multiplatform `BigDecimal` for safe arbitrary-precision
+arithmetic calculations.
+
+To instantiate and use `FhirDecimal`:
+
+```kotlin
+import dev.ohs.fhir.model.r4.FhirDecimal
+
+// Create FhirDecimal instances
+val value1 = FhirDecimal.fromString("1.50") // Preserves exact "1.50"
+val value2 = FhirDecimal.fromInt(10)
+
+// Perform math operations using standard operators
+val sum = value1 + value2 // 11.50
+
+// Access the underlying BigDecimal representation
+val bigDecimalValue = value1.asBigDecimal()
+
+// Access the string representation
+val rawString = value1.toString() // "1.50"
+```
+
+#### Working with partial dates (`FhirDate` and `FhirDateTime`)
+
+`FhirDate` and `FhirDateTime` are sealed interfaces representing FHIR `date` and `dateTime` data
+types, supporting partial dates and date-times. Specifically, `FhirDate` supports Year, YearMonth,
+or full Date precision, while `FhirDateTime` additionally supports full DateTime precision (with a
+required UTC offset).
+
+Here is how you parse and construct them in code:
+
+```kotlin
+import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.FhirDateTime
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.UtcOffset
+import kotlinx.datetime.YearMonth
+
+// Use constructors
+val dateYear = FhirDate.Year(1985)
+val dateYearMonth = FhirDate.YearMonth(YearMonth(1985, 3))
+val dateFull = FhirDate.Date(LocalDate(1985, 3, 15))
+
+val dateTimeYear = FhirDateTime.Year(1985)
+val dateTimeYearMonth = FhirDateTime.YearMonth(YearMonth(1985, 3))
+val dateTimeDate = FhirDateTime.Date(LocalDate(1985, 3, 15))
+val dateTimeFull = FhirDateTime.DateTime(
+    dateTime = LocalDateTime(1985, 3, 15, 13, 0, 0),
+    utcOffset = UtcOffset(hours = 1)
+)
+
+// Parse from strings
+val dateYearFromString = FhirDate.fromString("1985")
+val dateYearMonthFromString = FhirDate.fromString("1985-03")
+val dateFullFromString = FhirDate.fromString("1985-03-15")
+
+val dateTimeYearFromString = FhirDateTime.fromString("1985")
+val dateTimeYearMonthFromString = FhirDateTime.fromString("1985-03")
+val dateTimeDateFromString = FhirDateTime.fromString("1985-03-15")
+val dateTimeFullFromString = FhirDateTime.fromString("1985-03-15T13:00:00+01:00")
+```
+
+##### Pattern Matching
+
+Because `FhirDate` and `FhirDateTime` are sealed interfaces, you can use exhaustive `when`
+expressions to safely destructure and handle each precision level:
+
+```kotlin
+fun describeDate(date: FhirDate): String = when (date) {
+    is FhirDate.Year -> "Year: ${date.value}"
+    is FhirDate.YearMonth -> "Year-Month: ${date.value}"
+    is FhirDate.Date -> "Full Date: ${date.date}"
+}
+
+fun describeDateTime(dateTime: FhirDateTime): String = when (dateTime) {
+    is FhirDateTime.Year -> "Year: ${dateTime.value}"
+    is FhirDateTime.YearMonth -> "Year-Month: ${dateTime.value}"
+    is FhirDateTime.Date -> "Date: ${dateTime.date}"
+    is FhirDateTime.DateTime -> "Date-Time: ${dateTime.dateTime} with offset ${dateTime.utcOffset}"
+}
+```
+
 
 ### Working with search parameters
 
@@ -676,12 +769,12 @@ import dev.ohs.fhir.model.r4.search.PatientSearchParams
 val birthdates: List<Date> = PatientSearchParams.birthdate.extractFrom(patient)
 ```
 
-Alternatively, use the more fluent `extract()` extension function on the resource object itself:
+Alternatively, use the fluent `extract()` extension function on the resource object itself:
 
 ```kotlin
 import dev.ohs.fhir.model.r4.search.extract
 
-val birthdates: List<Date> = patient.extract(PatientSearchParams.birthdate)
+val birthDates: List<Date> = patient.extract(PatientSearchParams.birthdate)
 ```
 
 To iterate over all supported parameters for a given resource type (e.g. to build a search index):

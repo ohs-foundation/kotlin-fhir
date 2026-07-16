@@ -174,11 +174,9 @@ private class BuilderSupportGenerator(
     typeSpecBuilder.addType(
       TypeSpec.classBuilder("Builder")
         .addModifiers(KModifier.ABSTRACT)
-        // Expose `id` as a settable, polymorphic property on the abstract base builder so callers
-        // can set it without knowing the concrete resource type (e.g. `resource.toBuilder().apply
-        // { id = … }.build()`). Concrete builders back this field and override it (see
-        // `overridesResourceId` in addBuilderClass). KDoc is not generated from the element
-        // comment since the generated code allows setting the id.
+        // Lets callers set an id on any resource without knowing its concrete type; concrete
+        // builders override this property. KDoc is not generated from the element comment since
+        // the generated code allows setting the id.
         .addProperty(
           PropertySpec.builder("id", STRING.copy(nullable = true))
             .mutable()
@@ -310,8 +308,7 @@ private class BuilderSupportGenerator(
     val constructorBuilder = FunSpec.constructorBuilder()
     elements.forEach { element ->
       val propertyInfo = propertyMapper.mapToProperty(element)
-      // Concrete resource builders inherit an abstract `id` from Resource.Builder, so their backing
-      // `id` property overrides it.
+      // Concrete resource builders override the abstract `id` declared on Resource.Builder.
       val isInheritedResourceId = overridesResourceId && element.getElementName() == "id"
       val property =
         PropertySpec.builder(propertyInfo.name, propertyInfo.typeName)

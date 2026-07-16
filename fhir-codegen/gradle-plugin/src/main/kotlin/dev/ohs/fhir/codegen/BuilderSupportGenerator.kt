@@ -311,12 +311,8 @@ private class BuilderSupportGenerator(
     elements.forEach { element ->
       val propertyInfo = propertyMapper.mapToProperty(element)
       // Concrete resource builders inherit an abstract `id` from Resource.Builder, so their backing
-      // `id` property overrides it. (`path != base.path` confirms `id` is inherited, never declared
-      // locally.)
-      val isInheritedResourceId =
-        overridesResourceId &&
-          element.getElementName() == "id" &&
-          element.path != element.base?.path
+      // `id` property overrides it.
+      val isInheritedResourceId = overridesResourceId && element.getElementName() == "id"
       val property =
         PropertySpec.builder(propertyInfo.name, propertyInfo.typeName)
           .mutable()

@@ -104,9 +104,6 @@ private class BuilderSupportGenerator(
               overrideBaseBuilder = true,
               overrideBaseProperties = false,
               open = false,
-              // `id` is abstract on Resource.Builder (see addBuilderForResource); concrete resource
-              // builders inherit it and must override their backing `id` property.
-              overridesResourceId = true,
             )
             addToBuilderFunction(
               structureDefinition.rootElements,
@@ -234,7 +231,6 @@ private class BuilderSupportGenerator(
     overrideBaseBuilder: Boolean,
     overrideBaseProperties: Boolean,
     open: Boolean,
-    overridesResourceId: Boolean = false,
   ) =
     typeSpecBuilder.addType(
       TypeSpec.classBuilder(baseClassName.nestedClass("Builder"))
@@ -252,7 +248,8 @@ private class BuilderSupportGenerator(
             elements,
             override = overrideBaseProperties,
             open = open,
-            overridesResourceId = overridesResourceId,
+            overridesResourceId =
+              overrideBaseBuilder && structureDefinition.kind == StructureDefinition.Kind.RESOURCE,
           )
         }
         .addFunction(
@@ -313,7 +310,7 @@ private class BuilderSupportGenerator(
     elements: List<Element>,
     override: Boolean,
     open: Boolean,
-    overridesResourceId: Boolean = false,
+    overridesResourceId: Boolean,
   ) {
     val propertyMapper =
       PropertyMapper(PropertyMapper.MappingContext.BUILDER, baseClassName, valueSetMap)

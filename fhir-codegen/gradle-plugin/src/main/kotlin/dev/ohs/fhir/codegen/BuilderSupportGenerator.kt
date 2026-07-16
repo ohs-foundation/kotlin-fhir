@@ -22,6 +22,7 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeSpec
 import dev.ohs.fhir.codegen.primitives.FhirPathType
 import dev.ohs.fhir.codegen.schema.Element
@@ -170,28 +171,20 @@ private class BuilderSupportGenerator(
   }
 
   private fun addBuilderForResource() {
-    val builder = TypeSpec.classBuilder("Builder").addModifiers(KModifier.ABSTRACT)
-    // Expose `id` as a settable, polymorphic property on the abstract base builder so callers can
-    // set it without knowing the concrete resource type (e.g. `resource.toBuilder().apply { id =
-    // … }.build()`). Concrete builders already back this field; they override it (see
-    // `overridesResourceId` in addBuilderClass).
-    structureDefinition.rootElements
-      .firstOrNull { it.getElementName() == "id" }
-      ?.let { idElement ->
-        val propertyInfo =
-          PropertyMapper(PropertyMapper.MappingContext.BUILDER, baseClassName, valueSetMap)
-            .mapToProperty(idElement)
-        // KDoc is not generated from the element comment since the generated code allows setting
-        // the id.
-        builder.addProperty(
-          PropertySpec.builder(propertyInfo.name, propertyInfo.typeName)
+    typeSpecBuilder.addType(
+      TypeSpec.classBuilder("Builder")
+        .addModifiers(KModifier.ABSTRACT)
+        // Expose `id` as a settable, polymorphic property on the abstract base builder so callers
+        // can set it without knowing the concrete resource type (e.g. `resource.toBuilder().apply
+        // { id = … }.build()`). Concrete builders back this field and override it (see
+        // `overridesResourceId` in addBuilderClass). KDoc is not generated from the element
+        // comment since the generated code allows setting the id.
+        .addProperty(
+          PropertySpec.builder("id", STRING.copy(nullable = true))
             .mutable()
             .addModifiers(KModifier.ABSTRACT)
             .build()
         )
-      }
-    typeSpecBuilder.addType(
-      builder
         .addFunction(
           FunSpec.builder("build").returns(baseClassName).addModifiers(KModifier.ABSTRACT).build()
         )

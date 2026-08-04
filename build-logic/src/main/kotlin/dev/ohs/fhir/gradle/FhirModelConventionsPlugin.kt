@@ -100,8 +100,11 @@ class FhirModelConventionsPlugin : Plugin<Project> {
           // level doesn't silently track the toolchain.
           android.compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
         }
+        macosArm64()
         iosSimulatorArm64()
         iosArm64()
+        linuxX64()
+        linuxArm64()
 
         val commonMain = sourceSets.getByName("commonMain")
         // Explicitly set source dirs to avoid "redeclaration" errors with build/generated

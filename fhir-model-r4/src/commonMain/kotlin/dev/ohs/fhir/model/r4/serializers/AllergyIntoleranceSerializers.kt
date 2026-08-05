@@ -493,7 +493,11 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
           )
         },
       code = code,
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on AllergyIntolerance"
+          ),
       encounter = encounter,
       onset =
         AllergyIntolerance.Onset.from(

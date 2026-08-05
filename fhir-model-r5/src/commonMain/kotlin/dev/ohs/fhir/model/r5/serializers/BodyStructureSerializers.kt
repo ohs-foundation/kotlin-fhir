@@ -161,7 +161,11 @@ internal object BodyStructureIncludedStructureSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      structure = structure!!,
+      structure =
+        structure
+          ?: throw SerializationException(
+            "Missing required property 'structure' on BodyStructure.IncludedStructure"
+          ),
       laterality = laterality,
       bodyLandmarkOrientation = bodyLandmarkOrientation ?: listOf(),
       spatialReference = spatialReference ?: listOf(),
@@ -711,7 +715,9 @@ internal object BodyStructureSerializer : KSerializer<BodyStructure> {
       excludedStructure = excludedStructure ?: listOf(),
       description = Markdown.of(description, _description),
       image = image ?: listOf(),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException("Missing required property 'patient' on BodyStructure"),
     )
   }
 

@@ -127,7 +127,11 @@ internal object CoveragePaymentBySerializer : KSerializer<Coverage.PaymentBy> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      party = party!!,
+      party =
+        party
+          ?: throw SerializationException(
+            "Missing required property 'party' on Coverage.PaymentBy"
+          ),
       responsibility = R5String.of(responsibility, _responsibility),
     )
   }
@@ -223,8 +227,11 @@ internal object CoverageClassSerializer : KSerializer<Coverage.Class> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
-      `value` = `value`!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Coverage.Class"),
+      `value` =
+        `value`
+          ?: throw SerializationException("Missing required property 'value' on Coverage.Class"),
       name = R5String.of(name, _name),
     )
   }
@@ -463,7 +470,11 @@ internal object CoverageCostToBeneficiaryExceptionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on Coverage.CostToBeneficiary.Exception"
+          ),
       period = period,
     )
   }
@@ -738,14 +749,28 @@ internal object CoverageSerializer : KSerializer<Coverage> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Coverage.FinancialResourceStatusCodes.fromCode(status!!), _status),
-      kind = Enumeration.of(Coverage.Kind.fromCode(kind!!), _kind),
+      status =
+        Enumeration.of(
+          Coverage.FinancialResourceStatusCodes.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Coverage")
+          ),
+          _status,
+        ),
+      kind =
+        Enumeration.of(
+          Coverage.Kind.fromCode(
+            kind ?: throw SerializationException("Missing required property 'kind' on Coverage")
+          ),
+          _kind,
+        ),
       paymentBy = paymentBy ?: listOf(),
       type = type,
       policyHolder = policyHolder,
       subscriber = subscriber,
       subscriberId = subscriberId ?: listOf(),
-      beneficiary = beneficiary!!,
+      beneficiary =
+        beneficiary
+          ?: throw SerializationException("Missing required property 'beneficiary' on Coverage"),
       dependent = R5String.of(dependent, _dependent),
       relationship = relationship,
       period = period,

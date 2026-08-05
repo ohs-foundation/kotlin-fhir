@@ -125,7 +125,11 @@ internal object MedicationAdministrationPerformerSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on MedicationAdministration.Performer"
+          ),
     )
   }
 
@@ -573,13 +577,26 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          MedicationAdministration.MedicationAdministrationStatusCodes.fromCode(status!!),
+          MedicationAdministration.MedicationAdministrationStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on MedicationAdministration"
+              )
+          ),
           _status,
         ),
       statusReason = statusReason ?: listOf(),
       category = category ?: listOf(),
-      medication = medication!!,
-      subject = subject!!,
+      medication =
+        medication
+          ?: throw SerializationException(
+            "Missing required property 'medication' on MedicationAdministration"
+          ),
+      subject =
+        subject
+          ?: throw SerializationException(
+            "Missing required property 'subject' on MedicationAdministration"
+          ),
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),
       occurence =
@@ -587,7 +604,10 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
           DateTime.of(FhirDateTime.fromString(occurenceDateTime), _occurenceDateTime),
           occurencePeriod,
           occurenceTiming,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'occurence' on MedicationAdministration"
+          ),
       recorded = DateTime.of(FhirDateTime.fromString(recorded), _recorded),
       isSubPotent = R5Boolean.of(isSubPotent, _isSubPotent),
       subPotentReason = subPotentReason ?: listOf(),

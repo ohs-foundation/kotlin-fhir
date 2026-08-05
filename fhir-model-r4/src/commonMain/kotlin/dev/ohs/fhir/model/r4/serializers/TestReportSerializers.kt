@@ -127,8 +127,21 @@ internal object TestReportParticipantSerializer : KSerializer<TestReport.Partici
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(TestReport.TestReportParticipantType.fromCode(type!!), _type),
-      uri = Uri.of(uri, _uri)!!,
+      type =
+        Enumeration.of(
+          TestReport.TestReportParticipantType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on TestReport.Participant"
+              )
+          ),
+          _type,
+        ),
+      uri =
+        Uri.of(uri, _uri)
+          ?: throw SerializationException(
+            "Missing required property 'uri' on TestReport.Participant"
+          ),
       display = R4String.of(display, _display),
     )
   }
@@ -431,7 +444,16 @@ internal object TestReportSetupActionOperationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      result = Enumeration.of(TestReport.TestReportActionResult.fromCode(result!!), _result),
+      result =
+        Enumeration.of(
+          TestReport.TestReportActionResult.fromCode(
+            result
+              ?: throw SerializationException(
+                "Missing required property 'result' on TestReport.Setup.Action.Operation"
+              )
+          ),
+          _result,
+        ),
       message = Markdown.of(message, _message),
       detail = Uri.of(detail, _detail),
     )
@@ -548,7 +570,16 @@ internal object TestReportSetupActionAssertSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      result = Enumeration.of(TestReport.TestReportActionResult.fromCode(result!!), _result),
+      result =
+        Enumeration.of(
+          TestReport.TestReportActionResult.fromCode(
+            result
+              ?: throw SerializationException(
+                "Missing required property 'result' on TestReport.Setup.Action.Assert"
+              )
+          ),
+          _result,
+        ),
       message = Markdown.of(message, _message),
       detail = R4String.of(detail, _detail),
     )
@@ -954,7 +985,11 @@ internal object TestReportTeardownActionSerializer : KSerializer<TestReport.Tear
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      operation = operation!!,
+      operation =
+        operation
+          ?: throw SerializationException(
+            "Missing required property 'operation' on TestReport.Teardown.Action"
+          ),
     )
   }
 
@@ -1174,9 +1209,25 @@ internal object TestReportSerializer : KSerializer<TestReport> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
       name = R4String.of(name, _name),
-      status = Enumeration.of(TestReport.TestReportStatus.fromCode(status!!), _status),
-      testScript = testScript!!,
-      result = Enumeration.of(TestReport.TestReportResult.fromCode(result!!), _result),
+      status =
+        Enumeration.of(
+          TestReport.TestReportStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on TestReport")
+          ),
+          _status,
+        ),
+      testScript =
+        testScript
+          ?: throw SerializationException("Missing required property 'testScript' on TestReport"),
+      result =
+        Enumeration.of(
+          TestReport.TestReportResult.fromCode(
+            result
+              ?: throw SerializationException("Missing required property 'result' on TestReport")
+          ),
+          _result,
+        ),
       score = Decimal.of(score, _score),
       tester = R4String.of(tester, _tester),
       issued = DateTime.of(FhirDateTime.fromString(issued), _issued),

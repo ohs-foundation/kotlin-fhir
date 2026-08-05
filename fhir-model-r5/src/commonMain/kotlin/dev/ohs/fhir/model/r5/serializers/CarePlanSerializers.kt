@@ -516,12 +516,25 @@ internal object CarePlanSerializer : KSerializer<CarePlan> {
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(CarePlan.RequestStatus.fromCode(status!!), _status),
-      intent = Enumeration.of(CarePlan.CarePlanIntent.fromCode(intent!!), _intent),
+      status =
+        Enumeration.of(
+          CarePlan.RequestStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on CarePlan")
+          ),
+          _status,
+        ),
+      intent =
+        Enumeration.of(
+          CarePlan.CarePlanIntent.fromCode(
+            intent ?: throw SerializationException("Missing required property 'intent' on CarePlan")
+          ),
+          _intent,
+        ),
       category = category ?: listOf(),
       title = R5String.of(title, _title),
       description = R5String.of(description, _description),
-      subject = subject!!,
+      subject =
+        subject ?: throw SerializationException("Missing required property 'subject' on CarePlan"),
       encounter = encounter,
       period = period,
       created = DateTime.of(FhirDateTime.fromString(created), _created),

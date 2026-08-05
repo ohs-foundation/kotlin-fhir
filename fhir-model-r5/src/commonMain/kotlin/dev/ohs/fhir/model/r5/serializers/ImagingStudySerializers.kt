@@ -202,9 +202,15 @@ internal object ImagingStudySeriesSerializer : KSerializer<ImagingStudy.Series> 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      uid = Id.of(uid, _uid)!!,
+      uid =
+        Id.of(uid, _uid)
+          ?: throw SerializationException("Missing required property 'uid' on ImagingStudy.Series"),
       number = UnsignedInt.of(number, _number),
-      modality = modality!!,
+      modality =
+        modality
+          ?: throw SerializationException(
+            "Missing required property 'modality' on ImagingStudy.Series"
+          ),
       description = R5String.of(description, _description),
       numberOfInstances = UnsignedInt.of(numberOfInstances, _numberOfInstances),
       endpoint = endpoint ?: listOf(),
@@ -353,7 +359,11 @@ internal object ImagingStudySeriesPerformerSerializer : KSerializer<ImagingStudy
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on ImagingStudy.Series.Performer"
+          ),
     )
   }
 
@@ -458,8 +468,16 @@ internal object ImagingStudySeriesInstanceSerializer : KSerializer<ImagingStudy.
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      uid = Id.of(uid, _uid)!!,
-      sopClass = sopClass!!,
+      uid =
+        Id.of(uid, _uid)
+          ?: throw SerializationException(
+            "Missing required property 'uid' on ImagingStudy.Series.Instance"
+          ),
+      sopClass =
+        sopClass
+          ?: throw SerializationException(
+            "Missing required property 'sopClass' on ImagingStudy.Series.Instance"
+          ),
       number = UnsignedInt.of(number, _number),
       title = R5String.of(title, _title),
     )
@@ -726,9 +744,18 @@ internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(ImagingStudy.ImagingStudyStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          ImagingStudy.ImagingStudyStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on ImagingStudy")
+          ),
+          _status,
+        ),
       modality = modality ?: listOf(),
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on ImagingStudy"),
       encounter = encounter,
       started = DateTime.of(FhirDateTime.fromString(started), _started),
       basedOn = basedOn ?: listOf(),

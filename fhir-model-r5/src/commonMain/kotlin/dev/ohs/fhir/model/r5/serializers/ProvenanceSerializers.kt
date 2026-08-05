@@ -129,7 +129,8 @@ internal object ProvenanceAgentSerializer : KSerializer<Provenance.Agent> {
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
       role = role ?: listOf(),
-      who = who!!,
+      who =
+        who ?: throw SerializationException("Missing required property 'who' on Provenance.Agent"),
       onBehalfOf = onBehalfOf,
     )
   }
@@ -231,8 +232,19 @@ internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      role = Enumeration.of(Provenance.ProvenanceEntityRole.fromCode(role!!), _role),
-      what = what!!,
+      role =
+        Enumeration.of(
+          Provenance.ProvenanceEntityRole.fromCode(
+            role
+              ?: throw SerializationException(
+                "Missing required property 'role' on Provenance.Entity"
+              )
+          ),
+          _role,
+        ),
+      what =
+        what
+          ?: throw SerializationException("Missing required property 'what' on Provenance.Entity"),
       agent = agent ?: listOf(),
     )
   }

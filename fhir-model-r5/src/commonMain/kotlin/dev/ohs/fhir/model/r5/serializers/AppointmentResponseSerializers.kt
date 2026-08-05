@@ -257,7 +257,11 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      appointment = appointment!!,
+      appointment =
+        appointment
+          ?: throw SerializationException(
+            "Missing required property 'appointment' on AppointmentResponse"
+          ),
       proposedNewTime = R5Boolean.of(proposedNewTime, _proposedNewTime),
       start = Instant.of(FhirDateTime.fromString(start), _start),
       end = Instant.of(FhirDateTime.fromString(end), _end),
@@ -265,7 +269,12 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
       actor = actor,
       participantStatus =
         Enumeration.of(
-          AppointmentResponse.AppointmentResponseStatus.fromCode(participantStatus!!),
+          AppointmentResponse.AppointmentResponseStatus.fromCode(
+            participantStatus
+              ?: throw SerializationException(
+                "Missing required property 'participantStatus' on AppointmentResponse"
+              )
+          ),
           _participantStatus,
         ),
       comment = Markdown.of(comment, _comment),

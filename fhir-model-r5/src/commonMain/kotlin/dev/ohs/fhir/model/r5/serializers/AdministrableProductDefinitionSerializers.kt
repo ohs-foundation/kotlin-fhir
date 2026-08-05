@@ -178,7 +178,11 @@ internal object AdministrableProductDefinitionPropertySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on AdministrableProductDefinition.Property"
+          ),
       `value` =
         AdministrableProductDefinition.Property.Value.from(
           valueCodeableConcept,
@@ -370,7 +374,11 @@ internal object AdministrableProductDefinitionRouteOfAdministrationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on AdministrableProductDefinition.RouteOfAdministration"
+          ),
       firstDose = firstDose,
       maxSingleDose = maxSingleDose,
       maxDosePerDay = maxDosePerDay,
@@ -524,7 +532,11 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on AdministrableProductDefinition.RouteOfAdministration.TargetSpecies"
+          ),
       withdrawalPeriod = withdrawalPeriod ?: listOf(),
     )
   }
@@ -653,8 +665,16 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      tissue = tissue!!,
-      `value` = `value`!!,
+      tissue =
+        tissue
+          ?: throw SerializationException(
+            "Missing required property 'tissue' on AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod"
+          ),
+      `value` =
+        `value`
+          ?: throw SerializationException(
+            "Missing required property 'value' on AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod"
+          ),
       supportingInformation = R5String.of(supportingInformation, _supportingInformation),
     )
   }
@@ -897,7 +917,16 @@ internal object AdministrableProductDefinitionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on AdministrableProductDefinition"
+              )
+          ),
+          _status,
+        ),
       formOf = formOf ?: listOf(),
       administrableDoseForm = administrableDoseForm,
       unitOfPresentation = unitOfPresentation,

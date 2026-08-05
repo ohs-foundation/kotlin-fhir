@@ -723,7 +723,16 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
         (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { index ->
           Canonical.of(replaces?.getOrNull(index)?.let { it }, _replaces?.getOrNull(index))!!
         }),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ChargeItemDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

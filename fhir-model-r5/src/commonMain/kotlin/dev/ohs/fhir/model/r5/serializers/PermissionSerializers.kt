@@ -484,8 +484,21 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      meaning = Enumeration.of(Permission.ConsentDataMeaning.fromCode(meaning!!), _meaning),
-      reference = reference!!,
+      meaning =
+        Enumeration.of(
+          Permission.ConsentDataMeaning.fromCode(
+            meaning
+              ?: throw SerializationException(
+                "Missing required property 'meaning' on Permission.Rule.Data.Resource"
+              )
+          ),
+          _meaning,
+        ),
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on Permission.Rule.Data.Resource"
+          ),
     )
   }
 
@@ -775,7 +788,14 @@ internal object PermissionSerializer : KSerializer<Permission> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      status = Enumeration.of(Permission.PermissionStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Permission.PermissionStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Permission")
+          ),
+          _status,
+        ),
       asserter = asserter,
       date =
         (kotlin.collections.List(maxOf(date?.size ?: 0, _date?.size ?: 0)) { index ->
@@ -787,7 +807,13 @@ internal object PermissionSerializer : KSerializer<Permission> {
       validity = validity,
       justification = justification,
       combining =
-        Enumeration.of(Permission.PermissionRuleCombining.fromCode(combining!!), _combining),
+        Enumeration.of(
+          Permission.PermissionRuleCombining.fromCode(
+            combining
+              ?: throw SerializationException("Missing required property 'combining' on Permission")
+          ),
+          _combining,
+        ),
       rule = rule ?: listOf(),
     )
   }

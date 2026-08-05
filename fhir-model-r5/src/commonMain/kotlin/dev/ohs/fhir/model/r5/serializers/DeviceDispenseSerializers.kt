@@ -119,7 +119,11 @@ internal object DeviceDispensePerformerSerializer : KSerializer<DeviceDispense.P
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on DeviceDispense.Performer"
+          ),
     )
   }
 
@@ -386,11 +390,24 @@ internal object DeviceDispenseSerializer : KSerializer<DeviceDispense> {
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(DeviceDispense.DeviceDispenseStatusCodes.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          DeviceDispense.DeviceDispenseStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on DeviceDispense"
+              )
+          ),
+          _status,
+        ),
       statusReason = statusReason,
       category = category ?: listOf(),
-      device = device!!,
-      subject = subject!!,
+      device =
+        device
+          ?: throw SerializationException("Missing required property 'device' on DeviceDispense"),
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on DeviceDispense"),
       `receiver` = `receiver`,
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),

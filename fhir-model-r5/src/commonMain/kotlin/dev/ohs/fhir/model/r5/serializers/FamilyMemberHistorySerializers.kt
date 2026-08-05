@@ -128,7 +128,11 @@ internal object FamilyMemberHistoryParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on FamilyMemberHistory.Participant"
+          ),
     )
   }
 
@@ -264,7 +268,11 @@ internal object FamilyMemberHistoryConditionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on FamilyMemberHistory.Condition"
+          ),
       outcome = outcome,
       contributedToDeath = R5Boolean.of(contributedToDeath, _contributedToDeath),
       onset =
@@ -462,7 +470,11 @@ internal object FamilyMemberHistoryProcedureSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on FamilyMemberHistory.Procedure"
+          ),
       outcome = outcome,
       contributedToDeath = R5Boolean.of(contributedToDeath, _contributedToDeath),
       performed =
@@ -906,13 +918,30 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
             _instantiatesUri?.getOrNull(index),
           )!!
         }),
-      status = Enumeration.of(FamilyMemberHistory.FamilyHistoryStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          FamilyMemberHistory.FamilyHistoryStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on FamilyMemberHistory"
+              )
+          ),
+          _status,
+        ),
       dataAbsentReason = dataAbsentReason,
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on FamilyMemberHistory"
+          ),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       participant = participant ?: listOf(),
       name = R5String.of(name, _name),
-      relationship = relationship!!,
+      relationship =
+        relationship
+          ?: throw SerializationException(
+            "Missing required property 'relationship' on FamilyMemberHistory"
+          ),
       sex = sex,
       born =
         FamilyMemberHistory.Born.from(

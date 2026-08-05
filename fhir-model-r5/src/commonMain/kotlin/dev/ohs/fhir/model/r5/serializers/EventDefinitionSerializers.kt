@@ -457,7 +457,16 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       subtitle = R5String.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on EventDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       subject = EventDefinition.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),

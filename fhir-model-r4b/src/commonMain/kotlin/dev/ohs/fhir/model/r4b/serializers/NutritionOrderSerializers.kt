@@ -1236,11 +1236,33 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
           ->
           Uri.of(instantiates?.getOrNull(index)?.let { it }, _instantiates?.getOrNull(index))!!
         }),
-      status = Enumeration.of(NutritionOrder.RequestStatus.fromCode(status!!), _status),
-      intent = Enumeration.of(NutritionOrder.RequestIntent.fromCode(intent!!), _intent),
-      patient = patient!!,
+      status =
+        Enumeration.of(
+          NutritionOrder.RequestStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on NutritionOrder"
+              )
+          ),
+          _status,
+        ),
+      intent =
+        Enumeration.of(
+          NutritionOrder.RequestIntent.fromCode(
+            intent
+              ?: throw SerializationException(
+                "Missing required property 'intent' on NutritionOrder"
+              )
+          ),
+          _intent,
+        ),
+      patient =
+        patient
+          ?: throw SerializationException("Missing required property 'patient' on NutritionOrder"),
       encounter = encounter,
-      dateTime = DateTime.of(FhirDateTime.fromString(dateTime), _dateTime)!!,
+      dateTime =
+        DateTime.of(FhirDateTime.fromString(dateTime), _dateTime)
+          ?: throw SerializationException("Missing required property 'dateTime' on NutritionOrder"),
       orderer = orderer,
       allergyIntolerance = allergyIntolerance ?: listOf(),
       foodPreferenceModifier = foodPreferenceModifier ?: listOf(),

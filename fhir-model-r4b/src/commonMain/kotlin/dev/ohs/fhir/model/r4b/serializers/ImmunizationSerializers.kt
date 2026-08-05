@@ -123,7 +123,11 @@ internal object ImmunizationPerformerSerializer : KSerializer<Immunization.Perfo
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on Immunization.Performer"
+          ),
     )
   }
 
@@ -501,7 +505,10 @@ internal object ImmunizationProtocolAppliedSerializer : KSerializer<Immunization
         Immunization.ProtocolApplied.DoseNumber.from(
           PositiveInt.of(doseNumberPositiveInt, _doseNumberPositiveInt),
           R4bString.of(doseNumberString, _doseNumberString),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'doseNumber' on Immunization.ProtocolApplied"
+          ),
       seriesDoses =
         Immunization.ProtocolApplied.SeriesDoses.from(
           PositiveInt.of(seriesDosesPositiveInt, _seriesDosesPositiveInt),
@@ -893,16 +900,29 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Immunization.ImmunizationStatusCodes.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Immunization.ImmunizationStatusCodes.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Immunization")
+          ),
+          _status,
+        ),
       statusReason = statusReason,
-      vaccineCode = vaccineCode!!,
-      patient = patient!!,
+      vaccineCode =
+        vaccineCode
+          ?: throw SerializationException(
+            "Missing required property 'vaccineCode' on Immunization"
+          ),
+      patient =
+        patient
+          ?: throw SerializationException("Missing required property 'patient' on Immunization"),
       encounter = encounter,
       occurrence =
         Immunization.Occurrence.from(
           DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
           R4bString.of(occurrenceString, _occurrenceString),
-        )!!,
+        ) ?: throw SerializationException("Missing required property 'occurrence' on Immunization"),
       recorded = DateTime.of(FhirDateTime.fromString(recorded), _recorded),
       primarySource = R4bBoolean.of(primarySource, _primarySource),
       reportOrigin = reportOrigin,

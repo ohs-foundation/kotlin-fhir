@@ -148,7 +148,11 @@ internal object StructureDefinitionMappingSerializer : KSerializer<StructureDefi
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      identity = Id.of(identity, _identity)!!,
+      identity =
+        Id.of(identity, _identity)
+          ?: throw SerializationException(
+            "Missing required property 'identity' on StructureDefinition.Mapping"
+          ),
       uri = Uri.of(uri, _uri),
       name = R4String.of(name, _name),
       comment = R4String.of(comment, _comment),
@@ -256,8 +260,21 @@ internal object StructureDefinitionContextSerializer : KSerializer<StructureDefi
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(StructureDefinition.ExtensionContextType.fromCode(type!!), _type),
-      expression = R4String.of(expression, _expression)!!,
+      type =
+        Enumeration.of(
+          StructureDefinition.ExtensionContextType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on StructureDefinition.Context"
+              )
+          ),
+          _type,
+        ),
+      expression =
+        R4String.of(expression, _expression)
+          ?: throw SerializationException(
+            "Missing required property 'expression' on StructureDefinition.Context"
+          ),
     )
   }
 
@@ -811,12 +828,27 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException("Missing required property 'url' on StructureDefinition"),
       identifier = identifier ?: listOf(),
       version = R4String.of(version, _version),
-      name = R4String.of(name, _name)!!,
+      name =
+        R4String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on StructureDefinition"
+          ),
       title = R4String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on StructureDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
@@ -829,8 +861,21 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
       keyword = keyword ?: listOf(),
       fhirVersion = fhirVersion?.let { Enumeration.of(FHIRVersion.fromCode(it), _fhirVersion) },
       mapping = mapping ?: listOf(),
-      kind = Enumeration.of(StructureDefinition.StructureDefinitionKind.fromCode(kind!!), _kind),
-      `abstract` = R4Boolean.of(`abstract`, _abstract)!!,
+      kind =
+        Enumeration.of(
+          StructureDefinition.StructureDefinitionKind.fromCode(
+            kind
+              ?: throw SerializationException(
+                "Missing required property 'kind' on StructureDefinition"
+              )
+          ),
+          _kind,
+        ),
+      `abstract` =
+        R4Boolean.of(`abstract`, _abstract)
+          ?: throw SerializationException(
+            "Missing required property 'abstract' on StructureDefinition"
+          ),
       context = context ?: listOf(),
       contextInvariant =
         (kotlin.collections.List(
@@ -841,7 +886,11 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
             _contextInvariant?.getOrNull(index),
           )!!
         }),
-      type = Uri.of(type, _type)!!,
+      type =
+        Uri.of(type, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on StructureDefinition"
+          ),
       baseDefinition = Canonical.of(baseDefinition, _baseDefinition),
       derivation =
         derivation?.let {

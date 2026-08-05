@@ -211,7 +211,11 @@ internal object NutritionProductIngredientSerializer : KSerializer<NutritionProd
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = item!!,
+      item =
+        item
+          ?: throw SerializationException(
+            "Missing required property 'item' on NutritionProduct.Ingredient"
+          ),
       amount = amount ?: listOf(),
     )
   }
@@ -342,7 +346,11 @@ internal object NutritionProductCharacteristicSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on NutritionProduct.Characteristic"
+          ),
       `value` =
         NutritionProduct.Characteristic.Value.from(
           valueCodeableConcept,
@@ -351,7 +359,10 @@ internal object NutritionProductCharacteristicSerializer :
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
           valueAttachment,
           R5Boolean.of(valueBoolean, _valueBoolean),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on NutritionProduct.Characteristic"
+          ),
     )
   }
 
@@ -762,7 +773,16 @@ internal object NutritionProductSerializer : KSerializer<NutritionProduct> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code = code,
-      status = Enumeration.of(NutritionProduct.NutritionProductStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          NutritionProduct.NutritionProductStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on NutritionProduct"
+              )
+          ),
+          _status,
+        ),
       category = category ?: listOf(),
       manufacturer = manufacturer ?: listOf(),
       nutrient = nutrient ?: listOf(),

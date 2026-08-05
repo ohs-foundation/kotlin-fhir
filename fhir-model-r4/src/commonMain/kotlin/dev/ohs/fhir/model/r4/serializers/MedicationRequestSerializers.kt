@@ -433,7 +433,10 @@ internal object MedicationRequestSubstitutionSerializer :
         MedicationRequest.Substitution.Allowed.from(
           R4Boolean.of(allowedBoolean, _allowedBoolean),
           allowedCodeableConcept,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'allowed' on MedicationRequest.Substitution"
+          ),
       reason = reason,
     )
   }
@@ -949,10 +952,26 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(MedicationRequest.MedicationrequestStatus.fromCode(status!!), _status),
+        Enumeration.of(
+          MedicationRequest.MedicationrequestStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on MedicationRequest"
+              )
+          ),
+          _status,
+        ),
       statusReason = statusReason,
       intent =
-        Enumeration.of(MedicationRequest.MedicationRequestIntent.fromCode(intent!!), _intent),
+        Enumeration.of(
+          MedicationRequest.MedicationRequestIntent.fromCode(
+            intent
+              ?: throw SerializationException(
+                "Missing required property 'intent' on MedicationRequest"
+              )
+          ),
+          _intent,
+        ),
       category = category ?: listOf(),
       priority =
         priority?.let { Enumeration.of(MedicationRequest.RequestPriority.fromCode(it), _priority) },
@@ -963,8 +982,15 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
           reportedReference,
         ),
       medication =
-        MedicationRequest.Medication.from(medicationCodeableConcept, medicationReference)!!,
-      subject = subject!!,
+        MedicationRequest.Medication.from(medicationCodeableConcept, medicationReference)
+          ?: throw SerializationException(
+            "Missing required property 'medication' on MedicationRequest"
+          ),
+      subject =
+        subject
+          ?: throw SerializationException(
+            "Missing required property 'subject' on MedicationRequest"
+          ),
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),
       authoredOn = DateTime.of(FhirDateTime.fromString(authoredOn), _authoredOn),

@@ -297,8 +297,16 @@ internal object ClinicalUseDefinitionContraindicationOtherTherapySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      relationshipType = relationshipType!!,
-      therapy = therapy!!,
+      relationshipType =
+        relationshipType
+          ?: throw SerializationException(
+            "Missing required property 'relationshipType' on ClinicalUseDefinition.Contraindication.OtherTherapy"
+          ),
+      therapy =
+        therapy
+          ?: throw SerializationException(
+            "Missing required property 'therapy' on ClinicalUseDefinition.Contraindication.OtherTherapy"
+          ),
     )
   }
 
@@ -766,10 +774,10 @@ internal object ClinicalUseDefinitionInteractionInteractantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       item =
-        ClinicalUseDefinition.Interaction.Interactant.Item.from(
-          itemReference,
-          itemCodeableConcept,
-        )!!,
+        ClinicalUseDefinition.Interaction.Interactant.Item.from(itemReference, itemCodeableConcept)
+          ?: throw SerializationException(
+            "Missing required property 'item' on ClinicalUseDefinition.Interaction.Interactant"
+          ),
     )
   }
 
@@ -1237,7 +1245,15 @@ internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinit
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       type =
-        Enumeration.of(ClinicalUseDefinition.ClinicalUseDefinitionType.fromCode(type!!), _type),
+        Enumeration.of(
+          ClinicalUseDefinition.ClinicalUseDefinitionType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ClinicalUseDefinition"
+              )
+          ),
+          _type,
+        ),
       category = category ?: listOf(),
       subject = subject ?: listOf(),
       status = status,

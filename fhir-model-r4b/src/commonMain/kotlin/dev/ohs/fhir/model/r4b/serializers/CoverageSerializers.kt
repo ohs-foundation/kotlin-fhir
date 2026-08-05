@@ -127,8 +127,11 @@ internal object CoverageClassSerializer : KSerializer<Coverage.Class> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
-      `value` = R4bString.of(`value`, _value)!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Coverage.Class"),
+      `value` =
+        R4bString.of(`value`, _value)
+          ?: throw SerializationException("Missing required property 'value' on Coverage.Class"),
       name = R4bString.of(name, _name),
     )
   }
@@ -240,7 +243,11 @@ internal object CoverageCostToBeneficiarySerializer : KSerializer<Coverage.CostT
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
-      `value` = Coverage.CostToBeneficiary.Value.from(valueQuantity, valueMoney)!!,
+      `value` =
+        Coverage.CostToBeneficiary.Value.from(valueQuantity, valueMoney)
+          ?: throw SerializationException(
+            "Missing required property 'value' on Coverage.CostToBeneficiary"
+          ),
       exception = exception ?: listOf(),
     )
   }
@@ -345,7 +352,11 @@ internal object CoverageCostToBeneficiaryExceptionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on Coverage.CostToBeneficiary.Exception"
+          ),
       period = period,
     )
   }
@@ -596,12 +607,20 @@ internal object CoverageSerializer : KSerializer<Coverage> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Coverage.FinancialResourceStatusCodes.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Coverage.FinancialResourceStatusCodes.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Coverage")
+          ),
+          _status,
+        ),
       type = type,
       policyHolder = policyHolder,
       subscriber = subscriber,
       subscriberId = R4bString.of(subscriberId, _subscriberId),
-      beneficiary = beneficiary!!,
+      beneficiary =
+        beneficiary
+          ?: throw SerializationException("Missing required property 'beneficiary' on Coverage"),
       dependent = R4bString.of(dependent, _dependent),
       relationship = relationship,
       period = period,

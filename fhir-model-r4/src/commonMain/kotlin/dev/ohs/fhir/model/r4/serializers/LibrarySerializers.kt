@@ -448,9 +448,15 @@ internal object LibrarySerializer : KSerializer<Library> {
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       subtitle = R4String.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Library")
+          ),
+          _status,
+        ),
       experimental = R4Boolean.of(experimental, _experimental),
-      type = type!!,
+      type = type ?: throw SerializationException("Missing required property 'type' on Library"),
       subject = Library.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),

@@ -136,7 +136,11 @@ internal object PractitionerQualificationSerializer : KSerializer<Practitioner.Q
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on Practitioner.Qualification"
+          ),
       period = period,
       issuer = issuer,
     )
@@ -240,7 +244,11 @@ internal object PractitionerCommunicationSerializer : KSerializer<Practitioner.C
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      language = language!!,
+      language =
+        language
+          ?: throw SerializationException(
+            "Missing required property 'language' on Practitioner.Communication"
+          ),
       preferred = R5Boolean.of(preferred, _preferred),
     )
   }

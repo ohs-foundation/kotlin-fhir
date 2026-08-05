@@ -221,7 +221,10 @@ internal object EvidenceVariableCharacteristicSerializer :
           Canonical.of(definitionCanonical, _definitionCanonical),
           definitionCodeableConcept,
           definitionExpression,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'definition' on EvidenceVariable.Characteristic"
+          ),
       method = method,
       device = device,
       exclude = R4bBoolean.of(exclude, _exclude),
@@ -888,7 +891,16 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       title = R4bString.of(title, _title),
       shortTitle = R4bString.of(shortTitle, _shortTitle),
       subtitle = R4bString.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on EvidenceVariable"
+              )
+          ),
+          _status,
+        ),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       description = Markdown.of(description, _description),
       note = note ?: listOf(),

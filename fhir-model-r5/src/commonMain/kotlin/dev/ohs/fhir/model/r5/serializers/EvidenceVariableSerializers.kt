@@ -541,7 +541,11 @@ internal object EvidenceVariableCharacteristicDefinitionByTypeAndValueSerializer
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on EvidenceVariable.Characteristic.DefinitionByTypeAndValue"
+          ),
       method = method ?: listOf(),
       device = device,
       `value` =
@@ -552,7 +556,10 @@ internal object EvidenceVariableCharacteristicDefinitionByTypeAndValueSerializer
           valueRange,
           valueReference,
           Id.of(valueId, _valueId),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on EvidenceVariable.Characteristic.DefinitionByTypeAndValue"
+          ),
       offset = offset,
     )
   }
@@ -711,7 +718,16 @@ internal object EvidenceVariableCharacteristicDefinitionByCombinationSerializer 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Enumeration.of(EvidenceVariable.CharacteristicCombination.fromCode(code!!), _code),
+      code =
+        Enumeration.of(
+          EvidenceVariable.CharacteristicCombination.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on EvidenceVariable.Characteristic.DefinitionByCombination"
+              )
+          ),
+          _code,
+        ),
       threshold = PositiveInt.of(threshold, _threshold),
       characteristic = characteristic ?: listOf(),
     )
@@ -1465,7 +1481,16 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       shortTitle = R5String.of(shortTitle, _shortTitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on EvidenceVariable"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

@@ -132,7 +132,9 @@ internal object CitationSummarySerializer : KSerializer<Citation.Summary> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       style = style,
-      text = Markdown.of(text, _text)!!,
+      text =
+        Markdown.of(text, _text)
+          ?: throw SerializationException("Missing required property 'text' on Citation.Summary"),
     )
   }
 
@@ -324,9 +326,17 @@ internal object CitationStatusDateSerializer : KSerializer<Citation.StatusDate> 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      activity = activity!!,
+      activity =
+        activity
+          ?: throw SerializationException(
+            "Missing required property 'activity' on Citation.StatusDate"
+          ),
       `actual` = R5Boolean.of(`actual`, _actual),
-      period = period!!,
+      period =
+        period
+          ?: throw SerializationException(
+            "Missing required property 'period' on Citation.StatusDate"
+          ),
     )
   }
 
@@ -782,7 +792,11 @@ internal object CitationCitedArtifactVersionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      `value` = R5String.of(`value`, _value)!!,
+      `value` =
+        R5String.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on Citation.CitedArtifact.Version"
+          ),
       baseCitation = baseCitation,
     )
   }
@@ -888,9 +902,17 @@ internal object CitationCitedArtifactStatusDateSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      activity = activity!!,
+      activity =
+        activity
+          ?: throw SerializationException(
+            "Missing required property 'activity' on Citation.CitedArtifact.StatusDate"
+          ),
       `actual` = R5Boolean.of(`actual`, _actual),
-      period = period!!,
+      period =
+        period
+          ?: throw SerializationException(
+            "Missing required property 'period' on Citation.CitedArtifact.StatusDate"
+          ),
     )
   }
 
@@ -998,7 +1020,11 @@ internal object CitationCitedArtifactTitleSerializer : KSerializer<Citation.Cite
       modifierExtension = modifierExtension ?: listOf(),
       type = type ?: listOf(),
       language = language,
-      text = Markdown.of(text, _text)!!,
+      text =
+        Markdown.of(text, _text)
+          ?: throw SerializationException(
+            "Missing required property 'text' on Citation.CitedArtifact.Title"
+          ),
     )
   }
 
@@ -1110,7 +1136,11 @@ internal object CitationCitedArtifactAbstractSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
       language = language,
-      text = Markdown.of(text, _text)!!,
+      text =
+        Markdown.of(text, _text)
+          ?: throw SerializationException(
+            "Missing required property 'text' on Citation.CitedArtifact.Abstract"
+          ),
       copyright = Markdown.of(copyright, _copyright),
     )
   }
@@ -1366,7 +1396,16 @@ internal object CitationCitedArtifactRelatesToSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(Citation.RelatedArtifactTypeExpanded.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          Citation.RelatedArtifactTypeExpanded.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on Citation.CitedArtifact.RelatesTo"
+              )
+          ),
+          _type,
+        ),
       classifier = classifier ?: listOf(),
       label = R5String.of(label, _label),
       display = R5String.of(display, _display),
@@ -2377,7 +2416,11 @@ internal object CitationCitedArtifactContributorshipEntrySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      contributor = contributor!!,
+      contributor =
+        contributor
+          ?: throw SerializationException(
+            "Missing required property 'contributor' on Citation.CitedArtifact.Contributorship.Entry"
+          ),
       forenameInitials = R5String.of(forenameInitials, _forenameInitials),
       affiliation = affiliation ?: listOf(),
       contributionType = contributionType ?: listOf(),
@@ -2528,7 +2571,11 @@ internal object CitationCitedArtifactContributorshipEntryContributionInstanceSer
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on Citation.CitedArtifact.Contributorship.Entry.ContributionInstance"
+          ),
       time = DateTime.of(FhirDateTime.fromString(time), _time),
     )
   }
@@ -2640,7 +2687,11 @@ internal object CitationCitedArtifactContributorshipSummarySerializer :
       type = type,
       style = style,
       source = source,
-      `value` = Markdown.of(`value`, _value)!!,
+      `value` =
+        Markdown.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on Citation.CitedArtifact.Contributorship.Summary"
+          ),
     )
   }
 
@@ -3064,7 +3115,13 @@ internal object CitationSerializer : KSerializer<Citation> {
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Citation")
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

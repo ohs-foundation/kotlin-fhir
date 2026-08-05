@@ -248,7 +248,11 @@ internal object ImmunizationRecommendationRecommendationSerializer :
       vaccineCode = vaccineCode ?: listOf(),
       targetDisease = targetDisease,
       contraindicatedVaccineCode = contraindicatedVaccineCode ?: listOf(),
-      forecastStatus = forecastStatus!!,
+      forecastStatus =
+        forecastStatus
+          ?: throw SerializationException(
+            "Missing required property 'forecastStatus' on ImmunizationRecommendation.Recommendation"
+          ),
       forecastReason = forecastReason ?: listOf(),
       dateCriterion = dateCriterion ?: listOf(),
       description = R4bString.of(description, _description),
@@ -457,8 +461,16 @@ internal object ImmunizationRecommendationRecommendationDateCriterionSerializer 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
-      `value` = DateTime.of(FhirDateTime.fromString(`value`), _value)!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on ImmunizationRecommendation.Recommendation.DateCriterion"
+          ),
+      `value` =
+        DateTime.of(FhirDateTime.fromString(`value`), _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on ImmunizationRecommendation.Recommendation.DateCriterion"
+          ),
     )
   }
 
@@ -636,8 +648,16 @@ internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationR
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      patient = patient!!,
-      date = DateTime.of(FhirDateTime.fromString(date), _date)!!,
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on ImmunizationRecommendation"
+          ),
+      date =
+        DateTime.of(FhirDateTime.fromString(date), _date)
+          ?: throw SerializationException(
+            "Missing required property 'date' on ImmunizationRecommendation"
+          ),
       authority = authority,
       recommendation = recommendation ?: listOf(),
     )

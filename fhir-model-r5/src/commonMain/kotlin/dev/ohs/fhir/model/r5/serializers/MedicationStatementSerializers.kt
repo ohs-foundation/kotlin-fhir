@@ -119,7 +119,11 @@ internal object MedicationStatementAdherenceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on MedicationStatement.Adherence"
+          ),
       reason = reason,
     )
   }
@@ -389,12 +393,25 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          MedicationStatement.MedicationStatementStatusCodes.fromCode(status!!),
+          MedicationStatement.MedicationStatementStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on MedicationStatement"
+              )
+          ),
           _status,
         ),
       category = category ?: listOf(),
-      medication = medication!!,
-      subject = subject!!,
+      medication =
+        medication
+          ?: throw SerializationException(
+            "Missing required property 'medication' on MedicationStatement"
+          ),
+      subject =
+        subject
+          ?: throw SerializationException(
+            "Missing required property 'subject' on MedicationStatement"
+          ),
       encounter = encounter,
       effective =
         MedicationStatement.Effective.from(

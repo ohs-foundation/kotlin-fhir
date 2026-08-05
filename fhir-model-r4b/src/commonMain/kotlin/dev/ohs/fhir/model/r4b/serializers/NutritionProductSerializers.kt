@@ -211,7 +211,11 @@ internal object NutritionProductIngredientSerializer : KSerializer<NutritionProd
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = item!!,
+      item =
+        item
+          ?: throw SerializationException(
+            "Missing required property 'item' on NutritionProduct.Ingredient"
+          ),
       amount = amount ?: listOf(),
     )
   }
@@ -345,7 +349,11 @@ internal object NutritionProductProductCharacteristicSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on NutritionProduct.ProductCharacteristic"
+          ),
       `value` =
         NutritionProduct.ProductCharacteristic.Value.from(
           valueCodeableConcept,
@@ -354,7 +362,10 @@ internal object NutritionProductProductCharacteristicSerializer :
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
           valueAttachment,
           R4bBoolean.of(valueBoolean, _valueBoolean),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on NutritionProduct.ProductCharacteristic"
+          ),
     )
   }
 
@@ -743,7 +754,16 @@ internal object NutritionProductSerializer : KSerializer<NutritionProduct> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      status = Enumeration.of(NutritionProduct.NutritionProductStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          NutritionProduct.NutritionProductStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on NutritionProduct"
+              )
+          ),
+          _status,
+        ),
       category = category ?: listOf(),
       code = code,
       manufacturer = manufacturer ?: listOf(),

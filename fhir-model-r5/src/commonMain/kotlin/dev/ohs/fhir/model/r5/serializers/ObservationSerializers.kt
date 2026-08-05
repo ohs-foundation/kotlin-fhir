@@ -140,8 +140,21 @@ internal object ObservationTriggeredBySerializer : KSerializer<Observation.Trigg
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      observation = observation!!,
-      type = Enumeration.of(Observation.TriggeredBytype.fromCode(type!!), _type),
+      observation =
+        observation
+          ?: throw SerializationException(
+            "Missing required property 'observation' on Observation.TriggeredBy"
+          ),
+      type =
+        Enumeration.of(
+          Observation.TriggeredBytype.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on Observation.TriggeredBy"
+              )
+          ),
+          _type,
+        ),
       reason = R5String.of(reason, _reason),
     )
   }
@@ -501,7 +514,11 @@ internal object ObservationComponentSerializer : KSerializer<Observation.Compone
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on Observation.Component"
+          ),
       `value` =
         Observation.Component.Value.from(
           valueQuantity,
@@ -1099,9 +1116,17 @@ internal object ObservationSerializer : KSerializer<Observation> {
       basedOn = basedOn ?: listOf(),
       triggeredBy = triggeredBy ?: listOf(),
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(Observation.ObservationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Observation.ObservationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Observation")
+          ),
+          _status,
+        ),
       category = category ?: listOf(),
-      code = code!!,
+      code =
+        code ?: throw SerializationException("Missing required property 'code' on Observation"),
       subject = subject,
       focus = focus ?: listOf(),
       encounter = encounter,

@@ -141,9 +141,22 @@ internal object MessageDefinitionFocusSerializer : KSerializer<MessageDefinition
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Enumeration.of(ResourceType.fromCode(code!!), _code),
+      code =
+        Enumeration.of(
+          ResourceType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on MessageDefinition.Focus"
+              )
+          ),
+          _code,
+        ),
       profile = Canonical.of(profile, _profile),
-      min = UnsignedInt.of(min, _min)!!,
+      min =
+        UnsignedInt.of(min, _min)
+          ?: throw SerializationException(
+            "Missing required property 'min' on MessageDefinition.Focus"
+          ),
       max = R4bString.of(max, _max),
     )
   }
@@ -252,7 +265,11 @@ internal object MessageDefinitionAllowedResponseSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      message = Canonical.of(message, _message)!!,
+      message =
+        Canonical.of(message, _message)
+          ?: throw SerializationException(
+            "Missing required property 'message' on MessageDefinition.AllowedResponse"
+          ),
       situation = Markdown.of(situation, _situation),
     )
   }
@@ -623,9 +640,20 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
         (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { index ->
           Canonical.of(replaces?.getOrNull(index)?.let { it }, _replaces?.getOrNull(index))!!
         }),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on MessageDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date)!!,
+      date =
+        DateTime.of(FhirDateTime.fromString(date), _date)
+          ?: throw SerializationException("Missing required property 'date' on MessageDefinition"),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -638,7 +666,9 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
         (kotlin.collections.List(maxOf(parent?.size ?: 0, _parent?.size ?: 0)) { index ->
           Canonical.of(parent?.getOrNull(index)?.let { it }, _parent?.getOrNull(index))!!
         }),
-      event = MessageDefinition.Event.from(eventCoding, Uri.of(eventUri, _eventUri))!!,
+      event =
+        MessageDefinition.Event.from(eventCoding, Uri.of(eventUri, _eventUri))
+          ?: throw SerializationException("Missing required property 'event' on MessageDefinition"),
       category =
         category?.let {
           Enumeration.of(MessageDefinition.MessageSignificanceCategory.fromCode(it), _category)

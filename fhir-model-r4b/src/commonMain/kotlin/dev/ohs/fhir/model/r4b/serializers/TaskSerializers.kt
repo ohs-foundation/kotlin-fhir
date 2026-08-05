@@ -761,7 +761,7 @@ internal object TaskInputSerializer : KSerializer<Task.Input> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type = type ?: throw SerializationException("Missing required property 'type' on Task.Input"),
       `value` =
         Task.Input.Value.from(
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
@@ -814,7 +814,7 @@ internal object TaskInputSerializer : KSerializer<Task.Input> {
           valueUsageContext,
           valueDosage,
           valueMeta,
-        )!!,
+        ) ?: throw SerializationException("Missing required property 'value' on Task.Input"),
     )
   }
 
@@ -1699,7 +1699,8 @@ internal object TaskOutputSerializer : KSerializer<Task.Output> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Task.Output"),
       `value` =
         Task.Output.Value.from(
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
@@ -1752,7 +1753,7 @@ internal object TaskOutputSerializer : KSerializer<Task.Output> {
           valueUsageContext,
           valueDosage,
           valueMeta,
-        )!!,
+        ) ?: throw SerializationException("Missing required property 'value' on Task.Output"),
     )
   }
 
@@ -2407,10 +2408,22 @@ internal object TaskSerializer : KSerializer<Task> {
       basedOn = basedOn ?: listOf(),
       groupIdentifier = groupIdentifier,
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(Task.TaskStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Task.TaskStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Task")
+          ),
+          _status,
+        ),
       statusReason = statusReason,
       businessStatus = businessStatus,
-      intent = Enumeration.of(Task.TaskIntent.fromCode(intent!!), _intent),
+      intent =
+        Enumeration.of(
+          Task.TaskIntent.fromCode(
+            intent ?: throw SerializationException("Missing required property 'intent' on Task")
+          ),
+          _intent,
+        ),
       priority = priority?.let { Enumeration.of(Task.RequestPriority.fromCode(it), _priority) },
       code = code,
       description = R4bString.of(description, _description),

@@ -295,7 +295,11 @@ internal object MedicinalProductAuthorizationProcedureSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicinalProductAuthorization.Procedure"
+          ),
       date =
         MedicinalProductAuthorization.Procedure.Date.from(
           datePeriod,

@@ -145,7 +145,10 @@ internal object CommunicationPayloadSerializer : KSerializer<Communication.Paylo
           contentAttachment,
           contentReference,
           contentCodeableConcept,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'content' on Communication.Payload"
+          ),
     )
   }
 
@@ -502,7 +505,14 @@ internal object CommunicationSerializer : KSerializer<Communication> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       inResponseTo = inResponseTo ?: listOf(),
-      status = Enumeration.of(Communication.EventStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Communication.EventStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Communication")
+          ),
+          _status,
+        ),
       statusReason = statusReason,
       category = category ?: listOf(),
       priority =

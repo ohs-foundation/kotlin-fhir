@@ -133,8 +133,16 @@ internal object MedicinalProductIngredientSpecifiedSubstanceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
-      group = group!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on MedicinalProductIngredient.SpecifiedSubstance"
+          ),
+      group =
+        group
+          ?: throw SerializationException(
+            "Missing required property 'group' on MedicinalProductIngredient.SpecifiedSubstance"
+          ),
       confidentiality = confidentiality,
       strength = strength ?: listOf(),
     )
@@ -300,7 +308,11 @@ internal object MedicinalProductIngredientSpecifiedSubstanceStrengthSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      presentation = presentation!!,
+      presentation =
+        presentation
+          ?: throw SerializationException(
+            "Missing required property 'presentation' on MedicinalProductIngredient.SpecifiedSubstance.Strength"
+          ),
       presentationLowLimit = presentationLowLimit,
       concentration = concentration,
       concentrationLowLimit = concentrationLowLimit,
@@ -468,7 +480,11 @@ internal object MedicinalProductIngredientSpecifiedSubstanceStrengthReferenceStr
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       substance = substance,
-      strength = strength!!,
+      strength =
+        strength
+          ?: throw SerializationException(
+            "Missing required property 'strength' on MedicinalProductIngredient.SpecifiedSubstance.Strength.ReferenceStrength"
+          ),
       strengthLowLimit = strengthLowLimit,
       measurementPoint = R4String.of(measurementPoint, _measurementPoint),
       country = country ?: listOf(),
@@ -585,7 +601,11 @@ internal object MedicinalProductIngredientSubstanceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on MedicinalProductIngredient.Substance"
+          ),
       strength = strength ?: listOf(),
     )
   }
@@ -775,7 +795,11 @@ internal object MedicinalProductIngredientSerializer : KSerializer<MedicinalProd
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
-      role = role!!,
+      role =
+        role
+          ?: throw SerializationException(
+            "Missing required property 'role' on MedicinalProductIngredient"
+          ),
       allergenicIndicator = R4Boolean.of(allergenicIndicator, _allergenicIndicator),
       manufacturer = manufacturer ?: listOf(),
       specifiedSubstance = specifiedSubstance ?: listOf(),

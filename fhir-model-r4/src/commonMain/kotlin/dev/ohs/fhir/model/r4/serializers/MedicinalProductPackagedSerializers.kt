@@ -130,7 +130,11 @@ internal object MedicinalProductPackagedBatchIdentifierSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      outerPackaging = outerPackaging!!,
+      outerPackaging =
+        outerPackaging
+          ?: throw SerializationException(
+            "Missing required property 'outerPackaging' on MedicinalProductPackaged.BatchIdentifier"
+          ),
       immediatePackaging = immediatePackaging,
     )
   }
@@ -325,8 +329,16 @@ internal object MedicinalProductPackagedPackageItemSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      type = type!!,
-      quantity = quantity!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicinalProductPackaged.PackageItem"
+          ),
+      quantity =
+        quantity
+          ?: throw SerializationException(
+            "Missing required property 'quantity' on MedicinalProductPackaged.PackageItem"
+          ),
       material = material ?: listOf(),
       alternateMaterial = alternateMaterial ?: listOf(),
       device = device ?: listOf(),

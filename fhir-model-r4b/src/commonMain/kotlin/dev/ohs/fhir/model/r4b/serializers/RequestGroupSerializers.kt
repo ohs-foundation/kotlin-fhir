@@ -575,7 +575,16 @@ internal object RequestGroupActionConditionSerializer : KSerializer<RequestGroup
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      kind = Enumeration.of(RequestGroup.ActionConditionKind.fromCode(kind!!), _kind),
+      kind =
+        Enumeration.of(
+          RequestGroup.ActionConditionKind.fromCode(
+            kind
+              ?: throw SerializationException(
+                "Missing required property 'kind' on RequestGroup.Action.Condition"
+              )
+          ),
+          _kind,
+        ),
       expression = expression,
     )
   }
@@ -692,9 +701,21 @@ internal object RequestGroupActionRelatedActionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      actionId = Id.of(actionId, _actionId)!!,
+      actionId =
+        Id.of(actionId, _actionId)
+          ?: throw SerializationException(
+            "Missing required property 'actionId' on RequestGroup.Action.RelatedAction"
+          ),
       relationship =
-        Enumeration.of(RequestGroup.ActionRelationshipType.fromCode(relationship!!), _relationship),
+        Enumeration.of(
+          RequestGroup.ActionRelationshipType.fromCode(
+            relationship
+              ?: throw SerializationException(
+                "Missing required property 'relationship' on RequestGroup.Action.RelatedAction"
+              )
+          ),
+          _relationship,
+        ),
       offset = RequestGroup.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
     )
   }
@@ -1031,8 +1052,22 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
-      status = Enumeration.of(RequestGroup.RequestStatus.fromCode(status!!), _status),
-      intent = Enumeration.of(RequestGroup.RequestIntent.fromCode(intent!!), _intent),
+      status =
+        Enumeration.of(
+          RequestGroup.RequestStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on RequestGroup")
+          ),
+          _status,
+        ),
+      intent =
+        Enumeration.of(
+          RequestGroup.RequestIntent.fromCode(
+            intent
+              ?: throw SerializationException("Missing required property 'intent' on RequestGroup")
+          ),
+          _intent,
+        ),
       priority =
         priority?.let { Enumeration.of(RequestGroup.RequestPriority.fromCode(it), _priority) },
       code = code,

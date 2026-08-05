@@ -123,7 +123,11 @@ internal object ImmunizationPerformerSerializer : KSerializer<Immunization.Perfo
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on Immunization.Performer"
+          ),
     )
   }
 
@@ -215,8 +219,16 @@ internal object ImmunizationProgramEligibilitySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      program = program!!,
-      programStatus = programStatus!!,
+      program =
+        program
+          ?: throw SerializationException(
+            "Missing required property 'program' on Immunization.ProgramEligibility"
+          ),
+      programStatus =
+        programStatus
+          ?: throw SerializationException(
+            "Missing required property 'programStatus' on Immunization.ProgramEligibility"
+          ),
     )
   }
 
@@ -446,7 +458,11 @@ internal object ImmunizationProtocolAppliedSerializer : KSerializer<Immunization
       series = R5String.of(series, _series),
       authority = authority,
       targetDisease = targetDisease ?: listOf(),
-      doseNumber = R5String.of(doseNumber, _doseNumber)!!,
+      doseNumber =
+        R5String.of(doseNumber, _doseNumber)
+          ?: throw SerializationException(
+            "Missing required property 'doseNumber' on Immunization.ProtocolApplied"
+          ),
       seriesDoses = R5String.of(seriesDoses, _seriesDoses),
     )
   }
@@ -828,21 +844,34 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
-      status = Enumeration.of(Immunization.ImmunizationStatusCodes.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Immunization.ImmunizationStatusCodes.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Immunization")
+          ),
+          _status,
+        ),
       statusReason = statusReason,
-      vaccineCode = vaccineCode!!,
+      vaccineCode =
+        vaccineCode
+          ?: throw SerializationException(
+            "Missing required property 'vaccineCode' on Immunization"
+          ),
       administeredProduct = administeredProduct,
       manufacturer = manufacturer,
       lotNumber = R5String.of(lotNumber, _lotNumber),
       expirationDate = Date.of(FhirDate.fromString(expirationDate), _expirationDate),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException("Missing required property 'patient' on Immunization"),
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),
       occurrence =
         Immunization.Occurrence.from(
           DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
           R5String.of(occurrenceString, _occurrenceString),
-        )!!,
+        ) ?: throw SerializationException("Missing required property 'occurrence' on Immunization"),
       primarySource = R5Boolean.of(primarySource, _primarySource),
       informationSource = informationSource,
       location = location,

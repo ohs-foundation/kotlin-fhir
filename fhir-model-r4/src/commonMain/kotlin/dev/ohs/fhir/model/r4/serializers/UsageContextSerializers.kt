@@ -131,9 +131,11 @@ internal object UsageContextSerializer : KSerializer<UsageContext> {
     return UsageContext(
       id = id,
       extension = extension ?: listOf(),
-      code = code!!,
+      code =
+        code ?: throw SerializationException("Missing required property 'code' on UsageContext"),
       `value` =
-        UsageContext.Value.from(valueCodeableConcept, valueQuantity, valueRange, valueReference)!!,
+        UsageContext.Value.from(valueCodeableConcept, valueQuantity, valueRange, valueReference)
+          ?: throw SerializationException("Missing required property 'value' on UsageContext"),
     )
   }
 

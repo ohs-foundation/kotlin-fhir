@@ -152,9 +152,21 @@ internal object DeviceDefinitionUdiDeviceIdentifierSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      deviceIdentifier = R4bString.of(deviceIdentifier, _deviceIdentifier)!!,
-      issuer = Uri.of(issuer, _issuer)!!,
-      jurisdiction = Uri.of(jurisdiction, _jurisdiction)!!,
+      deviceIdentifier =
+        R4bString.of(deviceIdentifier, _deviceIdentifier)
+          ?: throw SerializationException(
+            "Missing required property 'deviceIdentifier' on DeviceDefinition.UdiDeviceIdentifier"
+          ),
+      issuer =
+        Uri.of(issuer, _issuer)
+          ?: throw SerializationException(
+            "Missing required property 'issuer' on DeviceDefinition.UdiDeviceIdentifier"
+          ),
+      jurisdiction =
+        Uri.of(jurisdiction, _jurisdiction)
+          ?: throw SerializationException(
+            "Missing required property 'jurisdiction' on DeviceDefinition.UdiDeviceIdentifier"
+          ),
     )
   }
 
@@ -256,8 +268,21 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R4bString.of(name, _name)!!,
-      type = Enumeration.of(DeviceDefinition.DeviceNameType.fromCode(type!!), _type),
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on DeviceDefinition.DeviceName"
+          ),
+      type =
+        Enumeration.of(
+          DeviceDefinition.DeviceNameType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on DeviceDefinition.DeviceName"
+              )
+          ),
+          _type,
+        ),
     )
   }
 
@@ -357,7 +382,11 @@ internal object DeviceDefinitionSpecializationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      systemType = R4bString.of(systemType, _systemType)!!,
+      systemType =
+        R4bString.of(systemType, _systemType)
+          ?: throw SerializationException(
+            "Missing required property 'systemType' on DeviceDefinition.Specialization"
+          ),
       version = R4bString.of(version, _version),
     )
   }
@@ -456,7 +485,11 @@ internal object DeviceDefinitionCapabilitySerializer : KSerializer<DeviceDefinit
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on DeviceDefinition.Capability"
+          ),
       description = description ?: listOf(),
     )
   }
@@ -558,7 +591,11 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on DeviceDefinition.Property"
+          ),
       valueQuantity = valueQuantity ?: listOf(),
       valueCode = valueCode ?: listOf(),
     )
@@ -673,7 +710,11 @@ internal object DeviceDefinitionMaterialSerializer : KSerializer<DeviceDefinitio
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      substance = substance!!,
+      substance =
+        substance
+          ?: throw SerializationException(
+            "Missing required property 'substance' on DeviceDefinition.Material"
+          ),
       alternate = R4bBoolean.of(alternate, _alternate),
       allergenicIndicator = R4bBoolean.of(allergenicIndicator, _allergenicIndicator),
     )

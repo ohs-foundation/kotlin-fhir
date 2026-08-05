@@ -127,7 +127,11 @@ internal object DocumentReferenceAttesterSerializer : KSerializer<DocumentRefere
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      mode = mode!!,
+      mode =
+        mode
+          ?: throw SerializationException(
+            "Missing required property 'mode' on DocumentReference.Attester"
+          ),
       time = DateTime.of(FhirDateTime.fromString(time), _time),
       party = party,
     )
@@ -221,8 +225,16 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
-      target = target!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on DocumentReference.RelatesTo"
+          ),
+      target =
+        target
+          ?: throw SerializationException(
+            "Missing required property 'target' on DocumentReference.RelatesTo"
+          ),
     )
   }
 
@@ -317,7 +329,11 @@ internal object DocumentReferenceContentSerializer : KSerializer<DocumentReferen
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      attachment = attachment!!,
+      attachment =
+        attachment
+          ?: throw SerializationException(
+            "Missing required property 'attachment' on DocumentReference.Content"
+          ),
       profile = profile ?: listOf(),
     )
   }
@@ -429,7 +445,10 @@ internal object DocumentReferenceContentProfileSerializer :
           valueCoding,
           Uri.of(valueUri, _valueUri),
           Canonical.of(valueCanonical, _valueCanonical),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on DocumentReference.Content.Profile"
+          ),
     )
   }
 
@@ -741,7 +760,16 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
       identifier = identifier ?: listOf(),
       version = R5String.of(version, _version),
       basedOn = basedOn ?: listOf(),
-      status = Enumeration.of(DocumentReferenceStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          DocumentReferenceStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on DocumentReference"
+              )
+          ),
+          _status,
+        ),
       docStatus =
         docStatus?.let {
           Enumeration.of(DocumentReference.CompositionStatus.fromCode(it), _docStatus)

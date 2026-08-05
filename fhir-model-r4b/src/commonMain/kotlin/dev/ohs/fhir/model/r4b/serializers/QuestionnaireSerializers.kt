@@ -253,12 +253,25 @@ internal object QuestionnaireItemSerializer : KSerializer<Questionnaire.Item> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      linkId = R4bString.of(linkId, _linkId)!!,
+      linkId =
+        R4bString.of(linkId, _linkId)
+          ?: throw SerializationException(
+            "Missing required property 'linkId' on Questionnaire.Item"
+          ),
       definition = Uri.of(definition, _definition),
       code = code ?: listOf(),
       prefix = R4bString.of(prefix, _prefix),
       text = R4bString.of(text, _text),
-      type = Enumeration.of(Questionnaire.QuestionnaireItemType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          Questionnaire.QuestionnaireItemType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on Questionnaire.Item"
+              )
+          ),
+          _type,
+        ),
       enableWhen = enableWhen ?: listOf(),
       enableBehavior =
         enableBehavior?.let {
@@ -529,9 +542,21 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      question = R4bString.of(question, _question)!!,
+      question =
+        R4bString.of(question, _question)
+          ?: throw SerializationException(
+            "Missing required property 'question' on Questionnaire.Item.EnableWhen"
+          ),
       `operator` =
-        Enumeration.of(Questionnaire.QuestionnaireItemOperator.fromCode(`operator`!!), _operator),
+        Enumeration.of(
+          Questionnaire.QuestionnaireItemOperator.fromCode(
+            `operator`
+              ?: throw SerializationException(
+                "Missing required property 'operator' on Questionnaire.Item.EnableWhen"
+              )
+          ),
+          _operator,
+        ),
       answer =
         Questionnaire.Item.EnableWhen.Answer.from(
           R4bBoolean.of(answerBoolean, _answerBoolean),
@@ -544,7 +569,10 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
           answerCoding,
           answerQuantity,
           answerReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'answer' on Questionnaire.Item.EnableWhen"
+          ),
     )
   }
 
@@ -756,7 +784,10 @@ internal object QuestionnaireItemAnswerOptionSerializer :
           R4bString.of(valueString, _valueString),
           valueCoding,
           valueReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on Questionnaire.Item.AnswerOption"
+          ),
       initialSelected = R4bBoolean.of(initialSelected, _initialSelected),
     )
   }
@@ -989,7 +1020,10 @@ internal object QuestionnaireItemInitialSerializer : KSerializer<Questionnaire.I
           valueCoding,
           valueQuantity,
           valueReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on Questionnaire.Item.Initial"
+          ),
     )
   }
 
@@ -1391,7 +1425,14 @@ internal object QuestionnaireSerializer : KSerializer<Questionnaire> {
         (kotlin.collections.List(maxOf(derivedFrom?.size ?: 0, _derivedFrom?.size ?: 0)) { index ->
           Canonical.of(derivedFrom?.getOrNull(index)?.let { it }, _derivedFrom?.getOrNull(index))!!
         }),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Questionnaire")
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       subjectType =
         (kotlin.collections.List(maxOf(subjectType?.size ?: 0, _subjectType?.size ?: 0)) { index ->

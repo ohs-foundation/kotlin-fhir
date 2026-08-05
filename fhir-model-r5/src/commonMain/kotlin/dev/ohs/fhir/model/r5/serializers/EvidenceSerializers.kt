@@ -155,7 +155,11 @@ internal object EvidenceVariableDefinitionSerializer : KSerializer<Evidence.Vari
       modifierExtension = modifierExtension ?: listOf(),
       description = Markdown.of(description, _description),
       note = note ?: listOf(),
-      variableRole = variableRole!!,
+      variableRole =
+        variableRole
+          ?: throw SerializationException(
+            "Missing required property 'variableRole' on Evidence.VariableDefinition"
+          ),
       observed = observed,
       intended = intended,
       directnessMatch = directnessMatch,
@@ -834,7 +838,11 @@ internal object EvidenceStatisticModelCharacteristicSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on Evidence.Statistic.ModelCharacteristic"
+          ),
       `value` = `value`,
       variable = variable ?: listOf(),
       attributeEstimate = attributeEstimate ?: listOf(),
@@ -987,7 +995,11 @@ internal object EvidenceStatisticModelCharacteristicVariableSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      variableDefinition = variableDefinition!!,
+      variableDefinition =
+        variableDefinition
+          ?: throw SerializationException(
+            "Missing required property 'variableDefinition' on Evidence.Statistic.ModelCharacteristic.Variable"
+          ),
       handling =
         handling?.let { Enumeration.of(Evidence.EvidenceVariableHandling.fromCode(it), _handling) },
       valueCategory = valueCategory ?: listOf(),
@@ -1594,7 +1606,13 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       citeAs = Evidence.CiteAs.from(citeAsReference, Markdown.of(citeAsMarkdown, _citeAsMarkdown)),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Evidence")
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),

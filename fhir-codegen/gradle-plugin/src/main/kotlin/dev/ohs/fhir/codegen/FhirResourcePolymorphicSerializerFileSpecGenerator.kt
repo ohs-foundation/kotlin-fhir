@@ -223,7 +223,8 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
       .addAnnotation(
         AnnotationSpec.builder(Suppress::class)
           .useSiteTarget(AnnotationSpec.UseSiteTarget.FILE)
-          .addMember("%S, %S", "INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")
+          .addMember("%S", "INVISIBLE_MEMBER")
+          .addMember("%S", "INVISIBLE_REFERENCE")
           .build()
       )
       .addType(objectSpec)

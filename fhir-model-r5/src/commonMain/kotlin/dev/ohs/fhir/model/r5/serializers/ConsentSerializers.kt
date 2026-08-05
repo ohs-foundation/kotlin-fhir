@@ -267,7 +267,11 @@ internal object ConsentVerificationSerializer : KSerializer<Consent.Verification
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      verified = R5Boolean.of(verified, _verified)!!,
+      verified =
+        R5Boolean.of(verified, _verified)
+          ?: throw SerializationException(
+            "Missing required property 'verified' on Consent.Verification"
+          ),
       verificationType = verificationType,
       verifiedBy = verifiedBy,
       verifiedWith = verifiedWith,
@@ -719,8 +723,21 @@ internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.D
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      meaning = Enumeration.of(Consent.ConsentDataMeaning.fromCode(meaning!!), _meaning),
-      reference = reference!!,
+      meaning =
+        Enumeration.of(
+          Consent.ConsentDataMeaning.fromCode(
+            meaning
+              ?: throw SerializationException(
+                "Missing required property 'meaning' on Consent.Provision.Data"
+              )
+          ),
+          _meaning,
+        ),
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on Consent.Provision.Data"
+          ),
     )
   }
 
@@ -994,7 +1011,13 @@ internal object ConsentSerializer : KSerializer<Consent> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Consent.ConsentState.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Consent.ConsentState.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Consent")
+          ),
+          _status,
+        ),
       category = category ?: listOf(),
       subject = subject,
       date = Date.of(FhirDate.fromString(date), _date),

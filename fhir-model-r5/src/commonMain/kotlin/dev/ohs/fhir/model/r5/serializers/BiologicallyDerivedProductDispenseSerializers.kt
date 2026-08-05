@@ -121,7 +121,11 @@ internal object BiologicallyDerivedProductDispensePerformerSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on BiologicallyDerivedProductDispense.Performer"
+          ),
     )
   }
 
@@ -373,13 +377,24 @@ internal object BiologicallyDerivedProductDispenseSerializer :
       status =
         Enumeration.of(
           BiologicallyDerivedProductDispense.BiologicallyDerivedProductDispenseCodes.fromCode(
-            status!!
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on BiologicallyDerivedProductDispense"
+              )
           ),
           _status,
         ),
       originRelationshipType = originRelationshipType,
-      product = product!!,
-      patient = patient!!,
+      product =
+        product
+          ?: throw SerializationException(
+            "Missing required property 'product' on BiologicallyDerivedProductDispense"
+          ),
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on BiologicallyDerivedProductDispense"
+          ),
       matchStatus = matchStatus,
       performer = performer ?: listOf(),
       location = location,

@@ -131,12 +131,19 @@ internal object CoverageEligibilityResponseEventSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on CoverageEligibilityResponse.Event"
+          ),
       `when` =
         CoverageEligibilityResponse.Event.When.from(
           DateTime.of(FhirDateTime.fromString(whenDateTime), _whenDateTime),
           whenPeriod,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'when' on CoverageEligibilityResponse.Event"
+          ),
     )
   }
 
@@ -260,7 +267,11 @@ internal object CoverageEligibilityResponseInsuranceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      coverage = coverage!!,
+      coverage =
+        coverage
+          ?: throw SerializationException(
+            "Missing required property 'coverage' on CoverageEligibilityResponse.Insurance"
+          ),
       inforce = R5Boolean.of(inforce, _inforce),
       benefitPeriod = benefitPeriod,
       item = item ?: listOf(),
@@ -682,7 +693,11 @@ internal object CoverageEligibilityResponseInsuranceItemBenefitSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on CoverageEligibilityResponse.Insurance.Item.Benefit"
+          ),
       allowed =
         CoverageEligibilityResponse.Insurance.Item.Benefit.Allowed.from(
           UnsignedInt.of(allowedUnsignedInt, _allowedUnsignedInt),
@@ -835,7 +850,11 @@ internal object CoverageEligibilityResponseErrorSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on CoverageEligibilityResponse.Error"
+          ),
       expression =
         (kotlin.collections.List(maxOf(expression?.size ?: 0, _expression?.size ?: 0)) { index ->
           R5String.of(expression?.getOrNull(index)?.let { it }, _expression?.getOrNull(index))!!
@@ -1123,7 +1142,12 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          CoverageEligibilityResponse.FinancialResourceStatusCodes.fromCode(status!!),
+          CoverageEligibilityResponse.FinancialResourceStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on CoverageEligibilityResponse"
+              )
+          ),
           _status,
         ),
       purpose =
@@ -1135,23 +1159,44 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
             _purpose?.getOrNull(index),
           )
         }),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on CoverageEligibilityResponse"
+          ),
       event = event ?: listOf(),
       serviced =
         CoverageEligibilityResponse.Serviced.from(
           Date.of(FhirDate.fromString(servicedDate), _servicedDate),
           servicedPeriod,
         ),
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException(
+            "Missing required property 'created' on CoverageEligibilityResponse"
+          ),
       requestor = requestor,
-      request = request!!,
+      request =
+        request
+          ?: throw SerializationException(
+            "Missing required property 'request' on CoverageEligibilityResponse"
+          ),
       outcome =
         Enumeration.of(
-          CoverageEligibilityResponse.EligibilityOutcome.fromCode(outcome!!),
+          CoverageEligibilityResponse.EligibilityOutcome.fromCode(
+            outcome
+              ?: throw SerializationException(
+                "Missing required property 'outcome' on CoverageEligibilityResponse"
+              )
+          ),
           _outcome,
         ),
       disposition = R5String.of(disposition, _disposition),
-      insurer = insurer!!,
+      insurer =
+        insurer
+          ?: throw SerializationException(
+            "Missing required property 'insurer' on CoverageEligibilityResponse"
+          ),
       insurance = insurance ?: listOf(),
       preAuthRef = R5String.of(preAuthRef, _preAuthRef),
       form = form,

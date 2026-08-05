@@ -1014,7 +1014,11 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       linkId = R5String.of(linkId, _linkId),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on MeasureReport.Group.Stratifier.Stratum.Component"
+          ),
       `value` =
         MeasureReport.Group.Stratifier.Stratum.Component.Value.from(
           valueCodeableConcept,
@@ -1022,7 +1026,10 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
           valueQuantity,
           valueRange,
           valueReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on MeasureReport.Group.Stratifier.Stratum.Component"
+          ),
     )
   }
 
@@ -1471,8 +1478,22 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(MeasureReport.MeasureReportStatus.fromCode(status!!), _status),
-      type = Enumeration.of(MeasureReport.MeasureReportType.fromCode(type!!), _type),
+      status =
+        Enumeration.of(
+          MeasureReport.MeasureReportStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on MeasureReport")
+          ),
+          _status,
+        ),
+      type =
+        Enumeration.of(
+          MeasureReport.MeasureReportType.fromCode(
+            type
+              ?: throw SerializationException("Missing required property 'type' on MeasureReport")
+          ),
+          _type,
+        ),
       dataUpdateType =
         dataUpdateType?.let {
           Enumeration.of(MeasureReport.SubmitDataUpdateType.fromCode(it), _dataUpdateType)
@@ -1483,7 +1504,9 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
       reporter = reporter,
       reportingVendor = reportingVendor,
       location = location,
-      period = period!!,
+      period =
+        period
+          ?: throw SerializationException("Missing required property 'period' on MeasureReport"),
       inputParameters = inputParameters,
       scoring = scoring,
       improvementNotation = improvementNotation,

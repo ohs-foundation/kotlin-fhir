@@ -357,7 +357,11 @@ internal object ObservationComponentSerializer : KSerializer<Observation.Compone
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on Observation.Component"
+          ),
       `value` =
         Observation.Component.Value.from(
           valueQuantity,
@@ -860,9 +864,17 @@ internal object ObservationSerializer : KSerializer<Observation> {
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(Observation.ObservationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Observation.ObservationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Observation")
+          ),
+          _status,
+        ),
       category = category ?: listOf(),
-      code = code!!,
+      code =
+        code ?: throw SerializationException("Missing required property 'code' on Observation"),
       subject = subject,
       focus = focus ?: listOf(),
       encounter = encounter,

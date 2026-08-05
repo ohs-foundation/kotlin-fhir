@@ -138,7 +138,16 @@ internal object CompartmentDefinitionResourceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Enumeration.of(ResourceType.fromCode(code!!), _code),
+      code =
+        Enumeration.of(
+          ResourceType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on CompartmentDefinition.Resource"
+              )
+          ),
+          _code,
+        ),
       `param` =
         (kotlin.collections.List(maxOf(`param`?.size ?: 0, _param?.size ?: 0)) { index ->
           R4bString.of(`param`?.getOrNull(index)?.let { it }, _param?.getOrNull(index))!!
@@ -408,10 +417,27 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException(
+            "Missing required property 'url' on CompartmentDefinition"
+          ),
       version = R4bString.of(version, _version),
-      name = R4bString.of(name, _name)!!,
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on CompartmentDefinition"
+          ),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on CompartmentDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -419,8 +445,21 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
       description = Markdown.of(description, _description),
       useContext = useContext ?: listOf(),
       purpose = Markdown.of(purpose, _purpose),
-      code = Enumeration.of(CompartmentDefinition.CompartmentType.fromCode(code!!), _code),
-      search = R4bBoolean.of(search, _search)!!,
+      code =
+        Enumeration.of(
+          CompartmentDefinition.CompartmentType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on CompartmentDefinition"
+              )
+          ),
+          _code,
+        ),
+      search =
+        R4bBoolean.of(search, _search)
+          ?: throw SerializationException(
+            "Missing required property 'search' on CompartmentDefinition"
+          ),
       resource = resource ?: listOf(),
     )
   }

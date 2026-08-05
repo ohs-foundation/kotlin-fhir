@@ -143,7 +143,11 @@ internal object MedicinalProductNameSerializer : KSerializer<MedicinalProduct.Na
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      productName = R4String.of(productName, _productName)!!,
+      productName =
+        R4String.of(productName, _productName)
+          ?: throw SerializationException(
+            "Missing required property 'productName' on MedicinalProduct.Name"
+          ),
       namePart = namePart ?: listOf(),
       countryLanguage = countryLanguage ?: listOf(),
     )
@@ -255,8 +259,16 @@ internal object MedicinalProductNameNamePartSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      part = R4String.of(part, _part)!!,
-      type = type!!,
+      part =
+        R4String.of(part, _part)
+          ?: throw SerializationException(
+            "Missing required property 'part' on MedicinalProduct.Name.NamePart"
+          ),
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicinalProduct.Name.NamePart"
+          ),
     )
   }
 
@@ -359,9 +371,17 @@ internal object MedicinalProductNameCountryLanguageSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      country = country!!,
+      country =
+        country
+          ?: throw SerializationException(
+            "Missing required property 'country' on MedicinalProduct.Name.CountryLanguage"
+          ),
       jurisdiction = jurisdiction,
-      language = language!!,
+      language =
+        language
+          ?: throw SerializationException(
+            "Missing required property 'language' on MedicinalProduct.Name.CountryLanguage"
+          ),
     )
   }
 

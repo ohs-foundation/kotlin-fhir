@@ -148,8 +148,21 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Canonical.of(url, _url)!!,
-      mode = Enumeration.of(StructureMap.StructureMapModelMode.fromCode(mode!!), _mode),
+      url =
+        Canonical.of(url, _url)
+          ?: throw SerializationException(
+            "Missing required property 'url' on StructureMap.Structure"
+          ),
+      mode =
+        Enumeration.of(
+          StructureMap.StructureMapModelMode.fromCode(
+            mode
+              ?: throw SerializationException(
+                "Missing required property 'mode' on StructureMap.Structure"
+              )
+          ),
+          _mode,
+        ),
       alias = R5String.of(alias, _alias),
       documentation = R5String.of(documentation, _documentation),
     )
@@ -383,7 +396,9 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Id.of(name, _name)!!,
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on StructureMap.Group"),
       extends = Id.of(extends, _extends),
       typeMode =
         typeMode?.let {
@@ -524,9 +539,22 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Id.of(name, _name)!!,
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on StructureMap.Group.Input"
+          ),
       type = R5String.of(type, _type),
-      mode = Enumeration.of(StructureMap.StructureMapInputMode.fromCode(mode!!), _mode),
+      mode =
+        Enumeration.of(
+          StructureMap.StructureMapInputMode.fromCode(
+            mode
+              ?: throw SerializationException(
+                "Missing required property 'mode' on StructureMap.Group.Input"
+              )
+          ),
+          _mode,
+        ),
       documentation = R5String.of(documentation, _documentation),
     )
   }
@@ -876,7 +904,11 @@ internal object StructureMapGroupRuleSourceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      context = Id.of(context, _context)!!,
+      context =
+        Id.of(context, _context)
+          ?: throw SerializationException(
+            "Missing required property 'context' on StructureMap.Group.Rule.Source"
+          ),
       min = Integer.of(min, _min),
       max = R5String.of(max, _max),
       type = R5String.of(type, _type),
@@ -1293,7 +1325,10 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
           Date.of(FhirDate.fromString(valueDate), _valueDate),
           Time.of(valueTime, _valueTime),
           DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on StructureMap.Group.Rule.Target.Parameter"
+          ),
     )
   }
 
@@ -1443,7 +1478,11 @@ internal object StructureMapGroupRuleDependentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Id.of(name, _name)!!,
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on StructureMap.Group.Rule.Dependent"
+          ),
       parameter = parameter ?: listOf(),
     )
   }
@@ -1771,7 +1810,9 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException("Missing required property 'url' on StructureMap"),
       identifier = identifier ?: listOf(),
       version = R5String.of(version, _version),
       versionAlgorithm =
@@ -1779,9 +1820,18 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
           R5String.of(versionAlgorithmString, _versionAlgorithmString),
           versionAlgorithmCoding,
         ),
-      name = R5String.of(name, _name)!!,
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on StructureMap"),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on StructureMap")
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

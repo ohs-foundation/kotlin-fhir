@@ -304,8 +304,19 @@ internal object DeviceDeviceNameSerializer : KSerializer<Device.DeviceName> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R4bString.of(name, _name)!!,
-      type = Enumeration.of(Device.DeviceNameType.fromCode(type!!), _type),
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on Device.DeviceName"),
+      type =
+        Enumeration.of(
+          Device.DeviceNameType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on Device.DeviceName"
+              )
+          ),
+          _type,
+        ),
     )
   }
 
@@ -401,7 +412,11 @@ internal object DeviceSpecializationSerializer : KSerializer<Device.Specializati
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      systemType = systemType!!,
+      systemType =
+        systemType
+          ?: throw SerializationException(
+            "Missing required property 'systemType' on Device.Specialization"
+          ),
       version = R4bString.of(version, _version),
     )
   }
@@ -501,7 +516,9 @@ internal object DeviceVersionSerializer : KSerializer<Device.Version> {
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
       component = component,
-      `value` = R4bString.of(`value`, _value)!!,
+      `value` =
+        R4bString.of(`value`, _value)
+          ?: throw SerializationException("Missing required property 'value' on Device.Version"),
     )
   }
 
@@ -609,7 +626,8 @@ internal object DevicePropertySerializer : KSerializer<Device.Property> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Device.Property"),
       valueQuantity = valueQuantity ?: listOf(),
       valueCode = valueCode ?: listOf(),
     )

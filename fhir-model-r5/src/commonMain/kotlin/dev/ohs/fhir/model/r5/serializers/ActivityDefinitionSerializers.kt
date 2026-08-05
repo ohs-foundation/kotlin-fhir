@@ -267,8 +267,16 @@ internal object ActivityDefinitionDynamicValueSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      path = R5String.of(path, _path)!!,
-      expression = expression!!,
+      path =
+        R5String.of(path, _path)
+          ?: throw SerializationException(
+            "Missing required property 'path' on ActivityDefinition.DynamicValue"
+          ),
+      expression =
+        expression
+          ?: throw SerializationException(
+            "Missing required property 'expression' on ActivityDefinition.DynamicValue"
+          ),
     )
   }
 
@@ -925,7 +933,16 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       subtitle = R5String.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ActivityDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       subject =
         ActivityDefinition.Subject.from(

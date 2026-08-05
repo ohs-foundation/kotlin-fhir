@@ -613,7 +613,11 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       category = category ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on ObservationDefinition"
+          ),
       identifier = identifier ?: listOf(),
       permittedDataType =
         (kotlin.collections.List(

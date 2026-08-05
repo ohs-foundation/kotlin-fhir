@@ -271,7 +271,11 @@ internal object ServiceRequestOrderDetailParameterSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on ServiceRequest.OrderDetail.Parameter"
+          ),
       `value` =
         ServiceRequest.OrderDetail.Parameter.Value.from(
           valueQuantity,
@@ -281,7 +285,10 @@ internal object ServiceRequestOrderDetailParameterSerializer :
           valueCodeableConcept,
           R5String.of(valueString, _valueString),
           valuePeriod,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on ServiceRequest.OrderDetail.Parameter"
+          ),
     )
   }
 
@@ -924,8 +931,26 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
       requisition = requisition,
-      status = Enumeration.of(ServiceRequest.RequestStatus.fromCode(status!!), _status),
-      intent = Enumeration.of(ServiceRequest.RequestIntent.fromCode(intent!!), _intent),
+      status =
+        Enumeration.of(
+          ServiceRequest.RequestStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ServiceRequest"
+              )
+          ),
+          _status,
+        ),
+      intent =
+        Enumeration.of(
+          ServiceRequest.RequestIntent.fromCode(
+            intent
+              ?: throw SerializationException(
+                "Missing required property 'intent' on ServiceRequest"
+              )
+          ),
+          _intent,
+        ),
       category = category ?: listOf(),
       priority =
         priority?.let { Enumeration.of(ServiceRequest.RequestPriority.fromCode(it), _priority) },
@@ -933,7 +958,9 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
       code = code,
       orderDetail = orderDetail ?: listOf(),
       quantity = ServiceRequest.Quantity.from(quantityQuantity, quantityRatio, quantityRange),
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on ServiceRequest"),
       focus = focus ?: listOf(),
       encounter = encounter,
       occurrence =

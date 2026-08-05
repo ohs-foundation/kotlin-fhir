@@ -262,8 +262,20 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
       status =
-        Enumeration.of(DeviceUseStatement.DeviceUseStatementStatus.fromCode(status!!), _status),
-      subject = subject!!,
+        Enumeration.of(
+          DeviceUseStatement.DeviceUseStatementStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on DeviceUseStatement"
+              )
+          ),
+          _status,
+        ),
+      subject =
+        subject
+          ?: throw SerializationException(
+            "Missing required property 'subject' on DeviceUseStatement"
+          ),
       derivedFrom = derivedFrom ?: listOf(),
       timing =
         DeviceUseStatement.Timing.from(
@@ -273,7 +285,11 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
         ),
       recordedOn = DateTime.of(FhirDateTime.fromString(recordedOn), _recordedOn),
       source = source,
-      device = device!!,
+      device =
+        device
+          ?: throw SerializationException(
+            "Missing required property 'device' on DeviceUseStatement"
+          ),
       reasonCode = reasonCode ?: listOf(),
       reasonReference = reasonReference ?: listOf(),
       bodySite = bodySite,

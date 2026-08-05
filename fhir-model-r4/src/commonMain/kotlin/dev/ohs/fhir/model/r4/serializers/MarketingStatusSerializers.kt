@@ -124,10 +124,18 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      country = country!!,
+      country =
+        country
+          ?: throw SerializationException("Missing required property 'country' on MarketingStatus"),
       jurisdiction = jurisdiction,
-      status = status!!,
-      dateRange = dateRange!!,
+      status =
+        status
+          ?: throw SerializationException("Missing required property 'status' on MarketingStatus"),
+      dateRange =
+        dateRange
+          ?: throw SerializationException(
+            "Missing required property 'dateRange' on MarketingStatus"
+          ),
       restoreDate = DateTime.of(FhirDateTime.fromString(restoreDate), _restoreDate),
     )
   }

@@ -957,10 +957,8 @@ equivalence is maintained.
 
 These tests use inline test data and do not require filesystem access:
 
-- **`JsonConfigurationTest`** — Custom JSON configuration behaviors (leniency, pretty print)
-- **`PolymorphicSerializationTest`** — Polymorphic type serialization & missing-discriminator rejection
-- **`IndexOrderingTest`** — Serializer descriptor field index mapping integrity (ProtoBuf)
-- **`FhirDateTest` / `FhirDateTimeTest`** — Custom date and date-time validation and parsing
+- **Primitive types** (`FhirDateTest`, `FhirDateTimeTest`, `FhirDecimalTest`) — Custom primitive types (`FhirDate`, `FhirDateTime`, `FhirDecimal`)
+- **Serialization** (`PolymorphicSerializationTest`, `SerializationExceptionTest`, `JsonConfigurationTest`, `IndexOrderingTest`) — Polymorphism, property validation, and format-specific behavior (JSON and ProtoBuf)
 
 #### Platform coverage and CI
 

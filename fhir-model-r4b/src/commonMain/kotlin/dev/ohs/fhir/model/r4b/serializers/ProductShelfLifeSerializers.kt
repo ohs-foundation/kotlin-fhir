@@ -121,8 +121,12 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
-      type = type!!,
-      period = period!!,
+      type =
+        type
+          ?: throw SerializationException("Missing required property 'type' on ProductShelfLife"),
+      period =
+        period
+          ?: throw SerializationException("Missing required property 'period' on ProductShelfLife"),
       specialPrecautionsForStorage = specialPrecautionsForStorage ?: listOf(),
     )
   }

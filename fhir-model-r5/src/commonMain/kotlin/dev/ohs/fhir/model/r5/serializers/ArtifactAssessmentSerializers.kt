@@ -543,7 +543,10 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
           artifactReference,
           Canonical.of(artifactCanonical, _artifactCanonical),
           Uri.of(artifactUri, _artifactUri),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'artifact' on ArtifactAssessment"
+          ),
       content = content ?: listOf(),
       workflowStatus =
         workflowStatus?.let {

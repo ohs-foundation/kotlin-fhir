@@ -430,8 +430,12 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
       category = category,
       priority =
         priority?.let { Enumeration.of(SupplyRequest.RequestPriority.fromCode(it), _priority) },
-      item = SupplyRequest.Item.from(itemCodeableConcept, itemReference)!!,
-      quantity = quantity!!,
+      item =
+        SupplyRequest.Item.from(itemCodeableConcept, itemReference)
+          ?: throw SerializationException("Missing required property 'item' on SupplyRequest"),
+      quantity =
+        quantity
+          ?: throw SerializationException("Missing required property 'quantity' on SupplyRequest"),
       parameter = parameter ?: listOf(),
       occurrence =
         SupplyRequest.Occurrence.from(

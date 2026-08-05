@@ -218,7 +218,11 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      key = Id.of(key, _key)!!,
+      key =
+        Id.of(key, _key)
+          ?: throw SerializationException(
+            "Missing required property 'key' on Requirements.Statement"
+          ),
       label = R5String.of(label, _label),
       conformance =
         (kotlin.collections.List(maxOf(conformance?.size ?: 0, _conformance?.size ?: 0)) { index ->
@@ -228,7 +232,11 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
           )
         }),
       conditionality = R5Boolean.of(conditionality, _conditionality),
-      requirement = Markdown.of(requirement, _requirement)!!,
+      requirement =
+        Markdown.of(requirement, _requirement)
+          ?: throw SerializationException(
+            "Missing required property 'requirement' on Requirements.Statement"
+          ),
       derivedFrom = R5String.of(derivedFrom, _derivedFrom),
       parent = R5String.of(parent, _parent),
       satisfiedBy =
@@ -637,7 +645,14 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Requirements")
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

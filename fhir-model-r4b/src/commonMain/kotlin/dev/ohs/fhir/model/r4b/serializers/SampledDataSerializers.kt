@@ -147,12 +147,17 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
     return SampledData(
       id = id,
       extension = extension ?: listOf(),
-      origin = origin!!,
-      period = Decimal.of(period, _period)!!,
+      origin =
+        origin ?: throw SerializationException("Missing required property 'origin' on SampledData"),
+      period =
+        Decimal.of(period, _period)
+          ?: throw SerializationException("Missing required property 'period' on SampledData"),
       factor = Decimal.of(factor, _factor),
       lowerLimit = Decimal.of(lowerLimit, _lowerLimit),
       upperLimit = Decimal.of(upperLimit, _upperLimit),
-      dimensions = PositiveInt.of(dimensions, _dimensions)!!,
+      dimensions =
+        PositiveInt.of(dimensions, _dimensions)
+          ?: throw SerializationException("Missing required property 'dimensions' on SampledData"),
       `data` = R4bString.of(`data`, _data),
     )
   }

@@ -125,7 +125,11 @@ internal object IngredientManufacturerSerializer : KSerializer<Ingredient.Manufa
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       role = role?.let { Enumeration.of(IngredientManufacturerRole.fromCode(it), _role) },
-      manufacturer = manufacturer!!,
+      manufacturer =
+        manufacturer
+          ?: throw SerializationException(
+            "Missing required property 'manufacturer' on Ingredient.Manufacturer"
+          ),
     )
   }
 
@@ -221,7 +225,11 @@ internal object IngredientSubstanceSerializer : KSerializer<Ingredient.Substance
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on Ingredient.Substance"
+          ),
       strength = strength ?: listOf(),
     )
   }
@@ -724,13 +732,20 @@ internal object IngredientSubstanceStrengthReferenceStrengthSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      substance = substance!!,
+      substance =
+        substance
+          ?: throw SerializationException(
+            "Missing required property 'substance' on Ingredient.Substance.Strength.ReferenceStrength"
+          ),
       strength =
         Ingredient.Substance.Strength.ReferenceStrength.Strength.from(
           strengthRatio,
           strengthRatioRange,
           strengthQuantity,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'strength' on Ingredient.Substance.Strength.ReferenceStrength"
+          ),
       measurementPoint = R5String.of(measurementPoint, _measurementPoint),
       country = country ?: listOf(),
     )
@@ -961,15 +976,24 @@ internal object IngredientSerializer : KSerializer<Ingredient> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Ingredient")
+          ),
+          _status,
+        ),
       `for` = `for` ?: listOf(),
-      role = role!!,
+      role = role ?: throw SerializationException("Missing required property 'role' on Ingredient"),
       function = function ?: listOf(),
       group = group,
       allergenicIndicator = R5Boolean.of(allergenicIndicator, _allergenicIndicator),
       comment = Markdown.of(comment, _comment),
       manufacturer = manufacturer ?: listOf(),
-      substance = substance!!,
+      substance =
+        substance
+          ?: throw SerializationException("Missing required property 'substance' on Ingredient"),
     )
   }
 

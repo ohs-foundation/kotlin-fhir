@@ -571,7 +571,11 @@ internal object ParametersParameterSerializer : KSerializer<Parameters.Parameter
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R4String.of(name, _name)!!,
+      name =
+        R4String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on Parameters.Parameter"
+          ),
       `value` =
         Parameters.Parameter.Value.from(
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),

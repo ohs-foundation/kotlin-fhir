@@ -400,7 +400,16 @@ internal object ChargeItemDefinitionPropertyGroupPriceComponentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(ChargeItemDefinition.InvoicePriceComponentType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          ChargeItemDefinition.InvoicePriceComponentType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ChargeItemDefinition.PropertyGroup.PriceComponent"
+              )
+          ),
+          _type,
+        ),
       code = code,
       factor = Decimal.of(factor, _factor),
       amount = amount,
@@ -796,7 +805,11 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException(
+            "Missing required property 'url' on ChargeItemDefinition"
+          ),
       identifier = identifier ?: listOf(),
       version = R4bString.of(version, _version),
       title = R4bString.of(title, _title),
@@ -813,7 +826,16 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
         (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { index ->
           Canonical.of(replaces?.getOrNull(index)?.let { it }, _replaces?.getOrNull(index))!!
         }),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ChargeItemDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),

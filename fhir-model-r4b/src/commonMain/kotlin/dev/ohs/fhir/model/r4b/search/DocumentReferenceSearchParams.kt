@@ -253,7 +253,7 @@ public object DocumentReferenceSearchParams {
       target = listOf(Encounter::class),
       extractor = { resource ->
         (resource.context?.encounter ?: emptyList()).filter {
-          it.reference?.value?.toString()?.contains("Encounter/") == true
+          it.reference?.value?.contains("Encounter/") == true
         }
       },
     )
@@ -313,9 +313,7 @@ public object DocumentReferenceSearchParams {
       expression = "DocumentReference.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        listOfNotNull(resource.subject).filter {
-          it.reference?.value?.toString()?.contains("Patient/") == true
-        }
+        listOfNotNull(resource.subject).filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 

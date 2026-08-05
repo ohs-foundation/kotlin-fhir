@@ -203,10 +203,25 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(ResearchSubject.ResearchSubjectStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          ResearchSubject.ResearchSubjectStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ResearchSubject"
+              )
+          ),
+          _status,
+        ),
       period = period,
-      study = study!!,
-      individual = individual!!,
+      study =
+        study
+          ?: throw SerializationException("Missing required property 'study' on ResearchSubject"),
+      individual =
+        individual
+          ?: throw SerializationException(
+            "Missing required property 'individual' on ResearchSubject"
+          ),
       assignedArm = R4bString.of(assignedArm, _assignedArm),
       actualArm = R4bString.of(actualArm, _actualArm),
       consent = consent,

@@ -145,7 +145,11 @@ internal object CoverageEligibilityResponseInsuranceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      coverage = coverage!!,
+      coverage =
+        coverage
+          ?: throw SerializationException(
+            "Missing required property 'coverage' on CoverageEligibilityResponse.Insurance"
+          ),
       inforce = R4bBoolean.of(inforce, _inforce),
       benefitPeriod = benefitPeriod,
       item = item ?: listOf(),
@@ -567,7 +571,11 @@ internal object CoverageEligibilityResponseInsuranceItemBenefitSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on CoverageEligibilityResponse.Insurance.Item.Benefit"
+          ),
       allowed =
         CoverageEligibilityResponse.Insurance.Item.Benefit.Allowed.from(
           UnsignedInt.of(allowedUnsignedInt, _allowedUnsignedInt),
@@ -702,7 +710,11 @@ internal object CoverageEligibilityResponseErrorSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on CoverageEligibilityResponse.Error"
+          ),
     )
   }
 
@@ -960,7 +972,12 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          CoverageEligibilityResponse.FinancialResourceStatusCodes.fromCode(status!!),
+          CoverageEligibilityResponse.FinancialResourceStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on CoverageEligibilityResponse"
+              )
+          ),
           _status,
         ),
       purpose =
@@ -972,18 +989,43 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
             _purpose?.getOrNull(index),
           )
         }),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on CoverageEligibilityResponse"
+          ),
       serviced =
         CoverageEligibilityResponse.Serviced.from(
           Date.of(FhirDate.fromString(servicedDate), _servicedDate),
           servicedPeriod,
         ),
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException(
+            "Missing required property 'created' on CoverageEligibilityResponse"
+          ),
       requestor = requestor,
-      request = request!!,
-      outcome = Enumeration.of(RemittanceOutcome.fromCode(outcome!!), _outcome),
+      request =
+        request
+          ?: throw SerializationException(
+            "Missing required property 'request' on CoverageEligibilityResponse"
+          ),
+      outcome =
+        Enumeration.of(
+          RemittanceOutcome.fromCode(
+            outcome
+              ?: throw SerializationException(
+                "Missing required property 'outcome' on CoverageEligibilityResponse"
+              )
+          ),
+          _outcome,
+        ),
       disposition = R4bString.of(disposition, _disposition),
-      insurer = insurer!!,
+      insurer =
+        insurer
+          ?: throw SerializationException(
+            "Missing required property 'insurer' on CoverageEligibilityResponse"
+          ),
       insurance = insurance ?: listOf(),
       preAuthRef = R4bString.of(preAuthRef, _preAuthRef),
       form = form,

@@ -81,9 +81,7 @@ public object AppointmentResponseSearchParams {
       expression = "AppointmentResponse.actor.where(resolve() is Location)",
       target = listOf(Location::class),
       extractor = { resource ->
-        listOfNotNull(resource.actor).filter {
-          it.reference?.value?.toString()?.contains("Location/") == true
-        }
+        listOfNotNull(resource.actor).filter { it.reference?.value?.contains("Location/") == true }
       },
     )
 
@@ -102,9 +100,7 @@ public object AppointmentResponseSearchParams {
       expression = "AppointmentResponse.actor.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        listOfNotNull(resource.actor).filter {
-          it.reference?.value?.toString()?.contains("Patient/") == true
-        }
+        listOfNotNull(resource.actor).filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 
@@ -116,7 +112,7 @@ public object AppointmentResponseSearchParams {
       target = listOf(Practitioner::class),
       extractor = { resource ->
         listOfNotNull(resource.actor).filter {
-          it.reference?.value?.toString()?.contains("Practitioner/") == true
+          it.reference?.value?.contains("Practitioner/") == true
         }
       },
     )

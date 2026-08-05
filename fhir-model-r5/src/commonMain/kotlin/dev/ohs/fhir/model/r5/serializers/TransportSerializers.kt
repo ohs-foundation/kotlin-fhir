@@ -816,7 +816,8 @@ internal object TransportInputSerializer : KSerializer<Transport.Input> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Transport.Input"),
       `value` =
         Transport.Input.Value.from(
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
@@ -873,7 +874,7 @@ internal object TransportInputSerializer : KSerializer<Transport.Input> {
           valueExtendedContactDetail,
           valueDosage,
           valueMeta,
-        )!!,
+        ) ?: throw SerializationException("Missing required property 'value' on Transport.Input"),
     )
   }
 
@@ -1847,7 +1848,9 @@ internal object TransportOutputSerializer : KSerializer<Transport.Output> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException("Missing required property 'type' on Transport.Output"),
       `value` =
         Transport.Output.Value.from(
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
@@ -1904,7 +1907,7 @@ internal object TransportOutputSerializer : KSerializer<Transport.Output> {
           valueExtendedContactDetail,
           valueDosage,
           valueMeta,
-        )!!,
+        ) ?: throw SerializationException("Missing required property 'value' on Transport.Output"),
     )
   }
 
@@ -2601,7 +2604,14 @@ internal object TransportSerializer : KSerializer<Transport> {
       partOf = partOf ?: listOf(),
       status = status?.let { Enumeration.of(Transport.TransportStatus.fromCode(it), _status) },
       statusReason = statusReason,
-      intent = Enumeration.of(Transport.TransportIntent.fromCode(intent!!), _intent),
+      intent =
+        Enumeration.of(
+          Transport.TransportIntent.fromCode(
+            intent
+              ?: throw SerializationException("Missing required property 'intent' on Transport")
+          ),
+          _intent,
+        ),
       priority =
         priority?.let { Enumeration.of(Transport.RequestPriority.fromCode(it), _priority) },
       code = code,
@@ -2622,8 +2632,16 @@ internal object TransportSerializer : KSerializer<Transport> {
       restriction = restriction,
       input = input ?: listOf(),
       output = output ?: listOf(),
-      requestedLocation = requestedLocation!!,
-      currentLocation = currentLocation!!,
+      requestedLocation =
+        requestedLocation
+          ?: throw SerializationException(
+            "Missing required property 'requestedLocation' on Transport"
+          ),
+      currentLocation =
+        currentLocation
+          ?: throw SerializationException(
+            "Missing required property 'currentLocation' on Transport"
+          ),
       reason = reason,
       history = history,
     )

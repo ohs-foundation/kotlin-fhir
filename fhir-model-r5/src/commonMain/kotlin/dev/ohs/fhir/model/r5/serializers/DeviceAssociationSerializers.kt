@@ -120,7 +120,11 @@ internal object DeviceAssociationOperationSerializer : KSerializer<DeviceAssocia
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      status = status!!,
+      status =
+        status
+          ?: throw SerializationException(
+            "Missing required property 'status' on DeviceAssociation.Operation"
+          ),
       `operator` = `operator` ?: listOf(),
       period = period,
     )
@@ -315,9 +319,17 @@ internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      device = device!!,
+      device =
+        device
+          ?: throw SerializationException(
+            "Missing required property 'device' on DeviceAssociation"
+          ),
       category = category ?: listOf(),
-      status = status!!,
+      status =
+        status
+          ?: throw SerializationException(
+            "Missing required property 'status' on DeviceAssociation"
+          ),
       statusReason = statusReason ?: listOf(),
       subject = subject,
       bodyStructure = bodyStructure,

@@ -404,10 +404,23 @@ internal object ClinicalImpressionSerializer : KSerializer<ClinicalImpression> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(ClinicalImpression.EventStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          ClinicalImpression.EventStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ClinicalImpression"
+              )
+          ),
+          _status,
+        ),
       statusReason = statusReason,
       description = R5String.of(description, _description),
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException(
+            "Missing required property 'subject' on ClinicalImpression"
+          ),
       encounter = encounter,
       effective =
         ClinicalImpression.Effective.from(

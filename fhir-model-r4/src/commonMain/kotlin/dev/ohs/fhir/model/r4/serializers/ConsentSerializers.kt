@@ -231,7 +231,11 @@ internal object ConsentVerificationSerializer : KSerializer<Consent.Verification
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      verified = R4Boolean.of(verified, _verified)!!,
+      verified =
+        R4Boolean.of(verified, _verified)
+          ?: throw SerializationException(
+            "Missing required property 'verified' on Consent.Verification"
+          ),
       verifiedWith = verifiedWith,
       verificationDate = DateTime.of(FhirDateTime.fromString(verificationDate), _verificationDate),
     )
@@ -549,8 +553,16 @@ internal object ConsentProvisionActorSerializer : KSerializer<Consent.Provision.
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      role = role!!,
-      reference = reference!!,
+      role =
+        role
+          ?: throw SerializationException(
+            "Missing required property 'role' on Consent.Provision.Actor"
+          ),
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on Consent.Provision.Actor"
+          ),
     )
   }
 
@@ -642,8 +654,21 @@ internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.D
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      meaning = Enumeration.of(Consent.ConsentDataMeaning.fromCode(meaning!!), _meaning),
-      reference = reference!!,
+      meaning =
+        Enumeration.of(
+          Consent.ConsentDataMeaning.fromCode(
+            meaning
+              ?: throw SerializationException(
+                "Missing required property 'meaning' on Consent.Provision.Data"
+              )
+          ),
+          _meaning,
+        ),
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on Consent.Provision.Data"
+          ),
     )
   }
 
@@ -881,8 +906,14 @@ internal object ConsentSerializer : KSerializer<Consent> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Consent.ConsentState.fromCode(status!!), _status),
-      scope = scope!!,
+      status =
+        Enumeration.of(
+          Consent.ConsentState.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Consent")
+          ),
+          _status,
+        ),
+      scope = scope ?: throw SerializationException("Missing required property 'scope' on Consent"),
       category = category ?: listOf(),
       patient = patient,
       dateTime = DateTime.of(FhirDateTime.fromString(dateTime), _dateTime),

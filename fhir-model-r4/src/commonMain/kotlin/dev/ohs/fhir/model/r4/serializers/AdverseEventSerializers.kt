@@ -122,7 +122,11 @@ internal object AdverseEventSuspectEntitySerializer : KSerializer<AdverseEvent.S
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      instance = instance!!,
+      instance =
+        instance
+          ?: throw SerializationException(
+            "Missing required property 'instance' on AdverseEvent.SuspectEntity"
+          ),
       causality = causality ?: listOf(),
     )
   }
@@ -542,10 +546,20 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
       actuality =
-        Enumeration.of(AdverseEvent.AdverseEventActuality.fromCode(actuality!!), _actuality),
+        Enumeration.of(
+          AdverseEvent.AdverseEventActuality.fromCode(
+            actuality
+              ?: throw SerializationException(
+                "Missing required property 'actuality' on AdverseEvent"
+              )
+          ),
+          _actuality,
+        ),
       category = category ?: listOf(),
       event = event,
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on AdverseEvent"),
       encounter = encounter,
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       detected = DateTime.of(FhirDateTime.fromString(detected), _detected),

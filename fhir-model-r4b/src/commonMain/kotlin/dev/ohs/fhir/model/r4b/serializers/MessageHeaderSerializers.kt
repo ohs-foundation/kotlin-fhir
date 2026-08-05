@@ -133,7 +133,11 @@ internal object MessageHeaderDestinationSerializer : KSerializer<MessageHeader.D
       modifierExtension = modifierExtension ?: listOf(),
       name = R4bString.of(name, _name),
       target = target,
-      endpoint = Url.of(endpoint, _endpoint)!!,
+      endpoint =
+        Url.of(endpoint, _endpoint)
+          ?: throw SerializationException(
+            "Missing required property 'endpoint' on MessageHeader.Destination"
+          ),
       `receiver` = `receiver`,
     )
   }
@@ -261,7 +265,11 @@ internal object MessageHeaderSourceSerializer : KSerializer<MessageHeader.Source
       software = R4bString.of(software, _software),
       version = R4bString.of(version, _version),
       contact = contact,
-      endpoint = Url.of(endpoint, _endpoint)!!,
+      endpoint =
+        Url.of(endpoint, _endpoint)
+          ?: throw SerializationException(
+            "Missing required property 'endpoint' on MessageHeader.Source"
+          ),
     )
   }
 
@@ -378,8 +386,21 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      identifier = Id.of(identifier, _identifier)!!,
-      code = Enumeration.of(MessageHeader.ResponseType.fromCode(code!!), _code),
+      identifier =
+        Id.of(identifier, _identifier)
+          ?: throw SerializationException(
+            "Missing required property 'identifier' on MessageHeader.Response"
+          ),
+      code =
+        Enumeration.of(
+          MessageHeader.ResponseType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on MessageHeader.Response"
+              )
+          ),
+          _code,
+        ),
       details = details,
     )
   }
@@ -589,12 +610,16 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      event = MessageHeader.Event.from(eventCoding, Uri.of(eventUri, _eventUri))!!,
+      event =
+        MessageHeader.Event.from(eventCoding, Uri.of(eventUri, _eventUri))
+          ?: throw SerializationException("Missing required property 'event' on MessageHeader"),
       destination = destination ?: listOf(),
       sender = sender,
       enterer = enterer,
       author = author,
-      source = source!!,
+      source =
+        source
+          ?: throw SerializationException("Missing required property 'source' on MessageHeader"),
       responsible = responsible,
       reason = reason,
       response = response,

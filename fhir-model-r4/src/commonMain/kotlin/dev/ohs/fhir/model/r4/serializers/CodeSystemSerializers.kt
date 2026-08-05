@@ -154,7 +154,9 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException("Missing required property 'code' on CodeSystem.Filter"),
       description = R4String.of(description, _description),
       `operator` =
         (kotlin.collections.List(maxOf(`operator`?.size ?: 0, _operator?.size ?: 0)) { index ->
@@ -163,7 +165,9 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
             _operator?.getOrNull(index),
           )
         }),
-      `value` = R4String.of(`value`, _value)!!,
+      `value` =
+        R4String.of(`value`, _value)
+          ?: throw SerializationException("Missing required property 'value' on CodeSystem.Filter"),
     )
   }
 
@@ -291,10 +295,23 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on CodeSystem.Property"
+          ),
       uri = Uri.of(uri, _uri),
       description = R4String.of(description, _description),
-      type = Enumeration.of(CodeSystem.PropertyType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          CodeSystem.PropertyType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on CodeSystem.Property"
+              )
+          ),
+          _type,
+        ),
     )
   }
 
@@ -437,7 +454,9 @@ internal object CodeSystemConceptSerializer : KSerializer<CodeSystem.Concept> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException("Missing required property 'code' on CodeSystem.Concept"),
       display = R4String.of(display, _display),
       definition = R4String.of(definition, _definition),
       designation = designation ?: listOf(),
@@ -574,7 +593,11 @@ internal object CodeSystemConceptDesignationSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       language = language?.let { Enumeration.of(CommonLanguages.fromCode(it), _language) },
       use = use,
-      `value` = R4String.of(`value`, _value)!!,
+      `value` =
+        R4String.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on CodeSystem.Concept.Designation"
+          ),
     )
   }
 
@@ -724,7 +747,11 @@ internal object CodeSystemConceptPropertySerializer : KSerializer<CodeSystem.Con
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on CodeSystem.Concept.Property"
+          ),
       `value` =
         CodeSystem.Concept.Property.Value.from(
           Code.of(valueCode, _valueCode),
@@ -734,7 +761,10 @@ internal object CodeSystemConceptPropertySerializer : KSerializer<CodeSystem.Con
           R4Boolean.of(valueBoolean, _valueBoolean),
           DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
           Decimal.of(valueDecimal, _valueDecimal),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on CodeSystem.Concept.Property"
+          ),
     )
   }
 
@@ -1125,7 +1155,14 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
       version = R4String.of(version, _version),
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on CodeSystem")
+          ),
+          _status,
+        ),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
@@ -1143,7 +1180,14 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
         },
       compositional = R4Boolean.of(compositional, _compositional),
       versionNeeded = R4Boolean.of(versionNeeded, _versionNeeded),
-      content = Enumeration.of(CodeSystem.CodeSystemContentMode.fromCode(content!!), _content),
+      content =
+        Enumeration.of(
+          CodeSystem.CodeSystemContentMode.fromCode(
+            content
+              ?: throw SerializationException("Missing required property 'content' on CodeSystem")
+          ),
+          _content,
+        ),
       supplements = Canonical.of(supplements, _supplements),
       count = UnsignedInt.of(count, _count),
       filter = filter ?: listOf(),

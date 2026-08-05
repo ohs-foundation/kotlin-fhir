@@ -240,12 +240,19 @@ internal object ExplanationOfBenefitEventSerializer : KSerializer<ExplanationOfB
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on ExplanationOfBenefit.Event"
+          ),
       `when` =
         ExplanationOfBenefit.Event.When.from(
           DateTime.of(FhirDateTime.fromString(whenDateTime), _whenDateTime),
           whenPeriod,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'when' on ExplanationOfBenefit.Event"
+          ),
     )
   }
 
@@ -453,8 +460,16 @@ internal object ExplanationOfBenefitCareTeamSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
-      provider = provider!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on ExplanationOfBenefit.CareTeam"
+          ),
+      provider =
+        provider
+          ?: throw SerializationException(
+            "Missing required property 'provider' on ExplanationOfBenefit.CareTeam"
+          ),
       responsible = R5Boolean.of(responsible, _responsible),
       role = role,
       specialty = specialty,
@@ -633,8 +648,16 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
-      category = category!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on ExplanationOfBenefit.SupportingInfo"
+          ),
+      category =
+        category
+          ?: throw SerializationException(
+            "Missing required property 'category' on ExplanationOfBenefit.SupportingInfo"
+          ),
       code = code,
       timing =
         ExplanationOfBenefit.SupportingInfo.Timing.from(
@@ -838,12 +861,16 @@ internal object ExplanationOfBenefitDiagnosisSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on ExplanationOfBenefit.Diagnosis"
+          ),
       diagnosis =
-        ExplanationOfBenefit.Diagnosis.Diagnosis.from(
-          diagnosisCodeableConcept,
-          diagnosisReference,
-        )!!,
+        ExplanationOfBenefit.Diagnosis.Diagnosis.from(diagnosisCodeableConcept, diagnosisReference)
+          ?: throw SerializationException(
+            "Missing required property 'diagnosis' on ExplanationOfBenefit.Diagnosis"
+          ),
       type = type ?: listOf(),
       onAdmission = onAdmission,
     )
@@ -1004,14 +1031,18 @@ internal object ExplanationOfBenefitProcedureSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on ExplanationOfBenefit.Procedure"
+          ),
       type = type ?: listOf(),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       procedure =
-        ExplanationOfBenefit.Procedure.Procedure.from(
-          procedureCodeableConcept,
-          procedureReference,
-        )!!,
+        ExplanationOfBenefit.Procedure.Procedure.from(procedureCodeableConcept, procedureReference)
+          ?: throw SerializationException(
+            "Missing required property 'procedure' on ExplanationOfBenefit.Procedure"
+          ),
       udi = udi ?: listOf(),
     )
   }
@@ -1154,8 +1185,16 @@ internal object ExplanationOfBenefitInsuranceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      focal = R5Boolean.of(focal, _focal)!!,
-      coverage = coverage!!,
+      focal =
+        R5Boolean.of(focal, _focal)
+          ?: throw SerializationException(
+            "Missing required property 'focal' on ExplanationOfBenefit.Insurance"
+          ),
+      coverage =
+        coverage
+          ?: throw SerializationException(
+            "Missing required property 'coverage' on ExplanationOfBenefit.Insurance"
+          ),
       preAuthRef =
         (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { index ->
           R5String.of(preAuthRef?.getOrNull(index)?.let { it }, _preAuthRef?.getOrNull(index))!!
@@ -1708,7 +1747,11 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on ExplanationOfBenefit.Item"
+          ),
       careTeamSequence =
         (kotlin.collections.List(
           maxOf(careTeamSequence?.size ?: 0, _careTeamSequence?.size ?: 0)
@@ -2273,7 +2316,11 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      category = category!!,
+      category =
+        category
+          ?: throw SerializationException(
+            "Missing required property 'category' on ExplanationOfBenefit.Item.Adjudication"
+          ),
       reason = reason,
       amount = amount,
       quantity = quantity,
@@ -2505,7 +2552,11 @@ internal object ExplanationOfBenefitItemDetailSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on ExplanationOfBenefit.Item.Detail"
+          ),
       traceNumber = traceNumber ?: listOf(),
       revenue = revenue,
       category = category,
@@ -2832,7 +2883,11 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on ExplanationOfBenefit.Item.Detail.SubDetail"
+          ),
       traceNumber = traceNumber ?: listOf(),
       revenue = revenue,
       category = category,
@@ -4227,8 +4282,16 @@ internal object ExplanationOfBenefitTotalSerializer : KSerializer<ExplanationOfB
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      category = category!!,
-      amount = amount!!,
+      category =
+        category
+          ?: throw SerializationException(
+            "Missing required property 'category' on ExplanationOfBenefit.Total"
+          ),
+      amount =
+        amount
+          ?: throw SerializationException(
+            "Missing required property 'amount' on ExplanationOfBenefit.Total"
+          ),
     )
   }
 
@@ -4609,7 +4672,11 @@ internal object ExplanationOfBenefitBenefitBalanceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      category = category!!,
+      category =
+        category
+          ?: throw SerializationException(
+            "Missing required property 'category' on ExplanationOfBenefit.BenefitBalance"
+          ),
       excluded = R5Boolean.of(excluded, _excluded),
       name = R5String.of(name, _name),
       description = R5String.of(description, _description),
@@ -4777,7 +4844,11 @@ internal object ExplanationOfBenefitBenefitBalanceFinancialSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on ExplanationOfBenefit.BenefitBalance.Financial"
+          ),
       allowed =
         ExplanationOfBenefit.BenefitBalance.Financial.Allowed.from(
           UnsignedInt.of(allowedUnsignedInt, _allowedUnsignedInt),
@@ -5335,13 +5406,42 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
       identifier = identifier ?: listOf(),
       traceNumber = traceNumber ?: listOf(),
       status =
-        Enumeration.of(ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(status!!), _status),
-      type = type!!,
+        Enumeration.of(
+          ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ExplanationOfBenefit"
+              )
+          ),
+          _status,
+        ),
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on ExplanationOfBenefit"
+          ),
       subType = subType,
-      use = Enumeration.of(ExplanationOfBenefit.Use.fromCode(use!!), _use),
-      patient = patient!!,
+      use =
+        Enumeration.of(
+          ExplanationOfBenefit.Use.fromCode(
+            use
+              ?: throw SerializationException(
+                "Missing required property 'use' on ExplanationOfBenefit"
+              )
+          ),
+          _use,
+        ),
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on ExplanationOfBenefit"
+          ),
       billablePeriod = billablePeriod,
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException(
+            "Missing required property 'created' on ExplanationOfBenefit"
+          ),
       enterer = enterer,
       insurer = insurer,
       provider = provider,
@@ -5359,7 +5459,15 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
       claim = claim,
       claimResponse = claimResponse,
       outcome =
-        Enumeration.of(ExplanationOfBenefit.ClaimProcessingCodes.fromCode(outcome!!), _outcome),
+        Enumeration.of(
+          ExplanationOfBenefit.ClaimProcessingCodes.fromCode(
+            outcome
+              ?: throw SerializationException(
+                "Missing required property 'outcome' on ExplanationOfBenefit"
+              )
+          ),
+          _outcome,
+        ),
       decision = decision,
       disposition = R5String.of(disposition, _disposition),
       preAuthRef =

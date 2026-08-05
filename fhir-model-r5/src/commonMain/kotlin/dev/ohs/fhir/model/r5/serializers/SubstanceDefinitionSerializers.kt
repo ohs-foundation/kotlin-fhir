@@ -453,7 +453,11 @@ internal object SubstanceDefinitionPropertySerializer : KSerializer<SubstanceDef
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on SubstanceDefinition.Property"
+          ),
       `value` =
         SubstanceDefinition.Property.Value.from(
           valueCodeableConcept,
@@ -582,7 +586,11 @@ internal object SubstanceDefinitionMolecularWeightSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       method = method,
       type = type,
-      amount = amount!!,
+      amount =
+        amount
+          ?: throw SerializationException(
+            "Missing required property 'amount' on SubstanceDefinition.MolecularWeight"
+          ),
     )
   }
 
@@ -1225,7 +1233,11 @@ internal object SubstanceDefinitionNameSerializer : KSerializer<SubstanceDefinit
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R5String.of(name, _name)!!,
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on SubstanceDefinition.Name"
+          ),
       type = type,
       status = status,
       preferred = R5Boolean.of(preferred, _preferred),
@@ -1553,7 +1565,11 @@ internal object SubstanceDefinitionRelationshipSerializer :
           substanceDefinitionReference,
           substanceDefinitionCodeableConcept,
         ),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on SubstanceDefinition.Relationship"
+          ),
       isDefining = R5Boolean.of(isDefining, _isDefining),
       amount =
         SubstanceDefinition.Relationship.Amount.from(

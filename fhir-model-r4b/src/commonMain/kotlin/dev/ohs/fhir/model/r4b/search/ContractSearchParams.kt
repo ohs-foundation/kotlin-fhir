@@ -221,7 +221,7 @@ public object ContractSearchParams {
       expression = "Contract.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
+        resource.subject.filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 

@@ -365,7 +365,7 @@ public object ActivityDefinitionSearchParams {
         ),
       extractor = { resource ->
         resource.relatedArtifact
-          .filter { it.type?.value?.toString() == "composed-of" }
+          .filter { it.type.value?.toString() == "composed-of" }
           .mapNotNull { it.resource }
       },
     )
@@ -594,7 +594,7 @@ public object ActivityDefinitionSearchParams {
         ),
       extractor = { resource ->
         resource.relatedArtifact
-          .filter { it.type?.value?.toString() == "depends-on" }
+          .filter { it.type.value?.toString() == "depends-on" }
           .mapNotNull { it.resource }
       },
     )
@@ -767,7 +767,7 @@ public object ActivityDefinitionSearchParams {
         ),
       extractor = { resource ->
         resource.relatedArtifact
-          .filter { it.type?.value?.toString() == "derived-from" }
+          .filter { it.type.value?.toString() == "derived-from" }
           .mapNotNull { it.resource }
       },
     )
@@ -988,7 +988,7 @@ public object ActivityDefinitionSearchParams {
         ),
       extractor = { resource ->
         resource.relatedArtifact
-          .filter { it.type?.value?.toString() == "predecessor" }
+          .filter { it.type.value?.toString() == "predecessor" }
           .mapNotNull { it.resource }
       },
     )
@@ -1177,7 +1177,7 @@ public object ActivityDefinitionSearchParams {
         ),
       extractor = { resource ->
         resource.relatedArtifact
-          .filter { it.type?.value?.toString() == "successor" }
+          .filter { it.type.value?.toString() == "successor" }
           .mapNotNull { it.resource }
       },
     )

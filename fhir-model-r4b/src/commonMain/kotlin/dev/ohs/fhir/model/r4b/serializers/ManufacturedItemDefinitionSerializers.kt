@@ -150,7 +150,11 @@ internal object ManufacturedItemDefinitionPropertySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on ManufacturedItemDefinition.Property"
+          ),
       `value` =
         ManufacturedItemDefinition.Property.Value.from(
           valueCodeableConcept,
@@ -383,8 +387,21 @@ internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedI
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
-      manufacturedDoseForm = manufacturedDoseForm!!,
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ManufacturedItemDefinition"
+              )
+          ),
+          _status,
+        ),
+      manufacturedDoseForm =
+        manufacturedDoseForm
+          ?: throw SerializationException(
+            "Missing required property 'manufacturedDoseForm' on ManufacturedItemDefinition"
+          ),
       unitOfPresentation = unitOfPresentation,
       manufacturer = manufacturer ?: listOf(),
       ingredient = ingredient ?: listOf(),

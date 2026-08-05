@@ -616,8 +616,16 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
-      `value` = `value`!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on MeasureReport.Group.Stratifier.Stratum.Component"
+          ),
+      `value` =
+        `value`
+          ?: throw SerializationException(
+            "Missing required property 'value' on MeasureReport.Group.Stratifier.Stratum.Component"
+          ),
     )
   }
 
@@ -951,13 +959,31 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(MeasureReport.MeasureReportStatus.fromCode(status!!), _status),
-      type = Enumeration.of(MeasureReport.MeasureReportType.fromCode(type!!), _type),
-      measure = Canonical.of(measure, _measure)!!,
+      status =
+        Enumeration.of(
+          MeasureReport.MeasureReportStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on MeasureReport")
+          ),
+          _status,
+        ),
+      type =
+        Enumeration.of(
+          MeasureReport.MeasureReportType.fromCode(
+            type
+              ?: throw SerializationException("Missing required property 'type' on MeasureReport")
+          ),
+          _type,
+        ),
+      measure =
+        Canonical.of(measure, _measure)
+          ?: throw SerializationException("Missing required property 'measure' on MeasureReport"),
       subject = subject,
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       reporter = reporter,
-      period = period!!,
+      period =
+        period
+          ?: throw SerializationException("Missing required property 'period' on MeasureReport"),
       improvementNotation = improvementNotation,
       group = group ?: listOf(),
       evaluatedResource = evaluatedResource ?: listOf(),

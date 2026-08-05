@@ -215,8 +215,21 @@ internal object VisionPrescriptionLensSpecificationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      product = product!!,
-      eye = Enumeration.of(VisionPrescription.VisionEyes.fromCode(eye!!), _eye),
+      product =
+        product
+          ?: throw SerializationException(
+            "Missing required property 'product' on VisionPrescription.LensSpecification"
+          ),
+      eye =
+        Enumeration.of(
+          VisionPrescription.VisionEyes.fromCode(
+            eye
+              ?: throw SerializationException(
+                "Missing required property 'eye' on VisionPrescription.LensSpecification"
+              )
+          ),
+          _eye,
+        ),
       sphere = Decimal.of(sphere, _sphere),
       cylinder = Decimal.of(cylinder, _cylinder),
       axis = Integer.of(axis, _axis),
@@ -400,8 +413,21 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      amount = Decimal.of(amount, _amount)!!,
-      base = Enumeration.of(VisionPrescription.VisionBase.fromCode(base!!), _base),
+      amount =
+        Decimal.of(amount, _amount)
+          ?: throw SerializationException(
+            "Missing required property 'amount' on VisionPrescription.LensSpecification.Prism"
+          ),
+      base =
+        Enumeration.of(
+          VisionPrescription.VisionBase.fromCode(
+            base
+              ?: throw SerializationException(
+                "Missing required property 'base' on VisionPrescription.LensSpecification.Prism"
+              )
+          ),
+          _base,
+        ),
     )
   }
 
@@ -603,12 +629,36 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(VisionPrescription.FinancialResourceStatusCodes.fromCode(status!!), _status),
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
-      patient = patient!!,
+        Enumeration.of(
+          VisionPrescription.FinancialResourceStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on VisionPrescription"
+              )
+          ),
+          _status,
+        ),
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException(
+            "Missing required property 'created' on VisionPrescription"
+          ),
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on VisionPrescription"
+          ),
       encounter = encounter,
-      dateWritten = DateTime.of(FhirDateTime.fromString(dateWritten), _dateWritten)!!,
-      prescriber = prescriber!!,
+      dateWritten =
+        DateTime.of(FhirDateTime.fromString(dateWritten), _dateWritten)
+          ?: throw SerializationException(
+            "Missing required property 'dateWritten' on VisionPrescription"
+          ),
+      prescriber =
+        prescriber
+          ?: throw SerializationException(
+            "Missing required property 'prescriber' on VisionPrescription"
+          ),
       lensSpecification = lensSpecification ?: listOf(),
     )
   }

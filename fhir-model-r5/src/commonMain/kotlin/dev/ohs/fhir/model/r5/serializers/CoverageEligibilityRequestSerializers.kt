@@ -132,12 +132,19 @@ internal object CoverageEligibilityRequestEventSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on CoverageEligibilityRequest.Event"
+          ),
       `when` =
         CoverageEligibilityRequest.Event.When.from(
           DateTime.of(FhirDateTime.fromString(whenDateTime), _whenDateTime),
           whenPeriod,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'when' on CoverageEligibilityRequest.Event"
+          ),
     )
   }
 
@@ -255,8 +262,16 @@ internal object CoverageEligibilityRequestSupportingInfoSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
-      information = information!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on CoverageEligibilityRequest.SupportingInfo"
+          ),
+      information =
+        information
+          ?: throw SerializationException(
+            "Missing required property 'information' on CoverageEligibilityRequest.SupportingInfo"
+          ),
       appliesToAll = R5Boolean.of(appliesToAll, _appliesToAll),
     )
   }
@@ -368,7 +383,11 @@ internal object CoverageEligibilityRequestInsuranceSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       focal = R5Boolean.of(focal, _focal),
-      coverage = coverage!!,
+      coverage =
+        coverage
+          ?: throw SerializationException(
+            "Missing required property 'coverage' on CoverageEligibilityRequest.Insurance"
+          ),
       businessArrangement = R5String.of(businessArrangement, _businessArrangement),
     )
   }
@@ -1009,7 +1028,12 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          CoverageEligibilityRequest.FinancialResourceStatusCodes.fromCode(status!!),
+          CoverageEligibilityRequest.FinancialResourceStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on CoverageEligibilityRequest"
+              )
+          ),
           _status,
         ),
       priority = priority,
@@ -1022,17 +1046,29 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
             _purpose?.getOrNull(index),
           )
         }),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on CoverageEligibilityRequest"
+          ),
       event = event ?: listOf(),
       serviced =
         CoverageEligibilityRequest.Serviced.from(
           Date.of(FhirDate.fromString(servicedDate), _servicedDate),
           servicedPeriod,
         ),
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException(
+            "Missing required property 'created' on CoverageEligibilityRequest"
+          ),
       enterer = enterer,
       provider = provider,
-      insurer = insurer!!,
+      insurer =
+        insurer
+          ?: throw SerializationException(
+            "Missing required property 'insurer' on CoverageEligibilityRequest"
+          ),
       facility = facility,
       supportingInfo = supportingInfo ?: listOf(),
       insurance = insurance ?: listOf(),

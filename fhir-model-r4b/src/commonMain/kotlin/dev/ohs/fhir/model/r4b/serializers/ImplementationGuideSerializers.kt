@@ -139,7 +139,11 @@ internal object ImplementationGuideDependsOnSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      uri = Canonical.of(uri, _uri)!!,
+      uri =
+        Canonical.of(uri, _uri)
+          ?: throw SerializationException(
+            "Missing required property 'uri' on ImplementationGuide.DependsOn"
+          ),
       packageId = Id.of(packageId, _packageId),
       version = R4bString.of(version, _version),
     )
@@ -241,8 +245,21 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(ResourceType.fromCode(type!!), _type),
-      profile = Canonical.of(profile, _profile)!!,
+      type =
+        Enumeration.of(
+          ResourceType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ImplementationGuide.Global"
+              )
+          ),
+          _type,
+        ),
+      profile =
+        Canonical.of(profile, _profile)
+          ?: throw SerializationException(
+            "Missing required property 'profile' on ImplementationGuide.Global"
+          ),
     )
   }
 
@@ -510,7 +527,11 @@ internal object ImplementationGuideDefinitionGroupingSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R4bString.of(name, _name)!!,
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on ImplementationGuide.Definition.Grouping"
+          ),
       description = R4bString.of(description, _description),
     )
   }
@@ -688,7 +709,11 @@ internal object ImplementationGuideDefinitionResourceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      reference = reference!!,
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on ImplementationGuide.Definition.Resource"
+          ),
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
@@ -865,10 +890,25 @@ internal object ImplementationGuideDefinitionPageSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       name =
-        ImplementationGuide.Definition.Page.Name.from(Url.of(nameUrl, _nameUrl), nameReference)!!,
-      title = R4bString.of(title, _title)!!,
+        ImplementationGuide.Definition.Page.Name.from(Url.of(nameUrl, _nameUrl), nameReference)
+          ?: throw SerializationException(
+            "Missing required property 'name' on ImplementationGuide.Definition.Page"
+          ),
+      title =
+        R4bString.of(title, _title)
+          ?: throw SerializationException(
+            "Missing required property 'title' on ImplementationGuide.Definition.Page"
+          ),
       generation =
-        Enumeration.of(ImplementationGuide.GuidePageGeneration.fromCode(generation!!), _generation),
+        Enumeration.of(
+          ImplementationGuide.GuidePageGeneration.fromCode(
+            generation
+              ?: throw SerializationException(
+                "Missing required property 'generation' on ImplementationGuide.Definition.Page"
+              )
+          ),
+          _generation,
+        ),
       page = page ?: listOf(),
     )
   }
@@ -992,8 +1032,21 @@ internal object ImplementationGuideDefinitionParameterSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Enumeration.of(ImplementationGuide.GuideParameterCode.fromCode(code!!), _code),
-      `value` = R4bString.of(`value`, _value)!!,
+      code =
+        Enumeration.of(
+          ImplementationGuide.GuideParameterCode.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on ImplementationGuide.Definition.Parameter"
+              )
+          ),
+          _code,
+        ),
+      `value` =
+        R4bString.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on ImplementationGuide.Definition.Parameter"
+          ),
     )
   }
 
@@ -1102,8 +1155,16 @@ internal object ImplementationGuideDefinitionTemplateSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
-      source = R4bString.of(source, _source)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ImplementationGuide.Definition.Template"
+          ),
+      source =
+        R4bString.of(source, _source)
+          ?: throw SerializationException(
+            "Missing required property 'source' on ImplementationGuide.Definition.Template"
+          ),
       scope = R4bString.of(scope, _scope),
     )
   }
@@ -1418,7 +1479,11 @@ internal object ImplementationGuideManifestResourceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      reference = reference!!,
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on ImplementationGuide.Manifest.Resource"
+          ),
       example =
         ImplementationGuide.Manifest.Resource.Example.from(
           R4bBoolean.of(exampleBoolean, _exampleBoolean),
@@ -1551,7 +1616,11 @@ internal object ImplementationGuideManifestPageSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R4bString.of(name, _name)!!,
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on ImplementationGuide.Manifest.Page"
+          ),
       title = R4bString.of(title, _title),
       anchor =
         (kotlin.collections.List(maxOf(anchor?.size ?: 0, _anchor?.size ?: 0)) { index ->
@@ -1881,11 +1950,26 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException("Missing required property 'url' on ImplementationGuide"),
       version = R4bString.of(version, _version),
-      name = R4bString.of(name, _name)!!,
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on ImplementationGuide"
+          ),
       title = R4bString.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ImplementationGuide"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -1894,7 +1978,11 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
       useContext = useContext ?: listOf(),
       jurisdiction = jurisdiction ?: listOf(),
       copyright = Markdown.of(copyright, _copyright),
-      packageId = Id.of(packageId, _packageId)!!,
+      packageId =
+        Id.of(packageId, _packageId)
+          ?: throw SerializationException(
+            "Missing required property 'packageId' on ImplementationGuide"
+          ),
       license =
         license?.let { Enumeration.of(ImplementationGuide.SPDXLicense.fromCode(it), _license) },
       fhirVersion =

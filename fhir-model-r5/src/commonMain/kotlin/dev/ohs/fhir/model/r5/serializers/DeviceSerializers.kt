@@ -196,8 +196,16 @@ internal object DeviceUdiCarrierSerializer : KSerializer<Device.UdiCarrier> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      deviceIdentifier = R5String.of(deviceIdentifier, _deviceIdentifier)!!,
-      issuer = Uri.of(issuer, _issuer)!!,
+      deviceIdentifier =
+        R5String.of(deviceIdentifier, _deviceIdentifier)
+          ?: throw SerializationException(
+            "Missing required property 'deviceIdentifier' on Device.UdiCarrier"
+          ),
+      issuer =
+        Uri.of(issuer, _issuer)
+          ?: throw SerializationException(
+            "Missing required property 'issuer' on Device.UdiCarrier"
+          ),
       jurisdiction = Uri.of(jurisdiction, _jurisdiction),
       carrierAIDC = Base64Binary.of(carrierAIDC, _carrierAIDC),
       carrierHRF = R5String.of(carrierHRF, _carrierHRF),
@@ -322,8 +330,16 @@ internal object DeviceNameSerializer : KSerializer<Device.Name> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      `value` = R5String.of(`value`, _value)!!,
-      type = Enumeration.of(Device.DeviceNameType.fromCode(type!!), _type),
+      `value` =
+        R5String.of(`value`, _value)
+          ?: throw SerializationException("Missing required property 'value' on Device.Name"),
+      type =
+        Enumeration.of(
+          Device.DeviceNameType.fromCode(
+            type ?: throw SerializationException("Missing required property 'type' on Device.Name")
+          ),
+          _type,
+        ),
       display = R5Boolean.of(display, _display),
     )
   }
@@ -438,7 +454,9 @@ internal object DeviceVersionSerializer : KSerializer<Device.Version> {
       type = type,
       component = component,
       installDate = DateTime.of(FhirDateTime.fromString(installDate), _installDate),
-      `value` = R5String.of(`value`, _value)!!,
+      `value` =
+        R5String.of(`value`, _value)
+          ?: throw SerializationException("Missing required property 'value' on Device.Version"),
     )
   }
 
@@ -548,7 +566,11 @@ internal object DeviceConformsToSerializer : KSerializer<Device.ConformsTo> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       category = category,
-      specification = specification!!,
+      specification =
+        specification
+          ?: throw SerializationException(
+            "Missing required property 'specification' on Device.ConformsTo"
+          ),
       version = R5String.of(version, _version),
     )
   }
@@ -686,7 +708,8 @@ internal object DevicePropertySerializer : KSerializer<Device.Property> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Device.Property"),
       `value` =
         Device.Property.Value.from(
           valueQuantity,
@@ -696,7 +719,7 @@ internal object DevicePropertySerializer : KSerializer<Device.Property> {
           Integer.of(valueInteger, _valueInteger),
           valueRange,
           valueAttachment,
-        )!!,
+        ) ?: throw SerializationException("Missing required property 'value' on Device.Property"),
     )
   }
 

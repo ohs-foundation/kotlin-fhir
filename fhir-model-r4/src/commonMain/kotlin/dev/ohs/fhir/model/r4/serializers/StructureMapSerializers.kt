@@ -180,8 +180,21 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Canonical.of(url, _url)!!,
-      mode = Enumeration.of(StructureMap.StructureMapModelMode.fromCode(mode!!), _mode),
+      url =
+        Canonical.of(url, _url)
+          ?: throw SerializationException(
+            "Missing required property 'url' on StructureMap.Structure"
+          ),
+      mode =
+        Enumeration.of(
+          StructureMap.StructureMapModelMode.fromCode(
+            mode
+              ?: throw SerializationException(
+                "Missing required property 'mode' on StructureMap.Structure"
+              )
+          ),
+          _mode,
+        ),
       alias = R4String.of(alias, _alias),
       documentation = R4String.of(documentation, _documentation),
     )
@@ -318,10 +331,20 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Id.of(name, _name)!!,
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on StructureMap.Group"),
       extends = Id.of(extends, _extends),
       typeMode =
-        Enumeration.of(StructureMap.StructureMapGroupTypeMode.fromCode(typeMode!!), _typeMode),
+        Enumeration.of(
+          StructureMap.StructureMapGroupTypeMode.fromCode(
+            typeMode
+              ?: throw SerializationException(
+                "Missing required property 'typeMode' on StructureMap.Group"
+              )
+          ),
+          _typeMode,
+        ),
       documentation = R4String.of(documentation, _documentation),
       input = input ?: listOf(),
       rule = rule ?: listOf(),
@@ -457,9 +480,22 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Id.of(name, _name)!!,
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on StructureMap.Group.Input"
+          ),
       type = R4String.of(type, _type),
-      mode = Enumeration.of(StructureMap.StructureMapInputMode.fromCode(mode!!), _mode),
+      mode =
+        Enumeration.of(
+          StructureMap.StructureMapInputMode.fromCode(
+            mode
+              ?: throw SerializationException(
+                "Missing required property 'mode' on StructureMap.Group.Input"
+              )
+          ),
+          _mode,
+        ),
       documentation = R4String.of(documentation, _documentation),
     )
   }
@@ -603,7 +639,11 @@ internal object StructureMapGroupRuleSerializer : KSerializer<StructureMap.Group
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Id.of(name, _name)!!,
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on StructureMap.Group.Rule"
+          ),
       source = source ?: listOf(),
       target = target ?: listOf(),
       rule = rule ?: listOf(),
@@ -1287,7 +1327,11 @@ internal object StructureMapGroupRuleSourceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      context = Id.of(context, _context)!!,
+      context =
+        Id.of(context, _context)
+          ?: throw SerializationException(
+            "Missing required property 'context' on StructureMap.Group.Rule.Source"
+          ),
       min = Integer.of(min, _min),
       max = R4String.of(max, _max),
       type = R4String.of(type, _type),
@@ -2165,7 +2209,10 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
           R4Boolean.of(valueBoolean, _valueBoolean),
           Integer.of(valueInteger, _valueInteger),
           Decimal.of(valueDecimal, _valueDecimal),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on StructureMap.Group.Rule.Target.Parameter"
+          ),
     )
   }
 
@@ -2298,7 +2345,11 @@ internal object StructureMapGroupRuleDependentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Id.of(name, _name)!!,
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on StructureMap.Group.Rule.Dependent"
+          ),
       variable =
         (kotlin.collections.List(maxOf(variable?.size ?: 0, _variable?.size ?: 0)) { index ->
           R4String.of(variable?.getOrNull(index)?.let { it }, _variable?.getOrNull(index))!!
@@ -2601,12 +2652,23 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException("Missing required property 'url' on StructureMap"),
       identifier = identifier ?: listOf(),
       version = R4String.of(version, _version),
-      name = R4String.of(name, _name)!!,
+      name =
+        R4String.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on StructureMap"),
       title = R4String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on StructureMap")
+          ),
+          _status,
+        ),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),

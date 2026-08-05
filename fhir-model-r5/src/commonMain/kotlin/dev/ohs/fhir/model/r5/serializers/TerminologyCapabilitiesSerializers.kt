@@ -129,7 +129,11 @@ internal object TerminologyCapabilitiesSoftwareSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R5String.of(name, _name)!!,
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on TerminologyCapabilities.Software"
+          ),
       version = R5String.of(version, _version),
     )
   }
@@ -235,7 +239,11 @@ internal object TerminologyCapabilitiesImplementationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      description = R5String.of(description, _description)!!,
+      description =
+        R5String.of(description, _description)
+          ?: throw SerializationException(
+            "Missing required property 'description' on TerminologyCapabilities.Implementation"
+          ),
       url = Url.of(url, _url),
     )
   }
@@ -358,7 +366,15 @@ internal object TerminologyCapabilitiesCodeSystemSerializer :
       uri = Canonical.of(uri, _uri),
       version = version ?: listOf(),
       content =
-        Enumeration.of(TerminologyCapabilities.CodeSystemContentMode.fromCode(content!!), _content),
+        Enumeration.of(
+          TerminologyCapabilities.CodeSystemContentMode.fromCode(
+            content
+              ?: throw SerializationException(
+                "Missing required property 'content' on TerminologyCapabilities.CodeSystem"
+              )
+          ),
+          _content,
+        ),
       subsumption = R5Boolean.of(subsumption, _subsumption),
     )
   }
@@ -672,7 +688,11 @@ internal object TerminologyCapabilitiesCodeSystemVersionFilterSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on TerminologyCapabilities.CodeSystem.Version.Filter"
+          ),
       op =
         (kotlin.collections.List(maxOf(op?.size ?: 0, _op?.size ?: 0)) { index ->
           Code.of(op?.getOrNull(index)?.let { it }, _op?.getOrNull(index))!!
@@ -938,7 +958,11 @@ internal object TerminologyCapabilitiesExpansionParameterSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Code.of(name, _name)!!,
+      name =
+        Code.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on TerminologyCapabilities.Expansion.Parameter"
+          ),
       documentation = R5String.of(documentation, _documentation),
     )
   }
@@ -1034,7 +1058,11 @@ internal object TerminologyCapabilitiesValidateCodeSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      translations = R5Boolean.of(translations, _translations)!!,
+      translations =
+        R5Boolean.of(translations, _translations)
+          ?: throw SerializationException(
+            "Missing required property 'translations' on TerminologyCapabilities.ValidateCode"
+          ),
     )
   }
 
@@ -1125,7 +1153,11 @@ internal object TerminologyCapabilitiesTranslationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      needsMap = R5Boolean.of(needsMap, _needsMap)!!,
+      needsMap =
+        R5Boolean.of(needsMap, _needsMap)
+          ?: throw SerializationException(
+            "Missing required property 'needsMap' on TerminologyCapabilities.Translation"
+          ),
     )
   }
 
@@ -1601,9 +1633,22 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on TerminologyCapabilities"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date)!!,
+      date =
+        DateTime.of(FhirDateTime.fromString(date), _date)
+          ?: throw SerializationException(
+            "Missing required property 'date' on TerminologyCapabilities"
+          ),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -1613,7 +1658,15 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       kind =
-        Enumeration.of(TerminologyCapabilities.CapabilityStatementKind.fromCode(kind!!), _kind),
+        Enumeration.of(
+          TerminologyCapabilities.CapabilityStatementKind.fromCode(
+            kind
+              ?: throw SerializationException(
+                "Missing required property 'kind' on TerminologyCapabilities"
+              )
+          ),
+          _kind,
+        ),
       software = software,
       implementation = implementation,
       lockedDate = R5Boolean.of(lockedDate, _lockedDate),

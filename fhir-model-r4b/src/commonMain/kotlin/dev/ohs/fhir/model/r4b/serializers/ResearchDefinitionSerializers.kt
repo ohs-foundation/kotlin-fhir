@@ -494,7 +494,16 @@ internal object ResearchDefinitionSerializer : KSerializer<ResearchDefinition> {
       title = R4bString.of(title, _title),
       shortTitle = R4bString.of(shortTitle, _shortTitle),
       subtitle = R4bString.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ResearchDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       subject = ResearchDefinition.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
@@ -523,7 +532,11 @@ internal object ResearchDefinitionSerializer : KSerializer<ResearchDefinition> {
         (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
           Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
-      population = population!!,
+      population =
+        population
+          ?: throw SerializationException(
+            "Missing required property 'population' on ResearchDefinition"
+          ),
       exposure = exposure,
       exposureAlternative = exposureAlternative,
       outcome = outcome,

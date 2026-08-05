@@ -119,8 +119,21 @@ internal object EncounterStatusHistorySerializer : KSerializer<Encounter.StatusH
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      status = Enumeration.of(Encounter.EncounterStatus.fromCode(status!!), _status),
-      period = period!!,
+      status =
+        Enumeration.of(
+          Encounter.EncounterStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on Encounter.StatusHistory"
+              )
+          ),
+          _status,
+        ),
+      period =
+        period
+          ?: throw SerializationException(
+            "Missing required property 'period' on Encounter.StatusHistory"
+          ),
     )
   }
 
@@ -210,8 +223,16 @@ internal object EncounterClassHistorySerializer : KSerializer<Encounter.ClassHis
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      `class` = `class`!!,
-      period = period!!,
+      `class` =
+        `class`
+          ?: throw SerializationException(
+            "Missing required property 'class' on Encounter.ClassHistory"
+          ),
+      period =
+        period
+          ?: throw SerializationException(
+            "Missing required property 'period' on Encounter.ClassHistory"
+          ),
     )
   }
 
@@ -409,7 +430,11 @@ internal object EncounterDiagnosisSerializer : KSerializer<Encounter.Diagnosis> 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      condition = condition!!,
+      condition =
+        condition
+          ?: throw SerializationException(
+            "Missing required property 'condition' on Encounter.Diagnosis"
+          ),
       use = use,
       rank = PositiveInt.of(rank, _rank),
     )
@@ -721,7 +746,11 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      location = location!!,
+      location =
+        location
+          ?: throw SerializationException(
+            "Missing required property 'location' on Encounter.Location"
+          ),
       status =
         status?.let { Enumeration.of(Encounter.EncounterLocationStatus.fromCode(it), _status) },
       physicalType = physicalType,
@@ -1030,9 +1059,17 @@ internal object EncounterSerializer : KSerializer<Encounter> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Encounter.EncounterStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Encounter.EncounterStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Encounter")
+          ),
+          _status,
+        ),
       statusHistory = statusHistory ?: listOf(),
-      `class` = `class`!!,
+      `class` =
+        `class` ?: throw SerializationException("Missing required property 'class' on Encounter"),
       classHistory = classHistory ?: listOf(),
       type = type ?: listOf(),
       serviceType = serviceType,

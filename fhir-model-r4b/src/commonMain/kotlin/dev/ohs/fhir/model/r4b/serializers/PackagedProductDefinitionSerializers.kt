@@ -662,7 +662,11 @@ internal object PackagedProductDefinitionPackagePropertySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on PackagedProductDefinition.Package.Property"
+          ),
       `value` =
         PackagedProductDefinition.Package.Property.Value.from(
           valueCodeableConcept,
@@ -792,7 +796,11 @@ internal object PackagedProductDefinitionPackageContainedItemSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = item!!,
+      item =
+        item
+          ?: throw SerializationException(
+            "Missing required property 'item' on PackagedProductDefinition.Package.ContainedItem"
+          ),
       amount = amount,
     )
   }

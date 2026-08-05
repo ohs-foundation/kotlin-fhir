@@ -570,7 +570,11 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      location = location!!,
+      location =
+        location
+          ?: throw SerializationException(
+            "Missing required property 'location' on Encounter.Location"
+          ),
       status =
         status?.let { Enumeration.of(Encounter.EncounterLocationStatus.fromCode(it), _status) },
       form = form,
@@ -925,7 +929,14 @@ internal object EncounterSerializer : KSerializer<Encounter> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Encounter.EncounterStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Encounter.EncounterStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Encounter")
+          ),
+          _status,
+        ),
       `class` = `class` ?: listOf(),
       priority = priority,
       type = type ?: listOf(),

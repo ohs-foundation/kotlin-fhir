@@ -158,7 +158,11 @@ internal object MolecularSequenceRelativeSerializer : KSerializer<MolecularSeque
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      coordinateSystem = coordinateSystem!!,
+      coordinateSystem =
+        coordinateSystem
+          ?: throw SerializationException(
+            "Missing required property 'coordinateSystem' on MolecularSequence.Relative"
+          ),
       ordinalPosition = Integer.of(ordinalPosition, _ordinalPosition),
       sequenceRange = sequenceRange,
       startingSequence = startingSequence,

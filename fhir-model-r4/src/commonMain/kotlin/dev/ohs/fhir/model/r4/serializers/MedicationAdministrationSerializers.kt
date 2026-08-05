@@ -122,7 +122,11 @@ internal object MedicationAdministrationPerformerSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on MedicationAdministration.Performer"
+          ),
     )
   }
 
@@ -572,21 +576,36 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          MedicationAdministration.MedicationAdministrationStatusCodes.fromCode(status!!),
+          MedicationAdministration.MedicationAdministrationStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on MedicationAdministration"
+              )
+          ),
           _status,
         ),
       statusReason = statusReason ?: listOf(),
       category = category,
       medication =
-        MedicationAdministration.Medication.from(medicationCodeableConcept, medicationReference)!!,
-      subject = subject!!,
+        MedicationAdministration.Medication.from(medicationCodeableConcept, medicationReference)
+          ?: throw SerializationException(
+            "Missing required property 'medication' on MedicationAdministration"
+          ),
+      subject =
+        subject
+          ?: throw SerializationException(
+            "Missing required property 'subject' on MedicationAdministration"
+          ),
       context = context,
       supportingInformation = supportingInformation ?: listOf(),
       effective =
         MedicationAdministration.Effective.from(
           DateTime.of(FhirDateTime.fromString(effectiveDateTime), _effectiveDateTime),
           effectivePeriod,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'effective' on MedicationAdministration"
+          ),
       performer = performer ?: listOf(),
       reasonCode = reasonCode ?: listOf(),
       reasonReference = reasonReference ?: listOf(),

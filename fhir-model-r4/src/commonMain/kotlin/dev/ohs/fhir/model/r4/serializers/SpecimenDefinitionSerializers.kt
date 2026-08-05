@@ -180,7 +180,12 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       type = type,
       preference =
         Enumeration.of(
-          SpecimenDefinition.SpecimenContainedPreference.fromCode(preference!!),
+          SpecimenDefinition.SpecimenContainedPreference.fromCode(
+            preference
+              ?: throw SerializationException(
+                "Missing required property 'preference' on SpecimenDefinition.TypeTested"
+              )
+          ),
           _preference,
         ),
       container = container,
@@ -528,7 +533,10 @@ internal object SpecimenDefinitionTypeTestedContainerAdditiveSerializer :
         SpecimenDefinition.TypeTested.Container.Additive.Additive.from(
           additiveCodeableConcept,
           additiveReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'additive' on SpecimenDefinition.TypeTested.Container.Additive"
+          ),
     )
   }
 

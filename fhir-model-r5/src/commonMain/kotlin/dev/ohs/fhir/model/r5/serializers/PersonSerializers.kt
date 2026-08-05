@@ -127,7 +127,11 @@ internal object PersonCommunicationSerializer : KSerializer<Person.Communication
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      language = language!!,
+      language =
+        language
+          ?: throw SerializationException(
+            "Missing required property 'language' on Person.Communication"
+          ),
       preferred = R5Boolean.of(preferred, _preferred),
     )
   }
@@ -222,7 +226,8 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      target = target!!,
+      target =
+        target ?: throw SerializationException("Missing required property 'target' on Person.Link"),
       assurance =
         assurance?.let { Enumeration.of(Person.IdentityAssuranceLevel.fromCode(it), _assurance) },
     )

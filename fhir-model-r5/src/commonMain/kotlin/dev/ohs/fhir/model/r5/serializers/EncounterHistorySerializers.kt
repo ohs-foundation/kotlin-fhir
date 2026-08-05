@@ -116,7 +116,11 @@ internal object EncounterHistoryLocationSerializer : KSerializer<EncounterHistor
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      location = location!!,
+      location =
+        location
+          ?: throw SerializationException(
+            "Missing required property 'location' on EncounterHistory.Location"
+          ),
       form = form,
     )
   }
@@ -332,8 +336,19 @@ internal object EncounterHistorySerializer : KSerializer<EncounterHistory> {
       modifierExtension = modifierExtension ?: listOf(),
       encounter = encounter,
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(EncounterHistory.EncounterStatus.fromCode(status!!), _status),
-      `class` = `class`!!,
+      status =
+        Enumeration.of(
+          EncounterHistory.EncounterStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on EncounterHistory"
+              )
+          ),
+          _status,
+        ),
+      `class` =
+        `class`
+          ?: throw SerializationException("Missing required property 'class' on EncounterHistory"),
       type = type ?: listOf(),
       serviceType = serviceType ?: listOf(),
       subject = subject,

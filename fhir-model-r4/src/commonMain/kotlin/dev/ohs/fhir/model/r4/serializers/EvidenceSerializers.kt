@@ -416,7 +416,13 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
       title = R4String.of(title, _title),
       shortTitle = R4String.of(shortTitle, _shortTitle),
       subtitle = R4String.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Evidence")
+          ),
+          _status,
+        ),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -434,7 +440,11 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
       reviewer = reviewer ?: listOf(),
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
-      exposureBackground = exposureBackground!!,
+      exposureBackground =
+        exposureBackground
+          ?: throw SerializationException(
+            "Missing required property 'exposureBackground' on Evidence"
+          ),
       exposureVariant = exposureVariant ?: listOf(),
       outcome = outcome ?: listOf(),
     )

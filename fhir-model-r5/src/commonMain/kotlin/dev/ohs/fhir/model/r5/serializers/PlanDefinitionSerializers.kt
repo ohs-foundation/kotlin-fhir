@@ -178,7 +178,11 @@ internal object PlanDefinitionGoalSerializer : KSerializer<PlanDefinition.Goal> 
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       category = category,
-      description = description!!,
+      description =
+        description
+          ?: throw SerializationException(
+            "Missing required property 'description' on PlanDefinition.Goal"
+          ),
       priority = priority,
       start = start,
       addresses = addresses ?: listOf(),
@@ -1363,7 +1367,16 @@ internal object PlanDefinitionActionConditionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      kind = Enumeration.of(PlanDefinition.ActionConditionKind.fromCode(kind!!), _kind),
+      kind =
+        Enumeration.of(
+          PlanDefinition.ActionConditionKind.fromCode(
+            kind
+              ?: throw SerializationException(
+                "Missing required property 'kind' on PlanDefinition.Action.Condition"
+              )
+          ),
+          _kind,
+        ),
       expression = expression,
     )
   }
@@ -1711,10 +1724,19 @@ internal object PlanDefinitionActionRelatedActionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      targetId = Id.of(targetId, _targetId)!!,
+      targetId =
+        Id.of(targetId, _targetId)
+          ?: throw SerializationException(
+            "Missing required property 'targetId' on PlanDefinition.Action.RelatedAction"
+          ),
       relationship =
         Enumeration.of(
-          PlanDefinition.ActionRelationshipType.fromCode(relationship!!),
+          PlanDefinition.ActionRelationshipType.fromCode(
+            relationship
+              ?: throw SerializationException(
+                "Missing required property 'relationship' on PlanDefinition.Action.RelatedAction"
+              )
+          ),
           _relationship,
         ),
       endRelationship =
@@ -2453,7 +2475,16 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
       title = R5String.of(title, _title),
       subtitle = R5String.of(subtitle, _subtitle),
       type = type,
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on PlanDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       subject =
         PlanDefinition.Subject.from(

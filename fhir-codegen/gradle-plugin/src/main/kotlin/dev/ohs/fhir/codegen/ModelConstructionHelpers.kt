@@ -36,6 +36,9 @@ import dev.ohs.fhir.codegen.schema.valueset.ValueSet
  */
 class ModelConstructionHelpers(val codegenContext: CodegenContext) {
 
+  private val serializationExceptionClassName =
+    ClassName("kotlinx.serialization", "SerializationException")
+
   /** Emit the model-class constructor argument for [element]. */
   internal fun CodeBlock.Builder.addParamToModelClassConstructor(
     modelClassName: ClassName,
@@ -44,9 +47,9 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
   ) {
     val propertyName = element.getElementName()
     val sidecarName = "_$propertyName"
+    val modelDisplayName = modelClassName.simpleNames.joinToString(".")
     if (element.type != null && element.type.size > 1) {
       if (expandPolymorphicProperties) {
-        val notNull = if (element.min == 1) "!!" else ""
         val factoryClassName =
           if (element.path.endsWith("[x]")) {
             ClassName(modelClassName.packageName, element.getPathSimpleNames())
@@ -58,10 +61,23 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
           addChoiceTypeParamToModelClassConstructor(modelClassName, element, type)
           add(", ")
         }
-        add(")${notNull}")
+        add(")")
+        if (element.min == 1) {
+          add(
+            " ?: throw %T(%S)",
+            serializationExceptionClassName,
+            "Missing required property '$propertyName' on $modelDisplayName",
+          )
+        }
       } else {
         add("%N", propertyName)
-        if (element.min == 1) add("!!")
+        if (element.min == 1) {
+          add(
+            " ?: throw %T(%S)",
+            serializationExceptionClassName,
+            "Missing required property '$propertyName' on $modelDisplayName",
+          )
+        }
       }
     } else if ((element.max == "*" || propertyName == "extension")) {
       if (FhirPathType.containsFhirTypeCode(element.type?.singleOrNull()?.code ?: "")) {
@@ -118,6 +134,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
     element: Element,
   ) {
     val sidecarName = "_$propertyName"
+    val modelDisplayName = modelClassName.simpleNames.joinToString(".")
     if (element.typeIsEnumeratedCode(valueSetMap)) {
       val enumClass = element.getEnumClass(modelClassName, valueSetMap)
       if (element.min == 0) {
@@ -130,10 +147,12 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
         )
       } else {
         add(
-          "%T.of(%T.fromCode(%N!!), %N)",
+          "%T.of(%T.fromCode(%N ?: throw %T(%S)), %N)",
           ClassName(modelClassName.packageName, "Enumeration"),
           enumClass,
           propertyName,
+          serializationExceptionClassName,
+          "Missing required property '$propertyName' on $modelDisplayName",
           sidecarName,
         )
       }
@@ -144,7 +163,6 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
       // call site. `Type.of(...)` then returns non-null, making any outer `!!` redundant.
       val wireValueIsNonNull = codegenContext.primitiveValueIsNonNull[type.code] == true
       val coerceWireValue = if (wireValueIsNonNull) "!!" else ""
-      val coerceResult = if (element.min == 1 && !wireValueIsNonNull) "!!" else ""
       add("%T.of(", ClassName(modelClassName.packageName, type.code.capitalized()))
       fhirPathType.addCodeToDecodeWirePropertyToModel(
         this,
@@ -153,11 +171,21 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
       )
       add(coerceWireValue)
       add(", %N)", sidecarName)
-      add(coerceResult)
+      if (element.min == 1 && !wireValueIsNonNull) {
+        add(
+          " ?: throw %T(%S)",
+          serializationExceptionClassName,
+          "Missing required property '$propertyName' on $modelDisplayName",
+        )
+      }
     } else {
       add("%N", propertyName)
       if (element.min == 1 && element.max == "1") {
-        add("!!")
+        add(
+          " ?: throw %T(%S)",
+          serializationExceptionClassName,
+          "Missing required property '$propertyName' on $modelDisplayName",
+        )
       }
     }
   }

@@ -248,8 +248,21 @@ internal object OperationDefinitionParameterSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Code.of(name, _name)!!,
-      use = Enumeration.of(OperationDefinition.OperationParameterUse.fromCode(use!!), _use),
+      name =
+        Code.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on OperationDefinition.Parameter"
+          ),
+      use =
+        Enumeration.of(
+          OperationDefinition.OperationParameterUse.fromCode(
+            use
+              ?: throw SerializationException(
+                "Missing required property 'use' on OperationDefinition.Parameter"
+              )
+          ),
+          _use,
+        ),
       scope =
         (kotlin.collections.List(maxOf(scope?.size ?: 0, _scope?.size ?: 0)) { index ->
           Enumeration.of(
@@ -257,8 +270,16 @@ internal object OperationDefinitionParameterSerializer :
             _scope?.getOrNull(index),
           )
         }),
-      min = Integer.of(min, _min)!!,
-      max = R5String.of(max, _max)!!,
+      min =
+        Integer.of(min, _min)
+          ?: throw SerializationException(
+            "Missing required property 'min' on OperationDefinition.Parameter"
+          ),
+      max =
+        R5String.of(max, _max)
+          ?: throw SerializationException(
+            "Missing required property 'max' on OperationDefinition.Parameter"
+          ),
       documentation = Markdown.of(documentation, _documentation),
       type = type?.let { Enumeration.of(FHIRTypes.fromCode(it), _type) },
       allowedType =
@@ -453,8 +474,21 @@ internal object OperationDefinitionParameterBindingSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      strength = Enumeration.of(BindingStrength.fromCode(strength!!), _strength),
-      valueSet = Canonical.of(valueSet, _valueSet)!!,
+      strength =
+        Enumeration.of(
+          BindingStrength.fromCode(
+            strength
+              ?: throw SerializationException(
+                "Missing required property 'strength' on OperationDefinition.Parameter.Binding"
+              )
+          ),
+          _strength,
+        ),
+      valueSet =
+        Canonical.of(valueSet, _valueSet)
+          ?: throw SerializationException(
+            "Missing required property 'valueSet' on OperationDefinition.Parameter.Binding"
+          ),
     )
   }
 
@@ -559,7 +593,11 @@ internal object OperationDefinitionParameterReferencedFromSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      source = R5String.of(source, _source)!!,
+      source =
+        R5String.of(source, _source)
+          ?: throw SerializationException(
+            "Missing required property 'source' on OperationDefinition.Parameter.ReferencedFrom"
+          ),
       sourceId = R5String.of(sourceId, _sourceId),
     )
   }
@@ -1103,10 +1141,32 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
           R5String.of(versionAlgorithmString, _versionAlgorithmString),
           versionAlgorithmCoding,
         ),
-      name = R5String.of(name, _name)!!,
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on OperationDefinition"
+          ),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
-      kind = Enumeration.of(OperationDefinition.OperationKind.fromCode(kind!!), _kind),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on OperationDefinition"
+              )
+          ),
+          _status,
+        ),
+      kind =
+        Enumeration.of(
+          OperationDefinition.OperationKind.fromCode(
+            kind
+              ?: throw SerializationException(
+                "Missing required property 'kind' on OperationDefinition"
+              )
+          ),
+          _kind,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -1118,7 +1178,11 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       affectsState = R5Boolean.of(affectsState, _affectsState),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on OperationDefinition"
+          ),
       comment = Markdown.of(comment, _comment),
       base = Canonical.of(base, _base),
       resource =
@@ -1130,9 +1194,21 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
             _resource?.getOrNull(index),
           )
         }),
-      system = R5Boolean.of(system, _system)!!,
-      type = R5Boolean.of(type, _type)!!,
-      instance = R5Boolean.of(instance, _instance)!!,
+      system =
+        R5Boolean.of(system, _system)
+          ?: throw SerializationException(
+            "Missing required property 'system' on OperationDefinition"
+          ),
+      type =
+        R5Boolean.of(type, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on OperationDefinition"
+          ),
+      instance =
+        R5Boolean.of(instance, _instance)
+          ?: throw SerializationException(
+            "Missing required property 'instance' on OperationDefinition"
+          ),
       inputProfile = Canonical.of(inputProfile, _inputProfile),
       outputProfile = Canonical.of(outputProfile, _outputProfile),
       parameter = parameter ?: listOf(),

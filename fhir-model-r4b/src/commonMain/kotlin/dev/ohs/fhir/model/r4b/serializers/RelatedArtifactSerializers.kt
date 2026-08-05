@@ -135,7 +135,14 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
     return RelatedArtifact(
       id = id,
       extension = extension ?: listOf(),
-      type = Enumeration.of(RelatedArtifact.RelatedArtifactType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          RelatedArtifact.RelatedArtifactType.fromCode(
+            type
+              ?: throw SerializationException("Missing required property 'type' on RelatedArtifact")
+          ),
+          _type,
+        ),
       label = R4bString.of(label, _label),
       display = R4bString.of(display, _display),
       citation = Markdown.of(citation, _citation),

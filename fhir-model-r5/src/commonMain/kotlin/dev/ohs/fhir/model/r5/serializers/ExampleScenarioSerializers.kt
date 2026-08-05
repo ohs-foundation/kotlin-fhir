@@ -140,9 +140,26 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      key = R5String.of(key, _key)!!,
-      type = Enumeration.of(ExampleScenario.ExampleScenarioActorType.fromCode(type!!), _type),
-      title = R5String.of(title, _title)!!,
+      key =
+        R5String.of(key, _key)
+          ?: throw SerializationException(
+            "Missing required property 'key' on ExampleScenario.Actor"
+          ),
+      type =
+        Enumeration.of(
+          ExampleScenario.ExampleScenarioActorType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ExampleScenario.Actor"
+              )
+          ),
+          _type,
+        ),
+      title =
+        R5String.of(title, _title)
+          ?: throw SerializationException(
+            "Missing required property 'title' on ExampleScenario.Actor"
+          ),
       description = Markdown.of(description, _description),
     )
   }
@@ -316,15 +333,27 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      key = R5String.of(key, _key)!!,
-      structureType = structureType!!,
+      key =
+        R5String.of(key, _key)
+          ?: throw SerializationException(
+            "Missing required property 'key' on ExampleScenario.Instance"
+          ),
+      structureType =
+        structureType
+          ?: throw SerializationException(
+            "Missing required property 'structureType' on ExampleScenario.Instance"
+          ),
       structureVersion = R5String.of(structureVersion, _structureVersion),
       structureProfile =
         ExampleScenario.Instance.StructureProfile.from(
           Canonical.of(structureProfileCanonical, _structureProfileCanonical),
           Uri.of(structureProfileUri, _structureProfileUri),
         ),
-      title = R5String.of(title, _title)!!,
+      title =
+        R5String.of(title, _title)
+          ?: throw SerializationException(
+            "Missing required property 'title' on ExampleScenario.Instance"
+          ),
       description = Markdown.of(description, _description),
       content = content,
       version = version ?: listOf(),
@@ -489,8 +518,16 @@ internal object ExampleScenarioInstanceVersionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      key = R5String.of(key, _key)!!,
-      title = R5String.of(title, _title)!!,
+      key =
+        R5String.of(key, _key)
+          ?: throw SerializationException(
+            "Missing required property 'key' on ExampleScenario.Instance.Version"
+          ),
+      title =
+        R5String.of(title, _title)
+          ?: throw SerializationException(
+            "Missing required property 'title' on ExampleScenario.Instance.Version"
+          ),
       description = Markdown.of(description, _description),
       content = content,
     )
@@ -616,7 +653,11 @@ internal object ExampleScenarioInstanceContainedInstanceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      instanceReference = R5String.of(instanceReference, _instanceReference)!!,
+      instanceReference =
+        R5String.of(instanceReference, _instanceReference)
+          ?: throw SerializationException(
+            "Missing required property 'instanceReference' on ExampleScenario.Instance.ContainedInstance"
+          ),
       versionReference = R5String.of(versionReference, _versionReference),
     )
   }
@@ -743,7 +784,11 @@ internal object ExampleScenarioProcessSerializer : KSerializer<ExampleScenario.P
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      title = R5String.of(title, _title)!!,
+      title =
+        R5String.of(title, _title)
+          ?: throw SerializationException(
+            "Missing required property 'title' on ExampleScenario.Process"
+          ),
       description = Markdown.of(description, _description),
       preConditions = Markdown.of(preConditions, _preConditions),
       postConditions = Markdown.of(postConditions, _postConditions),
@@ -1082,7 +1127,11 @@ internal object ExampleScenarioProcessStepOperationSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
-      title = R5String.of(title, _title)!!,
+      title =
+        R5String.of(title, _title)
+          ?: throw SerializationException(
+            "Missing required property 'title' on ExampleScenario.Process.Step.Operation"
+          ),
       initiator = R5String.of(initiator, _initiator),
       `receiver` = R5String.of(`receiver`, _receiver),
       description = Markdown.of(description, _description),
@@ -1230,7 +1279,11 @@ internal object ExampleScenarioProcessStepAlternativeSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      title = R5String.of(title, _title)!!,
+      title =
+        R5String.of(title, _title)
+          ?: throw SerializationException(
+            "Missing required property 'title' on ExampleScenario.Process.Step.Alternative"
+          ),
       description = Markdown.of(description, _description),
       step = step ?: listOf(),
     )
@@ -1560,7 +1613,16 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ExampleScenario"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

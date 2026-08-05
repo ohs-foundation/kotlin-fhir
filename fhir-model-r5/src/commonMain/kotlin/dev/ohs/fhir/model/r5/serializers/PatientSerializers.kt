@@ -286,7 +286,11 @@ internal object PatientCommunicationSerializer : KSerializer<Patient.Communicati
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      language = language!!,
+      language =
+        language
+          ?: throw SerializationException(
+            "Missing required property 'language' on Patient.Communication"
+          ),
       preferred = R5Boolean.of(preferred, _preferred),
     )
   }
@@ -379,8 +383,15 @@ internal object PatientLinkSerializer : KSerializer<Patient.Link> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      other = other!!,
-      type = Enumeration.of(Patient.LinkType.fromCode(type!!), _type),
+      other =
+        other ?: throw SerializationException("Missing required property 'other' on Patient.Link"),
+      type =
+        Enumeration.of(
+          Patient.LinkType.fromCode(
+            type ?: throw SerializationException("Missing required property 'type' on Patient.Link")
+          ),
+          _type,
+        ),
     )
   }
 

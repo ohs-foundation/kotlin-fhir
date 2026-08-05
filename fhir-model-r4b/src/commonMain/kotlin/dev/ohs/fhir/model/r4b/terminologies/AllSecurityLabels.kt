@@ -1996,7 +1996,6 @@ public enum class AllSecurityLabels(
         "ECH" -> Ech
         "FLY" -> Fly
         "IND" -> Ind
-        "SSP" -> Ssp
         "_CoverageItemLimitObservationValue" -> _CoverageItemLimitObservationValue
         "_CoverageLocationLimitObservationValue" -> _CoverageLocationLimitObservationValue
         "_CriticalityObservationValue" -> _CriticalityObservationValue
@@ -2042,7 +2041,6 @@ public enum class AllSecurityLabels(
         "LE" -> Le
         "ME" -> Me
         "MI" -> Mi
-        "N" -> N
         "S" -> S
         "_SecurityObservationValue" -> _SecurityObservationValue
         "_SECCATOBV" -> _Seccatobv
@@ -2098,8 +2096,6 @@ public enum class AllSecurityLabels(
         "TRSTMECOBV" -> Trstmecobv
         "_SeverityObservation" -> _SeverityObservation
         "H" -> H
-        "L" -> L
-        "M" -> M
         "_SubjectBodyPosition" -> _SubjectBodyPosition
         "LLD" -> Lld
         "PRN" -> Prn

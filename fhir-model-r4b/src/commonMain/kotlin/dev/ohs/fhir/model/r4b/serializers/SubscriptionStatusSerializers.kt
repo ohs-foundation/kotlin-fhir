@@ -141,7 +141,11 @@ internal object SubscriptionStatusNotificationEventSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      eventNumber = R4bString.of(eventNumber, _eventNumber)!!,
+      eventNumber =
+        R4bString.of(eventNumber, _eventNumber)
+          ?: throw SerializationException(
+            "Missing required property 'eventNumber' on SubscriptionStatus.NotificationEvent"
+          ),
       timestamp = Instant.of(FhirDateTime.fromString(timestamp), _timestamp),
       focus = focus,
       additionalContext = additionalContext ?: listOf(),
@@ -360,11 +364,23 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
           Enumeration.of(SubscriptionStatus.SubscriptionStatusCodes.fromCode(it), _status)
         },
       type =
-        Enumeration.of(SubscriptionStatus.SubscriptionNotificationType.fromCode(type!!), _type),
+        Enumeration.of(
+          SubscriptionStatus.SubscriptionNotificationType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on SubscriptionStatus"
+              )
+          ),
+          _type,
+        ),
       eventsSinceSubscriptionStart =
         R4bString.of(eventsSinceSubscriptionStart, _eventsSinceSubscriptionStart),
       notificationEvent = notificationEvent ?: listOf(),
-      subscription = subscription!!,
+      subscription =
+        subscription
+          ?: throw SerializationException(
+            "Missing required property 'subscription' on SubscriptionStatus"
+          ),
       topic = Canonical.of(topic, _topic),
       error = error ?: listOf(),
     )

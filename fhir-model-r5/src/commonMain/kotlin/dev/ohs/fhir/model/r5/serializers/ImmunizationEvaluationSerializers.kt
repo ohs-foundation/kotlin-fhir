@@ -255,15 +255,36 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.fromCode(status!!),
+          ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ImmunizationEvaluation"
+              )
+          ),
           _status,
         ),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on ImmunizationEvaluation"
+          ),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       authority = authority,
-      targetDisease = targetDisease!!,
-      immunizationEvent = immunizationEvent!!,
-      doseStatus = doseStatus!!,
+      targetDisease =
+        targetDisease
+          ?: throw SerializationException(
+            "Missing required property 'targetDisease' on ImmunizationEvaluation"
+          ),
+      immunizationEvent =
+        immunizationEvent
+          ?: throw SerializationException(
+            "Missing required property 'immunizationEvent' on ImmunizationEvaluation"
+          ),
+      doseStatus =
+        doseStatus
+          ?: throw SerializationException(
+            "Missing required property 'doseStatus' on ImmunizationEvaluation"
+          ),
       doseStatusReason = doseStatusReason ?: listOf(),
       description = Markdown.of(description, _description),
       series = R5String.of(series, _series),

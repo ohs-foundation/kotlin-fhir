@@ -127,7 +127,11 @@ internal object MedicinalProductDefinitionContactSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
-      contact = contact!!,
+      contact =
+        contact
+          ?: throw SerializationException(
+            "Missing required property 'contact' on MedicinalProductDefinition.Contact"
+          ),
     )
   }
 
@@ -240,7 +244,11 @@ internal object MedicinalProductDefinitionNameSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      productName = R5String.of(productName, _productName)!!,
+      productName =
+        R5String.of(productName, _productName)
+          ?: throw SerializationException(
+            "Missing required property 'productName' on MedicinalProductDefinition.Name"
+          ),
       type = type,
       part = part ?: listOf(),
       usage = usage ?: listOf(),
@@ -354,8 +362,16 @@ internal object MedicinalProductDefinitionNamePartSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      part = R5String.of(part, _part)!!,
-      type = type!!,
+      part =
+        R5String.of(part, _part)
+          ?: throw SerializationException(
+            "Missing required property 'part' on MedicinalProductDefinition.Name.Part"
+          ),
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicinalProductDefinition.Name.Part"
+          ),
     )
   }
 
@@ -458,9 +474,17 @@ internal object MedicinalProductDefinitionNameUsageSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      country = country!!,
+      country =
+        country
+          ?: throw SerializationException(
+            "Missing required property 'country' on MedicinalProductDefinition.Name.Usage"
+          ),
       jurisdiction = jurisdiction,
-      language = language!!,
+      language =
+        language
+          ?: throw SerializationException(
+            "Missing required property 'language' on MedicinalProductDefinition.Name.Usage"
+          ),
     )
   }
 
@@ -554,7 +578,11 @@ internal object MedicinalProductDefinitionCrossReferenceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      product = product!!,
+      product =
+        product
+          ?: throw SerializationException(
+            "Missing required property 'product' on MedicinalProductDefinition.CrossReference"
+          ),
       type = type,
     )
   }
@@ -827,7 +855,11 @@ internal object MedicinalProductDefinitionCharacteristicSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicinalProductDefinition.Characteristic"
+          ),
       `value` =
         MedicinalProductDefinition.Characteristic.Value.from(
           valueCodeableConcept,

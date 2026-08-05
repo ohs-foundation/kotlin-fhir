@@ -152,12 +152,20 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       resourceType = Uri.of(resourceType, _resourceType),
-      filterParameter = R5String.of(filterParameter, _filterParameter)!!,
+      filterParameter =
+        R5String.of(filterParameter, _filterParameter)
+          ?: throw SerializationException(
+            "Missing required property 'filterParameter' on Subscription.FilterBy"
+          ),
       comparator =
         comparator?.let { Enumeration.of(Subscription.SearchComparator.fromCode(it), _comparator) },
       modifier =
         modifier?.let { Enumeration.of(Subscription.SearchModifierCode.fromCode(it), _modifier) },
-      `value` = R5String.of(`value`, _value)!!,
+      `value` =
+        R5String.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on Subscription.FilterBy"
+          ),
     )
   }
 
@@ -265,8 +273,16 @@ internal object SubscriptionParameterSerializer : KSerializer<Subscription.Param
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R5String.of(name, _name)!!,
-      `value` = R5String.of(`value`, _value)!!,
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on Subscription.Parameter"
+          ),
+      `value` =
+        R5String.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on Subscription.Parameter"
+          ),
     )
   }
 
@@ -538,14 +554,27 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       name = R5String.of(name, _name),
-      status = Enumeration.of(Subscription.SubscriptionStatusCodes.fromCode(status!!), _status),
-      topic = Canonical.of(topic, _topic)!!,
+      status =
+        Enumeration.of(
+          Subscription.SubscriptionStatusCodes.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Subscription")
+          ),
+          _status,
+        ),
+      topic =
+        Canonical.of(topic, _topic)
+          ?: throw SerializationException("Missing required property 'topic' on Subscription"),
       contact = contact ?: listOf(),
       end = Instant.of(FhirDateTime.fromString(end), _end),
       managingEntity = managingEntity,
       reason = R5String.of(reason, _reason),
       filterBy = filterBy ?: listOf(),
-      channelType = channelType!!,
+      channelType =
+        channelType
+          ?: throw SerializationException(
+            "Missing required property 'channelType' on Subscription"
+          ),
       endpoint = Url.of(endpoint, _endpoint),
       parameter = parameter ?: listOf(),
       heartbeatPeriod = UnsignedInt.of(heartbeatPeriod, _heartbeatPeriod),

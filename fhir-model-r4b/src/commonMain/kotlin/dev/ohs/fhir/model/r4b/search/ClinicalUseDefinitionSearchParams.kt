@@ -112,7 +112,7 @@ public object ClinicalUseDefinitionSearchParams {
       target = listOf(MedicinalProductDefinition::class),
       extractor = { resource ->
         resource.subject.filter {
-          it.reference?.value?.toString()?.contains("MedicinalProductDefinition/") == true
+          it.reference?.value?.contains("MedicinalProductDefinition/") == true
         }
       },
     )

@@ -319,7 +319,11 @@ internal object BiologicallyDerivedProductPropertySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on BiologicallyDerivedProduct.Property"
+          ),
       `value` =
         BiologicallyDerivedProduct.Property.Value.from(
           R5Boolean.of(valueBoolean, _valueBoolean),
@@ -331,7 +335,10 @@ internal object BiologicallyDerivedProductPropertySerializer :
           valueRatio,
           R5String.of(valueString, _valueString),
           valueAttachment,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on BiologicallyDerivedProduct.Property"
+          ),
     )
   }
 

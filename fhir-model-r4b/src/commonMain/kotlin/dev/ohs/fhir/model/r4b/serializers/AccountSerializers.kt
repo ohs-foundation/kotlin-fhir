@@ -121,7 +121,11 @@ internal object AccountCoverageSerializer : KSerializer<Account.Coverage> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      coverage = coverage!!,
+      coverage =
+        coverage
+          ?: throw SerializationException(
+            "Missing required property 'coverage' on Account.Coverage"
+          ),
       priority = PositiveInt.of(priority, _priority),
     )
   }
@@ -220,7 +224,9 @@ internal object AccountGuarantorSerializer : KSerializer<Account.Guarantor> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      party = party!!,
+      party =
+        party
+          ?: throw SerializationException("Missing required property 'party' on Account.Guarantor"),
       onHold = R4bBoolean.of(onHold, _onHold),
       period = period,
     )
@@ -430,7 +436,13 @@ internal object AccountSerializer : KSerializer<Account> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Account.AccountStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Account.AccountStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Account")
+          ),
+          _status,
+        ),
       type = type,
       name = R4bString.of(name, _name),
       subject = subject ?: listOf(),

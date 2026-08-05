@@ -519,8 +519,26 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
       requisition = requisition,
-      status = Enumeration.of(ServiceRequest.RequestStatus.fromCode(status!!), _status),
-      intent = Enumeration.of(ServiceRequest.RequestIntent.fromCode(intent!!), _intent),
+      status =
+        Enumeration.of(
+          ServiceRequest.RequestStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ServiceRequest"
+              )
+          ),
+          _status,
+        ),
+      intent =
+        Enumeration.of(
+          ServiceRequest.RequestIntent.fromCode(
+            intent
+              ?: throw SerializationException(
+                "Missing required property 'intent' on ServiceRequest"
+              )
+          ),
+          _intent,
+        ),
       category = category ?: listOf(),
       priority =
         priority?.let { Enumeration.of(ServiceRequest.RequestPriority.fromCode(it), _priority) },
@@ -528,7 +546,9 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
       code = code,
       orderDetail = orderDetail ?: listOf(),
       quantity = ServiceRequest.Quantity.from(quantityQuantity, quantityRatio, quantityRange),
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on ServiceRequest"),
       encounter = encounter,
       occurrence =
         ServiceRequest.Occurrence.from(

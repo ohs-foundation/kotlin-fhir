@@ -264,8 +264,16 @@ internal object InventoryReportInventoryListingItemSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       category = category,
-      quantity = quantity!!,
-      item = item!!,
+      quantity =
+        quantity
+          ?: throw SerializationException(
+            "Missing required property 'quantity' on InventoryReport.InventoryListing.Item"
+          ),
+      item =
+        item
+          ?: throw SerializationException(
+            "Missing required property 'item' on InventoryReport.InventoryListing.Item"
+          ),
     )
   }
 
@@ -478,13 +486,33 @@ internal object InventoryReportSerializer : KSerializer<InventoryReport> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(InventoryReport.InventoryReportStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          InventoryReport.InventoryReportStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on InventoryReport"
+              )
+          ),
+          _status,
+        ),
       countType =
-        Enumeration.of(InventoryReport.InventoryCountType.fromCode(countType!!), _countType),
+        Enumeration.of(
+          InventoryReport.InventoryCountType.fromCode(
+            countType
+              ?: throw SerializationException(
+                "Missing required property 'countType' on InventoryReport"
+              )
+          ),
+          _countType,
+        ),
       operationType = operationType,
       operationTypeReason = operationTypeReason,
       reportedDateTime =
-        DateTime.of(FhirDateTime.fromString(reportedDateTime), _reportedDateTime)!!,
+        DateTime.of(FhirDateTime.fromString(reportedDateTime), _reportedDateTime)
+          ?: throw SerializationException(
+            "Missing required property 'reportedDateTime' on InventoryReport"
+          ),
       reporter = reporter,
       reportingPeriod = reportingPeriod,
       inventoryListing = inventoryListing ?: listOf(),

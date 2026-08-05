@@ -580,7 +580,16 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(MolecularSequence.QualityType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          MolecularSequence.QualityType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on MolecularSequence.Quality"
+              )
+          ),
+          _type,
+        ),
       standardSequence = standardSequence,
       start = Integer.of(start, _start),
       end = Integer.of(end, _end),
@@ -1018,7 +1027,16 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(MolecularSequence.RepositoryType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          MolecularSequence.RepositoryType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on MolecularSequence.Repository"
+              )
+          ),
+          _type,
+        ),
       url = Uri.of(url, _url),
       name = R4String.of(name, _name),
       datasetId = R4String.of(datasetId, _datasetId),
@@ -1640,7 +1658,11 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       type = type?.let { Enumeration.of(MolecularSequence.SequenceType.fromCode(it), _type) },
-      coordinateSystem = Integer.of(coordinateSystem, _coordinateSystem)!!,
+      coordinateSystem =
+        Integer.of(coordinateSystem, _coordinateSystem)
+          ?: throw SerializationException(
+            "Missing required property 'coordinateSystem' on MolecularSequence"
+          ),
       patient = patient,
       specimen = specimen,
       device = device,

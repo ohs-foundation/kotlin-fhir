@@ -126,7 +126,9 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
       modifierExtension = modifierExtension ?: listOf(),
       country = country,
       jurisdiction = jurisdiction,
-      status = status!!,
+      status =
+        status
+          ?: throw SerializationException("Missing required property 'status' on MarketingStatus"),
       dateRange = dateRange,
       restoreDate = DateTime.of(FhirDateTime.fromString(restoreDate), _restoreDate),
     )

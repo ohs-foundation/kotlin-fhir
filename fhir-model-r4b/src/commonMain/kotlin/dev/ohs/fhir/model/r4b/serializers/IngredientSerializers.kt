@@ -123,7 +123,11 @@ internal object IngredientManufacturerSerializer : KSerializer<Ingredient.Manufa
       modifierExtension = modifierExtension ?: listOf(),
       role =
         role?.let { Enumeration.of(Ingredient.IngredientManufacturerRole.fromCode(it), _role) },
-      manufacturer = manufacturer!!,
+      manufacturer =
+        manufacturer
+          ?: throw SerializationException(
+            "Missing required property 'manufacturer' on Ingredient.Manufacturer"
+          ),
     )
   }
 
@@ -219,7 +223,11 @@ internal object IngredientSubstanceSerializer : KSerializer<Ingredient.Substance
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on Ingredient.Substance"
+          ),
       strength = strength ?: listOf(),
     )
   }
@@ -613,7 +621,10 @@ internal object IngredientSubstanceStrengthReferenceStrengthSerializer :
         Ingredient.Substance.Strength.ReferenceStrength.Strength.from(
           strengthRatio,
           strengthRatioRange,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'strength' on Ingredient.Substance.Strength.ReferenceStrength"
+          ),
       measurementPoint = R4bString.of(measurementPoint, _measurementPoint),
       country = country ?: listOf(),
     )
@@ -829,13 +840,22 @@ internal object IngredientSerializer : KSerializer<Ingredient> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Ingredient")
+          ),
+          _status,
+        ),
       `for` = `for` ?: listOf(),
-      role = role!!,
+      role = role ?: throw SerializationException("Missing required property 'role' on Ingredient"),
       function = function ?: listOf(),
       allergenicIndicator = R4bBoolean.of(allergenicIndicator, _allergenicIndicator),
       manufacturer = manufacturer ?: listOf(),
-      substance = substance!!,
+      substance =
+        substance
+          ?: throw SerializationException("Missing required property 'substance' on Ingredient"),
     )
   }
 

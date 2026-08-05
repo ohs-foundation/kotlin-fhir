@@ -513,13 +513,22 @@ internal object GoalSerializer : KSerializer<Goal> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       lifecycleStatus =
-        Enumeration.of(Goal.GoalLifecycleStatus.fromCode(lifecycleStatus!!), _lifecycleStatus),
+        Enumeration.of(
+          Goal.GoalLifecycleStatus.fromCode(
+            lifecycleStatus
+              ?: throw SerializationException("Missing required property 'lifecycleStatus' on Goal")
+          ),
+          _lifecycleStatus,
+        ),
       achievementStatus = achievementStatus,
       category = category ?: listOf(),
       continuous = R5Boolean.of(continuous, _continuous),
       priority = priority,
-      description = description!!,
-      subject = subject!!,
+      description =
+        description
+          ?: throw SerializationException("Missing required property 'description' on Goal"),
+      subject =
+        subject ?: throw SerializationException("Missing required property 'subject' on Goal"),
       start =
         Goal.Start.from(Date.of(FhirDate.fromString(startDate), _startDate), startCodeableConcept),
       target = target ?: listOf(),

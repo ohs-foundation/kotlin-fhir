@@ -122,7 +122,11 @@ internal object InvoiceParticipantSerializer : KSerializer<Invoice.Participant> 
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       role = role,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on Invoice.Participant"
+          ),
     )
   }
 
@@ -272,7 +276,10 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
           servicedPeriod,
         ),
       chargeItem =
-        Invoice.LineItem.ChargeItem.from(chargeItemReference, chargeItemCodeableConcept)!!,
+        Invoice.LineItem.ChargeItem.from(chargeItemReference, chargeItemCodeableConcept)
+          ?: throw SerializationException(
+            "Missing required property 'chargeItem' on Invoice.LineItem"
+          ),
       priceComponent = priceComponent ?: listOf(),
     )
   }
@@ -581,7 +588,13 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Invoice.InvoiceStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Invoice.InvoiceStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Invoice")
+          ),
+          _status,
+        ),
       cancelledReason = R5String.of(cancelledReason, _cancelledReason),
       type = type,
       subject = subject,

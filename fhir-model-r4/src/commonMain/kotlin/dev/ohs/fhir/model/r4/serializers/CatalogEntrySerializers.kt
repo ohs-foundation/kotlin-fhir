@@ -122,10 +122,19 @@ internal object CatalogEntryRelatedEntrySerializer : KSerializer<CatalogEntry.Re
       modifierExtension = modifierExtension ?: listOf(),
       relationtype =
         Enumeration.of(
-          CatalogEntry.CatalogEntryRelationType.fromCode(relationtype!!),
+          CatalogEntry.CatalogEntryRelationType.fromCode(
+            relationtype
+              ?: throw SerializationException(
+                "Missing required property 'relationtype' on CatalogEntry.RelatedEntry"
+              )
+          ),
           _relationtype,
         ),
-      item = item!!,
+      item =
+        item
+          ?: throw SerializationException(
+            "Missing required property 'item' on CatalogEntry.RelatedEntry"
+          ),
     )
   }
 
@@ -381,8 +390,14 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       type = type,
-      orderable = R4Boolean.of(orderable, _orderable)!!,
-      referencedItem = referencedItem!!,
+      orderable =
+        R4Boolean.of(orderable, _orderable)
+          ?: throw SerializationException("Missing required property 'orderable' on CatalogEntry"),
+      referencedItem =
+        referencedItem
+          ?: throw SerializationException(
+            "Missing required property 'referencedItem' on CatalogEntry"
+          ),
       additionalIdentifier = additionalIdentifier ?: listOf(),
       classification = classification ?: listOf(),
       status = status?.let { Enumeration.of(PublicationStatus.fromCode(it), _status) },

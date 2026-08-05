@@ -400,7 +400,11 @@ internal object HealthcareServiceNotAvailableSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      description = R4String.of(description, _description)!!,
+      description =
+        R4String.of(description, _description)
+          ?: throw SerializationException(
+            "Missing required property 'description' on HealthcareService.NotAvailable"
+          ),
       during = during,
     )
   }

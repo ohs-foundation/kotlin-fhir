@@ -237,7 +237,11 @@ internal object ResearchStudyAssociatedPartySerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       name = R5String.of(name, _name),
-      role = role!!,
+      role =
+        role
+          ?: throw SerializationException(
+            "Missing required property 'role' on ResearchStudy.AssociatedParty"
+          ),
       period = period ?: listOf(),
       classifier = classifier ?: listOf(),
       party = party,
@@ -351,7 +355,11 @@ internal object ResearchStudyProgressStatusSerializer : KSerializer<ResearchStud
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      state = state!!,
+      state =
+        state
+          ?: throw SerializationException(
+            "Missing required property 'state' on ResearchStudy.ProgressStatus"
+          ),
       `actual` = R5Boolean.of(`actual`, _actual),
       period = period,
     )
@@ -610,7 +618,11 @@ internal object ResearchStudyComparisonGroupSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       linkId = Id.of(linkId, _linkId),
-      name = R5String.of(name, _name)!!,
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on ResearchStudy.ComparisonGroup"
+          ),
       type = type,
       description = Markdown.of(description, _description),
       intendedExposure = intendedExposure ?: listOf(),
@@ -1291,7 +1303,14 @@ internal object ResearchStudySerializer : KSerializer<ResearchStudy> {
       partOf = partOf ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on ResearchStudy")
+          ),
+          _status,
+        ),
       primaryPurposeType = primaryPurposeType,
       phase = phase,
       studyDesign = studyDesign ?: listOf(),

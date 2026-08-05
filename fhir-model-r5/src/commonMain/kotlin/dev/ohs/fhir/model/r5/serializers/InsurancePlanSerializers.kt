@@ -130,7 +130,11 @@ internal object InsurancePlanCoverageSerializer : KSerializer<InsurancePlan.Cove
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on InsurancePlan.Coverage"
+          ),
       network = network ?: listOf(),
       benefit = benefit ?: listOf(),
     )
@@ -244,7 +248,11 @@ internal object InsurancePlanCoverageBenefitSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on InsurancePlan.Coverage.Benefit"
+          ),
       requirement = R5String.of(requirement, _requirement),
       limit = limit ?: listOf(),
     )
@@ -726,7 +734,11 @@ internal object InsurancePlanPlanSpecificCostSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      category = category!!,
+      category =
+        category
+          ?: throw SerializationException(
+            "Missing required property 'category' on InsurancePlan.Plan.SpecificCost"
+          ),
       benefit = benefit ?: listOf(),
     )
   }
@@ -829,7 +841,11 @@ internal object InsurancePlanPlanSpecificCostBenefitSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on InsurancePlan.Plan.SpecificCost.Benefit"
+          ),
       cost = cost ?: listOf(),
     )
   }
@@ -941,7 +957,11 @@ internal object InsurancePlanPlanSpecificCostBenefitCostSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on InsurancePlan.Plan.SpecificCost.Benefit.Cost"
+          ),
       applicability = applicability,
       qualifiers = qualifiers ?: listOf(),
       `value` = `value`,

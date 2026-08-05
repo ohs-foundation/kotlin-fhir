@@ -172,7 +172,11 @@ internal object ManufacturedItemDefinitionPropertySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on ManufacturedItemDefinition.Property"
+          ),
       `value` =
         ManufacturedItemDefinition.Property.Value.from(
           valueCodeableConcept,
@@ -354,7 +358,11 @@ internal object ManufacturedItemDefinitionComponentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on ManufacturedItemDefinition.Component"
+          ),
       function = function ?: listOf(),
       amount = amount ?: listOf(),
       constituent = constituent ?: listOf(),
@@ -765,9 +773,22 @@ internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedI
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ManufacturedItemDefinition"
+              )
+          ),
+          _status,
+        ),
       name = R5String.of(name, _name),
-      manufacturedDoseForm = manufacturedDoseForm!!,
+      manufacturedDoseForm =
+        manufacturedDoseForm
+          ?: throw SerializationException(
+            "Missing required property 'manufacturedDoseForm' on ManufacturedItemDefinition"
+          ),
       unitOfPresentation = unitOfPresentation,
       manufacturer = manufacturer ?: listOf(),
       marketingStatus = marketingStatus ?: listOf(),

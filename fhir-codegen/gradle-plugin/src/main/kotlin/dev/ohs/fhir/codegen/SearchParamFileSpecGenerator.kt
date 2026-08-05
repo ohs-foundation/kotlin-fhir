@@ -131,7 +131,7 @@ object SearchParamFileSpecGenerator {
 
     val extractFn =
       FunSpec.builder("extract")
-        .addModifiers(KModifier.PUBLIC, KModifier.INLINE)
+        .addModifiers(KModifier.PUBLIC)
         .addKdoc(
           "Extracts the values for [param] from this resource. Equivalent to " +
             "`param.extractFrom(this)`, but reads more fluently at the call site " +

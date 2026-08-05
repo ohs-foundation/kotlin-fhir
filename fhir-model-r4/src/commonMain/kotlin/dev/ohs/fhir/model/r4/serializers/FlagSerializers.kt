@@ -203,10 +203,17 @@ internal object FlagSerializer : KSerializer<Flag> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Flag.FlagStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Flag.FlagStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Flag")
+          ),
+          _status,
+        ),
       category = category ?: listOf(),
-      code = code!!,
-      subject = subject!!,
+      code = code ?: throw SerializationException("Missing required property 'code' on Flag"),
+      subject =
+        subject ?: throw SerializationException("Missing required property 'subject' on Flag"),
       period = period,
       encounter = encounter,
       author = author,

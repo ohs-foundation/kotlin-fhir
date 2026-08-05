@@ -127,7 +127,11 @@ internal object ProcedurePerformerSerializer : KSerializer<Procedure.Performer> 
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on Procedure.Performer"
+          ),
       onBehalfOf = onBehalfOf,
     )
   }
@@ -222,7 +226,11 @@ internal object ProcedureFocalDeviceSerializer : KSerializer<Procedure.FocalDevi
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       action = action,
-      manipulated = manipulated!!,
+      manipulated =
+        manipulated
+          ?: throw SerializationException(
+            "Missing required property 'manipulated' on Procedure.FocalDevice"
+          ),
     )
   }
 
@@ -636,11 +644,19 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
         }),
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(Procedure.EventStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Procedure.EventStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Procedure")
+          ),
+          _status,
+        ),
       statusReason = statusReason,
       category = category,
       code = code,
-      subject = subject!!,
+      subject =
+        subject ?: throw SerializationException("Missing required property 'subject' on Procedure"),
       encounter = encounter,
       performed =
         Procedure.Performed.from(

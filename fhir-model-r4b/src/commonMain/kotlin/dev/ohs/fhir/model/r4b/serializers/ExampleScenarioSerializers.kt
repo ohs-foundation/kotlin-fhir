@@ -144,8 +144,21 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      actorId = R4bString.of(actorId, _actorId)!!,
-      type = Enumeration.of(ExampleScenario.ExampleScenarioActorType.fromCode(type!!), _type),
+      actorId =
+        R4bString.of(actorId, _actorId)
+          ?: throw SerializationException(
+            "Missing required property 'actorId' on ExampleScenario.Actor"
+          ),
+      type =
+        Enumeration.of(
+          ExampleScenario.ExampleScenarioActorType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ExampleScenario.Actor"
+              )
+          ),
+          _type,
+        ),
       name = R4bString.of(name, _name),
       description = Markdown.of(description, _description),
     )
@@ -297,8 +310,21 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      resourceId = R4bString.of(resourceId, _resourceId)!!,
-      resourceType = Enumeration.of(ResourceType.fromCode(resourceType!!), _resourceType),
+      resourceId =
+        R4bString.of(resourceId, _resourceId)
+          ?: throw SerializationException(
+            "Missing required property 'resourceId' on ExampleScenario.Instance"
+          ),
+      resourceType =
+        Enumeration.of(
+          ResourceType.fromCode(
+            resourceType
+              ?: throw SerializationException(
+                "Missing required property 'resourceType' on ExampleScenario.Instance"
+              )
+          ),
+          _resourceType,
+        ),
       name = R4bString.of(name, _name),
       description = Markdown.of(description, _description),
       version = version ?: listOf(),
@@ -431,8 +457,16 @@ internal object ExampleScenarioInstanceVersionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      versionId = R4bString.of(versionId, _versionId)!!,
-      description = Markdown.of(description, _description)!!,
+      versionId =
+        R4bString.of(versionId, _versionId)
+          ?: throw SerializationException(
+            "Missing required property 'versionId' on ExampleScenario.Instance.Version"
+          ),
+      description =
+        Markdown.of(description, _description)
+          ?: throw SerializationException(
+            "Missing required property 'description' on ExampleScenario.Instance.Version"
+          ),
     )
   }
 
@@ -537,7 +571,11 @@ internal object ExampleScenarioInstanceContainedInstanceSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      resourceId = R4bString.of(resourceId, _resourceId)!!,
+      resourceId =
+        R4bString.of(resourceId, _resourceId)
+          ?: throw SerializationException(
+            "Missing required property 'resourceId' on ExampleScenario.Instance.ContainedInstance"
+          ),
       versionId = R4bString.of(versionId, _versionId),
     )
   }
@@ -664,7 +702,11 @@ internal object ExampleScenarioProcessSerializer : KSerializer<ExampleScenario.P
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      title = R4bString.of(title, _title)!!,
+      title =
+        R4bString.of(title, _title)
+          ?: throw SerializationException(
+            "Missing required property 'title' on ExampleScenario.Process"
+          ),
       description = Markdown.of(description, _description),
       preConditions = Markdown.of(preConditions, _preConditions),
       postConditions = Markdown.of(postConditions, _postConditions),
@@ -990,7 +1032,11 @@ internal object ExampleScenarioProcessStepOperationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      number = R4bString.of(number, _number)!!,
+      number =
+        R4bString.of(number, _number)
+          ?: throw SerializationException(
+            "Missing required property 'number' on ExampleScenario.Process.Step.Operation"
+          ),
       type = R4bString.of(type, _type),
       name = R4bString.of(name, _name),
       initiator = R4bString.of(initiator, _initiator),
@@ -1145,7 +1191,11 @@ internal object ExampleScenarioProcessStepAlternativeSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      title = R4bString.of(title, _title)!!,
+      title =
+        R4bString.of(title, _title)
+          ?: throw SerializationException(
+            "Missing required property 'title' on ExampleScenario.Process.Step.Alternative"
+          ),
       description = Markdown.of(description, _description),
       step = step ?: listOf(),
     )
@@ -1441,7 +1491,16 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
       identifier = identifier ?: listOf(),
       version = R4bString.of(version, _version),
       name = R4bString.of(name, _name),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ExampleScenario"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),

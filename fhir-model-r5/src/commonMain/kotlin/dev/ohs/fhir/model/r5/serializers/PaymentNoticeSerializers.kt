@@ -229,16 +229,28 @@ internal object PaymentNoticeSerializer : KSerializer<PaymentNotice> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(PaymentNotice.FinancialResourceStatusCodes.fromCode(status!!), _status),
+        Enumeration.of(
+          PaymentNotice.FinancialResourceStatusCodes.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on PaymentNotice")
+          ),
+          _status,
+        ),
       request = request,
       response = response,
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException("Missing required property 'created' on PaymentNotice"),
       reporter = reporter,
       payment = payment,
       paymentDate = Date.of(FhirDate.fromString(paymentDate), _paymentDate),
       payee = payee,
-      recipient = recipient!!,
-      amount = amount!!,
+      recipient =
+        recipient
+          ?: throw SerializationException("Missing required property 'recipient' on PaymentNotice"),
+      amount =
+        amount
+          ?: throw SerializationException("Missing required property 'amount' on PaymentNotice"),
       paymentStatus = paymentStatus,
     )
   }

@@ -400,7 +400,11 @@ internal object ObservationDefinitionComponentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on ObservationDefinition.Component"
+          ),
       permittedDataType =
         (kotlin.collections.List(
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
@@ -980,7 +984,16 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ObservationDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -1011,7 +1024,11 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       subject = subject ?: listOf(),
       performerType = performerType,
       category = category ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on ObservationDefinition"
+          ),
       permittedDataType =
         (kotlin.collections.List(
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)

@@ -1119,7 +1119,16 @@ internal object RiskEvidenceSynthesisSerializer : KSerializer<RiskEvidenceSynthe
       version = R4String.of(version, _version),
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on RiskEvidenceSynthesis"
+              )
+          ),
+          _status,
+        ),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -1139,9 +1148,17 @@ internal object RiskEvidenceSynthesisSerializer : KSerializer<RiskEvidenceSynthe
       relatedArtifact = relatedArtifact ?: listOf(),
       synthesisType = synthesisType,
       studyType = studyType,
-      population = population!!,
+      population =
+        population
+          ?: throw SerializationException(
+            "Missing required property 'population' on RiskEvidenceSynthesis"
+          ),
       exposure = exposure,
-      outcome = outcome!!,
+      outcome =
+        outcome
+          ?: throw SerializationException(
+            "Missing required property 'outcome' on RiskEvidenceSynthesis"
+          ),
       sampleSize = sampleSize,
       riskEstimate = riskEstimate,
       certainty = certainty ?: listOf(),

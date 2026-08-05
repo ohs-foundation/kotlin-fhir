@@ -303,7 +303,16 @@ internal object GraphDefinitionLinkTargetSerializer : KSerializer<GraphDefinitio
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(ResourceType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          ResourceType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on GraphDefinition.Link.Target"
+              )
+          ),
+          _type,
+        ),
       params = R4bString.of(params, _params),
       profile = Canonical.of(profile, _profile),
       compartment = compartment ?: listOf(),
@@ -446,9 +455,36 @@ internal object GraphDefinitionLinkTargetCompartmentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      use = Enumeration.of(GraphDefinition.GraphCompartmentUse.fromCode(use!!), _use),
-      code = Enumeration.of(GraphDefinition.CompartmentType.fromCode(code!!), _code),
-      rule = Enumeration.of(GraphDefinition.GraphCompartmentRule.fromCode(rule!!), _rule),
+      use =
+        Enumeration.of(
+          GraphDefinition.GraphCompartmentUse.fromCode(
+            use
+              ?: throw SerializationException(
+                "Missing required property 'use' on GraphDefinition.Link.Target.Compartment"
+              )
+          ),
+          _use,
+        ),
+      code =
+        Enumeration.of(
+          GraphDefinition.CompartmentType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on GraphDefinition.Link.Target.Compartment"
+              )
+          ),
+          _code,
+        ),
+      rule =
+        Enumeration.of(
+          GraphDefinition.GraphCompartmentRule.fromCode(
+            rule
+              ?: throw SerializationException(
+                "Missing required property 'rule' on GraphDefinition.Link.Target.Compartment"
+              )
+          ),
+          _rule,
+        ),
       expression = R4bString.of(expression, _expression),
       description = R4bString.of(description, _description),
     )
@@ -720,8 +756,19 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
       modifierExtension = modifierExtension ?: listOf(),
       url = Uri.of(url, _url),
       version = R4bString.of(version, _version),
-      name = R4bString.of(name, _name)!!,
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on GraphDefinition"),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on GraphDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -730,7 +777,16 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
       useContext = useContext ?: listOf(),
       jurisdiction = jurisdiction ?: listOf(),
       purpose = Markdown.of(purpose, _purpose),
-      start = Enumeration.of(ResourceType.fromCode(start!!), _start),
+      start =
+        Enumeration.of(
+          ResourceType.fromCode(
+            start
+              ?: throw SerializationException(
+                "Missing required property 'start' on GraphDefinition"
+              )
+          ),
+          _start,
+        ),
       profile = Canonical.of(profile, _profile),
       link = link ?: listOf(),
     )

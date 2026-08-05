@@ -222,10 +222,31 @@ internal object OperationDefinitionParameterSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = Code.of(name, _name)!!,
-      use = Enumeration.of(OperationDefinition.OperationParameterUse.fromCode(use!!), _use),
-      min = Integer.of(min, _min)!!,
-      max = R4bString.of(max, _max)!!,
+      name =
+        Code.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on OperationDefinition.Parameter"
+          ),
+      use =
+        Enumeration.of(
+          OperationDefinition.OperationParameterUse.fromCode(
+            use
+              ?: throw SerializationException(
+                "Missing required property 'use' on OperationDefinition.Parameter"
+              )
+          ),
+          _use,
+        ),
+      min =
+        Integer.of(min, _min)
+          ?: throw SerializationException(
+            "Missing required property 'min' on OperationDefinition.Parameter"
+          ),
+      max =
+        R4bString.of(max, _max)
+          ?: throw SerializationException(
+            "Missing required property 'max' on OperationDefinition.Parameter"
+          ),
       documentation = R4bString.of(documentation, _documentation),
       type = type?.let { Enumeration.of(FHIRAllTypes.fromCode(it), _type) },
       targetProfile =
@@ -402,8 +423,21 @@ internal object OperationDefinitionParameterBindingSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      strength = Enumeration.of(BindingStrength.fromCode(strength!!), _strength),
-      valueSet = Canonical.of(valueSet, _valueSet)!!,
+      strength =
+        Enumeration.of(
+          BindingStrength.fromCode(
+            strength
+              ?: throw SerializationException(
+                "Missing required property 'strength' on OperationDefinition.Parameter.Binding"
+              )
+          ),
+          _strength,
+        ),
+      valueSet =
+        Canonical.of(valueSet, _valueSet)
+          ?: throw SerializationException(
+            "Missing required property 'valueSet' on OperationDefinition.Parameter.Binding"
+          ),
     )
   }
 
@@ -508,7 +542,11 @@ internal object OperationDefinitionParameterReferencedFromSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      source = R4bString.of(source, _source)!!,
+      source =
+        R4bString.of(source, _source)
+          ?: throw SerializationException(
+            "Missing required property 'source' on OperationDefinition.Parameter.ReferencedFrom"
+          ),
       sourceId = R4bString.of(sourceId, _sourceId),
     )
   }
@@ -1003,10 +1041,32 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
       modifierExtension = modifierExtension ?: listOf(),
       url = Uri.of(url, _url),
       version = R4bString.of(version, _version),
-      name = R4bString.of(name, _name)!!,
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on OperationDefinition"
+          ),
       title = R4bString.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
-      kind = Enumeration.of(OperationDefinition.OperationKind.fromCode(kind!!), _kind),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on OperationDefinition"
+              )
+          ),
+          _status,
+        ),
+      kind =
+        Enumeration.of(
+          OperationDefinition.OperationKind.fromCode(
+            kind
+              ?: throw SerializationException(
+                "Missing required property 'kind' on OperationDefinition"
+              )
+          ),
+          _kind,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -1016,7 +1076,11 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
       jurisdiction = jurisdiction ?: listOf(),
       purpose = Markdown.of(purpose, _purpose),
       affectsState = R4bBoolean.of(affectsState, _affectsState),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on OperationDefinition"
+          ),
       comment = Markdown.of(comment, _comment),
       base = Canonical.of(base, _base),
       resource =
@@ -1026,9 +1090,21 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
             _resource?.getOrNull(index),
           )
         }),
-      system = R4bBoolean.of(system, _system)!!,
-      type = R4bBoolean.of(type, _type)!!,
-      instance = R4bBoolean.of(instance, _instance)!!,
+      system =
+        R4bBoolean.of(system, _system)
+          ?: throw SerializationException(
+            "Missing required property 'system' on OperationDefinition"
+          ),
+      type =
+        R4bBoolean.of(type, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on OperationDefinition"
+          ),
+      instance =
+        R4bBoolean.of(instance, _instance)
+          ?: throw SerializationException(
+            "Missing required property 'instance' on OperationDefinition"
+          ),
       inputProfile = Canonical.of(inputProfile, _inputProfile),
       outputProfile = Canonical.of(outputProfile, _outputProfile),
       parameter = parameter ?: listOf(),

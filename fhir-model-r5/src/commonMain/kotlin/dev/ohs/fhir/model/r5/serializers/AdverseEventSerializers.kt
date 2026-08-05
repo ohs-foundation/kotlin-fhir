@@ -120,7 +120,11 @@ internal object AdverseEventParticipantSerializer : KSerializer<AdverseEvent.Par
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on AdverseEvent.Participant"
+          ),
     )
   }
 
@@ -231,7 +235,10 @@ internal object AdverseEventSuspectEntitySerializer : KSerializer<AdverseEvent.S
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       instance =
-        AdverseEvent.SuspectEntity.Instance.from(instanceCodeableConcept, instanceReference)!!,
+        AdverseEvent.SuspectEntity.Instance.from(instanceCodeableConcept, instanceReference)
+          ?: throw SerializationException(
+            "Missing required property 'instance' on AdverseEvent.SuspectEntity"
+          ),
       causality = causality,
     )
   }
@@ -459,7 +466,11 @@ internal object AdverseEventContributingFactorSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = AdverseEvent.ContributingFactor.Item.from(itemReference, itemCodeableConcept)!!,
+      item =
+        AdverseEvent.ContributingFactor.Item.from(itemReference, itemCodeableConcept)
+          ?: throw SerializationException(
+            "Missing required property 'item' on AdverseEvent.ContributingFactor"
+          ),
     )
   }
 
@@ -568,7 +579,11 @@ internal object AdverseEventPreventiveActionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = AdverseEvent.PreventiveAction.Item.from(itemReference, itemCodeableConcept)!!,
+      item =
+        AdverseEvent.PreventiveAction.Item.from(itemReference, itemCodeableConcept)
+          ?: throw SerializationException(
+            "Missing required property 'item' on AdverseEvent.PreventiveAction"
+          ),
     )
   }
 
@@ -674,7 +689,11 @@ internal object AdverseEventMitigatingActionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = AdverseEvent.MitigatingAction.Item.from(itemReference, itemCodeableConcept)!!,
+      item =
+        AdverseEvent.MitigatingAction.Item.from(itemReference, itemCodeableConcept)
+          ?: throw SerializationException(
+            "Missing required property 'item' on AdverseEvent.MitigatingAction"
+          ),
     )
   }
 
@@ -779,7 +798,11 @@ internal object AdverseEventSupportingInfoSerializer : KSerializer<AdverseEvent.
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = AdverseEvent.SupportingInfo.Item.from(itemReference, itemCodeableConcept)!!,
+      item =
+        AdverseEvent.SupportingInfo.Item.from(itemReference, itemCodeableConcept)
+          ?: throw SerializationException(
+            "Missing required property 'item' on AdverseEvent.SupportingInfo"
+          ),
     )
   }
 
@@ -1150,12 +1173,29 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(AdverseEvent.AdverseEventStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          AdverseEvent.AdverseEventStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on AdverseEvent")
+          ),
+          _status,
+        ),
       actuality =
-        Enumeration.of(AdverseEvent.AdverseEventActuality.fromCode(actuality!!), _actuality),
+        Enumeration.of(
+          AdverseEvent.AdverseEventActuality.fromCode(
+            actuality
+              ?: throw SerializationException(
+                "Missing required property 'actuality' on AdverseEvent"
+              )
+          ),
+          _actuality,
+        ),
       category = category ?: listOf(),
       code = code,
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on AdverseEvent"),
       encounter = encounter,
       occurrence =
         AdverseEvent.Occurrence.from(

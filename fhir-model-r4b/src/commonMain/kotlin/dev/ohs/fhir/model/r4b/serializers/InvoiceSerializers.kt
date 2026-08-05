@@ -120,7 +120,11 @@ internal object InvoiceParticipantSerializer : KSerializer<Invoice.Participant> 
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       role = role,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on Invoice.Participant"
+          ),
     )
   }
 
@@ -249,7 +253,10 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
       modifierExtension = modifierExtension ?: listOf(),
       sequence = PositiveInt.of(sequence, _sequence),
       chargeItem =
-        Invoice.LineItem.ChargeItem.from(chargeItemReference, chargeItemCodeableConcept)!!,
+        Invoice.LineItem.ChargeItem.from(chargeItemReference, chargeItemCodeableConcept)
+          ?: throw SerializationException(
+            "Missing required property 'chargeItem' on Invoice.LineItem"
+          ),
       priceComponent = priceComponent ?: listOf(),
     )
   }
@@ -388,7 +395,16 @@ internal object InvoiceLineItemPriceComponentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(Invoice.InvoicePriceComponentType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          Invoice.InvoicePriceComponentType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on Invoice.LineItem.PriceComponent"
+              )
+          ),
+          _type,
+        ),
       code = code,
       factor = Decimal.of(factor, _factor),
       amount = amount,
@@ -645,7 +661,13 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Invoice.InvoiceStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Invoice.InvoiceStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Invoice")
+          ),
+          _status,
+        ),
       cancelledReason = R4bString.of(cancelledReason, _cancelledReason),
       type = type,
       subject = subject,

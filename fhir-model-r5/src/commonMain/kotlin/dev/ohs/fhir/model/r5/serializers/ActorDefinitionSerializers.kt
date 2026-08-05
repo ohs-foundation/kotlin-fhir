@@ -383,7 +383,16 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ActorDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -394,7 +403,14 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
-      type = Enumeration.of(ActorDefinition.ExampleScenarioActorType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          ActorDefinition.ExampleScenarioActorType.fromCode(
+            type
+              ?: throw SerializationException("Missing required property 'type' on ActorDefinition")
+          ),
+          _type,
+        ),
       documentation = Markdown.of(documentation, _documentation),
       reference =
         (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { index ->

@@ -732,7 +732,11 @@ internal object TestPlanTestCaseTestDataSerializer : KSerializer<TestPlan.TestCa
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on TestPlan.TestCase.TestData"
+          ),
       content = content,
       source =
         TestPlan.TestCase.TestData.Source.from(
@@ -1202,7 +1206,13 @@ internal object TestPlanSerializer : KSerializer<TestPlan> {
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on TestPlan")
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

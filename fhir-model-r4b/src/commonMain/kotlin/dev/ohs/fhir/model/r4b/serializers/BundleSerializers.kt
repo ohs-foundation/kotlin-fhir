@@ -122,8 +122,12 @@ internal object BundleLinkSerializer : KSerializer<Bundle.Link> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      relation = R4bString.of(relation, _relation)!!,
-      url = Uri.of(url, _url)!!,
+      relation =
+        R4bString.of(relation, _relation)
+          ?: throw SerializationException("Missing required property 'relation' on Bundle.Link"),
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException("Missing required property 'url' on Bundle.Link"),
     )
   }
 
@@ -508,8 +512,21 @@ internal object BundleEntryRequestSerializer : KSerializer<Bundle.Entry.Request>
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      method = Enumeration.of(Bundle.HTTPVerb.fromCode(method!!), _method),
-      url = Uri.of(url, _url)!!,
+      method =
+        Enumeration.of(
+          Bundle.HTTPVerb.fromCode(
+            method
+              ?: throw SerializationException(
+                "Missing required property 'method' on Bundle.Entry.Request"
+              )
+          ),
+          _method,
+        ),
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException(
+            "Missing required property 'url' on Bundle.Entry.Request"
+          ),
       ifNoneMatch = R4bString.of(ifNoneMatch, _ifNoneMatch),
       ifModifiedSince = Instant.of(FhirDateTime.fromString(ifModifiedSince), _ifModifiedSince),
       ifMatch = R4bString.of(ifMatch, _ifMatch),
@@ -650,7 +667,11 @@ internal object BundleEntryResponseSerializer : KSerializer<Bundle.Entry.Respons
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      status = R4bString.of(status, _status)!!,
+      status =
+        R4bString.of(status, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on Bundle.Entry.Response"
+          ),
       location = Uri.of(location, _location),
       etag = R4bString.of(etag, _etag),
       lastModified = Instant.of(FhirDateTime.fromString(lastModified), _lastModified),
@@ -816,7 +837,13 @@ internal object BundleSerializer : KSerializer<Bundle> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       identifier = identifier,
-      type = Enumeration.of(Bundle.BundleType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          Bundle.BundleType.fromCode(
+            type ?: throw SerializationException("Missing required property 'type' on Bundle")
+          ),
+          _type,
+        ),
       timestamp = Instant.of(FhirDateTime.fromString(timestamp), _timestamp),
       total = UnsignedInt.of(total, _total),
       link = link ?: listOf(),

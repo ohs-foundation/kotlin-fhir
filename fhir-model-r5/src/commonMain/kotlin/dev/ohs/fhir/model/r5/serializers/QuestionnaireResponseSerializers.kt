@@ -158,7 +158,11 @@ internal object QuestionnaireResponseItemSerializer : KSerializer<QuestionnaireR
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      linkId = R5String.of(linkId, _linkId)!!,
+      linkId =
+        R5String.of(linkId, _linkId)
+          ?: throw SerializationException(
+            "Missing required property 'linkId' on QuestionnaireResponse.Item"
+          ),
       definition = Uri.of(definition, _definition),
       text = R5String.of(text, _text),
       answer = answer ?: listOf(),
@@ -385,7 +389,10 @@ internal object QuestionnaireResponseItemAnswerSerializer :
           valueCoding,
           valueQuantity,
           valueReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on QuestionnaireResponse.Item.Answer"
+          ),
       item = item ?: listOf(),
     )
   }
@@ -668,10 +675,19 @@ internal object QuestionnaireResponseSerializer : KSerializer<QuestionnaireRespo
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
-      questionnaire = Canonical.of(questionnaire, _questionnaire)!!,
+      questionnaire =
+        Canonical.of(questionnaire, _questionnaire)
+          ?: throw SerializationException(
+            "Missing required property 'questionnaire' on QuestionnaireResponse"
+          ),
       status =
         Enumeration.of(
-          QuestionnaireResponse.QuestionnaireResponseStatus.fromCode(status!!),
+          QuestionnaireResponse.QuestionnaireResponseStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on QuestionnaireResponse"
+              )
+          ),
           _status,
         ),
       subject = subject,

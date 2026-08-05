@@ -120,7 +120,11 @@ internal object DeviceUsageAdherenceSerializer : KSerializer<DeviceUsage.Adheren
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on DeviceUsage.Adherence"
+          ),
       reason = reason ?: listOf(),
     )
   }
@@ -375,9 +379,18 @@ internal object DeviceUsageSerializer : KSerializer<DeviceUsage> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
-      status = Enumeration.of(DeviceUsage.DeviceUsageStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          DeviceUsage.DeviceUsageStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on DeviceUsage")
+          ),
+          _status,
+        ),
       category = category ?: listOf(),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException("Missing required property 'patient' on DeviceUsage"),
       derivedFrom = derivedFrom ?: listOf(),
       context = context,
       timing =
@@ -391,7 +404,8 @@ internal object DeviceUsageSerializer : KSerializer<DeviceUsage> {
       usageReason = usageReason ?: listOf(),
       adherence = adherence,
       informationSource = informationSource,
-      device = device!!,
+      device =
+        device ?: throw SerializationException("Missing required property 'device' on DeviceUsage"),
       reason = reason ?: listOf(),
       bodySite = bodySite,
       note = note ?: listOf(),

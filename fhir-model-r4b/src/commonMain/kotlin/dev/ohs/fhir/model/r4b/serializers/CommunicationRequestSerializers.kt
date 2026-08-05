@@ -144,7 +144,10 @@ internal object CommunicationRequestPayloadSerializer : KSerializer<Communicatio
           R4bString.of(contentString, _contentString),
           contentAttachment,
           contentReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'content' on CommunicationRequest.Payload"
+          ),
     )
   }
 
@@ -458,7 +461,16 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
-      status = Enumeration.of(CommunicationRequest.RequestStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          CommunicationRequest.RequestStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on CommunicationRequest"
+              )
+          ),
+          _status,
+        ),
       statusReason = statusReason,
       category = category ?: listOf(),
       priority =

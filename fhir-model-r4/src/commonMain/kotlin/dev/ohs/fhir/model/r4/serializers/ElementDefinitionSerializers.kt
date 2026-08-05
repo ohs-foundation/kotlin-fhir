@@ -179,7 +179,16 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
       discriminator = discriminator ?: listOf(),
       description = R4String.of(description, _description),
       ordered = R4Boolean.of(ordered, _ordered),
-      rules = Enumeration.of(ElementDefinition.SlicingRules.fromCode(rules!!), _rules),
+      rules =
+        Enumeration.of(
+          ElementDefinition.SlicingRules.fromCode(
+            rules
+              ?: throw SerializationException(
+                "Missing required property 'rules' on ElementDefinition.Slicing"
+              )
+          ),
+          _rules,
+        ),
     )
   }
 
@@ -277,8 +286,21 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
     return ElementDefinition.Slicing.Discriminator(
       id = id,
       extension = extension ?: listOf(),
-      type = Enumeration.of(ElementDefinition.DiscriminatorType.fromCode(type!!), _type),
-      path = R4String.of(path, _path)!!,
+      type =
+        Enumeration.of(
+          ElementDefinition.DiscriminatorType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ElementDefinition.Slicing.Discriminator"
+              )
+          ),
+          _type,
+        ),
+      path =
+        R4String.of(path, _path)
+          ?: throw SerializationException(
+            "Missing required property 'path' on ElementDefinition.Slicing.Discriminator"
+          ),
     )
   }
 
@@ -365,9 +387,21 @@ internal object ElementDefinitionBaseSerializer : KSerializer<ElementDefinition.
     return ElementDefinition.Base(
       id = id,
       extension = extension ?: listOf(),
-      path = R4String.of(path, _path)!!,
-      min = UnsignedInt.of(min, _min)!!,
-      max = R4String.of(max, _max)!!,
+      path =
+        R4String.of(path, _path)
+          ?: throw SerializationException(
+            "Missing required property 'path' on ElementDefinition.Base"
+          ),
+      min =
+        UnsignedInt.of(min, _min)
+          ?: throw SerializationException(
+            "Missing required property 'min' on ElementDefinition.Base"
+          ),
+      max =
+        R4String.of(max, _max)
+          ?: throw SerializationException(
+            "Missing required property 'max' on ElementDefinition.Base"
+          ),
     )
   }
 
@@ -501,7 +535,11 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
     return ElementDefinition.Type(
       id = id,
       extension = extension ?: listOf(),
-      code = Uri.of(code, _code)!!,
+      code =
+        Uri.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ElementDefinition.Type"
+          ),
       profile =
         (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
           Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!
@@ -1026,7 +1064,11 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
     return ElementDefinition.Example(
       id = id,
       extension = extension ?: listOf(),
-      label = R4String.of(label, _label)!!,
+      label =
+        R4String.of(label, _label)
+          ?: throw SerializationException(
+            "Missing required property 'label' on ElementDefinition.Example"
+          ),
       `value` =
         ElementDefinition.Example.Value.from(
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
@@ -1079,7 +1121,10 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
           valueUsageContext,
           valueDosage,
           valueMeta,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on ElementDefinition.Example"
+          ),
     )
   }
 
@@ -1507,11 +1552,27 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
     return ElementDefinition.Constraint(
       id = id,
       extension = extension ?: listOf(),
-      key = Id.of(key, _key)!!,
+      key =
+        Id.of(key, _key)
+          ?: throw SerializationException(
+            "Missing required property 'key' on ElementDefinition.Constraint"
+          ),
       requirements = R4String.of(requirements, _requirements),
       severity =
-        Enumeration.of(ElementDefinition.ConstraintSeverity.fromCode(severity!!), _severity),
-      human = R4String.of(human, _human)!!,
+        Enumeration.of(
+          ElementDefinition.ConstraintSeverity.fromCode(
+            severity
+              ?: throw SerializationException(
+                "Missing required property 'severity' on ElementDefinition.Constraint"
+              )
+          ),
+          _severity,
+        ),
+      human =
+        R4String.of(human, _human)
+          ?: throw SerializationException(
+            "Missing required property 'human' on ElementDefinition.Constraint"
+          ),
       expression = R4String.of(expression, _expression),
       xpath = R4String.of(xpath, _xpath),
       source = Canonical.of(source, _source),
@@ -1624,7 +1685,16 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
     return ElementDefinition.Binding(
       id = id,
       extension = extension ?: listOf(),
-      strength = Enumeration.of(BindingStrength.fromCode(strength!!), _strength),
+      strength =
+        Enumeration.of(
+          BindingStrength.fromCode(
+            strength
+              ?: throw SerializationException(
+                "Missing required property 'strength' on ElementDefinition.Binding"
+              )
+          ),
+          _strength,
+        ),
       description = R4String.of(description, _description),
       valueSet = Canonical.of(valueSet, _valueSet),
     )
@@ -1727,9 +1797,17 @@ internal object ElementDefinitionMappingSerializer : KSerializer<ElementDefiniti
     return ElementDefinition.Mapping(
       id = id,
       extension = extension ?: listOf(),
-      identity = Id.of(identity, _identity)!!,
+      identity =
+        Id.of(identity, _identity)
+          ?: throw SerializationException(
+            "Missing required property 'identity' on ElementDefinition.Mapping"
+          ),
       language = Code.of(language, _language),
-      map = R4String.of(map, _map)!!,
+      map =
+        R4String.of(map, _map)
+          ?: throw SerializationException(
+            "Missing required property 'map' on ElementDefinition.Mapping"
+          ),
       comment = R4String.of(comment, _comment),
     )
   }
@@ -3667,7 +3745,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      path = R4String.of(path, _path)!!,
+      path =
+        R4String.of(path, _path)
+          ?: throw SerializationException("Missing required property 'path' on ElementDefinition"),
       representation =
         (kotlin.collections.List(maxOf(representation?.size ?: 0, _representation?.size ?: 0)) {
           index ->

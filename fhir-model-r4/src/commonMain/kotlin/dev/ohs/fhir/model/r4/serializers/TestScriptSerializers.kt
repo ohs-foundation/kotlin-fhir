@@ -130,8 +130,14 @@ internal object TestScriptOriginSerializer : KSerializer<TestScript.Origin> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      index = Integer.of(index, _index)!!,
-      profile = profile!!,
+      index =
+        Integer.of(index, _index)
+          ?: throw SerializationException("Missing required property 'index' on TestScript.Origin"),
+      profile =
+        profile
+          ?: throw SerializationException(
+            "Missing required property 'profile' on TestScript.Origin"
+          ),
     )
   }
 
@@ -225,8 +231,16 @@ internal object TestScriptDestinationSerializer : KSerializer<TestScript.Destina
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      index = Integer.of(index, _index)!!,
-      profile = profile!!,
+      index =
+        Integer.of(index, _index)
+          ?: throw SerializationException(
+            "Missing required property 'index' on TestScript.Destination"
+          ),
+      profile =
+        profile
+          ?: throw SerializationException(
+            "Missing required property 'profile' on TestScript.Destination"
+          ),
     )
   }
 
@@ -430,7 +444,11 @@ internal object TestScriptMetadataLinkSerializer : KSerializer<TestScript.Metada
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException(
+            "Missing required property 'url' on TestScript.Metadata.Link"
+          ),
       description = R4String.of(description, _description),
     )
   }
@@ -571,8 +589,16 @@ internal object TestScriptMetadataCapabilitySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      required = R4Boolean.of(required, _required)!!,
-      validated = R4Boolean.of(validated, _validated)!!,
+      required =
+        R4Boolean.of(required, _required)
+          ?: throw SerializationException(
+            "Missing required property 'required' on TestScript.Metadata.Capability"
+          ),
+      validated =
+        R4Boolean.of(validated, _validated)
+          ?: throw SerializationException(
+            "Missing required property 'validated' on TestScript.Metadata.Capability"
+          ),
       description = R4String.of(description, _description),
       origin =
         (kotlin.collections.List(maxOf(origin?.size ?: 0, _origin?.size ?: 0)) { index ->
@@ -583,7 +609,11 @@ internal object TestScriptMetadataCapabilitySerializer :
         (kotlin.collections.List(maxOf(link?.size ?: 0, _link?.size ?: 0)) { index ->
           Uri.of(link?.getOrNull(index)?.let { it }, _link?.getOrNull(index))!!
         }),
-      capabilities = Canonical.of(capabilities, _capabilities)!!,
+      capabilities =
+        Canonical.of(capabilities, _capabilities)
+          ?: throw SerializationException(
+            "Missing required property 'capabilities' on TestScript.Metadata.Capability"
+          ),
     )
   }
 
@@ -727,8 +757,16 @@ internal object TestScriptFixtureSerializer : KSerializer<TestScript.Fixture> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      autocreate = R4Boolean.of(autocreate, _autocreate)!!,
-      autodelete = R4Boolean.of(autodelete, _autodelete)!!,
+      autocreate =
+        R4Boolean.of(autocreate, _autocreate)
+          ?: throw SerializationException(
+            "Missing required property 'autocreate' on TestScript.Fixture"
+          ),
+      autodelete =
+        R4Boolean.of(autodelete, _autodelete)
+          ?: throw SerializationException(
+            "Missing required property 'autodelete' on TestScript.Fixture"
+          ),
       resource = resource,
     )
   }
@@ -877,7 +915,11 @@ internal object TestScriptVariableSerializer : KSerializer<TestScript.Variable> 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R4String.of(name, _name)!!,
+      name =
+        R4String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on TestScript.Variable"
+          ),
       defaultValue = R4String.of(defaultValue, _defaultValue),
       description = R4String.of(description, _description),
       expression = R4String.of(expression, _expression),
@@ -1322,7 +1364,11 @@ internal object TestScriptSetupActionOperationSerializer :
       accept = Code.of(accept, _accept),
       contentType = Code.of(contentType, _contentType),
       destination = Integer.of(destination, _destination),
-      encodeRequestUrl = R4Boolean.of(encodeRequestUrl, _encodeRequestUrl)!!,
+      encodeRequestUrl =
+        R4Boolean.of(encodeRequestUrl, _encodeRequestUrl)
+          ?: throw SerializationException(
+            "Missing required property 'encodeRequestUrl' on TestScript.Setup.Action.Operation"
+          ),
       method =
         method?.let {
           Enumeration.of(TestScript.TestScriptRequestMethodCode.fromCode(it), _method)
@@ -1509,8 +1555,16 @@ internal object TestScriptSetupActionOperationRequestHeaderSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      `field` = R4String.of(`field`, _field)!!,
-      `value` = R4String.of(`value`, _value)!!,
+      `field` =
+        R4String.of(`field`, _field)
+          ?: throw SerializationException(
+            "Missing required property 'field' on TestScript.Setup.Action.Operation.RequestHeader"
+          ),
+      `value` =
+        R4String.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on TestScript.Setup.Action.Operation.RequestHeader"
+          ),
     )
   }
 
@@ -1802,7 +1856,11 @@ internal object TestScriptSetupActionAssertSerializer :
       sourceId = Id.of(sourceId, _sourceId),
       validateProfileId = Id.of(validateProfileId, _validateProfileId),
       `value` = R4String.of(`value`, _value),
-      warningOnly = R4Boolean.of(warningOnly, _warningOnly)!!,
+      warningOnly =
+        R4Boolean.of(warningOnly, _warningOnly)
+          ?: throw SerializationException(
+            "Missing required property 'warningOnly' on TestScript.Setup.Action.Assert"
+          ),
     )
   }
 
@@ -2286,7 +2344,11 @@ internal object TestScriptTeardownActionSerializer : KSerializer<TestScript.Tear
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      operation = operation!!,
+      operation =
+        operation
+          ?: throw SerializationException(
+            "Missing required property 'operation' on TestScript.Teardown.Action"
+          ),
     )
   }
 
@@ -2604,12 +2666,23 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException("Missing required property 'url' on TestScript"),
       identifier = identifier,
       version = R4String.of(version, _version),
-      name = R4String.of(name, _name)!!,
+      name =
+        R4String.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on TestScript"),
       title = R4String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on TestScript")
+          ),
+          _status,
+        ),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),

@@ -267,10 +267,21 @@ internal object SlotSerializer : KSerializer<Slot> {
       serviceType = serviceType ?: listOf(),
       specialty = specialty ?: listOf(),
       appointmentType = appointmentType ?: listOf(),
-      schedule = schedule!!,
-      status = Enumeration.of(Slot.SlotStatus.fromCode(status!!), _status),
-      start = Instant.of(FhirDateTime.fromString(start), _start)!!,
-      end = Instant.of(FhirDateTime.fromString(end), _end)!!,
+      schedule =
+        schedule ?: throw SerializationException("Missing required property 'schedule' on Slot"),
+      status =
+        Enumeration.of(
+          Slot.SlotStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Slot")
+          ),
+          _status,
+        ),
+      start =
+        Instant.of(FhirDateTime.fromString(start), _start)
+          ?: throw SerializationException("Missing required property 'start' on Slot"),
+      end =
+        Instant.of(FhirDateTime.fromString(end), _end)
+          ?: throw SerializationException("Missing required property 'end' on Slot"),
       overbooked = R5Boolean.of(overbooked, _overbooked),
       comment = R5String.of(comment, _comment),
     )

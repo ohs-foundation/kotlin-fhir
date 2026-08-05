@@ -509,7 +509,16 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
       reasonCode = reasonCode ?: listOf(),
       reasonReference = reasonReference ?: listOf(),
       goal = goal ?: listOf(),
-      status = Enumeration.of(CarePlan.CarePlanActivityStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          CarePlan.CarePlanActivityStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on CarePlan.Activity.Detail"
+              )
+          ),
+          _status,
+        ),
       statusReason = statusReason,
       doNotPerform = R4Boolean.of(doNotPerform, _doNotPerform),
       scheduled =
@@ -977,12 +986,25 @@ internal object CarePlanSerializer : KSerializer<CarePlan> {
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(CarePlan.RequestStatus.fromCode(status!!), _status),
-      intent = Enumeration.of(CarePlan.CarePlanIntent.fromCode(intent!!), _intent),
+      status =
+        Enumeration.of(
+          CarePlan.RequestStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on CarePlan")
+          ),
+          _status,
+        ),
+      intent =
+        Enumeration.of(
+          CarePlan.CarePlanIntent.fromCode(
+            intent ?: throw SerializationException("Missing required property 'intent' on CarePlan")
+          ),
+          _intent,
+        ),
       category = category ?: listOf(),
       title = R4String.of(title, _title),
       description = R4String.of(description, _description),
-      subject = subject!!,
+      subject =
+        subject ?: throw SerializationException("Missing required property 'subject' on CarePlan"),
       encounter = encounter,
       period = period,
       created = DateTime.of(FhirDateTime.fromString(created), _created),

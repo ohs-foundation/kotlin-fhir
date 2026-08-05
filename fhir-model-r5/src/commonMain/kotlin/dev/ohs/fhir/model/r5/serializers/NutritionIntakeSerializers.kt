@@ -153,8 +153,16 @@ internal object NutritionIntakeConsumedItemSerializer : KSerializer<NutritionInt
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
-      nutritionProduct = nutritionProduct!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on NutritionIntake.ConsumedItem"
+          ),
+      nutritionProduct =
+        nutritionProduct
+          ?: throw SerializationException(
+            "Missing required property 'nutritionProduct' on NutritionIntake.ConsumedItem"
+          ),
       schedule = schedule,
       amount = amount,
       rate = rate,
@@ -271,8 +279,16 @@ internal object NutritionIntakeIngredientLabelSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      nutrient = nutrient!!,
-      amount = amount!!,
+      nutrient =
+        nutrient
+          ?: throw SerializationException(
+            "Missing required property 'nutrient' on NutritionIntake.IngredientLabel"
+          ),
+      amount =
+        amount
+          ?: throw SerializationException(
+            "Missing required property 'amount' on NutritionIntake.IngredientLabel"
+          ),
     )
   }
 
@@ -364,7 +380,11 @@ internal object NutritionIntakePerformerSerializer : KSerializer<NutritionIntake
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on NutritionIntake.Performer"
+          ),
     )
   }
 
@@ -723,10 +743,21 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
         }),
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(NutritionIntake.EventStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          NutritionIntake.EventStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on NutritionIntake"
+              )
+          ),
+          _status,
+        ),
       statusReason = statusReason ?: listOf(),
       code = code,
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on NutritionIntake"),
       encounter = encounter,
       occurrence =
         NutritionIntake.Occurrence.from(

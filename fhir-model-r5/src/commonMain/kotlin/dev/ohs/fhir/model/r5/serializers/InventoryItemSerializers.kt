@@ -140,9 +140,24 @@ internal object InventoryItemNameSerializer : KSerializer<InventoryItem.Name> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      nameType = nameType!!,
-      language = Enumeration.of(InventoryItem.CommonLanguages.fromCode(language!!), _language),
-      name = R5String.of(name, _name)!!,
+      nameType =
+        nameType
+          ?: throw SerializationException(
+            "Missing required property 'nameType' on InventoryItem.Name"
+          ),
+      language =
+        Enumeration.of(
+          InventoryItem.CommonLanguages.fromCode(
+            language
+              ?: throw SerializationException(
+                "Missing required property 'language' on InventoryItem.Name"
+              )
+          ),
+          _language,
+        ),
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on InventoryItem.Name"),
     )
   }
 
@@ -240,8 +255,16 @@ internal object InventoryItemResponsibleOrganizationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      role = role!!,
-      organization = organization!!,
+      role =
+        role
+          ?: throw SerializationException(
+            "Missing required property 'role' on InventoryItem.ResponsibleOrganization"
+          ),
+      organization =
+        organization
+          ?: throw SerializationException(
+            "Missing required property 'organization' on InventoryItem.ResponsibleOrganization"
+          ),
     )
   }
 
@@ -444,9 +467,21 @@ internal object InventoryItemAssociationSerializer : KSerializer<InventoryItem.A
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      associationType = associationType!!,
-      relatedItem = relatedItem!!,
-      quantity = quantity!!,
+      associationType =
+        associationType
+          ?: throw SerializationException(
+            "Missing required property 'associationType' on InventoryItem.Association"
+          ),
+      relatedItem =
+        relatedItem
+          ?: throw SerializationException(
+            "Missing required property 'relatedItem' on InventoryItem.Association"
+          ),
+      quantity =
+        quantity
+          ?: throw SerializationException(
+            "Missing required property 'quantity' on InventoryItem.Association"
+          ),
     )
   }
 
@@ -638,7 +673,11 @@ internal object InventoryItemCharacteristicSerializer : KSerializer<InventoryIte
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      characteristicType = characteristicType!!,
+      characteristicType =
+        characteristicType
+          ?: throw SerializationException(
+            "Missing required property 'characteristicType' on InventoryItem.Characteristic"
+          ),
       `value` =
         InventoryItem.Characteristic.Value.from(
           R5String.of(valueString, _valueString),
@@ -654,7 +693,10 @@ internal object InventoryItemCharacteristicSerializer : KSerializer<InventoryIte
           valueAddress,
           valueDuration,
           valueCodeableConcept,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on InventoryItem.Characteristic"
+          ),
     )
   }
 
@@ -1128,7 +1170,14 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(InventoryItem.InventoryItemStatusCodes.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          InventoryItem.InventoryItemStatusCodes.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on InventoryItem")
+          ),
+          _status,
+        ),
       category = category ?: listOf(),
       code = code ?: listOf(),
       name = name ?: listOf(),

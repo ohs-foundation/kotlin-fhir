@@ -740,7 +740,16 @@ internal object RequestOrchestrationActionConditionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      kind = Enumeration.of(RequestOrchestration.ActionConditionKind.fromCode(kind!!), _kind),
+      kind =
+        Enumeration.of(
+          RequestOrchestration.ActionConditionKind.fromCode(
+            kind
+              ?: throw SerializationException(
+                "Missing required property 'kind' on RequestOrchestration.Action.Condition"
+              )
+          ),
+          _kind,
+        ),
       expression = expression,
     )
   }
@@ -1098,10 +1107,19 @@ internal object RequestOrchestrationActionRelatedActionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      targetId = Id.of(targetId, _targetId)!!,
+      targetId =
+        Id.of(targetId, _targetId)
+          ?: throw SerializationException(
+            "Missing required property 'targetId' on RequestOrchestration.Action.RelatedAction"
+          ),
       relationship =
         Enumeration.of(
-          RequestOrchestration.ActionRelationshipType.fromCode(relationship!!),
+          RequestOrchestration.ActionRelationshipType.fromCode(
+            relationship
+              ?: throw SerializationException(
+                "Missing required property 'relationship' on RequestOrchestration.Action.RelatedAction"
+              )
+          ),
           _relationship,
         ),
       endRelationship =
@@ -1707,8 +1725,26 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
-      status = Enumeration.of(RequestOrchestration.RequestStatus.fromCode(status!!), _status),
-      intent = Enumeration.of(RequestOrchestration.RequestIntent.fromCode(intent!!), _intent),
+      status =
+        Enumeration.of(
+          RequestOrchestration.RequestStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on RequestOrchestration"
+              )
+          ),
+          _status,
+        ),
+      intent =
+        Enumeration.of(
+          RequestOrchestration.RequestIntent.fromCode(
+            intent
+              ?: throw SerializationException(
+                "Missing required property 'intent' on RequestOrchestration"
+              )
+          ),
+          _intent,
+        ),
       priority =
         priority?.let {
           Enumeration.of(RequestOrchestration.RequestPriority.fromCode(it), _priority)

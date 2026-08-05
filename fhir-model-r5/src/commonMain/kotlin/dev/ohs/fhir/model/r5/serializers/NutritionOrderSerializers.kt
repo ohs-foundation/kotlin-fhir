@@ -1773,14 +1773,36 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
         }),
       basedOn = basedOn ?: listOf(),
       groupIdentifier = groupIdentifier,
-      status = Enumeration.of(NutritionOrder.RequestStatus.fromCode(status!!), _status),
-      intent = Enumeration.of(NutritionOrder.RequestIntent.fromCode(intent!!), _intent),
+      status =
+        Enumeration.of(
+          NutritionOrder.RequestStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on NutritionOrder"
+              )
+          ),
+          _status,
+        ),
+      intent =
+        Enumeration.of(
+          NutritionOrder.RequestIntent.fromCode(
+            intent
+              ?: throw SerializationException(
+                "Missing required property 'intent' on NutritionOrder"
+              )
+          ),
+          _intent,
+        ),
       priority =
         priority?.let { Enumeration.of(NutritionOrder.RequestPriority.fromCode(it), _priority) },
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on NutritionOrder"),
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),
-      dateTime = DateTime.of(FhirDateTime.fromString(dateTime), _dateTime)!!,
+      dateTime =
+        DateTime.of(FhirDateTime.fromString(dateTime), _dateTime)
+          ?: throw SerializationException("Missing required property 'dateTime' on NutritionOrder"),
       orderer = orderer,
       performer = performer ?: listOf(),
       allergyIntolerance = allergyIntolerance ?: listOf(),

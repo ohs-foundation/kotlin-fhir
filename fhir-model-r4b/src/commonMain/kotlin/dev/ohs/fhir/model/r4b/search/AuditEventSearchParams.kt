@@ -433,7 +433,7 @@ public object AuditEventSearchParams {
       extractor = { resource ->
         resource.agent
           .mapNotNull { it.who }
-          .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
+          .filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 

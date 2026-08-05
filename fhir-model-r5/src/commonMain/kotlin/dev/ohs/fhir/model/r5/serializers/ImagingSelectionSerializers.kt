@@ -257,7 +257,11 @@ internal object ImagingSelectionInstanceSerializer : KSerializer<ImagingSelectio
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      uid = Id.of(uid, _uid)!!,
+      uid =
+        Id.of(uid, _uid)
+          ?: throw SerializationException(
+            "Missing required property 'uid' on ImagingSelection.Instance"
+          ),
       number = UnsignedInt.of(number, _number),
       sopClass = sopClass,
       subset =
@@ -423,7 +427,12 @@ internal object ImagingSelectionInstanceImageRegion2DSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       regionType =
         Enumeration.of(
-          ImagingSelection.ImagingSelection2DGraphicType.fromCode(regionType!!),
+          ImagingSelection.ImagingSelection2DGraphicType.fromCode(
+            regionType
+              ?: throw SerializationException(
+                "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion2D"
+              )
+          ),
           _regionType,
         ),
       coordinate =
@@ -554,7 +563,12 @@ internal object ImagingSelectionInstanceImageRegion3DSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       regionType =
         Enumeration.of(
-          ImagingSelection.ImagingSelection3DGraphicType.fromCode(regionType!!),
+          ImagingSelection.ImagingSelection3DGraphicType.fromCode(
+            regionType
+              ?: throw SerializationException(
+                "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion3D"
+              )
+          ),
           _regionType,
         ),
       coordinate =
@@ -829,13 +843,24 @@ internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(ImagingSelection.ImagingSelectionStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          ImagingSelection.ImagingSelectionStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ImagingSelection"
+              )
+          ),
+          _status,
+        ),
       subject = subject,
       issued = Instant.of(FhirDateTime.fromString(issued), _issued),
       performer = performer ?: listOf(),
       basedOn = basedOn ?: listOf(),
       category = category ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException("Missing required property 'code' on ImagingSelection"),
       studyUid = Id.of(studyUid, _studyUid),
       derivedFrom = derivedFrom ?: listOf(),
       endpoint = endpoint ?: listOf(),

@@ -128,7 +128,8 @@ internal object ProvenanceAgentSerializer : KSerializer<Provenance.Agent> {
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
       role = role ?: listOf(),
-      who = who!!,
+      who =
+        who ?: throw SerializationException("Missing required property 'who' on Provenance.Agent"),
       onBehalfOf = onBehalfOf,
     )
   }
@@ -230,8 +231,19 @@ internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      role = Enumeration.of(Provenance.ProvenanceEntityRole.fromCode(role!!), _role),
-      what = what!!,
+      role =
+        Enumeration.of(
+          Provenance.ProvenanceEntityRole.fromCode(
+            role
+              ?: throw SerializationException(
+                "Missing required property 'role' on Provenance.Entity"
+              )
+          ),
+          _role,
+        ),
+      what =
+        what
+          ?: throw SerializationException("Missing required property 'what' on Provenance.Entity"),
       agent = agent ?: listOf(),
     )
   }
@@ -456,7 +468,9 @@ internal object ProvenanceSerializer : KSerializer<Provenance> {
           occurredPeriod,
           DateTime.of(FhirDateTime.fromString(occurredDateTime), _occurredDateTime),
         ),
-      recorded = Instant.of(FhirDateTime.fromString(recorded), _recorded)!!,
+      recorded =
+        Instant.of(FhirDateTime.fromString(recorded), _recorded)
+          ?: throw SerializationException("Missing required property 'recorded' on Provenance"),
       policy =
         (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { index ->
           Uri.of(policy?.getOrNull(index)?.let { it }, _policy?.getOrNull(index))!!

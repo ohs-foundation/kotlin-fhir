@@ -162,7 +162,11 @@ internal object PaymentReconciliationDetailSerializer : KSerializer<PaymentRecon
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
       predecessor = predecessor,
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on PaymentReconciliation.Detail"
+          ),
       request = request,
       submitter = submitter,
       response = response,
@@ -536,18 +540,35 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          PaymentReconciliation.FinancialResourceStatusCodes.fromCode(status!!),
+          PaymentReconciliation.FinancialResourceStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on PaymentReconciliation"
+              )
+          ),
           _status,
         ),
       period = period,
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException(
+            "Missing required property 'created' on PaymentReconciliation"
+          ),
       paymentIssuer = paymentIssuer,
       request = request,
       requestor = requestor,
       outcome = outcome?.let { Enumeration.of(RemittanceOutcome.fromCode(it), _outcome) },
       disposition = R4bString.of(disposition, _disposition),
-      paymentDate = Date.of(FhirDate.fromString(paymentDate), _paymentDate)!!,
-      paymentAmount = paymentAmount!!,
+      paymentDate =
+        Date.of(FhirDate.fromString(paymentDate), _paymentDate)
+          ?: throw SerializationException(
+            "Missing required property 'paymentDate' on PaymentReconciliation"
+          ),
+      paymentAmount =
+        paymentAmount
+          ?: throw SerializationException(
+            "Missing required property 'paymentAmount' on PaymentReconciliation"
+          ),
       paymentIdentifier = paymentIdentifier,
       detail = detail ?: listOf(),
       formCode = formCode,

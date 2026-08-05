@@ -123,8 +123,14 @@ internal object SpecimenFeatureSerializer : KSerializer<Specimen.Feature> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
-      description = R5String.of(description, _description)!!,
+      type =
+        type
+          ?: throw SerializationException("Missing required property 'type' on Specimen.Feature"),
+      description =
+        R5String.of(description, _description)
+          ?: throw SerializationException(
+            "Missing required property 'description' on Specimen.Feature"
+          ),
     )
   }
 
@@ -576,7 +582,11 @@ internal object SpecimenContainerSerializer : KSerializer<Specimen.Container> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      device = device!!,
+      device =
+        device
+          ?: throw SerializationException(
+            "Missing required property 'device' on Specimen.Container"
+          ),
       location = location,
       specimenQuantity = specimenQuantity,
     )

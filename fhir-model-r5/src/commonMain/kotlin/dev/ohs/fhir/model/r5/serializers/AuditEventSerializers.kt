@@ -129,7 +129,9 @@ internal object AuditEventOutcomeSerializer : KSerializer<AuditEvent.Outcome> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException("Missing required property 'code' on AuditEvent.Outcome"),
       detail = detail ?: listOf(),
     )
   }
@@ -283,7 +285,8 @@ internal object AuditEventAgentSerializer : KSerializer<AuditEvent.Agent> {
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
       role = role ?: listOf(),
-      who = who!!,
+      who =
+        who ?: throw SerializationException("Missing required property 'who' on AuditEvent.Agent"),
       requestor = R5Boolean.of(requestor, _requestor),
       location = location,
       policy =
@@ -435,7 +438,11 @@ internal object AuditEventSourceSerializer : KSerializer<AuditEvent.Source> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       site = site,
-      observer = observer!!,
+      observer =
+        observer
+          ?: throw SerializationException(
+            "Missing required property 'observer' on AuditEvent.Source"
+          ),
       type = type ?: listOf(),
     )
   }
@@ -749,7 +756,11 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on AuditEvent.Entity.Detail"
+          ),
       `value` =
         AuditEvent.Entity.Detail.Value.from(
           valueQuantity,
@@ -763,7 +774,10 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
           DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
           valuePeriod,
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on AuditEvent.Entity.Detail"
+          ),
     )
   }
 
@@ -1066,7 +1080,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       category = category ?: listOf(),
-      code = code!!,
+      code = code ?: throw SerializationException("Missing required property 'code' on AuditEvent"),
       action = action?.let { Enumeration.of(AuditEvent.AuditEventAction.fromCode(it), _action) },
       severity =
         severity?.let { Enumeration.of(AuditEvent.AuditEventSeverity.fromCode(it), _severity) },
@@ -1075,14 +1089,17 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
           occurredPeriod,
           DateTime.of(FhirDateTime.fromString(occurredDateTime), _occurredDateTime),
         ),
-      recorded = Instant.of(FhirDateTime.fromString(recorded), _recorded)!!,
+      recorded =
+        Instant.of(FhirDateTime.fromString(recorded), _recorded)
+          ?: throw SerializationException("Missing required property 'recorded' on AuditEvent"),
       outcome = outcome,
       authorization = authorization ?: listOf(),
       basedOn = basedOn ?: listOf(),
       patient = patient,
       encounter = encounter,
       agent = agent ?: listOf(),
-      source = source!!,
+      source =
+        source ?: throw SerializationException("Missing required property 'source' on AuditEvent"),
       entity = entity ?: listOf(),
     )
   }

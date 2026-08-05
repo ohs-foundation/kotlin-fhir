@@ -479,7 +479,11 @@ internal object VerificationResultValidatorSerializer : KSerializer<Verification
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      organization = organization!!,
+      organization =
+        organization
+          ?: throw SerializationException(
+            "Missing required property 'organization' on VerificationResult.Validator"
+          ),
       identityCertificate = R4String.of(identityCertificate, _identityCertificate),
       attestationSignature = attestationSignature,
     )
@@ -751,7 +755,16 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
           )!!
         }),
       need = need,
-      status = Enumeration.of(VerificationResult.Status.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          VerificationResult.Status.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on VerificationResult"
+              )
+          ),
+          _status,
+        ),
       statusDate = DateTime.of(FhirDateTime.fromString(statusDate), _statusDate),
       validationType = validationType,
       validationProcess = validationProcess ?: listOf(),

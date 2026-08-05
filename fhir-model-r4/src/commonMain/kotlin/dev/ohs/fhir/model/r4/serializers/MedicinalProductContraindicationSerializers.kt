@@ -139,12 +139,19 @@ internal object MedicinalProductContraindicationOtherTherapySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      therapyRelationshipType = therapyRelationshipType!!,
+      therapyRelationshipType =
+        therapyRelationshipType
+          ?: throw SerializationException(
+            "Missing required property 'therapyRelationshipType' on MedicinalProductContraindication.OtherTherapy"
+          ),
       medication =
         MedicinalProductContraindication.OtherTherapy.Medication.from(
           medicationCodeableConcept,
           medicationReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'medication' on MedicinalProductContraindication.OtherTherapy"
+          ),
     )
   }
 

@@ -321,8 +321,21 @@ internal object ConditionDefinitionPreconditionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(ConditionDefinition.ConditionPreconditionType.fromCode(type!!), _type),
-      code = code!!,
+      type =
+        Enumeration.of(
+          ConditionDefinition.ConditionPreconditionType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ConditionDefinition.Precondition"
+              )
+          ),
+          _type,
+        ),
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on ConditionDefinition.Precondition"
+          ),
       `value` = ConditionDefinition.Precondition.Value.from(valueCodeableConcept, valueQuantity),
     )
   }
@@ -435,10 +448,19 @@ internal object ConditionDefinitionQuestionnaireSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       purpose =
         Enumeration.of(
-          ConditionDefinition.ConditionQuestionnairePurpose.fromCode(purpose!!),
+          ConditionDefinition.ConditionQuestionnairePurpose.fromCode(
+            purpose
+              ?: throw SerializationException(
+                "Missing required property 'purpose' on ConditionDefinition.Questionnaire"
+              )
+          ),
           _purpose,
         ),
-      reference = reference!!,
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on ConditionDefinition.Questionnaire"
+          ),
     )
   }
 
@@ -532,7 +554,11 @@ internal object ConditionDefinitionPlanSerializer : KSerializer<ConditionDefinit
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       role = role,
-      reference = reference!!,
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on ConditionDefinition.Plan"
+          ),
     )
   }
 
@@ -940,7 +966,16 @@ internal object ConditionDefinitionSerializer : KSerializer<ConditionDefinition>
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       subtitle = R5String.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ConditionDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -948,7 +983,11 @@ internal object ConditionDefinitionSerializer : KSerializer<ConditionDefinition>
       description = Markdown.of(description, _description),
       useContext = useContext ?: listOf(),
       jurisdiction = jurisdiction ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on ConditionDefinition"
+          ),
       severity = severity,
       bodySite = bodySite,
       stage = stage,

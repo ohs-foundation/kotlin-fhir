@@ -127,7 +127,11 @@ internal object AccountCoverageSerializer : KSerializer<Account.Coverage> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      coverage = coverage!!,
+      coverage =
+        coverage
+          ?: throw SerializationException(
+            "Missing required property 'coverage' on Account.Coverage"
+          ),
       priority = PositiveInt.of(priority, _priority),
     )
   }
@@ -226,7 +230,9 @@ internal object AccountGuarantorSerializer : KSerializer<Account.Guarantor> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      party = party!!,
+      party =
+        party
+          ?: throw SerializationException("Missing required property 'party' on Account.Guarantor"),
       onHold = R5Boolean.of(onHold, _onHold),
       period = period,
     )
@@ -359,7 +365,11 @@ internal object AccountDiagnosisSerializer : KSerializer<Account.Diagnosis> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       sequence = PositiveInt.of(sequence, _sequence),
-      condition = condition!!,
+      condition =
+        condition
+          ?: throw SerializationException(
+            "Missing required property 'condition' on Account.Diagnosis"
+          ),
       dateOfDiagnosis = DateTime.of(FhirDateTime.fromString(dateOfDiagnosis), _dateOfDiagnosis),
       type = type ?: listOf(),
       onAdmission = R5Boolean.of(onAdmission, _onAdmission),
@@ -503,7 +513,9 @@ internal object AccountProcedureSerializer : KSerializer<Account.Procedure> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       sequence = PositiveInt.of(sequence, _sequence),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException("Missing required property 'code' on Account.Procedure"),
       dateOfService = DateTime.of(FhirDateTime.fromString(dateOfService), _dateOfService),
       type = type ?: listOf(),
       packageCode = packageCode ?: listOf(),
@@ -620,7 +632,11 @@ internal object AccountRelatedAccountSerializer : KSerializer<Account.RelatedAcc
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       relationship = relationship,
-      account = account!!,
+      account =
+        account
+          ?: throw SerializationException(
+            "Missing required property 'account' on Account.RelatedAccount"
+          ),
     )
   }
 
@@ -726,7 +742,9 @@ internal object AccountBalanceSerializer : KSerializer<Account.Balance> {
       aggregate = aggregate,
       term = term,
       estimate = R5Boolean.of(estimate, _estimate),
-      amount = amount!!,
+      amount =
+        amount
+          ?: throw SerializationException("Missing required property 'amount' on Account.Balance"),
     )
   }
 
@@ -993,7 +1011,13 @@ internal object AccountSerializer : KSerializer<Account> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Account.AccountStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Account.AccountStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Account")
+          ),
+          _status,
+        ),
       billingStatus = billingStatus,
       type = type,
       name = R5String.of(name, _name),

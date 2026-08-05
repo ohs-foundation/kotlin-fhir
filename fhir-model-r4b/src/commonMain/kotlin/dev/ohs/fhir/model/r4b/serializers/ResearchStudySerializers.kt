@@ -126,7 +126,9 @@ internal object ResearchStudyArmSerializer : KSerializer<ResearchStudy.Arm> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R4bString.of(name, _name)!!,
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on ResearchStudy.Arm"),
       type = type,
       description = R4bString.of(description, _description),
     )
@@ -549,7 +551,14 @@ internal object ResearchStudySerializer : KSerializer<ResearchStudy> {
       title = R4bString.of(title, _title),
       protocol = protocol ?: listOf(),
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(ResearchStudy.ResearchStudyStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          ResearchStudy.ResearchStudyStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on ResearchStudy")
+          ),
+          _status,
+        ),
       primaryPurposeType = primaryPurposeType,
       phase = phase,
       category = category ?: listOf(),

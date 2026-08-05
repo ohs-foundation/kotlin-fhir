@@ -214,7 +214,12 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       type = type,
       preference =
         Enumeration.of(
-          SpecimenDefinition.SpecimenContainedPreference.fromCode(preference!!),
+          SpecimenDefinition.SpecimenContainedPreference.fromCode(
+            preference
+              ?: throw SerializationException(
+                "Missing required property 'preference' on SpecimenDefinition.TypeTested"
+              )
+          ),
           _preference,
         ),
       container = container,
@@ -575,7 +580,10 @@ internal object SpecimenDefinitionTypeTestedContainerAdditiveSerializer :
         SpecimenDefinition.TypeTested.Container.Additive.Additive.from(
           additiveCodeableConcept,
           additiveReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'additive' on SpecimenDefinition.TypeTested.Container.Additive"
+          ),
     )
   }
 
@@ -1172,7 +1180,16 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
           index ->
           Uri.of(derivedFromUri?.getOrNull(index)?.let { it }, _derivedFromUri?.getOrNull(index))!!
         }),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on SpecimenDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       subject = SpecimenDefinition.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),

@@ -158,7 +158,11 @@ internal object GroupCharacteristicSerializer : KSerializer<Group.Characteristic
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on Group.Characteristic"
+          ),
       `value` =
         Group.Characteristic.Value.from(
           valueCodeableConcept,
@@ -166,8 +170,15 @@ internal object GroupCharacteristicSerializer : KSerializer<Group.Characteristic
           valueQuantity,
           valueRange,
           valueReference,
-        )!!,
-      exclude = R4Boolean.of(exclude, _exclude)!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on Group.Characteristic"
+          ),
+      exclude =
+        R4Boolean.of(exclude, _exclude)
+          ?: throw SerializationException(
+            "Missing required property 'exclude' on Group.Characteristic"
+          ),
       period = period,
     )
   }
@@ -295,7 +306,9 @@ internal object GroupMemberSerializer : KSerializer<Group.Member> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      entity = entity!!,
+      entity =
+        entity
+          ?: throw SerializationException("Missing required property 'entity' on Group.Member"),
       period = period,
       inactive = R4Boolean.of(inactive, _inactive),
     )
@@ -516,8 +529,16 @@ internal object GroupSerializer : KSerializer<Group> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       active = R4Boolean.of(active, _active),
-      type = Enumeration.of(Group.GroupType.fromCode(type!!), _type),
-      `actual` = R4Boolean.of(`actual`, _actual)!!,
+      type =
+        Enumeration.of(
+          Group.GroupType.fromCode(
+            type ?: throw SerializationException("Missing required property 'type' on Group")
+          ),
+          _type,
+        ),
+      `actual` =
+        R4Boolean.of(`actual`, _actual)
+          ?: throw SerializationException("Missing required property 'actual' on Group"),
       code = code,
       name = R4String.of(name, _name),
       quantity = UnsignedInt.of(quantity, _quantity),

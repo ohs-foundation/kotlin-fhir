@@ -135,7 +135,9 @@ internal object BinarySerializer : KSerializer<Binary> {
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
-      contentType = Code.of(contentType, _contentType)!!,
+      contentType =
+        Code.of(contentType, _contentType)
+          ?: throw SerializationException("Missing required property 'contentType' on Binary"),
       securityContext = securityContext,
       `data` = Base64Binary.of(`data`, _data),
     )

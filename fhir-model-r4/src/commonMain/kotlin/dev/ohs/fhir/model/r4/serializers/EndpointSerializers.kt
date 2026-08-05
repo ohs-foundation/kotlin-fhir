@@ -285,8 +285,16 @@ internal object EndpointSerializer : KSerializer<Endpoint> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Endpoint.EndpointStatus.fromCode(status!!), _status),
-      connectionType = connectionType!!,
+      status =
+        Enumeration.of(
+          Endpoint.EndpointStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Endpoint")
+          ),
+          _status,
+        ),
+      connectionType =
+        connectionType
+          ?: throw SerializationException("Missing required property 'connectionType' on Endpoint"),
       name = R4String.of(name, _name),
       managingOrganization = managingOrganization,
       contact = contact ?: listOf(),
@@ -300,7 +308,9 @@ internal object EndpointSerializer : KSerializer<Endpoint> {
             _payloadMimeType?.getOrNull(index),
           )!!
         }),
-      address = Url.of(address, _address)!!,
+      address =
+        Url.of(address, _address)
+          ?: throw SerializationException("Missing required property 'address' on Endpoint"),
       `header` =
         (kotlin.collections.List(maxOf(`header`?.size ?: 0, _header?.size ?: 0)) { index ->
           R4String.of(`header`?.getOrNull(index)?.let { it }, _header?.getOrNull(index))!!

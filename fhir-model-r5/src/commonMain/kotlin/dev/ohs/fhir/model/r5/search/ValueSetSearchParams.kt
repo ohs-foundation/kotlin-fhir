@@ -431,7 +431,7 @@ public object ValueSetSearchParams {
         ),
       extractor = { resource ->
         resource.relatedArtifact
-          .filter { it.type?.value?.toString() == "derived-from" }
+          .filter { it.type.value?.toString() == "derived-from" }
           .mapNotNull { it.resource }
       },
     )
@@ -652,7 +652,7 @@ public object ValueSetSearchParams {
         ),
       extractor = { resource ->
         resource.relatedArtifact
-          .filter { it.type?.value?.toString() == "predecessor" }
+          .filter { it.type.value?.toString() == "predecessor" }
           .mapNotNull { it.resource }
       },
     )

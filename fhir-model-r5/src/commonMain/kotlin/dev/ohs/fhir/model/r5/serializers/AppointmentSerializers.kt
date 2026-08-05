@@ -153,7 +153,16 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
       period = period,
       actor = actor,
       required = R5Boolean.of(required, _required),
-      status = Enumeration.of(Appointment.ParticipationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Appointment.ParticipationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on Appointment.Participant"
+              )
+          ),
+          _status,
+        ),
     )
   }
 
@@ -412,7 +421,11 @@ internal object AppointmentRecurrenceTemplateSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       timezone = timezone,
-      recurrenceType = recurrenceType!!,
+      recurrenceType =
+        recurrenceType
+          ?: throw SerializationException(
+            "Missing required property 'recurrenceType' on Appointment.RecurrenceTemplate"
+          ),
       lastOccurrenceDate = Date.of(FhirDate.fromString(lastOccurrenceDate), _lastOccurrenceDate),
       occurrenceCount = PositiveInt.of(occurrenceCount, _occurrenceCount),
       occurrenceDate =
@@ -814,7 +827,11 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
       dayOfMonth = PositiveInt.of(dayOfMonth, _dayOfMonth),
       nthWeekOfMonth = nthWeekOfMonth,
       dayOfWeek = dayOfWeek,
-      monthInterval = PositiveInt.of(monthInterval, _monthInterval)!!,
+      monthInterval =
+        PositiveInt.of(monthInterval, _monthInterval)
+          ?: throw SerializationException(
+            "Missing required property 'monthInterval' on Appointment.RecurrenceTemplate.MonthlyTemplate"
+          ),
     )
   }
 
@@ -919,7 +936,11 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      yearInterval = PositiveInt.of(yearInterval, _yearInterval)!!,
+      yearInterval =
+        PositiveInt.of(yearInterval, _yearInterval)
+          ?: throw SerializationException(
+            "Missing required property 'yearInterval' on Appointment.RecurrenceTemplate.YearlyTemplate"
+          ),
     )
   }
 
@@ -1317,7 +1338,14 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Appointment.AppointmentStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Appointment.AppointmentStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Appointment")
+          ),
+          _status,
+        ),
       cancellationReason = cancellationReason,
       `class` = `class` ?: listOf(),
       serviceCategory = serviceCategory ?: listOf(),

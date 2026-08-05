@@ -434,8 +434,21 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier!!,
-      code = Enumeration.of(MessageHeader.ResponseType.fromCode(code!!), _code),
+      identifier =
+        identifier
+          ?: throw SerializationException(
+            "Missing required property 'identifier' on MessageHeader.Response"
+          ),
+      code =
+        Enumeration.of(
+          MessageHeader.ResponseType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on MessageHeader.Response"
+              )
+          ),
+          _code,
+        ),
       details = details,
     )
   }
@@ -640,11 +653,14 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       event =
-        MessageHeader.Event.from(eventCoding, Canonical.of(eventCanonical, _eventCanonical))!!,
+        MessageHeader.Event.from(eventCoding, Canonical.of(eventCanonical, _eventCanonical))
+          ?: throw SerializationException("Missing required property 'event' on MessageHeader"),
       destination = destination ?: listOf(),
       sender = sender,
       author = author,
-      source = source!!,
+      source =
+        source
+          ?: throw SerializationException("Missing required property 'source' on MessageHeader"),
       responsible = responsible,
       reason = reason,
       response = response,

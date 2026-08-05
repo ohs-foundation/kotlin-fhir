@@ -136,7 +136,16 @@ internal object ActivityDefinitionParticipantSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(ActivityDefinition.ActionParticipantType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          ActivityDefinition.ActionParticipantType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ActivityDefinition.Participant"
+              )
+          ),
+          _type,
+        ),
       role = role,
     )
   }
@@ -234,8 +243,16 @@ internal object ActivityDefinitionDynamicValueSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      path = R4bString.of(path, _path)!!,
-      expression = expression!!,
+      path =
+        R4bString.of(path, _path)
+          ?: throw SerializationException(
+            "Missing required property 'path' on ActivityDefinition.DynamicValue"
+          ),
+      expression =
+        expression
+          ?: throw SerializationException(
+            "Missing required property 'expression' on ActivityDefinition.DynamicValue"
+          ),
     )
   }
 
@@ -854,7 +871,16 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
       name = R4bString.of(name, _name),
       title = R4bString.of(title, _title),
       subtitle = R4bString.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ActivityDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       subject =
         ActivityDefinition.Subject.from(

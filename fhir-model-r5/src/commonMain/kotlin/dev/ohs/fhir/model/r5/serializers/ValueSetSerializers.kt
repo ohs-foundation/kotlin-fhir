@@ -492,7 +492,11 @@ internal object ValueSetComposeIncludeConceptSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ValueSet.Compose.Include.Concept"
+          ),
       display = R5String.of(display, _display),
       designation = designation ?: listOf(),
     )
@@ -622,7 +626,11 @@ internal object ValueSetComposeIncludeConceptDesignationSerializer :
       language = Code.of(language, _language),
       use = use,
       additionalUse = additionalUse ?: listOf(),
-      `value` = R5String.of(`value`, _value)!!,
+      `value` =
+        R5String.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on ValueSet.Compose.Include.Concept.Designation"
+          ),
     )
   }
 
@@ -744,9 +752,26 @@ internal object ValueSetComposeIncludeFilterSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      `property` = Code.of(`property`, _property)!!,
-      op = Enumeration.of(ValueSet.FilterOperator.fromCode(op!!), _op),
-      `value` = R5String.of(`value`, _value)!!,
+      `property` =
+        Code.of(`property`, _property)
+          ?: throw SerializationException(
+            "Missing required property 'property' on ValueSet.Compose.Include.Filter"
+          ),
+      op =
+        Enumeration.of(
+          ValueSet.FilterOperator.fromCode(
+            op
+              ?: throw SerializationException(
+                "Missing required property 'op' on ValueSet.Compose.Include.Filter"
+              )
+          ),
+          _op,
+        ),
+      `value` =
+        R5String.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on ValueSet.Compose.Include.Filter"
+          ),
     )
   }
 
@@ -911,7 +936,11 @@ internal object ValueSetExpansionSerializer : KSerializer<ValueSet.Expansion> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = Uri.of(identifier, _identifier),
       next = Uri.of(next, _next),
-      timestamp = DateTime.of(FhirDateTime.fromString(timestamp), _timestamp)!!,
+      timestamp =
+        DateTime.of(FhirDateTime.fromString(timestamp), _timestamp)
+          ?: throw SerializationException(
+            "Missing required property 'timestamp' on ValueSet.Expansion"
+          ),
       total = Integer.of(total, _total),
       offset = Integer.of(offset, _offset),
       parameter = parameter ?: listOf(),
@@ -1099,7 +1128,11 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R5String.of(name, _name)!!,
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on ValueSet.Expansion.Parameter"
+          ),
       `value` =
         ValueSet.Expansion.Parameter.Value.from(
           R5String.of(valueString, _valueString),
@@ -1247,7 +1280,11 @@ internal object ValueSetExpansionPropertySerializer : KSerializer<ValueSet.Expan
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ValueSet.Expansion.Property"
+          ),
       uri = Uri.of(uri, _uri),
     )
   }
@@ -1617,7 +1654,11 @@ internal object ValueSetExpansionContainsPropertySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ValueSet.Expansion.Contains.Property"
+          ),
       `value` =
         ValueSet.Expansion.Contains.Property.Value.from(
           Code.of(valueCode, _valueCode),
@@ -1627,7 +1668,10 @@ internal object ValueSetExpansionContainsPropertySerializer :
           R5Boolean.of(valueBoolean, _valueBoolean),
           DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
           Decimal.of(valueDecimal, _valueDecimal),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on ValueSet.Expansion.Contains.Property"
+          ),
       subProperty = subProperty ?: listOf(),
     )
   }
@@ -1830,7 +1874,11 @@ internal object ValueSetExpansionContainsPropertySubPropertySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ValueSet.Expansion.Contains.Property.SubProperty"
+          ),
       `value` =
         ValueSet.Expansion.Contains.Property.SubProperty.Value.from(
           Code.of(valueCode, _valueCode),
@@ -1840,7 +1888,10 @@ internal object ValueSetExpansionContainsPropertySubPropertySerializer :
           R5Boolean.of(valueBoolean, _valueBoolean),
           DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
           Decimal.of(valueDecimal, _valueDecimal),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on ValueSet.Expansion.Contains.Property.SubProperty"
+          ),
     )
   }
 
@@ -2400,7 +2451,13 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on ValueSet")
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

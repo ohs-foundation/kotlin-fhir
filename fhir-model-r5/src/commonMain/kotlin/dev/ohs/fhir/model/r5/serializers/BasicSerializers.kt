@@ -183,7 +183,7 @@ internal object BasicSerializer : KSerializer<Basic> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      code = code!!,
+      code = code ?: throw SerializationException("Missing required property 'code' on Basic"),
       subject = subject,
       created = DateTime.of(FhirDateTime.fromString(created), _created),
       author = author,

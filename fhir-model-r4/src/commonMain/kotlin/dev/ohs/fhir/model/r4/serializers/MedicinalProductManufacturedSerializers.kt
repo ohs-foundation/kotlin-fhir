@@ -225,9 +225,17 @@ internal object MedicinalProductManufacturedSerializer : KSerializer<MedicinalPr
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      manufacturedDoseForm = manufacturedDoseForm!!,
+      manufacturedDoseForm =
+        manufacturedDoseForm
+          ?: throw SerializationException(
+            "Missing required property 'manufacturedDoseForm' on MedicinalProductManufactured"
+          ),
       unitOfPresentation = unitOfPresentation,
-      quantity = quantity!!,
+      quantity =
+        quantity
+          ?: throw SerializationException(
+            "Missing required property 'quantity' on MedicinalProductManufactured"
+          ),
       manufacturer = manufacturer ?: listOf(),
       ingredient = ingredient ?: listOf(),
       physicalCharacteristics = physicalCharacteristics,

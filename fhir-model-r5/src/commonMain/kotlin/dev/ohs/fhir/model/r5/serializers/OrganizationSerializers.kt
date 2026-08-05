@@ -130,7 +130,11 @@ internal object OrganizationQualificationSerializer : KSerializer<Organization.Q
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on Organization.Qualification"
+          ),
       period = period,
       issuer = issuer,
     )

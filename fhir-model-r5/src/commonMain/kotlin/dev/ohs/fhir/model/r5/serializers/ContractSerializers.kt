@@ -178,13 +178,22 @@ internal object ContractContentDefinitionSerializer : KSerializer<Contract.Conte
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on Contract.ContentDefinition"
+          ),
       subType = subType,
       publisher = publisher,
       publicationDate = DateTime.of(FhirDateTime.fromString(publicationDate), _publicationDate),
       publicationStatus =
         Enumeration.of(
-          Contract.ContractResourcePublicationStatusCodes.fromCode(publicationStatus!!),
+          Contract.ContractResourcePublicationStatusCodes.fromCode(
+            publicationStatus
+              ?: throw SerializationException(
+                "Missing required property 'publicationStatus' on Contract.ContentDefinition"
+              )
+          ),
           _publicationStatus,
         ),
       copyright = Markdown.of(copyright, _copyright),
@@ -403,7 +412,8 @@ internal object ContractTermSerializer : KSerializer<Contract.Term> {
       subType = subType,
       text = R5String.of(text, _text),
       securityLabel = securityLabel ?: listOf(),
-      offer = offer!!,
+      offer =
+        offer ?: throw SerializationException("Missing required property 'offer' on Contract.Term"),
       asset = asset ?: listOf(),
       action = action ?: listOf(),
       group = group ?: listOf(),
@@ -592,7 +602,11 @@ internal object ContractTermSecurityLabelSerializer : KSerializer<Contract.Term.
         (kotlin.collections.List(maxOf(number?.size ?: 0, _number?.size ?: 0)) { index ->
           UnsignedInt.of(number?.getOrNull(index)?.let { it }, _number?.getOrNull(index))!!
         }),
-      classification = classification!!,
+      classification =
+        classification
+          ?: throw SerializationException(
+            "Missing required property 'classification' on Contract.Term.SecurityLabel"
+          ),
       category = category ?: listOf(),
       control = control ?: listOf(),
     )
@@ -955,7 +969,11 @@ internal object ContractTermOfferPartySerializer : KSerializer<Contract.Term.Off
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       reference = reference ?: listOf(),
-      role = role!!,
+      role =
+        role
+          ?: throw SerializationException(
+            "Missing required property 'role' on Contract.Term.Offer.Party"
+          ),
     )
   }
 
@@ -1150,7 +1168,10 @@ internal object ContractTermOfferAnswerSerializer : KSerializer<Contract.Term.Of
           valueCoding,
           valueQuantity,
           valueReference,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on Contract.Term.Offer.Answer"
+          ),
     )
   }
 
@@ -2281,14 +2302,26 @@ internal object ContractTermActionSerializer : KSerializer<Contract.Term.Action>
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on Contract.Term.Action"
+          ),
       subject = subject ?: listOf(),
-      intent = intent!!,
+      intent =
+        intent
+          ?: throw SerializationException(
+            "Missing required property 'intent' on Contract.Term.Action"
+          ),
       linkId =
         (kotlin.collections.List(maxOf(linkId?.size ?: 0, _linkId?.size ?: 0)) { index ->
           R5String.of(linkId?.getOrNull(index)?.let { it }, _linkId?.getOrNull(index))!!
         }),
-      status = status!!,
+      status =
+        status
+          ?: throw SerializationException(
+            "Missing required property 'status' on Contract.Term.Action"
+          ),
       context = context,
       contextLinkId =
         (kotlin.collections.List(maxOf(contextLinkId?.size ?: 0, _contextLinkId?.size ?: 0)) { index
@@ -2649,8 +2682,11 @@ internal object ContractSignerSerializer : KSerializer<Contract.Signer> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
-      party = party!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Contract.Signer"),
+      party =
+        party
+          ?: throw SerializationException("Missing required property 'party' on Contract.Signer"),
       signature = signature ?: listOf(),
     )
   }
@@ -2757,7 +2793,11 @@ internal object ContractFriendlySerializer : KSerializer<Contract.Friendly> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      content = Contract.Friendly.Content.from(contentAttachment, contentReference)!!,
+      content =
+        Contract.Friendly.Content.from(contentAttachment, contentReference)
+          ?: throw SerializationException(
+            "Missing required property 'content' on Contract.Friendly"
+          ),
     )
   }
 
@@ -2862,7 +2902,9 @@ internal object ContractLegalSerializer : KSerializer<Contract.Legal> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      content = Contract.Legal.Content.from(contentAttachment, contentReference)!!,
+      content =
+        Contract.Legal.Content.from(contentAttachment, contentReference)
+          ?: throw SerializationException("Missing required property 'content' on Contract.Legal"),
     )
   }
 
@@ -2967,7 +3009,9 @@ internal object ContractRuleSerializer : KSerializer<Contract.Rule> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      content = Contract.Rule.Content.from(contentAttachment, contentReference)!!,
+      content =
+        Contract.Rule.Content.from(contentAttachment, contentReference)
+          ?: throw SerializationException("Missing required property 'content' on Contract.Rule"),
     )
   }
 

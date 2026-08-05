@@ -145,7 +145,16 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
       actor = actor,
       required =
         required?.let { Enumeration.of(Appointment.ParticipantRequired.fromCode(it), _required) },
-      status = Enumeration.of(Appointment.ParticipationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Appointment.ParticipationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on Appointment.Participant"
+              )
+          ),
+          _status,
+        ),
       period = period,
     )
   }
@@ -518,7 +527,14 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(Appointment.AppointmentStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Appointment.AppointmentStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Appointment")
+          ),
+          _status,
+        ),
       cancelationReason = cancelationReason,
       serviceCategory = serviceCategory ?: listOf(),
       serviceType = serviceType ?: listOf(),

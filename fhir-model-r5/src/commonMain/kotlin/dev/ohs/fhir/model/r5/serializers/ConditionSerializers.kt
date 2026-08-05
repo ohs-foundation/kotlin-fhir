@@ -120,7 +120,11 @@ internal object ConditionParticipantSerializer : KSerializer<Condition.Participa
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on Condition.Participant"
+          ),
     )
   }
 
@@ -532,13 +536,18 @@ internal object ConditionSerializer : KSerializer<Condition> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      clinicalStatus = clinicalStatus!!,
+      clinicalStatus =
+        clinicalStatus
+          ?: throw SerializationException(
+            "Missing required property 'clinicalStatus' on Condition"
+          ),
       verificationStatus = verificationStatus,
       category = category ?: listOf(),
       severity = severity,
       code = code,
       bodySite = bodySite ?: listOf(),
-      subject = subject!!,
+      subject =
+        subject ?: throw SerializationException("Missing required property 'subject' on Condition"),
       encounter = encounter,
       onset =
         Condition.Onset.from(

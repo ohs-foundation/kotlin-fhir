@@ -305,7 +305,13 @@ internal object MediaSerializer : KSerializer<Media> {
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
-      status = Enumeration.of(Media.EventStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          Media.EventStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Media")
+          ),
+          _status,
+        ),
       type = type,
       modality = modality,
       view = view,
@@ -326,7 +332,8 @@ internal object MediaSerializer : KSerializer<Media> {
       width = PositiveInt.of(width, _width),
       frames = PositiveInt.of(frames, _frames),
       duration = Decimal.of(duration, _duration),
-      content = content!!,
+      content =
+        content ?: throw SerializationException("Missing required property 'content' on Media"),
       note = note ?: listOf(),
     )
   }

@@ -275,7 +275,11 @@ internal object EffectEvidenceSynthesisResultsByExposureSerializer :
           Enumeration.of(EffectEvidenceSynthesis.ExposureState.fromCode(it), _exposureState)
         },
       variantState = variantState,
-      riskEvidenceSynthesis = riskEvidenceSynthesis!!,
+      riskEvidenceSynthesis =
+        riskEvidenceSynthesis
+          ?: throw SerializationException(
+            "Missing required property 'riskEvidenceSynthesis' on EffectEvidenceSynthesis.ResultsByExposure"
+          ),
     )
   }
 
@@ -1275,7 +1279,16 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
       version = R4String.of(version, _version),
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on EffectEvidenceSynthesis"
+              )
+          ),
+          _status,
+        ),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -1295,10 +1308,26 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
       relatedArtifact = relatedArtifact ?: listOf(),
       synthesisType = synthesisType,
       studyType = studyType,
-      population = population!!,
-      exposure = exposure!!,
-      exposureAlternative = exposureAlternative!!,
-      outcome = outcome!!,
+      population =
+        population
+          ?: throw SerializationException(
+            "Missing required property 'population' on EffectEvidenceSynthesis"
+          ),
+      exposure =
+        exposure
+          ?: throw SerializationException(
+            "Missing required property 'exposure' on EffectEvidenceSynthesis"
+          ),
+      exposureAlternative =
+        exposureAlternative
+          ?: throw SerializationException(
+            "Missing required property 'exposureAlternative' on EffectEvidenceSynthesis"
+          ),
+      outcome =
+        outcome
+          ?: throw SerializationException(
+            "Missing required property 'outcome' on EffectEvidenceSynthesis"
+          ),
       sampleSize = sampleSize,
       resultsByExposure = resultsByExposure ?: listOf(),
       effectEstimate = effectEstimate ?: listOf(),

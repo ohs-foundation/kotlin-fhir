@@ -133,7 +133,7 @@ internal object ListEntrySerializer : KSerializer<R5List.Entry> {
       flag = flag,
       deleted = R5Boolean.of(deleted, _deleted),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
-      item = item!!,
+      item = item ?: throw SerializationException("Missing required property 'item' on List.Entry"),
     )
   }
 
@@ -351,8 +351,20 @@ internal object ListSerializer : KSerializer<R5List> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(R5List.ListStatus.fromCode(status!!), _status),
-      mode = Enumeration.of(R5List.ListMode.fromCode(mode!!), _mode),
+      status =
+        Enumeration.of(
+          R5List.ListStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on List")
+          ),
+          _status,
+        ),
+      mode =
+        Enumeration.of(
+          R5List.ListMode.fromCode(
+            mode ?: throw SerializationException("Missing required property 'mode' on List")
+          ),
+          _mode,
+        ),
       title = R5String.of(title, _title),
       code = code,
       subject = subject ?: listOf(),

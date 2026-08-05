@@ -125,7 +125,11 @@ internal object ChargeItemPerformerSerializer : KSerializer<ChargeItem.Performer
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on ChargeItem.Performer"
+          ),
     )
   }
 
@@ -492,10 +496,19 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
             _definitionCanonical?.getOrNull(index),
           )!!
         }),
-      status = Enumeration.of(ChargeItem.ChargeItemStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          ChargeItem.ChargeItemStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on ChargeItem")
+          ),
+          _status,
+        ),
       partOf = partOf ?: listOf(),
-      code = code!!,
-      subject = subject!!,
+      code = code ?: throw SerializationException("Missing required property 'code' on ChargeItem"),
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on ChargeItem"),
       context = context,
       occurrence =
         ChargeItem.Occurrence.from(

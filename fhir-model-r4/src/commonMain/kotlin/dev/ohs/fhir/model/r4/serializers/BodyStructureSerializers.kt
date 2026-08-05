@@ -219,7 +219,9 @@ internal object BodyStructureSerializer : KSerializer<BodyStructure> {
       locationQualifier = locationQualifier ?: listOf(),
       description = R4String.of(description, _description),
       image = image ?: listOf(),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException("Missing required property 'patient' on BodyStructure"),
     )
   }
 

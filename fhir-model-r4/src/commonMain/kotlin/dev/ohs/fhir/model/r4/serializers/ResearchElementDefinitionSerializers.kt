@@ -396,7 +396,10 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
           Canonical.of(definitionCanonical, _definitionCanonical),
           definitionExpression,
           definitionDataRequirement,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'definition' on ResearchElementDefinition.Characteristic"
+          ),
       usageContext = usageContext ?: listOf(),
       exclude = R4Boolean.of(exclude, _exclude),
       unitOfMeasure = unitOfMeasure,
@@ -1039,7 +1042,16 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
       title = R4String.of(title, _title),
       shortTitle = R4String.of(shortTitle, _shortTitle),
       subtitle = R4String.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ResearchElementDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R4Boolean.of(experimental, _experimental),
       subject = ResearchElementDefinition.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
@@ -1068,7 +1080,16 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
         (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
           Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
-      type = Enumeration.of(ResearchElementDefinition.ResearchElementType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          ResearchElementDefinition.ResearchElementType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ResearchElementDefinition"
+              )
+          ),
+          _type,
+        ),
       variableType =
         variableType?.let {
           Enumeration.of(ResearchElementDefinition.EvidenceVariableType.fromCode(it), _variableType)

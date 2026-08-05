@@ -229,7 +229,8 @@ internal object ClaimPayeeSerializer : KSerializer<Claim.Payee> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Claim.Payee"),
       party = party,
     )
   }
@@ -325,12 +326,13 @@ internal object ClaimEventSerializer : KSerializer<Claim.Event> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Claim.Event"),
       `when` =
         Claim.Event.When.from(
           DateTime.of(FhirDateTime.fromString(whenDateTime), _whenDateTime),
           whenPeriod,
-        )!!,
+        ) ?: throw SerializationException("Missing required property 'when' on Claim.Event"),
     )
   }
 
@@ -450,8 +452,12 @@ internal object ClaimCareTeamSerializer : KSerializer<Claim.CareTeam> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
-      provider = provider!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException("Missing required property 'sequence' on Claim.CareTeam"),
+      provider =
+        provider
+          ?: throw SerializationException("Missing required property 'provider' on Claim.CareTeam"),
       responsible = R5Boolean.of(responsible, _responsible),
       role = role,
       specialty = specialty,
@@ -630,8 +636,16 @@ internal object ClaimSupportingInfoSerializer : KSerializer<Claim.SupportingInfo
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
-      category = category!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on Claim.SupportingInfo"
+          ),
+      category =
+        category
+          ?: throw SerializationException(
+            "Missing required property 'category' on Claim.SupportingInfo"
+          ),
       code = code,
       timing =
         Claim.SupportingInfo.Timing.from(
@@ -831,8 +845,16 @@ internal object ClaimDiagnosisSerializer : KSerializer<Claim.Diagnosis> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
-      diagnosis = Claim.Diagnosis.Diagnosis.from(diagnosisCodeableConcept, diagnosisReference)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on Claim.Diagnosis"
+          ),
+      diagnosis =
+        Claim.Diagnosis.Diagnosis.from(diagnosisCodeableConcept, diagnosisReference)
+          ?: throw SerializationException(
+            "Missing required property 'diagnosis' on Claim.Diagnosis"
+          ),
       type = type ?: listOf(),
       onAdmission = onAdmission,
     )
@@ -989,10 +1011,18 @@ internal object ClaimProcedureSerializer : KSerializer<Claim.Procedure> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on Claim.Procedure"
+          ),
       type = type ?: listOf(),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
-      procedure = Claim.Procedure.Procedure.from(procedureCodeableConcept, procedureReference)!!,
+      procedure =
+        Claim.Procedure.Procedure.from(procedureCodeableConcept, procedureReference)
+          ?: throw SerializationException(
+            "Missing required property 'procedure' on Claim.Procedure"
+          ),
       udi = udi ?: listOf(),
     )
   }
@@ -1158,10 +1188,20 @@ internal object ClaimInsuranceSerializer : KSerializer<Claim.Insurance> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
-      focal = R5Boolean.of(focal, _focal)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on Claim.Insurance"
+          ),
+      focal =
+        R5Boolean.of(focal, _focal)
+          ?: throw SerializationException("Missing required property 'focal' on Claim.Insurance"),
       identifier = identifier,
-      coverage = coverage!!,
+      coverage =
+        coverage
+          ?: throw SerializationException(
+            "Missing required property 'coverage' on Claim.Insurance"
+          ),
       businessArrangement = R5String.of(businessArrangement, _businessArrangement),
       preAuthRef =
         (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { index ->
@@ -1308,7 +1348,9 @@ internal object ClaimAccidentSerializer : KSerializer<Claim.Accident> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      date = Date.of(FhirDate.fromString(date), _date)!!,
+      date =
+        Date.of(FhirDate.fromString(date), _date)
+          ?: throw SerializationException("Missing required property 'date' on Claim.Accident"),
       type = type,
       location = Claim.Accident.Location.from(locationAddress, locationReference),
     )
@@ -1680,7 +1722,9 @@ internal object ClaimItemSerializer : KSerializer<Claim.Item> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException("Missing required property 'sequence' on Claim.Item"),
       traceNumber = traceNumber ?: listOf(),
       careTeamSequence =
         (kotlin.collections.List(
@@ -2163,7 +2207,11 @@ internal object ClaimItemDetailSerializer : KSerializer<Claim.Item.Detail> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on Claim.Item.Detail"
+          ),
       traceNumber = traceNumber ?: listOf(),
       revenue = revenue,
       category = category,
@@ -2416,7 +2464,11 @@ internal object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Deta
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on Claim.Item.Detail.SubDetail"
+          ),
       traceNumber = traceNumber ?: listOf(),
       revenue = revenue,
       category = category,
@@ -2836,13 +2888,28 @@ internal object ClaimSerializer : KSerializer<Claim> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       traceNumber = traceNumber ?: listOf(),
-      status = Enumeration.of(Claim.FinancialResourceStatusCodes.fromCode(status!!), _status),
-      type = type!!,
+      status =
+        Enumeration.of(
+          Claim.FinancialResourceStatusCodes.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Claim")
+          ),
+          _status,
+        ),
+      type = type ?: throw SerializationException("Missing required property 'type' on Claim"),
       subType = subType,
-      use = Enumeration.of(Claim.Use.fromCode(use!!), _use),
-      patient = patient!!,
+      use =
+        Enumeration.of(
+          Claim.Use.fromCode(
+            use ?: throw SerializationException("Missing required property 'use' on Claim")
+          ),
+          _use,
+        ),
+      patient =
+        patient ?: throw SerializationException("Missing required property 'patient' on Claim"),
       billablePeriod = billablePeriod,
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException("Missing required property 'created' on Claim"),
       enterer = enterer,
       insurer = insurer,
       provider = provider,

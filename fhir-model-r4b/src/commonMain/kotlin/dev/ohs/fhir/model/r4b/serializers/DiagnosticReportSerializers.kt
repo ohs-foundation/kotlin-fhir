@@ -121,7 +121,11 @@ internal object DiagnosticReportMediaSerializer : KSerializer<DiagnosticReport.M
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       comment = R4bString.of(comment, _comment),
-      link = link!!,
+      link =
+        link
+          ?: throw SerializationException(
+            "Missing required property 'link' on DiagnosticReport.Media"
+          ),
     )
   }
 
@@ -400,9 +404,20 @@ internal object DiagnosticReportSerializer : KSerializer<DiagnosticReport> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
-      status = Enumeration.of(DiagnosticReport.DiagnosticReportStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          DiagnosticReport.DiagnosticReportStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on DiagnosticReport"
+              )
+          ),
+          _status,
+        ),
       category = category ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException("Missing required property 'code' on DiagnosticReport"),
       subject = subject,
       encounter = encounter,
       effective =

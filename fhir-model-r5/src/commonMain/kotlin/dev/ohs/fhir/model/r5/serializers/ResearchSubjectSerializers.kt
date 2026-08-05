@@ -345,11 +345,24 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on ResearchSubject"
+              )
+          ),
+          _status,
+        ),
       progress = progress ?: listOf(),
       period = period,
-      study = study!!,
-      subject = subject!!,
+      study =
+        study
+          ?: throw SerializationException("Missing required property 'study' on ResearchSubject"),
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on ResearchSubject"),
       assignedComparisonGroup = Id.of(assignedComparisonGroup, _assignedComparisonGroup),
       actualComparisonGroup = Id.of(actualComparisonGroup, _actualComparisonGroup),
       consent = consent ?: listOf(),

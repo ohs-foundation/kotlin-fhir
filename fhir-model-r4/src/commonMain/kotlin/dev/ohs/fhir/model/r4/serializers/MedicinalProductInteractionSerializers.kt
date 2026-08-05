@@ -121,7 +121,10 @@ internal object MedicinalProductInteractionInteractantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       item =
-        MedicinalProductInteraction.Interactant.Item.from(itemReference, itemCodeableConcept)!!,
+        MedicinalProductInteraction.Interactant.Item.from(itemReference, itemCodeableConcept)
+          ?: throw SerializationException(
+            "Missing required property 'item' on MedicinalProductInteraction.Interactant"
+          ),
     )
   }
 

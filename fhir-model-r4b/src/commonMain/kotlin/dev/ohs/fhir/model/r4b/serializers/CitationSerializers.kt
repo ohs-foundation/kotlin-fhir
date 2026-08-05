@@ -132,7 +132,9 @@ internal object CitationSummarySerializer : KSerializer<Citation.Summary> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       style = style,
-      text = Markdown.of(text, _text)!!,
+      text =
+        Markdown.of(text, _text)
+          ?: throw SerializationException("Missing required property 'text' on Citation.Summary"),
     )
   }
 
@@ -324,9 +326,17 @@ internal object CitationStatusDateSerializer : KSerializer<Citation.StatusDate> 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      activity = activity!!,
+      activity =
+        activity
+          ?: throw SerializationException(
+            "Missing required property 'activity' on Citation.StatusDate"
+          ),
       `actual` = R4bBoolean.of(`actual`, _actual),
-      period = period!!,
+      period =
+        period
+          ?: throw SerializationException(
+            "Missing required property 'period' on Citation.StatusDate"
+          ),
     )
   }
 
@@ -473,7 +483,11 @@ internal object CitationRelatesToSerializer : KSerializer<Citation.RelatesTo> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      relationshipType = relationshipType!!,
+      relationshipType =
+        relationshipType
+          ?: throw SerializationException(
+            "Missing required property 'relationshipType' on Citation.RelatesTo"
+          ),
       targetClassifier = targetClassifier ?: listOf(),
       target =
         Citation.RelatesTo.Target.from(
@@ -481,7 +495,10 @@ internal object CitationRelatesToSerializer : KSerializer<Citation.RelatesTo> {
           targetIdentifier,
           targetReference,
           targetAttachment,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'target' on Citation.RelatesTo"
+          ),
     )
   }
 
@@ -968,7 +985,11 @@ internal object CitationCitedArtifactVersionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      `value` = R4bString.of(`value`, _value)!!,
+      `value` =
+        R4bString.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on Citation.CitedArtifact.Version"
+          ),
       baseCitation = baseCitation,
     )
   }
@@ -1074,9 +1095,17 @@ internal object CitationCitedArtifactStatusDateSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      activity = activity!!,
+      activity =
+        activity
+          ?: throw SerializationException(
+            "Missing required property 'activity' on Citation.CitedArtifact.StatusDate"
+          ),
       `actual` = R4bBoolean.of(`actual`, _actual),
-      period = period!!,
+      period =
+        period
+          ?: throw SerializationException(
+            "Missing required property 'period' on Citation.CitedArtifact.StatusDate"
+          ),
     )
   }
 
@@ -1184,7 +1213,11 @@ internal object CitationCitedArtifactTitleSerializer : KSerializer<Citation.Cite
       modifierExtension = modifierExtension ?: listOf(),
       type = type ?: listOf(),
       language = language,
-      text = Markdown.of(text, _text)!!,
+      text =
+        Markdown.of(text, _text)
+          ?: throw SerializationException(
+            "Missing required property 'text' on Citation.CitedArtifact.Title"
+          ),
     )
   }
 
@@ -1296,7 +1329,11 @@ internal object CitationCitedArtifactAbstractSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
       language = language,
-      text = Markdown.of(text, _text)!!,
+      text =
+        Markdown.of(text, _text)
+          ?: throw SerializationException(
+            "Missing required property 'text' on Citation.CitedArtifact.Abstract"
+          ),
       copyright = Markdown.of(copyright, _copyright),
     )
   }
@@ -1554,7 +1591,11 @@ internal object CitationCitedArtifactRelatesToSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      relationshipType = relationshipType!!,
+      relationshipType =
+        relationshipType
+          ?: throw SerializationException(
+            "Missing required property 'relationshipType' on Citation.CitedArtifact.RelatesTo"
+          ),
       targetClassifier = targetClassifier ?: listOf(),
       target =
         Citation.CitedArtifact.RelatesTo.Target.from(
@@ -1562,7 +1603,10 @@ internal object CitationCitedArtifactRelatesToSerializer :
           targetIdentifier,
           targetReference,
           targetAttachment,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'target' on Citation.CitedArtifact.RelatesTo"
+          ),
     )
   }
 
@@ -3302,7 +3346,11 @@ internal object CitationCitedArtifactContributorshipEntryContributionInstanceSer
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on Citation.CitedArtifact.Contributorship.Entry.ContributionInstance"
+          ),
       time = DateTime.of(FhirDateTime.fromString(time), _time),
     )
   }
@@ -3414,7 +3462,11 @@ internal object CitationCitedArtifactContributorshipSummarySerializer :
       type = type,
       style = style,
       source = source,
-      `value` = Markdown.of(`value`, _value)!!,
+      `value` =
+        Markdown.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on Citation.CitedArtifact.Contributorship.Summary"
+          ),
     )
   }
 
@@ -3802,7 +3854,13 @@ internal object CitationSerializer : KSerializer<Citation> {
       version = R4bString.of(version, _version),
       name = R4bString.of(name, _name),
       title = R4bString.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Citation")
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),

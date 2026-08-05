@@ -300,12 +300,27 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(MedicationStatement.MedicationStatusCodes.fromCode(status!!), _status),
+        Enumeration.of(
+          MedicationStatement.MedicationStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on MedicationStatement"
+              )
+          ),
+          _status,
+        ),
       statusReason = statusReason ?: listOf(),
       category = category,
       medication =
-        MedicationStatement.Medication.from(medicationCodeableConcept, medicationReference)!!,
-      subject = subject!!,
+        MedicationStatement.Medication.from(medicationCodeableConcept, medicationReference)
+          ?: throw SerializationException(
+            "Missing required property 'medication' on MedicationStatement"
+          ),
+      subject =
+        subject
+          ?: throw SerializationException(
+            "Missing required property 'subject' on MedicationStatement"
+          ),
       context = context,
       effective =
         MedicationStatement.Effective.from(

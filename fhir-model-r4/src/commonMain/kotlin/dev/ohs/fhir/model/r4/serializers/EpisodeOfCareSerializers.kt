@@ -117,8 +117,21 @@ internal object EpisodeOfCareStatusHistorySerializer : KSerializer<EpisodeOfCare
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      status = Enumeration.of(EpisodeOfCare.EpisodeOfCareStatus.fromCode(status!!), _status),
-      period = period!!,
+      status =
+        Enumeration.of(
+          EpisodeOfCare.EpisodeOfCareStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on EpisodeOfCare.StatusHistory"
+              )
+          ),
+          _status,
+        ),
+      period =
+        period
+          ?: throw SerializationException(
+            "Missing required property 'period' on EpisodeOfCare.StatusHistory"
+          ),
     )
   }
 
@@ -214,7 +227,11 @@ internal object EpisodeOfCareDiagnosisSerializer : KSerializer<EpisodeOfCare.Dia
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      condition = condition!!,
+      condition =
+        condition
+          ?: throw SerializationException(
+            "Missing required property 'condition' on EpisodeOfCare.Diagnosis"
+          ),
       role = role,
       rank = PositiveInt.of(rank, _rank),
     )
@@ -445,11 +462,20 @@ internal object EpisodeOfCareSerializer : KSerializer<EpisodeOfCare> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(EpisodeOfCare.EpisodeOfCareStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          EpisodeOfCare.EpisodeOfCareStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on EpisodeOfCare")
+          ),
+          _status,
+        ),
       statusHistory = statusHistory ?: listOf(),
       type = type ?: listOf(),
       diagnosis = diagnosis ?: listOf(),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException("Missing required property 'patient' on EpisodeOfCare"),
       managingOrganization = managingOrganization,
       period = period,
       referralRequest = referralRequest ?: listOf(),

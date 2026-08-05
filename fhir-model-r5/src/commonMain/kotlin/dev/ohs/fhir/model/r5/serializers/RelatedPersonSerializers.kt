@@ -126,7 +126,11 @@ internal object RelatedPersonCommunicationSerializer : KSerializer<RelatedPerson
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      language = language!!,
+      language =
+        language
+          ?: throw SerializationException(
+            "Missing required property 'language' on RelatedPerson.Communication"
+          ),
       preferred = R5Boolean.of(preferred, _preferred),
     )
   }
@@ -340,7 +344,9 @@ internal object RelatedPersonSerializer : KSerializer<RelatedPerson> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       active = R5Boolean.of(active, _active),
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException("Missing required property 'patient' on RelatedPerson"),
       relationship = relationship ?: listOf(),
       name = name ?: listOf(),
       telecom = telecom ?: listOf(),

@@ -464,9 +464,7 @@ public object ConditionSearchParams {
       expression = "Condition.subject.where(resolve() is Patient)",
       target = listOf(Patient::class, Group::class),
       extractor = { resource ->
-        listOf(resource.subject).filter {
-          it.reference?.value?.toString()?.contains("Patient/") == true
-        }
+        listOf(resource.subject).filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 

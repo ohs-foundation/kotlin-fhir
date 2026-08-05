@@ -714,15 +714,28 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on PaymentReconciliation"
+          ),
       status =
         Enumeration.of(
-          PaymentReconciliation.FinancialResourceStatusCodes.fromCode(status!!),
+          PaymentReconciliation.FinancialResourceStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on PaymentReconciliation"
+              )
+          ),
           _status,
         ),
       kind = kind,
       period = period,
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException(
+            "Missing required property 'created' on PaymentReconciliation"
+          ),
       enterer = enterer,
       issuerType = issuerType,
       paymentIssuer = paymentIssuer,
@@ -733,7 +746,11 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
           Enumeration.of(PaymentReconciliation.PaymentOutcome.fromCode(it), _outcome)
         },
       disposition = R5String.of(disposition, _disposition),
-      date = Date.of(FhirDate.fromString(date), _date)!!,
+      date =
+        Date.of(FhirDate.fromString(date), _date)
+          ?: throw SerializationException(
+            "Missing required property 'date' on PaymentReconciliation"
+          ),
       location = location,
       method = method,
       cardBrand = R5String.of(cardBrand, _cardBrand),
@@ -744,7 +761,11 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       authorization = R5String.of(authorization, _authorization),
       tenderedAmount = tenderedAmount,
       returnedAmount = returnedAmount,
-      amount = amount!!,
+      amount =
+        amount
+          ?: throw SerializationException(
+            "Missing required property 'amount' on PaymentReconciliation"
+          ),
       paymentIdentifier = paymentIdentifier,
       allocation = allocation ?: listOf(),
       formCode = formCode,

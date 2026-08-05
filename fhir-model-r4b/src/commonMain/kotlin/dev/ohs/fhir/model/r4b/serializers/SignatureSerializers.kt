@@ -137,8 +137,10 @@ internal object SignatureSerializer : KSerializer<Signature> {
       id = id,
       extension = extension ?: listOf(),
       type = type ?: listOf(),
-      `when` = Instant.of(FhirDateTime.fromString(`when`), _when)!!,
-      who = who!!,
+      `when` =
+        Instant.of(FhirDateTime.fromString(`when`), _when)
+          ?: throw SerializationException("Missing required property 'when' on Signature"),
+      who = who ?: throw SerializationException("Missing required property 'who' on Signature"),
       onBehalfOf = onBehalfOf,
       targetFormat = Code.of(targetFormat, _targetFormat),
       sigFormat = Code.of(sigFormat, _sigFormat),

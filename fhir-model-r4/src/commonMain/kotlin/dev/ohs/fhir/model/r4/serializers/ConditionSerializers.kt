@@ -544,7 +544,8 @@ internal object ConditionSerializer : KSerializer<Condition> {
       severity = severity,
       code = code,
       bodySite = bodySite ?: listOf(),
-      subject = subject!!,
+      subject =
+        subject ?: throw SerializationException("Missing required property 'subject' on Condition"),
       encounter = encounter,
       onset =
         Condition.Onset.from(

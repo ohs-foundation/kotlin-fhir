@@ -248,7 +248,10 @@ internal object SubstanceIngredientSerializer : KSerializer<Substance.Ingredient
       modifierExtension = modifierExtension ?: listOf(),
       quantity = quantity,
       substance =
-        Substance.Ingredient.Substance.from(substanceCodeableConcept, substanceReference)!!,
+        Substance.Ingredient.Substance.from(substanceCodeableConcept, substanceReference)
+          ?: throw SerializationException(
+            "Missing required property 'substance' on Substance.Ingredient"
+          ),
     )
   }
 
@@ -457,7 +460,7 @@ internal object SubstanceSerializer : KSerializer<Substance> {
       identifier = identifier ?: listOf(),
       status = status?.let { Enumeration.of(Substance.FHIRSubstanceStatus.fromCode(it), _status) },
       category = category ?: listOf(),
-      code = code!!,
+      code = code ?: throw SerializationException("Missing required property 'code' on Substance"),
       description = R4String.of(description, _description),
       instance = instance ?: listOf(),
       ingredient = ingredient ?: listOf(),

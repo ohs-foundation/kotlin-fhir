@@ -132,7 +132,11 @@ internal object MedicationKnowledgeRelatedMedicationKnowledgeSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicationKnowledge.RelatedMedicationKnowledge"
+          ),
       reference = reference ?: listOf(),
     )
   }
@@ -336,7 +340,11 @@ internal object MedicationKnowledgeIngredientSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = MedicationKnowledge.Ingredient.Item.from(itemCodeableConcept, itemReference)!!,
+      item =
+        MedicationKnowledge.Ingredient.Item.from(itemCodeableConcept, itemReference)
+          ?: throw SerializationException(
+            "Missing required property 'item' on MedicationKnowledge.Ingredient"
+          ),
       isActive = R4Boolean.of(isActive, _isActive),
       strength = strength,
     )
@@ -456,9 +464,17 @@ internal object MedicationKnowledgeCostSerializer : KSerializer<MedicationKnowle
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicationKnowledge.Cost"
+          ),
       source = R4String.of(source, _source),
-      cost = cost!!,
+      cost =
+        cost
+          ?: throw SerializationException(
+            "Missing required property 'cost' on MedicationKnowledge.Cost"
+          ),
     )
   }
 
@@ -844,7 +860,11 @@ internal object MedicationKnowledgeAdministrationGuidelinesDosageSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicationKnowledge.AdministrationGuidelines.Dosage"
+          ),
       dosage = dosage ?: listOf(),
     )
   }
@@ -979,7 +999,10 @@ internal object MedicationKnowledgeAdministrationGuidelinesPatientCharacteristic
         MedicationKnowledge.AdministrationGuidelines.PatientCharacteristics.Characteristic.from(
           characteristicCodeableConcept,
           characteristicQuantity,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'characteristic' on MedicationKnowledge.AdministrationGuidelines.PatientCharacteristics"
+          ),
       `value` =
         (kotlin.collections.List(maxOf(`value`?.size ?: 0, _value?.size ?: 0)) { index ->
           R4String.of(`value`?.getOrNull(index)?.let { it }, _value?.getOrNull(index))!!
@@ -1119,7 +1142,11 @@ internal object MedicationKnowledgeMedicineClassificationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicationKnowledge.MedicineClassification"
+          ),
       classification = classification ?: listOf(),
     )
   }
@@ -1485,7 +1512,11 @@ internal object MedicationKnowledgeRegulatorySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      regulatoryAuthority = regulatoryAuthority!!,
+      regulatoryAuthority =
+        regulatoryAuthority
+          ?: throw SerializationException(
+            "Missing required property 'regulatoryAuthority' on MedicationKnowledge.Regulatory"
+          ),
       substitution = substitution ?: listOf(),
       schedule = schedule ?: listOf(),
       maxDispense = maxDispense,
@@ -1608,8 +1639,16 @@ internal object MedicationKnowledgeRegulatorySubstitutionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
-      allowed = R4Boolean.of(allowed, _allowed)!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on MedicationKnowledge.Regulatory.Substitution"
+          ),
+      allowed =
+        R4Boolean.of(allowed, _allowed)
+          ?: throw SerializationException(
+            "Missing required property 'allowed' on MedicationKnowledge.Regulatory.Substitution"
+          ),
     )
   }
 
@@ -1702,7 +1741,11 @@ internal object MedicationKnowledgeRegulatoryScheduleSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      schedule = schedule!!,
+      schedule =
+        schedule
+          ?: throw SerializationException(
+            "Missing required property 'schedule' on MedicationKnowledge.Regulatory.Schedule"
+          ),
     )
   }
 
@@ -1793,7 +1836,11 @@ internal object MedicationKnowledgeRegulatoryMaxDispenseSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      quantity = quantity!!,
+      quantity =
+        quantity
+          ?: throw SerializationException(
+            "Missing required property 'quantity' on MedicationKnowledge.Regulatory.MaxDispense"
+          ),
       period = period,
     )
   }

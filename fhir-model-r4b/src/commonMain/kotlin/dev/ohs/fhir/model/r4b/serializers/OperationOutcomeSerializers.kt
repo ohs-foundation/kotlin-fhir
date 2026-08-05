@@ -164,8 +164,26 @@ internal object OperationOutcomeIssueSerializer : KSerializer<OperationOutcome.I
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      severity = Enumeration.of(OperationOutcome.IssueSeverity.fromCode(severity!!), _severity),
-      code = Enumeration.of(OperationOutcome.IssueType.fromCode(code!!), _code),
+      severity =
+        Enumeration.of(
+          OperationOutcome.IssueSeverity.fromCode(
+            severity
+              ?: throw SerializationException(
+                "Missing required property 'severity' on OperationOutcome.Issue"
+              )
+          ),
+          _severity,
+        ),
+      code =
+        Enumeration.of(
+          OperationOutcome.IssueType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on OperationOutcome.Issue"
+              )
+          ),
+          _code,
+        ),
       details = details,
       diagnostics = R4bString.of(diagnostics, _diagnostics),
       location =

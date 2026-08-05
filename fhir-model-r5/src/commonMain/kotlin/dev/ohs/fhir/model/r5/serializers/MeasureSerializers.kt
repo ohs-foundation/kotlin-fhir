@@ -962,7 +962,11 @@ internal object MeasureSupplementalDataSerializer : KSerializer<Measure.Suppleme
       code = code,
       usage = usage ?: listOf(),
       description = Markdown.of(description, _description),
-      criteria = criteria!!,
+      criteria =
+        criteria
+          ?: throw SerializationException(
+            "Missing required property 'criteria' on Measure.SupplementalData"
+          ),
     )
   }
 
@@ -1541,7 +1545,13 @@ internal object MeasureSerializer : KSerializer<Measure> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       subtitle = R5String.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Measure")
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       subject = Measure.Subject.from(subjectCodeableConcept, subjectReference),
       basis = basis?.let { Enumeration.of(FHIRTypes.fromCode(it), _basis) },

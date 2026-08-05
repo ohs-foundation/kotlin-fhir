@@ -147,7 +147,11 @@ internal object MedicationIngredientSerializer : KSerializer<Medication.Ingredie
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      item = item!!,
+      item =
+        item
+          ?: throw SerializationException(
+            "Missing required property 'item' on Medication.Ingredient"
+          ),
       isActive = R5Boolean.of(isActive, _isActive),
       strength =
         Medication.Ingredient.Strength.from(

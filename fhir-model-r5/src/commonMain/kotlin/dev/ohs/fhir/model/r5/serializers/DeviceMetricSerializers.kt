@@ -329,9 +329,12 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      type = type!!,
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on DeviceMetric"),
       unit = unit,
-      device = device!!,
+      device =
+        device
+          ?: throw SerializationException("Missing required property 'device' on DeviceMetric"),
       operationalStatus =
         operationalStatus?.let {
           Enumeration.of(
@@ -340,7 +343,16 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
           )
         },
       color = Code.of(color, _color),
-      category = Enumeration.of(DeviceMetric.DeviceMetricCategory.fromCode(category!!), _category),
+      category =
+        Enumeration.of(
+          DeviceMetric.DeviceMetricCategory.fromCode(
+            category
+              ?: throw SerializationException(
+                "Missing required property 'category' on DeviceMetric"
+              )
+          ),
+          _category,
+        ),
       measurementFrequency = measurementFrequency,
       calibration = calibration ?: listOf(),
     )

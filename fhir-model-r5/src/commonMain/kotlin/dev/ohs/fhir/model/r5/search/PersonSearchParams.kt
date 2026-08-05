@@ -196,9 +196,7 @@ public object PersonSearchParams {
       expression = "Person.link.target.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        resource.link
-          .map { it.target }
-          .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
+        resource.link.map { it.target }.filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 
@@ -229,7 +227,7 @@ public object PersonSearchParams {
       extractor = { resource ->
         resource.link
           .map { it.target }
-          .filter { it.reference?.value?.toString()?.contains("Practitioner/") == true }
+          .filter { it.reference?.value?.contains("Practitioner/") == true }
       },
     )
 
@@ -242,7 +240,7 @@ public object PersonSearchParams {
       extractor = { resource ->
         resource.link
           .map { it.target }
-          .filter { it.reference?.value?.toString()?.contains("RelatedPerson/") == true }
+          .filter { it.reference?.value?.contains("RelatedPerson/") == true }
       },
     )
 

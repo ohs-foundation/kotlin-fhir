@@ -144,8 +144,16 @@ internal object LocationPositionSerializer : KSerializer<Location.Position> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      longitude = Decimal.of(longitude, _longitude)!!,
-      latitude = Decimal.of(latitude, _latitude)!!,
+      longitude =
+        Decimal.of(longitude, _longitude)
+          ?: throw SerializationException(
+            "Missing required property 'longitude' on Location.Position"
+          ),
+      latitude =
+        Decimal.of(latitude, _latitude)
+          ?: throw SerializationException(
+            "Missing required property 'latitude' on Location.Position"
+          ),
       altitude = Decimal.of(altitude, _altitude),
     )
   }

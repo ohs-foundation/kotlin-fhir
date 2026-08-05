@@ -119,7 +119,11 @@ internal object MedicinalProductPharmaceuticalCharacteristicsSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on MedicinalProductPharmaceutical.Characteristics"
+          ),
       status = status,
     )
   }
@@ -260,7 +264,11 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on MedicinalProductPharmaceutical.RouteOfAdministration"
+          ),
       firstDose = firstDose,
       maxSingleDose = maxSingleDose,
       maxDosePerDay = maxDosePerDay,
@@ -414,7 +422,11 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpecies
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on MedicinalProductPharmaceutical.RouteOfAdministration.TargetSpecies"
+          ),
       withdrawalPeriod = withdrawalPeriod ?: listOf(),
     )
   }
@@ -543,8 +555,16 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpecies
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      tissue = tissue!!,
-      `value` = `value`!!,
+      tissue =
+        tissue
+          ?: throw SerializationException(
+            "Missing required property 'tissue' on MedicinalProductPharmaceutical.RouteOfAdministration.TargetSpecies.WithdrawalPeriod"
+          ),
+      `value` =
+        `value`
+          ?: throw SerializationException(
+            "Missing required property 'value' on MedicinalProductPharmaceutical.RouteOfAdministration.TargetSpecies.WithdrawalPeriod"
+          ),
       supportingInformation = R4String.of(supportingInformation, _supportingInformation),
     )
   }
@@ -763,7 +783,11 @@ internal object MedicinalProductPharmaceuticalSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      administrableDoseForm = administrableDoseForm!!,
+      administrableDoseForm =
+        administrableDoseForm
+          ?: throw SerializationException(
+            "Missing required property 'administrableDoseForm' on MedicinalProductPharmaceutical"
+          ),
       unitOfPresentation = unitOfPresentation,
       ingredient = ingredient ?: listOf(),
       device = device ?: listOf(),

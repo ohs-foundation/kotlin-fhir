@@ -1274,7 +1274,11 @@ internal object SubstanceSpecificationNameSerializer : KSerializer<SubstanceSpec
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R4String.of(name, _name)!!,
+      name =
+        R4String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on SubstanceSpecification.Name"
+          ),
       type = type,
       status = status,
       preferred = R4Boolean.of(preferred, _preferred),

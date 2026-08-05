@@ -136,12 +136,19 @@ internal object ClaimResponseEventSerializer : KSerializer<ClaimResponse.Event> 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on ClaimResponse.Event"
+          ),
       `when` =
         ClaimResponse.Event.When.from(
           DateTime.of(FhirDateTime.fromString(whenDateTime), _whenDateTime),
           whenPeriod,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'when' on ClaimResponse.Event"
+          ),
     )
   }
 
@@ -291,7 +298,11 @@ internal object ClaimResponseItemSerializer : KSerializer<ClaimResponse.Item> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      itemSequence = PositiveInt.of(itemSequence, _itemSequence)!!,
+      itemSequence =
+        PositiveInt.of(itemSequence, _itemSequence)
+          ?: throw SerializationException(
+            "Missing required property 'itemSequence' on ClaimResponse.Item"
+          ),
       traceNumber = traceNumber ?: listOf(),
       noteNumber =
         (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
@@ -567,7 +578,11 @@ internal object ClaimResponseItemAdjudicationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      category = category!!,
+      category =
+        category
+          ?: throw SerializationException(
+            "Missing required property 'category' on ClaimResponse.Item.Adjudication"
+          ),
       reason = reason,
       amount = amount,
       quantity = quantity,
@@ -727,7 +742,11 @@ internal object ClaimResponseItemDetailSerializer : KSerializer<ClaimResponse.It
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      detailSequence = PositiveInt.of(detailSequence, _detailSequence)!!,
+      detailSequence =
+        PositiveInt.of(detailSequence, _detailSequence)
+          ?: throw SerializationException(
+            "Missing required property 'detailSequence' on ClaimResponse.Item.Detail"
+          ),
       traceNumber = traceNumber ?: listOf(),
       noteNumber =
         (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
@@ -914,7 +933,11 @@ internal object ClaimResponseItemDetailSubDetailSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      subDetailSequence = PositiveInt.of(subDetailSequence, _subDetailSequence)!!,
+      subDetailSequence =
+        PositiveInt.of(subDetailSequence, _subDetailSequence)
+          ?: throw SerializationException(
+            "Missing required property 'subDetailSequence' on ClaimResponse.Item.Detail.SubDetail"
+          ),
       traceNumber = traceNumber ?: listOf(),
       noteNumber =
         (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
@@ -2194,8 +2217,16 @@ internal object ClaimResponseTotalSerializer : KSerializer<ClaimResponse.Total> 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      category = category!!,
-      amount = amount!!,
+      category =
+        category
+          ?: throw SerializationException(
+            "Missing required property 'category' on ClaimResponse.Total"
+          ),
+      amount =
+        amount
+          ?: throw SerializationException(
+            "Missing required property 'amount' on ClaimResponse.Total"
+          ),
     )
   }
 
@@ -2303,11 +2334,19 @@ internal object ClaimResponsePaymentSerializer : KSerializer<ClaimResponse.Payme
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on ClaimResponse.Payment"
+          ),
       adjustment = adjustment,
       adjustmentReason = adjustmentReason,
       date = Date.of(FhirDate.fromString(date), _date),
-      amount = amount!!,
+      amount =
+        amount
+          ?: throw SerializationException(
+            "Missing required property 'amount' on ClaimResponse.Payment"
+          ),
       identifier = identifier,
     )
   }
@@ -2428,7 +2467,11 @@ internal object ClaimResponseProcessNoteSerializer : KSerializer<ClaimResponse.P
       modifierExtension = modifierExtension ?: listOf(),
       number = PositiveInt.of(number, _number),
       type = type,
-      text = R5String.of(text, _text)!!,
+      text =
+        R5String.of(text, _text)
+          ?: throw SerializationException(
+            "Missing required property 'text' on ClaimResponse.ProcessNote"
+          ),
       language = language,
     )
   }
@@ -2550,9 +2593,21 @@ internal object ClaimResponseInsuranceSerializer : KSerializer<ClaimResponse.Ins
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      sequence = PositiveInt.of(sequence, _sequence)!!,
-      focal = R5Boolean.of(focal, _focal)!!,
-      coverage = coverage!!,
+      sequence =
+        PositiveInt.of(sequence, _sequence)
+          ?: throw SerializationException(
+            "Missing required property 'sequence' on ClaimResponse.Insurance"
+          ),
+      focal =
+        R5Boolean.of(focal, _focal)
+          ?: throw SerializationException(
+            "Missing required property 'focal' on ClaimResponse.Insurance"
+          ),
+      coverage =
+        coverage
+          ?: throw SerializationException(
+            "Missing required property 'coverage' on ClaimResponse.Insurance"
+          ),
       businessArrangement = R5String.of(businessArrangement, _businessArrangement),
       claimResponse = claimResponse,
     )
@@ -2695,7 +2750,11 @@ internal object ClaimResponseErrorSerializer : KSerializer<ClaimResponse.Error> 
       itemSequence = PositiveInt.of(itemSequence, _itemSequence),
       detailSequence = PositiveInt.of(detailSequence, _detailSequence),
       subDetailSequence = PositiveInt.of(subDetailSequence, _subDetailSequence),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on ClaimResponse.Error"
+          ),
       expression =
         (kotlin.collections.List(maxOf(expression?.size ?: 0, _expression?.size ?: 0)) { index ->
           R5String.of(expression?.getOrNull(index)?.let { it }, _expression?.getOrNull(index))!!
@@ -3074,16 +3133,42 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
       identifier = identifier ?: listOf(),
       traceNumber = traceNumber ?: listOf(),
       status =
-        Enumeration.of(ClaimResponse.FinancialResourceStatusCodes.fromCode(status!!), _status),
-      type = type!!,
+        Enumeration.of(
+          ClaimResponse.FinancialResourceStatusCodes.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on ClaimResponse")
+          ),
+          _status,
+        ),
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on ClaimResponse"),
       subType = subType,
-      use = Enumeration.of(ClaimResponse.Use.fromCode(use!!), _use),
-      patient = patient!!,
-      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      use =
+        Enumeration.of(
+          ClaimResponse.Use.fromCode(
+            use ?: throw SerializationException("Missing required property 'use' on ClaimResponse")
+          ),
+          _use,
+        ),
+      patient =
+        patient
+          ?: throw SerializationException("Missing required property 'patient' on ClaimResponse"),
+      created =
+        DateTime.of(FhirDateTime.fromString(created), _created)
+          ?: throw SerializationException("Missing required property 'created' on ClaimResponse"),
       insurer = insurer,
       requestor = requestor,
       request = request,
-      outcome = Enumeration.of(ClaimResponse.ClaimProcessingCodes.fromCode(outcome!!), _outcome),
+      outcome =
+        Enumeration.of(
+          ClaimResponse.ClaimProcessingCodes.fromCode(
+            outcome
+              ?: throw SerializationException(
+                "Missing required property 'outcome' on ClaimResponse"
+              )
+          ),
+          _outcome,
+        ),
       decision = decision,
       disposition = R5String.of(disposition, _disposition),
       preAuthRef = R5String.of(preAuthRef, _preAuthRef),

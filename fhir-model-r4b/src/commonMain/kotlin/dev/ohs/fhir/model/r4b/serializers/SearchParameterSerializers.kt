@@ -130,8 +130,16 @@ internal object SearchParameterComponentSerializer : KSerializer<SearchParameter
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      definition = Canonical.of(definition, _definition)!!,
-      expression = R4bString.of(expression, _expression)!!,
+      definition =
+        Canonical.of(definition, _definition)
+          ?: throw SerializationException(
+            "Missing required property 'definition' on SearchParameter.Component"
+          ),
+      expression =
+        R4bString.of(expression, _expression)
+          ?: throw SerializationException(
+            "Missing required property 'expression' on SearchParameter.Component"
+          ),
     )
   }
 
@@ -496,25 +504,51 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException("Missing required property 'url' on SearchParameter"),
       version = R4bString.of(version, _version),
-      name = R4bString.of(name, _name)!!,
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on SearchParameter"),
       derivedFrom = Canonical.of(derivedFrom, _derivedFrom),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on SearchParameter"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
-      description = Markdown.of(description, _description)!!,
+      description =
+        Markdown.of(description, _description)
+          ?: throw SerializationException(
+            "Missing required property 'description' on SearchParameter"
+          ),
       useContext = useContext ?: listOf(),
       jurisdiction = jurisdiction ?: listOf(),
       purpose = Markdown.of(purpose, _purpose),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException("Missing required property 'code' on SearchParameter"),
       base =
         (kotlin.collections.List(maxOf(base?.size ?: 0, _base?.size ?: 0)) { index ->
           Enumeration.of(ResourceType.fromCode(base?.getOrNull(index)!!), _base?.getOrNull(index))
         }),
-      type = Enumeration.of(SearchParamType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          SearchParamType.fromCode(
+            type
+              ?: throw SerializationException("Missing required property 'type' on SearchParameter")
+          ),
+          _type,
+        ),
       expression = R4bString.of(expression, _expression),
       xpath = R4bString.of(xpath, _xpath),
       xpathUsage =

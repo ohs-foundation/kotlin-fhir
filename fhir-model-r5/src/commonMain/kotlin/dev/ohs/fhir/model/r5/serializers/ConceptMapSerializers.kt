@@ -156,10 +156,23 @@ internal object ConceptMapPropertySerializer : KSerializer<ConceptMap.Property> 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ConceptMap.Property"
+          ),
       uri = Uri.of(uri, _uri),
       description = R5String.of(description, _description),
-      type = Enumeration.of(ConceptMap.ConceptMapPropertyType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          ConceptMap.ConceptMapPropertyType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ConceptMap.Property"
+              )
+          ),
+          _type,
+        ),
       system = Canonical.of(system, _system),
     )
   }
@@ -283,10 +296,23 @@ internal object ConceptMapAdditionalAttributeSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ConceptMap.AdditionalAttribute"
+          ),
       uri = Uri.of(uri, _uri),
       description = R5String.of(description, _description),
-      type = Enumeration.of(ConceptMap.ConceptMapAttributeType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          ConceptMap.ConceptMapAttributeType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on ConceptMap.AdditionalAttribute"
+              )
+          ),
+          _type,
+        ),
     )
   }
 
@@ -728,7 +754,16 @@ internal object ConceptMapGroupElementTargetSerializer :
       code = Code.of(code, _code),
       display = R5String.of(display, _display),
       valueSet = Canonical.of(valueSet, _valueSet),
-      relationship = Enumeration.of(ConceptMapRelationship.fromCode(relationship!!), _relationship),
+      relationship =
+        Enumeration.of(
+          ConceptMapRelationship.fromCode(
+            relationship
+              ?: throw SerializationException(
+                "Missing required property 'relationship' on ConceptMap.Group.Element.Target"
+              )
+          ),
+          _relationship,
+        ),
       comment = R5String.of(comment, _comment),
       `property` = `property` ?: listOf(),
       dependsOn = dependsOn ?: listOf(),
@@ -912,7 +947,11 @@ internal object ConceptMapGroupElementTargetPropertySerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Code.of(code, _code)!!,
+      code =
+        Code.of(code, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ConceptMap.Group.Element.Target.Property"
+          ),
       `value` =
         ConceptMap.Group.Element.Target.Property.Value.from(
           valueCoding,
@@ -922,7 +961,10 @@ internal object ConceptMapGroupElementTargetPropertySerializer :
           DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
           Decimal.of(valueDecimal, _valueDecimal),
           Code.of(valueCode, _valueCode),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on ConceptMap.Group.Element.Target.Property"
+          ),
     )
   }
 
@@ -1102,7 +1144,11 @@ internal object ConceptMapGroupElementTargetDependsOnSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      attribute = Code.of(attribute, _attribute)!!,
+      attribute =
+        Code.of(attribute, _attribute)
+          ?: throw SerializationException(
+            "Missing required property 'attribute' on ConceptMap.Group.Element.Target.DependsOn"
+          ),
       `value` =
         ConceptMap.Group.Element.Target.DependsOn.Value.from(
           Code.of(valueCode, _valueCode),
@@ -1271,7 +1317,16 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      mode = Enumeration.of(ConceptMap.ConceptMapGroupUnmappedMode.fromCode(mode!!), _mode),
+      mode =
+        Enumeration.of(
+          ConceptMap.ConceptMapGroupUnmappedMode.fromCode(
+            mode
+              ?: throw SerializationException(
+                "Missing required property 'mode' on ConceptMap.Group.Unmapped"
+              )
+          ),
+          _mode,
+        ),
       code = Code.of(code, _code),
       display = R5String.of(display, _display),
       valueSet = Canonical.of(valueSet, _valueSet),
@@ -1736,7 +1791,14 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on ConceptMap")
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

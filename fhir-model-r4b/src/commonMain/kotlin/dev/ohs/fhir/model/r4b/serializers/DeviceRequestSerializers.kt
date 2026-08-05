@@ -568,12 +568,23 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
       priorRequest = priorRequest ?: listOf(),
       groupIdentifier = groupIdentifier,
       status = status?.let { Enumeration.of(DeviceRequest.RequestStatus.fromCode(it), _status) },
-      intent = Enumeration.of(DeviceRequest.RequestIntent.fromCode(intent!!), _intent),
+      intent =
+        Enumeration.of(
+          DeviceRequest.RequestIntent.fromCode(
+            intent
+              ?: throw SerializationException("Missing required property 'intent' on DeviceRequest")
+          ),
+          _intent,
+        ),
       priority =
         priority?.let { Enumeration.of(DeviceRequest.RequestPriority.fromCode(it), _priority) },
-      code = DeviceRequest.Code.from(codeReference, codeCodeableConcept)!!,
+      code =
+        DeviceRequest.Code.from(codeReference, codeCodeableConcept)
+          ?: throw SerializationException("Missing required property 'code' on DeviceRequest"),
       parameter = parameter ?: listOf(),
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on DeviceRequest"),
       encounter = encounter,
       occurrence =
         DeviceRequest.Occurrence.from(

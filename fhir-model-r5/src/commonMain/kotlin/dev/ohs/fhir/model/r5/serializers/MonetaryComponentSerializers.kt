@@ -109,7 +109,16 @@ internal object MonetaryComponentSerializer : KSerializer<MonetaryComponent> {
     return MonetaryComponent(
       id = id,
       extension = extension ?: listOf(),
-      type = Enumeration.of(MonetaryComponent.PriceComponentType.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          MonetaryComponent.PriceComponentType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on MonetaryComponent"
+              )
+          ),
+          _type,
+        ),
       code = code,
       factor = Decimal.of(factor, _factor),
       amount = amount,

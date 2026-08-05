@@ -120,8 +120,21 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Enumeration.of(DocumentReference.DocumentRelationshipType.fromCode(code!!), _code),
-      target = target!!,
+      code =
+        Enumeration.of(
+          DocumentReference.DocumentRelationshipType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on DocumentReference.RelatesTo"
+              )
+          ),
+          _code,
+        ),
+      target =
+        target
+          ?: throw SerializationException(
+            "Missing required property 'target' on DocumentReference.RelatesTo"
+          ),
     )
   }
 
@@ -212,7 +225,11 @@ internal object DocumentReferenceContentSerializer : KSerializer<DocumentReferen
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      attachment = attachment!!,
+      attachment =
+        attachment
+          ?: throw SerializationException(
+            "Missing required property 'attachment' on DocumentReference.Content"
+          ),
       format = format,
     )
   }
@@ -612,7 +629,16 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
       modifierExtension = modifierExtension ?: listOf(),
       masterIdentifier = masterIdentifier,
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(DocumentReferenceStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          DocumentReferenceStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on DocumentReference"
+              )
+          ),
+          _status,
+        ),
       docStatus =
         docStatus?.let {
           Enumeration.of(DocumentReference.CompositionStatus.fromCode(it), _docStatus)

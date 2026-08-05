@@ -122,7 +122,11 @@ internal object MedicationDispensePerformerSerializer : KSerializer<MedicationDi
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on MedicationDispense.Performer"
+          ),
     )
   }
 
@@ -238,7 +242,11 @@ internal object MedicationDispenseSubstitutionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      wasSubstituted = R5Boolean.of(wasSubstituted, _wasSubstituted)!!,
+      wasSubstituted =
+        R5Boolean.of(wasSubstituted, _wasSubstituted)
+          ?: throw SerializationException(
+            "Missing required property 'wasSubstituted' on MedicationDispense.Substitution"
+          ),
       type = type,
       reason = reason ?: listOf(),
       responsibleParty = responsibleParty,
@@ -590,14 +598,27 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          MedicationDispense.MedicationDispenseStatusCodes.fromCode(status!!),
+          MedicationDispense.MedicationDispenseStatusCodes.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on MedicationDispense"
+              )
+          ),
           _status,
         ),
       notPerformedReason = notPerformedReason,
       statusChanged = DateTime.of(FhirDateTime.fromString(statusChanged), _statusChanged),
       category = category ?: listOf(),
-      medication = medication!!,
-      subject = subject!!,
+      medication =
+        medication
+          ?: throw SerializationException(
+            "Missing required property 'medication' on MedicationDispense"
+          ),
+      subject =
+        subject
+          ?: throw SerializationException(
+            "Missing required property 'subject' on MedicationDispense"
+          ),
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),
       performer = performer ?: listOf(),

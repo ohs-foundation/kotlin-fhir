@@ -218,7 +218,11 @@ internal object DetectedIssueMitigationSerializer : KSerializer<DetectedIssue.Mi
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      action = action!!,
+      action =
+        action
+          ?: throw SerializationException(
+            "Missing required property 'action' on DetectedIssue.Mitigation"
+          ),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       author = author,
     )
@@ -453,7 +457,14 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(DetectedIssue.ObservationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          DetectedIssue.ObservationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on DetectedIssue")
+          ),
+          _status,
+        ),
       code = code,
       severity =
         severity?.let {

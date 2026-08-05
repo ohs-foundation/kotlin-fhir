@@ -179,7 +179,11 @@ internal object SubscriptionTopicResourceTriggerSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       description = Markdown.of(description, _description),
-      resource = Uri.of(resource, _resource)!!,
+      resource =
+        Uri.of(resource, _resource)
+          ?: throw SerializationException(
+            "Missing required property 'resource' on SubscriptionTopic.ResourceTrigger"
+          ),
       supportedInteraction =
         (kotlin.collections.List(
           maxOf(supportedInteraction?.size ?: 0, _supportedInteraction?.size ?: 0)
@@ -481,8 +485,16 @@ internal object SubscriptionTopicEventTriggerSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       description = Markdown.of(description, _description),
-      event = event!!,
-      resource = Uri.of(resource, _resource)!!,
+      event =
+        event
+          ?: throw SerializationException(
+            "Missing required property 'event' on SubscriptionTopic.EventTrigger"
+          ),
+      resource =
+        Uri.of(resource, _resource)
+          ?: throw SerializationException(
+            "Missing required property 'resource' on SubscriptionTopic.EventTrigger"
+          ),
     )
   }
 
@@ -620,7 +632,11 @@ internal object SubscriptionTopicCanFilterBySerializer :
       modifierExtension = modifierExtension ?: listOf(),
       description = Markdown.of(description, _description),
       resource = Uri.of(resource, _resource),
-      filterParameter = R4bString.of(filterParameter, _filterParameter)!!,
+      filterParameter =
+        R4bString.of(filterParameter, _filterParameter)
+          ?: throw SerializationException(
+            "Missing required property 'filterParameter' on SubscriptionTopic.CanFilterBy"
+          ),
       filterDefinition = Uri.of(filterDefinition, _filterDefinition),
       modifier =
         (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
@@ -774,7 +790,11 @@ internal object SubscriptionTopicNotificationShapeSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      resource = Uri.of(resource, _resource)!!,
+      resource =
+        Uri.of(resource, _resource)
+          ?: throw SerializationException(
+            "Missing required property 'resource' on SubscriptionTopic.NotificationShape"
+          ),
       include =
         (kotlin.collections.List(maxOf(include?.size ?: 0, _include?.size ?: 0)) { index ->
           R4bString.of(include?.getOrNull(index)?.let { it }, _include?.getOrNull(index))!!
@@ -1146,7 +1166,9 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      url = Uri.of(url, _url)!!,
+      url =
+        Uri.of(url, _url)
+          ?: throw SerializationException("Missing required property 'url' on SubscriptionTopic"),
       identifier = identifier ?: listOf(),
       version = R4bString.of(version, _version),
       title = R4bString.of(title, _title),
@@ -1154,7 +1176,16 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
         (kotlin.collections.List(maxOf(derivedFrom?.size ?: 0, _derivedFrom?.size ?: 0)) { index ->
           Canonical.of(derivedFrom?.getOrNull(index)?.let { it }, _derivedFrom?.getOrNull(index))!!
         }),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on SubscriptionTopic"
+              )
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),

@@ -350,8 +350,21 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
     return DataRequirement.Sort(
       id = id,
       extension = extension ?: listOf(),
-      path = R4bString.of(path, _path)!!,
-      direction = Enumeration.of(DataRequirement.SortDirection.fromCode(direction!!), _direction),
+      path =
+        R4bString.of(path, _path)
+          ?: throw SerializationException(
+            "Missing required property 'path' on DataRequirement.Sort"
+          ),
+      direction =
+        Enumeration.of(
+          DataRequirement.SortDirection.fromCode(
+            direction
+              ?: throw SerializationException(
+                "Missing required property 'direction' on DataRequirement.Sort"
+              )
+          ),
+          _direction,
+        ),
     )
   }
 
@@ -519,7 +532,14 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
     return DataRequirement(
       id = id,
       extension = extension ?: listOf(),
-      type = Enumeration.of(FHIRAllTypes.fromCode(type!!), _type),
+      type =
+        Enumeration.of(
+          FHIRAllTypes.fromCode(
+            type
+              ?: throw SerializationException("Missing required property 'type' on DataRequirement")
+          ),
+          _type,
+        ),
       profile =
         (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
           Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!

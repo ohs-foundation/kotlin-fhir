@@ -146,10 +146,22 @@ internal object GraphDefinitionNodeSerializer : KSerializer<GraphDefinition.Node
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      nodeId = Id.of(nodeId, _nodeId)!!,
+      nodeId =
+        Id.of(nodeId, _nodeId)
+          ?: throw SerializationException(
+            "Missing required property 'nodeId' on GraphDefinition.Node"
+          ),
       description = R5String.of(description, _description),
       type =
-        Enumeration.of(GraphDefinition.VersionIndependentResourceTypesAll.fromCode(type!!), _type),
+        Enumeration.of(
+          GraphDefinition.VersionIndependentResourceTypesAll.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on GraphDefinition.Node"
+              )
+          ),
+          _type,
+        ),
       profile = Canonical.of(profile, _profile),
     )
   }
@@ -319,10 +331,18 @@ internal object GraphDefinitionLinkSerializer : KSerializer<GraphDefinition.Link
       description = R5String.of(description, _description),
       min = Integer.of(min, _min),
       max = R5String.of(max, _max),
-      sourceId = Id.of(sourceId, _sourceId)!!,
+      sourceId =
+        Id.of(sourceId, _sourceId)
+          ?: throw SerializationException(
+            "Missing required property 'sourceId' on GraphDefinition.Link"
+          ),
       path = R5String.of(path, _path),
       sliceName = R5String.of(sliceName, _sliceName),
-      targetId = Id.of(targetId, _targetId)!!,
+      targetId =
+        Id.of(targetId, _targetId)
+          ?: throw SerializationException(
+            "Missing required property 'targetId' on GraphDefinition.Link"
+          ),
       params = R5String.of(params, _params),
       compartment = compartment ?: listOf(),
     )
@@ -474,9 +494,36 @@ internal object GraphDefinitionLinkCompartmentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      use = Enumeration.of(GraphDefinition.GraphCompartmentUse.fromCode(use!!), _use),
-      rule = Enumeration.of(GraphDefinition.GraphCompartmentRule.fromCode(rule!!), _rule),
-      code = Enumeration.of(GraphDefinition.CompartmentType.fromCode(code!!), _code),
+      use =
+        Enumeration.of(
+          GraphDefinition.GraphCompartmentUse.fromCode(
+            use
+              ?: throw SerializationException(
+                "Missing required property 'use' on GraphDefinition.Link.Compartment"
+              )
+          ),
+          _use,
+        ),
+      rule =
+        Enumeration.of(
+          GraphDefinition.GraphCompartmentRule.fromCode(
+            rule
+              ?: throw SerializationException(
+                "Missing required property 'rule' on GraphDefinition.Link.Compartment"
+              )
+          ),
+          _rule,
+        ),
+      code =
+        Enumeration.of(
+          GraphDefinition.CompartmentType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on GraphDefinition.Link.Compartment"
+              )
+          ),
+          _code,
+        ),
       expression = R5String.of(expression, _expression),
       description = R5String.of(description, _description),
     )
@@ -804,9 +851,20 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
           R5String.of(versionAlgorithmString, _versionAlgorithmString),
           versionAlgorithmCoding,
         ),
-      name = R5String.of(name, _name)!!,
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on GraphDefinition"),
       title = R5String.of(title, _title),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on GraphDefinition"
+              )
+          ),
+          _status,
+        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

@@ -190,7 +190,11 @@ internal object AuditEventAgentSerializer : KSerializer<AuditEvent.Agent> {
       who = who,
       altId = R4String.of(altId, _altId),
       name = R4String.of(name, _name),
-      requestor = R4Boolean.of(requestor, _requestor)!!,
+      requestor =
+        R4Boolean.of(requestor, _requestor)
+          ?: throw SerializationException(
+            "Missing required property 'requestor' on AuditEvent.Agent"
+          ),
       location = location,
       policy =
         (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { index ->
@@ -435,7 +439,11 @@ internal object AuditEventSourceSerializer : KSerializer<AuditEvent.Source> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       site = R4String.of(site, _site),
-      observer = observer!!,
+      observer =
+        observer
+          ?: throw SerializationException(
+            "Missing required property 'observer' on AuditEvent.Source"
+          ),
       type = type ?: listOf(),
     )
   }
@@ -718,12 +726,19 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = R4String.of(type, _type)!!,
+      type =
+        R4String.of(type, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on AuditEvent.Entity.Detail"
+          ),
       `value` =
         AuditEvent.Entity.Detail.Value.from(
           R4String.of(valueString, _valueString),
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on AuditEvent.Entity.Detail"
+          ),
     )
   }
 
@@ -946,17 +961,20 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type = type ?: throw SerializationException("Missing required property 'type' on AuditEvent"),
       subtype = subtype ?: listOf(),
       action = action?.let { Enumeration.of(AuditEvent.AuditEventAction.fromCode(it), _action) },
       period = period,
-      recorded = Instant.of(FhirDateTime.fromString(recorded), _recorded)!!,
+      recorded =
+        Instant.of(FhirDateTime.fromString(recorded), _recorded)
+          ?: throw SerializationException("Missing required property 'recorded' on AuditEvent"),
       outcome =
         outcome?.let { Enumeration.of(AuditEvent.AuditEventOutcome.fromCode(it), _outcome) },
       outcomeDesc = R4String.of(outcomeDesc, _outcomeDesc),
       purposeOfEvent = purposeOfEvent ?: listOf(),
       agent = agent ?: listOf(),
-      source = source!!,
+      source =
+        source ?: throw SerializationException("Missing required property 'source' on AuditEvent"),
       entity = entity ?: listOf(),
     )
   }

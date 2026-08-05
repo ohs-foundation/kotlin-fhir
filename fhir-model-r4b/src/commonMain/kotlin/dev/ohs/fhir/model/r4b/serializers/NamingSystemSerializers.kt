@@ -143,8 +143,21 @@ internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.Unique
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(NamingSystem.NamingSystemIdentifierType.fromCode(type!!), _type),
-      `value` = R4bString.of(`value`, _value)!!,
+      type =
+        Enumeration.of(
+          NamingSystem.NamingSystemIdentifierType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on NamingSystem.UniqueId"
+              )
+          ),
+          _type,
+        ),
+      `value` =
+        R4bString.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on NamingSystem.UniqueId"
+          ),
       preferred = R4bBoolean.of(preferred, _preferred),
       comment = R4bString.of(comment, _comment),
       period = period,
@@ -392,10 +405,27 @@ internal object NamingSystemSerializer : KSerializer<NamingSystem> {
       contained = contained ?: listOf(),
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R4bString.of(name, _name)!!,
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
-      kind = Enumeration.of(NamingSystem.NamingSystemType.fromCode(kind!!), _kind),
-      date = DateTime.of(FhirDateTime.fromString(date), _date)!!,
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on NamingSystem"),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on NamingSystem")
+          ),
+          _status,
+        ),
+      kind =
+        Enumeration.of(
+          NamingSystem.NamingSystemType.fromCode(
+            kind ?: throw SerializationException("Missing required property 'kind' on NamingSystem")
+          ),
+          _kind,
+        ),
+      date =
+        DateTime.of(FhirDateTime.fromString(date), _date)
+          ?: throw SerializationException("Missing required property 'date' on NamingSystem"),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       responsible = R4bString.of(responsible, _responsible),

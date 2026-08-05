@@ -123,7 +123,11 @@ internal object AllergyIntoleranceParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       function = function,
-      actor = actor!!,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on AllergyIntolerance.Participant"
+          ),
     )
   }
 
@@ -594,7 +598,11 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
           )
         },
       code = code,
-      patient = patient!!,
+      patient =
+        patient
+          ?: throw SerializationException(
+            "Missing required property 'patient' on AllergyIntolerance"
+          ),
       encounter = encounter,
       onset =
         AllergyIntolerance.Onset.from(

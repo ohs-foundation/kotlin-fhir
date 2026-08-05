@@ -775,7 +775,7 @@ internal object ExtensionSerializer : KSerializer<Extension> {
     return Extension(
       id = id,
       extension = extension ?: listOf(),
-      url = url!!,
+      url = url ?: throw SerializationException("Missing required property 'url' on Extension"),
       `value` =
         Extension.Value.from(
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),

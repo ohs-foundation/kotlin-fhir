@@ -178,13 +178,20 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
     return SampledData(
       id = id,
       extension = extension ?: listOf(),
-      origin = origin!!,
+      origin =
+        origin ?: throw SerializationException("Missing required property 'origin' on SampledData"),
       interval = Decimal.of(interval, _interval),
-      intervalUnit = Code.of(intervalUnit, _intervalUnit)!!,
+      intervalUnit =
+        Code.of(intervalUnit, _intervalUnit)
+          ?: throw SerializationException(
+            "Missing required property 'intervalUnit' on SampledData"
+          ),
       factor = Decimal.of(factor, _factor),
       lowerLimit = Decimal.of(lowerLimit, _lowerLimit),
       upperLimit = Decimal.of(upperLimit, _upperLimit),
-      dimensions = PositiveInt.of(dimensions, _dimensions)!!,
+      dimensions =
+        PositiveInt.of(dimensions, _dimensions)
+          ?: throw SerializationException("Missing required property 'dimensions' on SampledData"),
       codeMap = Canonical.of(codeMap, _codeMap),
       offsets = R5String.of(offsets, _offsets),
       `data` = R5String.of(`data`, _data),

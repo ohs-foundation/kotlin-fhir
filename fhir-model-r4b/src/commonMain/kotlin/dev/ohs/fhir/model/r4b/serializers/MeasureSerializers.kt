@@ -267,7 +267,11 @@ internal object MeasureGroupPopulationSerializer : KSerializer<Measure.Group.Pop
       modifierExtension = modifierExtension ?: listOf(),
       code = code,
       description = R4bString.of(description, _description),
-      criteria = criteria!!,
+      criteria =
+        criteria
+          ?: throw SerializationException(
+            "Missing required property 'criteria' on Measure.Group.Population"
+          ),
     )
   }
 
@@ -496,7 +500,11 @@ internal object MeasureGroupStratifierComponentSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       code = code,
       description = R4bString.of(description, _description),
-      criteria = criteria!!,
+      criteria =
+        criteria
+          ?: throw SerializationException(
+            "Missing required property 'criteria' on Measure.Group.Stratifier.Component"
+          ),
     )
   }
 
@@ -611,7 +619,11 @@ internal object MeasureSupplementalDataSerializer : KSerializer<Measure.Suppleme
       code = code,
       usage = usage ?: listOf(),
       description = R4bString.of(description, _description),
-      criteria = criteria!!,
+      criteria =
+        criteria
+          ?: throw SerializationException(
+            "Missing required property 'criteria' on Measure.SupplementalData"
+          ),
     )
   }
 
@@ -1148,7 +1160,13 @@ internal object MeasureSerializer : KSerializer<Measure> {
       name = R4bString.of(name, _name),
       title = R4bString.of(title, _title),
       subtitle = R4bString.of(subtitle, _subtitle),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status ?: throw SerializationException("Missing required property 'status' on Measure")
+          ),
+          _status,
+        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       subject = Measure.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),

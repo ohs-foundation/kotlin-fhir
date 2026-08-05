@@ -178,9 +178,21 @@ internal object DeviceDefinitionUdiDeviceIdentifierSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      deviceIdentifier = R5String.of(deviceIdentifier, _deviceIdentifier)!!,
-      issuer = Uri.of(issuer, _issuer)!!,
-      jurisdiction = Uri.of(jurisdiction, _jurisdiction)!!,
+      deviceIdentifier =
+        R5String.of(deviceIdentifier, _deviceIdentifier)
+          ?: throw SerializationException(
+            "Missing required property 'deviceIdentifier' on DeviceDefinition.UdiDeviceIdentifier"
+          ),
+      issuer =
+        Uri.of(issuer, _issuer)
+          ?: throw SerializationException(
+            "Missing required property 'issuer' on DeviceDefinition.UdiDeviceIdentifier"
+          ),
+      jurisdiction =
+        Uri.of(jurisdiction, _jurisdiction)
+          ?: throw SerializationException(
+            "Missing required property 'jurisdiction' on DeviceDefinition.UdiDeviceIdentifier"
+          ),
       marketDistribution = marketDistribution ?: listOf(),
     )
   }
@@ -312,8 +324,16 @@ internal object DeviceDefinitionUdiDeviceIdentifierMarketDistributionSerializer 
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      marketPeriod = marketPeriod!!,
-      subJurisdiction = Uri.of(subJurisdiction, _subJurisdiction)!!,
+      marketPeriod =
+        marketPeriod
+          ?: throw SerializationException(
+            "Missing required property 'marketPeriod' on DeviceDefinition.UdiDeviceIdentifier.MarketDistribution"
+          ),
+      subJurisdiction =
+        Uri.of(subJurisdiction, _subJurisdiction)
+          ?: throw SerializationException(
+            "Missing required property 'subJurisdiction' on DeviceDefinition.UdiDeviceIdentifier.MarketDistribution"
+          ),
     )
   }
 
@@ -432,12 +452,29 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type =
         Enumeration.of(
-          DeviceDefinition.DeviceDefinitionRegulatoryIdentifierType.fromCode(type!!),
+          DeviceDefinition.DeviceDefinitionRegulatoryIdentifierType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on DeviceDefinition.RegulatoryIdentifier"
+              )
+          ),
           _type,
         ),
-      deviceIdentifier = R5String.of(deviceIdentifier, _deviceIdentifier)!!,
-      issuer = Uri.of(issuer, _issuer)!!,
-      jurisdiction = Uri.of(jurisdiction, _jurisdiction)!!,
+      deviceIdentifier =
+        R5String.of(deviceIdentifier, _deviceIdentifier)
+          ?: throw SerializationException(
+            "Missing required property 'deviceIdentifier' on DeviceDefinition.RegulatoryIdentifier"
+          ),
+      issuer =
+        Uri.of(issuer, _issuer)
+          ?: throw SerializationException(
+            "Missing required property 'issuer' on DeviceDefinition.RegulatoryIdentifier"
+          ),
+      jurisdiction =
+        Uri.of(jurisdiction, _jurisdiction)
+          ?: throw SerializationException(
+            "Missing required property 'jurisdiction' on DeviceDefinition.RegulatoryIdentifier"
+          ),
     )
   }
 
@@ -543,8 +580,21 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      name = R5String.of(name, _name)!!,
-      type = Enumeration.of(DeviceDefinition.DeviceNameType.fromCode(type!!), _type),
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on DeviceDefinition.DeviceName"
+          ),
+      type =
+        Enumeration.of(
+          DeviceDefinition.DeviceNameType.fromCode(
+            type
+              ?: throw SerializationException(
+                "Missing required property 'type' on DeviceDefinition.DeviceName"
+              )
+          ),
+          _type,
+        ),
     )
   }
 
@@ -640,7 +690,11 @@ internal object DeviceDefinitionClassificationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on DeviceDefinition.Classification"
+          ),
       justification = justification ?: listOf(),
     )
   }
@@ -765,7 +819,11 @@ internal object DeviceDefinitionConformsToSerializer : KSerializer<DeviceDefinit
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       category = category,
-      specification = specification!!,
+      specification =
+        specification
+          ?: throw SerializationException(
+            "Missing required property 'specification' on DeviceDefinition.ConformsTo"
+          ),
       version =
         (kotlin.collections.List(maxOf(version?.size ?: 0, _version?.size ?: 0)) { index ->
           R5String.of(version?.getOrNull(index)?.let { it }, _version?.getOrNull(index))!!
@@ -884,7 +942,11 @@ internal object DeviceDefinitionHasPartSerializer : KSerializer<DeviceDefinition
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      reference = reference!!,
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on DeviceDefinition.HasPart"
+          ),
       count = Integer.of(count, _count),
     )
   }
@@ -1274,7 +1336,11 @@ internal object DeviceDefinitionVersionSerializer : KSerializer<DeviceDefinition
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
       component = component,
-      `value` = R5String.of(`value`, _value)!!,
+      `value` =
+        R5String.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on DeviceDefinition.Version"
+          ),
     )
   }
 
@@ -1413,7 +1479,11 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type!!,
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on DeviceDefinition.Property"
+          ),
       `value` =
         DeviceDefinition.Property.Value.from(
           valueQuantity,
@@ -1423,7 +1493,10 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
           Integer.of(valueInteger, _valueInteger),
           valueRange,
           valueAttachment,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on DeviceDefinition.Property"
+          ),
     )
   }
 
@@ -1549,8 +1622,16 @@ internal object DeviceDefinitionLinkSerializer : KSerializer<DeviceDefinition.Li
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      relation = relation!!,
-      relatedDevice = relatedDevice!!,
+      relation =
+        relation
+          ?: throw SerializationException(
+            "Missing required property 'relation' on DeviceDefinition.Link"
+          ),
+      relatedDevice =
+        relatedDevice
+          ?: throw SerializationException(
+            "Missing required property 'relatedDevice' on DeviceDefinition.Link"
+          ),
     )
   }
 
@@ -1650,7 +1731,11 @@ internal object DeviceDefinitionMaterialSerializer : KSerializer<DeviceDefinitio
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      substance = substance!!,
+      substance =
+        substance
+          ?: throw SerializationException(
+            "Missing required property 'substance' on DeviceDefinition.Material"
+          ),
       alternate = R5Boolean.of(alternate, _alternate),
       allergenicIndicator = R5Boolean.of(allergenicIndicator, _allergenicIndicator),
     )
@@ -1958,12 +2043,20 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      recall = R5Boolean.of(recall, _recall)!!,
+      recall =
+        R5Boolean.of(recall, _recall)
+          ?: throw SerializationException(
+            "Missing required property 'recall' on DeviceDefinition.CorrectiveAction"
+          ),
       scope =
         scope?.let {
           Enumeration.of(DeviceDefinition.DeviceCorrectiveActionScope.fromCode(it), _scope)
         },
-      period = period!!,
+      period =
+        period
+          ?: throw SerializationException(
+            "Missing required property 'period' on DeviceDefinition.CorrectiveAction"
+          ),
     )
   }
 
@@ -2085,8 +2178,16 @@ internal object DeviceDefinitionChargeItemSerializer : KSerializer<DeviceDefinit
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      chargeItemCode = chargeItemCode!!,
-      count = count!!,
+      chargeItemCode =
+        chargeItemCode
+          ?: throw SerializationException(
+            "Missing required property 'chargeItemCode' on DeviceDefinition.ChargeItem"
+          ),
+      count =
+        count
+          ?: throw SerializationException(
+            "Missing required property 'count' on DeviceDefinition.ChargeItem"
+          ),
       effectivePeriod = effectivePeriod,
       useContext = useContext ?: listOf(),
     )

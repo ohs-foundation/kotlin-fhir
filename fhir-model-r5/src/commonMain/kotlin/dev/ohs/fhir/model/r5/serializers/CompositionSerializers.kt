@@ -124,7 +124,11 @@ internal object CompositionAttesterSerializer : KSerializer<Composition.Attester
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      mode = mode!!,
+      mode =
+        mode
+          ?: throw SerializationException(
+            "Missing required property 'mode' on Composition.Attester"
+          ),
       time = DateTime.of(FhirDateTime.fromString(time), _time),
       party = party,
     )
@@ -654,16 +658,28 @@ internal object CompositionSerializer : KSerializer<Composition> {
       url = Uri.of(url, _url),
       identifier = identifier ?: listOf(),
       version = R5String.of(version, _version),
-      status = Enumeration.of(Composition.CompositionStatus.fromCode(status!!), _status),
-      type = type!!,
+      status =
+        Enumeration.of(
+          Composition.CompositionStatus.fromCode(
+            status
+              ?: throw SerializationException("Missing required property 'status' on Composition")
+          ),
+          _status,
+        ),
+      type =
+        type ?: throw SerializationException("Missing required property 'type' on Composition"),
       category = category ?: listOf(),
       subject = subject ?: listOf(),
       encounter = encounter,
-      date = DateTime.of(FhirDateTime.fromString(date), _date)!!,
+      date =
+        DateTime.of(FhirDateTime.fromString(date), _date)
+          ?: throw SerializationException("Missing required property 'date' on Composition"),
       useContext = useContext ?: listOf(),
       author = author ?: listOf(),
       name = R5String.of(name, _name),
-      title = R5String.of(title, _title)!!,
+      title =
+        R5String.of(title, _title)
+          ?: throw SerializationException("Missing required property 'title' on Composition"),
       note = note ?: listOf(),
       attester = attester ?: listOf(),
       custodian = custodian,

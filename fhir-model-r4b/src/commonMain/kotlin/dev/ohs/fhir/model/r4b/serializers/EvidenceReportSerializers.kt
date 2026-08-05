@@ -278,7 +278,11 @@ internal object EvidenceReportSubjectCharacteristicSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = code!!,
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on EvidenceReport.Subject.Characteristic"
+          ),
       `value` =
         EvidenceReport.Subject.Characteristic.Value.from(
           valueReference,
@@ -286,7 +290,10 @@ internal object EvidenceReportSubjectCharacteristicSerializer :
           R4bBoolean.of(valueBoolean, _valueBoolean),
           valueQuantity,
           valueRange,
-        )!!,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on EvidenceReport.Subject.Characteristic"
+          ),
       exclude = R4bBoolean.of(exclude, _exclude),
       period = period,
     )
@@ -428,8 +435,21 @@ internal object EvidenceReportRelatesToSerializer : KSerializer<EvidenceReport.R
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      code = Enumeration.of(EvidenceReport.ReportRelationshipType.fromCode(code!!), _code),
-      target = EvidenceReport.RelatesTo.Target.from(targetIdentifier, targetReference)!!,
+      code =
+        Enumeration.of(
+          EvidenceReport.ReportRelationshipType.fromCode(
+            code
+              ?: throw SerializationException(
+                "Missing required property 'code' on EvidenceReport.RelatesTo"
+              )
+          ),
+          _code,
+        ),
+      target =
+        EvidenceReport.RelatesTo.Target.from(targetIdentifier, targetReference)
+          ?: throw SerializationException(
+            "Missing required property 'target' on EvidenceReport.RelatesTo"
+          ),
     )
   }
 
@@ -963,7 +983,16 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       url = Uri.of(url, _url),
-      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      status =
+        Enumeration.of(
+          PublicationStatus.fromCode(
+            status
+              ?: throw SerializationException(
+                "Missing required property 'status' on EvidenceReport"
+              )
+          ),
+          _status,
+        ),
       useContext = useContext ?: listOf(),
       identifier = identifier ?: listOf(),
       relatedIdentifier = relatedIdentifier ?: listOf(),
@@ -972,7 +1001,9 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
       type = type,
       note = note ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
-      subject = subject!!,
+      subject =
+        subject
+          ?: throw SerializationException("Missing required property 'subject' on EvidenceReport"),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       author = author ?: listOf(),

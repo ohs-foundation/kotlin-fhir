@@ -382,7 +382,7 @@ public object ProvenanceSearchParams {
       expression = "Provenance.target.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        resource.target.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
+        resource.target.filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 

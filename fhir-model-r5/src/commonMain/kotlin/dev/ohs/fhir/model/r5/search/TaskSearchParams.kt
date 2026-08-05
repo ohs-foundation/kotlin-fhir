@@ -818,9 +818,7 @@ public object TaskSearchParams {
       expression = "Task.for.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        listOfNotNull(resource.`for`).filter {
-          it.reference?.value?.toString()?.contains("Patient/") == true
-        }
+        listOfNotNull(resource.`for`).filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 

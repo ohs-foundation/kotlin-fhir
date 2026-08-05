@@ -92,7 +92,7 @@ public object SpecimenSearchParams {
       extractor = { resource ->
         resource.container
           .map { it.device }
-          .filter { it.reference?.value?.toString()?.contains("Device/") == true }
+          .filter { it.reference?.value?.contains("Device/") == true }
       },
     )
 
@@ -120,9 +120,7 @@ public object SpecimenSearchParams {
       expression = "Specimen.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        listOfNotNull(resource.subject).filter {
-          it.reference?.value?.toString()?.contains("Patient/") == true
-        }
+        listOfNotNull(resource.subject).filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 

@@ -258,9 +258,7 @@ public object QuestionnaireResponseSearchParams {
       expression = "QuestionnaireResponse.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        listOfNotNull(resource.subject).filter {
-          it.reference?.value?.toString()?.contains("Patient/") == true
-        }
+        listOfNotNull(resource.subject).filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 

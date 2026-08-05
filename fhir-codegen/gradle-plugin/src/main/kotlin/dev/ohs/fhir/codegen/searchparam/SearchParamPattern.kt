@@ -58,6 +58,7 @@ internal sealed interface SearchParamPattern {
     val field: String,
     val value: String,
     val postPath: ResolvedExpression?,
+    val isFieldNullable: Boolean = true,
   ) : SearchParamPattern
 
   /** Anything not matched by the parsers above. Renders as `List<Any>` / `return emptyList()`. */
@@ -93,19 +94,29 @@ internal fun parseSearchParamExpression(
   }
 
   parseWhereExpression(expression)?.let { w ->
-    if (w.isResolveFilter) {
-      resolver.resolve(w.pathBeforeWhere, resourceName)?.let {
-        return SearchParamPattern.WhereResolve(it, w.resolveTargetType!!)
-      }
-    } else {
-      val resolved = resolver.resolve(w.pathBeforeWhere, resourceName)
-      val elementType = resolved?.segments?.lastOrNull()?.leafTypeCode
-      if (resolved != null && elementType != null) {
-        val postPath =
-          if (w.pathAfterWhere != null) {
-            resolver.resolve("$elementType.${w.pathAfterWhere}", elementType) ?: return@let
-          } else null
-        return SearchParamPattern.WhereFilter(resolved, w.filterField!!, w.filterValue!!, postPath)
+    when (w) {
+      is WhereParseResult.Resolve ->
+        resolver.resolve(w.pathBeforeWhere, resourceName)?.let {
+          return SearchParamPattern.WhereResolve(it, w.resolveTargetType)
+        }
+      is WhereParseResult.Filter -> {
+        val resolved = resolver.resolve(w.pathBeforeWhere, resourceName)
+        val elementType = resolved?.segments?.lastOrNull()?.leafTypeCode
+        if (resolved != null && elementType != null) {
+          val postPath =
+            if (w.pathAfterWhere != null) {
+              resolver.resolve("$elementType.${w.pathAfterWhere}", elementType) ?: return@let
+            } else null
+          val fieldSegment =
+            resolver.resolve("$elementType.${w.filterField}", elementType)?.segments?.lastOrNull()
+          return SearchParamPattern.WhereFilter(
+            resolved,
+            w.filterField,
+            w.filterValue,
+            postPath,
+            isFieldNullable = fieldSegment?.isNullable ?: true,
+          )
+        }
       }
     }
   }
@@ -124,34 +135,35 @@ private fun parseElementCastExpression(expression: String): Pair<String, String>
   return null
 }
 
-private data class WhereParseResult(
-  val pathBeforeWhere: String,
-  val isResolveFilter: Boolean,
-  val resolveTargetType: String?,
-  val filterField: String?,
-  val filterValue: String?,
-  val pathAfterWhere: String?,
-)
+private sealed interface WhereParseResult {
+  val pathBeforeWhere: String
+
+  data class Resolve(
+    override val pathBeforeWhere: String,
+    val resolveTargetType: String,
+  ) : WhereParseResult
+
+  data class Filter(
+    override val pathBeforeWhere: String,
+    val filterField: String,
+    val filterValue: String,
+    val pathAfterWhere: String?,
+  ) : WhereParseResult
+}
 
 private fun parseWhereExpression(expression: String): WhereParseResult? {
   val trimmed = expression.trim()
 
   Regex("""(.+)\.where\(resolve\(\)\s+is\s+(\w+)\)""").matchEntire(trimmed)?.let {
-    return WhereParseResult(
+    return WhereParseResult.Resolve(
       pathBeforeWhere = it.groupValues[1],
-      isResolveFilter = true,
       resolveTargetType = it.groupValues[2],
-      filterField = null,
-      filterValue = null,
-      pathAfterWhere = null,
     )
   }
 
   Regex("""(.+)\.where\((\w+)='([^']+)'\)(?:\.(.+))?""").matchEntire(trimmed)?.let {
-    return WhereParseResult(
+    return WhereParseResult.Filter(
       pathBeforeWhere = it.groupValues[1],
-      isResolveFilter = false,
-      resolveTargetType = null,
       filterField = it.groupValues[2],
       filterValue = it.groupValues[3],
       pathAfterWhere = it.groupValues[4].ifEmpty { null },

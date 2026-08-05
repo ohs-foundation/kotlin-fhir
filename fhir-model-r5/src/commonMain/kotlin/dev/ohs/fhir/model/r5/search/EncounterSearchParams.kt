@@ -236,9 +236,7 @@ public object EncounterSearchParams {
       expression = "Encounter.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        listOfNotNull(resource.subject).filter {
-          it.reference?.value?.toString()?.contains("Patient/") == true
-        }
+        listOfNotNull(resource.subject).filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 
@@ -251,7 +249,7 @@ public object EncounterSearchParams {
       extractor = { resource ->
         resource.participant
           .mapNotNull { it.actor }
-          .filter { it.reference?.value?.toString()?.contains("Practitioner/") == true }
+          .filter { it.reference?.value?.contains("Practitioner/") == true }
       },
     )
 

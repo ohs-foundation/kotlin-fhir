@@ -237,7 +237,7 @@ public object AppointmentSearchParams {
       extractor = { resource ->
         resource.participant
           .mapNotNull { it.actor }
-          .filter { it.reference?.value?.toString()?.contains("Location/") == true }
+          .filter { it.reference?.value?.contains("Location/") == true }
       },
     )
 
@@ -258,7 +258,7 @@ public object AppointmentSearchParams {
       extractor = { resource ->
         resource.participant
           .mapNotNull { it.actor }
-          .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
+          .filter { it.reference?.value?.contains("Patient/") == true }
       },
     )
 
@@ -271,7 +271,7 @@ public object AppointmentSearchParams {
       extractor = { resource ->
         resource.participant
           .mapNotNull { it.actor }
-          .filter { it.reference?.value?.toString()?.contains("Practitioner/") == true }
+          .filter { it.reference?.value?.contains("Practitioner/") == true }
       },
     )
 

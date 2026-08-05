@@ -118,7 +118,11 @@ object EnumTypeSpecGenerator {
                   .returns(ClassName.bestGuess(enumClassName))
                   .beginControlFlow("return when (code)")
                   .apply {
-                    fhirEnum.constants.forEach { addStatement("%S -> %L", it.code, it.name) }
+                    fhirEnum.constants
+                      .distinctBy { it.code }
+                      .forEach {
+                        addStatement("%S -> %L", it.code, it.name)
+                      }
                     addStatement(
                       "else -> throw IllegalArgumentException(\"Unknown code \$code for enum %L\")",
                       enumClassName,

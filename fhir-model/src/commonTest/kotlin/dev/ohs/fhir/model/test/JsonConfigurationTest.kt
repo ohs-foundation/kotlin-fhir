@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("RedundantJson")
+
 package dev.ohs.fhir.model.test
 
 import dev.ohs.fhir.model.r4.Patient

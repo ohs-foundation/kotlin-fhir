@@ -47,7 +47,7 @@ public object EpisodeOfCareSearchParams {
       target = listOf(Practitioner::class),
       extractor = { resource ->
         listOfNotNull(resource.careManager).filter {
-          it.reference?.value?.toString()?.contains("Practitioner/") == true
+          it.reference?.value?.contains("Practitioner/") == true
         }
       },
     )

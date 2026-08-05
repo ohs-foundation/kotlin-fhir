@@ -57,7 +57,13 @@ internal object SearchParamExtractFromFunctionBodyEmitter {
           ),
         )
       is SearchParamPattern.WhereFilter ->
-        forWhereFilter(pattern.resolved, pattern.field, pattern.value, pattern.postPath)
+        forWhereFilter(
+          pattern.resolved,
+          pattern.field,
+          pattern.value,
+          pattern.postPath,
+          pattern.isFieldNullable,
+        )
       SearchParamPattern.Unsupported ->
         CodeBlock.of(
           "throw %T(%S)",
@@ -97,12 +103,16 @@ internal object SearchParamExtractFromFunctionBodyEmitter {
     field: String,
     value: String,
     postPath: ResolvedExpression?,
+    isFieldNullable: Boolean,
   ): CodeBlock {
+    val fieldAccess =
+      if (isFieldNullable) CodeBlock.of("it.%N?.value?.toString()", field)
+      else CodeBlock.of("it.%N.value?.toString()", field)
     val filtered =
       CodeBlock.of(
-        "%L.filter { it.%N?.value?.toString() == %S }",
+        "%L.filter { %L == %S }",
         filterBase(resolved.segments),
-        field,
+        fieldAccess,
         value,
       )
     var state: PathExpr = PathExpr.Listed(filtered)
@@ -118,7 +128,7 @@ internal object SearchParamExtractFromFunctionBodyEmitter {
    */
   private fun forWhereResolve(resolved: ResolvedExpression, targetType: String): CodeBlock =
     CodeBlock.of(
-      "%L.filter { it.reference?.value?.toString()?.contains(%S) == true }",
+      "%L.filter { it.reference?.value?.contains(%S) == true }",
       filterBase(resolved.segments),
       "$targetType/",
     )

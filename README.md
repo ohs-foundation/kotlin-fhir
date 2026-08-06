@@ -181,6 +181,14 @@ when (val multipleBirth = patient.multipleBirth) {
 The generated classes reflect the inheritance hierarchy defined by FHIR. For example, `Patient`
 inherits from `DomainResource`, which inherits from `Resource`.
 
+> [!NOTE]
+> FHIR [patterns](https://hl7.org/fhir/patterns.html) (such as `Event`, `Request`, and `Definition`)
+> are excluded from code generation because the specification permits conforming resources to alter
+> element names, types, cardinalities, and value sets. For example, in the `Event` pattern, the
+> occurrence time element is named `effective[x]` in `Observation` but `performed[x]` in
+> `Procedure`, and each resource defines its own distinct status value set. These structural
+> discrepancies make interface inheritance impractical in Kotlin.
+
 ### Mapping FHIR ValueSets to Kotlin Enums
 
 Kotlin enums classes are generated for value sets referenced by elements via

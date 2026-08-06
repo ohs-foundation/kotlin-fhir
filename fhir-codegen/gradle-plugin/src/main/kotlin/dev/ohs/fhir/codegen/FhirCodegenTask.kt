@@ -114,10 +114,10 @@ abstract class FhirCodegenTask : DefaultTask() {
           it.name == "MetadataResource" || it.name == "CanonicalResource"
         }
         .filterNot {
-          // ???
+          // Filter out profiles and specializations where name doesn't match id (e.g. specialized
+          // resource profiles)
           it.kind == StructureDefinition.Kind.RESOURCE && it.name != it.id
         }
-        .filterNot { it.name == "MetadataResource" || it.name == "CanonicalResource" }
         .filterNot {
           // Filter out files like StructureDefinition-hdlcholesterol.json
           it.baseDefinition?.endsWith(it.type) == true

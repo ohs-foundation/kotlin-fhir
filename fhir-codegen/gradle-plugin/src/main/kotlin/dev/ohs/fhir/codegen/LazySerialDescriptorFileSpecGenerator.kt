@@ -52,7 +52,7 @@ import kotlinx.serialization.descriptors.SerialKind
  */
 @OptIn(ExperimentalSerializationApi::class, SealedSerializationApi::class)
 internal class LazySerialDescriptor(provider: () -> SerialDescriptor) : SerialDescriptor {
-  private val delegate by lazy(LazyThreadSafetyMode.NONE, provider)
+  private val delegate by lazy(LazyThreadSafetyMode.PUBLICATION, provider)
   override val serialName: String get() = delegate.serialName
   override val kind: SerialKind get() = delegate.kind
   override val elementsCount: Int get() = delegate.elementsCount

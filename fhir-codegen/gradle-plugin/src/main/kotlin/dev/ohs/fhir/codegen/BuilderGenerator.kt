@@ -46,14 +46,14 @@ private val builderExclusionList =
 /**
  * Adds a nested `Builder` class and `toBuilder` function to the model class in [TypeSpec.Builder].
  */
-internal fun TypeSpec.Builder.addModelBuilderSupport(
+internal fun TypeSpec.Builder.addModelBuilder(
   structureDefinition: StructureDefinition,
   modelClassName: ClassName,
   valueSetMap: Map<String, ValueSet>,
   isBaseClass: Boolean,
 ): TypeSpec.Builder {
-  BuilderSupportGenerator(this, structureDefinition, modelClassName, valueSetMap, isBaseClass)
-    .addResourceBuilderSupport()
+  BuilderGenerator(this, structureDefinition, modelClassName, valueSetMap, isBaseClass)
+    .generateForModel()
   return this
 }
 
@@ -61,32 +61,60 @@ internal fun TypeSpec.Builder.addModelBuilderSupport(
  * Adds a nested `Builder` class and `toBuilder` function to the backbone element in
  * [TypeSpec.Builder].
  */
-internal fun TypeSpec.Builder.addBackboneElementBuilderSupport(
+internal fun TypeSpec.Builder.addBackboneElementBuilder(
   structureDefinition: StructureDefinition,
   backboneElementClassName: ClassName,
   valueSetMap: Map<String, ValueSet>,
   elements: List<Element>,
 ): TypeSpec.Builder {
   // Backbone elements are leaf types — no subclasses, so the toBuilder method is never open.
-  BuilderSupportGenerator(
+  BuilderGenerator(
       this,
       structureDefinition,
       backboneElementClassName,
       valueSetMap,
       isBaseClass = false,
     )
-    .addBackboneElementBuilderSupport(elements)
+    .generateForBackboneElement(elements)
   return this
 }
 
-private class BuilderSupportGenerator(
-  val typeSpecBuilder: TypeSpec.Builder,
-  val structureDefinition: StructureDefinition,
-  val baseClassName: ClassName,
-  val valueSetMap: Map<String, ValueSet>,
-  val isBaseClass: Boolean,
+private class BuilderGenerator(
+  private val typeSpecBuilder: TypeSpec.Builder,
+  private val structureDefinition: StructureDefinition,
+  private val baseClassName: ClassName,
+  private val valueSetMap: Map<String, ValueSet>,
+  private val isBaseClass: Boolean,
 ) {
-  fun addResourceBuilderSupport() {
+  private enum class Kind(
+    val overridesBaseBuilder: Boolean,
+    val overridesBaseProperties: Boolean,
+    val isOpen: Boolean,
+  ) {
+    RESOURCE(
+      overridesBaseBuilder = true,
+      overridesBaseProperties = false,
+      isOpen = false,
+    ),
+    BASE_TYPE(
+      overridesBaseBuilder = false,
+      overridesBaseProperties = false,
+      isOpen = true,
+    ),
+    DERIVED_TYPE(
+      overridesBaseBuilder = true,
+      overridesBaseProperties = true,
+      isOpen = true,
+    ),
+    BACKBONE_ELEMENT(
+      overridesBaseBuilder = false,
+      overridesBaseProperties = false,
+      isOpen = false,
+    ),
+  }
+
+  /** Generates builder support for top-level models (Resources, DataTypes, Primitives). */
+  fun generateForModel() {
     when (structureDefinition.kind) {
       StructureDefinition.Kind.RESOURCE -> {
         when (structureDefinition.name) {
@@ -98,61 +126,14 @@ private class BuilderSupportGenerator(
             addBuilderForDomainResource()
             addToBuilderFunctionForDomainResource()
           }
-          else -> {
-            // Resource classes
-            addBuilderClass(
-              structureDefinition.rootElements,
-              overrideBaseBuilder = true,
-              overrideBaseProperties = false,
-              open = false,
-            )
-            addToBuilderFunction(
-              structureDefinition.rootElements,
-              overrideBaseFunction = true,
-              open = false,
-            )
-          }
+          else -> generate(structureDefinition.rootElements, Kind.RESOURCE)
         }
       }
       StructureDefinition.Kind.PRIMITIVE_TYPE,
       StructureDefinition.Kind.COMPLEX_TYPE -> {
         if (structureDefinition.name !in builderExclusionList) {
-          when {
-            structureDefinition.baseDefinition?.endsWith("Element") == true ||
-              structureDefinition.baseDefinition?.endsWith("DataType") == true ||
-              structureDefinition.baseDefinition?.endsWith("PrimitiveType") == true ||
-              structureDefinition.baseDefinition?.endsWith("BackboneType") == true -> {
-              // Builders for base types, namely types that directly inherit from Element (for
-              // R4 and R4B) or DataType (for R5), do not have base builders.
-              addBuilderClass(
-                structureDefinition.rootElements,
-                overrideBaseBuilder = false,
-                overrideBaseProperties = false,
-                open = true,
-              )
-              addToBuilderFunction(
-                structureDefinition.rootElements,
-                overrideBaseFunction = false,
-                open = isBaseClass,
-              )
-            }
-
-            else -> {
-              addBuilderClass(
-                structureDefinition.rootElements,
-                overrideBaseBuilder = true,
-                overrideBaseProperties = true,
-                // Builder class stays open for simplicity (matches the historical pattern); the
-                // toBuilder fun is only marked open when this class actually has subclasses.
-                open = true,
-              )
-              addToBuilderFunction(
-                structureDefinition.rootElements,
-                overrideBaseFunction = true,
-                open = isBaseClass,
-              )
-            }
-          }
+          val kind = if (isBaseType(structureDefinition)) Kind.BASE_TYPE else Kind.DERIVED_TYPE
+          generate(structureDefinition.rootElements, kind)
         }
       }
 
@@ -160,14 +141,23 @@ private class BuilderSupportGenerator(
     }
   }
 
-  fun addBackboneElementBuilderSupport(elements: List<Element>) {
-    addBuilderClass(
-      elements,
-      overrideBaseBuilder = false,
-      overrideBaseProperties = false,
-      open = false,
-    )
-    addToBuilderFunction(elements, overrideBaseFunction = false, open = false)
+  /** Generates builder support for nested backbone elements. */
+  fun generateForBackboneElement(elements: List<Element>) {
+    generate(elements, Kind.BACKBONE_ELEMENT)
+  }
+
+  /** Core generation pipeline: adds the nested `Builder` class and the `toBuilder()` method. */
+  private fun generate(elements: List<Element>, kind: Kind) {
+    addBuilderClass(elements, kind)
+    addToBuilderFunction(elements, kind)
+  }
+
+  private fun isBaseType(structureDefinition: StructureDefinition): Boolean {
+    val base = structureDefinition.baseDefinition ?: return false
+    return base.endsWith("Element") ||
+      base.endsWith("DataType") ||
+      base.endsWith("PrimitiveType") ||
+      base.endsWith("BackboneType")
   }
 
   private fun addBuilderForResource() {
@@ -217,38 +207,32 @@ private class BuilderSupportGenerator(
     )
   }
 
-  private fun addBuilderClass(
-    elements: List<Element>,
-    overrideBaseBuilder: Boolean,
-    overrideBaseProperties: Boolean,
-    open: Boolean,
-  ) =
+  private fun addBuilderClass(elements: List<Element>, kind: Kind) =
     typeSpecBuilder.addType(
       TypeSpec.classBuilder(baseClassName.nestedClass("Builder"))
         .apply {
-          if (overrideBaseBuilder) {
+          if (kind.overridesBaseBuilder) {
             structureDefinition.baseDefinition?.substringAfterLast('/')?.capitalized()?.also {
               superclass(ClassName(baseClassName.packageName, it).nestedClass("Builder"))
             }
           }
-          if (open) {
+          if (kind.isOpen) {
             addModifiers(KModifier.OPEN)
           }
           buildBuilderProperties(
             this@apply,
             elements,
-            override = overrideBaseProperties,
-            open = open,
-            overridesResourceId =
-              overrideBaseBuilder && structureDefinition.kind == StructureDefinition.Kind.RESOURCE,
+            override = kind.overridesBaseProperties,
+            open = kind.isOpen,
+            overridesResourceId = kind == Kind.RESOURCE,
           )
         }
         .addFunction(
           FunSpec.builder("build")
             .apply {
               val modifiers = buildList {
-                if (overrideBaseBuilder) add(KModifier.OVERRIDE)
-                if (open) add(KModifier.OPEN)
+                if (kind.overridesBaseBuilder) add(KModifier.OVERRIDE)
+                if (kind.isOpen) add(KModifier.OPEN)
               }
               if (modifiers.isNotEmpty()) addModifiers(modifiers)
             }
@@ -334,18 +318,14 @@ private class BuilderSupportGenerator(
     builderTypeSpecBuilder.primaryConstructor(constructorBuilder.build())
   }
 
-  private fun addToBuilderFunction(
-    elements: List<Element>,
-    overrideBaseFunction: Boolean,
-    open: Boolean,
-  ) {
+  private fun addToBuilderFunction(elements: List<Element>, kind: Kind) {
     val builderClassName = baseClassName.nestedClass("Builder")
     typeSpecBuilder.addFunction(
       FunSpec.builder("toBuilder")
         .apply {
           val modifiers = buildList {
-            if (overrideBaseFunction) add(KModifier.OVERRIDE)
-            if (open) add(KModifier.OPEN)
+            if (kind.overridesBaseBuilder) add(KModifier.OVERRIDE)
+            if (kind.isOpen && isBaseClass) add(KModifier.OPEN)
           }
           if (modifiers.isNotEmpty()) addModifiers(modifiers)
         }

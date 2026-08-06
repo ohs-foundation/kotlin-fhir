@@ -36,21 +36,24 @@ class SerializationExceptionTest :
       context("$fhirVersionName Missing Required Properties") {
         test("$fhirVersionName missing required enum property throws SerializationException") {
           val json = """{"resourceType":"Questionnaire","title":"Sample"}"""
-          val ex =
+          val exception =
             assertFailsWith<SerializationException> {
               testJson.decodeFromString(serializer(resourceClass.createType()), json)
             }
-          assertEquals("Missing required property 'status' on Questionnaire", ex.message)
+          assertEquals("Missing required property 'status' on Questionnaire", exception.message)
         }
 
         test("$fhirVersionName missing required primitive property throws SerializationException") {
           val json =
             """{"resourceType":"Questionnaire","status":"draft","item":[{"text":"Question"}]}"""
-          val ex =
+          val exception =
             assertFailsWith<SerializationException> {
               testJson.decodeFromString(serializer(resourceClass.createType()), json)
             }
-          assertEquals("Missing required property 'linkId' on Questionnaire.Item", ex.message)
+          assertEquals(
+            "Missing required property 'linkId' on Questionnaire.Item",
+            exception.message,
+          )
         }
       }
     }

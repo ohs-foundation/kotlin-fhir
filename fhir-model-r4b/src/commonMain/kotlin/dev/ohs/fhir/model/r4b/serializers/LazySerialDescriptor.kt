@@ -34,6 +34,8 @@ import kotlinx.serialization.descriptors.SerialKind
  */
 @OptIn(ExperimentalSerializationApi::class, SealedSerializationApi::class)
 internal class LazySerialDescriptor(provider: () -> SerialDescriptor) : SerialDescriptor {
+  // Uses PUBLICATION for lock-free thread safety, avoiding race conditions (unlike NONE)
+  // and mutex locks/deadlocks during cyclic resolution (unlike SYNCHRONIZED).
   private val delegate by lazy(LazyThreadSafetyMode.PUBLICATION, provider)
   override val serialName: String
     get() = delegate.serialName

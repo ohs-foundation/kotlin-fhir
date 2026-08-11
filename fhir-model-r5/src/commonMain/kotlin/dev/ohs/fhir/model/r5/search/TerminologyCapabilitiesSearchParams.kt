@@ -26,39 +26,37 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.TerminologyCapabilities
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [TerminologyCapabilities] resource type. */
 public object TerminologyCapabilitiesSearchParams {
-  public val context: SearchParam<TerminologyCapabilities, Any> =
+  public val context: SearchParam<TerminologyCapabilities, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(TerminologyCapabilities.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(TerminologyCapabilities.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<TerminologyCapabilities, Any> =
+  public val contextQuantity: SearchParam<TerminologyCapabilities, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(TerminologyCapabilities.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(TerminologyCapabilities.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -171,8 +169,7 @@ public object TerminologyCapabilitiesSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<TerminologyCapabilities, *>> =
-    listOf(context, contextQuantity)
+  public val unsupported: List<SearchParam<TerminologyCapabilities, *>> = listOf()
 
   /**
    * Supported search parameters for the TerminologyCapabilities resource type. Iterating `all` and
@@ -181,6 +178,8 @@ public object TerminologyCapabilitiesSearchParams {
    */
   public val all: List<SearchParam<TerminologyCapabilities, *>> =
     listOf(
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,

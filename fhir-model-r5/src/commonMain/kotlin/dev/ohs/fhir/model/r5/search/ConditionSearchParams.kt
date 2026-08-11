@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.ActivityDefinition
 import dev.ohs.fhir.model.r5.ActorDefinition
 import dev.ohs.fhir.model.r5.AdministrableProductDefinition
 import dev.ohs.fhir.model.r5.AdverseEvent
+import dev.ohs.fhir.model.r5.Age
 import dev.ohs.fhir.model.r5.AllergyIntolerance
 import dev.ohs.fhir.model.r5.Appointment
 import dev.ohs.fhir.model.r5.AppointmentResponse
@@ -160,6 +161,7 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Slot
 import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.SpecimenDefinition
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.StructureMap
 import dev.ohs.fhir.model.r5.Subscription
@@ -184,46 +186,38 @@ import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Condition] resource type. */
 public object ConditionSearchParams {
-  public val abatementAge: SearchParam<Condition, Any> =
+  public val abatementAge: SearchParam<Condition, Age> =
     SearchParam(
       name = "abatement-age",
       type = SearchParamType.Quantity,
       expression = "Condition.abatement.ofType(Age)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'abatement-age' has expression 'Condition.abatement.ofType(Age)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.abatement as? Condition.Abatement.Age)?.value)
       },
     )
 
-  public val abatementDate: SearchParam<Condition, Any> =
+  public val abatementDate: SearchParam<Condition, DateTime> =
     SearchParam(
       name = "abatement-date",
       type = SearchParamType.Date,
       expression = "Condition.abatement.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'abatement-date' has expression 'Condition.abatement.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.abatement as? Condition.Abatement.DateTime)?.value)
       },
     )
 
-  public val abatementString: SearchParam<Condition, Any> =
+  public val abatementString: SearchParam<Condition, String> =
     SearchParam(
       name = "abatement-string",
       type = SearchParamType.String,
       expression = "Condition.abatement.ofType(string)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'abatement-string' has expression 'Condition.abatement.ofType(string)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.abatement as? Condition.Abatement.String)?.value)
       },
     )
 
@@ -453,40 +447,30 @@ public object ConditionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val onsetAge: SearchParam<Condition, Any> =
+  public val onsetAge: SearchParam<Condition, Age> =
     SearchParam(
       name = "onset-age",
       type = SearchParamType.Quantity,
       expression = "Condition.onset.ofType(Age)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'onset-age' has expression 'Condition.onset.ofType(Age)' which is not yet supported."
-        )
-      },
+      extractor = { resource -> listOfNotNull((resource.onset as? Condition.Onset.Age)?.value) },
     )
 
-  public val onsetDate: SearchParam<Condition, Any> =
+  public val onsetDate: SearchParam<Condition, DateTime> =
     SearchParam(
       name = "onset-date",
       type = SearchParamType.Date,
       expression = "Condition.onset.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'onset-date' has expression 'Condition.onset.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.onset as? Condition.Onset.DateTime)?.value)
       },
     )
 
-  public val onsetInfo: SearchParam<Condition, Any> =
+  public val onsetInfo: SearchParam<Condition, String> =
     SearchParam(
       name = "onset-info",
       type = SearchParamType.String,
       expression = "Condition.onset.ofType(string)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'onset-info' has expression 'Condition.onset.ofType(string)' which is not yet supported."
-        )
-      },
+      extractor = { resource -> listOfNotNull((resource.onset as? Condition.Onset.String)?.value) },
     )
 
   public val participantActor: SearchParam<Condition, Reference> =
@@ -572,8 +556,7 @@ public object ConditionSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<Condition, *>> =
-    listOf(abatementAge, abatementDate, abatementString, onsetAge, onsetDate, onsetInfo)
+  public val unsupported: CollectionsList<SearchParam<Condition, *>> = listOf()
 
   /**
    * Supported search parameters for the Condition resource type. Iterating `all` and calling
@@ -582,6 +565,9 @@ public object ConditionSearchParams {
    */
   public val all: CollectionsList<SearchParam<Condition, *>> =
     listOf(
+      abatementAge,
+      abatementDate,
+      abatementString,
       bodySite,
       category,
       clinicalStatus,
@@ -590,6 +576,9 @@ public object ConditionSearchParams {
       evidence,
       evidenceDetail,
       identifier,
+      onsetAge,
+      onsetDate,
+      onsetInfo,
       participantActor,
       participantFunction,
       patient,

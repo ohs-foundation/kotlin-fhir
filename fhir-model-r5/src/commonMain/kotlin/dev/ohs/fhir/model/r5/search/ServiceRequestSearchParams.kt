@@ -47,7 +47,6 @@ import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -154,15 +153,13 @@ public object ServiceRequestSearchParams {
       extractor = { resource -> listOf(resource.intent) },
     )
 
-  public val occurrence: SearchParam<ServiceRequest, Any> =
+  public val occurrence: SearchParam<ServiceRequest, DateTime> =
     SearchParam(
       name = "occurrence",
       type = SearchParamType.Date,
       expression = "ServiceRequest.occurrence.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'occurrence' has expression 'ServiceRequest.occurrence.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? ServiceRequest.Occurrence.DateTime)?.value)
       },
     )
 
@@ -277,7 +274,7 @@ public object ServiceRequestSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<ServiceRequest, *>> = listOf(occurrence)
+  public val unsupported: List<SearchParam<ServiceRequest, *>> = listOf()
 
   /**
    * Supported search parameters for the ServiceRequest resource type. Iterating `all` and calling
@@ -298,6 +295,7 @@ public object ServiceRequestSearchParams {
       instantiatesCanonical,
       instantiatesUri,
       intent,
+      occurrence,
       patient,
       performer,
       performerType,

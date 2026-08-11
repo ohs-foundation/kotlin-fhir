@@ -48,6 +48,7 @@ import dev.ohs.fhir.model.r5.ClaimResponse
 import dev.ohs.fhir.model.r5.ClinicalImpression
 import dev.ohs.fhir.model.r5.ClinicalUseDefinition
 import dev.ohs.fhir.model.r5.CodeSystem
+import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.Communication
 import dev.ohs.fhir.model.r5.CommunicationRequest
 import dev.ohs.fhir.model.r5.CompartmentDefinition
@@ -184,7 +185,6 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -216,15 +216,13 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> resource.destination.mapNotNull { it.name } },
     )
 
-  public val event: SearchParam<MessageHeader, Any> =
+  public val event: SearchParam<MessageHeader, Coding> =
     SearchParam(
       name = "event",
       type = SearchParamType.Token,
       expression = "MessageHeader.event.ofType(Coding)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'event' has expression 'MessageHeader.event.ofType(Coding)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.event as? MessageHeader.Event.Coding)?.value)
       },
     )
 
@@ -455,7 +453,7 @@ public object MessageHeaderSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<MessageHeader, *>> = listOf(event)
+  public val unsupported: CollectionsList<SearchParam<MessageHeader, *>> = listOf()
 
   /**
    * Supported search parameters for the MessageHeader resource type. Iterating `all` and calling
@@ -467,6 +465,7 @@ public object MessageHeaderSearchParams {
       author,
       code,
       destination,
+      event,
       focus,
       `receiver`,
       responseId,

@@ -27,38 +27,36 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ActorDefinition] resource type. */
 public object ActorDefinitionSearchParams {
-  public val context: SearchParam<ActorDefinition, Any> =
+  public val context: SearchParam<ActorDefinition, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(ActorDefinition.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(ActorDefinition.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<ActorDefinition, Any> =
+  public val contextQuantity: SearchParam<ActorDefinition, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(ActorDefinition.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(ActorDefinition.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -171,7 +169,7 @@ public object ActorDefinitionSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<ActorDefinition, *>> = listOf(context, contextQuantity)
+  public val unsupported: List<SearchParam<ActorDefinition, *>> = listOf()
 
   /**
    * Supported search parameters for the ActorDefinition resource type. Iterating `all` and calling
@@ -180,6 +178,8 @@ public object ActorDefinitionSearchParams {
    */
   public val all: List<SearchParam<ActorDefinition, *>> =
     listOf(
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,

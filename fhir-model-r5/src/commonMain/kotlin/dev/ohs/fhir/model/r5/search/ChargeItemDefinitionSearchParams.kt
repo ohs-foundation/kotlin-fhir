@@ -28,38 +28,36 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ChargeItemDefinition] resource type. */
 public object ChargeItemDefinitionSearchParams {
-  public val context: SearchParam<ChargeItemDefinition, Any> =
+  public val context: SearchParam<ChargeItemDefinition, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(ChargeItemDefinition.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(ChargeItemDefinition.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<ChargeItemDefinition, Any> =
+  public val contextQuantity: SearchParam<ChargeItemDefinition, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(ChargeItemDefinition.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(ChargeItemDefinition.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -172,8 +170,7 @@ public object ChargeItemDefinitionSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<ChargeItemDefinition, *>> =
-    listOf(context, contextQuantity)
+  public val unsupported: List<SearchParam<ChargeItemDefinition, *>> = listOf()
 
   /**
    * Supported search parameters for the ChargeItemDefinition resource type. Iterating `all` and
@@ -182,6 +179,8 @@ public object ChargeItemDefinitionSearchParams {
    */
   public val all: List<SearchParam<ChargeItemDefinition, *>> =
     listOf(
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,

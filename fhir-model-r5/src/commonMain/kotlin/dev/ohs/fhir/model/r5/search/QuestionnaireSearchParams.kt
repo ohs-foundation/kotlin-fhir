@@ -27,13 +27,13 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -47,27 +47,25 @@ public object QuestionnaireSearchParams {
       extractor = { resource -> resource.code },
     )
 
-  public val context: SearchParam<Questionnaire, Any> =
+  public val context: SearchParam<Questionnaire, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(Questionnaire.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(Questionnaire.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<Questionnaire, Any> =
+  public val contextQuantity: SearchParam<Questionnaire, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(Questionnaire.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(Questionnaire.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -220,7 +218,7 @@ public object QuestionnaireSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Questionnaire, *>> = listOf(context, contextQuantity)
+  public val unsupported: List<SearchParam<Questionnaire, *>> = listOf()
 
   /**
    * Supported search parameters for the Questionnaire resource type. Iterating `all` and calling
@@ -230,6 +228,8 @@ public object QuestionnaireSearchParams {
   public val all: List<SearchParam<Questionnaire, *>> =
     listOf(
       comboCode,
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,

@@ -38,21 +38,18 @@ import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Immunization] resource type. */
 public object ImmunizationSearchParams {
-  public val date: SearchParam<Immunization, Any> =
+  public val date: SearchParam<Immunization, DateTime> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
       expression = "(Immunization.occurrence.ofType(dateTime))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'date' has expression '(Immunization.occurrence.ofType(dateTime))' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? Immunization.Occurrence.DateTime)?.value)
       },
     )
 
@@ -196,7 +193,7 @@ public object ImmunizationSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Immunization, *>> = listOf(date)
+  public val unsupported: List<SearchParam<Immunization, *>> = listOf()
 
   /**
    * Supported search parameters for the Immunization resource type. Iterating `all` and calling
@@ -205,6 +202,7 @@ public object ImmunizationSearchParams {
    */
   public val all: List<SearchParam<Immunization, *>> =
     listOf(
+      date,
       identifier,
       location,
       lotNumber,

@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CarePlan
 import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
@@ -50,7 +51,6 @@ import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -96,15 +96,13 @@ public object DiagnosticReportSearchParams {
       extractor = { resource -> resource.conclusionCode },
     )
 
-  public val date: SearchParam<DiagnosticReport, Any> =
+  public val date: SearchParam<DiagnosticReport, DateTime> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
       expression = "DiagnosticReport.effective.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'date' has expression 'DiagnosticReport.effective.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.effective as? DiagnosticReport.Effective.DateTime)?.value)
       },
     )
 
@@ -233,7 +231,7 @@ public object DiagnosticReportSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<DiagnosticReport, *>> = listOf(date)
+  public val unsupported: List<SearchParam<DiagnosticReport, *>> = listOf()
 
   /**
    * Supported search parameters for the DiagnosticReport resource type. Iterating `all` and calling
@@ -246,6 +244,7 @@ public object DiagnosticReportSearchParams {
       category,
       code,
       conclusion,
+      date,
       encounter,
       identifier,
       issued,

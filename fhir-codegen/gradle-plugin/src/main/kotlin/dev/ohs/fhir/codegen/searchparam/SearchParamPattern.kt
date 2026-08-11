@@ -76,24 +76,30 @@ internal fun parseSearchParamExpression(
   resourceName: String,
   resolver: FhirPathExpressionResolver,
 ): SearchParamPattern {
-  resolver.resolve(expression, resourceName)?.let {
+  val unwrapped = unwrapOuterParentheses(expression)
+
+  resolver.resolve(unwrapped, resourceName)?.let {
     return SearchParamPattern.SimplePath(it)
   }
 
-  parseElementCastExpression(expression)?.let { (path, target) ->
+  parseElementCastExpression(unwrapped)?.let { (path, target) ->
     val resolved = resolver.resolve(path, resourceName, allowChoiceAtLeaf = true)
-    if (resolved?.segments?.lastOrNull()?.isChoiceType == true) {
-      return SearchParamPattern.ElementCast(resolved, target)
+    val leaf = resolved?.segments?.lastOrNull()
+    if (leaf?.isChoiceType == true) {
+      val validTypes = leaf.choiceTypeCodes ?: emptyList()
+      if (validTypes.any { it.equals(target, ignoreCase = true) }) {
+        return SearchParamPattern.ElementCast(resolved, target)
+      }
     }
   }
 
-  resolver.resolve(expression, resourceName, allowChoiceAtLeaf = true)?.let { resolved ->
+  resolver.resolve(unwrapped, resourceName, allowChoiceAtLeaf = true)?.let { resolved ->
     if (resolved.segments.lastOrNull()?.isChoiceType == true) {
       return SearchParamPattern.ElementNoCast(resolved)
     }
   }
 
-  parseWhereExpression(expression)?.let { w ->
+  parseWhereExpression(unwrapped)?.let { w ->
     when (w) {
       is WhereParseResult.Resolve ->
         resolver.resolve(w.pathBeforeWhere, resourceName)?.let {
@@ -124,12 +130,39 @@ internal fun parseSearchParamExpression(
   return SearchParamPattern.Unsupported
 }
 
+internal fun unwrapOuterParentheses(expression: String): String {
+  var trimmed = expression.trim()
+  while (trimmed.startsWith("(") && trimmed.endsWith(")")) {
+    var depth = 0
+    var matchedAll = true
+    for (i in 0 until trimmed.length - 1) {
+      if (trimmed[i] == '(') depth++
+      else if (trimmed[i] == ')') {
+        depth--
+        if (depth == 0) {
+          matchedAll = false
+          break
+        }
+      }
+    }
+    if (matchedAll && depth == 1) {
+      trimmed = trimmed.substring(1, trimmed.length - 1).trim()
+    } else {
+      break
+    }
+  }
+  return trimmed
+}
+
 private fun parseElementCastExpression(expression: String): Pair<String, String>? {
-  val trimmed = expression.trim()
-  Regex("""\((.+)\s+as\s+(\w+)\)""").matchEntire(trimmed)?.let {
+  val trimmed = unwrapOuterParentheses(expression)
+  Regex("""(.+)\s+as\s+(\w+)""").matchEntire(trimmed)?.let {
     return it.groupValues[1].trim() to it.groupValues[2].trim()
   }
   Regex("""(.+)\.as\((\w+)\)""").matchEntire(trimmed)?.let {
+    return it.groupValues[1].trim() to it.groupValues[2].trim()
+  }
+  Regex("""(.+)\.ofType\((\w+)\)""").matchEntire(trimmed)?.let {
     return it.groupValues[1].trim() to it.groupValues[2].trim()
   }
   return null
@@ -152,7 +185,7 @@ private sealed interface WhereParseResult {
 }
 
 private fun parseWhereExpression(expression: String): WhereParseResult? {
-  val trimmed = expression.trim()
+  val trimmed = unwrapOuterParentheses(expression)
 
   Regex("""(.+)\.where\(resolve\(\)\s+is\s+(\w+)\)""").matchEntire(trimmed)?.let {
     return WhereParseResult.Resolve(

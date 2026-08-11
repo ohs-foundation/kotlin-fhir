@@ -23,6 +23,8 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Condition
+import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Decimal
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Group
@@ -34,8 +36,6 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -50,15 +50,13 @@ public object RiskAssessmentSearchParams {
       extractor = { resource -> listOfNotNull(resource.condition) },
     )
 
-  public val date: SearchParam<RiskAssessment, Any> =
+  public val date: SearchParam<RiskAssessment, DateTime> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
       expression = "(RiskAssessment.occurrence.ofType(dateTime))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'date' has expression '(RiskAssessment.occurrence.ofType(dateTime))' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? RiskAssessment.Occurrence.DateTime)?.value)
       },
     )
 
@@ -114,15 +112,15 @@ public object RiskAssessmentSearchParams {
       extractor = { resource -> listOfNotNull(resource.performer) },
     )
 
-  public val probability: SearchParam<RiskAssessment, Any> =
+  public val probability: SearchParam<RiskAssessment, Decimal> =
     SearchParam(
       name = "probability",
       type = SearchParamType.Number,
       expression = "RiskAssessment.prediction.probability.ofType(decimal)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'probability' has expression 'RiskAssessment.prediction.probability.ofType(decimal)' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.prediction.mapNotNull {
+          (it.probability as? RiskAssessment.Prediction.Probability.Decimal)?.value
+        }
       },
     )
 
@@ -148,7 +146,7 @@ public object RiskAssessmentSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<RiskAssessment, *>> = listOf(date, probability)
+  public val unsupported: List<SearchParam<RiskAssessment, *>> = listOf()
 
   /**
    * Supported search parameters for the RiskAssessment resource type. Iterating `all` and calling
@@ -156,5 +154,16 @@ public object RiskAssessmentSearchParams {
    * list.
    */
   public val all: List<SearchParam<RiskAssessment, *>> =
-    listOf(condition, encounter, identifier, method, patient, performer, risk, subject)
+    listOf(
+      condition,
+      date,
+      encounter,
+      identifier,
+      method,
+      patient,
+      performer,
+      probability,
+      risk,
+      subject,
+    )
 }

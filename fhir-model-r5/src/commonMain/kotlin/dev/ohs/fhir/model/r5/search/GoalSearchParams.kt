@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Condition
+import dev.ohs.fhir.model.r5.Date
 import dev.ohs.fhir.model.r5.Goal
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -38,7 +39,6 @@ import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -114,16 +114,12 @@ public object GoalSearchParams {
       },
     )
 
-  public val startDate: SearchParam<Goal, Any> =
+  public val startDate: SearchParam<Goal, Date> =
     SearchParam(
       name = "start-date",
       type = SearchParamType.Date,
       expression = "(Goal.start.ofType(date))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'start-date' has expression '(Goal.start.ofType(date))' which is not yet supported."
-        )
-      },
+      extractor = { resource -> listOfNotNull((resource.start as? Goal.Start.Date)?.value) },
     )
 
   public val subject: SearchParam<Goal, Reference> =
@@ -135,15 +131,13 @@ public object GoalSearchParams {
       extractor = { resource -> listOf(resource.subject) },
     )
 
-  public val targetDate: SearchParam<Goal, Any> =
+  public val targetDate: SearchParam<Goal, Date> =
     SearchParam(
       name = "target-date",
       type = SearchParamType.Date,
       expression = "(Goal.target.due.ofType(date))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'target-date' has expression '(Goal.target.due.ofType(date))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.target.mapNotNull { (it.due as? Goal.Target.Due.Date)?.value }
       },
     )
 
@@ -160,7 +154,7 @@ public object GoalSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Goal, *>> = listOf(startDate, targetDate)
+  public val unsupported: List<SearchParam<Goal, *>> = listOf()
 
   /**
    * Supported search parameters for the Goal resource type. Iterating `all` and calling
@@ -176,7 +170,9 @@ public object GoalSearchParams {
       identifier,
       lifecycleStatus,
       patient,
+      startDate,
       subject,
+      targetDate,
       targetMeasure,
     )
 }

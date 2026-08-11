@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Condition
+import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.Encounter
@@ -39,7 +40,6 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -53,15 +53,13 @@ public object MedicationAdministrationSearchParams {
       extractor = { resource -> listOfNotNull(resource.medication.concept) },
     )
 
-  public val date: SearchParam<MedicationAdministration, Any> =
+  public val date: SearchParam<MedicationAdministration, DateTime> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
       expression = "MedicationAdministration.occurence.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'date' has expression 'MedicationAdministration.occurence.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurence as? MedicationAdministration.Occurence.DateTime)?.value)
       },
     )
 
@@ -191,7 +189,7 @@ public object MedicationAdministrationSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<MedicationAdministration, *>> = listOf(date)
+  public val unsupported: List<SearchParam<MedicationAdministration, *>> = listOf()
 
   /**
    * Supported search parameters for the MedicationAdministration resource type. Iterating `all` and
@@ -201,6 +199,7 @@ public object MedicationAdministrationSearchParams {
   public val all: List<SearchParam<MedicationAdministration, *>> =
     listOf(
       code,
+      date,
       device,
       encounter,
       identifier,

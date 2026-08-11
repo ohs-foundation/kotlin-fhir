@@ -30,7 +30,6 @@ import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -93,16 +92,16 @@ public object SubstanceSearchParams {
       extractor = { resource -> listOfNotNull(resource.status) },
     )
 
-  public val substanceReference: SearchParam<Substance, Any> =
+  public val substanceReference: SearchParam<Substance, Reference> =
     SearchParam(
       name = "substance-reference",
       type = SearchParamType.Reference,
       expression = "(Substance.ingredient.substance.ofType(Reference))",
       target = listOf(Substance::class),
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'substance-reference' has expression '(Substance.ingredient.substance.ofType(Reference))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.ingredient.mapNotNull {
+          (it.substance as? Substance.Ingredient.Substance.Reference)?.value
+        }
       },
     )
 
@@ -111,7 +110,7 @@ public object SubstanceSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Substance, *>> = listOf(substanceReference)
+  public val unsupported: List<SearchParam<Substance, *>> = listOf()
 
   /**
    * Supported search parameters for the Substance resource type. Iterating `all` and calling
@@ -119,5 +118,5 @@ public object SubstanceSearchParams {
    * list.
    */
   public val all: List<SearchParam<Substance, *>> =
-    listOf(category, code, codeReference, expiry, identifier, quantity, status)
+    listOf(category, code, codeReference, expiry, identifier, quantity, status, substanceReference)
 }

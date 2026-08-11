@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -34,7 +35,6 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -48,15 +48,13 @@ public object NutritionIntakeSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val date: SearchParam<NutritionIntake, Any> =
+  public val date: SearchParam<NutritionIntake, DateTime> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
       expression = "NutritionIntake.occurrence.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'date' has expression 'NutritionIntake.occurrence.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? NutritionIntake.Occurrence.DateTime)?.value)
       },
     )
 
@@ -138,7 +136,7 @@ public object NutritionIntakeSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<NutritionIntake, *>> = listOf(date)
+  public val unsupported: List<SearchParam<NutritionIntake, *>> = listOf()
 
   /**
    * Supported search parameters for the NutritionIntake resource type. Iterating `all` and calling
@@ -146,5 +144,5 @@ public object NutritionIntakeSearchParams {
    * list.
    */
   public val all: List<SearchParam<NutritionIntake, *>> =
-    listOf(code, encounter, identifier, nutrition, patient, source, status, subject)
+    listOf(code, date, encounter, identifier, nutrition, patient, source, status, subject)
 }

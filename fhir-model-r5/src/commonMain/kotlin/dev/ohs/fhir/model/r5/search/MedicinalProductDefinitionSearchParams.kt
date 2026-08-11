@@ -27,25 +27,24 @@ import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.MedicinalProductDefinition
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.PractitionerRole
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductDefinition] resource type. */
 public object MedicinalProductDefinitionSearchParams {
-  public val characteristic: SearchParam<MedicinalProductDefinition, Any> =
+  public val characteristic: SearchParam<MedicinalProductDefinition, Quantity> =
     SearchParam(
       name = "characteristic",
       type = SearchParamType.Token,
       expression = "MedicinalProductDefinition.characteristic.value.ofType(Quantity)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'characteristic' has expression 'MedicinalProductDefinition.characteristic.value.ofType(Quantity)' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.characteristic.mapNotNull {
+          (it.`value` as? MedicinalProductDefinition.Characteristic.Value.Quantity)?.value
+        }
       },
     )
 
@@ -144,7 +143,7 @@ public object MedicinalProductDefinitionSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<MedicinalProductDefinition, *>> = listOf(characteristic)
+  public val unsupported: List<SearchParam<MedicinalProductDefinition, *>> = listOf()
 
   /**
    * Supported search parameters for the MedicinalProductDefinition resource type. Iterating `all`
@@ -153,6 +152,7 @@ public object MedicinalProductDefinitionSearchParams {
    */
   public val all: List<SearchParam<MedicinalProductDefinition, *>> =
     listOf(
+      characteristic,
       characteristicType,
       contact,
       domain,

@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -38,7 +39,6 @@ import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -61,14 +61,14 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.collection?.bodySite?.reference) },
     )
 
-  public val collected: SearchParam<Specimen, Any> =
+  public val collected: SearchParam<Specimen, DateTime> =
     SearchParam(
       name = "collected",
       type = SearchParamType.Date,
       expression = "Specimen.collection.collected.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'collected' has expression 'Specimen.collection.collected.ofType(dateTime)' which is not yet supported."
+      extractor = { resource ->
+        listOfNotNull(
+          (resource.collection?.collected as? Specimen.Collection.Collected.DateTime)?.value
         )
       },
     )
@@ -171,7 +171,7 @@ public object SpecimenSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Specimen, *>> = listOf(collected)
+  public val unsupported: List<SearchParam<Specimen, *>> = listOf()
 
   /**
    * Supported search parameters for the Specimen resource type. Iterating `all` and calling
@@ -182,6 +182,7 @@ public object SpecimenSearchParams {
     listOf(
       accession,
       bodysite,
+      collected,
       collector,
       containerDevice,
       identifier,

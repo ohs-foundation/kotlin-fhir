@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.ContactPoint
 import dev.ohs.fhir.model.r5.Date
+import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.HumanName
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
@@ -107,15 +108,13 @@ public object PatientSearchParams {
       extractor = { resource -> listOfNotNull(resource.birthDate) },
     )
 
-  public val deathDate: SearchParam<Patient, Any> =
+  public val deathDate: SearchParam<Patient, DateTime> =
     SearchParam(
       name = "death-date",
       type = SearchParamType.Date,
       expression = "(Patient.deceased.ofType(dateTime))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'death-date' has expression '(Patient.deceased.ofType(dateTime))' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.deceased as? Patient.Deceased.DateTime)?.value)
       },
     )
 
@@ -247,7 +246,7 @@ public object PatientSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Patient, *>> = listOf(deathDate, deceased)
+  public val unsupported: List<SearchParam<Patient, *>> = listOf(deceased)
 
   /**
    * Supported search parameters for the Patient resource type. Iterating `all` and calling
@@ -264,6 +263,7 @@ public object PatientSearchParams {
       addressState,
       addressUse,
       birthdate,
+      deathDate,
       email,
       family,
       gender,

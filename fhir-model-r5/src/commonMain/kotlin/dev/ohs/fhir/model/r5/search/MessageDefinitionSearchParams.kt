@@ -30,12 +30,12 @@ import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.MessageDefinition
 import dev.ohs.fhir.model.r5.PlanDefinition
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -49,27 +49,25 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.category) },
     )
 
-  public val context: SearchParam<MessageDefinition, Any> =
+  public val context: SearchParam<MessageDefinition, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(MessageDefinition.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(MessageDefinition.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<MessageDefinition, Any> =
+  public val contextQuantity: SearchParam<MessageDefinition, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(MessageDefinition.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(MessageDefinition.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -113,15 +111,13 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val event: SearchParam<MessageDefinition, Any> =
+  public val event: SearchParam<MessageDefinition, Coding> =
     SearchParam(
       name = "event",
       type = SearchParamType.Token,
       expression = "MessageDefinition.event.ofType(Coding)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'event' has expression 'MessageDefinition.event.ofType(Coding)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.event as? MessageDefinition.Event.Coding)?.value)
       },
     )
 
@@ -211,8 +207,7 @@ public object MessageDefinitionSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<MessageDefinition, *>> =
-    listOf(context, contextQuantity, event)
+  public val unsupported: List<SearchParam<MessageDefinition, *>> = listOf()
 
   /**
    * Supported search parameters for the MessageDefinition resource type. Iterating `all` and
@@ -222,11 +217,14 @@ public object MessageDefinitionSearchParams {
   public val all: List<SearchParam<MessageDefinition, *>> =
     listOf(
       category,
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
       date,
       description,
+      event,
       focus,
       identifier,
       jurisdiction,

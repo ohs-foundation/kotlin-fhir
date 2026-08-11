@@ -187,7 +187,6 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -477,7 +476,7 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> listOf(resource.intent) },
     )
 
-  public val participant: SearchParam<RequestOrchestration, Any> =
+  public val participant: SearchParam<RequestOrchestration, Reference> =
     SearchParam(
       name = "participant",
       type = SearchParamType.Reference,
@@ -498,10 +497,12 @@ public object RequestOrchestrationSearchParams {
           PractitionerRole::class,
           Patient::class,
         ),
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'participant' has expression 'RequestOrchestration.action.participant.actor.ofType(Reference)' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.action
+          .flatMap { it.participant }
+          .mapNotNull {
+            (it.actor as? RequestOrchestration.Action.Participant.Actor.Reference)?.value
+          }
       },
     )
 
@@ -558,8 +559,7 @@ public object RequestOrchestrationSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<RequestOrchestration, *>> =
-    listOf(participant)
+  public val unsupported: CollectionsList<SearchParam<RequestOrchestration, *>> = listOf()
 
   /**
    * Supported search parameters for the RequestOrchestration resource type. Iterating `all` and
@@ -578,6 +578,7 @@ public object RequestOrchestrationSearchParams {
       instantiatesCanonical,
       instantiatesUri,
       intent,
+      participant,
       patient,
       priority,
       status,

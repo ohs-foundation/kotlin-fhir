@@ -149,6 +149,7 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Provenance
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.QuestionnaireResponse
 import dev.ohs.fhir.model.r5.RegulatedAuthorization
@@ -192,7 +193,6 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -206,27 +206,25 @@ public object NamingSystemSearchParams {
       extractor = { resource -> resource.contact.mapNotNull { it.name } },
     )
 
-  public val context: SearchParam<NamingSystem, Any> =
+  public val context: SearchParam<NamingSystem, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(NamingSystem.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(NamingSystem.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<NamingSystem, Any> =
+  public val contextQuantity: SearchParam<NamingSystem, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(NamingSystem.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(NamingSystem.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -749,8 +747,7 @@ public object NamingSystemSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<NamingSystem, *>> =
-    listOf(context, contextQuantity)
+  public val unsupported: CollectionsList<SearchParam<NamingSystem, *>> = listOf()
 
   /**
    * Supported search parameters for the NamingSystem resource type. Iterating `all` and calling
@@ -760,6 +757,8 @@ public object NamingSystemSearchParams {
   public val all: CollectionsList<SearchParam<NamingSystem, *>> =
     listOf(
       contact,
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,

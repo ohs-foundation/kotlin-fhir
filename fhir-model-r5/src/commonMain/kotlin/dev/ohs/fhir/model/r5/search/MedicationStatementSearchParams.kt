@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -35,7 +36,6 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -65,15 +65,13 @@ public object MedicationStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.medication.concept) },
     )
 
-  public val effective: SearchParam<MedicationStatement, Any> =
+  public val effective: SearchParam<MedicationStatement, DateTime> =
     SearchParam(
       name = "effective",
       type = SearchParamType.Date,
       expression = "MedicationStatement.effective.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'effective' has expression 'MedicationStatement.effective.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.effective as? MedicationStatement.Effective.DateTime)?.value)
       },
     )
 
@@ -152,7 +150,7 @@ public object MedicationStatementSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<MedicationStatement, *>> = listOf(effective)
+  public val unsupported: List<SearchParam<MedicationStatement, *>> = listOf()
 
   /**
    * Supported search parameters for the MedicationStatement resource type. Iterating `all` and
@@ -164,6 +162,7 @@ public object MedicationStatementSearchParams {
       adherence,
       category,
       code,
+      effective,
       encounter,
       identifier,
       medication,

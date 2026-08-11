@@ -186,7 +186,6 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -612,7 +611,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.lastModified) },
     )
 
-  public val output: SearchParam<Task, Any> =
+  public val output: SearchParam<Task, Reference> =
     SearchParam(
       name = "output",
       type = SearchParamType.Reference,
@@ -778,10 +777,8 @@ public object TaskSearchParams {
           VerificationResult::class,
           VisionPrescription::class,
         ),
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'output' has expression 'Task.output.value.ofType(Reference)' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.output.mapNotNull { (it.`value` as? Task.Output.Value.Reference)?.value }
       },
     )
 
@@ -1064,7 +1061,7 @@ public object TaskSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<Task, *>> = listOf(output)
+  public val unsupported: CollectionsList<SearchParam<Task, *>> = listOf()
 
   /**
    * Supported search parameters for the Task resource type. Iterating `all` and calling
@@ -1084,6 +1081,7 @@ public object TaskSearchParams {
       identifier,
       intent,
       modified,
+      output,
       owner,
       partOf,
       patient,

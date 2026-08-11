@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProductDispense
 import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.Bundle
+import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.CapabilityStatement
 import dev.ohs.fhir.model.r5.CarePlan
 import dev.ohs.fhir.model.r5.CareTeam
@@ -49,6 +50,7 @@ import dev.ohs.fhir.model.r5.ClinicalImpression
 import dev.ohs.fhir.model.r5.ClinicalUseDefinition
 import dev.ohs.fhir.model.r5.CodeSystem
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.Communication
 import dev.ohs.fhir.model.r5.CommunicationRequest
 import dev.ohs.fhir.model.r5.CompartmentDefinition
@@ -184,13 +186,13 @@ import dev.ohs.fhir.model.r5.TestPlan
 import dev.ohs.fhir.model.r5.TestReport
 import dev.ohs.fhir.model.r5.TestScript
 import dev.ohs.fhir.model.r5.Transport
+import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -527,7 +529,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.facilityType) },
     )
 
-  public val formatCanonical: SearchParam<DocumentReference, Any> =
+  public val formatCanonical: SearchParam<DocumentReference, Canonical> =
     SearchParam(
       name = "format-canonical",
       type = SearchParamType.Reference,
@@ -573,34 +575,34 @@ public object DocumentReferenceSearchParams {
           TestScript::class,
           ValueSet::class,
         ),
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'format-canonical' has expression '(DocumentReference.content.profile.value.ofType(canonical))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.content
+          .flatMap { it.profile }
+          .mapNotNull { (it.`value` as? DocumentReference.Content.Profile.Value.Canonical)?.value }
       },
     )
 
-  public val formatCode: SearchParam<DocumentReference, Any> =
+  public val formatCode: SearchParam<DocumentReference, Coding> =
     SearchParam(
       name = "format-code",
       type = SearchParamType.Token,
       expression = "(DocumentReference.content.profile.value.ofType(Coding))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'format-code' has expression '(DocumentReference.content.profile.value.ofType(Coding))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.content
+          .flatMap { it.profile }
+          .mapNotNull { (it.`value` as? DocumentReference.Content.Profile.Value.Coding)?.value }
       },
     )
 
-  public val formatUri: SearchParam<DocumentReference, Any> =
+  public val formatUri: SearchParam<DocumentReference, Uri> =
     SearchParam(
       name = "format-uri",
       type = SearchParamType.Uri,
       expression = "(DocumentReference.content.profile.value.ofType(uri))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'format-uri' has expression '(DocumentReference.content.profile.value.ofType(uri))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.content
+          .flatMap { it.profile }
+          .mapNotNull { (it.`value` as? DocumentReference.Content.Profile.Value.Uri)?.value }
       },
     )
 
@@ -894,8 +896,7 @@ public object DocumentReferenceSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<DocumentReference, *>> =
-    listOf(formatCanonical, formatCode, formatUri)
+  public val unsupported: CollectionsList<SearchParam<DocumentReference, *>> = listOf()
 
   /**
    * Supported search parameters for the DocumentReference resource type. Iterating `all` and
@@ -920,6 +921,9 @@ public object DocumentReferenceSearchParams {
       eventCode,
       eventReference,
       facility,
+      formatCanonical,
+      formatCode,
+      formatUri,
       identifier,
       language,
       location,

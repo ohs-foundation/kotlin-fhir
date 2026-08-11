@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
@@ -35,7 +36,6 @@ import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -68,27 +68,25 @@ public object StructureDefinitionSearchParams {
       },
     )
 
-  public val context: SearchParam<StructureDefinition, Any> =
+  public val context: SearchParam<StructureDefinition, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(StructureDefinition.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(StructureDefinition.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<StructureDefinition, Any> =
+  public val contextQuantity: SearchParam<StructureDefinition, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(StructureDefinition.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(StructureDefinition.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -286,8 +284,7 @@ public object StructureDefinitionSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<StructureDefinition, *>> =
-    listOf(context, contextQuantity)
+  public val unsupported: List<SearchParam<StructureDefinition, *>> = listOf()
 
   /**
    * Supported search parameters for the StructureDefinition resource type. Iterating `all` and
@@ -299,6 +296,8 @@ public object StructureDefinitionSearchParams {
       `abstract`,
       base,
       basePath,
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,

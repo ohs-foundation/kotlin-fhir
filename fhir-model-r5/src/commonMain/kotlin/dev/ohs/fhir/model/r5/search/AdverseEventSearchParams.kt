@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.AdverseEvent
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Condition
+import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -45,7 +46,6 @@ import dev.ohs.fhir.model.r5.ResearchSubject
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -75,15 +75,13 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val date: SearchParam<AdverseEvent, Any> =
+  public val date: SearchParam<AdverseEvent, DateTime> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
       expression = "AdverseEvent.occurrence.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'date' has expression 'AdverseEvent.occurrence.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? AdverseEvent.Occurrence.DateTime)?.value)
       },
     )
 
@@ -210,7 +208,7 @@ public object AdverseEventSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<AdverseEvent, *>> = listOf(date)
+  public val unsupported: List<SearchParam<AdverseEvent, *>> = listOf()
 
   /**
    * Supported search parameters for the AdverseEvent resource type. Iterating `all` and calling
@@ -222,6 +220,7 @@ public object AdverseEventSearchParams {
       actuality,
       category,
       code,
+      date,
       identifier,
       location,
       patient,

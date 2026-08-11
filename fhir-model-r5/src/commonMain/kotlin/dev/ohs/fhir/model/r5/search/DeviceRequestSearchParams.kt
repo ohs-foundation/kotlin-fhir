@@ -187,7 +187,6 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -396,15 +395,13 @@ public object DeviceRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val eventDate: SearchParam<DeviceRequest, Any> =
+  public val eventDate: SearchParam<DeviceRequest, DateTime> =
     SearchParam(
       name = "event-date",
       type = SearchParamType.Date,
       expression = "(DeviceRequest.occurrence.ofType(dateTime))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'event-date' has expression '(DeviceRequest.occurrence.ofType(dateTime))' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? DeviceRequest.Occurrence.DateTime)?.value)
       },
     )
 
@@ -537,7 +534,7 @@ public object DeviceRequestSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<DeviceRequest, *>> = listOf(eventDate)
+  public val unsupported: CollectionsList<SearchParam<DeviceRequest, *>> = listOf()
 
   /**
    * Supported search parameters for the DeviceRequest resource type. Iterating `all` and calling
@@ -551,6 +548,7 @@ public object DeviceRequestSearchParams {
       code,
       device,
       encounter,
+      eventDate,
       groupIdentifier,
       identifier,
       instantiatesCanonical,

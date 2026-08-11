@@ -186,7 +186,6 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -200,7 +199,7 @@ public object GroupSearchParams {
       extractor = { resource -> resource.characteristic.map { it.code } },
     )
 
-  public val characteristicReference: SearchParam<Group, Any> =
+  public val characteristicReference: SearchParam<Group, Reference> =
     SearchParam(
       name = "characteristic-reference",
       type = SearchParamType.Reference,
@@ -366,10 +365,10 @@ public object GroupSearchParams {
           VerificationResult::class,
           VisionPrescription::class,
         ),
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'characteristic-reference' has expression '(Group.characteristic.value.ofType(Reference))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.characteristic.mapNotNull {
+          (it.`value` as? Group.Characteristic.Value.Reference)?.value
+        }
       },
     )
 
@@ -466,15 +465,15 @@ public object GroupSearchParams {
       extractor = { resource -> listOf(resource.type) },
     )
 
-  public val `value`: SearchParam<Group, Any> =
+  public val `value`: SearchParam<Group, CodeableConcept> =
     SearchParam(
       name = "value",
       type = SearchParamType.Token,
       expression = "(Group.characteristic.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'value' has expression '(Group.characteristic.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.characteristic.mapNotNull {
+          (it.`value` as? Group.Characteristic.Value.CodeableConcept)?.value
+        }
       },
     )
 
@@ -483,8 +482,7 @@ public object GroupSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<Group, *>> =
-    listOf(characteristicReference, `value`)
+  public val unsupported: CollectionsList<SearchParam<Group, *>> = listOf()
 
   /**
    * Supported search parameters for the Group resource type. Iterating `all` and calling
@@ -494,6 +492,7 @@ public object GroupSearchParams {
   public val all: CollectionsList<SearchParam<Group, *>> =
     listOf(
       characteristic,
+      characteristicReference,
       characteristicValue,
       code,
       exclude,
@@ -503,5 +502,6 @@ public object GroupSearchParams {
       membership,
       name,
       type,
+      `value`,
     )
 }

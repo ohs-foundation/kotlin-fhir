@@ -28,12 +28,12 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -47,51 +47,41 @@ public object CitationSearchParams {
       extractor = { resource -> resource.classification },
     )
 
-  public val classificationType: SearchParam<Citation, Any> =
+  public val classificationType: SearchParam<Citation, CodeableConcept> =
     SearchParam(
       name = "classification-type",
       type = SearchParamType.Token,
       expression = "(Citation.classification.type)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'classification-type' has expression '(Citation.classification.type)' which is not yet supported."
-        )
-      },
+      extractor = { resource -> resource.classification.mapNotNull { it.type } },
     )
 
-  public val classifier: SearchParam<Citation, Any> =
+  public val classifier: SearchParam<Citation, CodeableConcept> =
     SearchParam(
       name = "classifier",
       type = SearchParamType.Token,
       expression = "(Citation.classification.classifier)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'classifier' has expression '(Citation.classification.classifier)' which is not yet supported."
-        )
-      },
+      extractor = { resource -> resource.classification.flatMap { it.classifier } },
     )
 
-  public val context: SearchParam<Citation, Any> =
+  public val context: SearchParam<Citation, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(Citation.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(Citation.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<Citation, Any> =
+  public val contextQuantity: SearchParam<Citation, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(Citation.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(Citation.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -212,8 +202,7 @@ public object CitationSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Citation, *>> =
-    listOf(classificationType, classifier, context, contextQuantity)
+  public val unsupported: List<SearchParam<Citation, *>> = listOf()
 
   /**
    * Supported search parameters for the Citation resource type. Iterating `all` and calling
@@ -223,6 +212,10 @@ public object CitationSearchParams {
   public val all: List<SearchParam<Citation, *>> =
     listOf(
       classification,
+      classificationType,
+      classifier,
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,

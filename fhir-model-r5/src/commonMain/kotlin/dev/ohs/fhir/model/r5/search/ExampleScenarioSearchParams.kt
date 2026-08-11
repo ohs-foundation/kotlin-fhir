@@ -26,38 +26,36 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.ExampleScenario
 import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ExampleScenario] resource type. */
 public object ExampleScenarioSearchParams {
-  public val context: SearchParam<ExampleScenario, Any> =
+  public val context: SearchParam<ExampleScenario, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(ExampleScenario.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(ExampleScenario.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<ExampleScenario, Any> =
+  public val contextQuantity: SearchParam<ExampleScenario, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(ExampleScenario.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(ExampleScenario.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -154,7 +152,7 @@ public object ExampleScenarioSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<ExampleScenario, *>> = listOf(context, contextQuantity)
+  public val unsupported: List<SearchParam<ExampleScenario, *>> = listOf()
 
   /**
    * Supported search parameters for the ExampleScenario resource type. Iterating `all` and calling
@@ -163,6 +161,8 @@ public object ExampleScenarioSearchParams {
    */
   public val all: List<SearchParam<ExampleScenario, *>> =
     listOf(
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,

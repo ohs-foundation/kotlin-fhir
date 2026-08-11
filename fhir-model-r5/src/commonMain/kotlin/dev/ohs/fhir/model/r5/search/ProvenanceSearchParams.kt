@@ -62,6 +62,7 @@ import dev.ohs.fhir.model.r5.Contract
 import dev.ohs.fhir.model.r5.Coverage
 import dev.ohs.fhir.model.r5.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r5.CoverageEligibilityResponse
+import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.DetectedIssue
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DeviceAssociation
@@ -184,8 +185,6 @@ import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -632,15 +631,13 @@ public object ProvenanceSearchParams {
       extractor = { resource -> resource.target },
     )
 
-  public val `when`: SearchParam<Provenance, Any> =
+  public val `when`: SearchParam<Provenance, DateTime> =
     SearchParam(
       name = "when",
       type = SearchParamType.Date,
       expression = "(Provenance.occurred.ofType(dateTime))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'when' has expression '(Provenance.occurred.ofType(dateTime))' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurred as? Provenance.Occurred.DateTime)?.value)
       },
     )
 
@@ -649,7 +646,7 @@ public object ProvenanceSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<Provenance, *>> = listOf(`when`)
+  public val unsupported: CollectionsList<SearchParam<Provenance, *>> = listOf()
 
   /**
    * Supported search parameters for the Provenance resource type. Iterating `all` and calling
@@ -670,5 +667,6 @@ public object ProvenanceSearchParams {
       recorded,
       signatureType,
       target,
+      `when`,
     )
 }

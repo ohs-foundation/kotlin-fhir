@@ -185,7 +185,6 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -428,15 +427,13 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> resource.medium },
     )
 
-  public val occurrence: SearchParam<CommunicationRequest, Any> =
+  public val occurrence: SearchParam<CommunicationRequest, DateTime> =
     SearchParam(
       name = "occurrence",
       type = SearchParamType.Date,
       expression = "CommunicationRequest.occurrence.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'occurrence' has expression 'CommunicationRequest.occurrence.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? CommunicationRequest.Occurrence.DateTime)?.value)
       },
     )
 
@@ -528,7 +525,7 @@ public object CommunicationRequestSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<CommunicationRequest, *>> = listOf(occurrence)
+  public val unsupported: CollectionsList<SearchParam<CommunicationRequest, *>> = listOf()
 
   /**
    * Supported search parameters for the CommunicationRequest resource type. Iterating `all` and
@@ -545,6 +542,7 @@ public object CommunicationRequestSearchParams {
       identifier,
       informationProvider,
       medium,
+      occurrence,
       patient,
       priority,
       recipient,

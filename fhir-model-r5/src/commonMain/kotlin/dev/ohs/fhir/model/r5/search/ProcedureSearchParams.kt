@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Composition
 import dev.ohs.fhir.model.r5.Condition
+import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
@@ -53,7 +54,6 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -84,15 +84,13 @@ public object ProcedureSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val date: SearchParam<Procedure, Any> =
+  public val date: SearchParam<Procedure, DateTime> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
       expression = "Procedure.occurrence.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'date' has expression 'Procedure.occurrence.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? Procedure.Occurrence.DateTime)?.value)
       },
     )
 
@@ -248,7 +246,7 @@ public object ProcedureSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Procedure, *>> = listOf(date)
+  public val unsupported: List<SearchParam<Procedure, *>> = listOf()
 
   /**
    * Supported search parameters for the Procedure resource type. Iterating `all` and calling
@@ -260,6 +258,7 @@ public object ProcedureSearchParams {
       basedOn,
       category,
       code,
+      date,
       encounter,
       identifier,
       instantiatesCanonical,

@@ -52,7 +52,6 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.SupplyDelivery
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -125,15 +124,13 @@ public object ChargeItemSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val occurrence: SearchParam<ChargeItem, Any> =
+  public val occurrence: SearchParam<ChargeItem, DateTime> =
     SearchParam(
       name = "occurrence",
       type = SearchParamType.Date,
       expression = "ChargeItem.occurrence.ofType(dateTime)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'occurrence' has expression 'ChargeItem.occurrence.ofType(dateTime)' which is not yet supported."
-        )
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? ChargeItem.Occurrence.DateTime)?.value)
       },
     )
 
@@ -252,7 +249,7 @@ public object ChargeItemSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<ChargeItem, *>> = listOf(occurrence)
+  public val unsupported: List<SearchParam<ChargeItem, *>> = listOf()
 
   /**
    * Supported search parameters for the ChargeItem resource type. Iterating `all` and calling
@@ -268,6 +265,7 @@ public object ChargeItemSearchParams {
       enterer,
       factorOverride,
       identifier,
+      occurrence,
       patient,
       performerActor,
       performerFunction,

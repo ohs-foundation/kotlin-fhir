@@ -21,43 +21,42 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Evidence
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Evidence] resource type. */
 public object EvidenceSearchParams {
-  public val context: SearchParam<Evidence, Any> =
+  public val context: SearchParam<Evidence, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(Evidence.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(Evidence.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<Evidence, Any> =
+  public val contextQuantity: SearchParam<Evidence, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(Evidence.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(Evidence.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -154,7 +153,7 @@ public object EvidenceSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Evidence, *>> = listOf(context, contextQuantity)
+  public val unsupported: List<SearchParam<Evidence, *>> = listOf()
 
   /**
    * Supported search parameters for the Evidence resource type. Iterating `all` and calling
@@ -163,6 +162,8 @@ public object EvidenceSearchParams {
    */
   public val all: List<SearchParam<Evidence, *>> =
     listOf(
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,

@@ -148,6 +148,7 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Provenance
+import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.QuestionnaireResponse
 import dev.ohs.fhir.model.r5.RegulatedAuthorization
@@ -191,7 +192,6 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -370,27 +370,25 @@ public object PlanDefinitionSearchParams {
       },
     )
 
-  public val context: SearchParam<PlanDefinition, Any> =
+  public val context: SearchParam<PlanDefinition, CodeableConcept> =
     SearchParam(
       name = "context",
       type = SearchParamType.Token,
       expression = "(PlanDefinition.useContext.value.ofType(CodeableConcept))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context' has expression '(PlanDefinition.useContext.value.ofType(CodeableConcept))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
-  public val contextQuantity: SearchParam<PlanDefinition, Any> =
+  public val contextQuantity: SearchParam<PlanDefinition, Quantity> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
       expression = "(PlanDefinition.useContext.value.ofType(Quantity))",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'context-quantity' has expression '(PlanDefinition.useContext.value.ofType(Quantity))' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -426,7 +424,7 @@ public object PlanDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val definition: SearchParam<PlanDefinition, Any> =
+  public val definition: SearchParam<PlanDefinition, Canonical> =
     SearchParam(
       name = "definition",
       type = SearchParamType.Reference,
@@ -440,10 +438,10 @@ public object PlanDefinitionSearchParams {
           Questionnaire::class,
           SpecimenDefinition::class,
         ),
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'definition' has expression 'PlanDefinition.action.definition.ofType(canonical)' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.action.mapNotNull {
+          (it.definition as? PlanDefinition.Action.Definition.Canonical)?.value
+        }
       },
     )
 
@@ -1240,8 +1238,7 @@ public object PlanDefinitionSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: CollectionsList<SearchParam<PlanDefinition, *>> =
-    listOf(context, contextQuantity, definition)
+  public val unsupported: CollectionsList<SearchParam<PlanDefinition, *>> = listOf()
 
   /**
    * Supported search parameters for the PlanDefinition resource type. Iterating `all` and calling
@@ -1251,10 +1248,13 @@ public object PlanDefinitionSearchParams {
   public val all: CollectionsList<SearchParam<PlanDefinition, *>> =
     listOf(
       composedOf,
+      context,
+      contextQuantity,
       contextType,
       contextTypeQuantity,
       contextTypeValue,
       date,
+      definition,
       dependsOn,
       derivedFrom,
       description,

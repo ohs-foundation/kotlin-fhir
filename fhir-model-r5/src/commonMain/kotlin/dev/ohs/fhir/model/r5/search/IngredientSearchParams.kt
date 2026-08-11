@@ -28,11 +28,12 @@ import dev.ohs.fhir.model.r5.Ingredient
 import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
 import dev.ohs.fhir.model.r5.MedicinalProductDefinition
 import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Quantity
+import dev.ohs.fhir.model.r5.Ratio
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.NotImplementedError
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -93,51 +94,51 @@ public object IngredientSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val strengthConcentrationQuantity: SearchParam<Ingredient, Any> =
+  public val strengthConcentrationQuantity: SearchParam<Ingredient, Quantity> =
     SearchParam(
       name = "strength-concentration-quantity",
       type = SearchParamType.Quantity,
       expression = "Ingredient.substance.strength.concentration.ofType(Quantity)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'strength-concentration-quantity' has expression 'Ingredient.substance.strength.concentration.ofType(Quantity)' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.substance.strength.mapNotNull {
+          (it.concentration as? Ingredient.Substance.Strength.Concentration.Quantity)?.value
+        }
       },
     )
 
-  public val strengthConcentrationRatio: SearchParam<Ingredient, Any> =
+  public val strengthConcentrationRatio: SearchParam<Ingredient, Ratio> =
     SearchParam(
       name = "strength-concentration-ratio",
       type = SearchParamType.Composite,
       expression = "Ingredient.substance.strength.concentration.ofType(Ratio)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'strength-concentration-ratio' has expression 'Ingredient.substance.strength.concentration.ofType(Ratio)' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.substance.strength.mapNotNull {
+          (it.concentration as? Ingredient.Substance.Strength.Concentration.Ratio)?.value
+        }
       },
     )
 
-  public val strengthPresentationQuantity: SearchParam<Ingredient, Any> =
+  public val strengthPresentationQuantity: SearchParam<Ingredient, Quantity> =
     SearchParam(
       name = "strength-presentation-quantity",
       type = SearchParamType.Quantity,
       expression = "Ingredient.substance.strength.presentation.ofType(Quantity)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'strength-presentation-quantity' has expression 'Ingredient.substance.strength.presentation.ofType(Quantity)' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.substance.strength.mapNotNull {
+          (it.presentation as? Ingredient.Substance.Strength.Presentation.Quantity)?.value
+        }
       },
     )
 
-  public val strengthPresentationRatio: SearchParam<Ingredient, Any> =
+  public val strengthPresentationRatio: SearchParam<Ingredient, Ratio> =
     SearchParam(
       name = "strength-presentation-ratio",
       type = SearchParamType.Composite,
       expression = "Ingredient.substance.strength.presentation.ofType(Ratio)",
-      extractor = {
-        throw NotImplementedError(
-          "Search parameter 'strength-presentation-ratio' has expression 'Ingredient.substance.strength.presentation.ofType(Ratio)' which is not yet supported."
-        )
+      extractor = { resource ->
+        resource.substance.strength.mapNotNull {
+          (it.presentation as? Ingredient.Substance.Strength.Presentation.Ratio)?.value
+        }
       },
     )
 
@@ -172,13 +173,7 @@ public object IngredientSearchParams {
    * throws `NotImplementedError`. Listed here so the unsupported set is visible at a glance, and
    * excluded from [all].
    */
-  public val unsupported: List<SearchParam<Ingredient, *>> =
-    listOf(
-      strengthConcentrationQuantity,
-      strengthConcentrationRatio,
-      strengthPresentationQuantity,
-      strengthPresentationRatio,
-    )
+  public val unsupported: List<SearchParam<Ingredient, *>> = listOf()
 
   /**
    * Supported search parameters for the Ingredient resource type. Iterating `all` and calling
@@ -193,6 +188,10 @@ public object IngredientSearchParams {
       manufacturer,
       role,
       status,
+      strengthConcentrationQuantity,
+      strengthConcentrationRatio,
+      strengthPresentationQuantity,
+      strengthPresentationRatio,
       substance,
       substanceCode,
       substanceDefinition,

@@ -797,28 +797,31 @@ PatientSearchParams.all.forEach { searchParam ->
 ### Serialization and deserialization
 
 Each generated FHIR resource class has its own generated serializer (marked by the `@Serializable`
-annotation). Simply use [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)'s
-`Json` object to encode and decode FHIR resources:
+annotation). To encode and decode FHIR resources, use [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)'s `Json` object,
+which is thread-safe and can be shared across threads and coroutines:
 
 #### Configuration
 
 ```kotlin
 import kotlinx.serialization.json.Json
 
-// See https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md#json-configuration
 val json = Json {
-    // No effect on FHIR serialization:
-    // explicitNulls, encodeDefaults, useAlternativeNames,
-    // serializersModule (assuming you don't override FHIR resources), classDiscriminator
+    // Format JSON with indentation for readability
+    prettyPrint = true
 
-    // Safe to use, but may affect serialization:
-    // ignoreUnknownKeys, isLenient, allowComments, allowTrailingComma, prettyPrintIndent,
-    // coerceInputValues, decodeEnumsCaseInsensitive
+    // Ignore unrecognized JSON keys during deserialization
+    ignoreUnknownKeys = true
 
-    // Incompatible with FHIR:
-    // useArrayPolymorphism, namingStrategy
+    // Tolerate relaxed JSON syntax (e.g. unquoted keys or strings)
+    isLenient = true
 }
 ```
+
+> [!NOTE]
+> Do not use `useArrayPolymorphism` or `namingStrategy` as they produce JSON that is not FHIR
+> compliant. Options such as `explicitNulls`, `encodeDefaults`, `useAlternativeNames`, and
+> `classDiscriminator` have no effect because field encoding and null handling are handled directly
+> by the generated serializers.
 
 #### Serialization
 
@@ -836,6 +839,7 @@ val serializedPatient = json.encodeToString(patient)
 import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Resource
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 
 val patientJson = """
@@ -854,17 +858,19 @@ val patientJson = """
     }
 """.trimIndent()
 
-// Deserialize to a specific type when you know the resource type
-val patient = json.decodeFromString<Patient>(patientJson)
+try {
+    // Deserialize to a specific type when you know the resource type
+    val patient = json.decodeFromString<Patient>(patientJson)
 
-// Deserialize to Resource when the type is unknown
-val resource = json.decodeFromString<Resource>(patientJson)
-
-// Then handle the resource based on the type
-when (resource) {
-    is OperationOutcome -> { /* parse error */ }
-    is Patient -> { /* parse patient */ }
-    else -> { /* other resource types */ }
+    // Deserialize to Resource when the type is unknown
+    val resource = json.decodeFromString<Resource>(patientJson)
+    when (resource) {
+        is OperationOutcome -> { /* handle operation outcome */ }
+        is Patient -> { /* handle patient */ }
+        else -> { /* other resource types */ }
+    }
+} catch (e: SerializationException) {
+    // Handle malformed JSON, invalid data, or unknown resource types
 }
 ```
 

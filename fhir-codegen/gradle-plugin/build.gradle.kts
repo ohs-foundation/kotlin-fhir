@@ -15,6 +15,11 @@ dependencies {
     implementation(gradleKotlinDsl())
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlin.poet)
+    testImplementation(libs.kotlin.test)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 configure<GradlePluginDevelopmentExtension> {

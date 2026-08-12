@@ -99,26 +99,30 @@ internal fun parseSearchParamExpression(
     }
   }
 
-  parseWhereExpression(unwrapped)?.let { w ->
-    when (w) {
+  parseWhereExpression(unwrapped)?.let { whereResult ->
+    when (whereResult) {
       is WhereParseResult.Resolve ->
-        resolver.resolve(w.pathBeforeWhere, resourceName)?.let {
-          return SearchParamPattern.WhereResolve(it, w.resolveTargetType)
+        resolver.resolve(whereResult.pathBeforeWhere, resourceName)?.let {
+          return SearchParamPattern.WhereResolve(it, whereResult.resolveTargetType)
         }
       is WhereParseResult.Filter -> {
-        val resolved = resolver.resolve(w.pathBeforeWhere, resourceName)
+        val resolved = resolver.resolve(whereResult.pathBeforeWhere, resourceName)
         val elementType = resolved?.segments?.lastOrNull()?.leafTypeCode
         if (resolved != null && elementType != null) {
           val postPath =
-            if (w.pathAfterWhere != null) {
-              resolver.resolve("$elementType.${w.pathAfterWhere}", elementType) ?: return@let
+            if (whereResult.pathAfterWhere != null) {
+              resolver.resolve("$elementType.${whereResult.pathAfterWhere}", elementType)
+                ?: return@let
             } else null
           val fieldSegment =
-            resolver.resolve("$elementType.${w.filterField}", elementType)?.segments?.lastOrNull()
+            resolver
+              .resolve("$elementType.${whereResult.filterField}", elementType)
+              ?.segments
+              ?.lastOrNull()
           return SearchParamPattern.WhereFilter(
             resolved,
-            w.filterField,
-            w.filterValue,
+            whereResult.filterField,
+            whereResult.filterValue,
             postPath,
             isFieldNullable = fieldSegment?.isNullable ?: true,
           )
@@ -130,28 +134,46 @@ internal fun parseSearchParamExpression(
   return SearchParamPattern.Unsupported
 }
 
+/**
+ * Strips matching outer enclosing parentheses from [expression].
+ *
+ * For example:
+ * - `"(Observation.value as Quantity)"` → `"Observation.value as Quantity"`
+ * - `"(((Patient.name)))"` → `"Patient.name"`
+ *
+ * Parentheses that do not enclose the entire expression (e.g. `"(a) | (b)"` or `"(a and b) or (c
+ * and d)"`) and internal parentheses (e.g. `"Patient.telecom.where(system='email')"`) are left
+ * intact.
+ */
 internal fun unwrapOuterParentheses(expression: String): String {
-  var trimmed = expression.trim()
-  while (trimmed.startsWith("(") && trimmed.endsWith(")")) {
-    var depth = 0
-    var matchedAll = true
-    for (i in 0 until trimmed.length - 1) {
-      if (trimmed[i] == '(') depth++
-      else if (trimmed[i] == ')') {
+  val trimmedExpression = expression.trim()
+  if (!trimmedExpression.startsWith('(') || !trimmedExpression.endsWith(')'))
+    return trimmedExpression
+
+  var depth = 0
+  var outerLayers = 0
+  var readingLeadingOpens = true
+
+  for (index in trimmedExpression.indices) {
+    when (trimmedExpression[index]) {
+      '(' -> {
+        depth++
+        if (readingLeadingOpens) outerLayers++
+      }
+      ')' -> {
         depth--
-        if (depth == 0) {
-          matchedAll = false
-          break
+        if (depth < 0) return trimmedExpression // Unbalanced
+        if (index < trimmedExpression.length - 1 - depth) {
+          outerLayers = minOf(outerLayers, depth)
         }
       }
-    }
-    if (matchedAll && depth == 1) {
-      trimmed = trimmed.substring(1, trimmed.length - 1).trim()
-    } else {
-      break
+      else -> readingLeadingOpens = false
     }
   }
-  return trimmed
+
+  if (depth != 0) return trimmedExpression // Unbalanced
+
+  return trimmedExpression.substring(outerLayers, trimmedExpression.length - outerLayers).trim()
 }
 
 private fun parseElementCastExpression(expression: String): Pair<String, String>? {

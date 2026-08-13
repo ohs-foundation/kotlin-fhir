@@ -715,7 +715,7 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       relatedAction = relatedAction ?: listOf(),
       timing =
         PlanDefinition.Action.Timing.from(
-          DateTime.of(FhirDateTime.fromString(timingDateTime), _timingDateTime),
+          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
           timingAge,
           timingPeriod,
           timingDuration,
@@ -1839,7 +1839,7 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
         ),
       experimental = R4Boolean.of(experimental, _experimental),
       subject = PlanDefinition.Subject.from(subjectCodeableConcept, subjectReference),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -1848,8 +1848,8 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
       purpose = Markdown.of(purpose, _purpose),
       usage = R4String.of(usage, _usage),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       topic = topic ?: listOf(),
       author = author ?: listOf(),

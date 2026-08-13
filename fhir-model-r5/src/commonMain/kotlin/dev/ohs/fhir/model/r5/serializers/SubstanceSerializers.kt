@@ -369,7 +369,7 @@ internal object SubstanceSerializer : KSerializer<Substance> {
       category = category ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on Substance"),
       description = Markdown.of(description, _description),
-      expiry = DateTime.of(FhirDateTime.fromString(expiry), _expiry),
+      expiry = DateTime.of(expiry?.let { FhirDateTime.fromString(it) }, _expiry),
       quantity = quantity,
       ingredient = ingredient ?: listOf(),
     )

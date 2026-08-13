@@ -566,7 +566,7 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
         Canonical.of(topic, _topic)
           ?: throw SerializationException("Missing required property 'topic' on Subscription"),
       contact = contact ?: listOf(),
-      end = Instant.of(FhirDateTime.fromString(end), _end),
+      end = Instant.of(end?.let { FhirDateTime.fromString(it) }, _end),
       managingEntity = managingEntity,
       reason = R5String.of(reason, _reason),
       filterBy = filterBy ?: listOf(),

@@ -370,7 +370,8 @@ internal object AccountDiagnosisSerializer : KSerializer<Account.Diagnosis> {
           ?: throw SerializationException(
             "Missing required property 'condition' on Account.Diagnosis"
           ),
-      dateOfDiagnosis = DateTime.of(FhirDateTime.fromString(dateOfDiagnosis), _dateOfDiagnosis),
+      dateOfDiagnosis =
+        DateTime.of(dateOfDiagnosis?.let { FhirDateTime.fromString(it) }, _dateOfDiagnosis),
       type = type ?: listOf(),
       onAdmission = R5Boolean.of(onAdmission, _onAdmission),
       packageCode = packageCode ?: listOf(),
@@ -516,7 +517,8 @@ internal object AccountProcedureSerializer : KSerializer<Account.Procedure> {
       code =
         code
           ?: throw SerializationException("Missing required property 'code' on Account.Procedure"),
-      dateOfService = DateTime.of(FhirDateTime.fromString(dateOfService), _dateOfService),
+      dateOfService =
+        DateTime.of(dateOfService?.let { FhirDateTime.fromString(it) }, _dateOfService),
       type = type ?: listOf(),
       packageCode = packageCode ?: listOf(),
       device = device ?: listOf(),
@@ -1032,7 +1034,7 @@ internal object AccountSerializer : KSerializer<Account> {
       relatedAccount = relatedAccount ?: listOf(),
       currency = currency,
       balance = balance ?: listOf(),
-      calculatedAt = Instant.of(FhirDateTime.fromString(calculatedAt), _calculatedAt),
+      calculatedAt = Instant.of(calculatedAt?.let { FhirDateTime.fromString(it) }, _calculatedAt),
     )
   }
 

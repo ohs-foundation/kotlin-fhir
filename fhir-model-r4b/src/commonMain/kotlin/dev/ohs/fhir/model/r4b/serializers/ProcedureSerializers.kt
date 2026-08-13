@@ -660,7 +660,7 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
       encounter = encounter,
       performed =
         Procedure.Performed.from(
-          DateTime.of(FhirDateTime.fromString(performedDateTime), _performedDateTime),
+          DateTime.of(performedDateTime?.let { FhirDateTime.fromString(it) }, _performedDateTime),
           performedPeriod,
           R4bString.of(performedString, _performedString),
           performedAge,

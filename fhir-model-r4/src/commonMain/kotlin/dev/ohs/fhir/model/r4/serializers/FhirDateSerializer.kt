@@ -33,6 +33,5 @@ internal object FhirDateSerializer : KSerializer<FhirDate> {
     encoder.encodeString(value.toString())
   }
 
-  override fun deserialize(decoder: Decoder): FhirDate =
-    FhirDate.fromString(decoder.decodeString())!!
+  override fun deserialize(decoder: Decoder): FhirDate = FhirDate.fromString(decoder.decodeString())
 }

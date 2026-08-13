@@ -685,7 +685,7 @@ internal object InventoryItemCharacteristicSerializer : KSerializer<InventoryIte
           Decimal.of(valueDecimal, _valueDecimal),
           R5Boolean.of(valueBoolean, _valueBoolean),
           Url.of(valueUrl, _valueUrl),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           valueQuantity,
           valueRange,
           valueRatio,
@@ -894,7 +894,7 @@ internal object InventoryItemInstanceSerializer : KSerializer<InventoryItem.Inst
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       lotNumber = R5String.of(lotNumber, _lotNumber),
-      expiry = DateTime.of(FhirDateTime.fromString(expiry), _expiry),
+      expiry = DateTime.of(expiry?.let { FhirDateTime.fromString(it) }, _expiry),
       subject = subject,
       location = location,
     )

@@ -303,7 +303,7 @@ internal object MedicinalProductAuthorizationProcedureSerializer :
       date =
         MedicinalProductAuthorization.Procedure.Date.from(
           datePeriod,
-          DateTime.of(FhirDateTime.fromString(dateDateTime), _dateDateTime),
+          DateTime.of(dateDateTime?.let { FhirDateTime.fromString(it) }, _dateDateTime),
         ),
       application = application ?: listOf(),
     )
@@ -603,14 +603,20 @@ internal object MedicinalProductAuthorizationSerializer :
       country = country ?: listOf(),
       jurisdiction = jurisdiction ?: listOf(),
       status = status,
-      statusDate = DateTime.of(FhirDateTime.fromString(statusDate), _statusDate),
-      restoreDate = DateTime.of(FhirDateTime.fromString(restoreDate), _restoreDate),
+      statusDate = DateTime.of(statusDate?.let { FhirDateTime.fromString(it) }, _statusDate),
+      restoreDate = DateTime.of(restoreDate?.let { FhirDateTime.fromString(it) }, _restoreDate),
       validityPeriod = validityPeriod,
       dataExclusivityPeriod = dataExclusivityPeriod,
       dateOfFirstAuthorization =
-        DateTime.of(FhirDateTime.fromString(dateOfFirstAuthorization), _dateOfFirstAuthorization),
+        DateTime.of(
+          dateOfFirstAuthorization?.let { FhirDateTime.fromString(it) },
+          _dateOfFirstAuthorization,
+        ),
       internationalBirthDate =
-        DateTime.of(FhirDateTime.fromString(internationalBirthDate), _internationalBirthDate),
+        DateTime.of(
+          internationalBirthDate?.let { FhirDateTime.fromString(it) },
+          _internationalBirthDate,
+        ),
       legalBasis = legalBasis,
       jurisdictionalAuthorization = jurisdictionalAuthorization ?: listOf(),
       holder = holder,

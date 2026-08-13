@@ -171,8 +171,8 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
         TriggerDefinition.Timing.from(
           timingTiming,
           timingReference,
-          Date.of(FhirDate.fromString(timingDate), _timingDate),
-          DateTime.of(FhirDateTime.fromString(timingDateTime), _timingDateTime),
+          Date.of(timingDate?.let { FhirDate.fromString(it) }, _timingDate),
+          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
         ),
       `data` = `data` ?: listOf(),
       condition = condition,

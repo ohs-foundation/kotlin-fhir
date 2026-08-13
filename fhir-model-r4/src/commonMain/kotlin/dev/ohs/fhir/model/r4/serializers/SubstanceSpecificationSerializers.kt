@@ -1094,7 +1094,7 @@ internal object SubstanceSpecificationCodeSerializer : KSerializer<SubstanceSpec
       modifierExtension = modifierExtension ?: listOf(),
       code = code,
       status = status,
-      statusDate = DateTime.of(FhirDateTime.fromString(statusDate), _statusDate),
+      statusDate = DateTime.of(statusDate?.let { FhirDateTime.fromString(it) }, _statusDate),
       comment = R4String.of(comment, _comment),
       source = source ?: listOf(),
     )
@@ -1426,7 +1426,7 @@ internal object SubstanceSpecificationNameOfficialSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       authority = authority,
       status = status,
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
     )
   }
 

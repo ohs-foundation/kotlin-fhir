@@ -149,7 +149,7 @@ internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuth
       date =
         RegulatedAuthorization.Case.Date.from(
           datePeriod,
-          DateTime.of(FhirDateTime.fromString(dateDateTime), _dateDateTime),
+          DateTime.of(dateDateTime?.let { FhirDateTime.fromString(it) }, _dateDateTime),
         ),
       application = application ?: listOf(),
     )
@@ -402,7 +402,7 @@ internal object RegulatedAuthorizationSerializer : KSerializer<RegulatedAuthoriz
       description = Markdown.of(description, _description),
       region = region ?: listOf(),
       status = status,
-      statusDate = DateTime.of(FhirDateTime.fromString(statusDate), _statusDate),
+      statusDate = DateTime.of(statusDate?.let { FhirDateTime.fromString(it) }, _statusDate),
       validityPeriod = validityPeriod,
       indication = indication,
       intendedUse = intendedUse,

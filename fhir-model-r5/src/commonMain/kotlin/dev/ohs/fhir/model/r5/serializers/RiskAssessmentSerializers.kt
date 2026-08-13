@@ -493,7 +493,7 @@ internal object RiskAssessmentSerializer : KSerializer<RiskAssessment> {
       encounter = encounter,
       occurrence =
         RiskAssessment.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
         ),
       condition = condition,

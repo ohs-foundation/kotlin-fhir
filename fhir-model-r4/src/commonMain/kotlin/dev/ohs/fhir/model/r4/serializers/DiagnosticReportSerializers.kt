@@ -422,10 +422,10 @@ internal object DiagnosticReportSerializer : KSerializer<DiagnosticReport> {
       encounter = encounter,
       effective =
         DiagnosticReport.Effective.from(
-          DateTime.of(FhirDateTime.fromString(effectiveDateTime), _effectiveDateTime),
+          DateTime.of(effectiveDateTime?.let { FhirDateTime.fromString(it) }, _effectiveDateTime),
           effectivePeriod,
         ),
-      issued = Instant.of(FhirDateTime.fromString(issued), _issued),
+      issued = Instant.of(issued?.let { FhirDateTime.fromString(it) }, _issued),
       performer = performer ?: listOf(),
       resultsInterpreter = resultsInterpreter ?: listOf(),
       specimen = specimen ?: listOf(),

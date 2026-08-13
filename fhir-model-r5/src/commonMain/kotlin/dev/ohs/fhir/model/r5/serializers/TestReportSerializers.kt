@@ -1369,7 +1369,7 @@ internal object TestReportSerializer : KSerializer<TestReport> {
         ),
       score = Decimal.of(score, _score),
       tester = R5String.of(tester, _tester),
-      issued = DateTime.of(FhirDateTime.fromString(issued), _issued),
+      issued = DateTime.of(issued?.let { FhirDateTime.fromString(it) }, _issued),
       participant = participant ?: listOf(),
       setup = setup,
       test = test ?: listOf(),

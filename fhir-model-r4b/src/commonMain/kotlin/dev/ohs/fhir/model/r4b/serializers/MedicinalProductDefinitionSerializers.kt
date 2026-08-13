@@ -867,7 +867,7 @@ internal object MedicinalProductDefinitionCharacteristicSerializer :
         MedicinalProductDefinition.Characteristic.Value.from(
           valueCodeableConcept,
           valueQuantity,
-          Date.of(FhirDate.fromString(valueDate), _valueDate),
+          Date.of(valueDate?.let { FhirDate.fromString(it) }, _valueDate),
           R4bBoolean.of(valueBoolean, _valueBoolean),
           valueAttachment,
         ),
@@ -1288,7 +1288,7 @@ internal object MedicinalProductDefinitionSerializer : KSerializer<MedicinalProd
       domain = domain,
       version = R4bString.of(version, _version),
       status = status,
-      statusDate = DateTime.of(FhirDateTime.fromString(statusDate), _statusDate),
+      statusDate = DateTime.of(statusDate?.let { FhirDateTime.fromString(it) }, _statusDate),
       description = Markdown.of(description, _description),
       combinedPharmaceuticalDoseForm = combinedPharmaceuticalDoseForm,
       route = route ?: listOf(),

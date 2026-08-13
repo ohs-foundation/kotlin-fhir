@@ -551,7 +551,7 @@ internal object ConditionSerializer : KSerializer<Condition> {
       encounter = encounter,
       onset =
         Condition.Onset.from(
-          DateTime.of(FhirDateTime.fromString(onsetDateTime), _onsetDateTime),
+          DateTime.of(onsetDateTime?.let { FhirDateTime.fromString(it) }, _onsetDateTime),
           onsetAge,
           onsetPeriod,
           onsetRange,
@@ -559,13 +559,13 @@ internal object ConditionSerializer : KSerializer<Condition> {
         ),
       abatement =
         Condition.Abatement.from(
-          DateTime.of(FhirDateTime.fromString(abatementDateTime), _abatementDateTime),
+          DateTime.of(abatementDateTime?.let { FhirDateTime.fromString(it) }, _abatementDateTime),
           abatementAge,
           abatementPeriod,
           abatementRange,
           R5String.of(abatementString, _abatementString),
         ),
-      recordedDate = DateTime.of(FhirDateTime.fromString(recordedDate), _recordedDate),
+      recordedDate = DateTime.of(recordedDate?.let { FhirDateTime.fromString(it) }, _recordedDate),
       participant = participant ?: listOf(),
       stage = stage ?: listOf(),
       evidence = evidence ?: listOf(),

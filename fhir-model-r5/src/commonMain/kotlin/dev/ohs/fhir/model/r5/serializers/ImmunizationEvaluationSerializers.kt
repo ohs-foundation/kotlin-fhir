@@ -268,7 +268,7 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
           ?: throw SerializationException(
             "Missing required property 'patient' on ImmunizationEvaluation"
           ),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       authority = authority,
       targetDisease =
         targetDisease

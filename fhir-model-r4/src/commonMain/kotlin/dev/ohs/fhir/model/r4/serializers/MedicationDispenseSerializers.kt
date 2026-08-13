@@ -634,8 +634,9 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
       type = type,
       quantity = quantity,
       daysSupply = daysSupply,
-      whenPrepared = DateTime.of(FhirDateTime.fromString(whenPrepared), _whenPrepared),
-      whenHandedOver = DateTime.of(FhirDateTime.fromString(whenHandedOver), _whenHandedOver),
+      whenPrepared = DateTime.of(whenPrepared?.let { FhirDateTime.fromString(it) }, _whenPrepared),
+      whenHandedOver =
+        DateTime.of(whenHandedOver?.let { FhirDateTime.fromString(it) }, _whenHandedOver),
       destination = destination,
       `receiver` = `receiver` ?: listOf(),
       note = note ?: listOf(),

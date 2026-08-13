@@ -192,7 +192,11 @@ internal object GoalTargetSerializer : KSerializer<Goal.Target> {
           Integer.of(detailInteger, _detailInteger),
           detailRatio,
         ),
-      due = Goal.Target.Due.from(Date.of(FhirDate.fromString(dueDate), _dueDate), dueDuration),
+      due =
+        Goal.Target.Due.from(
+          Date.of(dueDate?.let { FhirDate.fromString(it) }, _dueDate),
+          dueDuration,
+        ),
     )
   }
 
@@ -529,9 +533,12 @@ internal object GoalSerializer : KSerializer<Goal> {
       subject =
         subject ?: throw SerializationException("Missing required property 'subject' on Goal"),
       start =
-        Goal.Start.from(Date.of(FhirDate.fromString(startDate), _startDate), startCodeableConcept),
+        Goal.Start.from(
+          Date.of(startDate?.let { FhirDate.fromString(it) }, _startDate),
+          startCodeableConcept,
+        ),
       target = target ?: listOf(),
-      statusDate = Date.of(FhirDate.fromString(statusDate), _statusDate),
+      statusDate = Date.of(statusDate?.let { FhirDate.fromString(it) }, _statusDate),
       statusReason = R4bString.of(statusReason, _statusReason),
       expressedBy = expressedBy,
       addresses = addresses ?: listOf(),

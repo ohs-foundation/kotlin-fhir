@@ -561,9 +561,9 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
         subject
           ?: throw SerializationException("Missing required property 'subject' on AdverseEvent"),
       encounter = encounter,
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
-      detected = DateTime.of(FhirDateTime.fromString(detected), _detected),
-      recordedDate = DateTime.of(FhirDateTime.fromString(recordedDate), _recordedDate),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
+      detected = DateTime.of(detected?.let { FhirDateTime.fromString(it) }, _detected),
+      recordedDate = DateTime.of(recordedDate?.let { FhirDateTime.fromString(it) }, _recordedDate),
       resultingCondition = resultingCondition ?: listOf(),
       location = location,
       seriousness = seriousness,

@@ -144,7 +144,8 @@ internal object InventoryReportInventoryListingSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       location = location,
       itemStatus = itemStatus,
-      countingDateTime = DateTime.of(FhirDateTime.fromString(countingDateTime), _countingDateTime),
+      countingDateTime =
+        DateTime.of(countingDateTime?.let { FhirDateTime.fromString(it) }, _countingDateTime),
       item = item ?: listOf(),
     )
   }
@@ -509,7 +510,7 @@ internal object InventoryReportSerializer : KSerializer<InventoryReport> {
       operationType = operationType,
       operationTypeReason = operationTypeReason,
       reportedDateTime =
-        DateTime.of(FhirDateTime.fromString(reportedDateTime), _reportedDateTime)
+        DateTime.of(reportedDateTime?.let { FhirDateTime.fromString(it) }, _reportedDateTime)
           ?: throw SerializationException(
             "Missing required property 'reportedDateTime' on InventoryReport"
           ),

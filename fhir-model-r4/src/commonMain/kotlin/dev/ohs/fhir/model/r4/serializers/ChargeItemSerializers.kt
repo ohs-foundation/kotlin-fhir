@@ -512,7 +512,7 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
       context = context,
       occurrence =
         ChargeItem.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
           occurrenceTiming,
         ),
@@ -526,7 +526,7 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
       priceOverride = priceOverride,
       overrideReason = R4String.of(overrideReason, _overrideReason),
       enterer = enterer,
-      enteredDate = DateTime.of(FhirDateTime.fromString(enteredDate), _enteredDate),
+      enteredDate = DateTime.of(enteredDate?.let { FhirDateTime.fromString(it) }, _enteredDate),
       reason = reason ?: listOf(),
       service = service ?: listOf(),
       product = ChargeItem.Product.from(productReference, productCodeableConcept),

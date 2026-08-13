@@ -285,7 +285,7 @@ internal object SpecimenCollectionSerializer : KSerializer<Specimen.Collection> 
       collector = collector,
       collected =
         Specimen.Collection.Collected.from(
-          DateTime.of(FhirDateTime.fromString(collectedDateTime), _collectedDateTime),
+          DateTime.of(collectedDateTime?.let { FhirDateTime.fromString(it) }, _collectedDateTime),
           collectedPeriod,
         ),
       duration = duration,
@@ -459,7 +459,7 @@ internal object SpecimenProcessingSerializer : KSerializer<Specimen.Processing> 
       additive = additive ?: listOf(),
       time =
         Specimen.Processing.Time.from(
-          DateTime.of(FhirDateTime.fromString(timeDateTime), _timeDateTime),
+          DateTime.of(timeDateTime?.let { FhirDateTime.fromString(it) }, _timeDateTime),
           timePeriod,
         ),
     )
@@ -840,7 +840,7 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
       status = status?.let { Enumeration.of(Specimen.SpecimenStatus.fromCode(it), _status) },
       type = type,
       subject = subject,
-      receivedTime = DateTime.of(FhirDateTime.fromString(receivedTime), _receivedTime),
+      receivedTime = DateTime.of(receivedTime?.let { FhirDateTime.fromString(it) }, _receivedTime),
       parent = parent ?: listOf(),
       request = request ?: listOf(),
       combined = combined?.let { Enumeration.of(SpecimenCombined.fromCode(it), _combined) },

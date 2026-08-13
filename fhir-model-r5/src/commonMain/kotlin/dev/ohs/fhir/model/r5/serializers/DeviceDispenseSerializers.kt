@@ -415,8 +415,9 @@ internal object DeviceDispenseSerializer : KSerializer<DeviceDispense> {
       location = location,
       type = type,
       quantity = quantity,
-      preparedDate = DateTime.of(FhirDateTime.fromString(preparedDate), _preparedDate),
-      whenHandedOver = DateTime.of(FhirDateTime.fromString(whenHandedOver), _whenHandedOver),
+      preparedDate = DateTime.of(preparedDate?.let { FhirDateTime.fromString(it) }, _preparedDate),
+      whenHandedOver =
+        DateTime.of(whenHandedOver?.let { FhirDateTime.fromString(it) }, _whenHandedOver),
       destination = destination,
       note = note ?: listOf(),
       usageInstruction = Markdown.of(usageInstruction, _usageInstruction),

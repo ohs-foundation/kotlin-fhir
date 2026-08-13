@@ -854,7 +854,7 @@ internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
           _status,
         ),
       subject = subject,
-      issued = Instant.of(FhirDateTime.fromString(issued), _issued),
+      issued = Instant.of(issued?.let { FhirDateTime.fromString(it) }, _issued),
       performer = performer ?: listOf(),
       basedOn = basedOn ?: listOf(),
       category = category ?: listOf(),

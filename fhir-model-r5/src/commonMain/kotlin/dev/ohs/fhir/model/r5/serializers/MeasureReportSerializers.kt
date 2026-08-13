@@ -216,7 +216,10 @@ internal object MeasureReportGroupSerializer : KSerializer<MeasureReport.Group> 
       measureScore =
         MeasureReport.Group.MeasureScore.from(
           measureScoreQuantity,
-          DateTime.of(FhirDateTime.fromString(measureScoreDateTime), _measureScoreDateTime),
+          DateTime.of(
+            measureScoreDateTime?.let { FhirDateTime.fromString(it) },
+            _measureScoreDateTime,
+          ),
           measureScoreCodeableConcept,
           measureScorePeriod,
           measureScoreRange,
@@ -787,7 +790,10 @@ internal object MeasureReportGroupStratifierStratumSerializer :
       measureScore =
         MeasureReport.Group.Stratifier.Stratum.MeasureScore.from(
           measureScoreQuantity,
-          DateTime.of(FhirDateTime.fromString(measureScoreDateTime), _measureScoreDateTime),
+          DateTime.of(
+            measureScoreDateTime?.let { FhirDateTime.fromString(it) },
+            _measureScoreDateTime,
+          ),
           measureScoreCodeableConcept,
           measureScorePeriod,
           measureScoreRange,
@@ -1500,7 +1506,7 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
         },
       measure = Canonical.of(measure, _measure),
       subject = subject,
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       reporter = reporter,
       reportingVendor = reportingVendor,
       location = location,

@@ -537,7 +537,7 @@ internal object CarePlanSerializer : KSerializer<CarePlan> {
         subject ?: throw SerializationException("Missing required property 'subject' on CarePlan"),
       encounter = encounter,
       period = period,
-      created = DateTime.of(FhirDateTime.fromString(created), _created),
+      created = DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created),
       custodian = custodian,
       contributor = contributor ?: listOf(),
       careTeam = careTeam ?: listOf(),

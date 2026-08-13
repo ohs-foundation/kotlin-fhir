@@ -202,7 +202,7 @@ internal object EnrollmentRequestSerializer : KSerializer<EnrollmentRequest> {
         status?.let {
           Enumeration.of(EnrollmentRequest.FinancialResourceStatusCodes.fromCode(it), _status)
         },
-      created = DateTime.of(FhirDateTime.fromString(created), _created),
+      created = DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created),
       insurer = insurer,
       provider = provider,
       candidate = candidate,

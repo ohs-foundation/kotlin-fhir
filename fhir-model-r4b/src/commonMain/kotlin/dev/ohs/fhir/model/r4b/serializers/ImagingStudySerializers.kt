@@ -216,7 +216,7 @@ internal object ImagingStudySeriesSerializer : KSerializer<ImagingStudy.Series> 
       bodySite = bodySite,
       laterality = laterality,
       specimen = specimen ?: listOf(),
-      started = DateTime.of(FhirDateTime.fromString(started), _started),
+      started = DateTime.of(started?.let { FhirDateTime.fromString(it) }, _started),
       performer = performer ?: listOf(),
       instance = instance ?: listOf(),
     )
@@ -768,7 +768,7 @@ internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
         subject
           ?: throw SerializationException("Missing required property 'subject' on ImagingStudy"),
       encounter = encounter,
-      started = DateTime.of(FhirDateTime.fromString(started), _started),
+      started = DateTime.of(started?.let { FhirDateTime.fromString(it) }, _started),
       basedOn = basedOn ?: listOf(),
       referrer = referrer,
       interpreter = interpreter ?: listOf(),

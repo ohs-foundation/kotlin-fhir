@@ -242,8 +242,10 @@ internal object ImmunizationEducationSerializer : KSerializer<Immunization.Educa
       modifierExtension = modifierExtension ?: listOf(),
       documentType = R4bString.of(documentType, _documentType),
       reference = Uri.of(reference, _reference),
-      publicationDate = DateTime.of(FhirDateTime.fromString(publicationDate), _publicationDate),
-      presentationDate = DateTime.of(FhirDateTime.fromString(presentationDate), _presentationDate),
+      publicationDate =
+        DateTime.of(publicationDate?.let { FhirDateTime.fromString(it) }, _publicationDate),
+      presentationDate =
+        DateTime.of(presentationDate?.let { FhirDateTime.fromString(it) }, _presentationDate),
     )
   }
 
@@ -356,7 +358,7 @@ internal object ImmunizationReactionSerializer : KSerializer<Immunization.Reacti
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       detail = detail,
       reported = R4bBoolean.of(reported, _reported),
     )
@@ -920,16 +922,16 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
       encounter = encounter,
       occurrence =
         Immunization.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           R4bString.of(occurrenceString, _occurrenceString),
         ) ?: throw SerializationException("Missing required property 'occurrence' on Immunization"),
-      recorded = DateTime.of(FhirDateTime.fromString(recorded), _recorded),
+      recorded = DateTime.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded),
       primarySource = R4bBoolean.of(primarySource, _primarySource),
       reportOrigin = reportOrigin,
       location = location,
       manufacturer = manufacturer,
       lotNumber = R4bString.of(lotNumber, _lotNumber),
-      expirationDate = Date.of(FhirDate.fromString(expirationDate), _expirationDate),
+      expirationDate = Date.of(expirationDate?.let { FhirDate.fromString(it) }, _expirationDate),
       site = site,
       route = route,
       doseQuantity = doseQuantity,

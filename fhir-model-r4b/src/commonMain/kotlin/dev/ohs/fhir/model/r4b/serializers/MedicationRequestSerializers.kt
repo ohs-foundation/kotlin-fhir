@@ -993,7 +993,7 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
           ),
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),
-      authoredOn = DateTime.of(FhirDateTime.fromString(authoredOn), _authoredOn),
+      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
       requester = requester,
       performer = performer,
       performerType = performerType,

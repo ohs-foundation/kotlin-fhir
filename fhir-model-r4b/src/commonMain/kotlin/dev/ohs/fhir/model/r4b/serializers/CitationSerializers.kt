@@ -770,7 +770,7 @@ internal object CitationCitedArtifactSerializer : KSerializer<Citation.CitedArti
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       relatedIdentifier = relatedIdentifier ?: listOf(),
-      dateAccessed = DateTime.of(FhirDateTime.fromString(dateAccessed), _dateAccessed),
+      dateAccessed = DateTime.of(dateAccessed?.let { FhirDateTime.fromString(it) }, _dateAccessed),
       version = version,
       currentState = currentState ?: listOf(),
       statusDate = statusDate ?: listOf(),
@@ -1830,8 +1830,9 @@ internal object CitationCitedArtifactPublicationFormSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       publishedIn = publishedIn,
       periodicRelease = periodicRelease,
-      articleDate = DateTime.of(FhirDateTime.fromString(articleDate), _articleDate),
-      lastRevisionDate = DateTime.of(FhirDateTime.fromString(lastRevisionDate), _lastRevisionDate),
+      articleDate = DateTime.of(articleDate?.let { FhirDateTime.fromString(it) }, _articleDate),
+      lastRevisionDate =
+        DateTime.of(lastRevisionDate?.let { FhirDateTime.fromString(it) }, _lastRevisionDate),
       language = language ?: listOf(),
       accessionNumber = R4bString.of(accessionNumber, _accessionNumber),
       pageString = R4bString.of(pageString, _pageString),
@@ -2308,7 +2309,7 @@ internal object CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublica
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      date = Date.of(FhirDate.fromString(date), _date),
+      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
       year = R4bString.of(year, _year),
       month = R4bString.of(month, _month),
       day = R4bString.of(day, _day),
@@ -3351,7 +3352,7 @@ internal object CitationCitedArtifactContributorshipEntryContributionInstanceSer
           ?: throw SerializationException(
             "Missing required property 'type' on Citation.CitedArtifact.Contributorship.Entry.ContributionInstance"
           ),
-      time = DateTime.of(FhirDateTime.fromString(time), _time),
+      time = DateTime.of(time?.let { FhirDateTime.fromString(it) }, _time),
     )
   }
 
@@ -3862,7 +3863,7 @@ internal object CitationSerializer : KSerializer<Citation> {
           _status,
         ),
       experimental = R4bBoolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -3870,8 +3871,8 @@ internal object CitationSerializer : KSerializer<Citation> {
       jurisdiction = jurisdiction ?: listOf(),
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       author = author ?: listOf(),
       editor = editor ?: listOf(),

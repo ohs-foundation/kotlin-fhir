@@ -534,7 +534,7 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
       code = code,
       timing =
         ExplanationOfBenefit.SupportingInfo.Timing.from(
-          Date.of(FhirDate.fromString(timingDate), _timingDate),
+          Date.of(timingDate?.let { FhirDate.fromString(it) }, _timingDate),
           timingPeriod,
         ),
       `value` =
@@ -918,7 +918,7 @@ internal object ExplanationOfBenefitProcedureSerializer :
             "Missing required property 'sequence' on ExplanationOfBenefit.Procedure"
           ),
       type = type ?: listOf(),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       procedure =
         ExplanationOfBenefit.Procedure.Procedure.from(procedureCodeableConcept, procedureReference)
           ?: throw SerializationException(
@@ -1208,7 +1208,7 @@ internal object ExplanationOfBenefitAccidentSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      date = Date.of(FhirDate.fromString(date), _date),
+      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
       type = type,
       location = ExplanationOfBenefit.Accident.Location.from(locationAddress, locationReference),
     )
@@ -1647,7 +1647,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       programCode = programCode ?: listOf(),
       serviced =
         ExplanationOfBenefit.Item.Serviced.from(
-          Date.of(FhirDate.fromString(servicedDate), _servicedDate),
+          Date.of(servicedDate?.let { FhirDate.fromString(it) }, _servicedDate),
           servicedPeriod,
         ),
       location =
@@ -2799,7 +2799,7 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       programCode = programCode ?: listOf(),
       serviced =
         ExplanationOfBenefit.AddItem.Serviced.from(
-          Date.of(FhirDate.fromString(servicedDate), _servicedDate),
+          Date.of(servicedDate?.let { FhirDate.fromString(it) }, _servicedDate),
           servicedPeriod,
         ),
       location =
@@ -3590,7 +3590,7 @@ internal object ExplanationOfBenefitPaymentSerializer : KSerializer<ExplanationO
       type = type,
       adjustment = adjustment,
       adjustmentReason = adjustmentReason,
-      date = Date.of(FhirDate.fromString(date), _date),
+      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
       amount = amount,
       identifier = identifier,
     )
@@ -4595,7 +4595,7 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
           ),
       billablePeriod = billablePeriod,
       created =
-        DateTime.of(FhirDateTime.fromString(created), _created)
+        DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
           ?: throw SerializationException(
             "Missing required property 'created' on ExplanationOfBenefit"
           ),

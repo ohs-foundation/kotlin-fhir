@@ -759,7 +759,7 @@ internal object CodeSystemConceptPropertySerializer : KSerializer<CodeSystem.Con
           R4bString.of(valueString, _valueString),
           Integer.of(valueInteger, _valueInteger),
           R4bBoolean.of(valueBoolean, _valueBoolean),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           Decimal.of(valueDecimal, _valueDecimal),
         )
           ?: throw SerializationException(
@@ -1164,7 +1164,7 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
           _status,
         ),
       experimental = R4bBoolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),

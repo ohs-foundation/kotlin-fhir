@@ -901,7 +901,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
           ),
           _status,
         ),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       description = Markdown.of(description, _description),
       note = note ?: listOf(),
       useContext = useContext ?: listOf(),

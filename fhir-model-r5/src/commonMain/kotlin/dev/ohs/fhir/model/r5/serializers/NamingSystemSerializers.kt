@@ -620,7 +620,7 @@ internal object NamingSystemSerializer : KSerializer<NamingSystem> {
         ),
       experimental = R5Boolean.of(experimental, _experimental),
       date =
-        DateTime.of(FhirDateTime.fromString(date), _date)
+        DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date)
           ?: throw SerializationException("Missing required property 'date' on NamingSystem"),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -632,8 +632,8 @@ internal object NamingSystemSerializer : KSerializer<NamingSystem> {
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       topic = topic ?: listOf(),
       author = author ?: listOf(),

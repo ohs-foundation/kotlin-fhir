@@ -671,7 +671,7 @@ internal object PackagedProductDefinitionPackagePropertySerializer :
         PackagedProductDefinition.Package.Property.Value.from(
           valueCodeableConcept,
           valueQuantity,
-          Date.of(FhirDate.fromString(valueDate), _valueDate),
+          Date.of(valueDate?.let { FhirDate.fromString(it) }, _valueDate),
           R4bBoolean.of(valueBoolean, _valueBoolean),
           valueAttachment,
         ),
@@ -1070,7 +1070,7 @@ internal object PackagedProductDefinitionSerializer : KSerializer<PackagedProduc
       type = type,
       packageFor = packageFor ?: listOf(),
       status = status,
-      statusDate = DateTime.of(FhirDateTime.fromString(statusDate), _statusDate),
+      statusDate = DateTime.of(statusDate?.let { FhirDateTime.fromString(it) }, _statusDate),
       containedItemQuantity = containedItemQuantity ?: listOf(),
       description = Markdown.of(description, _description),
       legalStatusOfSupply = legalStatusOfSupply ?: listOf(),

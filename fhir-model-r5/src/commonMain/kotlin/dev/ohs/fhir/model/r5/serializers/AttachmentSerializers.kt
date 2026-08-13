@@ -206,7 +206,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
       size = Integer64.of(size?.toLong(), _size),
       hash = Base64Binary.of(hash, _hash),
       title = R5String.of(title, _title),
-      creation = DateTime.of(FhirDateTime.fromString(creation), _creation),
+      creation = DateTime.of(creation?.let { FhirDateTime.fromString(it) }, _creation),
       height = PositiveInt.of(height, _height),
       width = PositiveInt.of(width, _width),
       frames = PositiveInt.of(frames, _frames),

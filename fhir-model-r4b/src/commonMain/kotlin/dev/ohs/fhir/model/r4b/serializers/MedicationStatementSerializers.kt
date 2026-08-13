@@ -324,10 +324,10 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
       context = context,
       effective =
         MedicationStatement.Effective.from(
-          DateTime.of(FhirDateTime.fromString(effectiveDateTime), _effectiveDateTime),
+          DateTime.of(effectiveDateTime?.let { FhirDateTime.fromString(it) }, _effectiveDateTime),
           effectivePeriod,
         ),
-      dateAsserted = DateTime.of(FhirDateTime.fromString(dateAsserted), _dateAsserted),
+      dateAsserted = DateTime.of(dateAsserted?.let { FhirDateTime.fromString(it) }, _dateAsserted),
       informationSource = informationSource,
       derivedFrom = derivedFrom ?: listOf(),
       reasonCode = reasonCode ?: listOf(),

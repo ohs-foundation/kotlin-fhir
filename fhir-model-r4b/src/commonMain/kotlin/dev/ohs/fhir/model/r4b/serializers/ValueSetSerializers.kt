@@ -154,7 +154,7 @@ internal object ValueSetComposeSerializer : KSerializer<ValueSet.Compose> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      lockedDate = Date.of(FhirDate.fromString(lockedDate), _lockedDate),
+      lockedDate = Date.of(lockedDate?.let { FhirDate.fromString(it) }, _lockedDate),
       inactive = R4bBoolean.of(inactive, _inactive),
       include = include ?: listOf(),
       exclude = exclude ?: listOf(),
@@ -852,7 +852,7 @@ internal object ValueSetExpansionSerializer : KSerializer<ValueSet.Expansion> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = Uri.of(identifier, _identifier),
       timestamp =
-        DateTime.of(FhirDateTime.fromString(timestamp), _timestamp)
+        DateTime.of(timestamp?.let { FhirDateTime.fromString(it) }, _timestamp)
           ?: throw SerializationException(
             "Missing required property 'timestamp' on ValueSet.Expansion"
           ),
@@ -1043,7 +1043,7 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
           Decimal.of(valueDecimal, _valueDecimal),
           Uri.of(valueUri, _valueUri),
           Code.of(valueCode, _valueCode),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
         ),
     )
   }
@@ -1572,7 +1572,7 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
           _status,
         ),
       experimental = R4bBoolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),

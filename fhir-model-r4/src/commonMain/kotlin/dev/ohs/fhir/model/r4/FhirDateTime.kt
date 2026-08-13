@@ -53,8 +53,13 @@ public sealed interface FhirDateTime {
   }
 
   public companion object {
-    public fun fromString(string: String?): FhirDateTime? {
-      if (string == null) return null
+    /**
+     * Parses a FHIR dateTime string (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`, or a full date-time with a
+     * mandatory timezone offset).
+     *
+     * @throws IllegalStateException if [string] is not a valid FHIR dateTime.
+     */
+    public fun fromString(string: String): FhirDateTime {
       if (string.matches(Regex("\\d{4}"))) {
         return Year(string.toInt())
       } else if (string.matches(Regex("\\d{4}-\\d{2}"))) {

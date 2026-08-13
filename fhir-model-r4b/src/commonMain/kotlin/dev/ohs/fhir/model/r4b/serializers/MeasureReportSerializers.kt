@@ -979,7 +979,7 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
         Canonical.of(measure, _measure)
           ?: throw SerializationException("Missing required property 'measure' on MeasureReport"),
       subject = subject,
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       reporter = reporter,
       period =
         period

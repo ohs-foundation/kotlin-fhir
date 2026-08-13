@@ -277,10 +277,10 @@ internal object SlotSerializer : KSerializer<Slot> {
           _status,
         ),
       start =
-        Instant.of(FhirDateTime.fromString(start), _start)
+        Instant.of(start?.let { FhirDateTime.fromString(it) }, _start)
           ?: throw SerializationException("Missing required property 'start' on Slot"),
       end =
-        Instant.of(FhirDateTime.fromString(end), _end)
+        Instant.of(end?.let { FhirDateTime.fromString(it) }, _end)
           ?: throw SerializationException("Missing required property 'end' on Slot"),
       overbooked = R5Boolean.of(overbooked, _overbooked),
       comment = R5String.of(comment, _comment),

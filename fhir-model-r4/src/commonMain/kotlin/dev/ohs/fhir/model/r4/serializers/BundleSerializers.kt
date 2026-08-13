@@ -528,7 +528,8 @@ internal object BundleEntryRequestSerializer : KSerializer<Bundle.Entry.Request>
             "Missing required property 'url' on Bundle.Entry.Request"
           ),
       ifNoneMatch = R4String.of(ifNoneMatch, _ifNoneMatch),
-      ifModifiedSince = Instant.of(FhirDateTime.fromString(ifModifiedSince), _ifModifiedSince),
+      ifModifiedSince =
+        Instant.of(ifModifiedSince?.let { FhirDateTime.fromString(it) }, _ifModifiedSince),
       ifMatch = R4String.of(ifMatch, _ifMatch),
       ifNoneExist = R4String.of(ifNoneExist, _ifNoneExist),
     )
@@ -674,7 +675,7 @@ internal object BundleEntryResponseSerializer : KSerializer<Bundle.Entry.Respons
           ),
       location = Uri.of(location, _location),
       etag = R4String.of(etag, _etag),
-      lastModified = Instant.of(FhirDateTime.fromString(lastModified), _lastModified),
+      lastModified = Instant.of(lastModified?.let { FhirDateTime.fromString(it) }, _lastModified),
       outcome = outcome,
     )
   }
@@ -844,7 +845,7 @@ internal object BundleSerializer : KSerializer<Bundle> {
           ),
           _type,
         ),
-      timestamp = Instant.of(FhirDateTime.fromString(timestamp), _timestamp),
+      timestamp = Instant.of(timestamp?.let { FhirDateTime.fromString(it) }, _timestamp),
       total = UnsignedInt.of(total, _total),
       link = link ?: listOf(),
       entry = entry ?: listOf(),

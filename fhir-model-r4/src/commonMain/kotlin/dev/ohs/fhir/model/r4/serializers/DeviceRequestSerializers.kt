@@ -588,11 +588,11 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
       encounter = encounter,
       occurrence =
         DeviceRequest.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
           occurrenceTiming,
         ),
-      authoredOn = DateTime.of(FhirDateTime.fromString(authoredOn), _authoredOn),
+      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
       requester = requester,
       performerType = performerType,
       performer = performer,

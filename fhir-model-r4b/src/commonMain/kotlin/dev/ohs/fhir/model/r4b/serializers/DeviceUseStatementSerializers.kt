@@ -281,9 +281,9 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
         DeviceUseStatement.Timing.from(
           timingTiming,
           timingPeriod,
-          DateTime.of(FhirDateTime.fromString(timingDateTime), _timingDateTime),
+          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
         ),
-      recordedOn = DateTime.of(FhirDateTime.fromString(recordedOn), _recordedOn),
+      recordedOn = DateTime.of(recordedOn?.let { FhirDateTime.fromString(it) }, _recordedOn),
       source = source,
       device =
         device

@@ -1578,7 +1578,7 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
         ),
       experimental = R4Boolean.of(experimental, _experimental),
       date =
-        DateTime.of(FhirDateTime.fromString(date), _date)
+        DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date)
           ?: throw SerializationException(
             "Missing required property 'date' on TerminologyCapabilities"
           ),

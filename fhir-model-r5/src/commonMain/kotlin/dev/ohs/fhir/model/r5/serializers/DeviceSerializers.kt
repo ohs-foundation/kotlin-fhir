@@ -453,7 +453,7 @@ internal object DeviceVersionSerializer : KSerializer<Device.Version> {
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
       component = component,
-      installDate = DateTime.of(FhirDateTime.fromString(installDate), _installDate),
+      installDate = DateTime.of(installDate?.let { FhirDateTime.fromString(it) }, _installDate),
       `value` =
         R5String.of(`value`, _value)
           ?: throw SerializationException("Missing required property 'value' on Device.Version"),
@@ -1136,8 +1136,10 @@ internal object DeviceSerializer : KSerializer<Device> {
       availabilityStatus = availabilityStatus,
       biologicalSourceEvent = biologicalSourceEvent,
       manufacturer = R5String.of(manufacturer, _manufacturer),
-      manufactureDate = DateTime.of(FhirDateTime.fromString(manufactureDate), _manufactureDate),
-      expirationDate = DateTime.of(FhirDateTime.fromString(expirationDate), _expirationDate),
+      manufactureDate =
+        DateTime.of(manufactureDate?.let { FhirDateTime.fromString(it) }, _manufactureDate),
+      expirationDate =
+        DateTime.of(expirationDate?.let { FhirDateTime.fromString(it) }, _expirationDate),
       lotNumber = R5String.of(lotNumber, _lotNumber),
       serialNumber = R5String.of(serialNumber, _serialNumber),
       name = name ?: listOf(),

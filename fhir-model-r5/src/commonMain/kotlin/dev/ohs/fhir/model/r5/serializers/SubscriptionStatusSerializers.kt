@@ -146,7 +146,7 @@ internal object SubscriptionStatusNotificationEventSerializer :
           ?: throw SerializationException(
             "Missing required property 'eventNumber' on SubscriptionStatus.NotificationEvent"
           ),
-      timestamp = Instant.of(FhirDateTime.fromString(timestamp), _timestamp),
+      timestamp = Instant.of(timestamp?.let { FhirDateTime.fromString(it) }, _timestamp),
       focus = focus,
       additionalContext = additionalContext ?: listOf(),
     )

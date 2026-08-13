@@ -345,7 +345,7 @@ internal object DocumentManifestSerializer : KSerializer<DocumentManifest> {
         ),
       type = type,
       subject = subject,
-      created = DateTime.of(FhirDateTime.fromString(created), _created),
+      created = DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created),
       author = author ?: listOf(),
       recipient = recipient ?: listOf(),
       source = Uri.of(source, _source),

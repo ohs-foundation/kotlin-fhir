@@ -399,8 +399,9 @@ internal object BiologicallyDerivedProductDispenseSerializer :
       performer = performer ?: listOf(),
       location = location,
       quantity = quantity,
-      preparedDate = DateTime.of(FhirDateTime.fromString(preparedDate), _preparedDate),
-      whenHandedOver = DateTime.of(FhirDateTime.fromString(whenHandedOver), _whenHandedOver),
+      preparedDate = DateTime.of(preparedDate?.let { FhirDateTime.fromString(it) }, _preparedDate),
+      whenHandedOver =
+        DateTime.of(whenHandedOver?.let { FhirDateTime.fromString(it) }, _whenHandedOver),
       destination = destination,
       note = note ?: listOf(),
       usageInstruction = R5String.of(usageInstruction, _usageInstruction),

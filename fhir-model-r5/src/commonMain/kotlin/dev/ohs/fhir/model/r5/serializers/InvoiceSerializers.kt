@@ -272,7 +272,7 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
       sequence = PositiveInt.of(sequence, _sequence),
       serviced =
         Invoice.LineItem.Serviced.from(
-          Date.of(FhirDate.fromString(servicedDate), _servicedDate),
+          Date.of(servicedDate?.let { FhirDate.fromString(it) }, _servicedDate),
           servicedPeriod,
         ),
       chargeItem =
@@ -599,10 +599,13 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
       type = type,
       subject = subject,
       recipient = recipient,
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
-      creation = DateTime.of(FhirDateTime.fromString(creation), _creation),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
+      creation = DateTime.of(creation?.let { FhirDateTime.fromString(it) }, _creation),
       period =
-        Invoice.Period.from(Date.of(FhirDate.fromString(periodDate), _periodDate), periodPeriod),
+        Invoice.Period.from(
+          Date.of(periodDate?.let { FhirDate.fromString(it) }, _periodDate),
+          periodPeriod,
+        ),
       participant = participant ?: listOf(),
       issuer = issuer,
       account = account,

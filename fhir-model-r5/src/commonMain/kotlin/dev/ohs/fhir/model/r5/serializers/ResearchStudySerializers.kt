@@ -1302,7 +1302,7 @@ internal object ResearchStudySerializer : KSerializer<ResearchStudy> {
       protocol = protocol ?: listOf(),
       partOf = partOf ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       status =
         Enumeration.of(
           PublicationStatus.fromCode(

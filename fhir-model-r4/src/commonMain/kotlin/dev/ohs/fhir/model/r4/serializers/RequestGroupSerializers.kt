@@ -316,7 +316,7 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
       relatedAction = relatedAction ?: listOf(),
       timing =
         RequestGroup.Action.Timing.from(
-          DateTime.of(FhirDateTime.fromString(timingDateTime), _timingDateTime),
+          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
           timingAge,
           timingPeriod,
           timingDuration,
@@ -1073,7 +1073,7 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
       code = code,
       subject = subject,
       encounter = encounter,
-      authoredOn = DateTime.of(FhirDateTime.fromString(authoredOn), _authoredOn),
+      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
       author = author,
       reasonCode = reasonCode ?: listOf(),
       reasonReference = reasonReference ?: listOf(),

@@ -1199,12 +1199,12 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
       encounter = encounter,
       occurrence =
         AdverseEvent.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
           occurrenceTiming,
         ),
-      detected = DateTime.of(FhirDateTime.fromString(detected), _detected),
-      recordedDate = DateTime.of(FhirDateTime.fromString(recordedDate), _recordedDate),
+      detected = DateTime.of(detected?.let { FhirDateTime.fromString(it) }, _detected),
+      recordedDate = DateTime.of(recordedDate?.let { FhirDateTime.fromString(it) }, _recordedDate),
       resultingEffect = resultingEffect ?: listOf(),
       location = location,
       seriousness = seriousness,

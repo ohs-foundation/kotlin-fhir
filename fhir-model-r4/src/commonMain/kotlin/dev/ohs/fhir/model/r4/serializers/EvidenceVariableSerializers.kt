@@ -297,7 +297,7 @@ internal object EvidenceVariableCharacteristicSerializer :
       participantEffective =
         EvidenceVariable.Characteristic.ParticipantEffective.from(
           DateTime.of(
-            FhirDateTime.fromString(participantEffectiveDateTime),
+            participantEffectiveDateTime?.let { FhirDateTime.fromString(it) },
             _participantEffectiveDateTime,
           ),
           participantEffectivePeriod,
@@ -811,7 +811,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
           ),
           _status,
         ),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -819,8 +819,8 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       useContext = useContext ?: listOf(),
       jurisdiction = jurisdiction ?: listOf(),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       topic = topic ?: listOf(),
       author = author ?: listOf(),

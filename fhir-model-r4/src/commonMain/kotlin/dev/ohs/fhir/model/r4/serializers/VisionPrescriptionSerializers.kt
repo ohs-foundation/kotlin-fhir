@@ -639,7 +639,7 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
           _status,
         ),
       created =
-        DateTime.of(FhirDateTime.fromString(created), _created)
+        DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
           ?: throw SerializationException(
             "Missing required property 'created' on VisionPrescription"
           ),
@@ -650,7 +650,7 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
           ),
       encounter = encounter,
       dateWritten =
-        DateTime.of(FhirDateTime.fromString(dateWritten), _dateWritten)
+        DateTime.of(dateWritten?.let { FhirDateTime.fromString(it) }, _dateWritten)
           ?: throw SerializationException(
             "Missing required property 'dateWritten' on VisionPrescription"
           ),

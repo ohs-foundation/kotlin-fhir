@@ -397,9 +397,9 @@ internal object DeviceUsageSerializer : KSerializer<DeviceUsage> {
         DeviceUsage.Timing.from(
           timingTiming,
           timingPeriod,
-          DateTime.of(FhirDateTime.fromString(timingDateTime), _timingDateTime),
+          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
         ),
-      dateAsserted = DateTime.of(FhirDateTime.fromString(dateAsserted), _dateAsserted),
+      dateAsserted = DateTime.of(dateAsserted?.let { FhirDateTime.fromString(it) }, _dateAsserted),
       usageStatus = usageStatus,
       usageReason = usageReason ?: listOf(),
       adherence = adherence,

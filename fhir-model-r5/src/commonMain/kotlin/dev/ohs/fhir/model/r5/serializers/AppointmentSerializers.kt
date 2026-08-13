@@ -426,13 +426,14 @@ internal object AppointmentRecurrenceTemplateSerializer :
           ?: throw SerializationException(
             "Missing required property 'recurrenceType' on Appointment.RecurrenceTemplate"
           ),
-      lastOccurrenceDate = Date.of(FhirDate.fromString(lastOccurrenceDate), _lastOccurrenceDate),
+      lastOccurrenceDate =
+        Date.of(lastOccurrenceDate?.let { FhirDate.fromString(it) }, _lastOccurrenceDate),
       occurrenceCount = PositiveInt.of(occurrenceCount, _occurrenceCount),
       occurrenceDate =
         (kotlin.collections.List(maxOf(occurrenceDate?.size ?: 0, _occurrenceDate?.size ?: 0)) {
           index ->
           Date.of(
-            occurrenceDate?.getOrNull(index)?.let { FhirDate.fromString(it) },
+            occurrenceDate?.getOrNull(index)?.let { it?.let { FhirDate.fromString(it) } },
             _occurrenceDate?.getOrNull(index),
           )!!
         }),
@@ -443,7 +444,7 @@ internal object AppointmentRecurrenceTemplateSerializer :
         (kotlin.collections.List(maxOf(excludingDate?.size ?: 0, _excludingDate?.size ?: 0)) { index
           ->
           Date.of(
-            excludingDate?.getOrNull(index)?.let { FhirDate.fromString(it) },
+            excludingDate?.getOrNull(index)?.let { it?.let { FhirDate.fromString(it) } },
             _excludingDate?.getOrNull(index),
           )!!
         }),
@@ -1360,14 +1361,15 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
       supportingInformation = supportingInformation ?: listOf(),
       previousAppointment = previousAppointment,
       originatingAppointment = originatingAppointment,
-      start = Instant.of(FhirDateTime.fromString(start), _start),
-      end = Instant.of(FhirDateTime.fromString(end), _end),
+      start = Instant.of(start?.let { FhirDateTime.fromString(it) }, _start),
+      end = Instant.of(end?.let { FhirDateTime.fromString(it) }, _end),
       minutesDuration = PositiveInt.of(minutesDuration, _minutesDuration),
       requestedPeriod = requestedPeriod ?: listOf(),
       slot = slot ?: listOf(),
       account = account ?: listOf(),
-      created = DateTime.of(FhirDateTime.fromString(created), _created),
-      cancellationDate = DateTime.of(FhirDateTime.fromString(cancellationDate), _cancellationDate),
+      created = DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created),
+      cancellationDate =
+        DateTime.of(cancellationDate?.let { FhirDateTime.fromString(it) }, _cancellationDate),
       note = note ?: listOf(),
       patientInstruction = patientInstruction ?: listOf(),
       basedOn = basedOn ?: listOf(),

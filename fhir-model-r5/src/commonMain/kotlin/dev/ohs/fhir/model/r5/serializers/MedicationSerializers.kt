@@ -281,7 +281,8 @@ internal object MedicationBatchSerializer : KSerializer<Medication.Batch> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       lotNumber = R5String.of(lotNumber, _lotNumber),
-      expirationDate = DateTime.of(FhirDateTime.fromString(expirationDate), _expirationDate),
+      expirationDate =
+        DateTime.of(expirationDate?.let { FhirDateTime.fromString(it) }, _expirationDate),
     )
   }
 

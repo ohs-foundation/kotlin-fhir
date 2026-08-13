@@ -19,6 +19,7 @@ package dev.ohs.fhir.model.test
 import dev.ohs.fhir.model.r4.FhirDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class FhirDateTest {
   @Test
@@ -32,6 +33,12 @@ class FhirDateTest {
   @Test
   fun deserializingAndSerializingDate_shouldProduceSameString() =
     deserializeAndSerializeDateTime("2025-09-11")
+
+  @Test
+  fun deserializingInvalidString_shouldThrow() {
+    assertFailsWith<IllegalStateException> { FhirDate.fromString("not-a-date") }
+    assertFailsWith<IllegalStateException> { FhirDate.fromString("") }
+  }
 
   private fun deserializeAndSerializeDateTime(string: String) {
     assertEquals(string, FhirDate.Companion.fromString(string).toString())

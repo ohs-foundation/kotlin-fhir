@@ -888,7 +888,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
           subjectReference,
           Canonical.of(subjectCanonical, _subjectCanonical),
         ),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -897,8 +897,8 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
       purpose = Markdown.of(purpose, _purpose),
       usage = R4bString.of(usage, _usage),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       topic = topic ?: listOf(),
       author = author ?: listOf(),
@@ -923,7 +923,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
       timing =
         ActivityDefinition.Timing.from(
           timingTiming,
-          DateTime.of(FhirDateTime.fromString(timingDateTime), _timingDateTime),
+          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
           timingAge,
           timingPeriod,
           timingRange,

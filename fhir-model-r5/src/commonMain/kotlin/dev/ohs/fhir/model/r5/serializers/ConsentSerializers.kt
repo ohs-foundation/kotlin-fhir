@@ -280,7 +280,7 @@ internal object ConsentVerificationSerializer : KSerializer<Consent.Verification
           maxOf(verificationDate?.size ?: 0, _verificationDate?.size ?: 0)
         ) { index ->
           DateTime.of(
-            verificationDate?.getOrNull(index)?.let { FhirDateTime.fromString(it) },
+            verificationDate?.getOrNull(index)?.let { it?.let { FhirDateTime.fromString(it) } },
             _verificationDate?.getOrNull(index),
           )!!
         }),
@@ -1020,7 +1020,7 @@ internal object ConsentSerializer : KSerializer<Consent> {
         ),
       category = category ?: listOf(),
       subject = subject,
-      date = Date.of(FhirDate.fromString(date), _date),
+      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
       period = period,
       grantor = grantor ?: listOf(),
       grantee = grantee ?: listOf(),

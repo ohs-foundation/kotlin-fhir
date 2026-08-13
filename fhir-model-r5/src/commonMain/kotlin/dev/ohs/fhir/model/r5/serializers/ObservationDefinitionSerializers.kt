@@ -995,7 +995,7 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
           _status,
         ),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -1004,8 +1004,8 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       derivedFromCanonical =
         (kotlin.collections.List(

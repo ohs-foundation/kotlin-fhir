@@ -131,7 +131,7 @@ internal object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Cal
         state?.let {
           Enumeration.of(DeviceMetric.DeviceMetricCalibrationState.fromCode(it), _state)
         },
-      time = Instant.of(FhirDateTime.fromString(time), _time),
+      time = Instant.of(time?.let { FhirDateTime.fromString(it) }, _time),
     )
   }
 

@@ -577,7 +577,7 @@ internal object CitationCitedArtifactSerializer : KSerializer<Citation.CitedArti
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       relatedIdentifier = relatedIdentifier ?: listOf(),
-      dateAccessed = DateTime.of(FhirDateTime.fromString(dateAccessed), _dateAccessed),
+      dateAccessed = DateTime.of(dateAccessed?.let { FhirDateTime.fromString(it) }, _dateAccessed),
       version = version,
       currentState = currentState ?: listOf(),
       statusDate = statusDate ?: listOf(),
@@ -1654,10 +1654,11 @@ internal object CitationCitedArtifactPublicationFormSerializer :
       citedMedium = citedMedium,
       volume = R5String.of(volume, _volume),
       issue = R5String.of(issue, _issue),
-      articleDate = DateTime.of(FhirDateTime.fromString(articleDate), _articleDate),
+      articleDate = DateTime.of(articleDate?.let { FhirDateTime.fromString(it) }, _articleDate),
       publicationDateText = R5String.of(publicationDateText, _publicationDateText),
       publicationDateSeason = R5String.of(publicationDateSeason, _publicationDateSeason),
-      lastRevisionDate = DateTime.of(FhirDateTime.fromString(lastRevisionDate), _lastRevisionDate),
+      lastRevisionDate =
+        DateTime.of(lastRevisionDate?.let { FhirDateTime.fromString(it) }, _lastRevisionDate),
       language = language ?: listOf(),
       accessionNumber = R5String.of(accessionNumber, _accessionNumber),
       pageString = R5String.of(pageString, _pageString),
@@ -2576,7 +2577,7 @@ internal object CitationCitedArtifactContributorshipEntryContributionInstanceSer
           ?: throw SerializationException(
             "Missing required property 'type' on Citation.CitedArtifact.Contributorship.Entry.ContributionInstance"
           ),
-      time = DateTime.of(FhirDateTime.fromString(time), _time),
+      time = DateTime.of(time?.let { FhirDateTime.fromString(it) }, _time),
     )
   }
 
@@ -3123,7 +3124,7 @@ internal object CitationSerializer : KSerializer<Citation> {
           _status,
         ),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -3132,8 +3133,8 @@ internal object CitationSerializer : KSerializer<Citation> {
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       author = author ?: listOf(),
       editor = editor ?: listOf(),

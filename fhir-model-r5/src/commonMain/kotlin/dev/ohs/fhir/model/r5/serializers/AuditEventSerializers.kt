@@ -771,7 +771,7 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
           valueRange,
           valueRatio,
           Time.of(valueTime, _valueTime),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           valuePeriod,
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
         )
@@ -1087,10 +1087,10 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
       occurred =
         AuditEvent.Occurred.from(
           occurredPeriod,
-          DateTime.of(FhirDateTime.fromString(occurredDateTime), _occurredDateTime),
+          DateTime.of(occurredDateTime?.let { FhirDateTime.fromString(it) }, _occurredDateTime),
         ),
       recorded =
-        Instant.of(FhirDateTime.fromString(recorded), _recorded)
+        Instant.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded)
           ?: throw SerializationException("Missing required property 'recorded' on AuditEvent"),
       outcome = outcome,
       authorization = authorization ?: listOf(),

@@ -23,7 +23,6 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.asClassName
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.UtcOffset
@@ -153,11 +152,15 @@ object FhirDateTimeFileSpecGenerator {
               TypeSpec.companionObjectBuilder()
                 .addFunction(
                   FunSpec.builder("fromString")
-                    .addParameter("string", String::class.asClassName().copy(nullable = true))
-                    .returns(sealedInterfaceClassName.copy(nullable = true))
+                    .addKdoc(
+                      "Parses a FHIR dateTime string (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`, or a full " +
+                        "date-time with a mandatory timezone offset).\n\n" +
+                        "@throws IllegalStateException if [string] is not a valid FHIR dateTime."
+                    )
+                    .addParameter("string", String::class)
+                    .returns(sealedInterfaceClassName)
                     .addCode(
                       """
-                      if (string == null) return null
                       if (string.matches(Regex("\\d{4}"))) {
                           return Year(string.toInt())
                       } else if (string.matches(Regex("\\d{4}-\\d{2}"))) {

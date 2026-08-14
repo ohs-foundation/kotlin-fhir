@@ -18,6 +18,7 @@ package dev.ohs.fhir.codegen.searchparam
 
 import dev.ohs.fhir.codegen.FhirPathExpressionResolver
 import dev.ohs.fhir.codegen.ResolvedExpression
+import dev.ohs.fhir.codegen.primitives.FhirPathType
 
 /**
  * Classification of a FHIRPath search-parameter expression after parsing.
@@ -119,13 +120,25 @@ internal fun parseSearchParamExpression(
               .resolve("$elementType.${whereResult.filterField}", elementType)
               ?.segments
               ?.lastOrNull()
-          return SearchParamPattern.WhereFilter(
-            resolved,
-            whereResult.filterField,
-            whereResult.filterValue,
-            postPath,
-            isFieldNullable = fieldSegment?.isNullable ?: true,
-          )
+          // A supported filter compiles to `filter { it.<field>?.value?.toString() == "<value>" }`,
+          // which requires the field to be a primitive type whose raw value is exposed via
+          // `.value`. Example: in `Device.identifier.where(type='SNO')`, the field
+          // `Identifier.type` is a CodeableConcept with no `.value`, so no compilable filter
+          // can be generated. Such expressions are classified as unsupported, and their
+          // parameters render as a `NotImplementedError` throw instead of a partial or
+          // non-compiling extractor.
+          val fieldTypeCode = fieldSegment?.leafTypeCode
+          if (
+            fieldTypeCode != null && FhirPathType.entries.any { fieldTypeCode in it.fhirTypeCodes }
+          ) {
+            return SearchParamPattern.WhereFilter(
+              resolved,
+              whereResult.filterField,
+              whereResult.filterValue,
+              postPath,
+              isFieldNullable = fieldSegment.isNullable,
+            )
+          }
         }
       }
     }

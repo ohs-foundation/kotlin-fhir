@@ -25,7 +25,6 @@ import dev.ohs.fhir.model.r5.AdverseEvent
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Condition
-import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -75,13 +74,19 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val date: SearchParam<AdverseEvent, DateTime> =
+  public val date: SearchParam<AdverseEvent, Any> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
-      expression = "AdverseEvent.occurrence.ofType(dateTime)",
+      expression =
+        "AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing)",
       extractor = { resource ->
-        listOfNotNull((resource.occurrence as? AdverseEvent.Occurrence.DateTime)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.occurrence as? AdverseEvent.Occurrence.DateTime)?.value))
+            addAll(listOfNotNull((resource.occurrence as? AdverseEvent.Occurrence.Period)?.value))
+            addAll(listOfNotNull((resource.occurrence as? AdverseEvent.Occurrence.Timing)?.value))
+          }
+          .distinct()
       },
     )
 

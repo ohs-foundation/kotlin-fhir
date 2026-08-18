@@ -48,7 +48,6 @@ import dev.ohs.fhir.model.r5.ClaimResponse
 import dev.ohs.fhir.model.r5.ClinicalImpression
 import dev.ohs.fhir.model.r5.ClinicalUseDefinition
 import dev.ohs.fhir.model.r5.CodeSystem
-import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.Communication
 import dev.ohs.fhir.model.r5.CommunicationRequest
 import dev.ohs.fhir.model.r5.CompartmentDefinition
@@ -216,13 +215,17 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> resource.destination.mapNotNull { it.name } },
     )
 
-  public val event: SearchParam<MessageHeader, Coding> =
+  public val event: SearchParam<MessageHeader, Any> =
     SearchParam(
       name = "event",
       type = SearchParamType.Token,
-      expression = "MessageHeader.event.ofType(Coding)",
+      expression = "MessageHeader.event.ofType(Coding) | MessageHeader.event.ofType(canonical)",
       extractor = { resource ->
-        listOfNotNull((resource.event as? MessageHeader.Event.Coding)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.event as? MessageHeader.Event.Coding)?.value))
+            addAll(listOfNotNull((resource.event as? MessageHeader.Event.Canonical)?.value))
+          }
+          .distinct()
       },
     )
 

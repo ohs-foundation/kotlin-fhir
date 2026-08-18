@@ -28,7 +28,6 @@ import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.ImplementationGuide
 import dev.ohs.fhir.model.r4b.Markdown
-import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.StructureDefinition
 import dev.ohs.fhir.model.r4b.Uri
@@ -52,13 +51,22 @@ public object CapabilityStatementSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<CapabilityStatement, Quantity> =
+  public val contextQuantity: SearchParam<CapabilityStatement, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(CapabilityStatement.useContext.value as Quantity)",
+      expression =
+        "(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

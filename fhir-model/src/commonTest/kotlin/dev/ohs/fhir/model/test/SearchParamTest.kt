@@ -23,11 +23,17 @@ import dev.ohs.fhir.model.r4.search.PatientSearchParams as R4PatientSearchParams
 import dev.ohs.fhir.model.r5.ActivityDefinition
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
+import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Enumeration
+import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Observation
+import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Quantity
+import dev.ohs.fhir.model.r5.Range
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.search.ActivityDefinitionSearchParams
+import dev.ohs.fhir.model.r5.search.DeviceSearchParams
 import dev.ohs.fhir.model.r5.search.ObservationSearchParams
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.test.Test
@@ -118,5 +124,87 @@ class SearchParamTest {
       listOf(dateTime),
       R4PatientSearchParams.deathDate.extractFrom(patient),
     )
+  }
+
+  @Test
+  fun extractingUnionChoice_withFirstBranchType_shouldReturnExtractedValue() {
+    // value-date is `Observation.value.ofType(dateTime) | Observation.value.ofType(Period)`.
+    val dateTime =
+      dev.ohs.fhir.model.r5.DateTime(value = FhirDateTime.fromString("2026-08-12T09:30:00Z"))
+    val observation =
+      Observation(
+        status = Enumeration(value = Observation.ObservationStatus.Final),
+        code = CodeableConcept(text = dev.ohs.fhir.model.r5.String(value = "Onset")),
+        value = Observation.Value.DateTime(dateTime),
+      )
+
+    assertEquals(listOf<Any>(dateTime), ObservationSearchParams.valueDate.extractFrom(observation))
+  }
+
+  @Test
+  fun extractingUnionChoice_withSecondBranchType_shouldReturnExtractedValue() {
+    val period =
+      Period(start = dev.ohs.fhir.model.r5.DateTime(value = FhirDateTime.fromString("2026-08-01")))
+    val observation =
+      Observation(
+        status = Enumeration(value = Observation.ObservationStatus.Final),
+        code = CodeableConcept(text = dev.ohs.fhir.model.r5.String(value = "Onset")),
+        value = Observation.Value.Period(period),
+      )
+
+    assertEquals(listOf<Any>(period), ObservationSearchParams.valueDate.extractFrom(observation))
+  }
+
+  @Test
+  fun extractingUnionChoice_withValuesInBothBranches_shouldConcatenateInExpressionOrder() {
+    // context-quantity is `(...ofType(Quantity)) | (...ofType(Range))`. Results follow the
+    // branch order in the expression: all Quantity values first, then all Range values.
+    val contextQuantity = Quantity(unit = dev.ohs.fhir.model.r5.String(value = "years"))
+    val contextRange = Range(low = Quantity(unit = dev.ohs.fhir.model.r5.String(value = "months")))
+
+    val activityDefinition =
+      ActivityDefinition(
+        status = Enumeration(value = PublicationStatus.Draft),
+        useContext =
+          listOf(
+            UsageContext(
+              code = Coding(code = dev.ohs.fhir.model.r5.Code(value = "age")),
+              value = UsageContext.Value.Range(contextRange),
+            ),
+            UsageContext(
+              code = Coding(code = dev.ohs.fhir.model.r5.Code(value = "age")),
+              value = UsageContext.Value.Quantity(contextQuantity),
+            ),
+          ),
+      )
+
+    assertEquals(
+      listOf<Any>(contextQuantity, contextRange),
+      ActivityDefinitionSearchParams.contextQuantity.extractFrom(activityDefinition),
+    )
+  }
+
+  @Test
+  fun extractingPartiallySupportedUnion_shouldReturnOnlySupportedBranchValues() {
+    // serial-number is `Device.serialNumber | Device.identifier.where(type='SNO')`. The second
+    // branch is not supported and is skipped, so only the serialNumber value is extracted. See
+    // "Partially extracted unions" in docs/search-parameter-patterns.md.
+    val serialNumber = dev.ohs.fhir.model.r5.String(value = "SN-123")
+    val device =
+      Device(
+        serialNumber = serialNumber,
+        identifier =
+          listOf(
+            Identifier(
+              type =
+                CodeableConcept(
+                  coding = listOf(Coding(code = dev.ohs.fhir.model.r5.Code(value = "SNO")))
+                ),
+              value = dev.ohs.fhir.model.r5.String(value = "SN-456"),
+            )
+          ),
+      )
+
+    assertEquals(listOf(serialNumber), DeviceSearchParams.serialNumber.extractFrom(device))
   }
 }

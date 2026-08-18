@@ -428,12 +428,23 @@ public object AuditEventSearchParams {
     SearchParam(
       name = "patient",
       type = SearchParamType.Reference,
-      expression = "AuditEvent.agent.who.where(resolve() is Patient)",
+      expression =
+        "AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        resource.agent
-          .mapNotNull { it.who }
-          .filter { it.reference?.value?.contains("Patient/") == true }
+        buildList {
+            addAll(
+              resource.agent
+                .mapNotNull { it.who }
+                .filter { it.reference?.value?.contains("Patient/") == true }
+            )
+            addAll(
+              resource.entity
+                .mapNotNull { it.what }
+                .filter { it.reference?.value?.contains("Patient/") == true }
+            )
+          }
+          .distinct()
       },
     )
 

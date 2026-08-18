@@ -44,6 +44,11 @@ internal object SearchParamTypeResolver {
       is SearchParamPattern.WhereFilter ->
         if (pattern.postPath != null) forResolvedPath(pattern.postPath, packageName, resourceName)
         else ClassName(packageName, pattern.resolved.segments.last().leafTypeCode!!.capitalized())
+      // If all branches produce the same value type, use it. Otherwise fall back to Any: e.g.
+      // `ofType(dateTime) | ofType(Period)` produces two different types.
+      is SearchParamPattern.Union ->
+        pattern.branches.map { resolve(it, packageName, resourceName) }.distinct().singleOrNull()
+          ?: ClassName("kotlin", "Any")
       SearchParamPattern.Unsupported -> ClassName("kotlin", "Any")
     }
 

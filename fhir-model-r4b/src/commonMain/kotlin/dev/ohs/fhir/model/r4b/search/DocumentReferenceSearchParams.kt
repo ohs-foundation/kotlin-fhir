@@ -286,8 +286,14 @@ public object DocumentReferenceSearchParams {
     SearchParam(
       name = "identifier",
       type = SearchParamType.Token,
-      expression = "DocumentReference.masterIdentifier",
-      extractor = { resource -> listOfNotNull(resource.masterIdentifier) },
+      expression = "DocumentReference.masterIdentifier | DocumentReference.identifier",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.masterIdentifier))
+            addAll(resource.identifier)
+          }
+          .distinct()
+      },
     )
 
   public val language: SearchParam<DocumentReference, Any> =

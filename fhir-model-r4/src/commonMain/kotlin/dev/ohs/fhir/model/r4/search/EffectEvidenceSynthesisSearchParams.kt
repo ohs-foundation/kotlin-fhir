@@ -28,7 +28,6 @@ import dev.ohs.fhir.model.r4.EffectEvidenceSynthesis
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Period
-import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
@@ -51,13 +50,22 @@ public object EffectEvidenceSynthesisSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<EffectEvidenceSynthesis, Quantity> =
+  public val contextQuantity: SearchParam<EffectEvidenceSynthesis, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(EffectEvidenceSynthesis.useContext.value as Quantity)",
+      expression =
+        "(EffectEvidenceSynthesis.useContext.value as Quantity) | (EffectEvidenceSynthesis.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

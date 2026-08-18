@@ -19,12 +19,33 @@ The following FHIRPath patterns produce a typed `extractFrom()` function:
 | Choice element (no cast)           | `ChargeItem.occurrence`                       |
 | `where(resolve() is Type)` filter  | `Account.subject.where(resolve() is Patient)` |
 | `where(field='value')` filter      | `Patient.telecom.where(system='email')`       |
+| Union of the patterns above        | `Observation.value.ofType(dateTime) \| Observation.value.ofType(Period)` |
 
 > [!NOTE]
 > - **Choice elements without casting:** Returns the sealed interface (e.g. `ChargeItem.Occurrence`)
 >   rather than the underlying value (e.g. `DateTime`, `Period`).
 > - **`resolve() is Type` filtering:** Checks if `'Type/'` is in the `reference` field (e.g.
 >   `'Patient/123'`). Does not match URNs, contained resources, or references without a literal URL.
+> - **Unions:** `extractFrom()` concatenates the results of each branch in expression order and
+>   eliminates duplicate values, matching FHIRPath's `|` operator. The value type is the branches'
+>   common type (e.g. `CodeableConcept` for
+>   `AllergyIntolerance.code | AllergyIntolerance.reaction.substance`) and widens to `Any` when the
+>   branches differ (e.g. `dateTime | Period`). Branches whose pattern is not supported are
+>   skipped; a parameter is unsupported only when none of its branches are. The parameters
+>   affected by skipped branches are listed below.
+
+### Partially extracted unions
+
+For these parameters, `extractFrom()` extracts only the supported branches of the union. The
+`expression` metadata still carries the full expression, so the skipped branch can be evaluated
+with an external FHIRPath engine.
+
+| Version  | Parameter                  | Extracted                        | Skipped                                              |
+|:---------|:---------------------------|:---------------------------------|:-----------------------------------------------------|
+| R4, R4B  | `Observation.value-string` | `(Observation.value as string)`  | `(Observation.value as CodeableConcept).text`        |
+| R5       | `CareTeam.name`            | `CareTeam.name`                  | `CareTeam.extension('...careteam-alias').value`      |
+| R5       | `Composition.section-text` | `Composition.section.text`       | `Composition.section.section.text`                   |
+| R5       | `Device.serial-number`     | `Device.serialNumber`            | `Device.identifier.where(type='SNO')`                |
 
 ## Unsupported FHIRPath patterns
 
@@ -34,7 +55,7 @@ property lists these parameters explicitly, and `all` excludes them so iterating
 `extractFrom()` is safe. All metadata (`name`, `type`, `expression`, `target`) remains populated,
 allowing callers to evaluate the `expression` string with an external FHIRPath engine if needed.
 
-The 88 search parameters with unsupported expressions across R4, R4B, and R5 fall into the
+The 87 search parameters with unsupported expressions across R4, R4B, and R5 fall into the
 following categories:
 
 - [Empty FHIRPath expression](#empty-fhirpath-expression) (28)
@@ -43,7 +64,8 @@ following categories:
 - [Boolean logic](#boolean-logic) (5)
 - [Multi-resource union without a resource prefix](#multi-resource-union-without-a-resource-prefix) (3)
 - [Other `where(...)` conditions](#other-where-conditions) (3)
-- [Other patterns (parens, indexed access, bare paths)](#other-patterns-parens-indexed-access-bare-paths) (16)
+- [Union with no supported branch](#union-with-no-supported-branch) (1)
+- [Other patterns (indexed access, bare paths)](#other-patterns-indexed-access-bare-paths) (14)
 
 ### Empty FHIRPath expression
 
@@ -154,9 +176,11 @@ supported. Example: `Resource.deceased.exists() and Resource.deceased != false`.
 
 ### Multi-resource union without a resource prefix
 
-Union expressions (`A | B | ...`) aren't supported unless one of the parts starts with the
-parameter's resource. Example: `InsurancePlan`'s `name` parameter has expression `name | alias`, and
-neither `name` nor `alias` starts with `InsurancePlan.`.
+In a union expression (`A | B | ...`), the branches starting with the parameter's resource are
+extracted and their results concatenated; branches for other resources are ignored. These
+parameters have no branch starting with the resource at all, so there is nothing to extract.
+Example: `InsurancePlan`'s `name` parameter has expression `name | alias`, and neither `name` nor
+`alias` starts with `InsurancePlan.`.
 
 **Total:** 3 (R4: 1, R4B: 1, R5: 1)
 
@@ -181,16 +205,27 @@ for an extension.
 | R4B     | `QuestionnaireResponse` | `item-subject` | `reference` | _(none)_                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)` | `SearchParameter-questionnaireresponse-extensions-QuestionnaireResponse-item-subject.json` | `http://hl7.org/fhir/SearchParameter/questionnaireresponse-extensions-QuestionnaireResponse-item-subject` |
 | R5      | `QuestionnaireResponse` | `item-subject` | `reference` | `Account`<br>`ActivityDefinition`<br>`ActorDefinition`<br>`AdministrableProductDefinition`<br>`AdverseEvent`<br>`AllergyIntolerance`<br>`Appointment`<br>`AppointmentResponse`<br>`ArtifactAssessment`<br>`AuditEvent`<br>`Basic`<br>`Binary`<br>`BiologicallyDerivedProduct`<br>`BiologicallyDerivedProductDispense`<br>`BodyStructure`<br>`Bundle`<br>`CapabilityStatement`<br>`CarePlan`<br>`CareTeam`<br>`ChargeItem`<br>`ChargeItemDefinition`<br>`Citation`<br>`Claim`<br>`ClaimResponse`<br>`ClinicalImpression`<br>`ClinicalUseDefinition`<br>`CodeSystem`<br>`Communication`<br>`CommunicationRequest`<br>`CompartmentDefinition`<br>`Composition`<br>`ConceptMap`<br>`Condition`<br>`ConditionDefinition`<br>`Consent`<br>`Contract`<br>`Coverage`<br>`CoverageEligibilityRequest`<br>`CoverageEligibilityResponse`<br>`DetectedIssue`<br>`Device`<br>`DeviceAssociation`<br>`DeviceDefinition`<br>`DeviceDispense`<br>`DeviceMetric`<br>`DeviceRequest`<br>`DeviceUsage`<br>`DiagnosticReport`<br>`DocumentReference`<br>`Encounter`<br>`EncounterHistory`<br>`Endpoint`<br>`EnrollmentRequest`<br>`EnrollmentResponse`<br>`EpisodeOfCare`<br>`EventDefinition`<br>`Evidence`<br>`EvidenceReport`<br>`EvidenceVariable`<br>`ExampleScenario`<br>`ExplanationOfBenefit`<br>`FamilyMemberHistory`<br>`Flag`<br>`FormularyItem`<br>`GenomicStudy`<br>`Goal`<br>`GraphDefinition`<br>`Group`<br>`GuidanceResponse`<br>`HealthcareService`<br>`ImagingSelection`<br>`ImagingStudy`<br>`Immunization`<br>`ImmunizationEvaluation`<br>`ImmunizationRecommendation`<br>`ImplementationGuide`<br>`Ingredient`<br>`InsurancePlan`<br>`InventoryItem`<br>`InventoryReport`<br>`Invoice`<br>`Library`<br>`Linkage`<br>`List`<br>`Location`<br>`ManufacturedItemDefinition`<br>`Measure`<br>`MeasureReport`<br>`Medication`<br>`MedicationAdministration`<br>`MedicationDispense`<br>`MedicationKnowledge`<br>`MedicationRequest`<br>`MedicationStatement`<br>`MedicinalProductDefinition`<br>`MessageDefinition`<br>`MessageHeader`<br>`MolecularSequence`<br>`NamingSystem`<br>`NutritionIntake`<br>`NutritionOrder`<br>`NutritionProduct`<br>`Observation`<br>`ObservationDefinition`<br>`OperationDefinition`<br>`OperationOutcome`<br>`Organization`<br>`OrganizationAffiliation`<br>`PackagedProductDefinition`<br>`Parameters`<br>`Patient`<br>`PaymentNotice`<br>`PaymentReconciliation`<br>`Permission`<br>`Person`<br>`PlanDefinition`<br>`Practitioner`<br>`PractitionerRole`<br>`Procedure`<br>`Provenance`<br>`Questionnaire`<br>`QuestionnaireResponse`<br>`RegulatedAuthorization`<br>`RelatedPerson`<br>`RequestOrchestration`<br>`Requirements`<br>`ResearchStudy`<br>`ResearchSubject`<br>`RiskAssessment`<br>`Schedule`<br>`SearchParameter`<br>`ServiceRequest`<br>`Slot`<br>`Specimen`<br>`SpecimenDefinition`<br>`StructureDefinition`<br>`StructureMap`<br>`Subscription`<br>`SubscriptionStatus`<br>`SubscriptionTopic`<br>`Substance`<br>`SubstanceDefinition`<br>`SubstanceNucleicAcid`<br>`SubstancePolymer`<br>`SubstanceProtein`<br>`SubstanceReferenceInformation`<br>`SubstanceSourceMaterial`<br>`SupplyDelivery`<br>`SupplyRequest`<br>`Task`<br>`TerminologyCapabilities`<br>`TestPlan`<br>`TestReport`<br>`TestScript`<br>`Transport`<br>`ValueSet`<br>`VerificationResult`<br>`VisionPrescription` | `QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)` | `SearchParameter-QuestionnaireResponse-item-subject.json`                                  | `http://hl7.org/fhir/SearchParameter/QuestionnaireResponse-item-subject`                                  |
 
-### Other patterns (parens, indexed access, bare paths)
+### Union with no supported branch
 
-Three shapes aren't supported:
+Every branch of this parameter's union is unsupported: `ofType(markdown)` is an invalid cast
+(`Observation.value` has no `markdown` choice), and the second branch continues with a path after
+a cast.
 
-1. Leading parentheses, like `(Citation.classification.type)`.
-2. Indexed access with `[N]`, like `Bundle.entry[0].resource`.
-3. Bare paths that don't start with the resource name, like `id` (for `Resource`'s `_id` parameter)
+**Total:** 1 (R5: 1)
+
+| Version | Resource      | Param name       | Type     | Target   | Expression                                                                             | Source JSON                                       | Canonical URL                                                    |
+|:--------|:--------------|:-----------------|:---------|:---------|:----------------------------------------------------------------------------------------|:---------------------------------------------------|:------------------------------------------------------------------|
+| R5      | `Observation` | `value-markdown` | `string` | _(none)_ | `Observation.value.ofType(markdown) \| Observation.value.ofType(CodeableConcept).text` | `SearchParameter-Observation-value-markdown.json` | `http://hl7.org/fhir/SearchParameter/Observation-value-markdown` |
+
+### Other patterns (indexed access, bare paths)
+
+Two shapes aren't supported:
+
+1. Indexed access with `[N]`, like `Bundle.entry[0].resource`.
+2. Bare paths that don't start with the resource name, like `id` (for `Resource`'s `_id` parameter)
   or `requestedPeriod` (for `Appointment`'s `requested-period` parameter).
 
-**Total:** 16 (R4: 4, R4B: 4, R5: 8)
+**Total:** 14 (R4: 4, R4B: 4, R5: 6)
 
 | Version | Resource        | Param name            | Type        | Target          | Expression                                         | Source JSON                                            | Canonical URL                                                         |
 |:--------|:----------------|:----------------------|:------------|:----------------|:---------------------------------------------------|:-------------------------------------------------------|:----------------------------------------------------------------------|
@@ -207,6 +242,4 @@ Three shapes aren't supported:
 | R5      | `Bundle`        | `composition`         | `reference` | `Composition`   | `Bundle.entry[0].resource as Composition`          | `SearchParameter-Bundle-composition.json`              | `http://hl7.org/fhir/SearchParameter/Bundle-composition`              |
 | R5      | `Bundle`        | `example-constraint`  | `reference` | `Composition`   | `Bundle.entry[0].resource`                         | `SearchParameter-example-constraint.json`              | `http://hl7.org/fhir/SearchParameter/example-constraint`              |
 | R5      | `Bundle`        | `message`             | `reference` | `MessageHeader` | `Bundle.entry[0].resource as MessageHeader`        | `SearchParameter-Bundle-message.json`                  | `http://hl7.org/fhir/SearchParameter/Bundle-message`                  |
-| R5      | `Citation`      | `classification-type` | `token`     | _(none)_        | `(Citation.classification.type)`                   | `SearchParameter-Citation-classification-type.json`    | `http://hl7.org/fhir/SearchParameter/Citation-classification-type`    |
-| R5      | `Citation`      | `classifier`          | `token`     | _(none)_        | `(Citation.classification.classifier)`             | `SearchParameter-Citation-classifier.json`             | `http://hl7.org/fhir/SearchParameter/Citation-classifier`             |
 | R5      | `Resource`      | `_id`                 | `token`     | _(none)_        | `id`                                               | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |

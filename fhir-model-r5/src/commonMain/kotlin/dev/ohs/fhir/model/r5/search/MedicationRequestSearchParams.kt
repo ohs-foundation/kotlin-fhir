@@ -38,6 +38,7 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -69,13 +70,23 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.medication.concept) },
     )
 
-  public val comboDate: SearchParam<MedicationRequest, DateTime> =
+  public val comboDate: SearchParam<MedicationRequest, Any> =
     SearchParam(
       name = "combo-date",
       type = SearchParamType.Date,
-      expression = "MedicationRequest.dosageInstruction.timing.event",
+      expression =
+        "MedicationRequest.dosageInstruction.timing.event | (MedicationRequest.dosageInstruction.timing.repeat.bounds.ofType(Period))",
       extractor = { resource ->
-        resource.dosageInstruction.mapNotNull { it.timing }.flatMap { it.event }
+        buildList {
+            addAll(resource.dosageInstruction.mapNotNull { it.timing }.flatMap { it.event })
+            addAll(
+              resource.dosageInstruction
+                .mapNotNull { it.timing }
+                .mapNotNull { it.repeat }
+                .mapNotNull { (it.bounds as? Timing.Repeat.Bounds.Period)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

@@ -26,7 +26,6 @@ import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.GraphDefinition
 import dev.ohs.fhir.model.r4.Markdown
-import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
@@ -49,13 +48,22 @@ public object GraphDefinitionSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<GraphDefinition, Quantity> =
+  public val contextQuantity: SearchParam<GraphDefinition, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(GraphDefinition.useContext.value as Quantity)",
+      expression =
+        "(GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

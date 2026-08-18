@@ -58,7 +58,6 @@ import dev.ohs.fhir.model.r4b.Contract
 import dev.ohs.fhir.model.r4b.Coverage
 import dev.ohs.fhir.model.r4b.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r4b.CoverageEligibilityResponse
-import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.DetectedIssue
 import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.DeviceDefinition
@@ -132,7 +131,6 @@ import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Procedure
 import dev.ohs.fhir.model.r4b.Provenance
-import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.Questionnaire
 import dev.ohs.fhir.model.r4b.QuestionnaireResponse
 import dev.ohs.fhir.model.r4b.Reference
@@ -273,8 +271,14 @@ public object ObservationSearchParams {
     SearchParam(
       name = "combo-code",
       type = SearchParamType.Token,
-      expression = "Observation.code",
-      extractor = { resource -> listOf(resource.code) },
+      expression = "Observation.code | Observation.component.code",
+      extractor = { resource ->
+        buildList {
+            addAll(listOf(resource.code))
+            addAll(resource.component.map { it.code })
+          }
+          .distinct()
+      },
     )
 
   public val comboCodeValueConcept: SearchParam<Observation, Observation.Component> =
@@ -297,27 +301,57 @@ public object ObservationSearchParams {
     SearchParam(
       name = "combo-data-absent-reason",
       type = SearchParamType.Token,
-      expression = "Observation.dataAbsentReason",
-      extractor = { resource -> listOfNotNull(resource.dataAbsentReason) },
+      expression = "Observation.dataAbsentReason | Observation.component.dataAbsentReason",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.dataAbsentReason))
+            addAll(resource.component.mapNotNull { it.dataAbsentReason })
+          }
+          .distinct()
+      },
     )
 
   public val comboValueConcept: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "combo-value-concept",
       type = SearchParamType.Token,
-      expression = "(Observation.value as CodeableConcept)",
+      expression =
+        "(Observation.value as CodeableConcept) | (Observation.component.value as CodeableConcept)",
       extractor = { resource ->
-        listOfNotNull((resource.`value` as? Observation.Value.CodeableConcept)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.CodeableConcept)?.value))
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.CodeableConcept)?.value
+              }
+            )
+          }
+          .distinct()
       },
     )
 
-  public val comboValueQuantity: SearchParam<Observation, Quantity> =
+  public val comboValueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "combo-value-quantity",
       type = SearchParamType.Quantity,
-      expression = "(Observation.value as Quantity)",
+      expression =
+        "(Observation.value as Quantity) | (Observation.value as SampledData) | (Observation.component.value as Quantity) | (Observation.component.value as SampledData)",
       extractor = { resource ->
-        listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value))
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.SampledData)?.value))
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.Quantity)?.value
+              }
+            )
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.SampledData)?.value
+              }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -365,15 +399,26 @@ public object ObservationSearchParams {
       },
     )
 
-  public val componentValueQuantity: SearchParam<Observation, Quantity> =
+  public val componentValueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "component-value-quantity",
       type = SearchParamType.Quantity,
-      expression = "(Observation.component.value as Quantity)",
+      expression =
+        "(Observation.component.value as Quantity) | (Observation.component.value as SampledData)",
       extractor = { resource ->
-        resource.component.mapNotNull {
-          (it.`value` as? Observation.Component.Value.Quantity)?.value
-        }
+        buildList {
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.Quantity)?.value
+              }
+            )
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.SampledData)?.value
+              }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -748,23 +793,31 @@ public object ObservationSearchParams {
       },
     )
 
-  public val valueDate: SearchParam<Observation, DateTime> =
+  public val valueDate: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-date",
       type = SearchParamType.Date,
-      expression = "(Observation.value as dateTime)",
+      expression = "(Observation.value as dateTime) | (Observation.value as Period)",
       extractor = { resource ->
-        listOfNotNull((resource.`value` as? Observation.Value.DateTime)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.DateTime)?.value))
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.Period)?.value))
+          }
+          .distinct()
       },
     )
 
-  public val valueQuantity: SearchParam<Observation, Quantity> =
+  public val valueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-quantity",
       type = SearchParamType.Quantity,
-      expression = "(Observation.value as Quantity)",
+      expression = "(Observation.value as Quantity) | (Observation.value as SampledData)",
       extractor = { resource ->
-        listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value))
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.SampledData)?.value))
+          }
+          .distinct()
       },
     )
 
@@ -772,7 +825,7 @@ public object ObservationSearchParams {
     SearchParam(
       name = "value-string",
       type = SearchParamType.String,
-      expression = "(Observation.value as string)",
+      expression = "(Observation.value as string) | (Observation.value as CodeableConcept).text",
       extractor = { resource ->
         listOfNotNull((resource.`value` as? Observation.Value.String)?.value)
       },

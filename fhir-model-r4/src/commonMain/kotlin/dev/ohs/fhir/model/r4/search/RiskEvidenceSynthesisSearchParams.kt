@@ -27,7 +27,6 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Period
-import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.RiskEvidenceSynthesis
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
@@ -51,13 +50,22 @@ public object RiskEvidenceSynthesisSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<RiskEvidenceSynthesis, Quantity> =
+  public val contextQuantity: SearchParam<RiskEvidenceSynthesis, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(RiskEvidenceSynthesis.useContext.value as Quantity)",
+      expression =
+        "(RiskEvidenceSynthesis.useContext.value as Quantity) | (RiskEvidenceSynthesis.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

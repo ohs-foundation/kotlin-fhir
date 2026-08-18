@@ -153,13 +153,21 @@ public object ServiceRequestSearchParams {
       extractor = { resource -> listOf(resource.intent) },
     )
 
-  public val occurrence: SearchParam<ServiceRequest, DateTime> =
+  public val occurrence: SearchParam<ServiceRequest, Any> =
     SearchParam(
       name = "occurrence",
       type = SearchParamType.Date,
-      expression = "ServiceRequest.occurrence.ofType(dateTime)",
+      expression =
+        "ServiceRequest.occurrence.ofType(dateTime) | ServiceRequest.occurrence.ofType(Period) | ServiceRequest.occurrence.ofType(Timing)",
       extractor = { resource ->
-        listOfNotNull((resource.occurrence as? ServiceRequest.Occurrence.DateTime)?.value)
+        buildList {
+            addAll(
+              listOfNotNull((resource.occurrence as? ServiceRequest.Occurrence.DateTime)?.value)
+            )
+            addAll(listOfNotNull((resource.occurrence as? ServiceRequest.Occurrence.Period)?.value))
+            addAll(listOfNotNull((resource.occurrence as? ServiceRequest.Occurrence.Timing)?.value))
+          }
+          .distinct()
       },
     )
 

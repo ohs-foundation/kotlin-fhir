@@ -28,7 +28,6 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
-import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
@@ -62,9 +61,18 @@ public object StructureDefinitionSearchParams {
     SearchParam(
       name = "base-path",
       type = SearchParamType.Token,
-      expression = "StructureDefinition.snapshot.element.base.path",
+      expression =
+        "StructureDefinition.snapshot.element.base.path | StructureDefinition.differential.element.base.path",
       extractor = { resource ->
-        (resource.snapshot?.element ?: emptyList()).mapNotNull { it.base }.map { it.path }
+        buildList {
+            addAll(
+              (resource.snapshot?.element ?: emptyList()).mapNotNull { it.base }.map { it.path }
+            )
+            addAll(
+              (resource.differential?.element ?: emptyList()).mapNotNull { it.base }.map { it.path }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -80,13 +88,22 @@ public object StructureDefinitionSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<StructureDefinition, Quantity> =
+  public val contextQuantity: SearchParam<StructureDefinition, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(StructureDefinition.useContext.value.ofType(Quantity))",
+      expression =
+        "(StructureDefinition.useContext.value.ofType(Quantity)) | (StructureDefinition.useContext.value.ofType(Range))",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -214,8 +231,15 @@ public object StructureDefinitionSearchParams {
     SearchParam(
       name = "path",
       type = SearchParamType.Token,
-      expression = "StructureDefinition.snapshot.element.path",
-      extractor = { resource -> (resource.snapshot?.element ?: emptyList()).map { it.path } },
+      expression =
+        "StructureDefinition.snapshot.element.path | StructureDefinition.differential.element.path",
+      extractor = { resource ->
+        buildList {
+            addAll((resource.snapshot?.element ?: emptyList()).map { it.path })
+            addAll((resource.differential?.element ?: emptyList()).map { it.path })
+          }
+          .distinct()
+      },
     )
 
   public val publisher: SearchParam<StructureDefinition, String> =

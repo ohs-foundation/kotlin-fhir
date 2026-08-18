@@ -80,8 +80,15 @@ public object DeviceSearchParams {
     SearchParam(
       name = "device-name",
       type = SearchParamType.String,
-      expression = "Device.name.value",
-      extractor = { resource -> resource.name.map { it.`value` } },
+      expression = "Device.name.value | Device.type.coding.display | Device.type.text",
+      extractor = { resource ->
+        buildList {
+            addAll(resource.name.map { it.`value` })
+            addAll(resource.type.flatMap { it.coding }.mapNotNull { it.display })
+            addAll(resource.type.mapNotNull { it.text })
+          }
+          .distinct()
+      },
     )
 
   public val expirationDate: SearchParam<Device, DateTime> =
@@ -163,7 +170,7 @@ public object DeviceSearchParams {
     SearchParam(
       name = "serial-number",
       type = SearchParamType.String,
-      expression = "Device.serialNumber",
+      expression = "Device.serialNumber | Device.identifier.where(type='SNO')",
       extractor = { resource -> listOfNotNull(resource.serialNumber) },
     )
 

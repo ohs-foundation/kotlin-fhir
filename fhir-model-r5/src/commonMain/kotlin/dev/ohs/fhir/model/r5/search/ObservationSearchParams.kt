@@ -61,7 +61,6 @@ import dev.ohs.fhir.model.r5.Contract
 import dev.ohs.fhir.model.r5.Coverage
 import dev.ohs.fhir.model.r5.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r5.CoverageEligibilityResponse
-import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.DetectedIssue
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DeviceAssociation
@@ -144,7 +143,6 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Provenance
-import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.QuestionnaireResponse
 import dev.ohs.fhir.model.r5.Reference
@@ -277,8 +275,14 @@ public object ObservationSearchParams {
     SearchParam(
       name = "combo-code",
       type = SearchParamType.Token,
-      expression = "Observation.code",
-      extractor = { resource -> listOf(resource.code) },
+      expression = "Observation.code | Observation.component.code",
+      extractor = { resource ->
+        buildList {
+            addAll(listOf(resource.code))
+            addAll(resource.component.map { it.code })
+          }
+          .distinct()
+      },
     )
 
   public val comboCodeValueConcept: SearchParam<Observation, Observation.Component> =
@@ -301,27 +305,57 @@ public object ObservationSearchParams {
     SearchParam(
       name = "combo-data-absent-reason",
       type = SearchParamType.Token,
-      expression = "Observation.dataAbsentReason",
-      extractor = { resource -> listOfNotNull(resource.dataAbsentReason) },
+      expression = "Observation.dataAbsentReason | Observation.component.dataAbsentReason",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.dataAbsentReason))
+            addAll(resource.component.mapNotNull { it.dataAbsentReason })
+          }
+          .distinct()
+      },
     )
 
   public val comboValueConcept: SearchParam<Observation, CodeableConcept> =
     SearchParam(
       name = "combo-value-concept",
       type = SearchParamType.Token,
-      expression = "Observation.value.ofType(CodeableConcept)",
+      expression =
+        "Observation.value.ofType(CodeableConcept) | Observation.component.value.ofType(CodeableConcept)",
       extractor = { resource ->
-        listOfNotNull((resource.`value` as? Observation.Value.CodeableConcept)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.CodeableConcept)?.value))
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.CodeableConcept)?.value
+              }
+            )
+          }
+          .distinct()
       },
     )
 
-  public val comboValueQuantity: SearchParam<Observation, Quantity> =
+  public val comboValueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "combo-value-quantity",
       type = SearchParamType.Quantity,
-      expression = "Observation.value.ofType(Quantity)",
+      expression =
+        "Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData) | Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)",
       extractor = { resource ->
-        listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value))
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.SampledData)?.value))
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.Quantity)?.value
+              }
+            )
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.SampledData)?.value
+              }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -381,15 +415,26 @@ public object ObservationSearchParams {
       },
     )
 
-  public val componentValueQuantity: SearchParam<Observation, Quantity> =
+  public val componentValueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "component-value-quantity",
       type = SearchParamType.Quantity,
-      expression = "Observation.component.value.ofType(Quantity)",
+      expression =
+        "Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)",
       extractor = { resource ->
-        resource.component.mapNotNull {
-          (it.`value` as? Observation.Component.Value.Quantity)?.value
-        }
+        buildList {
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.Quantity)?.value
+              }
+            )
+            addAll(
+              resource.component.mapNotNull {
+                (it.`value` as? Observation.Component.Value.SampledData)?.value
+              }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -414,13 +459,20 @@ public object ObservationSearchParams {
       extractor = { resource -> listOfNotNull(resource.dataAbsentReason) },
     )
 
-  public val date: SearchParam<Observation, DateTime> =
+  public val date: SearchParam<Observation, Any> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
-      expression = "Observation.effective.ofType(dateTime)",
+      expression =
+        "Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant)",
       extractor = { resource ->
-        listOfNotNull((resource.effective as? Observation.Effective.DateTime)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.effective as? Observation.Effective.DateTime)?.value))
+            addAll(listOfNotNull((resource.effective as? Observation.Effective.Period)?.value))
+            addAll(listOfNotNull((resource.effective as? Observation.Effective.Timing)?.value))
+            addAll(listOfNotNull((resource.effective as? Observation.Effective.Instant)?.value))
+          }
+          .distinct()
       },
     )
 
@@ -761,13 +813,17 @@ public object ObservationSearchParams {
       },
     )
 
-  public val valueDate: SearchParam<Observation, DateTime> =
+  public val valueDate: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-date",
       type = SearchParamType.Date,
-      expression = "Observation.value.ofType(dateTime)",
+      expression = "Observation.value.ofType(dateTime) | Observation.value.ofType(Period)",
       extractor = { resource ->
-        listOfNotNull((resource.`value` as? Observation.Value.DateTime)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.DateTime)?.value))
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.Period)?.value))
+          }
+          .distinct()
       },
     )
 
@@ -775,21 +831,26 @@ public object ObservationSearchParams {
     SearchParam(
       name = "value-markdown",
       type = SearchParamType.String,
-      expression = "Observation.value.ofType(markdown)",
+      expression =
+        "Observation.value.ofType(markdown) | Observation.value.ofType(CodeableConcept).text",
       extractor = {
         throw NotImplementedError(
-          "Search parameter 'value-markdown' has expression 'Observation.value.ofType(markdown)' which is not yet supported."
+          "Search parameter 'value-markdown' has expression 'Observation.value.ofType(markdown) | Observation.value.ofType(CodeableConcept).text' which is not yet supported."
         )
       },
     )
 
-  public val valueQuantity: SearchParam<Observation, Quantity> =
+  public val valueQuantity: SearchParam<Observation, Any> =
     SearchParam(
       name = "value-quantity",
       type = SearchParamType.Quantity,
-      expression = "Observation.value.ofType(Quantity)",
+      expression = "Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData)",
       extractor = { resource ->
-        listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value))
+            addAll(listOfNotNull((resource.`value` as? Observation.Value.SampledData)?.value))
+          }
+          .distinct()
       },
     )
 

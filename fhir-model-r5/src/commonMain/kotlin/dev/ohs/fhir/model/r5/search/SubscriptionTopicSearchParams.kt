@@ -44,12 +44,18 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val derivedOrSelf: SearchParam<SubscriptionTopic, Uri> =
+  public val derivedOrSelf: SearchParam<SubscriptionTopic, Any> =
     SearchParam(
       name = "derived-or-self",
       type = SearchParamType.Uri,
-      expression = "SubscriptionTopic.url",
-      extractor = { resource -> listOf(resource.url) },
+      expression = "SubscriptionTopic.url | SubscriptionTopic.derivedFrom",
+      extractor = { resource ->
+        buildList {
+            addAll(listOf(resource.url))
+            addAll(resource.derivedFrom)
+          }
+          .distinct()
+      },
     )
 
   public val effective: SearchParam<SubscriptionTopic, Period> =
@@ -80,8 +86,17 @@ public object SubscriptionTopicSearchParams {
     SearchParam(
       name = "resource",
       type = SearchParamType.Uri,
-      expression = "SubscriptionTopic.resourceTrigger.resource",
-      extractor = { resource -> resource.resourceTrigger.map { it.resource } },
+      expression =
+        "SubscriptionTopic.resourceTrigger.resource | SubscriptionTopic.eventTrigger.resource | SubscriptionTopic.canFilterBy.resource | SubscriptionTopic.notificationShape.resource",
+      extractor = { resource ->
+        buildList {
+            addAll(resource.resourceTrigger.map { it.resource })
+            addAll(resource.eventTrigger.map { it.resource })
+            addAll(resource.canFilterBy.mapNotNull { it.resource })
+            addAll(resource.notificationShape.map { it.resource })
+          }
+          .distinct()
+      },
     )
 
   public val status: SearchParam<SubscriptionTopic, Any> =

@@ -64,6 +64,7 @@ internal object SearchParamExtractFromFunctionBodyEmitter {
           pattern.postPath,
           pattern.isFieldNullable,
         )
+      is SearchParamPattern.Union -> forUnion(pattern, packageName, paramCode, expression)
       SearchParamPattern.Unsupported ->
         CodeBlock.of(
           "throw %T(%S)",
@@ -73,6 +74,31 @@ internal object SearchParamExtractFromFunctionBodyEmitter {
     }
 
   // -- per-pattern emitters ---------------------------------------------------------------------
+
+  /**
+   * A union `A | B | …` becomes `buildList { addAll(<A>); addAll(<B>); … }.distinct()`.
+   *
+   * Wrapping each branch in `addAll(...)` keeps it a self-contained expression, so no branch needs
+   * extra parentheses regardless of its shape. `distinct()` removes duplicate values, matching the
+   * FHIRPath `|` operator: two branches can produce equal values (e.g. `AllergyIntolerance.code |
+   * AllergyIntolerance.reaction.substance` when the reaction substance repeats the allergy code),
+   * and a FHIRPath engine would return them once.
+   */
+  private fun forUnion(
+    union: SearchParamPattern.Union,
+    packageName: String,
+    paramCode: String,
+    expression: String,
+  ): CodeBlock =
+    CodeBlock.builder()
+      .add("buildList {\n")
+      .indent()
+      .apply {
+        union.branches.forEach { add("addAll(%L)\n", emit(it, packageName, paramCode, expression)) }
+      }
+      .unindent()
+      .add("}.distinct()")
+      .build()
 
   /** A simple dotted path (`Patient.address.city`), or a `where(resolve() is …)` base. */
   private fun forSegments(resolved: ResolvedExpression): CodeBlock = walkToList(resolved.segments)

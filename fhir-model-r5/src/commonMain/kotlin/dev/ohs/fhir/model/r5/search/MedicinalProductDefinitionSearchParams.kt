@@ -27,24 +27,36 @@ import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.MedicinalProductDefinition
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.PractitionerRole
-import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
+import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductDefinition] resource type. */
 public object MedicinalProductDefinitionSearchParams {
-  public val characteristic: SearchParam<MedicinalProductDefinition, Quantity> =
+  public val characteristic: SearchParam<MedicinalProductDefinition, Any> =
     SearchParam(
       name = "characteristic",
       type = SearchParamType.Token,
-      expression = "MedicinalProductDefinition.characteristic.value.ofType(Quantity)",
+      expression =
+        "MedicinalProductDefinition.characteristic.value.ofType(Quantity) | MedicinalProductDefinition.characteristic.value.ofType(CodeableConcept)",
       extractor = { resource ->
-        resource.characteristic.mapNotNull {
-          (it.`value` as? MedicinalProductDefinition.Characteristic.Value.Quantity)?.value
-        }
+        buildList {
+            addAll(
+              resource.characteristic.mapNotNull {
+                (it.`value` as? MedicinalProductDefinition.Characteristic.Value.Quantity)?.value
+              }
+            )
+            addAll(
+              resource.characteristic.mapNotNull {
+                (it.`value` as? MedicinalProductDefinition.Characteristic.Value.CodeableConcept)
+                  ?.value
+              }
+            )
+          }
+          .distinct()
       },
     )
 

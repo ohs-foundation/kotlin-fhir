@@ -42,8 +42,15 @@ public object DeviceSearchParams {
     SearchParam(
       name = "device-name",
       type = SearchParamType.String,
-      expression = "Device.deviceName.name",
-      extractor = { resource -> resource.deviceName.map { it.name } },
+      expression = "Device.deviceName.name | Device.type.coding.display | Device.type.text",
+      extractor = { resource ->
+        buildList {
+            addAll(resource.deviceName.map { it.name })
+            addAll((resource.type?.coding ?: emptyList()).mapNotNull { it.display })
+            addAll(listOfNotNull(resource.type?.text))
+          }
+          .distinct()
+      },
     )
 
   public val din: SearchParam<Device, Any> =

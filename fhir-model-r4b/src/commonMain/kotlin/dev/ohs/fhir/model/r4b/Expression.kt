@@ -63,7 +63,7 @@ public data class Expression(
    */
   public val name: Id? = null,
   /** The media type of the language for the expression. */
-  public val language: Enumeration<ExpressionLanguage>,
+  public val language: Code,
   /** An expression in the specified language that returns a value. */
   public val expression: String? = null,
   /**
@@ -76,7 +76,7 @@ public data class Expression(
 ) : Element() {
   public fun toBuilder(): Builder =
     with(this) {
-      Builder(language).apply {
+      Builder(language.toBuilder()).apply {
         id = this@with.id
         extension = this@with.extension.map { it.toBuilder() }.toMutableList()
         description = this@with.description?.toBuilder()
@@ -88,7 +88,7 @@ public data class Expression(
 
   public open class Builder(
     /** The media type of the language for the expression. */
-    public open var language: Enumeration<ExpressionLanguage>
+    public open var language: Code.Builder
   ) {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
@@ -139,48 +139,9 @@ public data class Expression(
         extension = extension.map { it.build() },
         description = description?.build(),
         name = name?.build(),
-        language = language,
+        language = language.build(),
         expression = expression?.build(),
         reference = reference?.build(),
       )
-  }
-
-  /** The media type of the expression language. */
-  public enum class ExpressionLanguage(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Text_Cql("text/cql", "http://hl7.org/fhir/expression-language", "CQL"),
-    Text_Fhirpath("text/fhirpath", "http://hl7.org/fhir/expression-language", "FHIRPath"),
-    Application_X_Fhir_Query(
-      "application/x-fhir-query",
-      "http://hl7.org/fhir/expression-language",
-      "FHIR Query",
-    ),
-    Text_Cql_Identifier(
-      "text/cql-identifier",
-      "http://hl7.org/fhir/expression-language",
-      "CQL Identifier",
-    ),
-    Text_Cql_Expression(
-      "text/cql-expression",
-      "http://hl7.org/fhir/expression-language",
-      "CQL Expression",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ExpressionLanguage =
-        when (code) {
-          "text/cql" -> Text_Cql
-          "text/fhirpath" -> Text_Fhirpath
-          "application/x-fhir-query" -> Application_X_Fhir_Query
-          "text/cql-identifier" -> Text_Cql_Identifier
-          "text/cql-expression" -> Text_Cql_Expression
-          else -> throw IllegalArgumentException("Unknown code $code for enum ExpressionLanguage")
-        }
-    }
   }
 }

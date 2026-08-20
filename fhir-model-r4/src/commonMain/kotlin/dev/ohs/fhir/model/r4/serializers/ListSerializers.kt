@@ -352,19 +352,11 @@ internal object ListSerializer : KSerializer<R4List> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          R4List.ListStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on List")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { R4List.ListStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on List"),
       mode =
-        Enumeration.of(
-          R4List.ListMode.fromCode(
-            mode ?: throw SerializationException("Missing required property 'mode' on List")
-          ),
-          _mode,
-        ),
+        Enumeration.of(mode?.let { R4List.ListMode.fromCode(it) }, _mode)
+          ?: throw SerializationException("Missing required property 'mode' on List"),
       title = R4String.of(title, _title),
       code = code,
       subject = subject,

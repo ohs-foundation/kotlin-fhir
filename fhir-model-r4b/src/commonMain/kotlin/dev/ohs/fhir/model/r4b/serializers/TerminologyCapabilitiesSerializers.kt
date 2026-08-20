@@ -1567,15 +1567,10 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
       name = R4bString.of(name, _name),
       title = R4bString.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on TerminologyCapabilities"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on TerminologyCapabilities"
           ),
-          _status,
-        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date =
         DateTime.of(FhirDateTime.fromString(date), _date)
@@ -1591,23 +1586,22 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
       copyright = Markdown.of(copyright, _copyright),
       kind =
         Enumeration.of(
-          TerminologyCapabilities.CapabilityStatementKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on TerminologyCapabilities"
-              )
-          ),
+          kind?.let { TerminologyCapabilities.CapabilityStatementKind.fromCode(it) },
           _kind,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'kind' on TerminologyCapabilities"
+          ),
       software = software,
       implementation = implementation,
       lockedDate = R4bBoolean.of(lockedDate, _lockedDate),
       codeSystem = codeSystem ?: listOf(),
       expansion = expansion,
       codeSearch =
-        codeSearch?.let {
-          Enumeration.of(TerminologyCapabilities.CodeSearchSupport.fromCode(it), _codeSearch)
-        },
+        Enumeration.of(
+          codeSearch?.let { TerminologyCapabilities.CodeSearchSupport.fromCode(it) },
+          _codeSearch,
+        ),
       validateCode = validateCode,
       translation = translation,
       closure = closure,

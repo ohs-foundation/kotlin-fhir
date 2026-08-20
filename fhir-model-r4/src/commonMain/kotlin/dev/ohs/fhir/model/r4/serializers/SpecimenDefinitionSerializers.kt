@@ -180,14 +180,12 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       type = type,
       preference =
         Enumeration.of(
-          SpecimenDefinition.SpecimenContainedPreference.fromCode(
-            preference
-              ?: throw SerializationException(
-                "Missing required property 'preference' on SpecimenDefinition.TypeTested"
-              )
-          ),
+          preference?.let { SpecimenDefinition.SpecimenContainedPreference.fromCode(it) },
           _preference,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'preference' on SpecimenDefinition.TypeTested"
+          ),
       container = container,
       requirement = R4String.of(requirement, _requirement),
       retentionTime = retentionTime,

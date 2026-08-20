@@ -334,15 +334,8 @@ internal object DocumentManifestSerializer : KSerializer<DocumentManifest> {
       masterIdentifier = masterIdentifier,
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          DocumentReferenceStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on DocumentManifest"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { DocumentReferenceStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on DocumentManifest"),
       type = type,
       subject = subject,
       created = DateTime.of(FhirDateTime.fromString(created), _created),

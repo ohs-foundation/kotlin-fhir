@@ -393,12 +393,8 @@ internal object EndpointSerializer : KSerializer<Endpoint> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Endpoint.EndpointStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Endpoint")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Endpoint.EndpointStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Endpoint"),
       connectionType = connectionType ?: listOf(),
       name = R5String.of(name, _name),
       description = R5String.of(description, _description),

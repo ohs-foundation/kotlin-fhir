@@ -440,15 +440,10 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
             "Missing required property 'identifier' on MessageHeader.Response"
           ),
       code =
-        Enumeration.of(
-          MessageHeader.ResponseType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on MessageHeader.Response"
-              )
+        Enumeration.of(code?.let { MessageHeader.ResponseType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on MessageHeader.Response"
           ),
-          _code,
-        ),
       details = details,
     )
   }

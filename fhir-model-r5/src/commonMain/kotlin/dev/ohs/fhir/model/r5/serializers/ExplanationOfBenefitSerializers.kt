@@ -5407,14 +5407,12 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
       traceNumber = traceNumber ?: listOf(),
       status =
         Enumeration.of(
-          ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ExplanationOfBenefit"
-              )
-          ),
+          status?.let { ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on ExplanationOfBenefit"
+          ),
       type =
         type
           ?: throw SerializationException(
@@ -5422,15 +5420,10 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
           ),
       subType = subType,
       use =
-        Enumeration.of(
-          ExplanationOfBenefit.Use.fromCode(
-            use
-              ?: throw SerializationException(
-                "Missing required property 'use' on ExplanationOfBenefit"
-              )
+        Enumeration.of(use?.let { ExplanationOfBenefit.Use.fromCode(it) }, _use)
+          ?: throw SerializationException(
+            "Missing required property 'use' on ExplanationOfBenefit"
           ),
-          _use,
-        ),
       patient =
         patient
           ?: throw SerializationException(
@@ -5460,14 +5453,12 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
       claimResponse = claimResponse,
       outcome =
         Enumeration.of(
-          ExplanationOfBenefit.ClaimProcessingCodes.fromCode(
-            outcome
-              ?: throw SerializationException(
-                "Missing required property 'outcome' on ExplanationOfBenefit"
-              )
-          ),
+          outcome?.let { ExplanationOfBenefit.ClaimProcessingCodes.fromCode(it) },
           _outcome,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'outcome' on ExplanationOfBenefit"
+          ),
       decision = decision,
       disposition = R5String.of(disposition, _disposition),
       preAuthRef =

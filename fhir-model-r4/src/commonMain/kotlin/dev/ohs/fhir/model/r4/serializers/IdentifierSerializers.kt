@@ -119,7 +119,7 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
     return Identifier(
       id = id,
       extension = extension ?: listOf(),
-      use = use?.let { Enumeration.of(Identifier.IdentifierUse.fromCode(it), _use) },
+      use = Enumeration.of(use?.let { Identifier.IdentifierUse.fromCode(it) }, _use),
       type = type,
       system = Uri.of(system, _system),
       `value` = R4String.of(`value`, _value),

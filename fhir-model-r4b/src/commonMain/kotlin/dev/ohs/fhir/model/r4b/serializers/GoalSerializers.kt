@@ -514,12 +514,9 @@ internal object GoalSerializer : KSerializer<Goal> {
       identifier = identifier ?: listOf(),
       lifecycleStatus =
         Enumeration.of(
-          Goal.GoalLifecycleStatus.fromCode(
-            lifecycleStatus
-              ?: throw SerializationException("Missing required property 'lifecycleStatus' on Goal")
-          ),
+          lifecycleStatus?.let { Goal.GoalLifecycleStatus.fromCode(it) },
           _lifecycleStatus,
-        ),
+        ) ?: throw SerializationException("Missing required property 'lifecycleStatus' on Goal"),
       achievementStatus = achievementStatus,
       category = category ?: listOf(),
       priority = priority,

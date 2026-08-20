@@ -487,25 +487,16 @@ internal object InventoryReportSerializer : KSerializer<InventoryReport> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          InventoryReport.InventoryReportStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on InventoryReport"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { InventoryReport.InventoryReportStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on InventoryReport"),
       countType =
         Enumeration.of(
-          InventoryReport.InventoryCountType.fromCode(
-            countType
-              ?: throw SerializationException(
-                "Missing required property 'countType' on InventoryReport"
-              )
-          ),
+          countType?.let { InventoryReport.InventoryCountType.fromCode(it) },
           _countType,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'countType' on InventoryReport"
+          ),
       operationType = operationType,
       operationTypeReason = operationTypeReason,
       reportedDateTime =

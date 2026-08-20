@@ -254,21 +254,18 @@ internal object OperationDefinitionParameterSerializer :
             "Missing required property 'name' on OperationDefinition.Parameter"
           ),
       use =
-        Enumeration.of(
-          OperationDefinition.OperationParameterUse.fromCode(
-            use
-              ?: throw SerializationException(
-                "Missing required property 'use' on OperationDefinition.Parameter"
-              )
+        Enumeration.of(use?.let { OperationDefinition.OperationParameterUse.fromCode(it) }, _use)
+          ?: throw SerializationException(
+            "Missing required property 'use' on OperationDefinition.Parameter"
           ),
-          _use,
-        ),
       scope =
         (kotlin.collections.List(maxOf(scope?.size ?: 0, _scope?.size ?: 0)) { index ->
           Enumeration.of(
-            OperationDefinition.OperationParameterScope.fromCode(scope?.getOrNull(index)!!),
+            scope?.getOrNull(index)?.let {
+              OperationDefinition.OperationParameterScope.fromCode(it)
+            },
             _scope?.getOrNull(index),
-          )
+          )!!
         }),
       min =
         Integer.of(min, _min)
@@ -281,13 +278,13 @@ internal object OperationDefinitionParameterSerializer :
             "Missing required property 'max' on OperationDefinition.Parameter"
           ),
       documentation = Markdown.of(documentation, _documentation),
-      type = type?.let { Enumeration.of(FHIRTypes.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { FHIRTypes.fromCode(it) }, _type),
       allowedType =
         (kotlin.collections.List(maxOf(allowedType?.size ?: 0, _allowedType?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRTypes.fromCode(allowedType?.getOrNull(index)!!),
+            allowedType?.getOrNull(index)?.let { FHIRTypes.fromCode(it) },
             _allowedType?.getOrNull(index),
-          )
+          )!!
         }),
       targetProfile =
         (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { index
@@ -297,7 +294,7 @@ internal object OperationDefinitionParameterSerializer :
             _targetProfile?.getOrNull(index),
           )!!
         }),
-      searchType = searchType?.let { Enumeration.of(SearchParamType.fromCode(it), _searchType) },
+      searchType = Enumeration.of(searchType?.let { SearchParamType.fromCode(it) }, _searchType),
       binding = binding,
       referencedFrom = referencedFrom ?: listOf(),
       part = part ?: listOf(),
@@ -475,15 +472,10 @@ internal object OperationDefinitionParameterBindingSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       strength =
-        Enumeration.of(
-          BindingStrength.fromCode(
-            strength
-              ?: throw SerializationException(
-                "Missing required property 'strength' on OperationDefinition.Parameter.Binding"
-              )
+        Enumeration.of(strength?.let { BindingStrength.fromCode(it) }, _strength)
+          ?: throw SerializationException(
+            "Missing required property 'strength' on OperationDefinition.Parameter.Binding"
           ),
-          _strength,
-        ),
       valueSet =
         Canonical.of(valueSet, _valueSet)
           ?: throw SerializationException(
@@ -1148,25 +1140,15 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
           ),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on OperationDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on OperationDefinition"
           ),
-          _status,
-        ),
       kind =
-        Enumeration.of(
-          OperationDefinition.OperationKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on OperationDefinition"
-              )
+        Enumeration.of(kind?.let { OperationDefinition.OperationKind.fromCode(it) }, _kind)
+          ?: throw SerializationException(
+            "Missing required property 'kind' on OperationDefinition"
           ),
-          _kind,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -1188,11 +1170,11 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
       resource =
         (kotlin.collections.List(maxOf(resource?.size ?: 0, _resource?.size ?: 0)) { index ->
           Enumeration.of(
-            OperationDefinition.VersionIndependentResourceTypesAll.fromCode(
-              resource?.getOrNull(index)!!
-            ),
+            resource?.getOrNull(index)?.let {
+              OperationDefinition.VersionIndependentResourceTypesAll.fromCode(it)
+            },
             _resource?.getOrNull(index),
-          )
+          )!!
         }),
       system =
         R5Boolean.of(system, _system)

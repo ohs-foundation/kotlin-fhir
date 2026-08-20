@@ -337,15 +337,8 @@ internal object EncounterHistorySerializer : KSerializer<EncounterHistory> {
       encounter = encounter,
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          EncounterHistory.EncounterStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EncounterHistory"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { EncounterHistory.EncounterStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on EncounterHistory"),
       `class` =
         `class`
           ?: throw SerializationException("Missing required property 'class' on EncounterHistory"),

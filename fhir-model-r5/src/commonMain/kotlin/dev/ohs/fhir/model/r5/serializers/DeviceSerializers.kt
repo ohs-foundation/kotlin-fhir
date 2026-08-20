@@ -209,7 +209,7 @@ internal object DeviceUdiCarrierSerializer : KSerializer<Device.UdiCarrier> {
       jurisdiction = Uri.of(jurisdiction, _jurisdiction),
       carrierAIDC = Base64Binary.of(carrierAIDC, _carrierAIDC),
       carrierHRF = R5String.of(carrierHRF, _carrierHRF),
-      entryType = entryType?.let { Enumeration.of(Device.UDIEntryType.fromCode(it), _entryType) },
+      entryType = Enumeration.of(entryType?.let { Device.UDIEntryType.fromCode(it) }, _entryType),
     )
   }
 
@@ -334,12 +334,8 @@ internal object DeviceNameSerializer : KSerializer<Device.Name> {
         R5String.of(`value`, _value)
           ?: throw SerializationException("Missing required property 'value' on Device.Name"),
       type =
-        Enumeration.of(
-          Device.DeviceNameType.fromCode(
-            type ?: throw SerializationException("Missing required property 'type' on Device.Name")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Device.DeviceNameType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Device.Name"),
       display = R5Boolean.of(display, _display),
     )
   }
@@ -1132,7 +1128,7 @@ internal object DeviceSerializer : KSerializer<Device> {
       displayName = R5String.of(displayName, _displayName),
       definition = definition,
       udiCarrier = udiCarrier ?: listOf(),
-      status = status?.let { Enumeration.of(Device.FHIRDeviceStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Device.FHIRDeviceStatus.fromCode(it) }, _status),
       availabilityStatus = availabilityStatus,
       biologicalSourceEvent = biologicalSourceEvent,
       manufacturer = R5String.of(manufacturer, _manufacturer),

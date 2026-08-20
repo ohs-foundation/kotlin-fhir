@@ -608,12 +608,8 @@ internal object CoverageSerializer : KSerializer<Coverage> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Coverage.FinancialResourceStatusCodes.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Coverage")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Coverage.FinancialResourceStatusCodes.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Coverage"),
       type = type,
       policyHolder = policyHolder,
       subscriber = subscriber,

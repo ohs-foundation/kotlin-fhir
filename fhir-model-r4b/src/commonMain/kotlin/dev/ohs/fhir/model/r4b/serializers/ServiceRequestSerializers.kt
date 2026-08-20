@@ -520,28 +520,14 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
       replaces = replaces ?: listOf(),
       requisition = requisition,
       status =
-        Enumeration.of(
-          ServiceRequest.RequestStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ServiceRequest"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { ServiceRequest.RequestStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ServiceRequest"),
       intent =
-        Enumeration.of(
-          ServiceRequest.RequestIntent.fromCode(
-            intent
-              ?: throw SerializationException(
-                "Missing required property 'intent' on ServiceRequest"
-              )
-          ),
-          _intent,
-        ),
+        Enumeration.of(intent?.let { ServiceRequest.RequestIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on ServiceRequest"),
       category = category ?: listOf(),
       priority =
-        priority?.let { Enumeration.of(ServiceRequest.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { ServiceRequest.RequestPriority.fromCode(it) }, _priority),
       doNotPerform = R4bBoolean.of(doNotPerform, _doNotPerform),
       code = code,
       orderDetail = orderDetail ?: listOf(),

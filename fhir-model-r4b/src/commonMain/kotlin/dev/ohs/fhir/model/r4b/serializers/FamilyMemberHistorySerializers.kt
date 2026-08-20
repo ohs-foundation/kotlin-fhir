@@ -604,14 +604,12 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         }),
       status =
         Enumeration.of(
-          FamilyMemberHistory.FamilyHistoryStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on FamilyMemberHistory"
-              )
-          ),
+          status?.let { FamilyMemberHistory.FamilyHistoryStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on FamilyMemberHistory"
+          ),
       dataAbsentReason = dataAbsentReason,
       patient =
         patient

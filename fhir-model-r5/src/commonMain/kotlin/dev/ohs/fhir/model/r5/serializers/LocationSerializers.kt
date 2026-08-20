@@ -459,7 +459,7 @@ internal object LocationSerializer : KSerializer<Location> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = status?.let { Enumeration.of(Location.LocationStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Location.LocationStatus.fromCode(it) }, _status),
       operationalStatus = operationalStatus,
       name = R5String.of(name, _name),
       alias =
@@ -467,7 +467,7 @@ internal object LocationSerializer : KSerializer<Location> {
           R5String.of(alias?.getOrNull(index)?.let { it }, _alias?.getOrNull(index))!!
         }),
       description = Markdown.of(description, _description),
-      mode = mode?.let { Enumeration.of(Location.LocationMode.fromCode(it), _mode) },
+      mode = Enumeration.of(mode?.let { Location.LocationMode.fromCode(it) }, _mode),
       type = type ?: listOf(),
       contact = contact ?: listOf(),
       address = address,

@@ -165,25 +165,15 @@ internal object OperationOutcomeIssueSerializer : KSerializer<OperationOutcome.I
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       severity =
-        Enumeration.of(
-          OperationOutcome.IssueSeverity.fromCode(
-            severity
-              ?: throw SerializationException(
-                "Missing required property 'severity' on OperationOutcome.Issue"
-              )
+        Enumeration.of(severity?.let { OperationOutcome.IssueSeverity.fromCode(it) }, _severity)
+          ?: throw SerializationException(
+            "Missing required property 'severity' on OperationOutcome.Issue"
           ),
-          _severity,
-        ),
       code =
-        Enumeration.of(
-          OperationOutcome.IssueType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on OperationOutcome.Issue"
-              )
+        Enumeration.of(code?.let { OperationOutcome.IssueType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on OperationOutcome.Issue"
           ),
-          _code,
-        ),
       details = details,
       diagnostics = R5String.of(diagnostics, _diagnostics),
       location =

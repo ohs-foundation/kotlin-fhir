@@ -462,21 +462,17 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          CommunicationRequest.RequestStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on CommunicationRequest"
-              )
+        Enumeration.of(status?.let { CommunicationRequest.RequestStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on CommunicationRequest"
           ),
-          _status,
-        ),
       statusReason = statusReason,
       category = category ?: listOf(),
       priority =
-        priority?.let {
-          Enumeration.of(CommunicationRequest.RequestPriority.fromCode(it), _priority)
-        },
+        Enumeration.of(
+          priority?.let { CommunicationRequest.RequestPriority.fromCode(it) },
+          _priority,
+        ),
       doNotPerform = R4Boolean.of(doNotPerform, _doNotPerform),
       medium = medium ?: listOf(),
       subject = subject,

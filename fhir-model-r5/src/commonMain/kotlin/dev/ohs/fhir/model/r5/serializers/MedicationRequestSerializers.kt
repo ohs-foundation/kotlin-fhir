@@ -887,29 +887,25 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
       groupIdentifier = groupIdentifier,
       status =
         Enumeration.of(
-          MedicationRequest.MedicationrequestStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on MedicationRequest"
-              )
-          ),
+          status?.let { MedicationRequest.MedicationrequestStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on MedicationRequest"
+          ),
       statusReason = statusReason,
       statusChanged = DateTime.of(FhirDateTime.fromString(statusChanged), _statusChanged),
       intent =
         Enumeration.of(
-          MedicationRequest.MedicationRequestIntent.fromCode(
-            intent
-              ?: throw SerializationException(
-                "Missing required property 'intent' on MedicationRequest"
-              )
-          ),
+          intent?.let { MedicationRequest.MedicationRequestIntent.fromCode(it) },
           _intent,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'intent' on MedicationRequest"
+          ),
       category = category ?: listOf(),
       priority =
-        priority?.let { Enumeration.of(MedicationRequest.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { MedicationRequest.RequestPriority.fromCode(it) }, _priority),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),
       medication =
         medication

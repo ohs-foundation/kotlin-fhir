@@ -761,19 +761,15 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
       version = R5String.of(version, _version),
       basedOn = basedOn ?: listOf(),
       status =
-        Enumeration.of(
-          DocumentReferenceStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on DocumentReference"
-              )
+        Enumeration.of(status?.let { DocumentReferenceStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on DocumentReference"
           ),
-          _status,
-        ),
       docStatus =
-        docStatus?.let {
-          Enumeration.of(DocumentReference.CompositionStatus.fromCode(it), _docStatus)
-        },
+        Enumeration.of(
+          docStatus?.let { DocumentReference.CompositionStatus.fromCode(it) },
+          _docStatus,
+        ),
       modality = modality ?: listOf(),
       type = type,
       category = category ?: listOf(),

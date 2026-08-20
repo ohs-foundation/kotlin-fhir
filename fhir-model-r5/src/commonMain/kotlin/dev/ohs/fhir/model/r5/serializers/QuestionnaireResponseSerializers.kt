@@ -682,14 +682,12 @@ internal object QuestionnaireResponseSerializer : KSerializer<QuestionnaireRespo
           ),
       status =
         Enumeration.of(
-          QuestionnaireResponse.QuestionnaireResponseStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on QuestionnaireResponse"
-              )
-          ),
+          status?.let { QuestionnaireResponse.QuestionnaireResponseStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on QuestionnaireResponse"
+          ),
       subject = subject,
       encounter = encounter,
       authored = DateTime.of(FhirDateTime.fromString(authored), _authored),

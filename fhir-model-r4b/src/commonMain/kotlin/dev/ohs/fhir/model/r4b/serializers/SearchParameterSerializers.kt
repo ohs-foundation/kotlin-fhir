@@ -513,15 +513,8 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
           ?: throw SerializationException("Missing required property 'name' on SearchParameter"),
       derivedFrom = Canonical.of(derivedFrom, _derivedFrom),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on SearchParameter"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on SearchParameter"),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -539,44 +532,43 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
           ?: throw SerializationException("Missing required property 'code' on SearchParameter"),
       base =
         (kotlin.collections.List(maxOf(base?.size ?: 0, _base?.size ?: 0)) { index ->
-          Enumeration.of(ResourceType.fromCode(base?.getOrNull(index)!!), _base?.getOrNull(index))
+          Enumeration.of(
+            base?.getOrNull(index)?.let { ResourceType.fromCode(it) },
+            _base?.getOrNull(index),
+          )!!
         }),
       type =
-        Enumeration.of(
-          SearchParamType.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on SearchParameter")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { SearchParamType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on SearchParameter"),
       expression = R4bString.of(expression, _expression),
       xpath = R4bString.of(xpath, _xpath),
       xpathUsage =
-        xpathUsage?.let {
-          Enumeration.of(SearchParameter.XPathUsageType.fromCode(it), _xpathUsage)
-        },
+        Enumeration.of(
+          xpathUsage?.let { SearchParameter.XPathUsageType.fromCode(it) },
+          _xpathUsage,
+        ),
       target =
         (kotlin.collections.List(maxOf(target?.size ?: 0, _target?.size ?: 0)) { index ->
           Enumeration.of(
-            ResourceType.fromCode(target?.getOrNull(index)!!),
+            target?.getOrNull(index)?.let { ResourceType.fromCode(it) },
             _target?.getOrNull(index),
-          )
+          )!!
         }),
       multipleOr = R4bBoolean.of(multipleOr, _multipleOr),
       multipleAnd = R4bBoolean.of(multipleAnd, _multipleAnd),
       comparator =
         (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.SearchComparator.fromCode(comparator?.getOrNull(index)!!),
+            comparator?.getOrNull(index)?.let { SearchParameter.SearchComparator.fromCode(it) },
             _comparator?.getOrNull(index),
-          )
+          )!!
         }),
       modifier =
         (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.SearchModifierCode.fromCode(modifier?.getOrNull(index)!!),
+            modifier?.getOrNull(index)?.let { SearchParameter.SearchModifierCode.fromCode(it) },
             _modifier?.getOrNull(index),
-          )
+          )!!
         }),
       chain =
         (kotlin.collections.List(maxOf(chain?.size ?: 0, _chain?.size ?: 0)) { index ->

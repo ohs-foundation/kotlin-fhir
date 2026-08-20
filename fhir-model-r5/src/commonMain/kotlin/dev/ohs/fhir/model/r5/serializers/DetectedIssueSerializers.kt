@@ -485,19 +485,15 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          DetectedIssue.DetectedIssueStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on DetectedIssue")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { DetectedIssue.DetectedIssueStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on DetectedIssue"),
       category = category ?: listOf(),
       code = code,
       severity =
-        severity?.let {
-          Enumeration.of(DetectedIssue.DetectedIssueSeverity.fromCode(it), _severity)
-        },
+        Enumeration.of(
+          severity?.let { DetectedIssue.DetectedIssueSeverity.fromCode(it) },
+          _severity,
+        ),
       subject = subject,
       encounter = encounter,
       identified =

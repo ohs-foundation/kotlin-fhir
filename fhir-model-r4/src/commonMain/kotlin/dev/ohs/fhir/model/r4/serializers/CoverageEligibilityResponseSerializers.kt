@@ -972,22 +972,20 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          CoverageEligibilityResponse.FinancialResourceStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on CoverageEligibilityResponse"
-              )
-          ),
+          status?.let { CoverageEligibilityResponse.FinancialResourceStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on CoverageEligibilityResponse"
+          ),
       purpose =
         (kotlin.collections.List(maxOf(purpose?.size ?: 0, _purpose?.size ?: 0)) { index ->
           Enumeration.of(
-            CoverageEligibilityResponse.EligibilityResponsePurpose.fromCode(
-              purpose?.getOrNull(index)!!
-            ),
+            purpose?.getOrNull(index)?.let {
+              CoverageEligibilityResponse.EligibilityResponsePurpose.fromCode(it)
+            },
             _purpose?.getOrNull(index),
-          )
+          )!!
         }),
       patient =
         patient
@@ -1011,15 +1009,10 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
             "Missing required property 'request' on CoverageEligibilityResponse"
           ),
       outcome =
-        Enumeration.of(
-          ClaimProcessingCodes.fromCode(
-            outcome
-              ?: throw SerializationException(
-                "Missing required property 'outcome' on CoverageEligibilityResponse"
-              )
+        Enumeration.of(outcome?.let { ClaimProcessingCodes.fromCode(it) }, _outcome)
+          ?: throw SerializationException(
+            "Missing required property 'outcome' on CoverageEligibilityResponse"
           ),
-          _outcome,
-        ),
       disposition = R4String.of(disposition, _disposition),
       insurer =
         insurer

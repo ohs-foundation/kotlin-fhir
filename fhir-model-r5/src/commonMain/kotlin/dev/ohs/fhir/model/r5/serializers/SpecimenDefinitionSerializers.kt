@@ -214,14 +214,12 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       type = type,
       preference =
         Enumeration.of(
-          SpecimenDefinition.SpecimenContainedPreference.fromCode(
-            preference
-              ?: throw SerializationException(
-                "Missing required property 'preference' on SpecimenDefinition.TypeTested"
-              )
-          ),
+          preference?.let { SpecimenDefinition.SpecimenContainedPreference.fromCode(it) },
           _preference,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'preference' on SpecimenDefinition.TypeTested"
+          ),
       container = container,
       requirement = Markdown.of(requirement, _requirement),
       retentionTime = retentionTime,
@@ -1181,15 +1179,10 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
           Uri.of(derivedFromUri?.getOrNull(index)?.let { it }, _derivedFromUri?.getOrNull(index))!!
         }),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on SpecimenDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on SpecimenDefinition"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       subject = SpecimenDefinition.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),

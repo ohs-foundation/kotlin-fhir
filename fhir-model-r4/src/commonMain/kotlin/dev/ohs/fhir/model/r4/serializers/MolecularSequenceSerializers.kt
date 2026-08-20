@@ -183,13 +183,14 @@ internal object MolecularSequenceReferenceSeqSerializer :
       chromosome = chromosome,
       genomeBuild = R4String.of(genomeBuild, _genomeBuild),
       orientation =
-        orientation?.let {
-          Enumeration.of(MolecularSequence.OrientationType.fromCode(it), _orientation)
-        },
+        Enumeration.of(
+          orientation?.let { MolecularSequence.OrientationType.fromCode(it) },
+          _orientation,
+        ),
       referenceSeqId = referenceSeqId,
       referenceSeqPointer = referenceSeqPointer,
       referenceSeqString = R4String.of(referenceSeqString, _referenceSeqString),
-      strand = strand?.let { Enumeration.of(MolecularSequence.StrandType.fromCode(it), _strand) },
+      strand = Enumeration.of(strand?.let { MolecularSequence.StrandType.fromCode(it) }, _strand),
       windowStart = Integer.of(windowStart, _windowStart),
       windowEnd = Integer.of(windowEnd, _windowEnd),
     )
@@ -581,15 +582,10 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          MolecularSequence.QualityType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on MolecularSequence.Quality"
-              )
+        Enumeration.of(type?.let { MolecularSequence.QualityType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on MolecularSequence.Quality"
           ),
-          _type,
-        ),
       standardSequence = standardSequence,
       start = Integer.of(start, _start),
       end = Integer.of(end, _end),
@@ -1028,15 +1024,10 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          MolecularSequence.RepositoryType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on MolecularSequence.Repository"
-              )
+        Enumeration.of(type?.let { MolecularSequence.RepositoryType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on MolecularSequence.Repository"
           ),
-          _type,
-        ),
       url = Uri.of(url, _url),
       name = R4String.of(name, _name),
       datasetId = R4String.of(datasetId, _datasetId),
@@ -1657,7 +1648,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      type = type?.let { Enumeration.of(MolecularSequence.SequenceType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { MolecularSequence.SequenceType.fromCode(it) }, _type),
       coordinateSystem =
         Integer.of(coordinateSystem, _coordinateSystem)
           ?: throw SerializationException(

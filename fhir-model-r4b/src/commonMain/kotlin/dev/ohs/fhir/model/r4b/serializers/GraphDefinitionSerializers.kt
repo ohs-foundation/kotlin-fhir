@@ -304,15 +304,10 @@ internal object GraphDefinitionLinkTargetSerializer : KSerializer<GraphDefinitio
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          ResourceType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on GraphDefinition.Link.Target"
-              )
+        Enumeration.of(type?.let { ResourceType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on GraphDefinition.Link.Target"
           ),
-          _type,
-        ),
       params = R4bString.of(params, _params),
       profile = Canonical.of(profile, _profile),
       compartment = compartment ?: listOf(),
@@ -456,35 +451,20 @@ internal object GraphDefinitionLinkTargetCompartmentSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       use =
-        Enumeration.of(
-          GraphDefinition.GraphCompartmentUse.fromCode(
-            use
-              ?: throw SerializationException(
-                "Missing required property 'use' on GraphDefinition.Link.Target.Compartment"
-              )
+        Enumeration.of(use?.let { GraphDefinition.GraphCompartmentUse.fromCode(it) }, _use)
+          ?: throw SerializationException(
+            "Missing required property 'use' on GraphDefinition.Link.Target.Compartment"
           ),
-          _use,
-        ),
       code =
-        Enumeration.of(
-          GraphDefinition.CompartmentType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on GraphDefinition.Link.Target.Compartment"
-              )
+        Enumeration.of(code?.let { GraphDefinition.CompartmentType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on GraphDefinition.Link.Target.Compartment"
           ),
-          _code,
-        ),
       rule =
-        Enumeration.of(
-          GraphDefinition.GraphCompartmentRule.fromCode(
-            rule
-              ?: throw SerializationException(
-                "Missing required property 'rule' on GraphDefinition.Link.Target.Compartment"
-              )
+        Enumeration.of(rule?.let { GraphDefinition.GraphCompartmentRule.fromCode(it) }, _rule)
+          ?: throw SerializationException(
+            "Missing required property 'rule' on GraphDefinition.Link.Target.Compartment"
           ),
-          _rule,
-        ),
       expression = R4bString.of(expression, _expression),
       description = R4bString.of(description, _description),
     )
@@ -760,15 +740,8 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
         R4bString.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on GraphDefinition"),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on GraphDefinition"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on GraphDefinition"),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -778,15 +751,8 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
       jurisdiction = jurisdiction ?: listOf(),
       purpose = Markdown.of(purpose, _purpose),
       start =
-        Enumeration.of(
-          ResourceType.fromCode(
-            start
-              ?: throw SerializationException(
-                "Missing required property 'start' on GraphDefinition"
-              )
-          ),
-          _start,
-        ),
+        Enumeration.of(start?.let { ResourceType.fromCode(it) }, _start)
+          ?: throw SerializationException("Missing required property 'start' on GraphDefinition"),
       profile = Canonical.of(profile, _profile),
       link = link ?: listOf(),
     )

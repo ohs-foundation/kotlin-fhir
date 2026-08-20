@@ -121,9 +121,9 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
       id = id,
       extension = extension ?: listOf(),
       system =
-        system?.let { Enumeration.of(ContactPoint.ContactPointSystem.fromCode(it), _system) },
+        Enumeration.of(system?.let { ContactPoint.ContactPointSystem.fromCode(it) }, _system),
       `value` = R4String.of(`value`, _value),
-      use = use?.let { Enumeration.of(ContactPoint.ContactPointUse.fromCode(it), _use) },
+      use = Enumeration.of(use?.let { ContactPoint.ContactPointUse.fromCode(it) }, _use),
       rank = PositiveInt.of(rank, _rank),
       period = period,
     )

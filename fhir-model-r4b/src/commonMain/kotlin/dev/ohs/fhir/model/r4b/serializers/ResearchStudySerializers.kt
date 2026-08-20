@@ -552,13 +552,8 @@ internal object ResearchStudySerializer : KSerializer<ResearchStudy> {
       protocol = protocol ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          ResearchStudy.ResearchStudyStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on ResearchStudy")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { ResearchStudy.ResearchStudyStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ResearchStudy"),
       primaryPurposeType = primaryPurposeType,
       phase = phase,
       category = category ?: listOf(),

@@ -539,20 +539,11 @@ internal object GroupSerializer : KSerializer<Group> {
       identifier = identifier ?: listOf(),
       active = R5Boolean.of(active, _active),
       type =
-        Enumeration.of(
-          Group.GroupType.fromCode(
-            type ?: throw SerializationException("Missing required property 'type' on Group")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Group.GroupType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Group"),
       membership =
-        Enumeration.of(
-          Group.GroupMembershipBasis.fromCode(
-            membership
-              ?: throw SerializationException("Missing required property 'membership' on Group")
-          ),
-          _membership,
-        ),
+        Enumeration.of(membership?.let { Group.GroupMembershipBasis.fromCode(it) }, _membership)
+          ?: throw SerializationException("Missing required property 'membership' on Group"),
       code = code,
       name = R5String.of(name, _name),
       description = Markdown.of(description, _description),

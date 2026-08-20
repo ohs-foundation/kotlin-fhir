@@ -141,28 +141,16 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
       extension = extension ?: listOf(),
       name = Code.of(name, _name),
       use =
-        Enumeration.of(
-          ParameterDefinition.OperationParameterUse.fromCode(
-            use
-              ?: throw SerializationException(
-                "Missing required property 'use' on ParameterDefinition"
-              )
-          ),
-          _use,
-        ),
+        Enumeration.of(use?.let { ParameterDefinition.OperationParameterUse.fromCode(it) }, _use)
+          ?: throw SerializationException("Missing required property 'use' on ParameterDefinition"),
       min = Integer.of(min, _min),
       max = R4bString.of(max, _max),
       documentation = R4bString.of(documentation, _documentation),
       type =
-        Enumeration.of(
-          FHIRAllTypes.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ParameterDefinition"
-              )
+        Enumeration.of(type?.let { FHIRAllTypes.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ParameterDefinition"
           ),
-          _type,
-        ),
       profile = Canonical.of(profile, _profile),
     )
   }

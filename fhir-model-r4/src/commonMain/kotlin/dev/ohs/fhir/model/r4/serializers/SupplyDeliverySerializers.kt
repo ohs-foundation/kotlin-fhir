@@ -368,7 +368,7 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        status?.let { Enumeration.of(SupplyDelivery.SupplyDeliveryStatus.fromCode(it), _status) },
+        Enumeration.of(status?.let { SupplyDelivery.SupplyDeliveryStatus.fromCode(it) }, _status),
       patient = patient,
       type = type,
       suppliedItem = suppliedItem,

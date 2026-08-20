@@ -895,23 +895,21 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          CoverageEligibilityRequest.FinancialResourceStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on CoverageEligibilityRequest"
-              )
-          ),
+          status?.let { CoverageEligibilityRequest.FinancialResourceStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on CoverageEligibilityRequest"
+          ),
       priority = priority,
       purpose =
         (kotlin.collections.List(maxOf(purpose?.size ?: 0, _purpose?.size ?: 0)) { index ->
           Enumeration.of(
-            CoverageEligibilityRequest.EligibilityRequestPurpose.fromCode(
-              purpose?.getOrNull(index)!!
-            ),
+            purpose?.getOrNull(index)?.let {
+              CoverageEligibilityRequest.EligibilityRequestPurpose.fromCode(it)
+            },
             _purpose?.getOrNull(index),
-          )
+          )!!
         }),
       patient =
         patient

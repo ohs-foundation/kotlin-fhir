@@ -306,14 +306,9 @@ internal object GuidanceResponseSerializer : KSerializer<GuidanceResponse> {
         ) ?: throw SerializationException("Missing required property 'module' on GuidanceResponse"),
       status =
         Enumeration.of(
-          GuidanceResponse.GuidanceResponseStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on GuidanceResponse"
-              )
-          ),
+          status?.let { GuidanceResponse.GuidanceResponseStatus.fromCode(it) },
           _status,
-        ),
+        ) ?: throw SerializationException("Missing required property 'status' on GuidanceResponse"),
       subject = subject,
       encounter = encounter,
       occurrenceDateTime =

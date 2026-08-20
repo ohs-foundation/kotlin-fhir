@@ -376,14 +376,14 @@ internal object BiologicallyDerivedProductDispenseSerializer :
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          BiologicallyDerivedProductDispense.BiologicallyDerivedProductDispenseCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on BiologicallyDerivedProductDispense"
-              )
-          ),
+          status?.let {
+            BiologicallyDerivedProductDispense.BiologicallyDerivedProductDispenseCodes.fromCode(it)
+          },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on BiologicallyDerivedProductDispense"
+          ),
       originRelationshipType = originRelationshipType,
       product =
         product

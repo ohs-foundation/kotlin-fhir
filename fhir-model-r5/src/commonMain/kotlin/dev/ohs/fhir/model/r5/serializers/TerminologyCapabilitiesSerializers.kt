@@ -367,14 +367,12 @@ internal object TerminologyCapabilitiesCodeSystemSerializer :
       version = version ?: listOf(),
       content =
         Enumeration.of(
-          TerminologyCapabilities.CodeSystemContentMode.fromCode(
-            content
-              ?: throw SerializationException(
-                "Missing required property 'content' on TerminologyCapabilities.CodeSystem"
-              )
-          ),
+          content?.let { TerminologyCapabilities.CodeSystemContentMode.fromCode(it) },
           _content,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'content' on TerminologyCapabilities.CodeSystem"
+          ),
       subsumption = R5Boolean.of(subsumption, _subsumption),
     )
   }
@@ -544,9 +542,11 @@ internal object TerminologyCapabilitiesCodeSystemVersionSerializer :
       language =
         (kotlin.collections.List(maxOf(language?.size ?: 0, _language?.size ?: 0)) { index ->
           Enumeration.of(
-            TerminologyCapabilities.CommonLanguages.fromCode(language?.getOrNull(index)!!),
+            language?.getOrNull(index)?.let {
+              TerminologyCapabilities.CommonLanguages.fromCode(it)
+            },
             _language?.getOrNull(index),
-          )
+          )!!
         }),
       filter = filter ?: listOf(),
       `property` =
@@ -1634,15 +1634,10 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on TerminologyCapabilities"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on TerminologyCapabilities"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date =
         DateTime.of(FhirDateTime.fromString(date), _date)
@@ -1659,23 +1654,22 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       kind =
         Enumeration.of(
-          TerminologyCapabilities.CapabilityStatementKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on TerminologyCapabilities"
-              )
-          ),
+          kind?.let { TerminologyCapabilities.CapabilityStatementKind.fromCode(it) },
           _kind,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'kind' on TerminologyCapabilities"
+          ),
       software = software,
       implementation = implementation,
       lockedDate = R5Boolean.of(lockedDate, _lockedDate),
       codeSystem = codeSystem ?: listOf(),
       expansion = expansion,
       codeSearch =
-        codeSearch?.let {
-          Enumeration.of(TerminologyCapabilities.CodeSearchSupport.fromCode(it), _codeSearch)
-        },
+        Enumeration.of(
+          codeSearch?.let { TerminologyCapabilities.CodeSearchSupport.fromCode(it) },
+          _codeSearch,
+        ),
       validateCode = validateCode,
       translation = translation,
       closure = closure,

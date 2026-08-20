@@ -50,7 +50,11 @@ public data class Enumeration<T : Enum<*>>(
   }
 
   public companion object {
-    public fun <T : Enum<*>> of(`value`: T, element: Element?): Enumeration<T> =
-      Enumeration(element?.id, element?.extension ?: listOf(), value = value)
+    public fun <T : Enum<*>> of(`value`: T?, element: Element?): Enumeration<T>? =
+      if (value != null || element?.id != null || element?.extension?.isEmpty() == false) {
+        Enumeration(element?.id, element?.extension ?: listOf(), value = value)
+      } else {
+        null
+      }
   }
 }

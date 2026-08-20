@@ -707,7 +707,7 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       description = R4bString.of(description, _description),
       textEquivalent = R4bString.of(textEquivalent, _textEquivalent),
       priority =
-        priority?.let { Enumeration.of(PlanDefinition.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { PlanDefinition.RequestPriority.fromCode(it) }, _priority),
       code = code ?: listOf(),
       reason = reason ?: listOf(),
       documentation = documentation ?: listOf(),
@@ -738,28 +738,30 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       participant = participant ?: listOf(),
       type = type,
       groupingBehavior =
-        groupingBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionGroupingBehavior.fromCode(it), _groupingBehavior)
-        },
+        Enumeration.of(
+          groupingBehavior?.let { PlanDefinition.ActionGroupingBehavior.fromCode(it) },
+          _groupingBehavior,
+        ),
       selectionBehavior =
-        selectionBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionSelectionBehavior.fromCode(it), _selectionBehavior)
-        },
+        Enumeration.of(
+          selectionBehavior?.let { PlanDefinition.ActionSelectionBehavior.fromCode(it) },
+          _selectionBehavior,
+        ),
       requiredBehavior =
-        requiredBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionRequiredBehavior.fromCode(it), _requiredBehavior)
-        },
+        Enumeration.of(
+          requiredBehavior?.let { PlanDefinition.ActionRequiredBehavior.fromCode(it) },
+          _requiredBehavior,
+        ),
       precheckBehavior =
-        precheckBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionPrecheckBehavior.fromCode(it), _precheckBehavior)
-        },
+        Enumeration.of(
+          precheckBehavior?.let { PlanDefinition.ActionPrecheckBehavior.fromCode(it) },
+          _precheckBehavior,
+        ),
       cardinalityBehavior =
-        cardinalityBehavior?.let {
-          Enumeration.of(
-            PlanDefinition.ActionCardinalityBehavior.fromCode(it),
-            _cardinalityBehavior,
-          )
-        },
+        Enumeration.of(
+          cardinalityBehavior?.let { PlanDefinition.ActionCardinalityBehavior.fromCode(it) },
+          _cardinalityBehavior,
+        ),
       definition =
         PlanDefinition.Action.Definition.from(
           Canonical.of(definitionCanonical, _definitionCanonical),
@@ -1072,15 +1074,10 @@ internal object PlanDefinitionActionConditionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       kind =
-        Enumeration.of(
-          PlanDefinition.ActionConditionKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on PlanDefinition.Action.Condition"
-              )
+        Enumeration.of(kind?.let { PlanDefinition.ActionConditionKind.fromCode(it) }, _kind)
+          ?: throw SerializationException(
+            "Missing required property 'kind' on PlanDefinition.Action.Condition"
           ),
-          _kind,
-        ),
       expression = expression,
     )
   }
@@ -1207,14 +1204,12 @@ internal object PlanDefinitionActionRelatedActionSerializer :
           ),
       relationship =
         Enumeration.of(
-          PlanDefinition.ActionRelationshipType.fromCode(
-            relationship
-              ?: throw SerializationException(
-                "Missing required property 'relationship' on PlanDefinition.Action.RelatedAction"
-              )
-          ),
+          relationship?.let { PlanDefinition.ActionRelationshipType.fromCode(it) },
           _relationship,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'relationship' on PlanDefinition.Action.RelatedAction"
+          ),
       offset = PlanDefinition.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
     )
   }
@@ -1325,15 +1320,10 @@ internal object PlanDefinitionActionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          PlanDefinition.ActionParticipantType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on PlanDefinition.Action.Participant"
-              )
+        Enumeration.of(type?.let { PlanDefinition.ActionParticipantType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on PlanDefinition.Action.Participant"
           ),
-          _type,
-        ),
       role = role,
     )
   }
@@ -1855,15 +1845,8 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
       subtitle = R4bString.of(subtitle, _subtitle),
       type = type,
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on PlanDefinition"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on PlanDefinition"),
       experimental = R4bBoolean.of(experimental, _experimental),
       subject =
         PlanDefinition.Subject.from(

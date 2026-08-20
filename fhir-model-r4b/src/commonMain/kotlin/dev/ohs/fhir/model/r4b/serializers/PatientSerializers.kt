@@ -163,7 +163,7 @@ internal object PatientContactSerializer : KSerializer<Patient.Contact> {
       name = name,
       telecom = telecom ?: listOf(),
       address = address,
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       organization = organization,
       period = period,
     )
@@ -386,12 +386,8 @@ internal object PatientLinkSerializer : KSerializer<Patient.Link> {
       other =
         other ?: throw SerializationException("Missing required property 'other' on Patient.Link"),
       type =
-        Enumeration.of(
-          Patient.LinkType.fromCode(
-            type ?: throw SerializationException("Missing required property 'type' on Patient.Link")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Patient.LinkType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Patient.Link"),
     )
   }
 
@@ -665,7 +661,7 @@ internal object PatientSerializer : KSerializer<Patient> {
       active = R4bBoolean.of(active, _active),
       name = name ?: listOf(),
       telecom = telecom ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       birthDate = Date.of(FhirDate.fromString(birthDate), _birthDate),
       deceased =
         Patient.Deceased.from(

@@ -402,7 +402,7 @@ internal object ConsentProvisionSerializer : KSerializer<Consent.Provision> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type?.let { Enumeration.of(Consent.ConsentProvisionType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { Consent.ConsentProvisionType.fromCode(it) }, _type),
       period = period,
       actor = actor ?: listOf(),
       action = action ?: listOf(),
@@ -655,15 +655,10 @@ internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.D
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       meaning =
-        Enumeration.of(
-          Consent.ConsentDataMeaning.fromCode(
-            meaning
-              ?: throw SerializationException(
-                "Missing required property 'meaning' on Consent.Provision.Data"
-              )
+        Enumeration.of(meaning?.let { Consent.ConsentDataMeaning.fromCode(it) }, _meaning)
+          ?: throw SerializationException(
+            "Missing required property 'meaning' on Consent.Provision.Data"
           ),
-          _meaning,
-        ),
       reference =
         reference
           ?: throw SerializationException(
@@ -907,12 +902,8 @@ internal object ConsentSerializer : KSerializer<Consent> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Consent.ConsentState.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Consent")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Consent.ConsentState.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Consent"),
       scope = scope ?: throw SerializationException("Missing required property 'scope' on Consent"),
       category = category ?: listOf(),
       patient = patient,

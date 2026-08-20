@@ -184,15 +184,10 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
       description = R5String.of(description, _description),
       ordered = R5Boolean.of(ordered, _ordered),
       rules =
-        Enumeration.of(
-          ElementDefinition.SlicingRules.fromCode(
-            rules
-              ?: throw SerializationException(
-                "Missing required property 'rules' on ElementDefinition.Slicing"
-              )
+        Enumeration.of(rules?.let { ElementDefinition.SlicingRules.fromCode(it) }, _rules)
+          ?: throw SerializationException(
+            "Missing required property 'rules' on ElementDefinition.Slicing"
           ),
-          _rules,
-        ),
     )
   }
 
@@ -291,15 +286,10 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          ElementDefinition.DiscriminatorType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ElementDefinition.Slicing.Discriminator"
-              )
+        Enumeration.of(type?.let { ElementDefinition.DiscriminatorType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ElementDefinition.Slicing.Discriminator"
           ),
-          _type,
-        ),
       path =
         R5String.of(path, _path)
           ?: throw SerializationException(
@@ -559,14 +549,15 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
       aggregation =
         (kotlin.collections.List(maxOf(aggregation?.size ?: 0, _aggregation?.size ?: 0)) { index ->
           Enumeration.of(
-            ElementDefinition.AggregationMode.fromCode(aggregation?.getOrNull(index)!!),
+            aggregation?.getOrNull(index)?.let { ElementDefinition.AggregationMode.fromCode(it) },
             _aggregation?.getOrNull(index),
-          )
+          )!!
         }),
       versioning =
-        versioning?.let {
-          Enumeration.of(ElementDefinition.ReferenceVersionRules.fromCode(it), _versioning)
-        },
+        Enumeration.of(
+          versioning?.let { ElementDefinition.ReferenceVersionRules.fromCode(it) },
+          _versioning,
+        ),
     )
   }
 
@@ -1653,14 +1644,12 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
       requirements = Markdown.of(requirements, _requirements),
       severity =
         Enumeration.of(
-          ElementDefinition.ConstraintSeverity.fromCode(
-            severity
-              ?: throw SerializationException(
-                "Missing required property 'severity' on ElementDefinition.Constraint"
-              )
-          ),
+          severity?.let { ElementDefinition.ConstraintSeverity.fromCode(it) },
           _severity,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'severity' on ElementDefinition.Constraint"
+          ),
       suppress = R5Boolean.of(suppress, _suppress),
       human =
         R5String.of(human, _human)
@@ -1790,15 +1779,10 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
       id = id,
       extension = extension ?: listOf(),
       strength =
-        Enumeration.of(
-          BindingStrength.fromCode(
-            strength
-              ?: throw SerializationException(
-                "Missing required property 'strength' on ElementDefinition.Binding"
-              )
+        Enumeration.of(strength?.let { BindingStrength.fromCode(it) }, _strength)
+          ?: throw SerializationException(
+            "Missing required property 'strength' on ElementDefinition.Binding"
           ),
-          _strength,
-        ),
       description = Markdown.of(description, _description),
       valueSet = Canonical.of(valueSet, _valueSet),
       additional = additional ?: listOf(),
@@ -1929,14 +1913,12 @@ internal object ElementDefinitionBindingAdditionalSerializer :
       extension = extension ?: listOf(),
       purpose =
         Enumeration.of(
-          ElementDefinition.AdditionalBindingPurposeVS.fromCode(
-            purpose
-              ?: throw SerializationException(
-                "Missing required property 'purpose' on ElementDefinition.Binding.Additional"
-              )
-          ),
+          purpose?.let { ElementDefinition.AdditionalBindingPurposeVS.fromCode(it) },
           _purpose,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'purpose' on ElementDefinition.Binding.Additional"
+          ),
       valueSet =
         Canonical.of(valueSet, _valueSet)
           ?: throw SerializationException(
@@ -4208,9 +4190,11 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
         (kotlin.collections.List(maxOf(representation?.size ?: 0, _representation?.size ?: 0)) {
           index ->
           Enumeration.of(
-            ElementDefinition.PropertyRepresentation.fromCode(representation?.getOrNull(index)!!),
+            representation?.getOrNull(index)?.let {
+              ElementDefinition.PropertyRepresentation.fromCode(it)
+            },
             _representation?.getOrNull(index),
-          )
+          )!!
         }),
       sliceName = R5String.of(sliceName, _sliceName),
       sliceIsConstraining = R5Boolean.of(sliceIsConstraining, _sliceIsConstraining),

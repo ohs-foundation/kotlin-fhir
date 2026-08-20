@@ -271,9 +271,10 @@ internal object EffectEvidenceSynthesisResultsByExposureSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       description = R4String.of(description, _description),
       exposureState =
-        exposureState?.let {
-          Enumeration.of(EffectEvidenceSynthesis.ExposureState.fromCode(it), _exposureState)
-        },
+        Enumeration.of(
+          exposureState?.let { EffectEvidenceSynthesis.ExposureState.fromCode(it) },
+          _exposureState,
+        ),
       variantState = variantState,
       riskEvidenceSynthesis =
         riskEvidenceSynthesis
@@ -1280,15 +1281,10 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EffectEvidenceSynthesis"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on EffectEvidenceSynthesis"
           ),
-          _status,
-        ),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),

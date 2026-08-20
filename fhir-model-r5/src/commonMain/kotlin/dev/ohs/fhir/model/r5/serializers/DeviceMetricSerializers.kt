@@ -126,11 +126,12 @@ internal object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Cal
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        type?.let { Enumeration.of(DeviceMetric.DeviceMetricCalibrationType.fromCode(it), _type) },
+        Enumeration.of(type?.let { DeviceMetric.DeviceMetricCalibrationType.fromCode(it) }, _type),
       state =
-        state?.let {
-          Enumeration.of(DeviceMetric.DeviceMetricCalibrationState.fromCode(it), _state)
-        },
+        Enumeration.of(
+          state?.let { DeviceMetric.DeviceMetricCalibrationState.fromCode(it) },
+          _state,
+        ),
       time = Instant.of(FhirDateTime.fromString(time), _time),
     )
   }
@@ -336,23 +337,14 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
         device
           ?: throw SerializationException("Missing required property 'device' on DeviceMetric"),
       operationalStatus =
-        operationalStatus?.let {
-          Enumeration.of(
-            DeviceMetric.DeviceMetricOperationalStatus.fromCode(it),
-            _operationalStatus,
-          )
-        },
+        Enumeration.of(
+          operationalStatus?.let { DeviceMetric.DeviceMetricOperationalStatus.fromCode(it) },
+          _operationalStatus,
+        ),
       color = Code.of(color, _color),
       category =
-        Enumeration.of(
-          DeviceMetric.DeviceMetricCategory.fromCode(
-            category
-              ?: throw SerializationException(
-                "Missing required property 'category' on DeviceMetric"
-              )
-          ),
-          _category,
-        ),
+        Enumeration.of(category?.let { DeviceMetric.DeviceMetricCategory.fromCode(it) }, _category)
+          ?: throw SerializationException("Missing required property 'category' on DeviceMetric"),
       measurementFrequency = measurementFrequency,
       calibration = calibration ?: listOf(),
     )

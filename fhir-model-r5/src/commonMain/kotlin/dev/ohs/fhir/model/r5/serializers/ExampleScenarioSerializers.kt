@@ -146,15 +146,10 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
             "Missing required property 'key' on ExampleScenario.Actor"
           ),
       type =
-        Enumeration.of(
-          ExampleScenario.ExampleScenarioActorType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ExampleScenario.Actor"
-              )
+        Enumeration.of(type?.let { ExampleScenario.ExampleScenarioActorType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ExampleScenario.Actor"
           ),
-          _type,
-        ),
       title =
         R5String.of(title, _title)
           ?: throw SerializationException(
@@ -1614,15 +1609,8 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ExampleScenario"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ExampleScenario"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

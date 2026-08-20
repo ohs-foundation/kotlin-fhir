@@ -2503,21 +2503,13 @@ internal object ClaimSerializer : KSerializer<Claim> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Claim.FinancialResourceStatusCodes.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Claim")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Claim.FinancialResourceStatusCodes.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Claim"),
       type = type ?: throw SerializationException("Missing required property 'type' on Claim"),
       subType = subType,
       use =
-        Enumeration.of(
-          Claim.Use.fromCode(
-            use ?: throw SerializationException("Missing required property 'use' on Claim")
-          ),
-          _use,
-        ),
+        Enumeration.of(use?.let { Claim.Use.fromCode(it) }, _use)
+          ?: throw SerializationException("Missing required property 'use' on Claim"),
       patient =
         patient ?: throw SerializationException("Missing required property 'patient' on Claim"),
       billablePeriod = billablePeriod,

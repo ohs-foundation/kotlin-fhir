@@ -301,14 +301,12 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          MedicationStatement.MedicationStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on MedicationStatement"
-              )
-          ),
+          status?.let { MedicationStatement.MedicationStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on MedicationStatement"
+          ),
       statusReason = statusReason ?: listOf(),
       category = category,
       medication =

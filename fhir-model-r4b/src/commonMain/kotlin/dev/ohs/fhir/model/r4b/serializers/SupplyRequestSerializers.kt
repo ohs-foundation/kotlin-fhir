@@ -426,10 +426,10 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        status?.let { Enumeration.of(SupplyRequest.SupplyRequestStatus.fromCode(it), _status) },
+        Enumeration.of(status?.let { SupplyRequest.SupplyRequestStatus.fromCode(it) }, _status),
       category = category,
       priority =
-        priority?.let { Enumeration.of(SupplyRequest.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { SupplyRequest.RequestPriority.fromCode(it) }, _priority),
       item =
         SupplyRequest.Item.from(itemCodeableConcept, itemReference)
           ?: throw SerializationException("Missing required property 'item' on SupplyRequest"),

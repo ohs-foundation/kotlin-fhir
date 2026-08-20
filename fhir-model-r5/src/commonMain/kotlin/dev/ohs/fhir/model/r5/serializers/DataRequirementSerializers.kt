@@ -387,9 +387,10 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
       path = R5String.of(path, _path),
       searchParam = R5String.of(searchParam, _searchParam),
       comparator =
-        comparator?.let {
-          Enumeration.of(DataRequirement.ValueFilterComparator.fromCode(it), _comparator)
-        },
+        Enumeration.of(
+          comparator?.let { DataRequirement.ValueFilterComparator.fromCode(it) },
+          _comparator,
+        ),
       `value` =
         DataRequirement.ValueFilter.Value.from(
           DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
@@ -504,15 +505,10 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
             "Missing required property 'path' on DataRequirement.Sort"
           ),
       direction =
-        Enumeration.of(
-          DataRequirement.SortDirection.fromCode(
-            direction
-              ?: throw SerializationException(
-                "Missing required property 'direction' on DataRequirement.Sort"
-              )
+        Enumeration.of(direction?.let { DataRequirement.SortDirection.fromCode(it) }, _direction)
+          ?: throw SerializationException(
+            "Missing required property 'direction' on DataRequirement.Sort"
           ),
-          _direction,
-        ),
     )
   }
 
@@ -692,13 +688,8 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          FHIRTypes.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on DataRequirement")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { FHIRTypes.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on DataRequirement"),
       profile =
         (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
           Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!

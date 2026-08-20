@@ -120,15 +120,10 @@ internal object EncounterStatusHistorySerializer : KSerializer<Encounter.StatusH
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          Encounter.EncounterStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on Encounter.StatusHistory"
-              )
+        Enumeration.of(status?.let { Encounter.EncounterStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on Encounter.StatusHistory"
           ),
-          _status,
-        ),
       period =
         period
           ?: throw SerializationException(
@@ -752,7 +747,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
             "Missing required property 'location' on Encounter.Location"
           ),
       status =
-        status?.let { Enumeration.of(Encounter.EncounterLocationStatus.fromCode(it), _status) },
+        Enumeration.of(status?.let { Encounter.EncounterLocationStatus.fromCode(it) }, _status),
       physicalType = physicalType,
       period = period,
     )
@@ -1060,13 +1055,8 @@ internal object EncounterSerializer : KSerializer<Encounter> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Encounter.EncounterStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Encounter")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Encounter.EncounterStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Encounter"),
       statusHistory = statusHistory ?: listOf(),
       `class` =
         `class` ?: throw SerializationException("Missing required property 'class' on Encounter"),

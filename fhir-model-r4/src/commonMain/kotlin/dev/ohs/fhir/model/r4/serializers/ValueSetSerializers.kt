@@ -568,7 +568,7 @@ internal object ValueSetComposeIncludeConceptDesignationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      language = language?.let { Enumeration.of(CommonLanguages.fromCode(it), _language) },
+      language = Enumeration.of(language?.let { CommonLanguages.fromCode(it) }, _language),
       use = use,
       `value` =
         R4String.of(`value`, _value)
@@ -693,15 +693,10 @@ internal object ValueSetComposeIncludeFilterSerializer :
             "Missing required property 'property' on ValueSet.Compose.Include.Filter"
           ),
       op =
-        Enumeration.of(
-          ValueSet.FilterOperator.fromCode(
-            op
-              ?: throw SerializationException(
-                "Missing required property 'op' on ValueSet.Compose.Include.Filter"
-              )
+        Enumeration.of(op?.let { ValueSet.FilterOperator.fromCode(it) }, _op)
+          ?: throw SerializationException(
+            "Missing required property 'op' on ValueSet.Compose.Include.Filter"
           ),
-          _op,
-        ),
       `value` =
         R4String.of(`value`, _value)
           ?: throw SerializationException(
@@ -1565,12 +1560,8 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on ValueSet")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ValueSet"),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),

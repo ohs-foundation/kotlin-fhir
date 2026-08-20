@@ -414,12 +414,10 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
         ),
       studyEffectiveTimeFromStart = studyEffectiveTimeFromStart,
       studyEffectiveGroupMeasure =
-        studyEffectiveGroupMeasure?.let {
-          Enumeration.of(
-            ResearchElementDefinition.GroupMeasure.fromCode(it),
-            _studyEffectiveGroupMeasure,
-          )
-        },
+        Enumeration.of(
+          studyEffectiveGroupMeasure?.let { ResearchElementDefinition.GroupMeasure.fromCode(it) },
+          _studyEffectiveGroupMeasure,
+        ),
       participantEffectiveDescription =
         R4bString.of(participantEffectiveDescription, _participantEffectiveDescription),
       participantEffective =
@@ -434,12 +432,12 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
         ),
       participantEffectiveTimeFromStart = participantEffectiveTimeFromStart,
       participantEffectiveGroupMeasure =
-        participantEffectiveGroupMeasure?.let {
-          Enumeration.of(
-            ResearchElementDefinition.GroupMeasure.fromCode(it),
-            _participantEffectiveGroupMeasure,
-          )
-        },
+        Enumeration.of(
+          participantEffectiveGroupMeasure?.let {
+            ResearchElementDefinition.GroupMeasure.fromCode(it)
+          },
+          _participantEffectiveGroupMeasure,
+        ),
     )
   }
 
@@ -1043,15 +1041,10 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
       shortTitle = R4bString.of(shortTitle, _shortTitle),
       subtitle = R4bString.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ResearchElementDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ResearchElementDefinition"
           ),
-          _status,
-        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       subject = ResearchElementDefinition.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
@@ -1082,18 +1075,17 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
         }),
       type =
         Enumeration.of(
-          ResearchElementDefinition.ResearchElementType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ResearchElementDefinition"
-              )
-          ),
+          type?.let { ResearchElementDefinition.ResearchElementType.fromCode(it) },
           _type,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'type' on ResearchElementDefinition"
+          ),
       variableType =
-        variableType?.let {
-          Enumeration.of(ResearchElementDefinition.VariableType.fromCode(it), _variableType)
-        },
+        Enumeration.of(
+          variableType?.let { ResearchElementDefinition.VariableType.fromCode(it) },
+          _variableType,
+        ),
       characteristic = characteristic ?: listOf(),
     )
   }

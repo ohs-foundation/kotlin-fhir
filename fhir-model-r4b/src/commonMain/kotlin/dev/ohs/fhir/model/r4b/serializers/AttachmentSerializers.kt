@@ -157,7 +157,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
       id = id,
       extension = extension ?: listOf(),
       contentType = Code.of(contentType, _contentType),
-      language = language?.let { Enumeration.of(CommonLanguages.fromCode(it), _language) },
+      language = Enumeration.of(language?.let { CommonLanguages.fromCode(it) }, _language),
       `data` = Base64Binary.of(`data`, _data),
       url = Url.of(url, _url),
       size = UnsignedInt.of(size, _size),

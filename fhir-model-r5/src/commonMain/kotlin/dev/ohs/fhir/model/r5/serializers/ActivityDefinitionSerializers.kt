@@ -156,7 +156,7 @@ internal object ActivityDefinitionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        type?.let { Enumeration.of(ActivityDefinition.ActionParticipantType.fromCode(it), _type) },
+        Enumeration.of(type?.let { ActivityDefinition.ActionParticipantType.fromCode(it) }, _type),
       typeCanonical = Canonical.of(typeCanonical, _typeCanonical),
       typeReference = typeReference,
       role = role,
@@ -934,15 +934,10 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
       title = R5String.of(title, _title),
       subtitle = R5String.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ActivityDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ActivityDefinition"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       subject =
         ActivityDefinition.Subject.from(
@@ -973,15 +968,16 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
         (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
           Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
-      kind = kind?.let { Enumeration.of(RequestResourceTypes.fromCode(it), _kind) },
+      kind = Enumeration.of(kind?.let { RequestResourceTypes.fromCode(it) }, _kind),
       profile = Canonical.of(profile, _profile),
       code = code,
       intent =
-        intent?.let { Enumeration.of(ActivityDefinition.RequestIntent.fromCode(it), _intent) },
+        Enumeration.of(intent?.let { ActivityDefinition.RequestIntent.fromCode(it) }, _intent),
       priority =
-        priority?.let {
-          Enumeration.of(ActivityDefinition.RequestPriority.fromCode(it), _priority)
-        },
+        Enumeration.of(
+          priority?.let { ActivityDefinition.RequestPriority.fromCode(it) },
+          _priority,
+        ),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),
       timing = ActivityDefinition.Timing.from(timingTiming, timingAge, timingRange, timingDuration),
       asNeeded =

@@ -242,7 +242,7 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type?.let { Enumeration.of(Permission.ConsentProvisionType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { Permission.ConsentProvisionType.fromCode(it) }, _type),
       `data` = `data` ?: listOf(),
       activity = activity ?: listOf(),
       limit = limit ?: listOf(),
@@ -485,15 +485,10 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       meaning =
-        Enumeration.of(
-          Permission.ConsentDataMeaning.fromCode(
-            meaning
-              ?: throw SerializationException(
-                "Missing required property 'meaning' on Permission.Rule.Data.Resource"
-              )
+        Enumeration.of(meaning?.let { Permission.ConsentDataMeaning.fromCode(it) }, _meaning)
+          ?: throw SerializationException(
+            "Missing required property 'meaning' on Permission.Rule.Data.Resource"
           ),
-          _meaning,
-        ),
       reference =
         reference
           ?: throw SerializationException(
@@ -789,13 +784,8 @@ internal object PermissionSerializer : KSerializer<Permission> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          Permission.PermissionStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Permission")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Permission.PermissionStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Permission"),
       asserter = asserter,
       date =
         (kotlin.collections.List(maxOf(date?.size ?: 0, _date?.size ?: 0)) { index ->
@@ -808,12 +798,9 @@ internal object PermissionSerializer : KSerializer<Permission> {
       justification = justification,
       combining =
         Enumeration.of(
-          Permission.PermissionRuleCombining.fromCode(
-            combining
-              ?: throw SerializationException("Missing required property 'combining' on Permission")
-          ),
+          combining?.let { Permission.PermissionRuleCombining.fromCode(it) },
           _combining,
-        ),
+        ) ?: throw SerializationException("Missing required property 'combining' on Permission"),
       rule = rule ?: listOf(),
     )
   }

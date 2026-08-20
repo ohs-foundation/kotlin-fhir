@@ -306,9 +306,10 @@ internal object EvidenceVariableCharacteristicSerializer :
         ),
       timeFromStart = timeFromStart,
       groupMeasure =
-        groupMeasure?.let {
-          Enumeration.of(EvidenceVariable.GroupMeasure.fromCode(it), _groupMeasure)
-        },
+        Enumeration.of(
+          groupMeasure?.let { EvidenceVariable.GroupMeasure.fromCode(it) },
+          _groupMeasure,
+        ),
     )
   }
 
@@ -802,15 +803,8 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       shortTitle = R4String.of(shortTitle, _shortTitle),
       subtitle = R4String.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EvidenceVariable"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on EvidenceVariable"),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -829,7 +823,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
       type =
-        type?.let { Enumeration.of(EvidenceVariable.EvidenceVariableType.fromCode(it), _type) },
+        Enumeration.of(type?.let { EvidenceVariable.EvidenceVariableType.fromCode(it) }, _type),
       characteristic = characteristic ?: listOf(),
     )
   }

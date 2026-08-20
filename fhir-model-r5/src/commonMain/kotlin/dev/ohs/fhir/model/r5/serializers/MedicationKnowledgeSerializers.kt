@@ -2757,9 +2757,10 @@ internal object MedicationKnowledgeSerializer : KSerializer<MedicationKnowledge>
       identifier = identifier ?: listOf(),
       code = code,
       status =
-        status?.let {
-          Enumeration.of(MedicationKnowledge.MedicationKnowledgeStatusCodes.fromCode(it), _status)
-        },
+        Enumeration.of(
+          status?.let { MedicationKnowledge.MedicationKnowledgeStatusCodes.fromCode(it) },
+          _status,
+        ),
       author = author,
       intendedJurisdiction = intendedJurisdiction ?: listOf(),
       name =

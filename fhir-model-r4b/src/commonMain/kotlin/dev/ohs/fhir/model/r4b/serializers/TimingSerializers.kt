@@ -270,18 +270,18 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       duration = Decimal.of(duration, _duration),
       durationMax = Decimal.of(durationMax, _durationMax),
       durationUnit =
-        durationUnit?.let { Enumeration.of(Timing.UnitsOfTime.fromCode(it), _durationUnit) },
+        Enumeration.of(durationUnit?.let { Timing.UnitsOfTime.fromCode(it) }, _durationUnit),
       frequency = PositiveInt.of(frequency, _frequency),
       frequencyMax = PositiveInt.of(frequencyMax, _frequencyMax),
       period = Decimal.of(period, _period),
       periodMax = Decimal.of(periodMax, _periodMax),
-      periodUnit = periodUnit?.let { Enumeration.of(Timing.UnitsOfTime.fromCode(it), _periodUnit) },
+      periodUnit = Enumeration.of(periodUnit?.let { Timing.UnitsOfTime.fromCode(it) }, _periodUnit),
       dayOfWeek =
         (kotlin.collections.List(maxOf(dayOfWeek?.size ?: 0, _dayOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            Timing.DaysOfWeek.fromCode(dayOfWeek?.getOrNull(index)!!),
+            dayOfWeek?.getOrNull(index)?.let { Timing.DaysOfWeek.fromCode(it) },
             _dayOfWeek?.getOrNull(index),
-          )
+          )!!
         }),
       timeOfDay =
         (kotlin.collections.List(maxOf(timeOfDay?.size ?: 0, _timeOfDay?.size ?: 0)) { index ->
@@ -290,9 +290,9 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       `when` =
         (kotlin.collections.List(maxOf(`when`?.size ?: 0, _when?.size ?: 0)) { index ->
           Enumeration.of(
-            Timing.EventTiming.fromCode(`when`?.getOrNull(index)!!),
+            `when`?.getOrNull(index)?.let { Timing.EventTiming.fromCode(it) },
             _when?.getOrNull(index),
-          )
+          )!!
         }),
       offset = UnsignedInt.of(offset, _offset),
     )

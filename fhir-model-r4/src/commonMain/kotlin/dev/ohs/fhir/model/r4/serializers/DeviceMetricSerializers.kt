@@ -126,11 +126,12 @@ internal object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Cal
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        type?.let { Enumeration.of(DeviceMetric.DeviceMetricCalibrationType.fromCode(it), _type) },
+        Enumeration.of(type?.let { DeviceMetric.DeviceMetricCalibrationType.fromCode(it) }, _type),
       state =
-        state?.let {
-          Enumeration.of(DeviceMetric.DeviceMetricCalibrationState.fromCode(it), _state)
-        },
+        Enumeration.of(
+          state?.let { DeviceMetric.DeviceMetricCalibrationState.fromCode(it) },
+          _state,
+        ),
       time = Instant.of(FhirDateTime.fromString(time), _time),
     )
   }
@@ -339,23 +340,14 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
       source = source,
       parent = parent,
       operationalStatus =
-        operationalStatus?.let {
-          Enumeration.of(
-            DeviceMetric.DeviceMetricOperationalStatus.fromCode(it),
-            _operationalStatus,
-          )
-        },
-      color = color?.let { Enumeration.of(DeviceMetric.DeviceMetricColor.fromCode(it), _color) },
-      category =
         Enumeration.of(
-          DeviceMetric.DeviceMetricCategory.fromCode(
-            category
-              ?: throw SerializationException(
-                "Missing required property 'category' on DeviceMetric"
-              )
-          ),
-          _category,
+          operationalStatus?.let { DeviceMetric.DeviceMetricOperationalStatus.fromCode(it) },
+          _operationalStatus,
         ),
+      color = Enumeration.of(color?.let { DeviceMetric.DeviceMetricColor.fromCode(it) }, _color),
+      category =
+        Enumeration.of(category?.let { DeviceMetric.DeviceMetricCategory.fromCode(it) }, _category)
+          ?: throw SerializationException("Missing required property 'category' on DeviceMetric"),
       measurementPeriod = measurementPeriod,
       calibration = calibration ?: listOf(),
     )

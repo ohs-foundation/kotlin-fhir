@@ -186,15 +186,10 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
             "Missing required property 'url' on StructureMap.Structure"
           ),
       mode =
-        Enumeration.of(
-          StructureMap.StructureMapModelMode.fromCode(
-            mode
-              ?: throw SerializationException(
-                "Missing required property 'mode' on StructureMap.Structure"
-              )
+        Enumeration.of(mode?.let { StructureMap.StructureMapModelMode.fromCode(it) }, _mode)
+          ?: throw SerializationException(
+            "Missing required property 'mode' on StructureMap.Structure"
           ),
-          _mode,
-        ),
       alias = R4bString.of(alias, _alias),
       documentation = R4bString.of(documentation, _documentation),
     )
@@ -337,14 +332,12 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
       extends = Id.of(extends, _extends),
       typeMode =
         Enumeration.of(
-          StructureMap.StructureMapGroupTypeMode.fromCode(
-            typeMode
-              ?: throw SerializationException(
-                "Missing required property 'typeMode' on StructureMap.Group"
-              )
-          ),
+          typeMode?.let { StructureMap.StructureMapGroupTypeMode.fromCode(it) },
           _typeMode,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'typeMode' on StructureMap.Group"
+          ),
       documentation = R4bString.of(documentation, _documentation),
       input = input ?: listOf(),
       rule = rule ?: listOf(),
@@ -487,15 +480,10 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
           ),
       type = R4bString.of(type, _type),
       mode =
-        Enumeration.of(
-          StructureMap.StructureMapInputMode.fromCode(
-            mode
-              ?: throw SerializationException(
-                "Missing required property 'mode' on StructureMap.Group.Input"
-              )
+        Enumeration.of(mode?.let { StructureMap.StructureMapInputMode.fromCode(it) }, _mode)
+          ?: throw SerializationException(
+            "Missing required property 'mode' on StructureMap.Group.Input"
           ),
-          _mode,
-        ),
       documentation = R4bString.of(documentation, _documentation),
     )
   }
@@ -1390,9 +1378,10 @@ internal object StructureMapGroupRuleSourceSerializer :
         ),
       element = R4bString.of(element, _element),
       listMode =
-        listMode?.let {
-          Enumeration.of(StructureMap.StructureMapSourceListMode.fromCode(it), _listMode)
-        },
+        Enumeration.of(
+          listMode?.let { StructureMap.StructureMapSourceListMode.fromCode(it) },
+          _listMode,
+        ),
       variable = Id.of(variable, _variable),
       condition = R4bString.of(condition, _condition),
       check = R4bString.of(check, _check),
@@ -2016,23 +2005,27 @@ internal object StructureMapGroupRuleTargetSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       context = Id.of(context, _context),
       contextType =
-        contextType?.let {
-          Enumeration.of(StructureMap.StructureMapContextType.fromCode(it), _contextType)
-        },
+        Enumeration.of(
+          contextType?.let { StructureMap.StructureMapContextType.fromCode(it) },
+          _contextType,
+        ),
       element = R4bString.of(element, _element),
       variable = Id.of(variable, _variable),
       listMode =
         (kotlin.collections.List(maxOf(listMode?.size ?: 0, _listMode?.size ?: 0)) { index ->
           Enumeration.of(
-            StructureMap.StructureMapTargetListMode.fromCode(listMode?.getOrNull(index)!!),
+            listMode?.getOrNull(index)?.let {
+              StructureMap.StructureMapTargetListMode.fromCode(it)
+            },
             _listMode?.getOrNull(index),
-          )
+          )!!
         }),
       listRuleId = Id.of(listRuleId, _listRuleId),
       transform =
-        transform?.let {
-          Enumeration.of(StructureMap.StructureMapTransform.fromCode(it), _transform)
-        },
+        Enumeration.of(
+          transform?.let { StructureMap.StructureMapTransform.fromCode(it) },
+          _transform,
+        ),
       parameter = parameter ?: listOf(),
     )
   }
@@ -2662,13 +2655,8 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
           ?: throw SerializationException("Missing required property 'name' on StructureMap"),
       title = R4bString.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on StructureMap")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on StructureMap"),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),

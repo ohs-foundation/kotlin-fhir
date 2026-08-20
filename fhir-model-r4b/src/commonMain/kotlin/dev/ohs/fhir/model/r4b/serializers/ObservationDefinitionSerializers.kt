@@ -306,13 +306,14 @@ internal object ObservationDefinitionQualifiedIntervalSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       category =
-        category?.let {
-          Enumeration.of(ObservationDefinition.ObservationRangeCategory.fromCode(it), _category)
-        },
+        Enumeration.of(
+          category?.let { ObservationDefinition.ObservationRangeCategory.fromCode(it) },
+          _category,
+        ),
       range = range,
       context = context,
       appliesTo = appliesTo ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       age = age,
       gestationalAge = gestationalAge,
       condition = R4bString.of(condition, _condition),
@@ -624,11 +625,11 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            ObservationDefinition.ObservationDataType.fromCode(
-              permittedDataType?.getOrNull(index)!!
-            ),
+            permittedDataType?.getOrNull(index)?.let {
+              ObservationDefinition.ObservationDataType.fromCode(it)
+            },
             _permittedDataType?.getOrNull(index),
-          )
+          )!!
         }),
       multipleResultsAllowed = R4bBoolean.of(multipleResultsAllowed, _multipleResultsAllowed),
       method = method,

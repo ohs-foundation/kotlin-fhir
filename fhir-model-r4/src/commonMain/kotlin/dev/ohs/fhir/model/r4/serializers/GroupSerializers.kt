@@ -530,12 +530,8 @@ internal object GroupSerializer : KSerializer<Group> {
       identifier = identifier ?: listOf(),
       active = R4Boolean.of(active, _active),
       type =
-        Enumeration.of(
-          Group.GroupType.fromCode(
-            type ?: throw SerializationException("Missing required property 'type' on Group")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Group.GroupType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Group"),
       `actual` =
         R4Boolean.of(`actual`, _actual)
           ?: throw SerializationException("Missing required property 'actual' on Group"),

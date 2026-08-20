@@ -1012,12 +1012,8 @@ internal object AccountSerializer : KSerializer<Account> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Account.AccountStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Account")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Account.AccountStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Account"),
       billingStatus = billingStatus,
       type = type,
       name = R5String.of(name, _name),

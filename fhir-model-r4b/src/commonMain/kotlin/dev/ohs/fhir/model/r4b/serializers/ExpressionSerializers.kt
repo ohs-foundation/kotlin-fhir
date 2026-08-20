@@ -129,13 +129,8 @@ internal object ExpressionSerializer : KSerializer<Expression> {
       description = R4bString.of(description, _description),
       name = Id.of(name, _name),
       language =
-        Enumeration.of(
-          Expression.ExpressionLanguage.fromCode(
-            language
-              ?: throw SerializationException("Missing required property 'language' on Expression")
-          ),
-          _language,
-        ),
+        Enumeration.of(language?.let { Expression.ExpressionLanguage.fromCode(it) }, _language)
+          ?: throw SerializationException("Missing required property 'language' on Expression"),
       expression = R4bString.of(expression, _expression),
       reference = Uri.of(reference, _reference),
     )

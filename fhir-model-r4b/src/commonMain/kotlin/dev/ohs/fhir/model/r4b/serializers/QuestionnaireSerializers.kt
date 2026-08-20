@@ -263,20 +263,14 @@ internal object QuestionnaireItemSerializer : KSerializer<Questionnaire.Item> {
       prefix = R4bString.of(prefix, _prefix),
       text = R4bString.of(text, _text),
       type =
-        Enumeration.of(
-          Questionnaire.QuestionnaireItemType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on Questionnaire.Item"
-              )
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Questionnaire.QuestionnaireItemType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Questionnaire.Item"),
       enableWhen = enableWhen ?: listOf(),
       enableBehavior =
-        enableBehavior?.let {
-          Enumeration.of(Questionnaire.EnableWhenBehavior.fromCode(it), _enableBehavior)
-        },
+        Enumeration.of(
+          enableBehavior?.let { Questionnaire.EnableWhenBehavior.fromCode(it) },
+          _enableBehavior,
+        ),
       required = R4bBoolean.of(required, _required),
       repeats = R4bBoolean.of(repeats, _repeats),
       readOnly = R4bBoolean.of(readOnly, _readOnly),
@@ -549,14 +543,12 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
           ),
       `operator` =
         Enumeration.of(
-          Questionnaire.QuestionnaireItemOperator.fromCode(
-            `operator`
-              ?: throw SerializationException(
-                "Missing required property 'operator' on Questionnaire.Item.EnableWhen"
-              )
-          ),
+          `operator`?.let { Questionnaire.QuestionnaireItemOperator.fromCode(it) },
           _operator,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'operator' on Questionnaire.Item.EnableWhen"
+          ),
       answer =
         Questionnaire.Item.EnableWhen.Answer.from(
           R4bBoolean.of(answerBoolean, _answerBoolean),
@@ -1426,20 +1418,15 @@ internal object QuestionnaireSerializer : KSerializer<Questionnaire> {
           Canonical.of(derivedFrom?.getOrNull(index)?.let { it }, _derivedFrom?.getOrNull(index))!!
         }),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Questionnaire")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Questionnaire"),
       experimental = R4bBoolean.of(experimental, _experimental),
       subjectType =
         (kotlin.collections.List(maxOf(subjectType?.size ?: 0, _subjectType?.size ?: 0)) { index ->
           Enumeration.of(
-            ResourceType.fromCode(subjectType?.getOrNull(index)!!),
+            subjectType?.getOrNull(index)?.let { ResourceType.fromCode(it) },
             _subjectType?.getOrNull(index),
-          )
+          )!!
         }),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),

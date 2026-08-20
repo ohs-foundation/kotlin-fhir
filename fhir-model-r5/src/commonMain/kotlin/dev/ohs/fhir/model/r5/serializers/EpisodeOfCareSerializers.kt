@@ -118,15 +118,10 @@ internal object EpisodeOfCareStatusHistorySerializer : KSerializer<EpisodeOfCare
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          EpisodeOfCare.EpisodeOfCareStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EpisodeOfCare.StatusHistory"
-              )
+        Enumeration.of(status?.let { EpisodeOfCare.EpisodeOfCareStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on EpisodeOfCare.StatusHistory"
           ),
-          _status,
-        ),
       period =
         period
           ?: throw SerializationException(
@@ -561,13 +556,8 @@ internal object EpisodeOfCareSerializer : KSerializer<EpisodeOfCare> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          EpisodeOfCare.EpisodeOfCareStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on EpisodeOfCare")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { EpisodeOfCare.EpisodeOfCareStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on EpisodeOfCare"),
       statusHistory = statusHistory ?: listOf(),
       type = type ?: listOf(),
       reason = reason ?: listOf(),

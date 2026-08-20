@@ -443,15 +443,10 @@ internal object ConceptMapGroupElementTargetSerializer :
       code = Code.of(code, _code),
       display = R4String.of(display, _display),
       equivalence =
-        Enumeration.of(
-          ConceptMapEquivalence.fromCode(
-            equivalence
-              ?: throw SerializationException(
-                "Missing required property 'equivalence' on ConceptMap.Group.Element.Target"
-              )
+        Enumeration.of(equivalence?.let { ConceptMapEquivalence.fromCode(it) }, _equivalence)
+          ?: throw SerializationException(
+            "Missing required property 'equivalence' on ConceptMap.Group.Element.Target"
           ),
-          _equivalence,
-        ),
       comment = R4String.of(comment, _comment),
       dependsOn = dependsOn ?: listOf(),
       product = product ?: listOf(),
@@ -724,15 +719,10 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          ConceptMap.ConceptMapGroupUnmappedMode.fromCode(
-            mode
-              ?: throw SerializationException(
-                "Missing required property 'mode' on ConceptMap.Group.Unmapped"
-              )
+        Enumeration.of(mode?.let { ConceptMap.ConceptMapGroupUnmappedMode.fromCode(it) }, _mode)
+          ?: throw SerializationException(
+            "Missing required property 'mode' on ConceptMap.Group.Unmapped"
           ),
-          _mode,
-        ),
       code = Code.of(code, _code),
       display = R4String.of(display, _display),
       url = Canonical.of(url, _url),
@@ -1040,13 +1030,8 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on ConceptMap")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ConceptMap"),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),

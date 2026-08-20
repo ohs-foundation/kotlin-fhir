@@ -471,7 +471,7 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
       active = R5Boolean.of(active, _active),
       name = name ?: listOf(),
       telecom = telecom ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       birthDate = Date.of(FhirDate.fromString(birthDate), _birthDate),
       deceased =
         Practitioner.Deceased.from(

@@ -439,15 +439,10 @@ internal object CapabilityStatementRestSerializer : KSerializer<CapabilityStatem
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          CapabilityStatement.RestfulCapabilityMode.fromCode(
-            mode
-              ?: throw SerializationException(
-                "Missing required property 'mode' on CapabilityStatement.Rest"
-              )
+        Enumeration.of(mode?.let { CapabilityStatement.RestfulCapabilityMode.fromCode(it) }, _mode)
+          ?: throw SerializationException(
+            "Missing required property 'mode' on CapabilityStatement.Rest"
           ),
-          _mode,
-        ),
       documentation = Markdown.of(documentation, _documentation),
       security = security,
       resource = resource ?: listOf(),
@@ -943,15 +938,10 @@ internal object CapabilityStatementRestResourceSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          ResourceType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on CapabilityStatement.Rest.Resource"
-              )
+        Enumeration.of(type?.let { ResourceType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on CapabilityStatement.Rest.Resource"
           ),
-          _type,
-        ),
       profile = Canonical.of(profile, _profile),
       supportedProfile =
         (kotlin.collections.List(
@@ -965,34 +955,34 @@ internal object CapabilityStatementRestResourceSerializer :
       documentation = Markdown.of(documentation, _documentation),
       interaction = interaction ?: listOf(),
       versioning =
-        versioning?.let {
-          Enumeration.of(CapabilityStatement.ResourceVersionPolicy.fromCode(it), _versioning)
-        },
+        Enumeration.of(
+          versioning?.let { CapabilityStatement.ResourceVersionPolicy.fromCode(it) },
+          _versioning,
+        ),
       readHistory = R5Boolean.of(readHistory, _readHistory),
       updateCreate = R5Boolean.of(updateCreate, _updateCreate),
       conditionalCreate = R5Boolean.of(conditionalCreate, _conditionalCreate),
       conditionalRead =
-        conditionalRead?.let {
-          Enumeration.of(CapabilityStatement.ConditionalReadStatus.fromCode(it), _conditionalRead)
-        },
+        Enumeration.of(
+          conditionalRead?.let { CapabilityStatement.ConditionalReadStatus.fromCode(it) },
+          _conditionalRead,
+        ),
       conditionalUpdate = R5Boolean.of(conditionalUpdate, _conditionalUpdate),
       conditionalPatch = R5Boolean.of(conditionalPatch, _conditionalPatch),
       conditionalDelete =
-        conditionalDelete?.let {
-          Enumeration.of(
-            CapabilityStatement.ConditionalDeleteStatus.fromCode(it),
-            _conditionalDelete,
-          )
-        },
+        Enumeration.of(
+          conditionalDelete?.let { CapabilityStatement.ConditionalDeleteStatus.fromCode(it) },
+          _conditionalDelete,
+        ),
       referencePolicy =
         (kotlin.collections.List(maxOf(referencePolicy?.size ?: 0, _referencePolicy?.size ?: 0)) {
           index ->
           Enumeration.of(
-            CapabilityStatement.ReferenceHandlingPolicy.fromCode(
-              referencePolicy?.getOrNull(index)!!
-            ),
+            referencePolicy?.getOrNull(index)?.let {
+              CapabilityStatement.ReferenceHandlingPolicy.fromCode(it)
+            },
             _referencePolicy?.getOrNull(index),
-          )
+          )!!
         }),
       searchInclude =
         (kotlin.collections.List(maxOf(searchInclude?.size ?: 0, _searchInclude?.size ?: 0)) { index
@@ -1212,15 +1202,10 @@ internal object CapabilityStatementRestResourceInteractionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          CapabilityStatement.TypeRestfulInteraction.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on CapabilityStatement.Rest.Resource.Interaction"
-              )
+        Enumeration.of(code?.let { CapabilityStatement.TypeRestfulInteraction.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on CapabilityStatement.Rest.Resource.Interaction"
           ),
-          _code,
-        ),
       documentation = Markdown.of(documentation, _documentation),
     )
   }
@@ -1345,15 +1330,10 @@ internal object CapabilityStatementRestResourceSearchParamSerializer :
           ),
       definition = Canonical.of(definition, _definition),
       type =
-        Enumeration.of(
-          SearchParamType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on CapabilityStatement.Rest.Resource.SearchParam"
-              )
+        Enumeration.of(type?.let { SearchParamType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on CapabilityStatement.Rest.Resource.SearchParam"
           ),
-          _type,
-        ),
       documentation = Markdown.of(documentation, _documentation),
     )
   }
@@ -1590,14 +1570,12 @@ internal object CapabilityStatementRestInteractionSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       code =
         Enumeration.of(
-          CapabilityStatement.SystemRestfulInteraction.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on CapabilityStatement.Rest.Interaction"
-              )
-          ),
+          code?.let { CapabilityStatement.SystemRestfulInteraction.fromCode(it) },
           _code,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'code' on CapabilityStatement.Rest.Interaction"
+          ),
       documentation = Markdown.of(documentation, _documentation),
     )
   }
@@ -1968,15 +1946,10 @@ internal object CapabilityStatementMessagingSupportedMessageSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          CapabilityStatement.EventCapabilityMode.fromCode(
-            mode
-              ?: throw SerializationException(
-                "Missing required property 'mode' on CapabilityStatement.Messaging.SupportedMessage"
-              )
+        Enumeration.of(mode?.let { CapabilityStatement.EventCapabilityMode.fromCode(it) }, _mode)
+          ?: throw SerializationException(
+            "Missing required property 'mode' on CapabilityStatement.Messaging.SupportedMessage"
           ),
-          _mode,
-        ),
       definition =
         Canonical.of(definition, _definition)
           ?: throw SerializationException(
@@ -2089,15 +2062,10 @@ internal object CapabilityStatementDocumentSerializer : KSerializer<CapabilitySt
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          CapabilityStatement.DocumentMode.fromCode(
-            mode
-              ?: throw SerializationException(
-                "Missing required property 'mode' on CapabilityStatement.Document"
-              )
+        Enumeration.of(mode?.let { CapabilityStatement.DocumentMode.fromCode(it) }, _mode)
+          ?: throw SerializationException(
+            "Missing required property 'mode' on CapabilityStatement.Document"
           ),
-          _mode,
-        ),
       documentation = Markdown.of(documentation, _documentation),
       profile =
         Canonical.of(profile, _profile)
@@ -2565,15 +2533,10 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on CapabilityStatement"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on CapabilityStatement"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date =
         DateTime.of(FhirDateTime.fromString(date), _date)
@@ -2590,14 +2553,12 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       kind =
         Enumeration.of(
-          CapabilityStatement.CapabilityStatementKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on CapabilityStatement"
-              )
-          ),
+          kind?.let { CapabilityStatement.CapabilityStatementKind.fromCode(it) },
           _kind,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'kind' on CapabilityStatement"
+          ),
       instantiates =
         (kotlin.collections.List(maxOf(instantiates?.size ?: 0, _instantiates?.size ?: 0)) { index
           ->
@@ -2613,15 +2574,10 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
       software = software,
       implementation = implementation,
       fhirVersion =
-        Enumeration.of(
-          FHIRVersion.fromCode(
-            fhirVersion
-              ?: throw SerializationException(
-                "Missing required property 'fhirVersion' on CapabilityStatement"
-              )
+        Enumeration.of(fhirVersion?.let { FHIRVersion.fromCode(it) }, _fhirVersion)
+          ?: throw SerializationException(
+            "Missing required property 'fhirVersion' on CapabilityStatement"
           ),
-          _fhirVersion,
-        ),
       format =
         (kotlin.collections.List(maxOf(format?.size ?: 0, _format?.size ?: 0)) { index ->
           Code.of(format?.getOrNull(index)?.let { it }, _format?.getOrNull(index))!!

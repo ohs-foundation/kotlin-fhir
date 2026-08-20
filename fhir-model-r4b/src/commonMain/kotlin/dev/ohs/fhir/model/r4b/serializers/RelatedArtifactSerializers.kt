@@ -136,13 +136,8 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          RelatedArtifact.RelatedArtifactType.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on RelatedArtifact")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { RelatedArtifact.RelatedArtifactType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on RelatedArtifact"),
       label = R4bString.of(label, _label),
       display = R4bString.of(display, _display),
       citation = Markdown.of(citation, _citation),

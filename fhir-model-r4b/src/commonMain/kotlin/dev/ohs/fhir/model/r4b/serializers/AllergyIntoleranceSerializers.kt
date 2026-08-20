@@ -162,9 +162,10 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
       description = R4bString.of(description, _description),
       onset = DateTime.of(FhirDateTime.fromString(onset), _onset),
       severity =
-        severity?.let {
-          Enumeration.of(AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(it), _severity)
-        },
+        Enumeration.of(
+          severity?.let { AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(it) },
+          _severity,
+        ),
       exposureRoute = exposureRoute,
       note = note ?: listOf(),
     )
@@ -477,21 +478,21 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
       clinicalStatus = clinicalStatus,
       verificationStatus = verificationStatus,
       type =
-        type?.let { Enumeration.of(AllergyIntolerance.AllergyIntoleranceType.fromCode(it), _type) },
+        Enumeration.of(type?.let { AllergyIntolerance.AllergyIntoleranceType.fromCode(it) }, _type),
       category =
         (kotlin.collections.List(maxOf(category?.size ?: 0, _category?.size ?: 0)) { index ->
           Enumeration.of(
-            AllergyIntolerance.AllergyIntoleranceCategory.fromCode(category?.getOrNull(index)!!),
+            category?.getOrNull(index)?.let {
+              AllergyIntolerance.AllergyIntoleranceCategory.fromCode(it)
+            },
             _category?.getOrNull(index),
-          )
+          )!!
         }),
       criticality =
-        criticality?.let {
-          Enumeration.of(
-            AllergyIntolerance.AllergyIntoleranceCriticality.fromCode(it),
-            _criticality,
-          )
-        },
+        Enumeration.of(
+          criticality?.let { AllergyIntolerance.AllergyIntoleranceCriticality.fromCode(it) },
+          _criticality,
+        ),
       code = code,
       patient =
         patient

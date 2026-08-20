@@ -164,15 +164,10 @@ internal object ConceptMapPropertySerializer : KSerializer<ConceptMap.Property> 
       uri = Uri.of(uri, _uri),
       description = R5String.of(description, _description),
       type =
-        Enumeration.of(
-          ConceptMap.ConceptMapPropertyType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ConceptMap.Property"
-              )
+        Enumeration.of(type?.let { ConceptMap.ConceptMapPropertyType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ConceptMap.Property"
           ),
-          _type,
-        ),
       system = Canonical.of(system, _system),
     )
   }
@@ -304,15 +299,10 @@ internal object ConceptMapAdditionalAttributeSerializer :
       uri = Uri.of(uri, _uri),
       description = R5String.of(description, _description),
       type =
-        Enumeration.of(
-          ConceptMap.ConceptMapAttributeType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ConceptMap.AdditionalAttribute"
-              )
+        Enumeration.of(type?.let { ConceptMap.ConceptMapAttributeType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ConceptMap.AdditionalAttribute"
           ),
-          _type,
-        ),
     )
   }
 
@@ -755,15 +745,10 @@ internal object ConceptMapGroupElementTargetSerializer :
       display = R5String.of(display, _display),
       valueSet = Canonical.of(valueSet, _valueSet),
       relationship =
-        Enumeration.of(
-          ConceptMapRelationship.fromCode(
-            relationship
-              ?: throw SerializationException(
-                "Missing required property 'relationship' on ConceptMap.Group.Element.Target"
-              )
+        Enumeration.of(relationship?.let { ConceptMapRelationship.fromCode(it) }, _relationship)
+          ?: throw SerializationException(
+            "Missing required property 'relationship' on ConceptMap.Group.Element.Target"
           ),
-          _relationship,
-        ),
       comment = R5String.of(comment, _comment),
       `property` = `property` ?: listOf(),
       dependsOn = dependsOn ?: listOf(),
@@ -1318,20 +1303,15 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          ConceptMap.ConceptMapGroupUnmappedMode.fromCode(
-            mode
-              ?: throw SerializationException(
-                "Missing required property 'mode' on ConceptMap.Group.Unmapped"
-              )
+        Enumeration.of(mode?.let { ConceptMap.ConceptMapGroupUnmappedMode.fromCode(it) }, _mode)
+          ?: throw SerializationException(
+            "Missing required property 'mode' on ConceptMap.Group.Unmapped"
           ),
-          _mode,
-        ),
       code = Code.of(code, _code),
       display = R5String.of(display, _display),
       valueSet = Canonical.of(valueSet, _valueSet),
       relationship =
-        relationship?.let { Enumeration.of(ConceptMapRelationship.fromCode(it), _relationship) },
+        Enumeration.of(relationship?.let { ConceptMapRelationship.fromCode(it) }, _relationship),
       otherMap = Canonical.of(otherMap, _otherMap),
     )
   }
@@ -1792,13 +1772,8 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on ConceptMap")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ConceptMap"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

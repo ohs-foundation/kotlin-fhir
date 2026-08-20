@@ -294,7 +294,7 @@ internal object PaymentReconciliationProcessNoteSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type?.let { Enumeration.of(NoteType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { NoteType.fromCode(it) }, _type),
       text = R4bString.of(text, _text),
     )
   }
@@ -540,14 +540,12 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          PaymentReconciliation.FinancialResourceStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on PaymentReconciliation"
-              )
-          ),
+          status?.let { PaymentReconciliation.FinancialResourceStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on PaymentReconciliation"
+          ),
       period = period,
       created =
         DateTime.of(FhirDateTime.fromString(created), _created)
@@ -557,7 +555,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       paymentIssuer = paymentIssuer,
       request = request,
       requestor = requestor,
-      outcome = outcome?.let { Enumeration.of(RemittanceOutcome.fromCode(it), _outcome) },
+      outcome = Enumeration.of(outcome?.let { RemittanceOutcome.fromCode(it) }, _outcome),
       disposition = R4bString.of(disposition, _disposition),
       paymentDate =
         Date.of(FhirDate.fromString(paymentDate), _paymentDate)

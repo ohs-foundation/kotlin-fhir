@@ -230,12 +230,9 @@ internal object PaymentNoticeSerializer : KSerializer<PaymentNotice> {
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          PaymentNotice.FinancialResourceStatusCodes.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on PaymentNotice")
-          ),
+          status?.let { PaymentNotice.FinancialResourceStatusCodes.fromCode(it) },
           _status,
-        ),
+        ) ?: throw SerializationException("Missing required property 'status' on PaymentNotice"),
       request = request,
       response = response,
       created =

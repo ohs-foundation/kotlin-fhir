@@ -757,14 +757,12 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
       need = need,
       status =
         Enumeration.of(
-          VerificationResult.VerificationResultStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on VerificationResult"
-              )
-          ),
+          status?.let { VerificationResult.VerificationResultStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on VerificationResult"
+          ),
       statusDate = DateTime.of(FhirDateTime.fromString(statusDate), _statusDate),
       validationType = validationType,
       validationProcess = validationProcess ?: listOf(),

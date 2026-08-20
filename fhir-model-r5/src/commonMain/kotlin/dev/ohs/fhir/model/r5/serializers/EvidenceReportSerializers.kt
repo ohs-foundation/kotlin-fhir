@@ -424,15 +424,10 @@ internal object EvidenceReportRelatesToSerializer : KSerializer<EvidenceReport.R
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          EvidenceReport.ReportRelationshipType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on EvidenceReport.RelatesTo"
-              )
+        Enumeration.of(code?.let { EvidenceReport.ReportRelationshipType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on EvidenceReport.RelatesTo"
           ),
-          _code,
-        ),
       target =
         target
           ?: throw SerializationException(
@@ -734,7 +729,7 @@ internal object EvidenceReportSectionSerializer : KSerializer<EvidenceReport.Sec
       focusReference = focusReference,
       author = author ?: listOf(),
       text = text,
-      mode = mode?.let { Enumeration.of(EvidenceReport.ListMode.fromCode(it), _mode) },
+      mode = Enumeration.of(mode?.let { EvidenceReport.ListMode.fromCode(it) }, _mode),
       orderedBy = orderedBy,
       entryClassifier = entryClassifier ?: listOf(),
       entryReference = entryReference ?: listOf(),
@@ -1087,15 +1082,8 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
       modifierExtension = modifierExtension ?: listOf(),
       url = Uri.of(url, _url),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EvidenceReport"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on EvidenceReport"),
       useContext = useContext ?: listOf(),
       identifier = identifier ?: listOf(),
       relatedIdentifier = relatedIdentifier ?: listOf(),

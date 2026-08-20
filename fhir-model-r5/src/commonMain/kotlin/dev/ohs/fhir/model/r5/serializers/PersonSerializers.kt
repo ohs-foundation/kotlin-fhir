@@ -229,7 +229,7 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
       target =
         target ?: throw SerializationException("Missing required property 'target' on Person.Link"),
       assurance =
-        assurance?.let { Enumeration.of(Person.IdentityAssuranceLevel.fromCode(it), _assurance) },
+        Enumeration.of(assurance?.let { Person.IdentityAssuranceLevel.fromCode(it) }, _assurance),
     )
   }
 
@@ -464,7 +464,7 @@ internal object PersonSerializer : KSerializer<Person> {
       active = R5Boolean.of(active, _active),
       name = name ?: listOf(),
       telecom = telecom ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       birthDate = Date.of(FhirDate.fromString(birthDate), _birthDate),
       deceased =
         Person.Deceased.from(

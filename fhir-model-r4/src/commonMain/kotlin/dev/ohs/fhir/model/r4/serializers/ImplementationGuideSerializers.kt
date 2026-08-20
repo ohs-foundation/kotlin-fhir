@@ -246,15 +246,10 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          ResourceType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ImplementationGuide.Global"
-              )
+        Enumeration.of(type?.let { ResourceType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ImplementationGuide.Global"
           ),
-          _type,
-        ),
       profile =
         Canonical.of(profile, _profile)
           ?: throw SerializationException(
@@ -717,9 +712,9 @@ internal object ImplementationGuideDefinitionResourceSerializer :
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            fhirVersion?.getOrNull(index)?.let { FHIRVersion.fromCode(it) },
             _fhirVersion?.getOrNull(index),
-          )
+          )!!
         }),
       name = R4String.of(name, _name),
       description = R4String.of(description, _description),
@@ -901,14 +896,12 @@ internal object ImplementationGuideDefinitionPageSerializer :
           ),
       generation =
         Enumeration.of(
-          ImplementationGuide.GuidePageGeneration.fromCode(
-            generation
-              ?: throw SerializationException(
-                "Missing required property 'generation' on ImplementationGuide.Definition.Page"
-              )
-          ),
+          generation?.let { ImplementationGuide.GuidePageGeneration.fromCode(it) },
           _generation,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'generation' on ImplementationGuide.Definition.Page"
+          ),
       page = page ?: listOf(),
     )
   }
@@ -1033,15 +1026,10 @@ internal object ImplementationGuideDefinitionParameterSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          ImplementationGuide.GuideParameterCode.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on ImplementationGuide.Definition.Parameter"
-              )
+        Enumeration.of(code?.let { ImplementationGuide.GuideParameterCode.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on ImplementationGuide.Definition.Parameter"
           ),
-          _code,
-        ),
       `value` =
         R4String.of(`value`, _value)
           ?: throw SerializationException(
@@ -1961,15 +1949,10 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
           ),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ImplementationGuide"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ImplementationGuide"
           ),
-          _status,
-        ),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
@@ -1984,13 +1967,13 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
             "Missing required property 'packageId' on ImplementationGuide"
           ),
       license =
-        license?.let { Enumeration.of(ImplementationGuide.SPDXLicense.fromCode(it), _license) },
+        Enumeration.of(license?.let { ImplementationGuide.SPDXLicense.fromCode(it) }, _license),
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            fhirVersion?.getOrNull(index)?.let { FHIRVersion.fromCode(it) },
             _fhirVersion?.getOrNull(index),
-          )
+          )!!
         }),
       dependsOn = dependsOn ?: listOf(),
       global = global ?: listOf(),

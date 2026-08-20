@@ -176,9 +176,9 @@ internal object PractitionerRoleAvailableTimeSerializer :
       daysOfWeek =
         (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            PractitionerRole.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(index)!!),
+            daysOfWeek?.getOrNull(index)?.let { PractitionerRole.DaysOfWeek.fromCode(it) },
             _daysOfWeek?.getOrNull(index),
-          )
+          )!!
         }),
       allDay = R4Boolean.of(allDay, _allDay),
       availableStartTime = Time.of(availableStartTime, _availableStartTime),

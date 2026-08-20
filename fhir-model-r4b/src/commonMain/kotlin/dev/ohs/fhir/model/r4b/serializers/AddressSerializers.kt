@@ -154,8 +154,8 @@ internal object AddressSerializer : KSerializer<Address> {
     return Address(
       id = id,
       extension = extension ?: listOf(),
-      use = use?.let { Enumeration.of(Address.AddressUse.fromCode(it), _use) },
-      type = type?.let { Enumeration.of(Address.AddressType.fromCode(it), _type) },
+      use = Enumeration.of(use?.let { Address.AddressUse.fromCode(it) }, _use),
+      type = Enumeration.of(type?.let { Address.AddressType.fromCode(it) }, _type),
       text = R4bString.of(text, _text),
       line =
         (kotlin.collections.List(maxOf(line?.size ?: 0, _line?.size ?: 0)) { index ->

@@ -306,12 +306,8 @@ internal object MediaSerializer : KSerializer<Media> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          Media.EventStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Media")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Media.EventStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Media"),
       type = type,
       modality = modality,
       view = view,

@@ -391,10 +391,11 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
       windowStart = Integer.of(windowStart, _windowStart),
       windowEnd = Integer.of(windowEnd, _windowEnd),
       orientation =
-        orientation?.let {
-          Enumeration.of(MolecularSequence.OrientationType.fromCode(it), _orientation)
-        },
-      strand = strand?.let { Enumeration.of(MolecularSequence.StrandType.fromCode(it), _strand) },
+        Enumeration.of(
+          orientation?.let { MolecularSequence.OrientationType.fromCode(it) },
+          _orientation,
+        ),
+      strand = Enumeration.of(strand?.let { MolecularSequence.StrandType.fromCode(it) }, _strand),
     )
   }
 
@@ -756,7 +757,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      type = type?.let { Enumeration.of(MolecularSequence.SequenceType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { MolecularSequence.SequenceType.fromCode(it) }, _type),
       subject = subject,
       focus = focus ?: listOf(),
       specimen = specimen,

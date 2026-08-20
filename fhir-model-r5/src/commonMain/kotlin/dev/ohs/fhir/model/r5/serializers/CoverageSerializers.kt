@@ -750,19 +750,11 @@ internal object CoverageSerializer : KSerializer<Coverage> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Coverage.FinancialResourceStatusCodes.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Coverage")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Coverage.FinancialResourceStatusCodes.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Coverage"),
       kind =
-        Enumeration.of(
-          Coverage.Kind.fromCode(
-            kind ?: throw SerializationException("Missing required property 'kind' on Coverage")
-          ),
-          _kind,
-        ),
+        Enumeration.of(kind?.let { Coverage.Kind.fromCode(it) }, _kind)
+          ?: throw SerializationException("Missing required property 'kind' on Coverage"),
       paymentBy = paymentBy ?: listOf(),
       type = type,
       policyHolder = policyHolder,

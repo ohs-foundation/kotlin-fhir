@@ -452,14 +452,12 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type =
         Enumeration.of(
-          DeviceDefinition.DeviceDefinitionRegulatoryIdentifierType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on DeviceDefinition.RegulatoryIdentifier"
-              )
-          ),
+          type?.let { DeviceDefinition.DeviceDefinitionRegulatoryIdentifierType.fromCode(it) },
           _type,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'type' on DeviceDefinition.RegulatoryIdentifier"
+          ),
       deviceIdentifier =
         R5String.of(deviceIdentifier, _deviceIdentifier)
           ?: throw SerializationException(
@@ -586,15 +584,10 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
             "Missing required property 'name' on DeviceDefinition.DeviceName"
           ),
       type =
-        Enumeration.of(
-          DeviceDefinition.DeviceNameType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on DeviceDefinition.DeviceName"
-              )
+        Enumeration.of(type?.let { DeviceDefinition.DeviceNameType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on DeviceDefinition.DeviceName"
           ),
-          _type,
-        ),
     )
   }
 
@@ -2049,9 +2042,10 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
             "Missing required property 'recall' on DeviceDefinition.CorrectiveAction"
           ),
       scope =
-        scope?.let {
-          Enumeration.of(DeviceDefinition.DeviceCorrectiveActionScope.fromCode(it), _scope)
-        },
+        Enumeration.of(
+          scope?.let { DeviceDefinition.DeviceCorrectiveActionScope.fromCode(it) },
+          _scope,
+        ),
       period =
         period
           ?: throw SerializationException(
@@ -2624,11 +2618,11 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
           maxOf(productionIdentifierInUDI?.size ?: 0, _productionIdentifierInUDI?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            DeviceDefinition.DeviceProductionIdentifierInUDI.fromCode(
-              productionIdentifierInUDI?.getOrNull(index)!!
-            ),
+            productionIdentifierInUDI?.getOrNull(index)?.let {
+              DeviceDefinition.DeviceProductionIdentifierInUDI.fromCode(it)
+            },
             _productionIdentifierInUDI?.getOrNull(index),
-          )
+          )!!
         }),
       guideline = guideline,
       correctiveAction = correctiveAction,

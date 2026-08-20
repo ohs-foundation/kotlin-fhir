@@ -150,15 +150,10 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
             "Missing required property 'actorId' on ExampleScenario.Actor"
           ),
       type =
-        Enumeration.of(
-          ExampleScenario.ExampleScenarioActorType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ExampleScenario.Actor"
-              )
+        Enumeration.of(type?.let { ExampleScenario.ExampleScenarioActorType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ExampleScenario.Actor"
           ),
-          _type,
-        ),
       name = R4bString.of(name, _name),
       description = Markdown.of(description, _description),
     )
@@ -316,15 +311,10 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
             "Missing required property 'resourceId' on ExampleScenario.Instance"
           ),
       resourceType =
-        Enumeration.of(
-          ResourceType.fromCode(
-            resourceType
-              ?: throw SerializationException(
-                "Missing required property 'resourceType' on ExampleScenario.Instance"
-              )
+        Enumeration.of(resourceType?.let { ResourceType.fromCode(it) }, _resourceType)
+          ?: throw SerializationException(
+            "Missing required property 'resourceType' on ExampleScenario.Instance"
           ),
-          _resourceType,
-        ),
       name = R4bString.of(name, _name),
       description = Markdown.of(description, _description),
       version = version ?: listOf(),
@@ -1492,15 +1482,8 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
       version = R4bString.of(version, _version),
       name = R4bString.of(name, _name),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ExampleScenario"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ExampleScenario"),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),

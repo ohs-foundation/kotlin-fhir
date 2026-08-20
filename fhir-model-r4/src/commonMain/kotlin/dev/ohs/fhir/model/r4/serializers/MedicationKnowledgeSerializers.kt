@@ -2340,9 +2340,10 @@ internal object MedicationKnowledgeSerializer : KSerializer<MedicationKnowledge>
       modifierExtension = modifierExtension ?: listOf(),
       code = code,
       status =
-        status?.let {
-          Enumeration.of(MedicationKnowledge.MedicationKnowledgeStatusCodes.fromCode(it), _status)
-        },
+        Enumeration.of(
+          status?.let { MedicationKnowledge.MedicationKnowledgeStatusCodes.fromCode(it) },
+          _status,
+        ),
       manufacturer = manufacturer,
       doseForm = doseForm,
       amount = amount,

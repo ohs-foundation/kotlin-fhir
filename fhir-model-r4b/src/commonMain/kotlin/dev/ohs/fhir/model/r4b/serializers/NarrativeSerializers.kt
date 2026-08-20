@@ -100,13 +100,8 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
       id = id,
       extension = extension ?: listOf(),
       status =
-        Enumeration.of(
-          Narrative.NarrativeStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Narrative")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Narrative.NarrativeStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Narrative"),
       div = Xhtml.of(div!!, _div),
     )
   }

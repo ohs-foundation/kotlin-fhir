@@ -458,18 +458,14 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          DetectedIssue.ObservationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on DetectedIssue")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { DetectedIssue.ObservationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on DetectedIssue"),
       code = code,
       severity =
-        severity?.let {
-          Enumeration.of(DetectedIssue.DetectedIssueSeverity.fromCode(it), _severity)
-        },
+        Enumeration.of(
+          severity?.let { DetectedIssue.DetectedIssueSeverity.fromCode(it) },
+          _severity,
+        ),
       patient = patient,
       identified =
         DetectedIssue.Identified.from(

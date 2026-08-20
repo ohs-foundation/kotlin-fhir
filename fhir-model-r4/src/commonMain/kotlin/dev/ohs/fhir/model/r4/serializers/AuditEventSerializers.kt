@@ -341,7 +341,7 @@ internal object AuditEventAgentNetworkSerializer : KSerializer<AuditEvent.Agent.
       modifierExtension = modifierExtension ?: listOf(),
       address = R4String.of(address, _address),
       type =
-        type?.let { Enumeration.of(AuditEvent.AuditEventAgentNetworkType.fromCode(it), _type) },
+        Enumeration.of(type?.let { AuditEvent.AuditEventAgentNetworkType.fromCode(it) }, _type),
     )
   }
 
@@ -963,13 +963,13 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
       modifierExtension = modifierExtension ?: listOf(),
       type = type ?: throw SerializationException("Missing required property 'type' on AuditEvent"),
       subtype = subtype ?: listOf(),
-      action = action?.let { Enumeration.of(AuditEvent.AuditEventAction.fromCode(it), _action) },
+      action = Enumeration.of(action?.let { AuditEvent.AuditEventAction.fromCode(it) }, _action),
       period = period,
       recorded =
         Instant.of(FhirDateTime.fromString(recorded), _recorded)
           ?: throw SerializationException("Missing required property 'recorded' on AuditEvent"),
       outcome =
-        outcome?.let { Enumeration.of(AuditEvent.AuditEventOutcome.fromCode(it), _outcome) },
+        Enumeration.of(outcome?.let { AuditEvent.AuditEventOutcome.fromCode(it) }, _outcome),
       outcomeDesc = R4String.of(outcomeDesc, _outcomeDesc),
       purposeOfEvent = purposeOfEvent ?: listOf(),
       agent = agent ?: listOf(),

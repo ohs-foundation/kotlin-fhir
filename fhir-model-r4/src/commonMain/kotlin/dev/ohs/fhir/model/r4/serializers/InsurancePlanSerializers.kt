@@ -1327,7 +1327,7 @@ internal object InsurancePlanSerializer : KSerializer<InsurancePlan> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = status?.let { Enumeration.of(PublicationStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status),
       type = type ?: listOf(),
       name = R4String.of(name, _name),
       alias =

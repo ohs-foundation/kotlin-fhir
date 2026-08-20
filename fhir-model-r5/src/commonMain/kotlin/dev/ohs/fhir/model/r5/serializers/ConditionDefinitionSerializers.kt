@@ -323,14 +323,12 @@ internal object ConditionDefinitionPreconditionSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type =
         Enumeration.of(
-          ConditionDefinition.ConditionPreconditionType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ConditionDefinition.Precondition"
-              )
-          ),
+          type?.let { ConditionDefinition.ConditionPreconditionType.fromCode(it) },
           _type,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'type' on ConditionDefinition.Precondition"
+          ),
       code =
         code
           ?: throw SerializationException(
@@ -448,14 +446,12 @@ internal object ConditionDefinitionQuestionnaireSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       purpose =
         Enumeration.of(
-          ConditionDefinition.ConditionQuestionnairePurpose.fromCode(
-            purpose
-              ?: throw SerializationException(
-                "Missing required property 'purpose' on ConditionDefinition.Questionnaire"
-              )
-          ),
+          purpose?.let { ConditionDefinition.ConditionQuestionnairePurpose.fromCode(it) },
           _purpose,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'purpose' on ConditionDefinition.Questionnaire"
+          ),
       reference =
         reference
           ?: throw SerializationException(
@@ -967,15 +963,10 @@ internal object ConditionDefinitionSerializer : KSerializer<ConditionDefinition>
       title = R5String.of(title, _title),
       subtitle = R5String.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ConditionDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ConditionDefinition"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

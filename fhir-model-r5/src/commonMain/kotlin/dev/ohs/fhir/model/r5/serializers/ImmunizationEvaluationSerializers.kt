@@ -255,14 +255,12 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ImmunizationEvaluation"
-              )
-          ),
+          status?.let { ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on ImmunizationEvaluation"
+          ),
       patient =
         patient
           ?: throw SerializationException(

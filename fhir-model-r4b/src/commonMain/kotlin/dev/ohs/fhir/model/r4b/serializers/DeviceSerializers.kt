@@ -193,7 +193,7 @@ internal object DeviceUdiCarrierSerializer : KSerializer<Device.UdiCarrier> {
       jurisdiction = Uri.of(jurisdiction, _jurisdiction),
       carrierAIDC = Base64Binary.of(carrierAIDC, _carrierAIDC),
       carrierHRF = R4bString.of(carrierHRF, _carrierHRF),
-      entryType = entryType?.let { Enumeration.of(Device.UDIEntryType.fromCode(it), _entryType) },
+      entryType = Enumeration.of(entryType?.let { Device.UDIEntryType.fromCode(it) }, _entryType),
     )
   }
 
@@ -308,15 +308,8 @@ internal object DeviceDeviceNameSerializer : KSerializer<Device.DeviceName> {
         R4bString.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on Device.DeviceName"),
       type =
-        Enumeration.of(
-          Device.DeviceNameType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on Device.DeviceName"
-              )
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Device.DeviceNameType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Device.DeviceName"),
     )
   }
 
@@ -976,7 +969,7 @@ internal object DeviceSerializer : KSerializer<Device> {
       identifier = identifier ?: listOf(),
       definition = definition,
       udiCarrier = udiCarrier ?: listOf(),
-      status = status?.let { Enumeration.of(Device.FHIRDeviceStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Device.FHIRDeviceStatus.fromCode(it) }, _status),
       statusReason = statusReason ?: listOf(),
       distinctIdentifier = R4bString.of(distinctIdentifier, _distinctIdentifier),
       manufacturer = R4bString.of(manufacturer, _manufacturer),

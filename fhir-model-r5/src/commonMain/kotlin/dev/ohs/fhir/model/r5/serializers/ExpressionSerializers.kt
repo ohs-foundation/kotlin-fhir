@@ -129,7 +129,7 @@ internal object ExpressionSerializer : KSerializer<Expression> {
       description = R5String.of(description, _description),
       name = Code.of(name, _name),
       language =
-        language?.let { Enumeration.of(Expression.ExpressionLanguage.fromCode(it), _language) },
+        Enumeration.of(language?.let { Expression.ExpressionLanguage.fromCode(it) }, _language),
       expression = R5String.of(expression, _expression),
       reference = Uri.of(reference, _reference),
     )

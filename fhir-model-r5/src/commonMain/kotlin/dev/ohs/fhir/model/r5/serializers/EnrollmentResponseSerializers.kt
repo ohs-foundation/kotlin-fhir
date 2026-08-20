@@ -211,14 +211,16 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        status?.let {
-          Enumeration.of(EnrollmentResponse.FinancialResourceStatusCodes.fromCode(it), _status)
-        },
+        Enumeration.of(
+          status?.let { EnrollmentResponse.FinancialResourceStatusCodes.fromCode(it) },
+          _status,
+        ),
       request = request,
       outcome =
-        outcome?.let {
-          Enumeration.of(EnrollmentResponse.EnrollmentOutcome.fromCode(it), _outcome)
-        },
+        Enumeration.of(
+          outcome?.let { EnrollmentResponse.EnrollmentOutcome.fromCode(it) },
+          _outcome,
+        ),
       disposition = R5String.of(disposition, _disposition),
       created = DateTime.of(FhirDateTime.fromString(created), _created),
       organization = organization,

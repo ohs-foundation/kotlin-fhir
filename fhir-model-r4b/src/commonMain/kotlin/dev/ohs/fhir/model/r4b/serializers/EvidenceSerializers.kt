@@ -998,7 +998,7 @@ internal object EvidenceStatisticModelCharacteristicVariableSerializer :
             "Missing required property 'variableDefinition' on Evidence.Statistic.ModelCharacteristic.Variable"
           ),
       handling =
-        handling?.let { Enumeration.of(Evidence.EvidenceVariableHandling.fromCode(it), _handling) },
+        Enumeration.of(handling?.let { Evidence.EvidenceVariableHandling.fromCode(it) }, _handling),
       valueCategory = valueCategory ?: listOf(),
       valueQuantity = valueQuantity ?: listOf(),
       valueRange = valueRange ?: listOf(),
@@ -1536,12 +1536,8 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
       title = R4bString.of(title, _title),
       citeAs = Evidence.CiteAs.from(citeAsReference, Markdown.of(citeAsMarkdown, _citeAsMarkdown)),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Evidence")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Evidence"),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       useContext = useContext ?: listOf(),
       approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),

@@ -311,9 +311,9 @@ internal object LocationHoursOfOperationSerializer : KSerializer<Location.HoursO
       daysOfWeek =
         (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            Location.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(index)!!),
+            daysOfWeek?.getOrNull(index)?.let { Location.DaysOfWeek.fromCode(it) },
             _daysOfWeek?.getOrNull(index),
-          )
+          )!!
         }),
       allDay = R4bBoolean.of(allDay, _allDay),
       openingTime = Time.of(openingTime, _openingTime),
@@ -620,7 +620,7 @@ internal object LocationSerializer : KSerializer<Location> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = status?.let { Enumeration.of(Location.LocationStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Location.LocationStatus.fromCode(it) }, _status),
       operationalStatus = operationalStatus,
       name = R4bString.of(name, _name),
       alias =
@@ -628,7 +628,7 @@ internal object LocationSerializer : KSerializer<Location> {
           R4bString.of(alias?.getOrNull(index)?.let { it }, _alias?.getOrNull(index))!!
         }),
       description = R4bString.of(description, _description),
-      mode = mode?.let { Enumeration.of(Location.LocationMode.fromCode(it), _mode) },
+      mode = Enumeration.of(mode?.let { Location.LocationMode.fromCode(it) }, _mode),
       type = type ?: listOf(),
       telecom = telecom ?: listOf(),
       address = address,

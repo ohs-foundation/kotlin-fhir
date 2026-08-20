@@ -132,13 +132,17 @@ object EnumerationFileSpecGenerator {
               .addFunction(
                 FunSpec.builder("of")
                   .addTypeVariable(typeVariable)
-                  .addParameter(ParameterSpec.builder("value", typeVariable).build())
+                  .addParameter(
+                    ParameterSpec.builder("value", typeVariable.copy(nullable = true)).build()
+                  )
                   .addParameter(
                     ParameterSpec.builder("element", elementClassName.copy(nullable = true)).build()
                   )
-                  .returns(ClassName("", "Enumeration").parameterizedBy(typeVariable))
+                  .returns(
+                    ClassName("", "Enumeration").parameterizedBy(typeVariable).copy(nullable = true)
+                  )
                   .addStatement(
-                    "return Enumeration(element?.id, element?.extension ?: listOf(), value = value)"
+                    "return if (value != null || element?.id != null || element?.extension?.isEmpty() == false) { Enumeration(element?.id, element?.extension ?: listOf(), value = value) } else { null }"
                   )
                   .build()
               )

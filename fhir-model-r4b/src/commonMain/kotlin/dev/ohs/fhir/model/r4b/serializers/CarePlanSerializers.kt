@@ -487,7 +487,7 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      kind = kind?.let { Enumeration.of(CarePlan.CarePlanActivityKind.fromCode(it), _kind) },
+      kind = Enumeration.of(kind?.let { CarePlan.CarePlanActivityKind.fromCode(it) }, _kind),
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
@@ -510,15 +510,10 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
       reasonReference = reasonReference ?: listOf(),
       goal = goal ?: listOf(),
       status =
-        Enumeration.of(
-          CarePlan.CarePlanActivityStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on CarePlan.Activity.Detail"
-              )
+        Enumeration.of(status?.let { CarePlan.CarePlanActivityStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on CarePlan.Activity.Detail"
           ),
-          _status,
-        ),
       statusReason = statusReason,
       doNotPerform = R4bBoolean.of(doNotPerform, _doNotPerform),
       scheduled =
@@ -987,19 +982,11 @@ internal object CarePlanSerializer : KSerializer<CarePlan> {
       replaces = replaces ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          CarePlan.RequestStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on CarePlan")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { CarePlan.RequestStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on CarePlan"),
       intent =
-        Enumeration.of(
-          CarePlan.CarePlanIntent.fromCode(
-            intent ?: throw SerializationException("Missing required property 'intent' on CarePlan")
-          ),
-          _intent,
-        ),
+        Enumeration.of(intent?.let { CarePlan.CarePlanIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on CarePlan"),
       category = category ?: listOf(),
       title = R4bString.of(title, _title),
       description = R4bString.of(description, _description),

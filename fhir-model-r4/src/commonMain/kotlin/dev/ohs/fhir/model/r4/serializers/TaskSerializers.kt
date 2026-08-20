@@ -2409,22 +2409,14 @@ internal object TaskSerializer : KSerializer<Task> {
       groupIdentifier = groupIdentifier,
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          Task.TaskStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Task")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Task.TaskStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Task"),
       statusReason = statusReason,
       businessStatus = businessStatus,
       intent =
-        Enumeration.of(
-          Task.TaskIntent.fromCode(
-            intent ?: throw SerializationException("Missing required property 'intent' on Task")
-          ),
-          _intent,
-        ),
-      priority = priority?.let { Enumeration.of(Task.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(intent?.let { Task.TaskIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on Task"),
+      priority = Enumeration.of(priority?.let { Task.RequestPriority.fromCode(it) }, _priority),
       code = code,
       description = R4String.of(description, _description),
       focus = focus,

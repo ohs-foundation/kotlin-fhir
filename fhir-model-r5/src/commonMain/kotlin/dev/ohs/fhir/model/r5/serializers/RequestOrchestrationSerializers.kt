@@ -383,9 +383,10 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
       description = Markdown.of(description, _description),
       textEquivalent = Markdown.of(textEquivalent, _textEquivalent),
       priority =
-        priority?.let {
-          Enumeration.of(RequestOrchestration.RequestPriority.fromCode(it), _priority)
-        },
+        Enumeration.of(
+          priority?.let { RequestOrchestration.RequestPriority.fromCode(it) },
+          _priority,
+        ),
       code = code ?: listOf(),
       documentation = documentation ?: listOf(),
       goal = goal ?: listOf(),
@@ -406,40 +407,30 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
       participant = participant ?: listOf(),
       type = type,
       groupingBehavior =
-        groupingBehavior?.let {
-          Enumeration.of(
-            RequestOrchestration.ActionGroupingBehavior.fromCode(it),
-            _groupingBehavior,
-          )
-        },
+        Enumeration.of(
+          groupingBehavior?.let { RequestOrchestration.ActionGroupingBehavior.fromCode(it) },
+          _groupingBehavior,
+        ),
       selectionBehavior =
-        selectionBehavior?.let {
-          Enumeration.of(
-            RequestOrchestration.ActionSelectionBehavior.fromCode(it),
-            _selectionBehavior,
-          )
-        },
+        Enumeration.of(
+          selectionBehavior?.let { RequestOrchestration.ActionSelectionBehavior.fromCode(it) },
+          _selectionBehavior,
+        ),
       requiredBehavior =
-        requiredBehavior?.let {
-          Enumeration.of(
-            RequestOrchestration.ActionRequiredBehavior.fromCode(it),
-            _requiredBehavior,
-          )
-        },
+        Enumeration.of(
+          requiredBehavior?.let { RequestOrchestration.ActionRequiredBehavior.fromCode(it) },
+          _requiredBehavior,
+        ),
       precheckBehavior =
-        precheckBehavior?.let {
-          Enumeration.of(
-            RequestOrchestration.ActionPrecheckBehavior.fromCode(it),
-            _precheckBehavior,
-          )
-        },
+        Enumeration.of(
+          precheckBehavior?.let { RequestOrchestration.ActionPrecheckBehavior.fromCode(it) },
+          _precheckBehavior,
+        ),
       cardinalityBehavior =
-        cardinalityBehavior?.let {
-          Enumeration.of(
-            RequestOrchestration.ActionCardinalityBehavior.fromCode(it),
-            _cardinalityBehavior,
-          )
-        },
+        Enumeration.of(
+          cardinalityBehavior?.let { RequestOrchestration.ActionCardinalityBehavior.fromCode(it) },
+          _cardinalityBehavior,
+        ),
       resource = resource,
       definition =
         RequestOrchestration.Action.Definition.from(
@@ -741,15 +732,10 @@ internal object RequestOrchestrationActionConditionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       kind =
-        Enumeration.of(
-          RequestOrchestration.ActionConditionKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on RequestOrchestration.Action.Condition"
-              )
+        Enumeration.of(kind?.let { RequestOrchestration.ActionConditionKind.fromCode(it) }, _kind)
+          ?: throw SerializationException(
+            "Missing required property 'kind' on RequestOrchestration.Action.Condition"
           ),
-          _kind,
-        ),
       expression = expression,
     )
   }
@@ -1114,18 +1100,17 @@ internal object RequestOrchestrationActionRelatedActionSerializer :
           ),
       relationship =
         Enumeration.of(
-          RequestOrchestration.ActionRelationshipType.fromCode(
-            relationship
-              ?: throw SerializationException(
-                "Missing required property 'relationship' on RequestOrchestration.Action.RelatedAction"
-              )
-          ),
+          relationship?.let { RequestOrchestration.ActionRelationshipType.fromCode(it) },
           _relationship,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'relationship' on RequestOrchestration.Action.RelatedAction"
+          ),
       endRelationship =
-        endRelationship?.let {
-          Enumeration.of(RequestOrchestration.ActionRelationshipType.fromCode(it), _endRelationship)
-        },
+        Enumeration.of(
+          endRelationship?.let { RequestOrchestration.ActionRelationshipType.fromCode(it) },
+          _endRelationship,
+        ),
       offset = RequestOrchestration.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
     )
   }
@@ -1274,9 +1259,10 @@ internal object RequestOrchestrationActionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        type?.let {
-          Enumeration.of(RequestOrchestration.ActionParticipantType.fromCode(it), _type)
-        },
+        Enumeration.of(
+          type?.let { RequestOrchestration.ActionParticipantType.fromCode(it) },
+          _type,
+        ),
       typeCanonical = Canonical.of(typeCanonical, _typeCanonical),
       typeReference = typeReference,
       role = role,
@@ -1726,29 +1712,20 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          RequestOrchestration.RequestStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on RequestOrchestration"
-              )
+        Enumeration.of(status?.let { RequestOrchestration.RequestStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on RequestOrchestration"
           ),
-          _status,
-        ),
       intent =
-        Enumeration.of(
-          RequestOrchestration.RequestIntent.fromCode(
-            intent
-              ?: throw SerializationException(
-                "Missing required property 'intent' on RequestOrchestration"
-              )
+        Enumeration.of(intent?.let { RequestOrchestration.RequestIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException(
+            "Missing required property 'intent' on RequestOrchestration"
           ),
-          _intent,
-        ),
       priority =
-        priority?.let {
-          Enumeration.of(RequestOrchestration.RequestPriority.fromCode(it), _priority)
-        },
+        Enumeration.of(
+          priority?.let { RequestOrchestration.RequestPriority.fromCode(it) },
+          _priority,
+        ),
       code = code,
       subject = subject,
       encounter = encounter,

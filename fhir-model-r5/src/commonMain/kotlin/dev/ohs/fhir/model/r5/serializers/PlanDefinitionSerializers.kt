@@ -625,7 +625,7 @@ internal object PlanDefinitionActorOptionSerializer : KSerializer<PlanDefinition
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type?.let { Enumeration.of(PlanDefinition.ActionParticipantType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { PlanDefinition.ActionParticipantType.fromCode(it) }, _type),
       typeCanonical = Canonical.of(typeCanonical, _typeCanonical),
       typeReference = typeReference,
       role = role,
@@ -1006,7 +1006,7 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       description = Markdown.of(description, _description),
       textEquivalent = Markdown.of(textEquivalent, _textEquivalent),
       priority =
-        priority?.let { Enumeration.of(PlanDefinition.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { PlanDefinition.RequestPriority.fromCode(it) }, _priority),
       code = code,
       reason = reason ?: listOf(),
       documentation = documentation ?: listOf(),
@@ -1031,28 +1031,30 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       participant = participant ?: listOf(),
       type = type,
       groupingBehavior =
-        groupingBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionGroupingBehavior.fromCode(it), _groupingBehavior)
-        },
+        Enumeration.of(
+          groupingBehavior?.let { PlanDefinition.ActionGroupingBehavior.fromCode(it) },
+          _groupingBehavior,
+        ),
       selectionBehavior =
-        selectionBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionSelectionBehavior.fromCode(it), _selectionBehavior)
-        },
+        Enumeration.of(
+          selectionBehavior?.let { PlanDefinition.ActionSelectionBehavior.fromCode(it) },
+          _selectionBehavior,
+        ),
       requiredBehavior =
-        requiredBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionRequiredBehavior.fromCode(it), _requiredBehavior)
-        },
+        Enumeration.of(
+          requiredBehavior?.let { PlanDefinition.ActionRequiredBehavior.fromCode(it) },
+          _requiredBehavior,
+        ),
       precheckBehavior =
-        precheckBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionPrecheckBehavior.fromCode(it), _precheckBehavior)
-        },
+        Enumeration.of(
+          precheckBehavior?.let { PlanDefinition.ActionPrecheckBehavior.fromCode(it) },
+          _precheckBehavior,
+        ),
       cardinalityBehavior =
-        cardinalityBehavior?.let {
-          Enumeration.of(
-            PlanDefinition.ActionCardinalityBehavior.fromCode(it),
-            _cardinalityBehavior,
-          )
-        },
+        Enumeration.of(
+          cardinalityBehavior?.let { PlanDefinition.ActionCardinalityBehavior.fromCode(it) },
+          _cardinalityBehavior,
+        ),
       definition =
         PlanDefinition.Action.Definition.from(
           Canonical.of(definitionCanonical, _definitionCanonical),
@@ -1368,15 +1370,10 @@ internal object PlanDefinitionActionConditionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       kind =
-        Enumeration.of(
-          PlanDefinition.ActionConditionKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on PlanDefinition.Action.Condition"
-              )
+        Enumeration.of(kind?.let { PlanDefinition.ActionConditionKind.fromCode(it) }, _kind)
+          ?: throw SerializationException(
+            "Missing required property 'kind' on PlanDefinition.Action.Condition"
           ),
-          _kind,
-        ),
       expression = expression,
     )
   }
@@ -1731,18 +1728,17 @@ internal object PlanDefinitionActionRelatedActionSerializer :
           ),
       relationship =
         Enumeration.of(
-          PlanDefinition.ActionRelationshipType.fromCode(
-            relationship
-              ?: throw SerializationException(
-                "Missing required property 'relationship' on PlanDefinition.Action.RelatedAction"
-              )
-          ),
+          relationship?.let { PlanDefinition.ActionRelationshipType.fromCode(it) },
           _relationship,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'relationship' on PlanDefinition.Action.RelatedAction"
+          ),
       endRelationship =
-        endRelationship?.let {
-          Enumeration.of(PlanDefinition.ActionRelationshipType.fromCode(it), _endRelationship)
-        },
+        Enumeration.of(
+          endRelationship?.let { PlanDefinition.ActionRelationshipType.fromCode(it) },
+          _endRelationship,
+        ),
       offset = PlanDefinition.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
     )
   }
@@ -1885,7 +1881,7 @@ internal object PlanDefinitionActionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       actorId = R5String.of(actorId, _actorId),
-      type = type?.let { Enumeration.of(PlanDefinition.ActionParticipantType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { PlanDefinition.ActionParticipantType.fromCode(it) }, _type),
       typeCanonical = Canonical.of(typeCanonical, _typeCanonical),
       typeReference = typeReference,
       role = role,
@@ -2476,15 +2472,8 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
       subtitle = R5String.of(subtitle, _subtitle),
       type = type,
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on PlanDefinition"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on PlanDefinition"),
       experimental = R5Boolean.of(experimental, _experimental),
       subject =
         PlanDefinition.Subject.from(

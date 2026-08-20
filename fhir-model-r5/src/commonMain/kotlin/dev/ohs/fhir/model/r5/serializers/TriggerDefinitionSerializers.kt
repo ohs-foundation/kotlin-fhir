@@ -174,15 +174,8 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          TriggerDefinition.TriggerType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on TriggerDefinition"
-              )
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { TriggerDefinition.TriggerType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on TriggerDefinition"),
       name = R5String.of(name, _name),
       code = code,
       subscriptionTopic = Canonical.of(subscriptionTopic, _subscriptionTopic),

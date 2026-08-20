@@ -181,13 +181,8 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          RelatedArtifact.RelatedArtifactType.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on RelatedArtifact")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { RelatedArtifact.RelatedArtifactType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on RelatedArtifact"),
       classifier = classifier ?: listOf(),
       label = R5String.of(label, _label),
       display = R5String.of(display, _display),
@@ -196,9 +191,10 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
       resource = Canonical.of(resource, _resource),
       resourceReference = resourceReference,
       publicationStatus =
-        publicationStatus?.let {
-          Enumeration.of(PublicationStatus.fromCode(it), _publicationStatus)
-        },
+        Enumeration.of(
+          publicationStatus?.let { PublicationStatus.fromCode(it) },
+          _publicationStatus,
+        ),
       publicationDate = Date.of(FhirDate.fromString(publicationDate), _publicationDate),
     )
   }

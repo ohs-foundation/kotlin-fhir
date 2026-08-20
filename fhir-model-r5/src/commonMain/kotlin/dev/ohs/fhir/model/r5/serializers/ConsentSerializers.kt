@@ -724,15 +724,10 @@ internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.D
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       meaning =
-        Enumeration.of(
-          Consent.ConsentDataMeaning.fromCode(
-            meaning
-              ?: throw SerializationException(
-                "Missing required property 'meaning' on Consent.Provision.Data"
-              )
+        Enumeration.of(meaning?.let { Consent.ConsentDataMeaning.fromCode(it) }, _meaning)
+          ?: throw SerializationException(
+            "Missing required property 'meaning' on Consent.Provision.Data"
           ),
-          _meaning,
-        ),
       reference =
         reference
           ?: throw SerializationException(
@@ -1012,12 +1007,8 @@ internal object ConsentSerializer : KSerializer<Consent> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Consent.ConsentState.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Consent")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Consent.ConsentState.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Consent"),
       category = category ?: listOf(),
       subject = subject,
       date = Date.of(FhirDate.fromString(date), _date),
@@ -1033,7 +1024,7 @@ internal object ConsentSerializer : KSerializer<Consent> {
       policyText = policyText ?: listOf(),
       verification = verification ?: listOf(),
       decision =
-        decision?.let { Enumeration.of(Consent.ConsentProvisionType.fromCode(it), _decision) },
+        Enumeration.of(decision?.let { Consent.ConsentProvisionType.fromCode(it) }, _decision),
       provision = provision ?: listOf(),
     )
   }

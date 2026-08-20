@@ -402,14 +402,12 @@ internal object ChargeItemDefinitionPropertyGroupPriceComponentSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type =
         Enumeration.of(
-          ChargeItemDefinition.InvoicePriceComponentType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ChargeItemDefinition.PropertyGroup.PriceComponent"
-              )
-          ),
+          type?.let { ChargeItemDefinition.InvoicePriceComponentType.fromCode(it) },
           _type,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'type' on ChargeItemDefinition.PropertyGroup.PriceComponent"
+          ),
       code = code,
       factor = Decimal.of(factor, _factor),
       amount = amount,
@@ -827,15 +825,10 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
           Canonical.of(replaces?.getOrNull(index)?.let { it }, _replaces?.getOrNull(index))!!
         }),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ChargeItemDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ChargeItemDefinition"
           ),
-          _status,
-        ),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),

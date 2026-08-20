@@ -228,15 +228,10 @@ internal object OperationDefinitionParameterSerializer :
             "Missing required property 'name' on OperationDefinition.Parameter"
           ),
       use =
-        Enumeration.of(
-          OperationDefinition.OperationParameterUse.fromCode(
-            use
-              ?: throw SerializationException(
-                "Missing required property 'use' on OperationDefinition.Parameter"
-              )
+        Enumeration.of(use?.let { OperationDefinition.OperationParameterUse.fromCode(it) }, _use)
+          ?: throw SerializationException(
+            "Missing required property 'use' on OperationDefinition.Parameter"
           ),
-          _use,
-        ),
       min =
         Integer.of(min, _min)
           ?: throw SerializationException(
@@ -248,7 +243,7 @@ internal object OperationDefinitionParameterSerializer :
             "Missing required property 'max' on OperationDefinition.Parameter"
           ),
       documentation = R4bString.of(documentation, _documentation),
-      type = type?.let { Enumeration.of(FHIRAllTypes.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { FHIRAllTypes.fromCode(it) }, _type),
       targetProfile =
         (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { index
           ->
@@ -257,7 +252,7 @@ internal object OperationDefinitionParameterSerializer :
             _targetProfile?.getOrNull(index),
           )!!
         }),
-      searchType = searchType?.let { Enumeration.of(SearchParamType.fromCode(it), _searchType) },
+      searchType = Enumeration.of(searchType?.let { SearchParamType.fromCode(it) }, _searchType),
       binding = binding,
       referencedFrom = referencedFrom ?: listOf(),
       part = part ?: listOf(),
@@ -424,15 +419,10 @@ internal object OperationDefinitionParameterBindingSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       strength =
-        Enumeration.of(
-          BindingStrength.fromCode(
-            strength
-              ?: throw SerializationException(
-                "Missing required property 'strength' on OperationDefinition.Parameter.Binding"
-              )
+        Enumeration.of(strength?.let { BindingStrength.fromCode(it) }, _strength)
+          ?: throw SerializationException(
+            "Missing required property 'strength' on OperationDefinition.Parameter.Binding"
           ),
-          _strength,
-        ),
       valueSet =
         Canonical.of(valueSet, _valueSet)
           ?: throw SerializationException(
@@ -1048,25 +1038,15 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
           ),
       title = R4bString.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on OperationDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on OperationDefinition"
           ),
-          _status,
-        ),
       kind =
-        Enumeration.of(
-          OperationDefinition.OperationKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on OperationDefinition"
-              )
+        Enumeration.of(kind?.let { OperationDefinition.OperationKind.fromCode(it) }, _kind)
+          ?: throw SerializationException(
+            "Missing required property 'kind' on OperationDefinition"
           ),
-          _kind,
-        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -1086,9 +1066,9 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
       resource =
         (kotlin.collections.List(maxOf(resource?.size ?: 0, _resource?.size ?: 0)) { index ->
           Enumeration.of(
-            ResourceType.fromCode(resource?.getOrNull(index)!!),
+            resource?.getOrNull(index)?.let { ResourceType.fromCode(it) },
             _resource?.getOrNull(index),
-          )
+          )!!
         }),
       system =
         R4bBoolean.of(system, _system)

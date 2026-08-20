@@ -129,7 +129,7 @@ internal object AgeSerializer : KSerializer<Age> {
       extension = extension ?: listOf(),
       `value` = Decimal.of(`value`, _value),
       comparator =
-        comparator?.let { Enumeration.of(Quantity.QuantityComparator.fromCode(it), _comparator) },
+        Enumeration.of(comparator?.let { Quantity.QuantityComparator.fromCode(it) }, _comparator),
       unit = R4bString.of(unit, _unit),
       system = Uri.of(system, _system),
       code = Code.of(code, _code),

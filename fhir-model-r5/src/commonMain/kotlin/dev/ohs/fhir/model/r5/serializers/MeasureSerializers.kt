@@ -322,7 +322,7 @@ internal object MeasureGroupSerializer : KSerializer<Measure.Group> {
       description = Markdown.of(description, _description),
       type = type ?: listOf(),
       subject = Measure.Group.Subject.from(subjectCodeableConcept, subjectReference),
-      basis = basis?.let { Enumeration.of(FHIRTypes.fromCode(it), _basis) },
+      basis = Enumeration.of(basis?.let { FHIRTypes.fromCode(it) }, _basis),
       scoring = scoring,
       scoringUnit = scoringUnit,
       rateAggregation = Markdown.of(rateAggregation, _rateAggregation),
@@ -1546,15 +1546,11 @@ internal object MeasureSerializer : KSerializer<Measure> {
       title = R5String.of(title, _title),
       subtitle = R5String.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Measure")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Measure"),
       experimental = R5Boolean.of(experimental, _experimental),
       subject = Measure.Subject.from(subjectCodeableConcept, subjectReference),
-      basis = basis?.let { Enumeration.of(FHIRTypes.fromCode(it), _basis) },
+      basis = Enumeration.of(basis?.let { FHIRTypes.fromCode(it) }, _basis),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),

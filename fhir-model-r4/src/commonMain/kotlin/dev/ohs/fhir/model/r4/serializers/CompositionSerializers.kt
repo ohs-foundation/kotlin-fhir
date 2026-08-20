@@ -124,15 +124,10 @@ internal object CompositionAttesterSerializer : KSerializer<Composition.Attester
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          Composition.CompositionAttestationMode.fromCode(
-            mode
-              ?: throw SerializationException(
-                "Missing required property 'mode' on Composition.Attester"
-              )
+        Enumeration.of(mode?.let { Composition.CompositionAttestationMode.fromCode(it) }, _mode)
+          ?: throw SerializationException(
+            "Missing required property 'mode' on Composition.Attester"
           ),
-          _mode,
-        ),
       time = DateTime.of(FhirDateTime.fromString(time), _time),
       party = party,
     )
@@ -247,15 +242,10 @@ internal object CompositionRelatesToSerializer : KSerializer<Composition.Relates
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          Composition.DocumentRelationshipType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on Composition.RelatesTo"
-              )
+        Enumeration.of(code?.let { Composition.DocumentRelationshipType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on Composition.RelatesTo"
           ),
-          _code,
-        ),
       target =
         Composition.RelatesTo.Target.from(targetIdentifier, targetReference)
           ?: throw SerializationException(
@@ -513,7 +503,7 @@ internal object CompositionSectionSerializer : KSerializer<Composition.Section> 
       author = author ?: listOf(),
       focus = focus,
       text = text,
-      mode = mode?.let { Enumeration.of(Composition.ListMode.fromCode(it), _mode) },
+      mode = Enumeration.of(mode?.let { Composition.ListMode.fromCode(it) }, _mode),
       orderedBy = orderedBy,
       entry = entry ?: listOf(),
       emptyReason = emptyReason,
@@ -783,13 +773,8 @@ internal object CompositionSerializer : KSerializer<Composition> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
       status =
-        Enumeration.of(
-          Composition.CompositionStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Composition")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Composition.CompositionStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Composition"),
       type =
         type ?: throw SerializationException("Missing required property 'type' on Composition"),
       category = category ?: listOf(),
@@ -803,9 +788,10 @@ internal object CompositionSerializer : KSerializer<Composition> {
         R4String.of(title, _title)
           ?: throw SerializationException("Missing required property 'title' on Composition"),
       confidentiality =
-        confidentiality?.let {
-          Enumeration.of(Composition.V3ConfidentialityClassification.fromCode(it), _confidentiality)
-        },
+        Enumeration.of(
+          confidentiality?.let { Composition.V3ConfidentialityClassification.fromCode(it) },
+          _confidentiality,
+        ),
       attester = attester ?: listOf(),
       custodian = custodian,
       relatesTo = relatesTo ?: listOf(),

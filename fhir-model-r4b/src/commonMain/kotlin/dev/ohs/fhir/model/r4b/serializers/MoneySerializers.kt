@@ -104,7 +104,7 @@ internal object MoneySerializer : KSerializer<Money> {
       id = id,
       extension = extension ?: listOf(),
       `value` = Decimal.of(`value`, _value),
-      currency = currency?.let { Enumeration.of(Currencies.fromCode(it), _currency) },
+      currency = Enumeration.of(currency?.let { Currencies.fromCode(it) }, _currency),
     )
   }
 

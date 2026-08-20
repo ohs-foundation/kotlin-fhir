@@ -90,10 +90,10 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
             sidecarName,
           )
           add(
-            "  %T.of(%T.fromCode(%N?.getOrNull(index)!!), %N?.getOrNull(index))\n",
+            "  %T.of(%N?.getOrNull(index)?.let·{ %T.fromCode(it) }, %N?.getOrNull(index))!!\n",
             ClassName(modelClassName.packageName, "Enumeration"),
-            enumClass,
             propertyName,
+            enumClass,
             sidecarName,
           )
           add("})")
@@ -139,21 +139,21 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
       val enumClass = element.getEnumClass(modelClassName, valueSetMap)
       if (element.min == 0) {
         add(
-          "%N?.let { %T.of(%T.fromCode(it), %N) }",
-          propertyName,
+          "%T.of(%N?.let·{ %T.fromCode(it) }, %N)",
           ClassName(modelClassName.packageName, "Enumeration"),
+          propertyName,
           enumClass,
           sidecarName,
         )
       } else {
         add(
-          "%T.of(%T.fromCode(%N ?: throw %T(%S)), %N)",
+          "%T.of(%N?.let·{ %T.fromCode(it) }, %N) ?: throw %T(%S)",
           ClassName(modelClassName.packageName, "Enumeration"),
-          enumClass,
           propertyName,
+          enumClass,
+          sidecarName,
           serializationExceptionClassName,
           "Missing required property '$propertyName' on $modelDisplayName",
-          sidecarName,
         )
       }
     } else if (type != null && FhirPathType.containsFhirTypeCode(type.code)) {

@@ -1479,25 +1479,16 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          MeasureReport.MeasureReportStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on MeasureReport")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { MeasureReport.MeasureReportStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on MeasureReport"),
       type =
-        Enumeration.of(
-          MeasureReport.MeasureReportType.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on MeasureReport")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { MeasureReport.MeasureReportType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on MeasureReport"),
       dataUpdateType =
-        dataUpdateType?.let {
-          Enumeration.of(MeasureReport.SubmitDataUpdateType.fromCode(it), _dataUpdateType)
-        },
+        Enumeration.of(
+          dataUpdateType?.let { MeasureReport.SubmitDataUpdateType.fromCode(it) },
+          _dataUpdateType,
+        ),
       measure = Canonical.of(measure, _measure),
       subject = subject,
       date = DateTime.of(FhirDateTime.fromString(date), _date),

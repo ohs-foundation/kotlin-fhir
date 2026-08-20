@@ -142,15 +142,10 @@ internal object MessageDefinitionFocusSerializer : KSerializer<MessageDefinition
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          ResourceType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on MessageDefinition.Focus"
-              )
+        Enumeration.of(code?.let { ResourceType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on MessageDefinition.Focus"
           ),
-          _code,
-        ),
       profile = Canonical.of(profile, _profile),
       min =
         UnsignedInt.of(min, _min)
@@ -641,15 +636,10 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
           Canonical.of(replaces?.getOrNull(index)?.let { it }, _replaces?.getOrNull(index))!!
         }),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on MessageDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on MessageDefinition"
           ),
-          _status,
-        ),
       experimental = R4Boolean.of(experimental, _experimental),
       date =
         DateTime.of(FhirDateTime.fromString(date), _date)
@@ -670,17 +660,16 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
         MessageDefinition.Event.from(eventCoding, Uri.of(eventUri, _eventUri))
           ?: throw SerializationException("Missing required property 'event' on MessageDefinition"),
       category =
-        category?.let {
-          Enumeration.of(MessageDefinition.MessageSignificanceCategory.fromCode(it), _category)
-        },
+        Enumeration.of(
+          category?.let { MessageDefinition.MessageSignificanceCategory.fromCode(it) },
+          _category,
+        ),
       focus = focus ?: listOf(),
       responseRequired =
-        responseRequired?.let {
-          Enumeration.of(
-            MessageDefinition.MessageheaderResponseRequest.fromCode(it),
-            _responseRequired,
-          )
-        },
+        Enumeration.of(
+          responseRequired?.let { MessageDefinition.MessageheaderResponseRequest.fromCode(it) },
+          _responseRequired,
+        ),
       allowedResponse = allowedResponse ?: listOf(),
       graph =
         (kotlin.collections.List(maxOf(graph?.size ?: 0, _graph?.size ?: 0)) { index ->

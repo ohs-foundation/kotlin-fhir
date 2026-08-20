@@ -496,15 +496,8 @@ internal object RiskAssessmentSerializer : KSerializer<RiskAssessment> {
       basedOn = basedOn,
       parent = parent,
       status =
-        Enumeration.of(
-          RiskAssessment.ObservationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on RiskAssessment"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { RiskAssessment.ObservationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on RiskAssessment"),
       method = method,
       code = code,
       subject =

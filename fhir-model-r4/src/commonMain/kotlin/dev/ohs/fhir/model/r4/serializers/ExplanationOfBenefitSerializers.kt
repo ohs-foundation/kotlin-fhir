@@ -3719,7 +3719,7 @@ internal object ExplanationOfBenefitProcessNoteSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       number = PositiveInt.of(number, _number),
-      type = type?.let { Enumeration.of(NoteType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { NoteType.fromCode(it) }, _type),
       text = R4String.of(text, _text),
       language = language,
     )
@@ -4564,14 +4564,12 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ExplanationOfBenefit"
-              )
-          ),
+          status?.let { ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on ExplanationOfBenefit"
+          ),
       type =
         type
           ?: throw SerializationException(
@@ -4579,15 +4577,10 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
           ),
       subType = subType,
       use =
-        Enumeration.of(
-          ExplanationOfBenefit.Use.fromCode(
-            use
-              ?: throw SerializationException(
-                "Missing required property 'use' on ExplanationOfBenefit"
-              )
+        Enumeration.of(use?.let { ExplanationOfBenefit.Use.fromCode(it) }, _use)
+          ?: throw SerializationException(
+            "Missing required property 'use' on ExplanationOfBenefit"
           ),
-          _use,
-        ),
       patient =
         patient
           ?: throw SerializationException(
@@ -4623,14 +4616,12 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
       claimResponse = claimResponse,
       outcome =
         Enumeration.of(
-          ExplanationOfBenefit.ClaimProcessingCodes.fromCode(
-            outcome
-              ?: throw SerializationException(
-                "Missing required property 'outcome' on ExplanationOfBenefit"
-              )
-          ),
+          outcome?.let { ExplanationOfBenefit.ClaimProcessingCodes.fromCode(it) },
           _outcome,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'outcome' on ExplanationOfBenefit"
+          ),
       disposition = R4String.of(disposition, _disposition),
       preAuthRef =
         (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { index ->

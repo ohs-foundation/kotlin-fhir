@@ -1161,12 +1161,8 @@ internal object MeasureSerializer : KSerializer<Measure> {
       title = R4String.of(title, _title),
       subtitle = R4String.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Measure")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Measure"),
       experimental = R4Boolean.of(experimental, _experimental),
       subject = Measure.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),

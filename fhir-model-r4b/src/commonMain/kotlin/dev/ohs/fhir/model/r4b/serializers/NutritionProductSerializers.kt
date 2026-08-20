@@ -756,14 +756,9 @@ internal object NutritionProductSerializer : KSerializer<NutritionProduct> {
       modifierExtension = modifierExtension ?: listOf(),
       status =
         Enumeration.of(
-          NutritionProduct.NutritionProductStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on NutritionProduct"
-              )
-          ),
+          status?.let { NutritionProduct.NutritionProductStatus.fromCode(it) },
           _status,
-        ),
+        ) ?: throw SerializationException("Missing required property 'status' on NutritionProduct"),
       category = category ?: listOf(),
       code = code,
       manufacturer = manufacturer ?: listOf(),

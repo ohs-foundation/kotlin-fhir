@@ -107,12 +107,8 @@ internal object ContributorSerializer : KSerializer<Contributor> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          Contributor.ContributorType.fromCode(
-            type ?: throw SerializationException("Missing required property 'type' on Contributor")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Contributor.ContributorType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Contributor"),
       name =
         R4bString.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on Contributor"),

@@ -230,9 +230,10 @@ internal object EvidenceVariableCharacteristicSerializer :
       exclude = R4bBoolean.of(exclude, _exclude),
       timeFromStart = timeFromStart,
       groupMeasure =
-        groupMeasure?.let {
-          Enumeration.of(EvidenceVariable.GroupMeasure.fromCode(it), _groupMeasure)
-        },
+        Enumeration.of(
+          groupMeasure?.let { EvidenceVariable.GroupMeasure.fromCode(it) },
+          _groupMeasure,
+        ),
     )
   }
 
@@ -892,15 +893,8 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       shortTitle = R4bString.of(shortTitle, _shortTitle),
       subtitle = R4bString.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EvidenceVariable"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on EvidenceVariable"),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       description = Markdown.of(description, _description),
       note = note ?: listOf(),
@@ -914,17 +908,18 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       relatedArtifact = relatedArtifact ?: listOf(),
       `actual` = R4bBoolean.of(`actual`, _actual),
       characteristicCombination =
-        characteristicCombination?.let {
-          Enumeration.of(
-            EvidenceVariable.CharacteristicCombination.fromCode(it),
-            _characteristicCombination,
-          )
-        },
+        Enumeration.of(
+          characteristicCombination?.let {
+            EvidenceVariable.CharacteristicCombination.fromCode(it)
+          },
+          _characteristicCombination,
+        ),
       characteristic = characteristic ?: listOf(),
       handling =
-        handling?.let {
-          Enumeration.of(EvidenceVariable.EvidenceVariableHandling.fromCode(it), _handling)
-        },
+        Enumeration.of(
+          handling?.let { EvidenceVariable.EvidenceVariableHandling.fromCode(it) },
+          _handling,
+        ),
       category = category ?: listOf(),
     )
   }

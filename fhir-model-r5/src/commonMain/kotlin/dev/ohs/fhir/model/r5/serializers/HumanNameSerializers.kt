@@ -159,7 +159,7 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
     return HumanName(
       id = id,
       extension = extension ?: listOf(),
-      use = use?.let { Enumeration.of(HumanName.NameUse.fromCode(it), _use) },
+      use = Enumeration.of(use?.let { HumanName.NameUse.fromCode(it) }, _use),
       text = R5String.of(text, _text),
       family = R5String.of(family, _family),
       given =

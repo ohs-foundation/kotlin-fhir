@@ -162,9 +162,9 @@ internal object AvailabilityAvailableTimeSerializer : KSerializer<Availability.A
       daysOfWeek =
         (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            Availability.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(index)!!),
+            daysOfWeek?.getOrNull(index)?.let { Availability.DaysOfWeek.fromCode(it) },
             _daysOfWeek?.getOrNull(index),
-          )
+          )!!
         }),
       allDay = R5Boolean.of(allDay, _allDay),
       availableStartTime = Time.of(availableStartTime, _availableStartTime),

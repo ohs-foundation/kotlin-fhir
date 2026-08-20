@@ -190,9 +190,11 @@ internal object SubscriptionTopicResourceTriggerSerializer :
           maxOf(supportedInteraction?.size ?: 0, _supportedInteraction?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            SubscriptionTopic.InteractionTrigger.fromCode(supportedInteraction?.getOrNull(index)!!),
+            supportedInteraction?.getOrNull(index)?.let {
+              SubscriptionTopic.InteractionTrigger.fromCode(it)
+            },
             _supportedInteraction?.getOrNull(index),
-          )
+          )!!
         }),
       queryCriteria = queryCriteria,
       fhirPathCriteria = R5String.of(fhirPathCriteria, _fhirPathCriteria),
@@ -354,14 +356,16 @@ internal object SubscriptionTopicResourceTriggerQueryCriteriaSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       previous = R5String.of(previous, _previous),
       resultForCreate =
-        resultForCreate?.let {
-          Enumeration.of(SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(it), _resultForCreate)
-        },
+        Enumeration.of(
+          resultForCreate?.let { SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(it) },
+          _resultForCreate,
+        ),
       current = R5String.of(current, _current),
       resultForDelete =
-        resultForDelete?.let {
-          Enumeration.of(SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(it), _resultForDelete)
-        },
+        Enumeration.of(
+          resultForDelete?.let { SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(it) },
+          _resultForDelete,
+        ),
       requireBoth = R5Boolean.of(requireBoth, _requireBoth),
     )
   }
@@ -660,16 +664,16 @@ internal object SubscriptionTopicCanFilterBySerializer :
       comparator =
         (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { index ->
           Enumeration.of(
-            SubscriptionTopic.SearchComparator.fromCode(comparator?.getOrNull(index)!!),
+            comparator?.getOrNull(index)?.let { SubscriptionTopic.SearchComparator.fromCode(it) },
             _comparator?.getOrNull(index),
-          )
+          )!!
         }),
       modifier =
         (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            SubscriptionTopic.SearchModifierCode.fromCode(modifier?.getOrNull(index)!!),
+            modifier?.getOrNull(index)?.let { SubscriptionTopic.SearchModifierCode.fromCode(it) },
             _modifier?.getOrNull(index),
-          )
+          )!!
         }),
     )
   }
@@ -1249,15 +1253,10 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
           Canonical.of(derivedFrom?.getOrNull(index)?.let { it }, _derivedFrom?.getOrNull(index))!!
         }),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on SubscriptionTopic"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on SubscriptionTopic"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

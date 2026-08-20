@@ -751,7 +751,7 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       accessionIdentifier = accessionIdentifier,
-      status = status?.let { Enumeration.of(Specimen.SpecimenStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Specimen.SpecimenStatus.fromCode(it) }, _status),
       type = type,
       subject = subject,
       receivedTime = DateTime.of(FhirDateTime.fromString(receivedTime), _receivedTime),

@@ -233,15 +233,8 @@ internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       role =
-        Enumeration.of(
-          Provenance.ProvenanceEntityRole.fromCode(
-            role
-              ?: throw SerializationException(
-                "Missing required property 'role' on Provenance.Entity"
-              )
-          ),
-          _role,
-        ),
+        Enumeration.of(role?.let { Provenance.ProvenanceEntityRole.fromCode(it) }, _role)
+          ?: throw SerializationException("Missing required property 'role' on Provenance.Entity"),
       what =
         what
           ?: throw SerializationException("Missing required property 'what' on Provenance.Entity"),

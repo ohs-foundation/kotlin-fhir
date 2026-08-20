@@ -157,15 +157,10 @@ internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.Unique
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          NamingSystem.NamingSystemIdentifierType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on NamingSystem.UniqueId"
-              )
+        Enumeration.of(type?.let { NamingSystem.NamingSystemIdentifierType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on NamingSystem.UniqueId"
           ),
-          _type,
-        ),
       `value` =
         R5String.of(`value`, _value)
           ?: throw SerializationException(
@@ -604,20 +599,11 @@ internal object NamingSystemSerializer : KSerializer<NamingSystem> {
           ?: throw SerializationException("Missing required property 'name' on NamingSystem"),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on NamingSystem")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on NamingSystem"),
       kind =
-        Enumeration.of(
-          NamingSystem.NamingSystemType.fromCode(
-            kind ?: throw SerializationException("Missing required property 'kind' on NamingSystem")
-          ),
-          _kind,
-        ),
+        Enumeration.of(kind?.let { NamingSystem.NamingSystemType.fromCode(it) }, _kind)
+          ?: throw SerializationException("Missing required property 'kind' on NamingSystem"),
       experimental = R5Boolean.of(experimental, _experimental),
       date =
         DateTime.of(FhirDateTime.fromString(date), _date)

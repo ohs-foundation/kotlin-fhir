@@ -206,12 +206,12 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       informationType =
-        informationType?.let {
-          Enumeration.of(
-            ArtifactAssessment.ArtifactAssessmentInformationType.fromCode(it),
-            _informationType,
-          )
-        },
+        Enumeration.of(
+          informationType?.let {
+            ArtifactAssessment.ArtifactAssessmentInformationType.fromCode(it)
+          },
+          _informationType,
+        ),
       summary = Markdown.of(summary, _summary),
       type = type,
       classifier = classifier ?: listOf(),
@@ -549,19 +549,15 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
           ),
       content = content ?: listOf(),
       workflowStatus =
-        workflowStatus?.let {
-          Enumeration.of(
-            ArtifactAssessment.ArtifactAssessmentWorkflowStatus.fromCode(it),
-            _workflowStatus,
-          )
-        },
+        Enumeration.of(
+          workflowStatus?.let { ArtifactAssessment.ArtifactAssessmentWorkflowStatus.fromCode(it) },
+          _workflowStatus,
+        ),
       disposition =
-        disposition?.let {
-          Enumeration.of(
-            ArtifactAssessment.ArtifactAssessmentDisposition.fromCode(it),
-            _disposition,
-          )
-        },
+        Enumeration.of(
+          disposition?.let { ArtifactAssessment.ArtifactAssessmentDisposition.fromCode(it) },
+          _disposition,
+        ),
     )
   }
 

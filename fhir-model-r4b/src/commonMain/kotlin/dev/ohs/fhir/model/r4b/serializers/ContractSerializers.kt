@@ -187,14 +187,12 @@ internal object ContractContentDefinitionSerializer : KSerializer<Contract.Conte
       publicationDate = DateTime.of(FhirDateTime.fromString(publicationDate), _publicationDate),
       publicationStatus =
         Enumeration.of(
-          Contract.ContractResourcePublicationStatusCodes.fromCode(
-            publicationStatus
-              ?: throw SerializationException(
-                "Missing required property 'publicationStatus' on Contract.ContentDefinition"
-              )
-          ),
+          publicationStatus?.let { Contract.ContractResourcePublicationStatusCodes.fromCode(it) },
           _publicationStatus,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'publicationStatus' on Contract.ContentDefinition"
+          ),
       copyright = Markdown.of(copyright, _copyright),
     )
   }
@@ -3454,7 +3452,7 @@ internal object ContractSerializer : KSerializer<Contract> {
       url = Uri.of(url, _url),
       version = R4bString.of(version, _version),
       status =
-        status?.let { Enumeration.of(Contract.ContractResourceStatusCodes.fromCode(it), _status) },
+        Enumeration.of(status?.let { Contract.ContractResourceStatusCodes.fromCode(it) }, _status),
       legalState = legalState,
       instantiatesCanonical = instantiatesCanonical,
       instantiatesUri = Uri.of(instantiatesUri, _instantiatesUri),

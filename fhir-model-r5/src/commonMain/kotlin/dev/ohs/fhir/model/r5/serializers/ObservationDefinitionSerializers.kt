@@ -204,17 +204,15 @@ internal object ObservationDefinitionQualifiedValueSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       context = context,
       appliesTo = appliesTo ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       age = age,
       gestationalAge = gestationalAge,
       condition = R5String.of(condition, _condition),
       rangeCategory =
-        rangeCategory?.let {
-          Enumeration.of(
-            ObservationDefinition.ObservationRangeCategory.fromCode(it),
-            _rangeCategory,
-          )
-        },
+        Enumeration.of(
+          rangeCategory?.let { ObservationDefinition.ObservationRangeCategory.fromCode(it) },
+          _rangeCategory,
+        ),
       range = range,
       validCodedValueSet = Canonical.of(validCodedValueSet, _validCodedValueSet),
       normalCodedValueSet = Canonical.of(normalCodedValueSet, _normalCodedValueSet),
@@ -410,11 +408,11 @@ internal object ObservationDefinitionComponentSerializer :
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            ObservationDefinition.ObservationDataType.fromCode(
-              permittedDataType?.getOrNull(index)!!
-            ),
+            permittedDataType?.getOrNull(index)?.let {
+              ObservationDefinition.ObservationDataType.fromCode(it)
+            },
             _permittedDataType?.getOrNull(index),
-          )
+          )!!
         }),
       permittedUnit = permittedUnit ?: listOf(),
       qualifiedValue = qualifiedValue ?: listOf(),
@@ -985,15 +983,10 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ObservationDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ObservationDefinition"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -1034,11 +1027,11 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            ObservationDefinition.ObservationDataType.fromCode(
-              permittedDataType?.getOrNull(index)!!
-            ),
+            permittedDataType?.getOrNull(index)?.let {
+              ObservationDefinition.ObservationDataType.fromCode(it)
+            },
             _permittedDataType?.getOrNull(index),
-          )
+          )!!
         }),
       multipleResultsAllowed = R5Boolean.of(multipleResultsAllowed, _multipleResultsAllowed),
       bodySite = bodySite,

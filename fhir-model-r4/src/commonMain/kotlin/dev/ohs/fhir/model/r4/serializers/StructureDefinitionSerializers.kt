@@ -261,15 +261,10 @@ internal object StructureDefinitionContextSerializer : KSerializer<StructureDefi
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          StructureDefinition.ExtensionContextType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on StructureDefinition.Context"
-              )
+        Enumeration.of(type?.let { StructureDefinition.ExtensionContextType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on StructureDefinition.Context"
           ),
-          _type,
-        ),
       expression =
         R4String.of(expression, _expression)
           ?: throw SerializationException(
@@ -840,15 +835,10 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
           ),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on StructureDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on StructureDefinition"
           ),
-          _status,
-        ),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
@@ -859,18 +849,16 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       keyword = keyword ?: listOf(),
-      fhirVersion = fhirVersion?.let { Enumeration.of(FHIRVersion.fromCode(it), _fhirVersion) },
+      fhirVersion = Enumeration.of(fhirVersion?.let { FHIRVersion.fromCode(it) }, _fhirVersion),
       mapping = mapping ?: listOf(),
       kind =
         Enumeration.of(
-          StructureDefinition.StructureDefinitionKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on StructureDefinition"
-              )
-          ),
+          kind?.let { StructureDefinition.StructureDefinitionKind.fromCode(it) },
           _kind,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'kind' on StructureDefinition"
+          ),
       `abstract` =
         R4Boolean.of(`abstract`, _abstract)
           ?: throw SerializationException(
@@ -893,9 +881,10 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
           ),
       baseDefinition = Canonical.of(baseDefinition, _baseDefinition),
       derivation =
-        derivation?.let {
-          Enumeration.of(StructureDefinition.TypeDerivationRule.fromCode(it), _derivation)
-        },
+        Enumeration.of(
+          derivation?.let { StructureDefinition.TypeDerivationRule.fromCode(it) },
+          _derivation,
+        ),
       snapshot = snapshot,
       differential = differential,
     )

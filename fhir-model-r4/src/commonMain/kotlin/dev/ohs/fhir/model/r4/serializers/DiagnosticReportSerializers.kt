@@ -406,14 +406,9 @@ internal object DiagnosticReportSerializer : KSerializer<DiagnosticReport> {
       basedOn = basedOn ?: listOf(),
       status =
         Enumeration.of(
-          DiagnosticReport.DiagnosticReportStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on DiagnosticReport"
-              )
-          ),
+          status?.let { DiagnosticReport.DiagnosticReportStatus.fromCode(it) },
           _status,
-        ),
+        ) ?: throw SerializationException("Missing required property 'status' on DiagnosticReport"),
       category = category ?: listOf(),
       code =
         code

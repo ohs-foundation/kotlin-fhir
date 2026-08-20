@@ -260,15 +260,10 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          ResourceType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ImplementationGuide.Global"
-              )
+        Enumeration.of(type?.let { ResourceType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ImplementationGuide.Global"
           ),
-          _type,
-        ),
       profile =
         Canonical.of(profile, _profile)
           ?: throw SerializationException(
@@ -732,9 +727,9 @@ internal object ImplementationGuideDefinitionResourceSerializer :
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            fhirVersion?.getOrNull(index)?.let { FHIRVersion.fromCode(it) },
             _fhirVersion?.getOrNull(index),
-          )
+          )!!
         }),
       name = R5String.of(name, _name),
       description = Markdown.of(description, _description),
@@ -936,14 +931,12 @@ internal object ImplementationGuideDefinitionPageSerializer :
           ),
       generation =
         Enumeration.of(
-          ImplementationGuide.GuidePageGeneration.fromCode(
-            generation
-              ?: throw SerializationException(
-                "Missing required property 'generation' on ImplementationGuide.Definition.Page"
-              )
-          ),
+          generation?.let { ImplementationGuide.GuidePageGeneration.fromCode(it) },
           _generation,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'generation' on ImplementationGuide.Definition.Page"
+          ),
       page = page ?: listOf(),
     )
   }
@@ -2042,15 +2035,10 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
           ),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ImplementationGuide"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ImplementationGuide"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -2067,13 +2055,13 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
             "Missing required property 'packageId' on ImplementationGuide"
           ),
       license =
-        license?.let { Enumeration.of(ImplementationGuide.SPDXLicense.fromCode(it), _license) },
+        Enumeration.of(license?.let { ImplementationGuide.SPDXLicense.fromCode(it) }, _license),
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            fhirVersion?.getOrNull(index)?.let { FHIRVersion.fromCode(it) },
             _fhirVersion?.getOrNull(index),
-          )
+          )!!
         }),
       dependsOn = dependsOn ?: listOf(),
       global = global ?: listOf(),

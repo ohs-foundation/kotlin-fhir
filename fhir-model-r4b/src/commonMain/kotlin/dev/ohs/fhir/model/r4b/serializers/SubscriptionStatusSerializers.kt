@@ -360,19 +360,15 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        status?.let {
-          Enumeration.of(SubscriptionStatus.SubscriptionStatusCodes.fromCode(it), _status)
-        },
+        Enumeration.of(
+          status?.let { SubscriptionStatus.SubscriptionStatusCodes.fromCode(it) },
+          _status,
+        ),
       type =
         Enumeration.of(
-          SubscriptionStatus.SubscriptionNotificationType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on SubscriptionStatus"
-              )
-          ),
+          type?.let { SubscriptionStatus.SubscriptionNotificationType.fromCode(it) },
           _type,
-        ),
+        ) ?: throw SerializationException("Missing required property 'type' on SubscriptionStatus"),
       eventsSinceSubscriptionStart =
         R4bString.of(eventsSinceSubscriptionStart, _eventsSinceSubscriptionStart),
       notificationEvent = notificationEvent ?: listOf(),

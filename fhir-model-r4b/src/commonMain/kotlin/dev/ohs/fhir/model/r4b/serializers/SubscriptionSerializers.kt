@@ -142,15 +142,10 @@ internal object SubscriptionChannelSerializer : KSerializer<Subscription.Channel
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          Subscription.SubscriptionChannelType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on Subscription.Channel"
-              )
+        Enumeration.of(type?.let { Subscription.SubscriptionChannelType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on Subscription.Channel"
           ),
-          _type,
-        ),
       endpoint = Url.of(endpoint, _endpoint),
       payload = Code.of(payload, _payload),
       `header` =
@@ -363,13 +358,8 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          Subscription.SubscriptionStatusCodes.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Subscription")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Subscription.SubscriptionStatusCodes.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Subscription"),
       contact = contact ?: listOf(),
       end = Instant.of(FhirDateTime.fromString(end), _end),
       reason =

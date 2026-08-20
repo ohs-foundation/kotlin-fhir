@@ -405,15 +405,10 @@ internal object ClinicalImpressionSerializer : KSerializer<ClinicalImpression> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          ClinicalImpression.EventStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ClinicalImpression"
-              )
+        Enumeration.of(status?.let { ClinicalImpression.EventStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ClinicalImpression"
           ),
-          _status,
-        ),
       statusReason = statusReason,
       description = R5String.of(description, _description),
       subject =

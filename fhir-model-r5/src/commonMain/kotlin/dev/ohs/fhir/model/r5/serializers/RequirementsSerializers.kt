@@ -227,9 +227,9 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
       conformance =
         (kotlin.collections.List(maxOf(conformance?.size ?: 0, _conformance?.size ?: 0)) { index ->
           Enumeration.of(
-            Requirements.ConformanceExpectation.fromCode(conformance?.getOrNull(index)!!),
+            conformance?.getOrNull(index)?.let { Requirements.ConformanceExpectation.fromCode(it) },
             _conformance?.getOrNull(index),
-          )
+          )!!
         }),
       conditionality = R5Boolean.of(conditionality, _conditionality),
       requirement =
@@ -646,13 +646,8 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Requirements")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Requirements"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),

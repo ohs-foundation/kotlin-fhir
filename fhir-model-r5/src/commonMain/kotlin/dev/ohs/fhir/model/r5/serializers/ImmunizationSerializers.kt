@@ -845,13 +845,8 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
       status =
-        Enumeration.of(
-          Immunization.ImmunizationStatusCodes.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Immunization")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Immunization.ImmunizationStatusCodes.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Immunization"),
       statusReason = statusReason,
       vaccineCode =
         vaccineCode

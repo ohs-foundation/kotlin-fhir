@@ -1358,7 +1358,7 @@ internal object TestScriptSetupActionOperationSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
-      resource = resource?.let { Enumeration.of(FHIRDefinedType.fromCode(it), _resource) },
+      resource = Enumeration.of(resource?.let { FHIRDefinedType.fromCode(it) }, _resource),
       label = R4String.of(label, _label),
       description = R4String.of(description, _description),
       accept = Code.of(accept, _accept),
@@ -1370,9 +1370,10 @@ internal object TestScriptSetupActionOperationSerializer :
             "Missing required property 'encodeRequestUrl' on TestScript.Setup.Action.Operation"
           ),
       method =
-        method?.let {
-          Enumeration.of(TestScript.TestScriptRequestMethodCode.fromCode(it), _method)
-        },
+        Enumeration.of(
+          method?.let { TestScript.TestScriptRequestMethodCode.fromCode(it) },
+          _method,
+        ),
       origin = Integer.of(origin, _origin),
       params = R4String.of(params, _params),
       requestHeader = requestHeader ?: listOf(),
@@ -1827,9 +1828,10 @@ internal object TestScriptSetupActionAssertSerializer :
       label = R4String.of(label, _label),
       description = R4String.of(description, _description),
       direction =
-        direction?.let {
-          Enumeration.of(TestScript.AssertionDirectionType.fromCode(it), _direction)
-        },
+        Enumeration.of(
+          direction?.let { TestScript.AssertionDirectionType.fromCode(it) },
+          _direction,
+        ),
       compareToSourceId = R4String.of(compareToSourceId, _compareToSourceId),
       compareToSourceExpression =
         R4String.of(compareToSourceExpression, _compareToSourceExpression),
@@ -1840,18 +1842,20 @@ internal object TestScriptSetupActionAssertSerializer :
       minimumId = R4String.of(minimumId, _minimumId),
       navigationLinks = R4Boolean.of(navigationLinks, _navigationLinks),
       `operator` =
-        `operator`?.let {
-          Enumeration.of(TestScript.AssertionOperatorType.fromCode(it), _operator)
-        },
+        Enumeration.of(
+          `operator`?.let { TestScript.AssertionOperatorType.fromCode(it) },
+          _operator,
+        ),
       path = R4String.of(path, _path),
       requestMethod =
-        requestMethod?.let {
-          Enumeration.of(TestScript.TestScriptRequestMethodCode.fromCode(it), _requestMethod)
-        },
+        Enumeration.of(
+          requestMethod?.let { TestScript.TestScriptRequestMethodCode.fromCode(it) },
+          _requestMethod,
+        ),
       requestURL = R4String.of(requestURL, _requestURL),
-      resource = resource?.let { Enumeration.of(FHIRDefinedType.fromCode(it), _resource) },
+      resource = Enumeration.of(resource?.let { FHIRDefinedType.fromCode(it) }, _resource),
       response =
-        response?.let { Enumeration.of(TestScript.AssertionResponseTypes.fromCode(it), _response) },
+        Enumeration.of(response?.let { TestScript.AssertionResponseTypes.fromCode(it) }, _response),
       responseCode = R4String.of(responseCode, _responseCode),
       sourceId = Id.of(sourceId, _sourceId),
       validateProfileId = Id.of(validateProfileId, _validateProfileId),
@@ -2676,13 +2680,8 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
           ?: throw SerializationException("Missing required property 'name' on TestScript"),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on TestScript")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on TestScript"),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),

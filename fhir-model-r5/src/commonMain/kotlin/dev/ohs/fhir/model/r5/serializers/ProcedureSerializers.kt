@@ -672,13 +672,8 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          Procedure.EventStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Procedure")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Procedure.EventStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Procedure"),
       statusReason = statusReason,
       category = category ?: listOf(),
       code = code,

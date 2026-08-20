@@ -273,9 +273,9 @@ internal object HealthcareServiceAvailableTimeSerializer :
       daysOfWeek =
         (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            HealthcareService.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(index)!!),
+            daysOfWeek?.getOrNull(index)?.let { HealthcareService.DaysOfWeek.fromCode(it) },
             _daysOfWeek?.getOrNull(index),
-          )
+          )!!
         }),
       allDay = R4Boolean.of(allDay, _allDay),
       availableStartTime = Time.of(availableStartTime, _availableStartTime),

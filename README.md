@@ -150,6 +150,18 @@ value (`T : FhirEnum`):
 | Bound `ValueSet` (e.g. `administrative-gender`)                            | `enum class` implementing `FhirEnum` (e.g. `AdministrativeGender`)             |
 | Bound element with `id` and `extension`s (e.g. `Patient.gender`)           | `Enumeration<T : FhirEnum>` (e.g. `Enumeration<AdministrativeGender>`)         |
 
+How an element is typed depends on its
+[binding strength](https://hl7.org/fhir/R5/terminologies.html#strength):
+
+- **`required` binding**: instances may only carry codes from the value set, so the element is
+  typed `Enumeration<T>` (e.g. `Patient.gender` is `Enumeration<AdministrativeGender>`).
+- **Weaker bindings** (`extensible`, `preferred`, `example`): instances may legally carry codes
+  outside the value set, so the element is typed as the open `Code` instead and deserialization
+  preserves any code (e.g. `Expression.language` carrying `text/cql-identifier`). The enum class
+  is still generated, and `Enumeration.toCode()` / `Enumeration.fromCode(code, parse)` convert
+  between the two representations. Note that `fromCode` throws if the code string is not in the
+  enum's value set.
+
 Depending on their binding scope, generated enums are placed in one of two locations:
 - **Shared enums** (`dev.ohs.fhir.model.<r4|r4b|r5>.terminologies`): Generated for elements with a
   [common binding](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html)

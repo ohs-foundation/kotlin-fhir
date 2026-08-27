@@ -289,7 +289,7 @@ FHIR resource or element containing primitive data types cannot be directly mapp
 
 To address this, the library generates a custom `KSerializer` per FHIR type (e.g.
 `PatientSerializer`). Each serializer describes the flat FHIR JSON wire shape via
-`buildClassSerialDescriptor` — one descriptor slot per wire key, including the `_field` sidecar
+`buildClassSerialDescriptor` — one descriptor slot per wire key, including the `_field` Element
 keys for primitive extensions (e.g. `gender` + `_gender`).
 
 Choice types (e.g. `Patient.multipleBirth`) are expanded into per-expansion keys on the same flat
@@ -945,10 +945,20 @@ equivalence is maintained.
 
 #### Unit tests
 
-These tests use inline test data and do not require filesystem access:
+These tests use inline test data, run across all platforms, and are parameterized across FHIR versions (R4, R4B, R5):
 
-- **Primitive types** (`FhirDateTest`, `FhirDateTimeTest`, `FhirDecimalTest`) — Custom primitive types (`FhirDate`, `FhirDateTime`, `FhirDecimal`)
-- **Serialization** (`PolymorphicSerializationTest`, `SerializationExceptionTest`, `JsonConfigurationTest`, `IndexOrderingTest`) — Polymorphism, property validation, and format-specific behavior (JSON and ProtoBuf)
+- **Primitive types:**
+  - `FhirDateTest`: Date parsing and formatting (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`).
+  - `FhirDateTimeTest`: DateTime parsing, timezone validation, and millisecond precision.
+  - `FhirDecimalTest`: Lexical precision, scientific notation, `BigDecimal` conversions, and arithmetic.
+- **Serialization:**
+  - `PolymorphicSerializationTest`: `resourceType` discriminator handling.
+  - `EnumerationSerializationTest`: Enum element extensions (`_field`) and missing-value lists.
+  - `SerializationExceptionTest`: Missing required property validation.
+  - `IndexOrderingTest`: Serializer descriptor slot indexing and field tag alignment in ProtoBuf.
+  - `JsonConfigurationTest`: Behavior with custom `Json { ... }` configurations.
+- **Search parameters:**
+  - `SearchParamTest`: Value extraction for choice types, filtered contexts, and type expressions.
 
 #### Platform coverage and CI
 

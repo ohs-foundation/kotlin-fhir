@@ -40,7 +40,7 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
    * Emits `private fun deserializeInternal(decoder: CompositeDecoder): X` — a while-loop over
    * `decodeElementIndex(descriptor)` with an index-dispatching `when`. Each case reads one flat
    * wire field via `decodeXxxElement` (specialized) or `decodeNullableSerializableElement` (for
-   * complex/list/sidecar types), then the loop terminates on `DECODE_DONE`.
+   * complex/list/element types), then the loop terminates on `DECODE_DONE`.
    *
    * After the loop, sealed-type (choice) locals are synthesized from their expansion transients;
    * then the model is constructed from the assembled locals.
@@ -54,7 +54,8 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
     hoister: SerializerHoister,
   ): FunSpec {
     val codeBlock = CodeBlock.builder()
-    // One local per flat wire field — choice types expand into per-expansion value+sidecar locals
+    // One local per flat wire field — choice types expand into per-expansion value + element
+    // (`_field`) locals
     // (e.g. `deceasedBoolean`, `_deceasedBoolean`, `deceasedDateTime`, `_deceasedDateTime`).
     for (wireField in wireFields) {
       codeBlock.add(

@@ -46,7 +46,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
     expandPolymorphicProperties: Boolean,
   ) {
     val propertyName = element.getElementName()
-    val sidecarName = "_$propertyName"
+    val elementPropertyName = "_$propertyName"
     val modelDisplayName = modelClassName.simpleNames.joinToString(".")
     if (element.type != null && element.type.size > 1) {
       if (expandPolymorphicProperties) {
@@ -87,21 +87,21 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
           add(
             "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { index ->\n",
             propertyName,
-            sidecarName,
+            elementPropertyName,
           )
           add(
             "  %T.of(%N?.getOrNull(index)?.let·{ %T.fromCode(it) }, %N?.getOrNull(index))!!\n",
             ClassName(modelClassName.packageName, "Enumeration"),
             propertyName,
             enumClass,
-            sidecarName,
+            elementPropertyName,
           )
           add("})")
         } else {
           add(
             "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { index ->\n",
             propertyName,
-            sidecarName,
+            elementPropertyName,
           )
           add(
             "  %T.of(%N?.getOrNull(index)?.let·{ ",
@@ -109,7 +109,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
             propertyName,
           )
           fhirPathType.addCodeToDecodeWireVarToModel(this, modelClassName.packageName, "it")
-          add(" }, %N?.getOrNull(index))!!\n", sidecarName)
+          add(" }, %N?.getOrNull(index))!!\n", elementPropertyName)
           add("})")
         }
       } else {
@@ -133,7 +133,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
     type: Type?,
     element: Element,
   ) {
-    val sidecarName = "_$propertyName"
+    val elementPropertyName = "_$propertyName"
     val modelDisplayName = modelClassName.simpleNames.joinToString(".")
     if (element.typeIsEnumeratedCode(valueSetMap)) {
       val enumClass = element.getEnumClass(modelClassName, valueSetMap)
@@ -143,7 +143,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
           ClassName(modelClassName.packageName, "Enumeration"),
           propertyName,
           enumClass,
-          sidecarName,
+          elementPropertyName,
         )
       } else {
         add(
@@ -151,7 +151,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
           ClassName(modelClassName.packageName, "Enumeration"),
           propertyName,
           enumClass,
-          sidecarName,
+          elementPropertyName,
           serializationExceptionClassName,
           "Missing required property '$propertyName' on $modelDisplayName",
         )
@@ -170,7 +170,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
         propertyName,
       )
       add(coerceWireValue)
-      add(", %N)", sidecarName)
+      add(", %N)", elementPropertyName)
       if (element.min == 1 && !wireValueIsNonNull) {
         add(
           " ?: throw %T(%S)",
@@ -215,7 +215,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
     type: Type,
   ) {
     val propertyName = "${element.getElementName()}${type.code.capitalized()}"
-    val sidecarName = "_$propertyName"
+    val elementPropertyName = "_$propertyName"
     if (FhirPathType.containsFhirTypeCode(type.code)) {
       val fhirPathType = FhirPathType.getFromFhirTypeCode(type.code)!!
       add("%T.of(", ClassName(modelClassName.packageName, type.code.capitalized()))
@@ -224,7 +224,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
         modelClassName.packageName,
         propertyName,
       )
-      add(", %N)", sidecarName)
+      add(", %N)", elementPropertyName)
     } else {
       add("%N", propertyName)
     }

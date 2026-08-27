@@ -16,65 +16,96 @@
 
 package dev.ohs.fhir.model.test
 
-import dev.ohs.fhir.model.r4.BodyStructure
-import dev.ohs.fhir.model.r4.Patient
-import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.BodyStructure as R4BodyStructure
+import dev.ohs.fhir.model.r4.Reference as R4Reference
 import dev.ohs.fhir.model.r4.Resource as R4Resource
 import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4b.BodyStructure as R4bBodyStructure
+import dev.ohs.fhir.model.r4b.Reference as R4bReference
+import dev.ohs.fhir.model.r4b.Resource as R4bResource
+import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r5.BodyStructure as R5BodyStructure
+import dev.ohs.fhir.model.r5.Reference as R5Reference
+import dev.ohs.fhir.model.r5.Resource as R5Resource
+import dev.ohs.fhir.model.r5.String as R5String
 import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.protobuf.ProtoBuf
+import kotlinx.serialization.serializer
 
 /**
- * Tests the custom serializer descriptor indexing (json doesn't use this, so we test with protobuf)
+ * Tests ProtoBuf descriptor field index ordering between resource-type-specific and polymorphic
+ * serializers.
  */
 @OptIn(ExperimentalSerializationApi::class)
 class IndexOrderingTest :
   FunSpec({
     val proto = ProtoBuf {}
 
-    // A resource whose required (non-nullable) field lives at the highest wire-field slot, so any
-    // index drift between the two descriptors is observable as a missing `patient` after decode.
-    fun bodyStructureWithPatient() =
-      BodyStructure(
-        id = "bs-1",
-        patient = Reference(reference = R4String.of("Patient/example", null)),
-      )
+    fun <TResource : Any, TBodyStructure : TResource> indexOrderingTestSuite(
+      fhirVersion: String,
+      resourceSerializer: KSerializer<TResource>,
+      bodyStructureSerializer: KSerializer<TBodyStructure>,
+      createBodyStructure: () -> TBodyStructure,
+    ) {
+      context("$fhirVersion Index Ordering") {
+        test("resource-type-specific serializer round-trips through ProtoBuf") {
+          val original = createBodyStructure()
+          val decoded =
+            proto.decodeFromByteArray(
+              bodyStructureSerializer,
+              proto.encodeToByteArray(bodyStructureSerializer, original),
+            )
+          assertEquals(original, decoded)
+        }
 
-    fun simplePatient() = Patient(id = "patient-01")
-
-    test("standalone JSON round-trip preserves required fields") {
-      val encoded = testJson.encodeToString(bodyStructureWithPatient())
-      val decoded = testJson.decodeFromString(encoded) as BodyStructure
-      assertEquals("Patient/example", decoded.patient.reference?.value)
+        test("polymorphic Resource serializer round-trips through ProtoBuf") {
+          val original = createBodyStructure()
+          val decoded =
+            proto.decodeFromByteArray(
+              resourceSerializer,
+              proto.encodeToByteArray(resourceSerializer, original),
+            )
+          assertEquals(original, decoded)
+        }
+      }
     }
 
-    test("standalone ProtoBuf round-trip preserves required fields") {
-      val original = bodyStructureWithPatient()
-      val bytes = proto.encodeToByteArray(BodyStructure.serializer(), original)
-      val decoded = proto.decodeFromByteArray(BodyStructure.serializer(), bytes)
-      assertEquals("Patient/example", decoded.patient.reference?.value)
-    }
-
-    test("polymorphic JSON round-trip preserves required fields") {
-      val original = bodyStructureWithPatient()
-      val encoded = testJson.encodeToString<R4Resource>(original)
-      val decoded = testJson.decodeFromString<R4Resource>(encoded) as BodyStructure
-      assertEquals("Patient/example", decoded.patient.reference?.value)
-    }
-
-    test("polymorphic ProtoBuf round-trip preserves required fields") {
-      val original = bodyStructureWithPatient()
-      val bytes = proto.encodeToByteArray(R4Resource.serializer(), original)
-      val decoded = proto.decodeFromByteArray(R4Resource.serializer(), bytes) as BodyStructure
-      assertEquals("Patient/example", decoded.patient.reference?.value)
-    }
-
-    test("standalone path: Patient round-trips through ProtoBuf") {
-      val original = simplePatient()
-      val bytes = proto.encodeToByteArray(Patient.serializer(), original)
-      val decoded = proto.decodeFromByteArray(Patient.serializer(), bytes)
-      assertEquals(original.id, decoded.id)
-    }
+    // BodyStructure is used because its required `patient` field occupies a high descriptor index.
+    indexOrderingTestSuite(
+      fhirVersion = "R4",
+      resourceSerializer = serializer<R4Resource>(),
+      bodyStructureSerializer = R4BodyStructure.serializer(),
+      createBodyStructure = {
+        R4BodyStructure(
+          id = "bs-1",
+          patient = R4Reference(reference = R4String.of("Patient/example", null)),
+        )
+      },
+    )
+    indexOrderingTestSuite(
+      fhirVersion = "R4B",
+      resourceSerializer = serializer<R4bResource>(),
+      bodyStructureSerializer = R4bBodyStructure.serializer(),
+      createBodyStructure = {
+        R4bBodyStructure(
+          id = "bs-1",
+          patient = R4bReference(reference = R4bString.of("Patient/example", null)),
+        )
+      },
+    )
+    indexOrderingTestSuite(
+      fhirVersion = "R5",
+      resourceSerializer = serializer<R5Resource>(),
+      bodyStructureSerializer = R5BodyStructure.serializer(),
+      createBodyStructure = {
+        R5BodyStructure(
+          id = "bs-1",
+          includedStructure = listOf(),
+          patient = R5Reference(reference = R5String.of("Patient/example", null)),
+        )
+      },
+    )
   })

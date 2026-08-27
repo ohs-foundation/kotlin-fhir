@@ -17,77 +17,71 @@
 package dev.ohs.fhir.model.test
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
-import dev.ohs.fhir.model.r4.FhirDecimal
-import dev.ohs.fhir.model.r5.FhirDecimal as R5FhirDecimal
-import kotlin.test.Test
+import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 
-class FhirDecimalTest {
-  // --- Lexical round-trip: fromString preserves the exact wire form verbatim. ---
-  @Test fun plainInteger_roundTrips() = roundTrip("100")
+class FhirDecimalTest :
+  FunSpec({
+    fun roundTrip(fromString: (String) -> Any, value: String) =
+      assertEquals(value, fromString(value).toString())
 
-  @Test fun zero_roundTrips() = roundTrip("0")
+    fun reject(fromString: (String) -> Any, value: String) = assertFails { fromString(value) }
 
-  @Test fun negative_roundTrips() = roundTrip("-3.14")
+    fun fhirDecimalTestSuite(
+      fhirVersion: String,
+      fromString: (String) -> Any,
+      fromBigDecimal: (BigDecimal) -> Any,
+      asBigDecimal: (Any) -> BigDecimal,
+    ) {
+      context("$fhirVersion FhirDecimal") {
+        // --- Lexical round-trip: fromString preserves the exact wire form verbatim. ---
+        test("plain integer round-trips") { roundTrip(fromString, "100") }
+        test("zero round-trips") { roundTrip(fromString, "0") }
+        test("negative round-trips") { roundTrip(fromString, "-3.14") }
+        test("trailing zeros are preserved") { roundTrip(fromString, "1.00") }
+        test("single trailing zero is preserved") { roundTrip(fromString, "1.0") }
+        test("leading fraction zeros are preserved") { roundTrip(fromString, "0.0100") }
+        test("lowercase scientific round-trips") { roundTrip(fromString, "1.5e-3") }
+        test("uppercase scientific round-trips") { roundTrip(fromString, "1E-22") }
+        test("large negative scientific round-trips") {
+          roundTrip(fromString, "-1.000000000000000000E+245")
+        }
+        test("large integer round-trips") { roundTrip(fromString, "1234567890123456789") }
 
-  @Test fun trailingZeros_arePreserved() = roundTrip("1.00")
+        // --- Unparseable input is rejected by the underlying BigDecimal parse. ---
+        test("rejects non-numeric") { reject(fromString, "abc") }
+        test("rejects two decimal points") { reject(fromString, "1.2.3") }
+        test("rejects comma separator") { reject(fromString, "1,5") }
+        test("rejects hex notation") { reject(fromString, "0x10") }
 
-  @Test fun singleTrailingZero_isPreserved() = roundTrip("1.0")
+        // --- fromBigDecimal uses the plain-string form as the wire representation. ---
+        test("fromBigDecimal formats wire as plain string") {
+          assertEquals("100", fromBigDecimal(BigDecimal.fromInt(100)).toString())
+        }
 
-  @Test fun leadingFractionZeros_arePreserved() = roundTrip("0.0100")
+        test("asBigDecimal returns numerical BigDecimal from parsed string") {
+          assertEquals(BigDecimal.parseString("12.5"), asBigDecimal(fromString("12.5")))
+        }
+      }
+    }
 
-  @Test fun lowercaseScientific_roundTrips() = roundTrip("1.5e-3")
-
-  @Test fun uppercaseScientific_roundTrips() = roundTrip("1E-22")
-
-  @Test fun largeNegativeScientific_roundTrips() = roundTrip("-1.000000000000000000E+245")
-
-  @Test fun largeInteger_roundTrips() = roundTrip("1234567890123456789")
-
-  private fun roundTrip(value: String) {
-    val decimal = FhirDecimal.fromString(value)
-    assertEquals(value, decimal.toString())
-  }
-
-  // --- Unparseable input is rejected by the underlying BigDecimal parse. ---
-  @Test fun rejectsNonNumeric() = rejected("abc")
-
-  @Test fun rejectsTwoDecimalPoints() = rejected("1.2.3")
-
-  @Test fun rejectsCommaSeparator() = rejected("1,5")
-
-  @Test fun rejectsHexNotation() = rejected("0x10")
-
-  private fun rejected(value: String) {
-    assertFails { FhirDecimal.fromString(value) }
-  }
-
-  // --- fromBigDecimal uses the plain-string form as the wire representation. ---
-  @Test
-  fun fromBigDecimal_usesPlainStringWire() {
-    val decimal = FhirDecimal.fromBigDecimal(BigDecimal.fromInt(100))
-    assertEquals("100", decimal.toString())
-    assertEquals(0, decimal.compareTo(FhirDecimal.fromString("100")))
-  }
-
-  @Test
-  fun asBigDecimal_returnsTheUnderlyingValue() {
-    val bigDecimal = BigDecimal.parseString("12.5")
-    val decimal = FhirDecimal.fromBigDecimal(bigDecimal)
-    assertEquals(0, decimal.asBigDecimal().compareTo(bigDecimal))
-  }
-
-  // --- Arithmetic stays numerically correct. ---
-  @Test
-  fun addition_isNumericallyCorrect() {
-    val sum = FhirDecimal.fromString("1.5") + FhirDecimal.fromString("2.5")
-    assertEquals(0, sum.compareTo(FhirDecimal.fromString("4")))
-  }
-
-  // --- Scientific notation is preserved verbatim across versions. ---
-  @Test
-  fun r5_scientificNotation_roundTrips() {
-    assertEquals("1E-22", R5FhirDecimal.fromString("1E-22").toString())
-  }
-}
+    fhirDecimalTestSuite(
+      fhirVersion = "R4",
+      fromString = dev.ohs.fhir.model.r4.FhirDecimal::fromString,
+      fromBigDecimal = dev.ohs.fhir.model.r4.FhirDecimal::fromBigDecimal,
+      asBigDecimal = { (it as dev.ohs.fhir.model.r4.FhirDecimal).asBigDecimal() },
+    )
+    fhirDecimalTestSuite(
+      fhirVersion = "R4B",
+      fromString = dev.ohs.fhir.model.r4b.FhirDecimal::fromString,
+      fromBigDecimal = dev.ohs.fhir.model.r4b.FhirDecimal::fromBigDecimal,
+      asBigDecimal = { (it as dev.ohs.fhir.model.r4b.FhirDecimal).asBigDecimal() },
+    )
+    fhirDecimalTestSuite(
+      fhirVersion = "R5",
+      fromString = dev.ohs.fhir.model.r5.FhirDecimal::fromString,
+      fromBigDecimal = dev.ohs.fhir.model.r5.FhirDecimal::fromBigDecimal,
+      asBigDecimal = { (it as dev.ohs.fhir.model.r5.FhirDecimal).asBigDecimal() },
+    )
+  })

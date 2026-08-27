@@ -16,107 +16,184 @@
 
 package dev.ohs.fhir.model.test
 
-import dev.ohs.fhir.model.r4.DateTime as R4DateTime
-import dev.ohs.fhir.model.r4.FhirDateTime as R4FhirDateTime
+import dev.ohs.fhir.model.r4.ActivityDefinition as R4ActivityDefinition
+import dev.ohs.fhir.model.r4.Observation as R4Observation
 import dev.ohs.fhir.model.r4.Patient as R4Patient
+import dev.ohs.fhir.model.r4.search.ActivityDefinitionSearchParams as R4ActivityDefinitionSearchParams
+import dev.ohs.fhir.model.r4.search.ObservationSearchParams as R4ObservationSearchParams
 import dev.ohs.fhir.model.r4.search.PatientSearchParams as R4PatientSearchParams
-import dev.ohs.fhir.model.r5.ActivityDefinition
-import dev.ohs.fhir.model.r5.CodeableConcept
-import dev.ohs.fhir.model.r5.Coding
-import dev.ohs.fhir.model.r5.Enumeration
-import dev.ohs.fhir.model.r5.Observation
-import dev.ohs.fhir.model.r5.Quantity
-import dev.ohs.fhir.model.r5.UsageContext
-import dev.ohs.fhir.model.r5.search.ActivityDefinitionSearchParams
-import dev.ohs.fhir.model.r5.search.ObservationSearchParams
-import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
-import kotlin.test.Test
+import dev.ohs.fhir.model.r4b.ActivityDefinition as R4bActivityDefinition
+import dev.ohs.fhir.model.r4b.Observation as R4bObservation
+import dev.ohs.fhir.model.r4b.Patient as R4bPatient
+import dev.ohs.fhir.model.r4b.search.ActivityDefinitionSearchParams as R4bActivityDefinitionSearchParams
+import dev.ohs.fhir.model.r4b.search.ObservationSearchParams as R4bObservationSearchParams
+import dev.ohs.fhir.model.r4b.search.PatientSearchParams as R4bPatientSearchParams
+import dev.ohs.fhir.model.r5.ActivityDefinition as R5ActivityDefinition
+import dev.ohs.fhir.model.r5.Observation as R5Observation
+import dev.ohs.fhir.model.r5.Patient as R5Patient
+import dev.ohs.fhir.model.r5.search.ActivityDefinitionSearchParams as R5ActivityDefinitionSearchParams
+import dev.ohs.fhir.model.r5.search.ObservationSearchParams as R5ObservationSearchParams
+import dev.ohs.fhir.model.r5.search.PatientSearchParams as R5PatientSearchParams
+import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.serialization.KSerializer
 
-class SearchParamTest {
+class SearchParamTest :
+  FunSpec({
+    val observationWithQuantityJson =
+      """
+      {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "text": "Weight"
+        },
+        "valueQuantity": {
+          "unit": "kg"
+        }
+      }
+      """
+        .trimIndent()
 
-  @Test
-  fun extractingOfTypeChoice_withMatchingType_shouldReturnExtractedValue() {
-    val quantity = Quantity(unit = dev.ohs.fhir.model.r5.String(value = "kg"))
-    val observation =
-      Observation(
-        status = Enumeration(value = Observation.ObservationStatus.Final),
-        code = CodeableConcept(text = dev.ohs.fhir.model.r5.String(value = "Weight")),
-        value = Observation.Value.Quantity(quantity),
-      )
+    val observationWithNullValueJson =
+      """
+      {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "text": "Finding"
+        }
+      }
+      """
+        .trimIndent()
 
-    assertEquals(
-      listOf(quantity),
-      ObservationSearchParams.valueQuantity.extractFrom(observation),
+    val activityDefinitionWithUseContextJson =
+      """
+      {
+        "resourceType": "ActivityDefinition",
+        "status": "draft",
+        "useContext": [
+          {
+            "code": {
+              "code": "focus"
+            },
+            "valueCodeableConcept": {
+              "text": "Cardiology"
+            }
+          },
+          {
+            "code": {
+              "code": "age"
+            },
+            "valueQuantity": {
+              "unit": "years"
+            }
+          }
+        ]
+      }
+      """
+        .trimIndent()
+
+    val patientWithDeceasedDateTimeJson =
+      """
+      {
+        "resourceType": "Patient",
+        "deceasedDateTime": "2026-08-11T12:00:00Z"
+      }
+      """
+        .trimIndent()
+
+    fun <TObservation : Any, TActivity : Any, TPatient : Any> searchParamTestSuite(
+      fhirVersion: String,
+      observationSerializer: KSerializer<TObservation>,
+      activitySerializer: KSerializer<TActivity>,
+      patientSerializer: KSerializer<TPatient>,
+      extractValueQuantity: (TObservation) -> List<*>,
+      extractValueConcept: (TObservation) -> List<*>,
+      extractContext: (TActivity) -> List<*>,
+      extractContextQuantity: (TActivity) -> List<*>,
+      extractDeathDate: (TPatient) -> List<*>,
+    ) {
+      context("$fhirVersion Search Parameters") {
+        // (Observation.value as Quantity)
+        test("extracting choice with matching type returns extracted value") {
+          val observation =
+            testJson.decodeFromString(observationSerializer, observationWithQuantityJson)
+          assertEquals(1, extractValueQuantity(observation).size)
+        }
+
+        // (Observation.value as CodeableConcept)
+        test("extracting choice with mismatched type returns empty list") {
+          val observation =
+            testJson.decodeFromString(observationSerializer, observationWithQuantityJson)
+          assertTrue(extractValueConcept(observation).isEmpty())
+        }
+
+        test("extracting choice with null value returns empty list") {
+          val observation =
+            testJson.decodeFromString(observationSerializer, observationWithNullValueJson)
+          assertTrue(extractValueQuantity(observation).isEmpty())
+          assertTrue(extractValueConcept(observation).isEmpty())
+        }
+
+        // (ActivityDefinition.useContext.value as Quantity)
+        test("extracting choice from list filters matching elements") {
+          val activity =
+            testJson.decodeFromString(
+              activitySerializer,
+              activityDefinitionWithUseContextJson,
+            )
+          assertEquals(1, extractContext(activity).size)
+          assertEquals(1, extractContextQuantity(activity).size)
+        }
+
+        // (Patient.deceased as dateTime)
+        test("extracting choice from scalar returns value") {
+          val patient =
+            testJson.decodeFromString(patientSerializer, patientWithDeceasedDateTimeJson)
+          assertEquals(1, extractDeathDate(patient).size)
+        }
+      }
+    }
+
+    searchParamTestSuite(
+      fhirVersion = "R4",
+      observationSerializer = R4Observation.serializer(),
+      activitySerializer = R4ActivityDefinition.serializer(),
+      patientSerializer = R4Patient.serializer(),
+      extractValueQuantity = { R4ObservationSearchParams.valueQuantity.extractFrom(it) },
+      extractValueConcept = { R4ObservationSearchParams.valueConcept.extractFrom(it) },
+      extractContext = { R4ActivityDefinitionSearchParams.context.extractFrom(it) },
+      extractContextQuantity = {
+        R4ActivityDefinitionSearchParams.contextQuantity.extractFrom(it)
+      },
+      extractDeathDate = { R4PatientSearchParams.deathDate.extractFrom(it) },
     )
-  }
-
-  @Test
-  fun extractingOfTypeChoice_withMismatchedType_shouldReturnEmptyList() {
-    val quantity = Quantity(unit = dev.ohs.fhir.model.r5.String(value = "kg"))
-    val observation =
-      Observation(
-        status = Enumeration(value = Observation.ObservationStatus.Final),
-        code = CodeableConcept(text = dev.ohs.fhir.model.r5.String(value = "Weight")),
-        value = Observation.Value.Quantity(quantity),
-      )
-
-    assertTrue(ObservationSearchParams.valueConcept.extractFrom(observation).isEmpty())
-  }
-
-  @Test
-  fun extractingOfTypeChoice_withNullValue_shouldReturnEmptyList() {
-    val observation =
-      Observation(
-        status = Enumeration(value = Observation.ObservationStatus.Final),
-        code = CodeableConcept(text = dev.ohs.fhir.model.r5.String(value = "Finding")),
-        value = null,
-      )
-
-    assertTrue(ObservationSearchParams.valueQuantity.extractFrom(observation).isEmpty())
-    assertTrue(ObservationSearchParams.valueConcept.extractFrom(observation).isEmpty())
-  }
-
-  @Test
-  fun extractingParenthesizedOfTypeChoice_fromList_shouldReturnFilteredElements() {
-    val contextConcept = CodeableConcept(text = dev.ohs.fhir.model.r5.String(value = "Cardiology"))
-    val contextQuantity = Quantity(unit = dev.ohs.fhir.model.r5.String(value = "years"))
-
-    val activityDefinition =
-      ActivityDefinition(
-        status = Enumeration(value = PublicationStatus.Draft),
-        useContext =
-          listOf(
-            UsageContext(
-              code = Coding(code = dev.ohs.fhir.model.r5.Code(value = "focus")),
-              value = UsageContext.Value.CodeableConcept(contextConcept),
-            ),
-            UsageContext(
-              code = Coding(code = dev.ohs.fhir.model.r5.Code(value = "age")),
-              value = UsageContext.Value.Quantity(contextQuantity),
-            ),
-          ),
-      )
-
-    assertEquals(
-      listOf(contextConcept),
-      ActivityDefinitionSearchParams.context.extractFrom(activityDefinition),
+    searchParamTestSuite(
+      fhirVersion = "R4B",
+      observationSerializer = R4bObservation.serializer(),
+      activitySerializer = R4bActivityDefinition.serializer(),
+      patientSerializer = R4bPatient.serializer(),
+      extractValueQuantity = { R4bObservationSearchParams.valueQuantity.extractFrom(it) },
+      extractValueConcept = { R4bObservationSearchParams.valueConcept.extractFrom(it) },
+      extractContext = { R4bActivityDefinitionSearchParams.context.extractFrom(it) },
+      extractContextQuantity = {
+        R4bActivityDefinitionSearchParams.contextQuantity.extractFrom(it)
+      },
+      extractDeathDate = { R4bPatientSearchParams.deathDate.extractFrom(it) },
     )
-    assertEquals(
-      listOf(contextQuantity),
-      ActivityDefinitionSearchParams.contextQuantity.extractFrom(activityDefinition),
+    searchParamTestSuite(
+      fhirVersion = "R5",
+      observationSerializer = R5Observation.serializer(),
+      activitySerializer = R5ActivityDefinition.serializer(),
+      patientSerializer = R5Patient.serializer(),
+      extractValueQuantity = { R5ObservationSearchParams.valueQuantity.extractFrom(it) },
+      extractValueConcept = { R5ObservationSearchParams.valueConcept.extractFrom(it) },
+      extractContext = { R5ActivityDefinitionSearchParams.context.extractFrom(it) },
+      extractContextQuantity = {
+        R5ActivityDefinitionSearchParams.contextQuantity.extractFrom(it)
+      },
+      extractDeathDate = { R5PatientSearchParams.deathDate.extractFrom(it) },
     )
-  }
-
-  @Test
-  fun extractingParenthesizedAsChoice_withMatchingType_shouldReturnExtractedValue() {
-    val dateTime = R4DateTime(value = R4FhirDateTime.fromString("2026-08-11T12:00:00Z"))
-    val patient = R4Patient(deceased = R4Patient.Deceased.DateTime(dateTime))
-
-    assertEquals(
-      listOf(dateTime),
-      R4PatientSearchParams.deathDate.extractFrom(patient),
-    )
-  }
-}
+  })

@@ -16,24 +16,29 @@
 
 package dev.ohs.fhir.model.test
 
-import dev.ohs.fhir.model.r4.FhirDate
-import kotlin.test.Test
+import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
 
-class FhirDateTest {
-  @Test
-  fun deserializingAndSerializingYear_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025")
+class FhirDateTest :
+  FunSpec({
+    fun roundTrip(fromString: (String) -> String, value: String) =
+      assertEquals(value, fromString(value))
 
-  @Test
-  fun deserializingAndSerializingYearAndMonth_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025-09")
+    fun fhirDateTestSuite(fhirVersion: String, fromString: (String) -> String) {
+      context("$fhirVersion FhirDate") {
+        test("deserializing and serializing year produces same string") {
+          roundTrip(fromString, "2025")
+        }
+        test("deserializing and serializing year and month produces same string") {
+          roundTrip(fromString, "2025-09")
+        }
+        test("deserializing and serializing date produces same string") {
+          roundTrip(fromString, "2025-09-11")
+        }
+      }
+    }
 
-  @Test
-  fun deserializingAndSerializingDate_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025-09-11")
-
-  private fun deserializeAndSerializeDateTime(string: String) {
-    assertEquals(string, FhirDate.Companion.fromString(string).toString())
-  }
-}
+    fhirDateTestSuite("R4") { dev.ohs.fhir.model.r4.FhirDate.fromString(it).toString() }
+    fhirDateTestSuite("R4B") { dev.ohs.fhir.model.r4b.FhirDate.fromString(it).toString() }
+    fhirDateTestSuite("R5") { dev.ohs.fhir.model.r5.FhirDate.fromString(it).toString() }
+  })

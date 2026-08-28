@@ -79,6 +79,10 @@ internal fun Element.typeIsEnumeratedCode(valueSetMap: Map<String, ValueSet>): B
     this.type?.count { it.code.equals("code", ignoreCase = true) } == 1
 }
 
+/** Returns true if the element is bound to an extensible or preferred value set. */
+internal val Element.isExtensibleBinding: Boolean
+  get() = binding?.strength == "extensible" || binding?.strength == "preferred"
+
 /**
  * Returns the Kotlin type name for the `contentReference` in the [Element], if present. Otherwise,
  * returns `null`.

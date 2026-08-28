@@ -701,7 +701,7 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
         Hoisted.partOfSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -703,29 +703,27 @@ public data class Location(
 
   /** Indicates whether the location is still in use. */
   public enum class LocationStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/location-status", "Active"),
     Suspended("suspended", "http://hl7.org/fhir/location-status", "Suspended"),
     Inactive("inactive", "http://hl7.org/fhir/location-status", "Inactive");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): LocationStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum LocationStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): LocationStatus? =
         when (code) {
           "active" -> Active
           "suspended" -> Suspended
           "inactive" -> Inactive
-          else -> throw IllegalArgumentException("Unknown code $code for enum LocationStatus")
+          else -> null
         }
     }
   }
@@ -734,27 +732,25 @@ public data class Location(
    * Indicates whether a resource instance represents a specific location or a class of locations.
    */
   public enum class LocationMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Instance("instance", "http://hl7.org/fhir/location-mode", "Instance"),
     Kind("kind", "http://hl7.org/fhir/location-mode", "Kind");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): LocationMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum LocationMode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): LocationMode? =
         when (code) {
           "instance" -> Instance
           "kind" -> Kind
-          else -> throw IllegalArgumentException("Unknown code $code for enum LocationMode")
+          else -> null
         }
     }
   }

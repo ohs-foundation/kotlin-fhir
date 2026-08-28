@@ -412,7 +412,7 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
     (value.searchParam?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.pathSer, it)
     }
-    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.comparator?.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.comparator?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.pathSer, it)
     }
@@ -520,7 +520,7 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
     (value.path.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.pathSer, it)
     }
-    ((value.direction.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.direction.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.direction.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.pathSer, it)
     }
@@ -711,7 +711,7 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
     }

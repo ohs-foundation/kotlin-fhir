@@ -381,7 +381,7 @@ internal object SlotSerializer : KSerializer<Slot> {
       Hoisted.scheduleSer,
       value.schedule,
     )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

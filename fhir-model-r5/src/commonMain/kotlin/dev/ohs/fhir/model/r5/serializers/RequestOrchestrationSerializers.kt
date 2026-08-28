@@ -474,7 +474,7 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
     (value.textEquivalent?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.linkIdSer, it)
     }
-    ((value.priority?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+    ((value.priority?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.priority?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.linkIdSer, it)
     }
@@ -534,31 +534,25 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
     (value.type)?.let {
       encoder.encodeSerializableElement(descriptor, 31, Hoisted.codeSerInner, it)
     }
-    ((value.groupingBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 32, it)
-    }
+    ((value.groupingBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 32, it) }
     (value.groupingBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 33, Hoisted.linkIdSer, it)
     }
-    ((value.selectionBehavior?.value?.getCode()))?.let {
+    ((value.selectionBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 34, it)
     }
     (value.selectionBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 35, Hoisted.linkIdSer, it)
     }
-    ((value.requiredBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 36, it)
-    }
+    ((value.requiredBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 36, it) }
     (value.requiredBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 37, Hoisted.linkIdSer, it)
     }
-    ((value.precheckBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 38, it)
-    }
+    ((value.precheckBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 38, it) }
     (value.precheckBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 39, Hoisted.linkIdSer, it)
     }
-    ((value.cardinalityBehavior?.value?.getCode()))?.let {
+    ((value.cardinalityBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 40, it)
     }
     (value.cardinalityBehavior?.toElement())?.let {
@@ -754,7 +748,7 @@ internal object RequestOrchestrationActionConditionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.kind.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.kind.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.kind.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.kindSer, it)
     }
@@ -1133,13 +1127,11 @@ internal object RequestOrchestrationActionRelatedActionSerializer :
     (value.targetId.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.targetIdSer, it)
     }
-    ((value.relationship.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.relationship.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.relationship.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.targetIdSer, it)
     }
-    ((value.endRelationship?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 7, it)
-    }
+    ((value.endRelationship?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.endRelationship?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.targetIdSer, it)
     }
@@ -1289,7 +1281,7 @@ internal object RequestOrchestrationActionParticipantSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1855,7 +1847,7 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1866,7 +1858,7 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -1877,7 +1869,7 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
         it,
       )
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

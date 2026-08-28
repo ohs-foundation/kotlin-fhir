@@ -1198,29 +1198,27 @@ public data class Bundle(
    * requirement, or to convey information or warning information about the search process.
    */
   public enum class SearchEntryMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Match("match", "http://hl7.org/fhir/search-entry-mode", "Match"),
     Include("include", "http://hl7.org/fhir/search-entry-mode", "Include"),
     Outcome("outcome", "http://hl7.org/fhir/search-entry-mode", "Outcome");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SearchEntryMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SearchEntryMode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SearchEntryMode? =
         when (code) {
           "match" -> Match
           "include" -> Include
           "outcome" -> Outcome
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchEntryMode")
+          else -> null
         }
     }
   }
@@ -1230,10 +1228,10 @@ public data class Bundle(
    * details.
    */
   public enum class HTTPVerb(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Get("GET", "http://hl7.org/fhir/http-verb", "GET"),
     Head("HEAD", "http://hl7.org/fhir/http-verb", "HEAD"),
     Post("POST", "http://hl7.org/fhir/http-verb", "POST"),
@@ -1243,14 +1241,12 @@ public data class Bundle(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): HTTPVerb =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum HTTPVerb")
+
+      public fun fromCodeOrNull(code: kotlin.String?): HTTPVerb? =
         when (code) {
           "GET" -> Get
           "HEAD" -> Head
@@ -1258,17 +1254,17 @@ public data class Bundle(
           "PUT" -> Put
           "DELETE" -> Delete
           "PATCH" -> Patch
-          else -> throw IllegalArgumentException("Unknown code $code for enum HTTPVerb")
+          else -> null
         }
     }
   }
 
   /** Indicates the purpose of a bundle - how it is intended to be used. */
   public enum class BundleType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Document("document", "http://hl7.org/fhir/bundle-type", "Document"),
     Message("message", "http://hl7.org/fhir/bundle-type", "Message"),
     Transaction("transaction", "http://hl7.org/fhir/bundle-type", "Transaction"),
@@ -1285,14 +1281,12 @@ public data class Bundle(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): BundleType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum BundleType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): BundleType? =
         when (code) {
           "document" -> Document
           "message" -> Message
@@ -1303,7 +1297,7 @@ public data class Bundle(
           "history" -> History
           "searchset" -> Searchset
           "collection" -> Collection
-          else -> throw IllegalArgumentException("Unknown code $code for enum BundleType")
+          else -> null
         }
     }
   }

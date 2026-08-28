@@ -1220,10 +1220,10 @@ public data class InventoryItem(
 
   /** This value set includes common codes from BCP-47 (see http://tools.ietf.org/html/bcp47) */
   public enum class CommonLanguages(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Ar("ar", "urn:ietf:bcp:47", "Arabisk"),
     Bg("bg", "urn:ietf:bcp:47", "Bulgarian"),
     Bg_Bg("bg-BG", "urn:ietf:bcp:47", "Bulgarian (Bulgaria)"),
@@ -1309,14 +1309,12 @@ public data class InventoryItem(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CommonLanguages =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum CommonLanguages")
+
+      public fun fromCodeOrNull(code: kotlin.String?): CommonLanguages? =
         when (code) {
           "ar" -> Ar
           "bg" -> Bg
@@ -1400,17 +1398,17 @@ public data class InventoryItem(
           "zh-HK" -> Zh_Hk
           "zh-SG" -> Zh_Sg
           "zh-TW" -> Zh_Tw
-          else -> throw IllegalArgumentException("Unknown code $code for enum CommonLanguages")
+          else -> null
         }
     }
   }
 
   /** InventoryItem Status Codes */
   public enum class InventoryItemStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/inventoryitem-status", "Active"),
     Inactive("inactive", "http://hl7.org/fhir/inventoryitem-status", "Inactive"),
     Entered_In_Error(
@@ -1422,21 +1420,18 @@ public data class InventoryItem(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): InventoryItemStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum InventoryItemStatusCodes")
+
+      public fun fromCodeOrNull(code: kotlin.String?): InventoryItemStatusCodes? =
         when (code) {
           "active" -> Active
           "inactive" -> Inactive
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum InventoryItemStatusCodes")
+          else -> null
         }
     }
   }

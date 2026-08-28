@@ -1687,39 +1687,37 @@ public data class MeasureReport(
 
   /** The status of the measure report. */
   public enum class MeasureReportStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Complete("complete", "http://hl7.org/fhir/measure-report-status", "Complete"),
     Pending("pending", "http://hl7.org/fhir/measure-report-status", "Pending"),
     Error("error", "http://hl7.org/fhir/measure-report-status", "Error");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): MeasureReportStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum MeasureReportStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): MeasureReportStatus? =
         when (code) {
           "complete" -> Complete
           "pending" -> Pending
           "error" -> Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum MeasureReportStatus")
+          else -> null
         }
     }
   }
 
   /** The type of the measure report. */
   public enum class MeasureReportType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Individual("individual", "http://hl7.org/fhir/measure-report-type", "Individual"),
     Subject_List("subject-list", "http://hl7.org/fhir/measure-report-type", "Subject List"),
     Summary("summary", "http://hl7.org/fhir/measure-report-type", "Summary"),
@@ -1727,20 +1725,18 @@ public data class MeasureReport(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): MeasureReportType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum MeasureReportType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): MeasureReportType? =
         when (code) {
           "individual" -> Individual
           "subject-list" -> Subject_List
           "summary" -> Summary
           "data-exchange" -> Data_Exchange
-          else -> throw IllegalArgumentException("Unknown code $code for enum MeasureReportType")
+          else -> null
         }
     }
   }
@@ -1750,10 +1746,10 @@ public data class MeasureReport(
    * choices are snapshot or incremental updates
    */
   public enum class SubmitDataUpdateType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Incremental(
       "incremental",
       "http://hl7.org/fhir/CodeSystem/submit-data-update-type",
@@ -1763,18 +1759,16 @@ public data class MeasureReport(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SubmitDataUpdateType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SubmitDataUpdateType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SubmitDataUpdateType? =
         when (code) {
           "incremental" -> Incremental
           "snapshot" -> Snapshot
-          else -> throw IllegalArgumentException("Unknown code $code for enum SubmitDataUpdateType")
+          else -> null
         }
     }
   }

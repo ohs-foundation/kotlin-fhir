@@ -1370,7 +1370,7 @@ internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinit
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

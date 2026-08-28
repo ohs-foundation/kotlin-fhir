@@ -146,7 +146,7 @@ internal object DurationSerializer : KSerializer<Duration> {
     (value.`value`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueSer, it)
     }
-    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.comparator?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.comparator?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
     }

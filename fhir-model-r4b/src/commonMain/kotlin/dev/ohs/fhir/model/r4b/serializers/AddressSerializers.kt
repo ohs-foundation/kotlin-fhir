@@ -174,11 +174,11 @@ internal object AddressSerializer : KSerializer<Address> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.use?.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.use?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.useSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.useSer, it)
     }

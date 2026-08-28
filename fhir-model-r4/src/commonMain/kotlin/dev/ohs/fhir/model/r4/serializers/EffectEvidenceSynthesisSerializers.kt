@@ -302,9 +302,7 @@ internal object EffectEvidenceSynthesisResultsByExposureSerializer :
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, it)
     }
-    ((value.exposureState?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 5, it)
-    }
+    ((value.exposureState?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.exposureState?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
     }
@@ -1436,7 +1434,7 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -701,10 +701,10 @@ public data class CompartmentDefinition(
 
   /** Which type a compartment definition describes. */
   public enum class CompartmentType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Patient("Patient", "http://hl7.org/fhir/compartment-type", "Patient"),
     Encounter("Encounter", "http://hl7.org/fhir/compartment-type", "Encounter"),
     RelatedPerson("RelatedPerson", "http://hl7.org/fhir/compartment-type", "RelatedPerson"),
@@ -713,21 +713,19 @@ public data class CompartmentDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CompartmentType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum CompartmentType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): CompartmentType? =
         when (code) {
           "Patient" -> Patient
           "Encounter" -> Encounter
           "RelatedPerson" -> RelatedPerson
           "Practitioner" -> Practitioner
           "Device" -> Device
-          else -> throw IllegalArgumentException("Unknown code $code for enum CompartmentType")
+          else -> null
         }
     }
   }

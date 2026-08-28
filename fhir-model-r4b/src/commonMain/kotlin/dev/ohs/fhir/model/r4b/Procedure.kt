@@ -1022,10 +1022,10 @@ public data class Procedure(
 
   /** Codes identifying the lifecycle stage of an event. */
   public enum class EventStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Preparation("preparation", "http://hl7.org/fhir/event-status", "Preparation"),
     In_Progress("in-progress", "http://hl7.org/fhir/event-status", "In Progress"),
     Not_Done("not-done", "http://hl7.org/fhir/event-status", "Not Done"),
@@ -1037,14 +1037,12 @@ public data class Procedure(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): EventStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum EventStatus")
+
+      public fun fromCodeOrNull(code: String?): EventStatus? =
         when (code) {
           "preparation" -> Preparation
           "in-progress" -> In_Progress
@@ -1054,7 +1052,7 @@ public data class Procedure(
           "completed" -> Completed
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum EventStatus")
+          else -> null
         }
     }
   }

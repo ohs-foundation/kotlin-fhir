@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /**
@@ -23,10 +24,10 @@ import kotlin.String
  * person.
  */
 public enum class MaritalStatusCodes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   A("A", "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "Annulled"),
   D("D", "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "Divorced"),
   I("I", "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "Interlocutory"),
@@ -42,14 +43,12 @@ public enum class MaritalStatusCodes(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): MaritalStatusCodes =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum MaritalStatusCodes")
+
+    public fun fromCodeOrNull(code: String?): MaritalStatusCodes? =
       when (code) {
         "A" -> A
         "D" -> D
@@ -63,7 +62,7 @@ public enum class MaritalStatusCodes(
         "S" -> S
         "W" -> W
         "UNK" -> Unk
-        else -> throw IllegalArgumentException("Unknown code $code for enum MaritalStatusCodes")
+        else -> null
       }
   }
 }

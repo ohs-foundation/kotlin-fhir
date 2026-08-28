@@ -311,15 +311,13 @@ internal object QuestionnaireItemSerializer : KSerializer<Questionnaire.Item> {
     (value.text?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.linkIdSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.linkIdSer, it)
     }
     if (value.enableWhen.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.enableWhenSer, value.enableWhen)
-    ((value.enableBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 15, it)
-    }
+    ((value.enableBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.enableBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.linkIdSer, it)
     }
@@ -583,7 +581,7 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
     (value.question.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.questionSer, it)
     }
-    ((value.`operator`.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.`operator`.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.`operator`.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.questionSer, it)
     }
@@ -1565,7 +1563,7 @@ internal object QuestionnaireSerializer : KSerializer<Questionnaire> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1587,7 +1585,7 @@ internal object QuestionnaireSerializer : KSerializer<Questionnaire> {
         it,
       )
     }
-    (value.subjectType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.subjectType.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,
         25 + descriptorOffset,

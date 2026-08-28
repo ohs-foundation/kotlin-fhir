@@ -252,7 +252,7 @@ internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.role.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.role.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.role.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, it)
     }

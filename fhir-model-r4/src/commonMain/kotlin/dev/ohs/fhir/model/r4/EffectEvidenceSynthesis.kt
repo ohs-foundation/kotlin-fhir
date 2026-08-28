@@ -1551,10 +1551,10 @@ public data class EffectEvidenceSynthesis(
    * (exposure) or the alternative state (exposureAlternative).
    */
   public enum class ExposureState(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Exposure("exposure", "http://hl7.org/fhir/exposure-state", "Exposure"),
     Exposure_Alternative(
       "exposure-alternative",
@@ -1564,18 +1564,16 @@ public data class EffectEvidenceSynthesis(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ExposureState =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ExposureState")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ExposureState? =
         when (code) {
           "exposure" -> Exposure
           "exposure-alternative" -> Exposure_Alternative
-          else -> throw IllegalArgumentException("Unknown code $code for enum ExposureState")
+          else -> null
         }
     }
   }

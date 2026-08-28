@@ -199,10 +199,10 @@ public data class HumanName(
 
   /** The use of a human name. */
   public enum class NameUse(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Usual("usual", "http://hl7.org/fhir/name-use", "Usual"),
     Official("official", "http://hl7.org/fhir/name-use", "Official"),
     Temp("temp", "http://hl7.org/fhir/name-use", "Temp"),
@@ -213,14 +213,12 @@ public data class HumanName(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): NameUse =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum NameUse")
+
+      public fun fromCodeOrNull(code: kotlin.String?): NameUse? =
         when (code) {
           "usual" -> Usual
           "official" -> Official
@@ -229,7 +227,7 @@ public data class HumanName(
           "anonymous" -> Anonymous
           "old" -> Old
           "maiden" -> Maiden
-          else -> throw IllegalArgumentException("Unknown code $code for enum NameUse")
+          else -> null
         }
     }
   }

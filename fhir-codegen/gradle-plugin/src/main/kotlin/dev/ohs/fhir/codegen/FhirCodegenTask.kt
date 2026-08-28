@@ -18,12 +18,14 @@ package dev.ohs.fhir.codegen
 
 import com.squareup.kotlinpoet.ClassName
 import dev.ohs.fhir.codegen.primitives.EnumerationFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.ExtensibleEnumerationFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDecimalFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDecimalSerializerFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirEnumFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.LocalTimeSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
 import dev.ohs.fhir.codegen.schema.StructureDefinition
@@ -167,8 +169,10 @@ abstract class FhirCodegenTask : DefaultTask() {
     FhirDateFileSpecGenerator.generate(packageName).writeTo(outputDir)
     FhirDecimalFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
-    // Generates a wrapper for enum types
+    // Generates a common interface and wrapper for enum types
+    FhirEnumFileSpecGenerator.generate(packageName).writeTo(outputDir)
     EnumerationFileSpecGenerator.generate(packageName).writeTo(outputDir)
+    ExtensibleEnumerationFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
     // Generate custom serializers
     val serializersPackageName = "$packageName.serializers"

@@ -284,7 +284,7 @@ internal object StructureDefinitionContextSerializer : KSerializer<StructureDefi
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1049,7 +1049,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1165,7 +1165,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
         Hoisted.keywordSer,
         value.keyword,
       )
-    ((value.fhirVersion?.value?.getCode()))?.let {
+    ((value.fhirVersion?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 42 + descriptorOffset, it)
     }
     (value.fhirVersion?.toElement())?.let {
@@ -1183,7 +1183,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
         Hoisted.mappingSer,
         value.mapping,
       )
-    ((value.kind.value?.getCode()))?.let {
+    ((value.kind.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 45 + descriptorOffset, it)
     }
     (value.kind.toElement())?.let {
@@ -1248,7 +1248,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
         it,
       )
     }
-    ((value.derivation?.value?.getCode()))?.let {
+    ((value.derivation?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 56 + descriptorOffset, it)
     }
     (value.derivation?.toElement())?.let {

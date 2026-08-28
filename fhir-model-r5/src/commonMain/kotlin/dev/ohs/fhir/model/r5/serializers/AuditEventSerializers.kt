@@ -1173,7 +1173,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
       Hoisted.categorySerInner,
       value.code,
     )
-    ((value.action?.value?.getCode()))?.let {
+    ((value.action?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.action?.toElement())?.let {
@@ -1184,7 +1184,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         it,
       )
     }
-    ((value.severity?.value?.getCode()))?.let {
+    ((value.severity?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.severity?.toElement())?.let {

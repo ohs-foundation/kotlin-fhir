@@ -260,7 +260,7 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -508,7 +508,7 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.meaning.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.meaning.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.meaning.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.meaningSer, it)
     }
@@ -861,7 +861,7 @@ internal object PermissionSerializer : KSerializer<Permission> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -892,7 +892,7 @@ internal object PermissionSerializer : KSerializer<Permission> {
         it,
       )
     }
-    ((value.combining.value?.getCode()))?.let {
+    ((value.combining.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.combining.toElement())?.let {

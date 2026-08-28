@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
 import kotlin.String
 
 /** A single value set for all security labels defined by FHIR. */
 public enum class AllSecurityLabels(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   U("U", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "unrestricted"),
   L("L", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "low"),
   M("M", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "moderate"),
@@ -659,14 +660,12 @@ public enum class AllSecurityLabels(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): AllSecurityLabels =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum AllSecurityLabels")
+
+    public fun fromCodeOrNull(code: String?): AllSecurityLabels? =
       when (code) {
         "U" -> U
         "L" -> L
@@ -868,7 +867,7 @@ public enum class AllSecurityLabels(
         "BTG" -> Btg
         "ERTREAT" -> Ertreat
         "POPHLTH" -> Pophlth
-        else -> throw IllegalArgumentException("Unknown code $code for enum AllSecurityLabels")
+        else -> null
       }
   }
 }

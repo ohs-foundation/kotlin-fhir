@@ -147,7 +147,7 @@ internal object CatalogEntryRelatedEntrySerializer : KSerializer<CatalogEntry.Re
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.relationtype.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.relationtype.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.relationtype.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.relationtypeSer, it)
     }
@@ -505,7 +505,7 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
         Hoisted.classificationSer,
         value.classification,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

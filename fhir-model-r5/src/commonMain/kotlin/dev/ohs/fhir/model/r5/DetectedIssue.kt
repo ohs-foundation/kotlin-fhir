@@ -770,10 +770,10 @@ public data class DetectedIssue(
 
   /** Indicates the status of a detected issue */
   public enum class DetectedIssueStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Preliminary("preliminary", "http://hl7.org/fhir/observation-status", "Preliminary"),
     Final("final", "http://hl7.org/fhir/observation-status", "Final"),
     Entered_In_Error(
@@ -785,50 +785,45 @@ public data class DetectedIssue(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): DetectedIssueStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DetectedIssueStatus")
+
+      public fun fromCodeOrNull(code: String?): DetectedIssueStatus? =
         when (code) {
           "preliminary" -> Preliminary
           "final" -> Final
           "entered-in-error" -> Entered_In_Error
           "mitigated" -> Mitigated
-          else -> throw IllegalArgumentException("Unknown code $code for enum DetectedIssueStatus")
+          else -> null
         }
     }
   }
 
   /** Indicates the potential degree of impact of the identified issue on the patient. */
   public enum class DetectedIssueSeverity(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     High("high", "http://hl7.org/fhir/detectedissue-severity", "High"),
     Moderate("moderate", "http://hl7.org/fhir/detectedissue-severity", "Moderate"),
     Low("low", "http://hl7.org/fhir/detectedissue-severity", "Low");
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): DetectedIssueSeverity =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DetectedIssueSeverity")
+
+      public fun fromCodeOrNull(code: String?): DetectedIssueSeverity? =
         when (code) {
           "high" -> High
           "moderate" -> Moderate
           "low" -> Low
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum DetectedIssueSeverity")
+          else -> null
         }
     }
   }

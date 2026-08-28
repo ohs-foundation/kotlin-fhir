@@ -1021,10 +1021,10 @@ public data class MessageDefinition(
 
   /** The impact of the content of a message. */
   public enum class MessageSignificanceCategory(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Consequence("consequence", "http://hl7.org/fhir/message-significance-category", "Consequence"),
     Currency("currency", "http://hl7.org/fhir/message-significance-category", "Currency"),
     Notification(
@@ -1035,22 +1035,19 @@ public data class MessageDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): MessageSignificanceCategory =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum MessageSignificanceCategory"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): MessageSignificanceCategory? =
         when (code) {
           "consequence" -> Consequence
           "currency" -> Currency
           "notification" -> Notification
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MessageSignificanceCategory"
-            )
+          else -> null
         }
     }
   }
@@ -1060,10 +1057,10 @@ public data class MessageDefinition(
    * to be returned in response to a message.
    */
   public enum class MessageheaderResponseRequest(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Always("always", "http://hl7.org/fhir/messageheader-response-request", "Always"),
     On_Error(
       "on-error",
@@ -1079,23 +1076,20 @@ public data class MessageDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): MessageheaderResponseRequest =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum MessageheaderResponseRequest"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): MessageheaderResponseRequest? =
         when (code) {
           "always" -> Always
           "on-error" -> On_Error
           "never" -> Never
           "on-success" -> On_Success
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MessageheaderResponseRequest"
-            )
+          else -> null
         }
     }
   }

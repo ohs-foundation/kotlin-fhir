@@ -910,10 +910,10 @@ public data class DiagnosticReport(
 
   /** The status of the diagnostic report. */
   public enum class DiagnosticReportStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Registered("registered", "http://hl7.org/fhir/diagnostic-report-status", "Registered"),
     Partial("partial", "http://hl7.org/fhir/diagnostic-report-status", "Partial"),
     Preliminary("preliminary", "http://hl7.org/fhir/diagnostic-report-status", "Preliminary"),
@@ -932,14 +932,12 @@ public data class DiagnosticReport(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): DiagnosticReportStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DiagnosticReportStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): DiagnosticReportStatus? =
         when (code) {
           "registered" -> Registered
           "partial" -> Partial
@@ -952,8 +950,7 @@ public data class DiagnosticReport(
           "cancelled" -> Cancelled
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum DiagnosticReportStatus")
+          else -> null
         }
     }
   }

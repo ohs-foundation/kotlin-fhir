@@ -506,10 +506,10 @@ public data class Substance(
 
   /** A code to indicate if the substance is actively used. */
   public enum class FHIRSubstanceStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/substance-status", "Active"),
     Inactive("inactive", "http://hl7.org/fhir/substance-status", "Inactive"),
     Entered_In_Error(
@@ -520,19 +520,17 @@ public data class Substance(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): FHIRSubstanceStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum FHIRSubstanceStatus")
+
+      public fun fromCodeOrNull(code: String?): FHIRSubstanceStatus? =
         when (code) {
           "active" -> Active
           "inactive" -> Inactive
           "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum FHIRSubstanceStatus")
+          else -> null
         }
     }
   }

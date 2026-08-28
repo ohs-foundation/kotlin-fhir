@@ -397,7 +397,7 @@ internal object TerminologyCapabilitiesCodeSystemSerializer :
     }
     if (value.version.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.versionSer, value.version)
-    ((value.content.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.content.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.content.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.uriSer, it)
     }
@@ -582,7 +582,7 @@ internal object TerminologyCapabilitiesCodeSystemVersionSerializer :
     (value.compositional?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.codeSer, it)
     }
-    (value.language.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.language.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.languageSer, it)
     }
     (value.language.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -1805,7 +1805,7 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1914,7 +1914,7 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
         it,
       )
     }
-    ((value.kind.value?.getCode()))?.let {
+    ((value.kind.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
     }
     (value.kind.toElement())?.let {
@@ -1957,7 +1957,7 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
     (value.expansion)?.let {
       encoder.encodeSerializableElement(descriptor, 48 + descriptorOffset, Hoisted.expansionSer, it)
     }
-    ((value.codeSearch?.value?.getCode()))?.let {
+    ((value.codeSearch?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 49 + descriptorOffset, it)
     }
     (value.codeSearch?.toElement())?.let {

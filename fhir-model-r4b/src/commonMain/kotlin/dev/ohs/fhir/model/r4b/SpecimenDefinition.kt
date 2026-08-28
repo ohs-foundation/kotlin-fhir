@@ -943,30 +943,27 @@ public data class SpecimenDefinition(
 
   /** Degree of preference of a type of conditioned specimen. */
   public enum class SpecimenContainedPreference(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Preferred("preferred", "http://hl7.org/fhir/specimen-contained-preference", "Preferred"),
     Alternate("alternate", "http://hl7.org/fhir/specimen-contained-preference", "Alternate");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SpecimenContainedPreference =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum SpecimenContainedPreference"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): SpecimenContainedPreference? =
         when (code) {
           "preferred" -> Preferred
           "alternate" -> Alternate
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum SpecimenContainedPreference"
-            )
+          else -> null
         }
     }
   }

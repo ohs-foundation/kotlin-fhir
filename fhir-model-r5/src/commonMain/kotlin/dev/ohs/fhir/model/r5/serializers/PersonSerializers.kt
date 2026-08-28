@@ -245,7 +245,7 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.targetSer, value.target)
-    ((value.assurance?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.assurance?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.assurance?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.assuranceSer, it)
     }
@@ -568,7 +568,7 @@ internal object PersonSerializer : KSerializer<Person> {
         Hoisted.telecomSer,
         value.telecom,
       )
-    ((value.gender?.value?.getCode()))?.let {
+    ((value.gender?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.gender?.toElement())?.let {

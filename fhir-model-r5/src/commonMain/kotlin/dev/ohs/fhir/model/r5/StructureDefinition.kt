@@ -1472,39 +1472,37 @@ public data class StructureDefinition(
 
   /** How an extension context is interpreted. */
   public enum class ExtensionContextType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Fhirpath("fhirpath", "http://hl7.org/fhir/extension-context-type", "FHIRPath"),
     Element("element", "http://hl7.org/fhir/extension-context-type", "Element ID"),
     Extension("extension", "http://hl7.org/fhir/extension-context-type", "Extension URL");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ExtensionContextType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ExtensionContextType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ExtensionContextType? =
         when (code) {
           "fhirpath" -> Fhirpath
           "element" -> Element
           "extension" -> Extension
-          else -> throw IllegalArgumentException("Unknown code $code for enum ExtensionContextType")
+          else -> null
         }
     }
   }
 
   /** Defines the type of structure that a definition is describing. */
   public enum class StructureDefinitionKind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Primitive_Type(
       "primitive-type",
       "http://hl7.org/fhir/structure-definition-kind",
@@ -1520,48 +1518,43 @@ public data class StructureDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): StructureDefinitionKind =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum StructureDefinitionKind")
+
+      public fun fromCodeOrNull(code: kotlin.String?): StructureDefinitionKind? =
         when (code) {
           "primitive-type" -> Primitive_Type
           "complex-type" -> Complex_Type
           "resource" -> Resource
           "logical" -> Logical
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum StructureDefinitionKind")
+          else -> null
         }
     }
   }
 
   /** How a type relates to its baseDefinition. */
   public enum class TypeDerivationRule(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Specialization("specialization", "http://hl7.org/fhir/type-derivation-rule", "Specialization"),
     Constraint("constraint", "http://hl7.org/fhir/type-derivation-rule", "Constraint");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): TypeDerivationRule =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum TypeDerivationRule")
+
+      public fun fromCodeOrNull(code: kotlin.String?): TypeDerivationRule? =
         when (code) {
           "specialization" -> Specialization
           "constraint" -> Constraint
-          else -> throw IllegalArgumentException("Unknown code $code for enum TypeDerivationRule")
+          else -> null
         }
     }
   }

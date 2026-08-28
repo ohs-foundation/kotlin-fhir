@@ -326,7 +326,7 @@ internal object GraphDefinitionLinkTargetSerializer : KSerializer<GraphDefinitio
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -484,15 +484,15 @@ internal object GraphDefinitionLinkTargetCompartmentSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.use.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.use.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.use.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.useSer, it)
     }
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.useSer, it)
     }
-    ((value.rule.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.rule.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.rule.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.useSer, it)
     }
@@ -843,7 +843,7 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -930,7 +930,7 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
         it,
       )
     }
-    ((value.start.value?.getCode()))?.let {
+    ((value.start.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 31 + descriptorOffset, it)
     }
     (value.start.toElement())?.let {

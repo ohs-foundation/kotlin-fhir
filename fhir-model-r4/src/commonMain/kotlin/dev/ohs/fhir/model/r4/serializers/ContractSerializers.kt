@@ -219,9 +219,7 @@ internal object ContractContentDefinitionSerializer : KSerializer<Contract.Conte
     (value.publicationDate?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.publicationDateSer, it)
     }
-    ((value.publicationStatus.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 8, it)
-    }
+    ((value.publicationStatus.value?.code))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.publicationStatus.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.publicationDateSer, it)
     }
@@ -3569,7 +3567,7 @@ internal object ContractSerializer : KSerializer<Contract> {
         it,
       )
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

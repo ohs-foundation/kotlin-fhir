@@ -441,10 +441,10 @@ public data class DeviceUseStatement(
 
   /** A coded concept indicating the current status of the Device Usage. */
   public enum class DeviceUseStatementStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/device-statement-status", "Active"),
     Completed("completed", "http://hl7.org/fhir/device-statement-status", "Completed"),
     Entered_In_Error(
@@ -458,14 +458,12 @@ public data class DeviceUseStatement(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): DeviceUseStatementStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DeviceUseStatementStatus")
+
+      public fun fromCodeOrNull(code: String?): DeviceUseStatementStatus? =
         when (code) {
           "active" -> Active
           "completed" -> Completed
@@ -473,8 +471,7 @@ public data class DeviceUseStatement(
           "intended" -> Intended
           "stopped" -> Stopped
           "on-hold" -> On_Hold
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum DeviceUseStatementStatus")
+          else -> null
         }
     }
   }

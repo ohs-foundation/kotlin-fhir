@@ -4255,10 +4255,10 @@ public data class TestScript(
 
   /** The allowable request method or HTTP operation codes. */
   public enum class TestScriptRequestMethodCode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Delete("delete", "http://hl7.org/fhir/http-operations", "DELETE"),
     Get("get", "http://hl7.org/fhir/http-operations", "GET"),
     Options("options", "http://hl7.org/fhir/http-operations", "OPTIONS"),
@@ -4269,14 +4269,14 @@ public data class TestScript(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): TestScriptRequestMethodCode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum TestScriptRequestMethodCode"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): TestScriptRequestMethodCode? =
         when (code) {
           "delete" -> Delete
           "get" -> Get
@@ -4285,48 +4285,42 @@ public data class TestScript(
           "post" -> Post
           "put" -> Put
           "head" -> Head
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum TestScriptRequestMethodCode"
-            )
+          else -> null
         }
     }
   }
 
   /** The type of direction to use for assertion. */
   public enum class AssertionDirectionType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Response("response", "http://hl7.org/fhir/assert-direction-codes", "response"),
     Request("request", "http://hl7.org/fhir/assert-direction-codes", "request");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AssertionDirectionType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AssertionDirectionType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AssertionDirectionType? =
         when (code) {
           "response" -> Response
           "request" -> Request
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AssertionDirectionType")
+          else -> null
         }
     }
   }
 
   /** The type of manual completion to use for assertion. */
   public enum class AssertionManualCompletionType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Fail("fail", "http://hl7.org/fhir/assert-manual-completion-codes", "Fail"),
     Pass("pass", "http://hl7.org/fhir/assert-manual-completion-codes", "Pass"),
     Skip("skip", "http://hl7.org/fhir/assert-manual-completion-codes", "Skip"),
@@ -4334,33 +4328,30 @@ public data class TestScript(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AssertionManualCompletionType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum AssertionManualCompletionType"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): AssertionManualCompletionType? =
         when (code) {
           "fail" -> Fail
           "pass" -> Pass
           "skip" -> Skip
           "stop" -> Stop
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum AssertionManualCompletionType"
-            )
+          else -> null
         }
     }
   }
 
   /** The type of operator to use for assertion. */
   public enum class AssertionOperatorType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Equals("equals", "http://hl7.org/fhir/assert-operator-codes", "equals"),
     NotEquals("notEquals", "http://hl7.org/fhir/assert-operator-codes", "notEquals"),
     In("in", "http://hl7.org/fhir/assert-operator-codes", "in"),
@@ -4376,14 +4367,12 @@ public data class TestScript(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AssertionOperatorType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AssertionOperatorType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AssertionOperatorType? =
         when (code) {
           "equals" -> Equals
           "notEquals" -> NotEquals
@@ -4397,18 +4386,17 @@ public data class TestScript(
           "notContains" -> NotContains
           "eval" -> Eval
           "manualEval" -> ManualEval
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AssertionOperatorType")
+          else -> null
         }
     }
   }
 
   /** The type of response code to use for assertion. */
   public enum class AssertionResponseTypes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Continue("continue", "http://hl7.org/fhir/assert-response-code-types", "Continue"),
     SwitchingProtocols(
       "switchingProtocols",
@@ -4560,14 +4548,12 @@ public data class TestScript(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AssertionResponseTypes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AssertionResponseTypes")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AssertionResponseTypes? =
         when (code) {
           "continue" -> Continue
           "switchingProtocols" -> SwitchingProtocols
@@ -4613,8 +4599,7 @@ public data class TestScript(
           "serviceUnavailable" -> ServiceUnavailable
           "gatewayTimeout" -> GatewayTimeout
           "httpVersionNotSupported" -> httpVersionNotSupported
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AssertionResponseTypes")
+          else -> null
         }
     }
   }

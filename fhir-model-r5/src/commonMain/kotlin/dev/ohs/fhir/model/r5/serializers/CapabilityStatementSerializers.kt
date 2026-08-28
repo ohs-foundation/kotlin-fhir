@@ -467,7 +467,7 @@ internal object CapabilityStatementRestSerializer : KSerializer<CapabilityStatem
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.mode.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.mode.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modeSer, it)
     }
@@ -1020,7 +1020,7 @@ internal object CapabilityStatementRestResourceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1040,7 +1040,7 @@ internal object CapabilityStatementRestResourceSerializer :
     }
     if (value.interaction.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.interactionSer, value.interaction)
-    ((value.versioning?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+    ((value.versioning?.value?.code))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.versioning?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.typeSer, it)
     }
@@ -1056,9 +1056,7 @@ internal object CapabilityStatementRestResourceSerializer :
     (value.conditionalCreate?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 19, Hoisted.typeSer, it)
     }
-    ((value.conditionalRead?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 20, it)
-    }
+    ((value.conditionalRead?.value?.code))?.let { encoder.encodeStringElement(descriptor, 20, it) }
     (value.conditionalRead?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 21, Hoisted.typeSer, it)
     }
@@ -1070,13 +1068,13 @@ internal object CapabilityStatementRestResourceSerializer :
     (value.conditionalPatch?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 25, Hoisted.typeSer, it)
     }
-    ((value.conditionalDelete?.value?.getCode()))?.let {
+    ((value.conditionalDelete?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 26, it)
     }
     (value.conditionalDelete?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 27, Hoisted.typeSer, it)
     }
-    (value.referencePolicy.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.referencePolicy.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 28, Hoisted.supportedProfileSer, it)
     }
     (value.referencePolicy.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -1224,7 +1222,7 @@ internal object CapabilityStatementRestResourceInteractionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -1360,7 +1358,7 @@ internal object CapabilityStatementRestResourceSearchParamSerializer :
     (value.definition?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.nameSer, it)
     }
@@ -1594,7 +1592,7 @@ internal object CapabilityStatementRestInteractionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -1972,7 +1970,7 @@ internal object CapabilityStatementMessagingSupportedMessageSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.mode.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.mode.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modeSer, it)
     }
@@ -2086,7 +2084,7 @@ internal object CapabilityStatementDocumentSerializer : KSerializer<CapabilitySt
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.mode.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.mode.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modeSer, it)
     }
@@ -2735,7 +2733,7 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -2844,7 +2842,7 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
         it,
       )
     }
-    ((value.kind.value?.getCode()))?.let {
+    ((value.kind.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
     }
     (value.kind.toElement())?.let {
@@ -2898,7 +2896,7 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
         it,
       )
     }
-    ((value.fhirVersion.value?.getCode()))?.let {
+    ((value.fhirVersion.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 49 + descriptorOffset, it)
     }
     (value.fhirVersion.toElement())?.let {

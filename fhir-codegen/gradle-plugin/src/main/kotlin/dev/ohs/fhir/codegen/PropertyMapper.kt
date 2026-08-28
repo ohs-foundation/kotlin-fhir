@@ -31,6 +31,7 @@ import dev.ohs.fhir.codegen.schema.getContentReferenceType
 import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.isBackboneElement
 import dev.ohs.fhir.codegen.schema.isCommonBinding
+import dev.ohs.fhir.codegen.schema.isExtensibleBinding
 import dev.ohs.fhir.codegen.schema.normalizeEnumName
 import dev.ohs.fhir.codegen.schema.typeIsEnumeratedCode
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
@@ -283,7 +284,8 @@ internal class PropertyMapper(
         else -> ""
       }
     val enumClass = ClassName(enumClassPackageName, enumClassName)
-    return ClassName(modelClassName.packageName, "Enumeration").parameterizedBy(enumClass)
+    val wrapperName = if (element.isExtensibleBinding) "ExtensibleEnumeration" else "Enumeration"
+    return ClassName(modelClassName.packageName, wrapperName).parameterizedBy(enumClass)
   }
 
   /**

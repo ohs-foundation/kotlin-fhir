@@ -776,10 +776,10 @@ public data class Group(
 
   /** Types of resources that are part of group. */
   public enum class GroupType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Person("person", "http://hl7.org/fhir/group-type", "Person"),
     Animal("animal", "http://hl7.org/fhir/group-type", "Animal"),
     Practitioner("practitioner", "http://hl7.org/fhir/group-type", "Practitioner"),
@@ -793,14 +793,12 @@ public data class Group(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): GroupType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum GroupType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): GroupType? =
         when (code) {
           "person" -> Person
           "animal" -> Animal
@@ -812,34 +810,32 @@ public data class Group(
           "organization" -> Organization
           "relatedperson" -> Relatedperson
           "specimen" -> Specimen
-          else -> throw IllegalArgumentException("Unknown code $code for enum GroupType")
+          else -> null
         }
     }
   }
 
   /** Basis for membership in a group */
   public enum class GroupMembershipBasis(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Definitional("definitional", "http://hl7.org/fhir/group-membership-basis", "Definitional"),
     Enumerated("enumerated", "http://hl7.org/fhir/group-membership-basis", "Enumerated");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): GroupMembershipBasis =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum GroupMembershipBasis")
+
+      public fun fromCodeOrNull(code: kotlin.String?): GroupMembershipBasis? =
         when (code) {
           "definitional" -> Definitional
           "enumerated" -> Enumerated
-          else -> throw IllegalArgumentException("Unknown code $code for enum GroupMembershipBasis")
+          else -> null
         }
     }
   }

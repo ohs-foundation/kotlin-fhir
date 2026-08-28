@@ -509,10 +509,10 @@ public data class SubscriptionStatus(
 
   /** State values for FHIR Subscriptions. */
   public enum class SubscriptionStatusCodes(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Requested("requested", "http://hl7.org/fhir/subscription-status", "Requested"),
     Active("active", "http://hl7.org/fhir/subscription-status", "Active"),
     Error("error", "http://hl7.org/fhir/subscription-status", "Error"),
@@ -525,32 +525,29 @@ public data class SubscriptionStatus(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): SubscriptionStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SubscriptionStatusCodes")
+
+      public fun fromCodeOrNull(code: String?): SubscriptionStatusCodes? =
         when (code) {
           "requested" -> Requested
           "active" -> Active
           "error" -> Error
           "off" -> Off
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum SubscriptionStatusCodes")
+          else -> null
         }
     }
   }
 
   /** The type of notification represented by the status message. */
   public enum class SubscriptionNotificationType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Handshake("handshake", "http://hl7.org/fhir/subscription-notification-type", "Handshake"),
     Heartbeat("heartbeat", "http://hl7.org/fhir/subscription-notification-type", "Heartbeat"),
     Event_Notification(
@@ -567,24 +564,21 @@ public data class SubscriptionStatus(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): SubscriptionNotificationType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum SubscriptionNotificationType"
+          )
+
+      public fun fromCodeOrNull(code: String?): SubscriptionNotificationType? =
         when (code) {
           "handshake" -> Handshake
           "heartbeat" -> Heartbeat
           "event-notification" -> Event_Notification
           "query-status" -> Query_Status
           "query-event" -> Query_Event
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum SubscriptionNotificationType"
-            )
+          else -> null
         }
     }
   }

@@ -852,10 +852,10 @@ public data class CarePlan(
 
   /** Codes identifying the lifecycle stage of a request. */
   public enum class RequestStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Draft("draft", "http://hl7.org/fhir/request-status", "Draft"),
     Active("active", "http://hl7.org/fhir/request-status", "Active"),
     On_Hold("on-hold", "http://hl7.org/fhir/request-status", "On Hold"),
@@ -866,14 +866,12 @@ public data class CarePlan(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): RequestStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum RequestStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): RequestStatus? =
         when (code) {
           "draft" -> Draft
           "active" -> Active
@@ -882,17 +880,17 @@ public data class CarePlan(
           "completed" -> Completed
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestStatus")
+          else -> null
         }
     }
   }
 
   /** Codes indicating the degree of authority/intentionality associated with a care plan. */
   public enum class CarePlanIntent(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
     Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
     Order("order", "http://hl7.org/fhir/request-intent", "Order"),
@@ -901,21 +899,19 @@ public data class CarePlan(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CarePlanIntent =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum CarePlanIntent")
+
+      public fun fromCodeOrNull(code: kotlin.String?): CarePlanIntent? =
         when (code) {
           "proposal" -> Proposal
           "plan" -> Plan
           "order" -> Order
           "option" -> Option
           "directive" -> Directive
-          else -> throw IllegalArgumentException("Unknown code $code for enum CarePlanIntent")
+          else -> null
         }
     }
   }

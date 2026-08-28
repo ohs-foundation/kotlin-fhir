@@ -985,10 +985,10 @@ public data class Requirements(
 
   /** Description Needed Here */
   public enum class ConformanceExpectation(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Shall("SHALL", "http://hl7.org/fhir/conformance-expectation", "SHALL"),
     Should("SHOULD", "http://hl7.org/fhir/conformance-expectation", "SHOULD"),
     May("MAY", "http://hl7.org/fhir/conformance-expectation", "MAY"),
@@ -996,21 +996,18 @@ public data class Requirements(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ConformanceExpectation =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ConformanceExpectation")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ConformanceExpectation? =
         when (code) {
           "SHALL" -> Shall
           "SHOULD" -> Should
           "MAY" -> May
           "SHOULD-NOT" -> Should_Not
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ConformanceExpectation")
+          else -> null
         }
     }
   }

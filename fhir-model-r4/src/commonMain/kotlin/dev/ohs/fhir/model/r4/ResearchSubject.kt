@@ -323,10 +323,10 @@ public data class ResearchSubject(
 
   /** Indicates the progression of a study subject through a study. */
   public enum class ResearchSubjectStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Candidate("candidate", "http://hl7.org/fhir/research-subject-status", "Candidate"),
     Eligible("eligible", "http://hl7.org/fhir/research-subject-status", "Eligible"),
     Follow_Up("follow-up", "http://hl7.org/fhir/research-subject-status", "Follow-up"),
@@ -363,14 +363,12 @@ public data class ResearchSubject(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ResearchSubjectStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ResearchSubjectStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ResearchSubjectStatus? =
         when (code) {
           "candidate" -> Candidate
           "eligible" -> Eligible
@@ -385,8 +383,7 @@ public data class ResearchSubject(
           "potential-candidate" -> Potential_Candidate
           "screening" -> Screening
           "withdrawn" -> Withdrawn
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ResearchSubjectStatus")
+          else -> null
         }
     }
   }

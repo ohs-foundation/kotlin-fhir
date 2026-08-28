@@ -1321,10 +1321,10 @@ public data class Consent(
 
   /** How a resource reference is interpreted when testing consent restrictions. */
   public enum class ConsentDataMeaning(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Instance("instance", "http://hl7.org/fhir/consent-data-meaning", "Instance"),
     Related("related", "http://hl7.org/fhir/consent-data-meaning", "Related"),
     Dependents("dependents", "http://hl7.org/fhir/consent-data-meaning", "Dependents"),
@@ -1332,30 +1332,28 @@ public data class Consent(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): ConsentDataMeaning =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ConsentDataMeaning")
+
+      public fun fromCodeOrNull(code: String?): ConsentDataMeaning? =
         when (code) {
           "instance" -> Instance
           "related" -> Related
           "dependents" -> Dependents
           "authoredby" -> Authoredby
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConsentDataMeaning")
+          else -> null
         }
     }
   }
 
   /** Indicates the state of the consent. */
   public enum class ConsentState(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Draft("draft", "http://hl7.org/fhir/consent-state-codes", "Pending"),
     Active("active", "http://hl7.org/fhir/consent-state-codes", "Active"),
     Inactive("inactive", "http://hl7.org/fhir/consent-state-codes", "Inactive"),
@@ -1369,14 +1367,12 @@ public data class Consent(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): ConsentState =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ConsentState")
+
+      public fun fromCodeOrNull(code: String?): ConsentState? =
         when (code) {
           "draft" -> Draft
           "active" -> Active
@@ -1384,34 +1380,32 @@ public data class Consent(
           "not-done" -> Not_Done
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConsentState")
+          else -> null
         }
     }
   }
 
   /** How a rule statement is applied, such as adding additional consent or removing consent. */
   public enum class ConsentProvisionType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Deny("deny", "http://hl7.org/fhir/consent-provision-type", "Deny"),
     Permit("permit", "http://hl7.org/fhir/consent-provision-type", "Permit");
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): ConsentProvisionType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ConsentProvisionType")
+
+      public fun fromCodeOrNull(code: String?): ConsentProvisionType? =
         when (code) {
           "deny" -> Deny
           "permit" -> Permit
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConsentProvisionType")
+          else -> null
         }
     }
   }

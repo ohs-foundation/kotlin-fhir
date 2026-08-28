@@ -655,10 +655,10 @@ public data class RiskAssessment(
 
   /** Codes providing the status of an observation. */
   public enum class ObservationStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Registered("registered", "http://hl7.org/fhir/observation-status", "Registered"),
     Preliminary("preliminary", "http://hl7.org/fhir/observation-status", "Preliminary"),
     Final("final", "http://hl7.org/fhir/observation-status", "Final"),
@@ -674,14 +674,12 @@ public data class RiskAssessment(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ObservationStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ObservationStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ObservationStatus? =
         when (code) {
           "registered" -> Registered
           "preliminary" -> Preliminary
@@ -691,7 +689,7 @@ public data class RiskAssessment(
           "cancelled" -> Cancelled
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum ObservationStatus")
+          else -> null
         }
     }
   }

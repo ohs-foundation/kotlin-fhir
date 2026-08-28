@@ -757,10 +757,10 @@ public data class AdverseEvent(
 
   /** Overall nature of the adverse event, e.g. real or potential. */
   public enum class AdverseEventActuality(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Actual("actual", "http://hl7.org/fhir/adverse-event-actuality", "Adverse Event"),
     Potential(
       "potential",
@@ -770,19 +770,16 @@ public data class AdverseEvent(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AdverseEventActuality =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AdverseEventActuality")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AdverseEventActuality? =
         when (code) {
           "actual" -> Actual
           "potential" -> Potential
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AdverseEventActuality")
+          else -> null
         }
     }
   }

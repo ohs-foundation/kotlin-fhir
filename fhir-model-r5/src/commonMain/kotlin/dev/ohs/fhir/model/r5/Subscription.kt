@@ -819,10 +819,10 @@ public data class Subscription(
 
   /** What Search Comparator Codes are supported in search. */
   public enum class SearchComparator(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Eq("eq", "http://hl7.org/fhir/search-comparator", "Equals"),
     Ne("ne", "http://hl7.org/fhir/search-comparator", "Not Equals"),
     Gt("gt", "http://hl7.org/fhir/search-comparator", "Greater Than"),
@@ -835,14 +835,12 @@ public data class Subscription(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SearchComparator =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SearchComparator")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SearchComparator? =
         when (code) {
           "eq" -> Eq
           "ne" -> Ne
@@ -853,17 +851,17 @@ public data class Subscription(
           "sa" -> Sa
           "eb" -> Eb
           "ap" -> Ap
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchComparator")
+          else -> null
         }
     }
   }
 
   /** A supported modifier for a search parameter. */
   public enum class SearchModifierCode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Missing("missing", "http://hl7.org/fhir/search-modifier-code", "Missing"),
     Exact("exact", "http://hl7.org/fhir/search-modifier-code", "Exact"),
     Contains("contains", "http://hl7.org/fhir/search-modifier-code", "Contains"),
@@ -882,14 +880,12 @@ public data class Subscription(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SearchModifierCode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SearchModifierCode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SearchModifierCode? =
         when (code) {
           "missing" -> Missing
           "exact" -> Exact
@@ -906,17 +902,17 @@ public data class Subscription(
           "code-text" -> Code_Text
           "text-advanced" -> Text_Advanced
           "iterate" -> Iterate
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchModifierCode")
+          else -> null
         }
     }
   }
 
   /** State values for FHIR Subscriptions. */
   public enum class SubscriptionStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Requested("requested", "http://hl7.org/fhir/subscription-status", "Requested"),
     Active("active", "http://hl7.org/fhir/subscription-status", "Active"),
     Error("error", "http://hl7.org/fhir/subscription-status", "Error"),
@@ -929,32 +925,29 @@ public data class Subscription(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SubscriptionStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SubscriptionStatusCodes")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SubscriptionStatusCodes? =
         when (code) {
           "requested" -> Requested
           "active" -> Active
           "error" -> Error
           "off" -> Off
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum SubscriptionStatusCodes")
+          else -> null
         }
     }
   }
 
   /** Codes to represent how much resource content to send in the notification payload. */
   public enum class SubscriptionPayloadContent(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Empty("empty", "http://hl7.org/fhir/subscription-payload-content", "Empty"),
     Id_Only("id-only", "http://hl7.org/fhir/subscription-payload-content", "Id-only"),
     Full_Resource(
@@ -965,20 +958,19 @@ public data class Subscription(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SubscriptionPayloadContent =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum SubscriptionPayloadContent"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): SubscriptionPayloadContent? =
         when (code) {
           "empty" -> Empty
           "id-only" -> Id_Only
           "full-resource" -> Full_Resource
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum SubscriptionPayloadContent")
+          else -> null
         }
     }
   }

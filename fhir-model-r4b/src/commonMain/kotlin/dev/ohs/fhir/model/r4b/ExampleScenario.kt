@@ -1683,28 +1683,25 @@ public data class ExampleScenario(
 
   /** The type of actor - system or human. */
   public enum class ExampleScenarioActorType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Person("person", "http://hl7.org/fhir/examplescenario-actor-type", "Person"),
     Entity("entity", "http://hl7.org/fhir/examplescenario-actor-type", "System");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ExampleScenarioActorType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ExampleScenarioActorType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ExampleScenarioActorType? =
         when (code) {
           "person" -> Person
           "entity" -> Entity
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ExampleScenarioActorType")
+          else -> null
         }
     }
   }

@@ -773,40 +773,37 @@ public data class ObservationDefinition(
 
   /** Codes identifying the category of observation range. */
   public enum class ObservationRangeCategory(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Reference("reference", "http://hl7.org/fhir/observation-range-category", "reference range"),
     Critical("critical", "http://hl7.org/fhir/observation-range-category", "critical range"),
     Absolute("absolute", "http://hl7.org/fhir/observation-range-category", "absolute range");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ObservationRangeCategory =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ObservationRangeCategory")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ObservationRangeCategory? =
         when (code) {
           "reference" -> Reference
           "critical" -> Critical
           "absolute" -> Absolute
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ObservationRangeCategory")
+          else -> null
         }
     }
   }
 
   /** Permitted data type for observation value. */
   public enum class ObservationDataType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Quantity("Quantity", "http://hl7.org/fhir/permitted-data-type", "Quantity"),
     CodeableConcept(
       "CodeableConcept",
@@ -825,14 +822,12 @@ public data class ObservationDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ObservationDataType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ObservationDataType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ObservationDataType? =
         when (code) {
           "Quantity" -> Quantity
           "CodeableConcept" -> CodeableConcept
@@ -845,7 +840,7 @@ public data class ObservationDefinition(
           "time" -> Time
           "dateTime" -> DateTime
           "Period" -> Period
-          else -> throw IllegalArgumentException("Unknown code $code for enum ObservationDataType")
+          else -> null
         }
     }
   }

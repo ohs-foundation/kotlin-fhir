@@ -1003,7 +1003,7 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1017,7 +1017,7 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
     (value.priority)?.let {
       encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.prioritySer, it)
     }
-    (value.purpose.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.purpose.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.purposeSer, it)
     }
     (value.purpose.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

@@ -58,7 +58,7 @@ public data class Attachment(
    */
   public val contentType: Code? = null,
   /** The human language of the content. The value can be any valid value according to BCP 47. */
-  public val language: Enumeration<CommonLanguages>? = null,
+  public val language: ExtensibleEnumeration<CommonLanguages>? = null,
   /**
    * The actual data of the attachment - a sequence of bytes, base64 encoded.
    *
@@ -144,7 +144,7 @@ public data class Attachment(
     public open var contentType: Code.Builder? = null
 
     /** The human language of the content. The value can be any valid value according to BCP 47. */
-    public open var language: Enumeration<CommonLanguages>? = null
+    public open var language: ExtensibleEnumeration<CommonLanguages>? = null
 
     /**
      * The actual data of the attachment - a sequence of bytes, base64 encoded.

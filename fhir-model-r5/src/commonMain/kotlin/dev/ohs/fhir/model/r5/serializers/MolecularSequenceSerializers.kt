@@ -442,11 +442,11 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
     (value.windowEnd?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.sequenceStringSer, it)
     }
-    ((value.orientation?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+    ((value.orientation?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.orientation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.sequenceStringSer, it)
     }
-    ((value.strand?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+    ((value.strand?.value?.code))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.strand?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.sequenceStringSer, it)
     }
@@ -832,7 +832,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.type?.value?.getCode()))?.let {
+    ((value.type?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.type?.toElement())?.let {

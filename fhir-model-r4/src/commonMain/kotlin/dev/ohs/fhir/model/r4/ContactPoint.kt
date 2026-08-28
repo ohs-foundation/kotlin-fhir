@@ -165,10 +165,10 @@ public data class ContactPoint(
 
   /** Telecommunications form for contact point. */
   public enum class ContactPointSystem(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Phone("phone", "http://hl7.org/fhir/contact-point-system", "Phone"),
     Fax("fax", "http://hl7.org/fhir/contact-point-system", "Fax"),
     Email("email", "http://hl7.org/fhir/contact-point-system", "Email"),
@@ -179,14 +179,12 @@ public data class ContactPoint(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ContactPointSystem =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ContactPointSystem")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ContactPointSystem? =
         when (code) {
           "phone" -> Phone
           "fax" -> Fax
@@ -195,17 +193,17 @@ public data class ContactPoint(
           "url" -> Url
           "sms" -> Sms
           "other" -> Other
-          else -> throw IllegalArgumentException("Unknown code $code for enum ContactPointSystem")
+          else -> null
         }
     }
   }
 
   /** Use of contact point. */
   public enum class ContactPointUse(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Home("home", "http://hl7.org/fhir/contact-point-use", "Home"),
     Work("work", "http://hl7.org/fhir/contact-point-use", "Work"),
     Temp("temp", "http://hl7.org/fhir/contact-point-use", "Temp"),
@@ -214,21 +212,19 @@ public data class ContactPoint(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ContactPointUse =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ContactPointUse")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ContactPointUse? =
         when (code) {
           "home" -> Home
           "work" -> Work
           "temp" -> Temp
           "old" -> Old
           "mobile" -> Mobile
-          else -> throw IllegalArgumentException("Unknown code $code for enum ContactPointUse")
+          else -> null
         }
     }
   }

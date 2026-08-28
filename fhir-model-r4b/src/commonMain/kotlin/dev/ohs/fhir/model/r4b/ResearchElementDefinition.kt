@@ -1203,10 +1203,10 @@ public data class ResearchElementDefinition(
 
   /** Possible group measure aggregates (E.g. Mean, Median). */
   public enum class GroupMeasure(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Mean("mean", "http://hl7.org/fhir/group-measure", "Mean"),
     Median("median", "http://hl7.org/fhir/group-measure", "Median"),
     Mean_Of_Mean("mean-of-mean", "http://hl7.org/fhir/group-measure", "Mean of Study Means"),
@@ -1220,14 +1220,12 @@ public data class ResearchElementDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): GroupMeasure =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum GroupMeasure")
+
+      public fun fromCodeOrNull(code: kotlin.String?): GroupMeasure? =
         when (code) {
           "mean" -> Mean
           "median" -> Median
@@ -1235,36 +1233,34 @@ public data class ResearchElementDefinition(
           "mean-of-median" -> Mean_Of_Median
           "median-of-mean" -> Median_Of_Mean
           "median-of-median" -> Median_Of_Median
-          else -> throw IllegalArgumentException("Unknown code $code for enum GroupMeasure")
+          else -> null
         }
     }
   }
 
   /** The possible types of research elements (E.g. Population, Exposure, Outcome). */
   public enum class ResearchElementType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Population("population", "http://hl7.org/fhir/research-element-type", "Population"),
     Exposure("exposure", "http://hl7.org/fhir/research-element-type", "Exposure"),
     Outcome("outcome", "http://hl7.org/fhir/research-element-type", "Outcome");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ResearchElementType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ResearchElementType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ResearchElementType? =
         when (code) {
           "population" -> Population
           "exposure" -> Exposure
           "outcome" -> Outcome
-          else -> throw IllegalArgumentException("Unknown code $code for enum ResearchElementType")
+          else -> null
         }
     }
   }
@@ -1274,29 +1270,27 @@ public data class ResearchElementDefinition(
    * Descriptive).
    */
   public enum class VariableType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Dichotomous("dichotomous", "http://hl7.org/fhir/variable-type", "Dichotomous"),
     Continuous("continuous", "http://hl7.org/fhir/variable-type", "Continuous"),
     Descriptive("descriptive", "http://hl7.org/fhir/variable-type", "Descriptive");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): VariableType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum VariableType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): VariableType? =
         when (code) {
           "dichotomous" -> Dichotomous
           "continuous" -> Continuous
           "descriptive" -> Descriptive
-          else -> throw IllegalArgumentException("Unknown code $code for enum VariableType")
+          else -> null
         }
     }
   }

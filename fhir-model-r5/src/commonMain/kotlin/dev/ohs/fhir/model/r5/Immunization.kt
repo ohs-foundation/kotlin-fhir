@@ -1191,30 +1191,27 @@ public data class Immunization(
    * administered dose of vaccine.
    */
   public enum class ImmunizationStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Completed("completed", "http://hl7.org/fhir/event-status", "Completed"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/event-status", "Entered in Error"),
     Not_Done("not-done", "http://hl7.org/fhir/event-status", "Not Done");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ImmunizationStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ImmunizationStatusCodes")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ImmunizationStatusCodes? =
         when (code) {
           "completed" -> Completed
           "entered-in-error" -> Entered_In_Error
           "not-done" -> Not_Done
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ImmunizationStatusCodes")
+          else -> null
         }
     }
   }

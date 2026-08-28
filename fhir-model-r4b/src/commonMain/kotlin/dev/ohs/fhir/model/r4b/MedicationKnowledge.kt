@@ -2598,10 +2598,10 @@ public data class MedicationKnowledge(
 
   /** MedicationKnowledge Status Codes */
   public enum class MedicationKnowledgeStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://terminology.hl7.org/CodeSystem/medicationknowledge-status", "Active"),
     Inactive(
       "inactive",
@@ -2616,22 +2616,19 @@ public data class MedicationKnowledge(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): MedicationKnowledgeStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum MedicationKnowledgeStatusCodes"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): MedicationKnowledgeStatusCodes? =
         when (code) {
           "active" -> Active
           "inactive" -> Inactive
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MedicationKnowledgeStatusCodes"
-            )
+          else -> null
         }
     }
   }

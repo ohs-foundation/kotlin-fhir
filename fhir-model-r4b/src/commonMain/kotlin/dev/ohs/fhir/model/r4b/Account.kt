@@ -676,10 +676,10 @@ public data class Account(
 
   /** Indicates whether the account is available to be used. */
   public enum class AccountStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/account-status", "Active"),
     Inactive("inactive", "http://hl7.org/fhir/account-status", "Inactive"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/account-status", "Entered in error"),
@@ -688,21 +688,19 @@ public data class Account(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AccountStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AccountStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AccountStatus? =
         when (code) {
           "active" -> Active
           "inactive" -> Inactive
           "entered-in-error" -> Entered_In_Error
           "on-hold" -> On_Hold
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum AccountStatus")
+          else -> null
         }
     }
   }

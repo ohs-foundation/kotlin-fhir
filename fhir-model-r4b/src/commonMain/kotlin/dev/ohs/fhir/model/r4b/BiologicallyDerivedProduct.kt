@@ -954,42 +954,39 @@ public data class BiologicallyDerivedProduct(
 
   /** BiologicallyDerived Product Storage Scale. */
   public enum class BiologicallyDerivedProductStorageScale(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Farenheit("farenheit", "http://hl7.org/fhir/product-storage-scale", "Fahrenheit"),
     Celsius("celsius", "http://hl7.org/fhir/product-storage-scale", "Celsius"),
     Kelvin("kelvin", "http://hl7.org/fhir/product-storage-scale", "Kelvin");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): BiologicallyDerivedProductStorageScale =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum BiologicallyDerivedProductStorageScale"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): BiologicallyDerivedProductStorageScale? =
         when (code) {
           "farenheit" -> Farenheit
           "celsius" -> Celsius
           "kelvin" -> Kelvin
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum BiologicallyDerivedProductStorageScale"
-            )
+          else -> null
         }
     }
   }
 
   /** Biologically Derived Product Category. */
   public enum class BiologicallyDerivedProductCategory(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Organ("organ", "http://hl7.org/fhir/product-category", "Organ"),
     Tissue("tissue", "http://hl7.org/fhir/product-category", "Tissue"),
     Fluid("fluid", "http://hl7.org/fhir/product-category", "Fluid"),
@@ -998,54 +995,48 @@ public data class BiologicallyDerivedProduct(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): BiologicallyDerivedProductCategory =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum BiologicallyDerivedProductCategory"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): BiologicallyDerivedProductCategory? =
         when (code) {
           "organ" -> Organ
           "tissue" -> Tissue
           "fluid" -> Fluid
           "cells" -> Cells
           "biologicalAgent" -> BiologicalAgent
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum BiologicallyDerivedProductCategory"
-            )
+          else -> null
         }
     }
   }
 
   /** Biologically Derived Product Status. */
   public enum class BiologicallyDerivedProductStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Available("available", "http://hl7.org/fhir/product-status", "Available"),
     Unavailable("unavailable", "http://hl7.org/fhir/product-status", "Unavailable");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): BiologicallyDerivedProductStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum BiologicallyDerivedProductStatus"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): BiologicallyDerivedProductStatus? =
         when (code) {
           "available" -> Available
           "unavailable" -> Unavailable
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum BiologicallyDerivedProductStatus"
-            )
+          else -> null
         }
     }
   }

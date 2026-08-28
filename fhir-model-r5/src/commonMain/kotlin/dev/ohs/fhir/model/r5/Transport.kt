@@ -1739,10 +1739,10 @@ public data class Transport(
 
   /** Status of the transport */
   public enum class TransportStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     In_Progress("in-progress", "http://hl7.org/fhir/transport-status", "In Progress"),
     Completed("completed", "http://hl7.org/fhir/transport-status", "Completed"),
     Abandoned("abandoned", "http://hl7.org/fhir/transport-status", "Abandoned"),
@@ -1756,14 +1756,12 @@ public data class Transport(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): TransportStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum TransportStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): TransportStatus? =
         when (code) {
           "in-progress" -> In_Progress
           "completed" -> Completed
@@ -1771,17 +1769,17 @@ public data class Transport(
           "cancelled" -> Cancelled
           "planned" -> Planned
           "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum TransportStatus")
+          else -> null
         }
     }
   }
 
   /** Distinguishes whether the transport is a proposal, plan or full order. */
   public enum class TransportIntent(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Unknown("unknown", "http://hl7.org/fhir/transport-intent", "Unknown"),
     Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
     Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
@@ -1794,14 +1792,12 @@ public data class Transport(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): TransportIntent =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum TransportIntent")
+
+      public fun fromCodeOrNull(code: kotlin.String?): TransportIntent? =
         when (code) {
           "unknown" -> Unknown
           "proposal" -> Proposal
@@ -1812,17 +1808,17 @@ public data class Transport(
           "filler-order" -> Filler_Order
           "instance-order" -> Instance_Order
           "option" -> Option
-          else -> throw IllegalArgumentException("Unknown code $code for enum TransportIntent")
+          else -> null
         }
     }
   }
 
   /** Identifies the level of importance to be assigned to actioning the request. */
   public enum class RequestPriority(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
@@ -1830,20 +1826,18 @@ public data class Transport(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): RequestPriority =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
+
+      public fun fromCodeOrNull(code: kotlin.String?): RequestPriority? =
         when (code) {
           "routine" -> Routine
           "urgent" -> Urgent
           "asap" -> Asap
           "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
+          else -> null
         }
     }
   }

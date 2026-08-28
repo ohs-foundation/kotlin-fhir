@@ -1154,10 +1154,10 @@ public data class ChargeItemDefinition(
 
   /** Codes indicating the kind of the price component. */
   public enum class InvoicePriceComponentType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Base("base", "http://hl7.org/fhir/invoice-priceComponentType", "base price"),
     Surcharge("surcharge", "http://hl7.org/fhir/invoice-priceComponentType", "surcharge"),
     Deduction("deduction", "http://hl7.org/fhir/invoice-priceComponentType", "deduction"),
@@ -1171,14 +1171,12 @@ public data class ChargeItemDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): InvoicePriceComponentType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum InvoicePriceComponentType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): InvoicePriceComponentType? =
         when (code) {
           "base" -> Base
           "surcharge" -> Surcharge
@@ -1186,8 +1184,7 @@ public data class ChargeItemDefinition(
           "discount" -> Discount
           "tax" -> Tax
           "informational" -> Informational
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum InvoicePriceComponentType")
+          else -> null
         }
     }
   }

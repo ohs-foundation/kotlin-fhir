@@ -16,31 +16,30 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** Codes providing the combined status of a specimen. */
 public enum class SpecimenCombined(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Grouped("grouped", "http://hl7.org/fhir/specimen-combined", "Grouped"),
   Pooled("pooled", "http://hl7.org/fhir/specimen-combined", "Pooled");
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): SpecimenCombined =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum SpecimenCombined")
+
+    public fun fromCodeOrNull(code: String?): SpecimenCombined? =
       when (code) {
         "grouped" -> Grouped
         "pooled" -> Pooled
-        else -> throw IllegalArgumentException("Unknown code $code for enum SpecimenCombined")
+        else -> null
       }
   }
 }

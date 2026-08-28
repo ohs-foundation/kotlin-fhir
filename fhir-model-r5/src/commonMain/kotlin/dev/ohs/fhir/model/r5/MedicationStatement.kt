@@ -725,10 +725,10 @@ public data class MedicationStatement(
 
   /** MedicationStatement Status Codes */
   public enum class MedicationStatementStatusCodes(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Recorded("recorded", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Recorded"),
     Entered_In_Error(
       "entered-in-error",
@@ -739,22 +739,19 @@ public data class MedicationStatement(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): MedicationStatementStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum MedicationStatementStatusCodes"
+          )
+
+      public fun fromCodeOrNull(code: String?): MedicationStatementStatusCodes? =
         when (code) {
           "recorded" -> Recorded
           "entered-in-error" -> Entered_In_Error
           "draft" -> Draft
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MedicationStatementStatusCodes"
-            )
+          else -> null
         }
     }
   }

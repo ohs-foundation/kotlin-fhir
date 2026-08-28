@@ -367,7 +367,7 @@ internal object MeasureGroupSerializer : KSerializer<Measure.Group> {
         encoder.encodeSerializableElement(descriptor, 10, Hoisted.subjectReferenceSer, choice.value)
       }
     }
-    ((value.basis?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
+    ((value.basis?.value?.code))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.basis?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.linkIdSer, it)
     }
@@ -1732,7 +1732,7 @@ internal object MeasureSerializer : KSerializer<Measure> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1773,7 +1773,7 @@ internal object MeasureSerializer : KSerializer<Measure> {
         )
       }
     }
-    ((value.basis?.value?.getCode()))?.let {
+    ((value.basis?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
     }
     (value.basis?.toElement())?.let {

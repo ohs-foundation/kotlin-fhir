@@ -1795,10 +1795,10 @@ public data class EvidenceVariable(
 
   /** Logical grouping of characteristics. */
   public enum class CharacteristicCombination(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     All_Of("all-of", "http://hl7.org/fhir/characteristic-combination", "All of"),
     Any_Of("any-of", "http://hl7.org/fhir/characteristic-combination", "Any of"),
     At_Least("at-least", "http://hl7.org/fhir/characteristic-combination", "At least"),
@@ -1809,14 +1809,12 @@ public data class EvidenceVariable(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CharacteristicCombination =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum CharacteristicCombination")
+
+      public fun fromCodeOrNull(code: kotlin.String?): CharacteristicCombination? =
         when (code) {
           "all-of" -> All_Of
           "any-of" -> Any_Of
@@ -1825,8 +1823,7 @@ public data class EvidenceVariable(
           "statistical" -> Statistical
           "net-effect" -> Net_Effect
           "dataset" -> Dataset
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CharacteristicCombination")
+          else -> null
         }
     }
   }
@@ -1836,10 +1833,10 @@ public data class EvidenceVariable(
    * Dichotomous, Continuous, Descriptive).
    */
   public enum class EvidenceVariableHandling(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Continuous("continuous", "http://hl7.org/fhir/variable-handling", "continuous variable"),
     Dichotomous("dichotomous", "http://hl7.org/fhir/variable-handling", "dichotomous variable"),
     Ordinal("ordinal", "http://hl7.org/fhir/variable-handling", "ordinal variable"),
@@ -1851,21 +1848,18 @@ public data class EvidenceVariable(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): EvidenceVariableHandling =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum EvidenceVariableHandling")
+
+      public fun fromCodeOrNull(code: kotlin.String?): EvidenceVariableHandling? =
         when (code) {
           "continuous" -> Continuous
           "dichotomous" -> Dichotomous
           "ordinal" -> Ordinal
           "polychotomous" -> Polychotomous
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum EvidenceVariableHandling")
+          else -> null
         }
     }
   }

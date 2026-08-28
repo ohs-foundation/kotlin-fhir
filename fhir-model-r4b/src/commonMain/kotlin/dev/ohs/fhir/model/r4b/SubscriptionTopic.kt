@@ -1544,29 +1544,27 @@ public data class SubscriptionTopic(
 
   /** FHIR RESTful interaction codes used for SubscriptionTopic trigger. */
   public enum class InteractionTrigger(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Create("create", "http://hl7.org/fhir/restful-interaction", "create"),
     Update("update", "http://hl7.org/fhir/restful-interaction", "update"),
     Delete("delete", "http://hl7.org/fhir/restful-interaction", "delete");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): InteractionTrigger =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum InteractionTrigger")
+
+      public fun fromCodeOrNull(code: kotlin.String?): InteractionTrigger? =
         when (code) {
           "create" -> Create
           "update" -> Update
           "delete" -> Delete
-          else -> throw IllegalArgumentException("Unknown code $code for enum InteractionTrigger")
+          else -> null
         }
     }
   }
@@ -1576,38 +1574,35 @@ public data class SubscriptionTopic(
    * create or after a delete).
    */
   public enum class CriteriaNotExistsBehavior(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Test_Passes("test-passes", "http://hl7.org/fhir/subscriptiontopic-cr-behavior", "test passes"),
     Test_Fails("test-fails", "http://hl7.org/fhir/subscriptiontopic-cr-behavior", "test fails");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CriteriaNotExistsBehavior =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum CriteriaNotExistsBehavior")
+
+      public fun fromCodeOrNull(code: kotlin.String?): CriteriaNotExistsBehavior? =
         when (code) {
           "test-passes" -> Test_Passes
           "test-fails" -> Test_Fails
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CriteriaNotExistsBehavior")
+          else -> null
         }
     }
   }
 
   /** FHIR search modifiers allowed for use in Subscriptions and SubscriptionTopics. */
   public enum class SubscriptionSearchModifier(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     EqualTo("=", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "="),
     Eq("eq", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Equal"),
     Ne("ne", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Not Equal"),
@@ -1642,14 +1637,14 @@ public data class SubscriptionTopic(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SubscriptionSearchModifier =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum SubscriptionSearchModifier"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): SubscriptionSearchModifier? =
         when (code) {
           "=" -> EqualTo
           "eq" -> Eq
@@ -1666,8 +1661,7 @@ public data class SubscriptionTopic(
           "in" -> In
           "not-in" -> Not_In
           "of-type" -> Of_Type
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum SubscriptionSearchModifier")
+          else -> null
         }
     }
   }

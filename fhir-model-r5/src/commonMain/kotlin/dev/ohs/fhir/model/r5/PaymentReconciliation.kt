@@ -923,10 +923,10 @@ public data class PaymentReconciliation(
 
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/fm-status", "Active"),
     Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
     Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
@@ -934,33 +934,30 @@ public data class PaymentReconciliation(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum FinancialResourceStatusCodes"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): FinancialResourceStatusCodes? =
         when (code) {
           "active" -> Active
           "cancelled" -> Cancelled
           "draft" -> Draft
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
+          else -> null
         }
     }
   }
 
   /** The outcome of the processing. */
   public enum class PaymentOutcome(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Queued("queued", "http://hl7.org/fhir/payment-outcome", "Queued"),
     Complete("complete", "http://hl7.org/fhir/payment-outcome", "Processing Complete"),
     Error("error", "http://hl7.org/fhir/payment-outcome", "Error"),
@@ -968,20 +965,18 @@ public data class PaymentReconciliation(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): PaymentOutcome =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum PaymentOutcome")
+
+      public fun fromCodeOrNull(code: kotlin.String?): PaymentOutcome? =
         when (code) {
           "queued" -> Queued
           "complete" -> Complete
           "error" -> Error
           "partial" -> Partial
-          else -> throw IllegalArgumentException("Unknown code $code for enum PaymentOutcome")
+          else -> null
         }
     }
   }

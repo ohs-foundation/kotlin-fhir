@@ -398,10 +398,10 @@ public data class AppointmentResponse(
 
   /** The Participation status of an appointment. */
   public enum class ParticipationStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Accepted("accepted", "http://hl7.org/fhir/participationstatus", "Accepted"),
     Declined("declined", "http://hl7.org/fhir/participationstatus", "Declined"),
     Tentative("tentative", "http://hl7.org/fhir/participationstatus", "Tentative"),
@@ -409,20 +409,18 @@ public data class AppointmentResponse(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ParticipationStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ParticipationStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ParticipationStatus? =
         when (code) {
           "accepted" -> Accepted
           "declined" -> Declined
           "tentative" -> Tentative
           "needs-action" -> Needs_Action
-          else -> throw IllegalArgumentException("Unknown code $code for enum ParticipationStatus")
+          else -> null
         }
     }
   }

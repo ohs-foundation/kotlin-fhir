@@ -33,10 +33,11 @@ import dev.ohs.fhir.codegen.schema.valueset.ValueSet
  */
 object EnumTypeSpecGenerator {
 
-  fun generate(enumClassName: String, valueSet: ValueSet): TypeSpec? {
+  fun generate(enumClassName: String, valueSet: ValueSet, packageName: String): TypeSpec? {
     val fhirEnum = generateEnum(valueSet) ?: return null
     val typeSpec =
       TypeSpec.enumBuilder(enumClassName)
+        .addSuperinterface(ClassName(packageName, "FhirEnum"))
         .apply {
           fhirEnum.description?.sanitizeKDoc()?.let { addKdoc(it) }
           primaryConstructor(
@@ -46,41 +47,41 @@ object EnumTypeSpecGenerator {
               .addParameter("display", String::class.asClassName().copy(nullable = true))
               .build()
           )
+          addProperty(
+            PropertySpec.builder("code", String::class, KModifier.OVERRIDE)
+              .initializer("code")
+              .build()
+          )
+          addProperty(
+            PropertySpec.builder("system", String::class, KModifier.OVERRIDE)
+              .initializer("system")
+              .build()
+          )
+          addProperty(
+            PropertySpec.builder(
+                "display",
+                String::class.asClassName().copy(nullable = true),
+                KModifier.OVERRIDE,
+              )
+              .initializer("display")
+              .build()
+          )
 
           fhirEnum.constants.forEach {
             addEnumConstant(
-                it.name,
-                TypeSpec.anonymousClassBuilder()
-                  .apply {
-                    addSuperclassConstructorParameter("%S", it.code)
-                    addSuperclassConstructorParameter("%S", it.system)
-                    if (it.display != null) {
-                      addSuperclassConstructorParameter("%S", it.display)
-                    } else {
-                      addSuperclassConstructorParameter("null")
-                    }
+              it.name,
+              TypeSpec.anonymousClassBuilder()
+                .apply {
+                  addSuperclassConstructorParameter("%S", it.code)
+                  addSuperclassConstructorParameter("%S", it.system)
+                  if (it.display != null) {
+                    addSuperclassConstructorParameter("%S", it.display)
+                  } else {
+                    addSuperclassConstructorParameter("null")
                   }
-                  .build(),
-              )
-              .addProperty(
-                PropertySpec.builder("code", String::class, KModifier.PRIVATE)
-                  .initializer("code")
-                  .build()
-              )
-              .addProperty(
-                PropertySpec.builder("system", String::class, KModifier.PRIVATE)
-                  .initializer("system")
-                  .build()
-              )
-              .addProperty(
-                PropertySpec.builder(
-                    "display",
-                    String::class.asClassName().copy(nullable = true),
-                    KModifier.PRIVATE,
-                  )
-                  .initializer("display")
-                  .build()
-              )
+                }
+                .build(),
+            )
           }
           addFunction(
             FunSpec.builder("toString")
@@ -89,33 +90,22 @@ object EnumTypeSpecGenerator {
               .returns(String::class)
               .build()
           )
-          addFunction(
-            FunSpec.builder("getCode")
-              .addModifiers(KModifier.PUBLIC)
-              .returns(String::class)
-              .addStatement("return code")
-              .build()
-          )
-          addFunction(
-            FunSpec.builder("getSystem")
-              .addModifiers(KModifier.PUBLIC)
-              .returns(String::class)
-              .addStatement("return system")
-              .build()
-          )
-          addFunction(
-            FunSpec.builder("getDisplay")
-              .addModifiers(KModifier.PUBLIC)
-              .returns(String::class.asClassName().copy(nullable = true))
-              .addStatement("return display")
-              .build()
-          )
           addType(
             TypeSpec.companionObjectBuilder()
               .addFunction(
                 FunSpec.builder("fromCode")
                   .addParameter("code", String::class)
                   .returns(ClassName.bestGuess(enumClassName))
+                  .addStatement(
+                    "return fromCodeOrNull(code) ?: throw IllegalArgumentException(\"Unknown code \$code for enum %L\")",
+                    enumClassName,
+                  )
+                  .build()
+              )
+              .addFunction(
+                FunSpec.builder("fromCodeOrNull")
+                  .addParameter("code", String::class.asClassName().copy(nullable = true))
+                  .returns(ClassName.bestGuess(enumClassName).copy(nullable = true))
                   .beginControlFlow("return when (code)")
                   .apply {
                     fhirEnum.constants
@@ -123,10 +113,7 @@ object EnumTypeSpecGenerator {
                       .forEach {
                         addStatement("%S -> %L", it.code, it.name)
                       }
-                    addStatement(
-                      "else -> throw IllegalArgumentException(\"Unknown code \$code for enum %L\")",
-                      enumClassName,
-                    )
+                    addStatement("else -> null")
                   }
                   .endControlFlow()
                   .build()

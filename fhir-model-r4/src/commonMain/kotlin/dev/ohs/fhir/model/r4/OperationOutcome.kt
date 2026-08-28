@@ -489,10 +489,10 @@ public data class OperationOutcome(
 
   /** How the issue affects the success of the action. */
   public enum class IssueSeverity(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Fatal("fatal", "http://hl7.org/fhir/issue-severity", "Fatal"),
     Error("error", "http://hl7.org/fhir/issue-severity", "Error"),
     Warning("warning", "http://hl7.org/fhir/issue-severity", "Warning"),
@@ -500,30 +500,28 @@ public data class OperationOutcome(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): IssueSeverity =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum IssueSeverity")
+
+      public fun fromCodeOrNull(code: kotlin.String?): IssueSeverity? =
         when (code) {
           "fatal" -> Fatal
           "error" -> Error
           "warning" -> Warning
           "information" -> Information
-          else -> throw IllegalArgumentException("Unknown code $code for enum IssueSeverity")
+          else -> null
         }
     }
   }
 
   /** A code that describes the type of issue. */
   public enum class IssueType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Invalid("invalid", "http://hl7.org/fhir/issue-type", "Invalid Content"),
     Structure("structure", "http://hl7.org/fhir/issue-type", "Structural Issue"),
     Required("required", "http://hl7.org/fhir/issue-type", "Required element missing"),
@@ -558,14 +556,12 @@ public data class OperationOutcome(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): IssueType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum IssueType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): IssueType? =
         when (code) {
           "invalid" -> Invalid
           "structure" -> Structure
@@ -598,7 +594,7 @@ public data class OperationOutcome(
           "incomplete" -> Incomplete
           "throttled" -> Throttled
           "informational" -> Informational
-          else -> throw IllegalArgumentException("Unknown code $code for enum IssueType")
+          else -> null
         }
     }
   }

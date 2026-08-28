@@ -1544,10 +1544,10 @@ public data class Device(
 
   /** Codes to identify how UDI data was entered. */
   public enum class UDIEntryType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Barcode("barcode", "http://hl7.org/fhir/udi-entry-type", "Barcode"),
     Rfid("rfid", "http://hl7.org/fhir/udi-entry-type", "RFID"),
     Manual("manual", "http://hl7.org/fhir/udi-entry-type", "Manual"),
@@ -1562,14 +1562,12 @@ public data class Device(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): UDIEntryType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum UDIEntryType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): UDIEntryType? =
         when (code) {
           "barcode" -> Barcode
           "rfid" -> Rfid
@@ -1578,17 +1576,17 @@ public data class Device(
           "self-reported" -> Self_Reported
           "electronic-transmission" -> Electronic_Transmission
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum UDIEntryType")
+          else -> null
         }
     }
   }
 
   /** The type of name the device is referred by. */
   public enum class DeviceNameType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Registered_Name("registered-name", "http://hl7.org/fhir/device-nametype", "Registered name"),
     User_Friendly_Name(
       "user-friendly-name",
@@ -1603,48 +1601,44 @@ public data class Device(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): DeviceNameType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DeviceNameType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): DeviceNameType? =
         when (code) {
           "registered-name" -> Registered_Name
           "user-friendly-name" -> User_Friendly_Name
           "patient-reported-name" -> Patient_Reported_Name
-          else -> throw IllegalArgumentException("Unknown code $code for enum DeviceNameType")
+          else -> null
         }
     }
   }
 
   /** The status of the Device record. */
   public enum class FHIRDeviceStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/device-status", "Active"),
     Inactive("inactive", "http://hl7.org/fhir/device-status", "Inactive"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/device-status", "Entered in Error");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): FHIRDeviceStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum FHIRDeviceStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): FHIRDeviceStatus? =
         when (code) {
           "active" -> Active
           "inactive" -> Inactive
           "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum FHIRDeviceStatus")
+          else -> null
         }
     }
   }

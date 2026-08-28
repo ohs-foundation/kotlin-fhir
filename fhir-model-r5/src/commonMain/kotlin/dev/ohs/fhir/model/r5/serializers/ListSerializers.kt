@@ -433,7 +433,7 @@ internal object ListSerializer : KSerializer<R5List> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -444,7 +444,7 @@ internal object ListSerializer : KSerializer<R5List> {
         it,
       )
     }
-    ((value.mode.value?.getCode()))?.let {
+    ((value.mode.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.mode.toElement())?.let {

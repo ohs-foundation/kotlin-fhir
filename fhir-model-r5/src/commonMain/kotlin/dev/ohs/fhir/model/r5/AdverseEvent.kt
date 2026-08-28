@@ -1574,10 +1574,10 @@ public data class AdverseEvent(
 
   /** Codes identifying the lifecycle stage of an adverse event. */
   public enum class AdverseEventStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     In_Progress("in-progress", "http://hl7.org/fhir/event-status", "In Progress"),
     Completed("completed", "http://hl7.org/fhir/event-status", "Completed"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/event-status", "Entered in Error"),
@@ -1585,30 +1585,28 @@ public data class AdverseEvent(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): AdverseEventStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AdverseEventStatus")
+
+      public fun fromCodeOrNull(code: String?): AdverseEventStatus? =
         when (code) {
           "in-progress" -> In_Progress
           "completed" -> Completed
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum AdverseEventStatus")
+          else -> null
         }
     }
   }
 
   /** Overall nature of the adverse event, e.g. real or potential. */
   public enum class AdverseEventActuality(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Actual("actual", "http://hl7.org/fhir/adverse-event-actuality", "Adverse Event"),
     Potential(
       "potential",
@@ -1618,19 +1616,16 @@ public data class AdverseEvent(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): AdverseEventActuality =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AdverseEventActuality")
+
+      public fun fromCodeOrNull(code: String?): AdverseEventActuality? =
         when (code) {
           "actual" -> Actual
           "potential" -> Potential
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AdverseEventActuality")
+          else -> null
         }
     }
   }

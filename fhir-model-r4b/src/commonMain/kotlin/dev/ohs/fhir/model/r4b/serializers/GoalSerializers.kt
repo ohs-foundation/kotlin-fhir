@@ -601,7 +601,7 @@ internal object GoalSerializer : KSerializer<Goal> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.lifecycleStatus.value?.getCode()))?.let {
+    ((value.lifecycleStatus.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.lifecycleStatus.toElement())?.let {

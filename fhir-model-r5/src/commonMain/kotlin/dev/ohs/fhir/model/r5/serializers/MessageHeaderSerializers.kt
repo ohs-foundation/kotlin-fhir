@@ -460,7 +460,7 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.identifierSer, value.identifier)
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it)
     }

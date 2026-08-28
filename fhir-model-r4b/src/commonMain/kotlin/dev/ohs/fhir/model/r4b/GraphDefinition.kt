@@ -1019,37 +1019,35 @@ public data class GraphDefinition(
 
   /** Defines how a compartment rule is used. */
   public enum class GraphCompartmentUse(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Condition("condition", "http://hl7.org/fhir/graph-compartment-use", "Condition"),
     Requirement("requirement", "http://hl7.org/fhir/graph-compartment-use", "Requirement");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): GraphCompartmentUse =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum GraphCompartmentUse")
+
+      public fun fromCodeOrNull(code: kotlin.String?): GraphCompartmentUse? =
         when (code) {
           "condition" -> Condition
           "requirement" -> Requirement
-          else -> throw IllegalArgumentException("Unknown code $code for enum GraphCompartmentUse")
+          else -> null
         }
     }
   }
 
   /** Which type a compartment definition describes. */
   public enum class CompartmentType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Patient("Patient", "http://hl7.org/fhir/compartment-type", "Patient"),
     Encounter("Encounter", "http://hl7.org/fhir/compartment-type", "Encounter"),
     RelatedPerson("RelatedPerson", "http://hl7.org/fhir/compartment-type", "RelatedPerson"),
@@ -1058,31 +1056,29 @@ public data class GraphDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CompartmentType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum CompartmentType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): CompartmentType? =
         when (code) {
           "Patient" -> Patient
           "Encounter" -> Encounter
           "RelatedPerson" -> RelatedPerson
           "Practitioner" -> Practitioner
           "Device" -> Device
-          else -> throw IllegalArgumentException("Unknown code $code for enum CompartmentType")
+          else -> null
         }
     }
   }
 
   /** How a compartment must be linked. */
   public enum class GraphCompartmentRule(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Identical("identical", "http://hl7.org/fhir/graph-compartment-rule", "Identical"),
     Matching("matching", "http://hl7.org/fhir/graph-compartment-rule", "Matching"),
     Different("different", "http://hl7.org/fhir/graph-compartment-rule", "Different"),
@@ -1090,20 +1086,18 @@ public data class GraphDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): GraphCompartmentRule =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum GraphCompartmentRule")
+
+      public fun fromCodeOrNull(code: kotlin.String?): GraphCompartmentRule? =
         when (code) {
           "identical" -> Identical
           "matching" -> Matching
           "different" -> Different
           "custom" -> Custom
-          else -> throw IllegalArgumentException("Unknown code $code for enum GraphCompartmentRule")
+          else -> null
         }
     }
   }

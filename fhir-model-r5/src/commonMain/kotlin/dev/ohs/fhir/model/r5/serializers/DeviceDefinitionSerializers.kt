@@ -490,7 +490,7 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -606,7 +606,7 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
     (value.name.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }
@@ -2072,7 +2072,7 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
     (value.recall.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.recallSer, it)
     }
-    ((value.scope?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.scope?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.scope?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.recallSer, it)
     }
@@ -2854,9 +2854,7 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
         Hoisted.materialSer,
         value.material,
       )
-    (value.productionIdentifierInUDI
-        .map { it.value?.getCode() }
-        .takeUnless { it.all { it == null } })
+    (value.productionIdentifierInUDI.map { it.value?.code }.takeUnless { it.all { it == null } })
       ?.let {
         encoder.encodeSerializableElement(
           descriptor,

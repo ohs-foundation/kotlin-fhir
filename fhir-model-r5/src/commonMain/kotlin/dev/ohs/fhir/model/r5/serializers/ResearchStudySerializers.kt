@@ -1474,7 +1474,7 @@ internal object ResearchStudySerializer : KSerializer<ResearchStudy> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -165,7 +165,7 @@ internal object CompartmentDefinitionResourceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -534,7 +534,7 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -614,7 +614,7 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
         it,
       )
     }
-    ((value.code.value?.getCode()))?.let {
+    ((value.code.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
     }
     (value.code.toElement())?.let {

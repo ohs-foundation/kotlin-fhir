@@ -2196,10 +2196,10 @@ public data class StructureMap(
 
   /** How the referenced structure is used in this mapping. */
   public enum class StructureMapModelMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Source("source", "http://hl7.org/fhir/map-model-mode", "Source Structure Definition"),
     Queried("queried", "http://hl7.org/fhir/map-model-mode", "Queried Structure Definition"),
     Target("target", "http://hl7.org/fhir/map-model-mode", "Target Structure Definition"),
@@ -2207,31 +2207,28 @@ public data class StructureMap(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): StructureMapModelMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum StructureMapModelMode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): StructureMapModelMode? =
         when (code) {
           "source" -> Source
           "queried" -> Queried
           "target" -> Target
           "produced" -> Produced
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum StructureMapModelMode")
+          else -> null
         }
     }
   }
 
   /** If this is the default rule set to apply for the source type, or this combination of types. */
   public enum class StructureMapGroupTypeMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     None("none", "http://hl7.org/fhir/map-group-type-mode", "Not a Default"),
     Types("types", "http://hl7.org/fhir/map-group-type-mode", "Default for Type Combination"),
     Type_And_Types(
@@ -2242,58 +2239,52 @@ public data class StructureMap(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): StructureMapGroupTypeMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum StructureMapGroupTypeMode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): StructureMapGroupTypeMode? =
         when (code) {
           "none" -> None
           "types" -> Types
           "type-and-types" -> Type_And_Types
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum StructureMapGroupTypeMode")
+          else -> null
         }
     }
   }
 
   /** Mode for this instance of data. */
   public enum class StructureMapInputMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Source("source", "http://hl7.org/fhir/map-input-mode", "Source Instance"),
     Target("target", "http://hl7.org/fhir/map-input-mode", "Target Instance");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): StructureMapInputMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum StructureMapInputMode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): StructureMapInputMode? =
         when (code) {
           "source" -> Source
           "target" -> Target
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum StructureMapInputMode")
+          else -> null
         }
     }
   }
 
   /** If field is a list, how to manage the source. */
   public enum class StructureMapSourceListMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     First("first", "http://hl7.org/fhir/map-source-list-mode", "First"),
     Not_First("not_first", "http://hl7.org/fhir/map-source-list-mode", "All but the first"),
     Last("last", "http://hl7.org/fhir/map-source-list-mode", "Last"),
@@ -2302,60 +2293,56 @@ public data class StructureMap(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): StructureMapSourceListMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum StructureMapSourceListMode"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): StructureMapSourceListMode? =
         when (code) {
           "first" -> First
           "not_first" -> Not_First
           "last" -> Last
           "not_last" -> Not_Last
           "only_one" -> Only_One
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum StructureMapSourceListMode")
+          else -> null
         }
     }
   }
 
   /** How to interpret the context. */
   public enum class StructureMapContextType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Type("type", "http://hl7.org/fhir/map-context-type", "Type"),
     Variable("variable", "http://hl7.org/fhir/map-context-type", "Variable");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): StructureMapContextType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum StructureMapContextType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): StructureMapContextType? =
         when (code) {
           "type" -> Type
           "variable" -> Variable
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum StructureMapContextType")
+          else -> null
         }
     }
   }
 
   /** If field is a list, how to manage the production. */
   public enum class StructureMapTargetListMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     First("first", "http://hl7.org/fhir/map-target-list-mode", "First"),
     Share("share", "http://hl7.org/fhir/map-target-list-mode", "Share"),
     Last("last", "http://hl7.org/fhir/map-target-list-mode", "Last"),
@@ -2363,31 +2350,30 @@ public data class StructureMap(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): StructureMapTargetListMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum StructureMapTargetListMode"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): StructureMapTargetListMode? =
         when (code) {
           "first" -> First
           "share" -> Share
           "last" -> Last
           "collate" -> Collate
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum StructureMapTargetListMode")
+          else -> null
         }
     }
   }
 
   /** How data is copied/created. */
   public enum class StructureMapTransform(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Create("create", "http://hl7.org/fhir/map-transform", "create"),
     Copy("copy", "http://hl7.org/fhir/map-transform", "copy"),
     Truncate("truncate", "http://hl7.org/fhir/map-transform", "truncate"),
@@ -2408,14 +2394,12 @@ public data class StructureMap(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): StructureMapTransform =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum StructureMapTransform")
+
+      public fun fromCodeOrNull(code: kotlin.String?): StructureMapTransform? =
         when (code) {
           "create" -> Create
           "copy" -> Copy
@@ -2434,8 +2418,7 @@ public data class StructureMap(
           "qty" -> Qty
           "id" -> Id
           "cp" -> Cp
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum StructureMapTransform")
+          else -> null
         }
     }
   }

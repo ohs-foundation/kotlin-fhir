@@ -27,7 +27,7 @@ import dev.ohs.fhir.model.r4.Base64Binary
 import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Element
-import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.ExtensibleEnumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
 import dev.ohs.fhir.model.r4.String as R4String
@@ -157,7 +157,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
       id = id,
       extension = extension ?: listOf(),
       contentType = Code.of(contentType, _contentType),
-      language = Enumeration.of(language?.let { CommonLanguages.fromCode(it) }, _language),
+      language = ExtensibleEnumeration.of(language, _language, CommonLanguages::fromCodeOrNull),
       `data` = Base64Binary.of(`data`, _data),
       url = Url.of(url, _url),
       size = UnsignedInt.of(size, _size),
@@ -175,7 +175,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     (value.contentType?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentTypeSer, it)
     }
-    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.language?.rawCode))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.contentTypeSer, it)
     }

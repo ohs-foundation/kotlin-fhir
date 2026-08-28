@@ -431,7 +431,7 @@ internal object GuidanceResponseSerializer : KSerializer<GuidanceResponse> {
         )
       }
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

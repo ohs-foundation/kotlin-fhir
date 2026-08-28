@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /** The status of the document reference. */
 public enum class DocumentReferenceStatus(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Current("current", "http://hl7.org/fhir/document-reference-status", "Current"),
   Superseded("superseded", "http://hl7.org/fhir/document-reference-status", "Superseded"),
   Entered_In_Error(
@@ -34,20 +35,17 @@ public enum class DocumentReferenceStatus(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): DocumentReferenceStatus =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum DocumentReferenceStatus")
+
+    public fun fromCodeOrNull(code: String?): DocumentReferenceStatus? =
       when (code) {
         "current" -> Current
         "superseded" -> Superseded
         "entered-in-error" -> Entered_In_Error
-        else ->
-          throw IllegalArgumentException("Unknown code $code for enum DocumentReferenceStatus")
+        else -> null
       }
   }
 }

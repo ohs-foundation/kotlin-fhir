@@ -855,7 +855,7 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
     (value.need)?.let {
       encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.needSer, it)
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

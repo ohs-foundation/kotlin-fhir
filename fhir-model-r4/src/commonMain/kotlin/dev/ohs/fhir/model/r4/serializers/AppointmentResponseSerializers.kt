@@ -347,7 +347,7 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
         it,
       )
     }
-    ((value.participantStatus.value?.getCode()))?.let {
+    ((value.participantStatus.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.participantStatus.toElement())?.let {

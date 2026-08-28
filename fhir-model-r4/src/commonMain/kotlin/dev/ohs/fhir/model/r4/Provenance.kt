@@ -770,10 +770,10 @@ public data class Provenance(
 
   /** How an entity was used in an activity. */
   public enum class ProvenanceEntityRole(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Derivation("derivation", "http://hl7.org/fhir/provenance-entity-role", "Derivation"),
     Revision("revision", "http://hl7.org/fhir/provenance-entity-role", "Revision"),
     Quotation("quotation", "http://hl7.org/fhir/provenance-entity-role", "Quotation"),
@@ -782,21 +782,19 @@ public data class Provenance(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): ProvenanceEntityRole =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ProvenanceEntityRole")
+
+      public fun fromCodeOrNull(code: String?): ProvenanceEntityRole? =
         when (code) {
           "derivation" -> Derivation
           "revision" -> Revision
           "quotation" -> Quotation
           "source" -> Source
           "removal" -> Removal
-          else -> throw IllegalArgumentException("Unknown code $code for enum ProvenanceEntityRole")
+          else -> null
         }
     }
   }

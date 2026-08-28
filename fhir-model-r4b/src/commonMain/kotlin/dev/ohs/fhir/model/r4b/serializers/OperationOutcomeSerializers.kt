@@ -198,11 +198,11 @@ internal object OperationOutcomeIssueSerializer : KSerializer<OperationOutcome.I
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.severity.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.severity.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.severity.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.severitySer, it)
     }
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.severitySer, it)
     }

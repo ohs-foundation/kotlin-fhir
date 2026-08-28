@@ -659,10 +659,10 @@ public data class ArtifactAssessment(
 
   /** The type of information contained in a component of an artifact assessment. */
   public enum class ArtifactAssessmentInformationType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Comment("comment", "http://hl7.org/fhir/artifactassessment-information-type", "Comment"),
     Classifier(
       "classifier",
@@ -680,14 +680,14 @@ public data class ArtifactAssessment(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ArtifactAssessmentInformationType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum ArtifactAssessmentInformationType"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): ArtifactAssessmentInformationType? =
         when (code) {
           "comment" -> Comment
           "classifier" -> Classifier
@@ -695,10 +695,7 @@ public data class ArtifactAssessment(
           "container" -> Container
           "response" -> Response
           "change-request" -> Change_Request
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ArtifactAssessmentInformationType"
-            )
+          else -> null
         }
     }
   }
@@ -709,10 +706,10 @@ public data class ArtifactAssessment(
    * artifact.
    */
   public enum class ArtifactAssessmentWorkflowStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Submitted("submitted", "http://hl7.org/fhir/artifactassessment-workflow-status", "Submitted"),
     Triaged("triaged", "http://hl7.org/fhir/artifactassessment-workflow-status", "Triaged"),
     Waiting_For_Input(
@@ -742,14 +739,14 @@ public data class ArtifactAssessment(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ArtifactAssessmentWorkflowStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum ArtifactAssessmentWorkflowStatus"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): ArtifactAssessmentWorkflowStatus? =
         when (code) {
           "submitted" -> Submitted
           "triaged" -> Triaged
@@ -761,10 +758,7 @@ public data class ArtifactAssessment(
           "applied" -> Applied
           "published" -> Published
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ArtifactAssessmentWorkflowStatus"
-            )
+          else -> null
         }
     }
   }
@@ -775,10 +769,10 @@ public data class ArtifactAssessment(
    * suggested by the comment or change request.
    */
   public enum class ArtifactAssessmentDisposition(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Unresolved("unresolved", "http://hl7.org/fhir/artifactassessment-disposition", "Unresolved"),
     Not_Persuasive(
       "not-persuasive",
@@ -799,24 +793,21 @@ public data class ArtifactAssessment(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ArtifactAssessmentDisposition =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum ArtifactAssessmentDisposition"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): ArtifactAssessmentDisposition? =
         when (code) {
           "unresolved" -> Unresolved
           "not-persuasive" -> Not_Persuasive
           "persuasive" -> Persuasive
           "persuasive-with-modification" -> Persuasive_With_Modification
           "not-persuasive-with-modification" -> Not_Persuasive_With_Modification
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ArtifactAssessmentDisposition"
-            )
+          else -> null
         }
     }
   }

@@ -144,7 +144,7 @@ internal object CompositionAttesterSerializer : KSerializer<Composition.Attester
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.mode.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.mode.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modeSer, it)
     }
@@ -265,7 +265,7 @@ internal object CompositionRelatesToSerializer : KSerializer<Composition.Relates
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -533,7 +533,7 @@ internal object CompositionSectionSerializer : KSerializer<Composition.Section> 
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.authorSerInner, it)
     }
     (value.text)?.let { encoder.encodeSerializableElement(descriptor, 8, Hoisted.textSer, it) }
-    ((value.mode?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    ((value.mode?.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.mode?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.titleSer, it)
     }
@@ -864,7 +864,7 @@ internal object CompositionSerializer : KSerializer<Composition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -923,7 +923,7 @@ internal object CompositionSerializer : KSerializer<Composition> {
         it,
       )
     }
-    ((value.confidentiality?.value?.getCode()))?.let {
+    ((value.confidentiality?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.confidentiality?.toElement())?.let {

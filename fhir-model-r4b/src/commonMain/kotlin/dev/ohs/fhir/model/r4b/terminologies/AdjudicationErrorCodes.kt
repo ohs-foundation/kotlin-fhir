@@ -16,31 +16,30 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /** This value set includes a smattering of adjudication codes. */
 public enum class AdjudicationErrorCodes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   A001("a001", "http://terminology.hl7.org/CodeSystem/adjudication-error", "Missing Identifier"),
   A002("a002", "http://terminology.hl7.org/CodeSystem/adjudication-error", "Missing Creation Date");
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): AdjudicationErrorCodes =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum AdjudicationErrorCodes")
+
+    public fun fromCodeOrNull(code: String?): AdjudicationErrorCodes? =
       when (code) {
         "a001" -> A001
         "a002" -> A002
-        else -> throw IllegalArgumentException("Unknown code $code for enum AdjudicationErrorCodes")
+        else -> null
       }
   }
 }

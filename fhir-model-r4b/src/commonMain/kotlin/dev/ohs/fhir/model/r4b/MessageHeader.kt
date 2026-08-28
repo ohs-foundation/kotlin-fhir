@@ -922,29 +922,27 @@ public data class MessageHeader(
 
   /** The kind of response to a message. */
   public enum class ResponseType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Ok("ok", "http://hl7.org/fhir/response-code", "OK"),
     Transient_Error("transient-error", "http://hl7.org/fhir/response-code", "Transient Error"),
     Fatal_Error("fatal-error", "http://hl7.org/fhir/response-code", "Fatal Error");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ResponseType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ResponseType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ResponseType? =
         when (code) {
           "ok" -> Ok
           "transient-error" -> Transient_Error
           "fatal-error" -> Fatal_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum ResponseType")
+          else -> null
         }
     }
   }

@@ -246,7 +246,7 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.isDerivedSer, it)
     }
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
-    ((value.preference.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.preference.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.preference.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.isDerivedSer, it)
     }
@@ -1367,7 +1367,7 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 26 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

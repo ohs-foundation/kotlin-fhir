@@ -178,7 +178,7 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
     (value.url.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.urlSer, it)
     }
-    ((value.mode.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.mode.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.urlSer, it)
     }
@@ -425,7 +425,7 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
     (value.extends?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }
-    ((value.typeMode?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.typeMode?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.typeMode?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.nameSer, it)
     }
@@ -569,7 +569,7 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }
-    ((value.mode.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.mode.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.nameSer, it)
     }
@@ -955,7 +955,7 @@ internal object StructureMapGroupRuleSourceSerializer :
     (value.element?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.contextSer, it)
     }
-    ((value.listMode?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+    ((value.listMode?.value?.code))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.listMode?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.contextSer, it)
     }
@@ -1149,7 +1149,7 @@ internal object StructureMapGroupRuleTargetSerializer :
     (value.variable?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.contextSer, it)
     }
-    (value.listMode.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.listMode.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.listModeSer, it)
     }
     (value.listMode.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -1159,7 +1159,7 @@ internal object StructureMapGroupRuleTargetSerializer :
     (value.listRuleId?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.contextSer, it)
     }
-    ((value.transform?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+    ((value.transform?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.transform?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.contextSer, it)
     }
@@ -1969,7 +1969,7 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

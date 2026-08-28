@@ -33,6 +33,7 @@ import dev.ohs.fhir.codegen.schema.getContentReferenceType
 import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.getPathSimpleNames
 import dev.ohs.fhir.codegen.schema.isBackboneElement
+import dev.ohs.fhir.codegen.schema.isExtensibleBinding
 import dev.ohs.fhir.codegen.schema.typeIsEnumeratedCode
 
 /**
@@ -391,10 +392,17 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         .apply {
           add("(")
           if (isEnum) {
-            add(
-              if (isRequired) "value.%N.value?.getCode()" else "value.%N?.value?.getCode()",
-              propertyName,
-            )
+            if (element.isExtensibleBinding) {
+              add(
+                if (isRequired) "value.%N.rawCode" else "value.%N?.rawCode",
+                propertyName,
+              )
+            } else {
+              add(
+                if (isRequired) "value.%N.value?.code" else "value.%N?.value?.code",
+                propertyName,
+              )
+            }
           } else {
             add("value.%N", propertyName)
             if (!isRequired) add("?")
@@ -406,7 +414,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     // The wire-encoded value is non-null only when both the wrapper itself is required AND its
     // `.value` field is non-null on the model side (which is true only for primitives whose own
     // StructureDefinition has `<Type>.value` with `min > 0`, atm only `xhtml`). Enums always
-    // go through a `?.getCode()` chain and stay nullable.
+    // go through a `?.code` chain and stay nullable.
     val wireIsNonNull = codegenContext.primitiveValueIsNonNull[typeCode] == true && !isEnum
     emitPrimitiveOrSerializableEncode(
       codeBlock,
@@ -478,10 +486,17 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     // values
     codeBlock.add("(")
     if (isEnum) {
-      codeBlock.add(
-        "value.%N.map·{·it.value?.getCode()·}.takeUnless·{·it.all·{·it == null·}·}",
-        propertyName,
-      )
+      if (element.isExtensibleBinding) {
+        codeBlock.add(
+          "value.%N.map·{·it.rawCode·}.takeUnless·{·it.all·{·it == null·}·}",
+          propertyName,
+        )
+      } else {
+        codeBlock.add(
+          "value.%N.map·{·it.value?.code·}.takeUnless·{·it.all·{·it == null·}·}",
+          propertyName,
+        )
+      }
     } else {
       codeBlock.add("value.%N.map·{·it", propertyName)
       fhirPathType.addCodeToEncodeModelToWire(codeBlock)

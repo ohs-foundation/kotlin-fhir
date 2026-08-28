@@ -1519,10 +1519,10 @@ public data class Encounter(
 
   /** The status of the location. */
   public enum class EncounterLocationStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Planned("planned", "http://hl7.org/fhir/encounter-location-status", "Planned"),
     Active("active", "http://hl7.org/fhir/encounter-location-status", "Active"),
     Reserved("reserved", "http://hl7.org/fhir/encounter-location-status", "Reserved"),
@@ -1530,31 +1530,28 @@ public data class Encounter(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): EncounterLocationStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum EncounterLocationStatus")
+
+      public fun fromCodeOrNull(code: String?): EncounterLocationStatus? =
         when (code) {
           "planned" -> Planned
           "active" -> Active
           "reserved" -> Reserved
           "completed" -> Completed
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum EncounterLocationStatus")
+          else -> null
         }
     }
   }
 
   /** Current state of the encounter. */
   public enum class EncounterStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Planned("planned", "http://hl7.org/fhir/encounter-status", "Planned"),
     In_Progress("in-progress", "http://hl7.org/fhir/encounter-status", "In Progress"),
     On_Hold("on-hold", "http://hl7.org/fhir/encounter-status", "On Hold"),
@@ -1571,14 +1568,12 @@ public data class Encounter(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): EncounterStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum EncounterStatus")
+
+      public fun fromCodeOrNull(code: String?): EncounterStatus? =
         when (code) {
           "planned" -> Planned
           "in-progress" -> In_Progress
@@ -1589,7 +1584,7 @@ public data class Encounter(
           "discontinued" -> Discontinued
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum EncounterStatus")
+          else -> null
         }
     }
   }

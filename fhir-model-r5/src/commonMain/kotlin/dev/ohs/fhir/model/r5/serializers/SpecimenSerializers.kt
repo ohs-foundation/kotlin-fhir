@@ -925,7 +925,7 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
         it,
       )
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
@@ -967,7 +967,7 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
         Hoisted.parentSer,
         value.request,
       )
-    ((value.combined?.value?.getCode()))?.let {
+    ((value.combined?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.combined?.toElement())?.let {

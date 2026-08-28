@@ -759,10 +759,10 @@ public data class ResearchStudy(
 
   /** Codes that convey the current status of the research study. */
   public enum class ResearchStudyStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/research-study-status", "Active"),
     Administratively_Completed(
       "administratively-completed",
@@ -797,14 +797,12 @@ public data class ResearchStudy(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ResearchStudyStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ResearchStudyStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ResearchStudyStatus? =
         when (code) {
           "active" -> Active
           "administratively-completed" -> Administratively_Completed
@@ -818,7 +816,7 @@ public data class ResearchStudy(
           "temporarily-closed-to-accrual-and-intervention" ->
             Temporarily_Closed_To_Accrual_And_Intervention
           "withdrawn" -> Withdrawn
-          else -> throw IllegalArgumentException("Unknown code $code for enum ResearchStudyStatus")
+          else -> null
         }
     }
   }

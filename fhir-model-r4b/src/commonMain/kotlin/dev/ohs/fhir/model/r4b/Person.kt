@@ -510,10 +510,10 @@ public data class Person(
    * Authentication Levels.
    */
   public enum class IdentityAssuranceLevel(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Level1("level1", "http://hl7.org/fhir/identity-assuranceLevel", "Level 1"),
     Level2("level2", "http://hl7.org/fhir/identity-assuranceLevel", "Level 2"),
     Level3("level3", "http://hl7.org/fhir/identity-assuranceLevel", "Level 3"),
@@ -521,21 +521,18 @@ public data class Person(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): IdentityAssuranceLevel =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum IdentityAssuranceLevel")
+
+      public fun fromCodeOrNull(code: String?): IdentityAssuranceLevel? =
         when (code) {
           "level1" -> Level1
           "level2" -> Level2
           "level3" -> Level3
           "level4" -> Level4
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum IdentityAssuranceLevel")
+          else -> null
         }
     }
   }

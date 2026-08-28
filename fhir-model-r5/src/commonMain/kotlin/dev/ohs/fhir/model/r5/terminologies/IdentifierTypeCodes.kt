@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /**
@@ -23,10 +24,10 @@ import kotlin.String
  * specific purpose.
  */
 public enum class IdentifierTypeCodes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Dl("DL", "http://terminology.hl7.org/CodeSystem/v2-0203", "Driver's license number"),
   Ppn("PPN", "http://terminology.hl7.org/CodeSystem/v2-0203", "Passport number"),
   Brn("BRN", "http://terminology.hl7.org/CodeSystem/v2-0203", "Breed Registry Number"),
@@ -52,14 +53,12 @@ public enum class IdentifierTypeCodes(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): IdentifierTypeCodes =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum IdentifierTypeCodes")
+
+    public fun fromCodeOrNull(code: String?): IdentifierTypeCodes? =
       when (code) {
         "DL" -> Dl
         "PPN" -> Ppn
@@ -79,7 +78,7 @@ public enum class IdentifierTypeCodes(
         "PLAC" -> Plac
         "FILL" -> Fill
         "JHN" -> Jhn
-        else -> throw IllegalArgumentException("Unknown code $code for enum IdentifierTypeCodes")
+        else -> null
       }
   }
 }

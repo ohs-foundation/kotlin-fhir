@@ -3743,7 +3743,7 @@ internal object ExplanationOfBenefitProcessNoteSerializer :
     (value.number?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.numberSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.numberSer, it)
     }
@@ -4711,7 +4711,7 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -4731,7 +4731,7 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
     (value.subType)?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.typeSer, it)
     }
-    ((value.use.value?.getCode()))?.let {
+    ((value.use.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.use.toElement())?.let {
@@ -4819,7 +4819,7 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
     (value.claimResponse)?.let {
       encoder.encodeSerializableElement(descriptor, 34 + descriptorOffset, Hoisted.patientSer, it)
     }
-    ((value.outcome.value?.getCode()))?.let {
+    ((value.outcome.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
     }
     (value.outcome.toElement())?.let {

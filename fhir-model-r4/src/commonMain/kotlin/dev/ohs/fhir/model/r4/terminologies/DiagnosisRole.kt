@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
 import kotlin.String
 
 /**
@@ -23,10 +24,10 @@ import kotlin.String
  * Encounter or EpisodeOfCare record.
  */
 public enum class DiagnosisRole(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Ad("AD", "http://terminology.hl7.org/CodeSystem/diagnosis-role", "Admission diagnosis"),
   Dd("DD", "http://terminology.hl7.org/CodeSystem/diagnosis-role", "Discharge diagnosis"),
   Cc("CC", "http://terminology.hl7.org/CodeSystem/diagnosis-role", "Chief complaint"),
@@ -37,14 +38,12 @@ public enum class DiagnosisRole(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): DiagnosisRole =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum DiagnosisRole")
+
+    public fun fromCodeOrNull(code: String?): DiagnosisRole? =
       when (code) {
         "AD" -> Ad
         "DD" -> Dd
@@ -53,7 +52,7 @@ public enum class DiagnosisRole(
         "pre-op" -> Pre_Op
         "post-op" -> Post_Op
         "billing" -> Billing
-        else -> throw IllegalArgumentException("Unknown code $code for enum DiagnosisRole")
+        else -> null
       }
   }
 }

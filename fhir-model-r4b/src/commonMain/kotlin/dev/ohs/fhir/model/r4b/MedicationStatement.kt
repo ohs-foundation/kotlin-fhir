@@ -602,10 +602,10 @@ public data class MedicationStatement(
 
   /** MedicationStatement Status Codes */
   public enum class MedicationStatementStatusCodes(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Active"),
     Completed(
       "completed",
@@ -629,14 +629,14 @@ public data class MedicationStatement(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): MedicationStatementStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum MedicationStatementStatusCodes"
+          )
+
+      public fun fromCodeOrNull(code: String?): MedicationStatementStatusCodes? =
         when (code) {
           "active" -> Active
           "completed" -> Completed
@@ -646,10 +646,7 @@ public data class MedicationStatement(
           "on-hold" -> On_Hold
           "unknown" -> Unknown
           "not-taken" -> Not_Taken
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MedicationStatementStatusCodes"
-            )
+          else -> null
         }
     }
   }

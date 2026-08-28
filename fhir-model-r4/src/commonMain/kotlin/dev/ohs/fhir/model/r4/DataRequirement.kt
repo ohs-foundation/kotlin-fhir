@@ -623,27 +623,25 @@ public data class DataRequirement(
 
   /** The possible sort directions, ascending or descending. */
   public enum class SortDirection(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Ascending("ascending", "http://hl7.org/fhir/sort-direction", "Ascending"),
     Descending("descending", "http://hl7.org/fhir/sort-direction", "Descending");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SortDirection =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SortDirection")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SortDirection? =
         when (code) {
           "ascending" -> Ascending
           "descending" -> Descending
-          else -> throw IllegalArgumentException("Unknown code $code for enum SortDirection")
+          else -> null
         }
     }
   }

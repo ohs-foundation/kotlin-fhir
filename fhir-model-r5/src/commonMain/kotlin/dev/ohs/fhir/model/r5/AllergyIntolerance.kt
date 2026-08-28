@@ -1076,40 +1076,39 @@ public data class AllergyIntolerance(
    * multiple different manifestations.
    */
   public enum class AllergyIntoleranceSeverity(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Mild("mild", "http://hl7.org/fhir/reaction-event-severity", "Mild"),
     Moderate("moderate", "http://hl7.org/fhir/reaction-event-severity", "Moderate"),
     Severe("severe", "http://hl7.org/fhir/reaction-event-severity", "Severe");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AllergyIntoleranceSeverity =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum AllergyIntoleranceSeverity"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): AllergyIntoleranceSeverity? =
         when (code) {
           "mild" -> Mild
           "moderate" -> Moderate
           "severe" -> Severe
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AllergyIntoleranceSeverity")
+          else -> null
         }
     }
   }
 
   /** Category of an identified substance associated with allergies or intolerances. */
   public enum class AllergyIntoleranceCategory(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Food("food", "http://hl7.org/fhir/allergy-intolerance-category", "Food"),
     Medication("medication", "http://hl7.org/fhir/allergy-intolerance-category", "Medication"),
     Environment("environment", "http://hl7.org/fhir/allergy-intolerance-category", "Environment"),
@@ -1117,21 +1116,20 @@ public data class AllergyIntolerance(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AllergyIntoleranceCategory =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum AllergyIntoleranceCategory"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): AllergyIntoleranceCategory? =
         when (code) {
           "food" -> Food
           "medication" -> Medication
           "environment" -> Environment
           "biologic" -> Biologic
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AllergyIntoleranceCategory")
+          else -> null
         }
     }
   }
@@ -1141,10 +1139,10 @@ public data class AllergyIntolerance(
    * substance.
    */
   public enum class AllergyIntoleranceCriticality(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Low("low", "http://hl7.org/fhir/allergy-intolerance-criticality", "Low Risk"),
     High("high", "http://hl7.org/fhir/allergy-intolerance-criticality", "High Risk"),
     Unable_To_Assess(
@@ -1155,22 +1153,19 @@ public data class AllergyIntolerance(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AllergyIntoleranceCriticality =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum AllergyIntoleranceCriticality"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): AllergyIntoleranceCriticality? =
         when (code) {
           "low" -> Low
           "high" -> High
           "unable-to-assess" -> Unable_To_Assess
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum AllergyIntoleranceCriticality"
-            )
+          else -> null
         }
     }
   }

@@ -690,10 +690,10 @@ public data class NamingSystem(
 
   /** Identifies the style of unique identifier used to identify a namespace. */
   public enum class NamingSystemIdentifierType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Oid("oid", "http://hl7.org/fhir/namingsystem-identifier-type", "OID"),
     Uuid("uuid", "http://hl7.org/fhir/namingsystem-identifier-type", "UUID"),
     Uri("uri", "http://hl7.org/fhir/namingsystem-identifier-type", "URI"),
@@ -701,50 +701,47 @@ public data class NamingSystem(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): NamingSystemIdentifierType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum NamingSystemIdentifierType"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): NamingSystemIdentifierType? =
         when (code) {
           "oid" -> Oid
           "uuid" -> Uuid
           "uri" -> Uri
           "other" -> Other
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum NamingSystemIdentifierType")
+          else -> null
         }
     }
   }
 
   /** Identifies the purpose of the naming system. */
   public enum class NamingSystemType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Codesystem("codesystem", "http://hl7.org/fhir/namingsystem-type", "Code System"),
     Identifier("identifier", "http://hl7.org/fhir/namingsystem-type", "Identifier"),
     Root("root", "http://hl7.org/fhir/namingsystem-type", "Root");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): NamingSystemType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum NamingSystemType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): NamingSystemType? =
         when (code) {
           "codesystem" -> Codesystem
           "identifier" -> Identifier
           "root" -> Root
-          else -> throw IllegalArgumentException("Unknown code $code for enum NamingSystemType")
+          else -> null
         }
     }
   }

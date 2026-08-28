@@ -502,28 +502,25 @@ public data class CatalogEntry(
 
   /** The type of relations between entries. */
   public enum class CatalogEntryRelationType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Triggers("triggers", "http://hl7.org/fhir/relation-type", "Triggers"),
     Is_Replaced_By("is-replaced-by", "http://hl7.org/fhir/relation-type", "Replaced By");
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): CatalogEntryRelationType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum CatalogEntryRelationType")
+
+      public fun fromCodeOrNull(code: String?): CatalogEntryRelationType? =
         when (code) {
           "triggers" -> Triggers
           "is-replaced-by" -> Is_Replaced_By
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CatalogEntryRelationType")
+          else -> null
         }
     }
   }

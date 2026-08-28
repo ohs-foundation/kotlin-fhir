@@ -520,10 +520,10 @@ public data class BiologicallyDerivedProductDispense(
 
   /** BiologicallyDerivedProductDispense Status Codes */
   public enum class BiologicallyDerivedProductDispenseCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Preparation(
       "preparation",
       "http://hl7.org/fhir/biologicallyderivedproductdispense-status",
@@ -559,14 +559,14 @@ public data class BiologicallyDerivedProductDispense(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): BiologicallyDerivedProductDispenseCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum BiologicallyDerivedProductDispenseCodes"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): BiologicallyDerivedProductDispenseCodes? =
         when (code) {
           "preparation" -> Preparation
           "in-progress" -> In_Progress
@@ -576,10 +576,7 @@ public data class BiologicallyDerivedProductDispense(
           "returned" -> Returned
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum BiologicallyDerivedProductDispenseCodes"
-            )
+          else -> null
         }
     }
   }

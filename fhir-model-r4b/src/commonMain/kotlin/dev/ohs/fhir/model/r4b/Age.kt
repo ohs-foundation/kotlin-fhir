@@ -156,10 +156,10 @@ public data class Age(
 
   /** How the Quantity should be understood and represented. */
   public enum class QuantityComparator(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     LessThan("<", "http://hl7.org/fhir/quantity-comparator", "Less than"),
     LessThanOrEqualTo("<=", "http://hl7.org/fhir/quantity-comparator", "Less or Equal to"),
     GreaterThanOrEqualTo(">=", "http://hl7.org/fhir/quantity-comparator", "Greater or Equal to"),
@@ -167,20 +167,18 @@ public data class Age(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): QuantityComparator =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum QuantityComparator")
+
+      public fun fromCodeOrNull(code: kotlin.String?): QuantityComparator? =
         when (code) {
           "<" -> LessThan
           "<=" -> LessThanOrEqualTo
           ">=" -> GreaterThanOrEqualTo
           ">" -> GreaterThan
-          else -> throw IllegalArgumentException("Unknown code $code for enum QuantityComparator")
+          else -> null
         }
     }
   }

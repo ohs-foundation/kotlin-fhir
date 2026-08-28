@@ -788,7 +788,7 @@ internal object ValueSetComposeIncludeFilterSerializer :
     (value.`property`.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.propertySer, it)
     }
-    ((value.op.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.op.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.op.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.propertySer, it)
     }
@@ -2604,7 +2604,7 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

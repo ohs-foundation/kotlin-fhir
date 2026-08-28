@@ -1090,7 +1090,7 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1109,7 +1109,7 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -1127,7 +1127,7 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
         Hoisted.categorySer,
         value.category,
       )
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

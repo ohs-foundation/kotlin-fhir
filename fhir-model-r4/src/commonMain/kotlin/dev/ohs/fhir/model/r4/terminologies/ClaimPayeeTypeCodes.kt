@@ -16,33 +16,32 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
 import kotlin.String
 
 /** This value set includes sample Payee Type codes. */
 public enum class ClaimPayeeTypeCodes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Subscriber("subscriber", "http://terminology.hl7.org/CodeSystem/payeetype", "Subscriber"),
   Provider("provider", "http://terminology.hl7.org/CodeSystem/payeetype", "Provider"),
   Other("other", "http://terminology.hl7.org/CodeSystem/payeetype", "Provider");
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): ClaimPayeeTypeCodes =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum ClaimPayeeTypeCodes")
+
+    public fun fromCodeOrNull(code: String?): ClaimPayeeTypeCodes? =
       when (code) {
         "subscriber" -> Subscriber
         "provider" -> Provider
         "other" -> Other
-        else -> throw IllegalArgumentException("Unknown code $code for enum ClaimPayeeTypeCodes")
+        else -> null
       }
   }
 }

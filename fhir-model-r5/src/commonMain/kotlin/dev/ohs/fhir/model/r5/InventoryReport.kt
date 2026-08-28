@@ -606,10 +606,10 @@ public data class InventoryReport(
 
   /** The status of the InventoryReport. */
   public enum class InventoryReportStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Draft("draft", "http://hl7.org/fhir/inventoryreport-status", "Draft"),
     Requested("requested", "http://hl7.org/fhir/inventoryreport-status", "Requested"),
     Active("active", "http://hl7.org/fhir/inventoryreport-status", "Active"),
@@ -621,48 +621,43 @@ public data class InventoryReport(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): InventoryReportStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum InventoryReportStatus")
+
+      public fun fromCodeOrNull(code: String?): InventoryReportStatus? =
         when (code) {
           "draft" -> Draft
           "requested" -> Requested
           "active" -> Active
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum InventoryReportStatus")
+          else -> null
         }
     }
   }
 
   /** The type of count. */
   public enum class InventoryCountType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Snapshot("snapshot", "http://hl7.org/fhir/inventoryreport-counttype", "Snapshot"),
     Difference("difference", "http://hl7.org/fhir/inventoryreport-counttype", "Difference");
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): InventoryCountType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum InventoryCountType")
+
+      public fun fromCodeOrNull(code: String?): InventoryCountType? =
         when (code) {
           "snapshot" -> Snapshot
           "difference" -> Difference
-          else -> throw IllegalArgumentException("Unknown code $code for enum InventoryCountType")
+          else -> null
         }
     }
   }

@@ -434,29 +434,27 @@ public data class Linkage(
 
   /** Used to distinguish different roles a resource can play within a set of linked resources. */
   public enum class LinkageType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Source("source", "http://hl7.org/fhir/linkage-type", "Source of Truth"),
     Alternate("alternate", "http://hl7.org/fhir/linkage-type", "Alternate Record"),
     Historical("historical", "http://hl7.org/fhir/linkage-type", "Historical/Obsolete Record");
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): LinkageType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum LinkageType")
+
+      public fun fromCodeOrNull(code: String?): LinkageType? =
         when (code) {
           "source" -> Source
           "alternate" -> Alternate
           "historical" -> Historical
-          else -> throw IllegalArgumentException("Unknown code $code for enum LinkageType")
+          else -> null
         }
     }
   }

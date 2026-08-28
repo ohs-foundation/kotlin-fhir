@@ -730,10 +730,10 @@ public data class Group(
 
   /** Types of resources that are part of group. */
   public enum class GroupType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Person("person", "http://hl7.org/fhir/group-type", "Person"),
     Animal("animal", "http://hl7.org/fhir/group-type", "Animal"),
     Practitioner("practitioner", "http://hl7.org/fhir/group-type", "Practitioner"),
@@ -743,14 +743,12 @@ public data class Group(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): GroupType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum GroupType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): GroupType? =
         when (code) {
           "person" -> Person
           "animal" -> Animal
@@ -758,7 +756,7 @@ public data class Group(
           "device" -> Device
           "medication" -> Medication
           "substance" -> Substance
-          else -> throw IllegalArgumentException("Unknown code $code for enum GroupType")
+          else -> null
         }
     }
   }

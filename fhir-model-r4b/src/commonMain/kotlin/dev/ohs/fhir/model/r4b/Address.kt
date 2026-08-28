@@ -234,10 +234,10 @@ public data class Address(
 
   /** The use of an address. */
   public enum class AddressUse(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Home("home", "http://hl7.org/fhir/address-use", "Home"),
     Work("work", "http://hl7.org/fhir/address-use", "Work"),
     Temp("temp", "http://hl7.org/fhir/address-use", "Temporary"),
@@ -246,50 +246,46 @@ public data class Address(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AddressUse =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AddressUse")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AddressUse? =
         when (code) {
           "home" -> Home
           "work" -> Work
           "temp" -> Temp
           "old" -> Old
           "billing" -> Billing
-          else -> throw IllegalArgumentException("Unknown code $code for enum AddressUse")
+          else -> null
         }
     }
   }
 
   /** The type of an address (physical / postal). */
   public enum class AddressType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Postal("postal", "http://hl7.org/fhir/address-type", "Postal"),
     Physical("physical", "http://hl7.org/fhir/address-type", "Physical"),
     Both("both", "http://hl7.org/fhir/address-type", "Postal & Physical");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AddressType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AddressType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AddressType? =
         when (code) {
           "postal" -> Postal
           "physical" -> Physical
           "both" -> Both
-          else -> throw IllegalArgumentException("Unknown code $code for enum AddressType")
+          else -> null
         }
     }
   }

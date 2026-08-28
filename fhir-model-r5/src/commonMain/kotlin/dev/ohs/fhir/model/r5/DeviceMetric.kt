@@ -528,10 +528,10 @@ public data class DeviceMetric(
 
   /** Describes the type of a metric calibration. */
   public enum class DeviceMetricCalibrationType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Unspecified("unspecified", "http://hl7.org/fhir/metric-calibration-type", "Unspecified"),
     Offset("offset", "http://hl7.org/fhir/metric-calibration-type", "Offset"),
     Gain("gain", "http://hl7.org/fhir/metric-calibration-type", "Gain"),
@@ -539,33 +539,30 @@ public data class DeviceMetric(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): DeviceMetricCalibrationType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum DeviceMetricCalibrationType"
+          )
+
+      public fun fromCodeOrNull(code: String?): DeviceMetricCalibrationType? =
         when (code) {
           "unspecified" -> Unspecified
           "offset" -> Offset
           "gain" -> Gain
           "two-point" -> Two_Point
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum DeviceMetricCalibrationType"
-            )
+          else -> null
         }
     }
   }
 
   /** Describes the state of a metric calibration. */
   public enum class DeviceMetricCalibrationState(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Not_Calibrated(
       "not-calibrated",
       "http://hl7.org/fhir/metric-calibration-state",
@@ -581,33 +578,30 @@ public data class DeviceMetric(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): DeviceMetricCalibrationState =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum DeviceMetricCalibrationState"
+          )
+
+      public fun fromCodeOrNull(code: String?): DeviceMetricCalibrationState? =
         when (code) {
           "not-calibrated" -> Not_Calibrated
           "calibration-required" -> Calibration_Required
           "calibrated" -> Calibrated
           "unspecified" -> Unspecified
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum DeviceMetricCalibrationState"
-            )
+          else -> null
         }
     }
   }
 
   /** Describes the operational status of the DeviceMetric. */
   public enum class DeviceMetricOperationalStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     On("on", "http://hl7.org/fhir/metric-operational-status", "On"),
     Off("off", "http://hl7.org/fhir/metric-operational-status", "Off"),
     Standby("standby", "http://hl7.org/fhir/metric-operational-status", "Standby"),
@@ -619,33 +613,30 @@ public data class DeviceMetric(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): DeviceMetricOperationalStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum DeviceMetricOperationalStatus"
+          )
+
+      public fun fromCodeOrNull(code: String?): DeviceMetricOperationalStatus? =
         when (code) {
           "on" -> On
           "off" -> Off
           "standby" -> Standby
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum DeviceMetricOperationalStatus"
-            )
+          else -> null
         }
     }
   }
 
   /** Describes the category of the metric. */
   public enum class DeviceMetricCategory(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Measurement("measurement", "http://hl7.org/fhir/metric-category", "Measurement"),
     Setting("setting", "http://hl7.org/fhir/metric-category", "Setting"),
     Calculation("calculation", "http://hl7.org/fhir/metric-category", "Calculation"),
@@ -653,20 +644,18 @@ public data class DeviceMetric(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): DeviceMetricCategory =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DeviceMetricCategory")
+
+      public fun fromCodeOrNull(code: String?): DeviceMetricCategory? =
         when (code) {
           "measurement" -> Measurement
           "setting" -> Setting
           "calculation" -> Calculation
           "unspecified" -> Unspecified
-          else -> throw IllegalArgumentException("Unknown code $code for enum DeviceMetricCategory")
+          else -> null
         }
     }
   }

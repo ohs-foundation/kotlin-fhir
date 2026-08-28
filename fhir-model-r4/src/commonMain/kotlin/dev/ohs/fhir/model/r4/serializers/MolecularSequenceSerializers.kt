@@ -217,7 +217,7 @@ internal object MolecularSequenceReferenceSeqSerializer :
     (value.genomeBuild?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.genomeBuildSer, it)
     }
-    ((value.orientation?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.orientation?.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.orientation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.genomeBuildSer, it)
     }
@@ -231,7 +231,7 @@ internal object MolecularSequenceReferenceSeqSerializer :
     (value.referenceSeqString?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.genomeBuildSer, it)
     }
-    ((value.strand?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+    ((value.strand?.value?.code))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.strand?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.genomeBuildSer, it)
     }
@@ -614,7 +614,7 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1047,7 +1047,7 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1733,7 +1733,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.type?.value?.getCode()))?.let {
+    ((value.type?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.type?.toElement())?.let {

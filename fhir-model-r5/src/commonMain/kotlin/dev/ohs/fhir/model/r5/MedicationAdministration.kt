@@ -971,10 +971,10 @@ public data class MedicationAdministration(
 
   /** MedicationAdministration Status Codes */
   public enum class MedicationAdministrationStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     In_Progress(
       "in-progress",
       "http://hl7.org/fhir/CodeSystem/medication-admin-status",
@@ -993,14 +993,14 @@ public data class MedicationAdministration(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): MedicationAdministrationStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum MedicationAdministrationStatusCodes"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): MedicationAdministrationStatusCodes? =
         when (code) {
           "in-progress" -> In_Progress
           "not-done" -> Not_Done
@@ -1009,10 +1009,7 @@ public data class MedicationAdministration(
           "entered-in-error" -> Entered_In_Error
           "stopped" -> Stopped
           "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MedicationAdministrationStatusCodes"
-            )
+          else -> null
         }
     }
   }

@@ -23,8 +23,8 @@
 package dev.ohs.fhir.model.r4b.serializers
 
 import dev.ohs.fhir.model.r4b.Element
-import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Expression
+import dev.ohs.fhir.model.r4b.ExtensibleEnumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.Id
 import dev.ohs.fhir.model.r4b.String as R4bString
@@ -129,7 +129,7 @@ internal object ExpressionSerializer : KSerializer<Expression> {
       description = R4bString.of(description, _description),
       name = Id.of(name, _name),
       language =
-        Enumeration.of(language?.let { Expression.ExpressionLanguage.fromCode(it) }, _language)
+        ExtensibleEnumeration.of(language, _language, Expression.ExpressionLanguage::fromCodeOrNull)
           ?: throw SerializationException("Missing required property 'language' on Expression"),
       expression = R4bString.of(expression, _expression),
       reference = Uri.of(reference, _reference),
@@ -148,7 +148,7 @@ internal object ExpressionSerializer : KSerializer<Expression> {
     (value.name?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.descriptionSer, it)
     }
-    ((value.language.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.language.rawCode))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.language.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.descriptionSer, it)
     }

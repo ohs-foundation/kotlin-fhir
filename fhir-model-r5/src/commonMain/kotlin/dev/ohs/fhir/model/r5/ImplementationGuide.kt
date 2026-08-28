@@ -2537,10 +2537,10 @@ public data class ImplementationGuide(
 
   /** A code that indicates how the page is generated. */
   public enum class GuidePageGeneration(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Html("html", "http://hl7.org/fhir/guide-page-generation", "HTML"),
     Markdown("markdown", "http://hl7.org/fhir/guide-page-generation", "Markdown"),
     Xml("xml", "http://hl7.org/fhir/guide-page-generation", "XML"),
@@ -2548,20 +2548,18 @@ public data class ImplementationGuide(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): GuidePageGeneration =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum GuidePageGeneration")
+
+      public fun fromCodeOrNull(code: kotlin.String?): GuidePageGeneration? =
         when (code) {
           "html" -> Html
           "markdown" -> Markdown
           "xml" -> Xml
           "generated" -> Generated
-          else -> throw IllegalArgumentException("Unknown code $code for enum GuidePageGeneration")
+          else -> null
         }
     }
   }
@@ -2572,10 +2570,10 @@ public data class ImplementationGuide(
    * used (https://spdx.org/licenses/).
    */
   public enum class SPDXLicense(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Not_Open_Source("not-open-source", "http://hl7.org/fhir/spdx-license", "Not open source"),
     _0BSD("0BSD", "http://hl7.org/fhir/spdx-license", "BSD Zero Clause License"),
     Aal("AAL", "http://hl7.org/fhir/spdx-license", "Attribution Assurance License"),
@@ -3441,14 +3439,12 @@ public data class ImplementationGuide(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SPDXLicense =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SPDXLicense")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SPDXLicense? =
         when (code) {
           "not-open-source" -> Not_Open_Source
           "0BSD" -> _0BSD
@@ -3796,7 +3792,7 @@ public data class ImplementationGuide(
           "ZPL-1.1" -> Zpl_1_1
           "ZPL-2.0" -> Zpl_2_0
           "ZPL-2.1" -> Zpl_2_1
-          else -> throw IllegalArgumentException("Unknown code $code for enum SPDXLicense")
+          else -> null
         }
     }
   }

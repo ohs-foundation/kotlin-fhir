@@ -785,10 +785,10 @@ public data class DataRequirement(
 
   /** The type of comparator operator to use */
   public enum class ValueFilterComparator(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Eq("eq", "http://hl7.org/fhir/search-comparator", "Equals"),
     Gt("gt", "http://hl7.org/fhir/search-comparator", "Greater Than"),
     Lt("lt", "http://hl7.org/fhir/search-comparator", "Less Than"),
@@ -799,14 +799,12 @@ public data class DataRequirement(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ValueFilterComparator =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ValueFilterComparator")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ValueFilterComparator? =
         when (code) {
           "eq" -> Eq
           "gt" -> Gt
@@ -815,35 +813,32 @@ public data class DataRequirement(
           "le" -> Le
           "sa" -> Sa
           "eb" -> Eb
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ValueFilterComparator")
+          else -> null
         }
     }
   }
 
   /** The possible sort directions, ascending or descending. */
   public enum class SortDirection(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Ascending("ascending", "http://hl7.org/fhir/sort-direction", "Ascending"),
     Descending("descending", "http://hl7.org/fhir/sort-direction", "Descending");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SortDirection =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SortDirection")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SortDirection? =
         when (code) {
           "ascending" -> Ascending
           "descending" -> Descending
-          else -> throw IllegalArgumentException("Unknown code $code for enum SortDirection")
+          else -> null
         }
     }
   }

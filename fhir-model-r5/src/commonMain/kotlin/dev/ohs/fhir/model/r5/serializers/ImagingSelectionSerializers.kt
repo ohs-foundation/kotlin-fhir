@@ -454,7 +454,7 @@ internal object ImagingSelectionInstanceImageRegion2DSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.regionType.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.regionType.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.regionType.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.regionTypeSer, it)
     }
@@ -588,7 +588,7 @@ internal object ImagingSelectionInstanceImageRegion3DSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.regionType.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.regionType.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.regionType.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.regionTypeSer, it)
     }
@@ -927,7 +927,7 @@ internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

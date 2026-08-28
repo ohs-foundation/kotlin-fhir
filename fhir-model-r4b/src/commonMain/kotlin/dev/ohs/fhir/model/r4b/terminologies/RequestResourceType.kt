@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /** A list of all the request resource types defined in this version of the FHIR specification. */
 public enum class RequestResourceType(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Appointment("Appointment", "http://hl7.org/fhir/request-resource-types", "Appointment"),
   AppointmentResponse(
     "AppointmentResponse",
@@ -66,14 +67,12 @@ public enum class RequestResourceType(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): RequestResourceType =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum RequestResourceType")
+
+    public fun fromCodeOrNull(code: String?): RequestResourceType? =
       when (code) {
         "Appointment" -> Appointment
         "AppointmentResponse" -> AppointmentResponse
@@ -90,7 +89,7 @@ public enum class RequestResourceType(
         "SupplyRequest" -> SupplyRequest
         "Task" -> Task
         "VisionPrescription" -> VisionPrescription
-        else -> throw IllegalArgumentException("Unknown code $code for enum RequestResourceType")
+        else -> null
       }
   }
 }

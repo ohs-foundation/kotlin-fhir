@@ -1059,7 +1059,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

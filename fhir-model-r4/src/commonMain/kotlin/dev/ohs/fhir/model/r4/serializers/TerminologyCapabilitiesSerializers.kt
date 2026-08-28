@@ -1706,7 +1706,7 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1804,7 +1804,7 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
         it,
       )
     }
-    ((value.kind.value?.getCode()))?.let {
+    ((value.kind.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
     }
     (value.kind.toElement())?.let {
@@ -1847,7 +1847,7 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
     (value.expansion)?.let {
       encoder.encodeSerializableElement(descriptor, 42 + descriptorOffset, Hoisted.expansionSer, it)
     }
-    ((value.codeSearch?.value?.getCode()))?.let {
+    ((value.codeSearch?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 43 + descriptorOffset, it)
     }
     (value.codeSearch?.toElement())?.let {

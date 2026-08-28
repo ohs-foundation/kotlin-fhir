@@ -334,9 +334,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     (value.durationMax?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.countSer, it)
     }
-    ((value.durationUnit?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 13, it)
-    }
+    ((value.durationUnit?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.durationUnit?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.countSer, it)
     }
@@ -360,11 +358,11 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     (value.periodMax?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 22, Hoisted.countSer, it)
     }
-    ((value.periodUnit?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 23, it) }
+    ((value.periodUnit?.value?.code))?.let { encoder.encodeStringElement(descriptor, 23, it) }
     (value.periodUnit?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 24, Hoisted.countSer, it)
     }
-    (value.dayOfWeek.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.dayOfWeek.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 25, Hoisted.dayOfWeekSer, it)
     }
     (value.dayOfWeek.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -376,7 +374,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     (value.timeOfDay.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 28, Hoisted.dayOfWeekSer2, it)
     }
-    (value.`when`.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.`when`.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 29, Hoisted.dayOfWeekSer, it)
     }
     (value.`when`.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

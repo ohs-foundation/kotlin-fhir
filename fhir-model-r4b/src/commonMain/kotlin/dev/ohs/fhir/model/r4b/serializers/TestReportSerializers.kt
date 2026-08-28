@@ -152,7 +152,7 @@ internal object TestReportParticipantSerializer : KSerializer<TestReport.Partici
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -463,7 +463,7 @@ internal object TestReportSetupActionOperationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.result.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.result.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.result.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.resultSer, it)
     }
@@ -584,7 +584,7 @@ internal object TestReportSetupActionAssertSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.result.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.result.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.result.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.resultSer, it)
     }
@@ -1288,7 +1288,7 @@ internal object TestReportSerializer : KSerializer<TestReport> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1305,7 +1305,7 @@ internal object TestReportSerializer : KSerializer<TestReport> {
       Hoisted.testScriptSer,
       value.testScript,
     )
-    ((value.result.value?.getCode()))?.let {
+    ((value.result.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.result.toElement())?.let {

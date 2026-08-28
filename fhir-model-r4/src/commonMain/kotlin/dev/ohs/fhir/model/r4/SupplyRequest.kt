@@ -613,10 +613,10 @@ public data class SupplyRequest(
 
   /** Status of the supply request. */
   public enum class SupplyRequestStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Draft("draft", "http://hl7.org/fhir/supplyrequest-status", "Draft"),
     Active("active", "http://hl7.org/fhir/supplyrequest-status", "Active"),
     Suspended("suspended", "http://hl7.org/fhir/supplyrequest-status", "Suspended"),
@@ -631,14 +631,12 @@ public data class SupplyRequest(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): SupplyRequestStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SupplyRequestStatus")
+
+      public fun fromCodeOrNull(code: String?): SupplyRequestStatus? =
         when (code) {
           "draft" -> Draft
           "active" -> Active
@@ -647,17 +645,17 @@ public data class SupplyRequest(
           "completed" -> Completed
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum SupplyRequestStatus")
+          else -> null
         }
     }
   }
 
   /** The clinical priority of a diagnostic order. */
   public enum class RequestPriority(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
@@ -665,20 +663,18 @@ public data class SupplyRequest(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): RequestPriority =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
+
+      public fun fromCodeOrNull(code: String?): RequestPriority? =
         when (code) {
           "routine" -> Routine
           "urgent" -> Urgent
           "asap" -> Asap
           "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
+          else -> null
         }
     }
   }

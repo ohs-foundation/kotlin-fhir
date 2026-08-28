@@ -538,7 +538,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
     (value.studyEffectiveTimeFromStart)?.let {
       encoder.encodeSerializableElement(descriptor, 19, Hoisted.studyEffectiveDurationSer, it)
     }
-    ((value.studyEffectiveGroupMeasure?.value?.getCode()))?.let {
+    ((value.studyEffectiveGroupMeasure?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20, it)
     }
     (value.studyEffectiveGroupMeasure?.toElement())?.let {
@@ -586,7 +586,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
     (value.participantEffectiveTimeFromStart)?.let {
       encoder.encodeSerializableElement(descriptor, 29, Hoisted.studyEffectiveDurationSer, it)
     }
-    ((value.participantEffectiveGroupMeasure?.value?.getCode()))?.let {
+    ((value.participantEffectiveGroupMeasure?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 30, it)
     }
     (value.participantEffectiveGroupMeasure?.toElement())?.let {
@@ -1217,7 +1217,7 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1429,7 +1429,7 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
     (value.library.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 58 + descriptorOffset, Hoisted.commentSer2, it)
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 59 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {
@@ -1440,7 +1440,7 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
         it,
       )
     }
-    ((value.variableType?.value?.getCode()))?.let {
+    ((value.variableType?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 61 + descriptorOffset, it)
     }
     (value.variableType?.toElement())?.let {

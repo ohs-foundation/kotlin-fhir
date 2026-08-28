@@ -2262,10 +2262,10 @@ public data class PlanDefinition(
 
   /** The clinical priority of a diagnostic order. */
   public enum class RequestPriority(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
@@ -2273,30 +2273,28 @@ public data class PlanDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): RequestPriority =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
+
+      public fun fromCodeOrNull(code: kotlin.String?): RequestPriority? =
         when (code) {
           "routine" -> Routine
           "urgent" -> Urgent
           "asap" -> Asap
           "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
+          else -> null
         }
     }
   }
 
   /** Defines organization behavior of a group. */
   public enum class ActionGroupingBehavior(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Visual_Group("visual-group", "http://hl7.org/fhir/action-grouping-behavior", "Visual Group"),
     Logical_Group("logical-group", "http://hl7.org/fhir/action-grouping-behavior", "Logical Group"),
     Sentence_Group(
@@ -2307,30 +2305,27 @@ public data class PlanDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ActionGroupingBehavior =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ActionGroupingBehavior")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ActionGroupingBehavior? =
         when (code) {
           "visual-group" -> Visual_Group
           "logical-group" -> Logical_Group
           "sentence-group" -> Sentence_Group
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionGroupingBehavior")
+          else -> null
         }
     }
   }
 
   /** Defines selection behavior of a group. */
   public enum class ActionSelectionBehavior(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Any("any", "http://hl7.org/fhir/action-selection-behavior", "Any"),
     All("all", "http://hl7.org/fhir/action-selection-behavior", "All"),
     All_Or_None("all-or-none", "http://hl7.org/fhir/action-selection-behavior", "All Or None"),
@@ -2340,14 +2335,12 @@ public data class PlanDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ActionSelectionBehavior =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ActionSelectionBehavior")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ActionSelectionBehavior? =
         when (code) {
           "any" -> Any
           "all" -> All
@@ -2355,18 +2348,17 @@ public data class PlanDefinition(
           "exactly-one" -> Exactly_One
           "at-most-one" -> At_Most_One
           "one-or-more" -> One_Or_More
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionSelectionBehavior")
+          else -> null
         }
     }
   }
 
   /** Defines expectations around whether an action or action group is required. */
   public enum class ActionRequiredBehavior(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Must("must", "http://hl7.org/fhir/action-required-behavior", "Must"),
     Could("could", "http://hl7.org/fhir/action-required-behavior", "Could"),
     Must_Unless_Documented(
@@ -2377,115 +2369,104 @@ public data class PlanDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ActionRequiredBehavior =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ActionRequiredBehavior")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ActionRequiredBehavior? =
         when (code) {
           "must" -> Must
           "could" -> Could
           "must-unless-documented" -> Must_Unless_Documented
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionRequiredBehavior")
+          else -> null
         }
     }
   }
 
   /** Defines selection frequency behavior for an action or group. */
   public enum class ActionPrecheckBehavior(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Yes("yes", "http://hl7.org/fhir/action-precheck-behavior", "Yes"),
     No("no", "http://hl7.org/fhir/action-precheck-behavior", "No");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ActionPrecheckBehavior =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ActionPrecheckBehavior")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ActionPrecheckBehavior? =
         when (code) {
           "yes" -> Yes
           "no" -> No
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionPrecheckBehavior")
+          else -> null
         }
     }
   }
 
   /** Defines behavior for an action or a group for how many times that item may be repeated. */
   public enum class ActionCardinalityBehavior(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Single("single", "http://hl7.org/fhir/action-cardinality-behavior", "Single"),
     Multiple("multiple", "http://hl7.org/fhir/action-cardinality-behavior", "Multiple");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ActionCardinalityBehavior =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ActionCardinalityBehavior")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ActionCardinalityBehavior? =
         when (code) {
           "single" -> Single
           "multiple" -> Multiple
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionCardinalityBehavior")
+          else -> null
         }
     }
   }
 
   /** Defines the kinds of conditions that can appear on actions. */
   public enum class ActionConditionKind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Applicability("applicability", "http://hl7.org/fhir/action-condition-kind", "Applicability"),
     Start("start", "http://hl7.org/fhir/action-condition-kind", "Start"),
     Stop("stop", "http://hl7.org/fhir/action-condition-kind", "Stop");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ActionConditionKind =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ActionConditionKind")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ActionConditionKind? =
         when (code) {
           "applicability" -> Applicability
           "start" -> Start
           "stop" -> Stop
-          else -> throw IllegalArgumentException("Unknown code $code for enum ActionConditionKind")
+          else -> null
         }
     }
   }
 
   /** Defines the types of relationships between actions. */
   public enum class ActionRelationshipType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Before_Start("before-start", "http://hl7.org/fhir/action-relationship-type", "Before Start"),
     Before("before", "http://hl7.org/fhir/action-relationship-type", "Before"),
     Before_End("before-end", "http://hl7.org/fhir/action-relationship-type", "Before End"),
@@ -2506,14 +2487,12 @@ public data class PlanDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ActionRelationshipType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ActionRelationshipType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ActionRelationshipType? =
         when (code) {
           "before-start" -> Before_Start
           "before" -> Before
@@ -2524,18 +2503,17 @@ public data class PlanDefinition(
           "after-start" -> After_Start
           "after" -> After
           "after-end" -> After_End
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionRelationshipType")
+          else -> null
         }
     }
   }
 
   /** The type of participant for the action. */
   public enum class ActionParticipantType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Patient("patient", "http://hl7.org/fhir/action-participant-type", "Patient"),
     Practitioner("practitioner", "http://hl7.org/fhir/action-participant-type", "Practitioner"),
     Related_Person(
@@ -2547,21 +2525,18 @@ public data class PlanDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ActionParticipantType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ActionParticipantType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ActionParticipantType? =
         when (code) {
           "patient" -> Patient
           "practitioner" -> Practitioner
           "related-person" -> Related_Person
           "device" -> Device
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionParticipantType")
+          else -> null
         }
     }
   }

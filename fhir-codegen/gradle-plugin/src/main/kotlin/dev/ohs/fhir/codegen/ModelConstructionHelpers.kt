@@ -26,6 +26,7 @@ import dev.ohs.fhir.codegen.schema.getBindingValueSetUrl
 import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.getPathSimpleNames
 import dev.ohs.fhir.codegen.schema.isCommonBinding
+import dev.ohs.fhir.codegen.schema.isExtensibleBinding
 import dev.ohs.fhir.codegen.schema.normalizeEnumName
 import dev.ohs.fhir.codegen.schema.typeIsEnumeratedCode
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
@@ -84,18 +85,33 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
         val fhirPathType = FhirPathType.getFromFhirTypeCode(element.type?.singleOrNull()?.code!!)!!
         if (element.typeIsEnumeratedCode(codegenContext.valueSetMap)) {
           val enumClass = element.getEnumClass(modelClassName, codegenContext.valueSetMap)
+          val wrapperClass =
+            ClassName(
+              modelClassName.packageName,
+              if (element.isExtensibleBinding) "ExtensibleEnumeration" else "Enumeration",
+            )
           add(
             "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { index ->\n",
             propertyName,
             elementPropertyName,
           )
-          add(
-            "  %T.of(%N?.getOrNull(index)?.let·{ %T.fromCode(it) }, %N?.getOrNull(index))!!\n",
-            ClassName(modelClassName.packageName, "Enumeration"),
-            propertyName,
-            enumClass,
-            elementPropertyName,
-          )
+          if (element.isExtensibleBinding) {
+            add(
+              "  %T.of(%N?.getOrNull(index), %N?.getOrNull(index), %T::fromCodeOrNull)!!\n",
+              wrapperClass,
+              propertyName,
+              elementPropertyName,
+              enumClass,
+            )
+          } else {
+            add(
+              "  %T.of(%N?.getOrNull(index)?.let·{ %T.fromCode(it) }, %N?.getOrNull(index))!!\n",
+              wrapperClass,
+              propertyName,
+              enumClass,
+              elementPropertyName,
+            )
+          }
           add("})")
         } else {
           add(
@@ -137,24 +153,51 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
     val modelDisplayName = modelClassName.simpleNames.joinToString(".")
     if (element.typeIsEnumeratedCode(valueSetMap)) {
       val enumClass = element.getEnumClass(modelClassName, valueSetMap)
-      if (element.min == 0) {
-        add(
-          "%T.of(%N?.let·{ %T.fromCode(it) }, %N)",
-          ClassName(modelClassName.packageName, "Enumeration"),
-          propertyName,
-          enumClass,
-          elementPropertyName,
+      val wrapperClass =
+        ClassName(
+          modelClassName.packageName,
+          if (element.isExtensibleBinding) "ExtensibleEnumeration" else "Enumeration",
         )
+      if (element.isExtensibleBinding) {
+        if (element.min == 0) {
+          add(
+            "%T.of(%N, %N, %T::fromCodeOrNull)",
+            wrapperClass,
+            propertyName,
+            elementPropertyName,
+            enumClass,
+          )
+        } else {
+          add(
+            "%T.of(%N, %N, %T::fromCodeOrNull) ?: throw %T(%S)",
+            wrapperClass,
+            propertyName,
+            elementPropertyName,
+            enumClass,
+            serializationExceptionClassName,
+            "Missing required property '$propertyName' on $modelDisplayName",
+          )
+        }
       } else {
-        add(
-          "%T.of(%N?.let·{ %T.fromCode(it) }, %N) ?: throw %T(%S)",
-          ClassName(modelClassName.packageName, "Enumeration"),
-          propertyName,
-          enumClass,
-          elementPropertyName,
-          serializationExceptionClassName,
-          "Missing required property '$propertyName' on $modelDisplayName",
-        )
+        if (element.min == 0) {
+          add(
+            "%T.of(%N?.let·{ %T.fromCode(it) }, %N)",
+            wrapperClass,
+            propertyName,
+            enumClass,
+            elementPropertyName,
+          )
+        } else {
+          add(
+            "%T.of(%N?.let·{ %T.fromCode(it) }, %N) ?: throw %T(%S)",
+            wrapperClass,
+            propertyName,
+            enumClass,
+            elementPropertyName,
+            serializationExceptionClassName,
+            "Missing required property '$propertyName' on $modelDisplayName",
+          )
+        }
       }
     } else if (type != null && FhirPathType.containsFhirTypeCode(type.code)) {
       val fhirPathType = FhirPathType.getFromFhirTypeCode(type.code)!!

@@ -1043,10 +1043,10 @@ public data class ImagingStudy(
 
   /** The status of the ImagingStudy. */
   public enum class ImagingStudyStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Registered("registered", "http://hl7.org/fhir/imagingstudy-status", "Registered"),
     Available("available", "http://hl7.org/fhir/imagingstudy-status", "Available"),
     Cancelled("cancelled", "http://hl7.org/fhir/imagingstudy-status", "Cancelled"),
@@ -1059,21 +1059,19 @@ public data class ImagingStudy(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ImagingStudyStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ImagingStudyStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ImagingStudyStatus? =
         when (code) {
           "registered" -> Registered
           "available" -> Available
           "cancelled" -> Cancelled
           "entered-in-error" -> Entered_In_Error
           "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum ImagingStudyStatus")
+          else -> null
         }
     }
   }

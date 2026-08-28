@@ -500,10 +500,10 @@ public data class GuidanceResponse(
 
   /** The status of a guidance response. */
   public enum class GuidanceResponseStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Success("success", "http://hl7.org/fhir/guidance-response-status", "Success"),
     Data_Requested(
       "data-requested",
@@ -521,14 +521,12 @@ public data class GuidanceResponse(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): GuidanceResponseStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum GuidanceResponseStatus")
+
+      public fun fromCodeOrNull(code: String?): GuidanceResponseStatus? =
         when (code) {
           "success" -> Success
           "data-requested" -> Data_Requested
@@ -536,8 +534,7 @@ public data class GuidanceResponse(
           "in-progress" -> In_Progress
           "failure" -> Failure
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum GuidanceResponseStatus")
+          else -> null
         }
     }
   }

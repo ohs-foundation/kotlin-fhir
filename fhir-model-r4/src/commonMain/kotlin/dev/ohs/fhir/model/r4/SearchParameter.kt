@@ -875,10 +875,10 @@ public data class SearchParameter(
    * How a search parameter relates to the set of elements returned by evaluating its xpath query.
    */
   public enum class XPathUsageType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Normal("normal", "http://hl7.org/fhir/search-xpath-usage", "Normal"),
     Phonetic("phonetic", "http://hl7.org/fhir/search-xpath-usage", "Phonetic"),
     Nearby("nearby", "http://hl7.org/fhir/search-xpath-usage", "Nearby"),
@@ -887,31 +887,29 @@ public data class SearchParameter(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): XPathUsageType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum XPathUsageType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): XPathUsageType? =
         when (code) {
           "normal" -> Normal
           "phonetic" -> Phonetic
           "nearby" -> Nearby
           "distance" -> Distance
           "other" -> Other
-          else -> throw IllegalArgumentException("Unknown code $code for enum XPathUsageType")
+          else -> null
         }
     }
   }
 
   /** What Search Comparator Codes are supported in search. */
   public enum class SearchComparator(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Eq("eq", "http://hl7.org/fhir/search-comparator", "Equals"),
     Ne("ne", "http://hl7.org/fhir/search-comparator", "Not Equals"),
     Gt("gt", "http://hl7.org/fhir/search-comparator", "Greater Than"),
@@ -924,14 +922,12 @@ public data class SearchParameter(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SearchComparator =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SearchComparator")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SearchComparator? =
         when (code) {
           "eq" -> Eq
           "ne" -> Ne
@@ -942,17 +938,17 @@ public data class SearchParameter(
           "sa" -> Sa
           "eb" -> Eb
           "ap" -> Ap
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchComparator")
+          else -> null
         }
     }
   }
 
   /** A supported modifier for a search parameter. */
   public enum class SearchModifierCode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Missing("missing", "http://hl7.org/fhir/search-modifier-code", "Missing"),
     Exact("exact", "http://hl7.org/fhir/search-modifier-code", "Exact"),
     Contains("contains", "http://hl7.org/fhir/search-modifier-code", "Contains"),
@@ -968,14 +964,12 @@ public data class SearchParameter(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SearchModifierCode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SearchModifierCode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SearchModifierCode? =
         when (code) {
           "missing" -> Missing
           "exact" -> Exact
@@ -989,7 +983,7 @@ public data class SearchParameter(
           "type" -> Type
           "identifier" -> Identifier
           "ofType" -> OfType
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchModifierCode")
+          else -> null
         }
     }
   }

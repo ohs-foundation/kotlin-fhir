@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** The relationship between concepts. */
 public enum class ConceptMapRelationship(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Related_To("related-to", "http://hl7.org/fhir/concept-map-relationship", "Related To"),
   Equivalent("equivalent", "http://hl7.org/fhir/concept-map-relationship", "Equivalent"),
   Source_Is_Narrower_Than_Target(
@@ -44,21 +45,19 @@ public enum class ConceptMapRelationship(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): ConceptMapRelationship =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum ConceptMapRelationship")
+
+    public fun fromCodeOrNull(code: String?): ConceptMapRelationship? =
       when (code) {
         "related-to" -> Related_To
         "equivalent" -> Equivalent
         "source-is-narrower-than-target" -> Source_Is_Narrower_Than_Target
         "source-is-broader-than-target" -> Source_Is_Broader_Than_Target
         "not-related-to" -> Not_Related_To
-        else -> throw IllegalArgumentException("Unknown code $code for enum ConceptMapRelationship")
+        else -> null
       }
   }
 }

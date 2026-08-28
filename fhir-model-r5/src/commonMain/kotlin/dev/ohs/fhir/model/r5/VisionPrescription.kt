@@ -700,37 +700,35 @@ public data class VisionPrescription(
 
   /** A coded concept listing the eye codes. */
   public enum class VisionEyes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Right("right", "http://hl7.org/fhir/vision-eye-codes", "Right Eye"),
     Left("left", "http://hl7.org/fhir/vision-eye-codes", "Left Eye");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): VisionEyes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum VisionEyes")
+
+      public fun fromCodeOrNull(code: kotlin.String?): VisionEyes? =
         when (code) {
           "right" -> Right
           "left" -> Left
-          else -> throw IllegalArgumentException("Unknown code $code for enum VisionEyes")
+          else -> null
         }
     }
   }
 
   /** A coded concept listing the base codes. */
   public enum class VisionBase(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Up("up", "http://hl7.org/fhir/vision-base-codes", "Up"),
     Down("down", "http://hl7.org/fhir/vision-base-codes", "Down"),
     In("in", "http://hl7.org/fhir/vision-base-codes", "In"),
@@ -738,30 +736,28 @@ public data class VisionPrescription(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): VisionBase =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum VisionBase")
+
+      public fun fromCodeOrNull(code: kotlin.String?): VisionBase? =
         when (code) {
           "up" -> Up
           "down" -> Down
           "in" -> In
           "out" -> Out
-          else -> throw IllegalArgumentException("Unknown code $code for enum VisionBase")
+          else -> null
         }
     }
   }
 
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/fm-status", "Active"),
     Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
     Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
@@ -769,23 +765,20 @@ public data class VisionPrescription(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum FinancialResourceStatusCodes"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): FinancialResourceStatusCodes? =
         when (code) {
           "active" -> Active
           "cancelled" -> Cancelled
           "draft" -> Draft
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
+          else -> null
         }
     }
   }

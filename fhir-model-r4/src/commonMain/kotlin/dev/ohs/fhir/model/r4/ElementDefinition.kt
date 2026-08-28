@@ -3314,39 +3314,37 @@ public data class ElementDefinition(
 
   /** How slices are interpreted when evaluating an instance. */
   public enum class SlicingRules(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Closed("closed", "http://hl7.org/fhir/resource-slicing-rules", "Closed"),
     Open("open", "http://hl7.org/fhir/resource-slicing-rules", "Open"),
     OpenAtEnd("openAtEnd", "http://hl7.org/fhir/resource-slicing-rules", "Open at End");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SlicingRules =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SlicingRules")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SlicingRules? =
         when (code) {
           "closed" -> Closed
           "open" -> Open
           "openAtEnd" -> OpenAtEnd
-          else -> throw IllegalArgumentException("Unknown code $code for enum SlicingRules")
+          else -> null
         }
     }
   }
 
   /** How an element value is interpreted when discrimination is evaluated. */
   public enum class DiscriminatorType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Value("value", "http://hl7.org/fhir/discriminator-type", "Value"),
     Exists("exists", "http://hl7.org/fhir/discriminator-type", "Exists"),
     Pattern("pattern", "http://hl7.org/fhir/discriminator-type", "Pattern"),
@@ -3355,50 +3353,46 @@ public data class ElementDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): DiscriminatorType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DiscriminatorType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): DiscriminatorType? =
         when (code) {
           "value" -> Value
           "exists" -> Exists
           "pattern" -> Pattern
           "type" -> Type
           "profile" -> Profile
-          else -> throw IllegalArgumentException("Unknown code $code for enum DiscriminatorType")
+          else -> null
         }
     }
   }
 
   /** How resource references can be aggregated. */
   public enum class AggregationMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Contained("contained", "http://hl7.org/fhir/resource-aggregation-mode", "Contained"),
     Referenced("referenced", "http://hl7.org/fhir/resource-aggregation-mode", "Referenced"),
     Bundled("bundled", "http://hl7.org/fhir/resource-aggregation-mode", "Bundled");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AggregationMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AggregationMode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AggregationMode? =
         when (code) {
           "contained" -> Contained
           "referenced" -> Referenced
           "bundled" -> Bundled
-          else -> throw IllegalArgumentException("Unknown code $code for enum AggregationMode")
+          else -> null
         }
     }
   }
@@ -3408,10 +3402,10 @@ public data class ElementDefinition(
    * be used.
    */
   public enum class ReferenceVersionRules(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Either(
       "either",
       "http://hl7.org/fhir/reference-version-rules",
@@ -3426,57 +3420,52 @@ public data class ElementDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ReferenceVersionRules =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ReferenceVersionRules")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ReferenceVersionRules? =
         when (code) {
           "either" -> Either
           "independent" -> Independent
           "specific" -> Specific
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ReferenceVersionRules")
+          else -> null
         }
     }
   }
 
   /** SHALL applications comply with this constraint? */
   public enum class ConstraintSeverity(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Error("error", "http://hl7.org/fhir/constraint-severity", "Error"),
     Warning("warning", "http://hl7.org/fhir/constraint-severity", "Warning");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ConstraintSeverity =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ConstraintSeverity")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ConstraintSeverity? =
         when (code) {
           "error" -> Error
           "warning" -> Warning
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConstraintSeverity")
+          else -> null
         }
     }
   }
 
   /** How a property is represented when serialized. */
   public enum class PropertyRepresentation(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     XmlAttr("xmlAttr", "http://hl7.org/fhir/property-representation", "XML Attribute"),
     XmlText("xmlText", "http://hl7.org/fhir/property-representation", "XML Text"),
     TypeAttr("typeAttr", "http://hl7.org/fhir/property-representation", "Type Attribute"),
@@ -3485,22 +3474,19 @@ public data class ElementDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): PropertyRepresentation =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum PropertyRepresentation")
+
+      public fun fromCodeOrNull(code: kotlin.String?): PropertyRepresentation? =
         when (code) {
           "xmlAttr" -> XmlAttr
           "xmlText" -> XmlText
           "typeAttr" -> TypeAttr
           "cdaText" -> CdaText
           "xhtml" -> Xhtml
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum PropertyRepresentation")
+          else -> null
         }
     }
   }

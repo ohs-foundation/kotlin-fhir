@@ -16,12 +16,14 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
+
 /** All FHIR types */
 public enum class FHIRTypes(
-  private val code: kotlin.String,
-  private val system: kotlin.String,
-  private val display: kotlin.String?,
-) {
+  override val code: kotlin.String,
+  override val system: kotlin.String,
+  override val display: kotlin.String?,
+) : FhirEnum {
   Base("Base", "http://hl7.org/fhir/fhir-types", "Base"),
   Element("Element", "http://hl7.org/fhir/fhir-types", "Element"),
   BackboneElement("BackboneElement", "http://hl7.org/fhir/fhir-types", "BackboneElement"),
@@ -412,14 +414,12 @@ public enum class FHIRTypes(
 
   override fun toString(): kotlin.String = code
 
-  public fun getCode(): kotlin.String = code
-
-  public fun getSystem(): kotlin.String = system
-
-  public fun getDisplay(): kotlin.String? = display
-
   public companion object {
     public fun fromCode(code: kotlin.String): FHIRTypes =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum FHIRTypes")
+
+    public fun fromCodeOrNull(code: kotlin.String?): FHIRTypes? =
       when (code) {
         "Base" -> Base
         "Element" -> Element
@@ -652,7 +652,7 @@ public enum class FHIRTypes(
         "VerificationResult" -> VerificationResult
         "VisionPrescription" -> VisionPrescription
         "Parameters" -> Parameters
-        else -> throw IllegalArgumentException("Unknown code $code for enum FHIRTypes")
+        else -> null
       }
   }
 }

@@ -379,10 +379,10 @@ public data class Slot(
 
   /** The free/busy status of the slot. */
   public enum class SlotStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Busy("busy", "http://hl7.org/fhir/slotstatus", "Busy"),
     Free("free", "http://hl7.org/fhir/slotstatus", "Free"),
     Busy_Unavailable("busy-unavailable", "http://hl7.org/fhir/slotstatus", "Busy (Unavailable)"),
@@ -391,21 +391,19 @@ public data class Slot(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): SlotStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum SlotStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): SlotStatus? =
         when (code) {
           "busy" -> Busy
           "free" -> Free
           "busy-unavailable" -> Busy_Unavailable
           "busy-tentative" -> Busy_Tentative
           "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum SlotStatus")
+          else -> null
         }
     }
   }

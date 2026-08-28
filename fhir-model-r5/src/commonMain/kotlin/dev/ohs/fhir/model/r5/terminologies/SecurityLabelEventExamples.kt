@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /**
@@ -25,10 +26,10 @@ import kotlin.String
  * PurposeOfUse and maybe a refrain/obligation.
  */
 public enum class SecurityLabelEventExamples(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Treat("TREAT", "http://terminology.hl7.org/CodeSystem/v3-ActReason", "treatment"),
   Hpaymt("HPAYMT", "http://terminology.hl7.org/CodeSystem/v3-ActReason", "healthcare payment"),
   Etreat("ETREAT", "http://terminology.hl7.org/CodeSystem/v3-ActReason", "Emergency Treatment"),
@@ -46,14 +47,12 @@ public enum class SecurityLabelEventExamples(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): SecurityLabelEventExamples =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum SecurityLabelEventExamples")
+
+    public fun fromCodeOrNull(code: String?): SecurityLabelEventExamples? =
       when (code) {
         "TREAT" -> Treat
         "HPAYMT" -> Hpaymt
@@ -61,8 +60,7 @@ public enum class SecurityLabelEventExamples(
         "NOAUTH" -> Noauth
         "DELAU" -> Delau
         "NORDSCLCD" -> Nordsclcd
-        else ->
-          throw IllegalArgumentException("Unknown code $code for enum SecurityLabelEventExamples")
+        else -> null
       }
   }
 }

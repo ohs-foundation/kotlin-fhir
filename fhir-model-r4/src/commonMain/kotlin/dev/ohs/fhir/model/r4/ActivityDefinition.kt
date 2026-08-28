@@ -1384,10 +1384,10 @@ public data class ActivityDefinition(
 
   /** The type of participant for the action. */
   public enum class ActionParticipantType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Patient("patient", "http://hl7.org/fhir/action-participant-type", "Patient"),
     Practitioner("practitioner", "http://hl7.org/fhir/action-participant-type", "Practitioner"),
     Related_Person(
@@ -1399,31 +1399,28 @@ public data class ActivityDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ActionParticipantType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ActionParticipantType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ActionParticipantType? =
         when (code) {
           "patient" -> Patient
           "practitioner" -> Practitioner
           "related-person" -> Related_Person
           "device" -> Device
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionParticipantType")
+          else -> null
         }
     }
   }
 
   /** A list of all the request resource types defined in this version of the FHIR specification. */
   public enum class RequestResourceType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Appointment("Appointment", "http://hl7.org/fhir/request-resource-types", "Appointment"),
     AppointmentResponse(
       "AppointmentResponse",
@@ -1474,14 +1471,12 @@ public data class ActivityDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): RequestResourceType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum RequestResourceType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): RequestResourceType? =
         when (code) {
           "Appointment" -> Appointment
           "AppointmentResponse" -> AppointmentResponse
@@ -1498,17 +1493,17 @@ public data class ActivityDefinition(
           "SupplyRequest" -> SupplyRequest
           "Task" -> Task
           "VisionPrescription" -> VisionPrescription
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestResourceType")
+          else -> null
         }
     }
   }
 
   /** Codes indicating the degree of authority/intentionality associated with a request. */
   public enum class RequestIntent(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
     Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
     Directive("directive", "http://hl7.org/fhir/request-intent", "Directive"),
@@ -1521,14 +1516,12 @@ public data class ActivityDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): RequestIntent =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum RequestIntent")
+
+      public fun fromCodeOrNull(code: kotlin.String?): RequestIntent? =
         when (code) {
           "proposal" -> Proposal
           "plan" -> Plan
@@ -1539,17 +1532,17 @@ public data class ActivityDefinition(
           "filler-order" -> Filler_Order
           "instance-order" -> Instance_Order
           "option" -> Option
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestIntent")
+          else -> null
         }
     }
   }
 
   /** The clinical priority of a diagnostic order. */
   public enum class RequestPriority(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
@@ -1557,20 +1550,18 @@ public data class ActivityDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): RequestPriority =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
+
+      public fun fromCodeOrNull(code: kotlin.String?): RequestPriority? =
         when (code) {
           "routine" -> Routine
           "urgent" -> Urgent
           "asap" -> Asap
           "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
+          else -> null
         }
     }
   }

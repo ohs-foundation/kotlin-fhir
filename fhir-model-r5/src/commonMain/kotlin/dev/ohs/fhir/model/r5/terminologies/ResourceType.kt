@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** Concrete FHIR Resource Types */
 public enum class ResourceType(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Account("Account", "http://hl7.org/fhir/fhir-types", "Account"),
   ActivityDefinition("ActivityDefinition", "http://hl7.org/fhir/fhir-types", "ActivityDefinition"),
   ActorDefinition("ActorDefinition", "http://hl7.org/fhir/fhir-types", "ActorDefinition"),
@@ -329,14 +330,12 @@ public enum class ResourceType(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): ResourceType =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum ResourceType")
+
+    public fun fromCodeOrNull(code: String?): ResourceType? =
       when (code) {
         "Account" -> Account
         "ActivityDefinition" -> ActivityDefinition
@@ -496,7 +495,7 @@ public enum class ResourceType(
         "ValueSet" -> ValueSet
         "VerificationResult" -> VerificationResult
         "VisionPrescription" -> VisionPrescription
-        else -> throw IllegalArgumentException("Unknown code $code for enum ResourceType")
+        else -> null
       }
   }
 }

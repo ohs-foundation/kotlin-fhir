@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Decimal
 import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.ExtensibleEnumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDate
 import dev.ohs.fhir.model.r4.FhirDateTime
@@ -568,7 +569,7 @@ internal object ValueSetComposeIncludeConceptDesignationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      language = Enumeration.of(language?.let { CommonLanguages.fromCode(it) }, _language),
+      language = ExtensibleEnumeration.of(language, _language, CommonLanguages::fromCodeOrNull),
       use = use,
       `value` =
         R4String.of(`value`, _value)
@@ -592,7 +593,7 @@ internal object ValueSetComposeIncludeConceptDesignationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.language?.rawCode))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.languageSer, it)
     }
@@ -723,7 +724,7 @@ internal object ValueSetComposeIncludeFilterSerializer :
     (value.`property`.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.propertySer, it)
     }
-    ((value.op.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.op.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.op.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.propertySer, it)
     }
@@ -1682,7 +1683,7 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

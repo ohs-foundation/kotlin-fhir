@@ -1323,10 +1323,10 @@ public data class AuditEvent(
 
   /** The type of network access point of this agent in the audit event. */
   public enum class AuditEventAgentNetworkType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     _1("1", "http://hl7.org/fhir/network-type", "Machine Name"),
     _2("2", "http://hl7.org/fhir/network-type", "IP Address"),
     _3("3", "http://hl7.org/fhir/network-type", "Telephone Number"),
@@ -1335,32 +1335,31 @@ public data class AuditEvent(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AuditEventAgentNetworkType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum AuditEventAgentNetworkType"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): AuditEventAgentNetworkType? =
         when (code) {
           "1" -> _1
           "2" -> _2
           "3" -> _3
           "4" -> _4
           "5" -> _5
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AuditEventAgentNetworkType")
+          else -> null
         }
     }
   }
 
   /** Indicator for type of action performed during the event that generated the event. */
   public enum class AuditEventAction(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     C("C", "http://hl7.org/fhir/audit-event-action", "Create"),
     R("R", "http://hl7.org/fhir/audit-event-action", "Read/View/Print"),
     U("U", "http://hl7.org/fhir/audit-event-action", "Update"),
@@ -1369,31 +1368,29 @@ public data class AuditEvent(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AuditEventAction =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AuditEventAction")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AuditEventAction? =
         when (code) {
           "C" -> C
           "R" -> R
           "U" -> U
           "D" -> D
           "E" -> E
-          else -> throw IllegalArgumentException("Unknown code $code for enum AuditEventAction")
+          else -> null
         }
     }
   }
 
   /** Indicates whether the event succeeded or failed. */
   public enum class AuditEventOutcome(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     _0("0", "http://hl7.org/fhir/audit-event-outcome", "Success"),
     _4("4", "http://hl7.org/fhir/audit-event-outcome", "Minor failure"),
     _8("8", "http://hl7.org/fhir/audit-event-outcome", "Serious failure"),
@@ -1401,20 +1398,18 @@ public data class AuditEvent(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AuditEventOutcome =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum AuditEventOutcome")
+
+      public fun fromCodeOrNull(code: kotlin.String?): AuditEventOutcome? =
         when (code) {
           "0" -> _0
           "4" -> _4
           "8" -> _8
           "12" -> _12
-          else -> throw IllegalArgumentException("Unknown code $code for enum AuditEventOutcome")
+          else -> null
         }
     }
   }

@@ -269,7 +269,7 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -742,7 +742,7 @@ internal object ImplementationGuideDefinitionResourceSerializer :
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, value.reference)
-    (value.fhirVersion.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.fhirVersion.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.fhirVersionSer, it)
     }
     (value.fhirVersion.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -935,7 +935,7 @@ internal object ImplementationGuideDefinitionPageSerializer :
     (value.title.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.nameUrlSer, it)
     }
-    ((value.generation.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+    ((value.generation.value?.code))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.generation.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.nameUrlSer, it)
     }
@@ -1052,7 +1052,7 @@ internal object ImplementationGuideDefinitionParameterSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -2078,7 +2078,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -2176,7 +2176,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
         it,
       )
     }
-    ((value.license?.value?.getCode()))?.let {
+    ((value.license?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
     }
     (value.license?.toElement())?.let {
@@ -2187,7 +2187,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
         it,
       )
     }
-    (value.fhirVersion.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.fhirVersion.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,
         37 + descriptorOffset,

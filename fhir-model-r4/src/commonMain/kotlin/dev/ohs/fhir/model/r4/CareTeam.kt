@@ -602,10 +602,10 @@ public data class CareTeam(
 
   /** Indicates the status of the care team. */
   public enum class CareTeamStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Proposed("proposed", "http://hl7.org/fhir/care-team-status", "Proposed"),
     Active("active", "http://hl7.org/fhir/care-team-status", "Active"),
     Suspended("suspended", "http://hl7.org/fhir/care-team-status", "Suspended"),
@@ -618,21 +618,19 @@ public data class CareTeam(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CareTeamStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum CareTeamStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): CareTeamStatus? =
         when (code) {
           "proposed" -> Proposed
           "active" -> Active
           "suspended" -> Suspended
           "inactive" -> Inactive
           "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum CareTeamStatus")
+          else -> null
         }
     }
   }

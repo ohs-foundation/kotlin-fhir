@@ -180,7 +180,7 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
     (value.required?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.requiredSer, it)
     }
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+    ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.status.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.requiredSer, it)
     }
@@ -1432,7 +1432,7 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

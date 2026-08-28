@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** Used to specify why the normally expected content of the data element is missing. */
 public enum class DataAbsentReason(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Unknown("unknown", "http://terminology.hl7.org/CodeSystem/data-absent-reason", "Unknown"),
   Asked_Unknown(
     "asked-unknown",
@@ -82,14 +83,12 @@ public enum class DataAbsentReason(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): DataAbsentReason =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum DataAbsentReason")
+
+    public fun fromCodeOrNull(code: String?): DataAbsentReason? =
       when (code) {
         "unknown" -> Unknown
         "asked-unknown" -> Asked_Unknown
@@ -106,7 +105,7 @@ public enum class DataAbsentReason(
         "positive-infinity" -> Positive_Infinity
         "not-performed" -> Not_Performed
         "not-permitted" -> Not_Permitted
-        else -> throw IllegalArgumentException("Unknown code $code for enum DataAbsentReason")
+        else -> null
       }
   }
 }

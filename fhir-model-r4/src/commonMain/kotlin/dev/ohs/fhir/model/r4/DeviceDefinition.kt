@@ -1229,10 +1229,10 @@ public data class DeviceDefinition(
 
   /** The type of name the device is referred by. */
   public enum class DeviceNameType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Udi_Label_Name("udi-label-name", "http://hl7.org/fhir/device-nametype", "UDI Label name"),
     User_Friendly_Name(
       "user-friendly-name",
@@ -1254,14 +1254,12 @@ public data class DeviceDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): DeviceNameType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DeviceNameType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): DeviceNameType? =
         when (code) {
           "udi-label-name" -> Udi_Label_Name
           "user-friendly-name" -> User_Friendly_Name
@@ -1269,7 +1267,7 @@ public data class DeviceDefinition(
           "manufacturer-name" -> Manufacturer_Name
           "model-name" -> Model_Name
           "other" -> Other
-          else -> throw IllegalArgumentException("Unknown code $code for enum DeviceNameType")
+          else -> null
         }
     }
   }

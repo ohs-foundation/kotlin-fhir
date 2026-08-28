@@ -16,33 +16,32 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
 import kotlin.String
 
 /** This value set includes sample funds reservation type codes. */
 public enum class FundsReservationCodes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Patient("patient", "http://terminology.hl7.org/CodeSystem/fundsreserve", "Patient"),
   Provider("provider", "http://terminology.hl7.org/CodeSystem/fundsreserve", "Provider"),
   None("none", "http://terminology.hl7.org/CodeSystem/fundsreserve", "None");
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): FundsReservationCodes =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum FundsReservationCodes")
+
+    public fun fromCodeOrNull(code: String?): FundsReservationCodes? =
       when (code) {
         "patient" -> Patient
         "provider" -> Provider
         "none" -> None
-        else -> throw IllegalArgumentException("Unknown code $code for enum FundsReservationCodes")
+        else -> null
       }
   }
 }

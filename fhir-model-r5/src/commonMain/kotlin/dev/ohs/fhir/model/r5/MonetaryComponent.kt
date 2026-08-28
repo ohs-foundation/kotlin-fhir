@@ -115,10 +115,10 @@ public data class MonetaryComponent(
 
   /** Codes indicating the kind of the price component. */
   public enum class PriceComponentType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Base("base", "http://hl7.org/fhir/price-component-type", "base price"),
     Surcharge("surcharge", "http://hl7.org/fhir/price-component-type", "surcharge"),
     Deduction("deduction", "http://hl7.org/fhir/price-component-type", "deduction"),
@@ -128,14 +128,12 @@ public data class MonetaryComponent(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): PriceComponentType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum PriceComponentType")
+
+      public fun fromCodeOrNull(code: String?): PriceComponentType? =
         when (code) {
           "base" -> Base
           "surcharge" -> Surcharge
@@ -143,7 +141,7 @@ public data class MonetaryComponent(
           "discount" -> Discount
           "tax" -> Tax
           "informational" -> Informational
-          else -> throw IllegalArgumentException("Unknown code $code for enum PriceComponentType")
+          else -> null
         }
     }
   }

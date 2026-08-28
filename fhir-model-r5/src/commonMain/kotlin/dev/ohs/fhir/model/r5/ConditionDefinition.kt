@@ -1386,38 +1386,35 @@ public data class ConditionDefinition(
 
   /** Kind of precondition for the condition. */
   public enum class ConditionPreconditionType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Sensitive("sensitive", "http://hl7.org/fhir/condition-precondition-type", "Sensitive"),
     Specific("specific", "http://hl7.org/fhir/condition-precondition-type", "Specific");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ConditionPreconditionType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ConditionPreconditionType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ConditionPreconditionType? =
         when (code) {
           "sensitive" -> Sensitive
           "specific" -> Specific
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ConditionPreconditionType")
+          else -> null
         }
     }
   }
 
   /** The use of a questionnaire. */
   public enum class ConditionQuestionnairePurpose(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Preadmit("preadmit", "http://hl7.org/fhir/condition-questionnaire-purpose", "Pre-admit"),
     Diff_Diagnosis(
       "diff-diagnosis",
@@ -1428,22 +1425,19 @@ public data class ConditionDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ConditionQuestionnairePurpose =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum ConditionQuestionnairePurpose"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): ConditionQuestionnairePurpose? =
         when (code) {
           "preadmit" -> Preadmit
           "diff-diagnosis" -> Diff_Diagnosis
           "outcome" -> Outcome
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ConditionQuestionnairePurpose"
-            )
+          else -> null
         }
     }
   }

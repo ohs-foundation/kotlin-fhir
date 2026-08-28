@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /** Indication of the degree of conformance expectations associated with a binding. */
 public enum class BindingStrength(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Required("required", "http://hl7.org/fhir/binding-strength", "Required"),
   Extensible("extensible", "http://hl7.org/fhir/binding-strength", "Extensible"),
   Preferred("preferred", "http://hl7.org/fhir/binding-strength", "Preferred"),
@@ -31,20 +32,18 @@ public enum class BindingStrength(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): BindingStrength =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum BindingStrength")
+
+    public fun fromCodeOrNull(code: String?): BindingStrength? =
       when (code) {
         "required" -> Required
         "extensible" -> Extensible
         "preferred" -> Preferred
         "example" -> Example
-        else -> throw IllegalArgumentException("Unknown code $code for enum BindingStrength")
+        else -> null
       }
   }
 }

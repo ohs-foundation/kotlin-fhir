@@ -360,7 +360,7 @@ internal object AuditEventAgentNetworkSerializer : KSerializer<AuditEvent.Agent.
     (value.address?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.addressSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.addressSer, it)
     }
@@ -1048,7 +1048,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         Hoisted.subtypeSer,
         value.subtype,
       )
-    ((value.action?.value?.getCode()))?.let {
+    ((value.action?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.action?.toElement())?.let {
@@ -1073,7 +1073,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         it,
       )
     }
-    ((value.outcome?.value?.getCode()))?.let {
+    ((value.outcome?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.outcome?.toElement())?.let {

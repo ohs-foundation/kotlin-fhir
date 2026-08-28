@@ -16,12 +16,14 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
+
 /** List of all non-abstract types, data types and resources */
 public enum class ConcreteFHIRTypes(
-  private val code: kotlin.String,
-  private val system: kotlin.String,
-  private val display: kotlin.String?,
-) {
+  override val code: kotlin.String,
+  override val system: kotlin.String,
+  override val display: kotlin.String?,
+) : FhirEnum {
   Account("Account", "http://hl7.org/fhir/fhir-types", "Account"),
   ActivityDefinition("ActivityDefinition", "http://hl7.org/fhir/fhir-types", "ActivityDefinition"),
   ActorDefinition("ActorDefinition", "http://hl7.org/fhir/fhir-types", "ActorDefinition"),
@@ -402,14 +404,12 @@ public enum class ConcreteFHIRTypes(
 
   override fun toString(): kotlin.String = code
 
-  public fun getCode(): kotlin.String = code
-
-  public fun getSystem(): kotlin.String = system
-
-  public fun getDisplay(): kotlin.String? = display
-
   public companion object {
     public fun fromCode(code: kotlin.String): ConcreteFHIRTypes =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum ConcreteFHIRTypes")
+
+    public fun fromCodeOrNull(code: kotlin.String?): ConcreteFHIRTypes? =
       when (code) {
         "Account" -> Account
         "ActivityDefinition" -> ActivityDefinition
@@ -632,7 +632,7 @@ public enum class ConcreteFHIRTypes(
         "VirtualServiceDetail" -> VirtualServiceDetail
         "VisionPrescription" -> VisionPrescription
         "xhtml" -> Xhtml
-        else -> throw IllegalArgumentException("Unknown code $code for enum ConcreteFHIRTypes")
+        else -> null
       }
   }
 }

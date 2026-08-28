@@ -492,10 +492,10 @@ public data class Timing(
 
   /** A unit of time (units from UCUM). */
   public enum class UnitsOfTime(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     S("s", "http://unitsofmeasure.org", "秒"),
     Min("min", "http://unitsofmeasure.org", "分钟"),
     H("h", "http://unitsofmeasure.org", "小时"),
@@ -506,14 +506,12 @@ public data class Timing(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): UnitsOfTime =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum UnitsOfTime")
+
+      public fun fromCodeOrNull(code: String?): UnitsOfTime? =
         when (code) {
           "s" -> S
           "min" -> Min
@@ -522,17 +520,17 @@ public data class Timing(
           "wk" -> Wk
           "mo" -> Mo
           "a" -> A
-          else -> throw IllegalArgumentException("Unknown code $code for enum UnitsOfTime")
+          else -> null
         }
     }
   }
 
   /** The days of the week. */
   public enum class DaysOfWeek(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Mon("mon", "http://hl7.org/fhir/days-of-week", "Monday"),
     Tue("tue", "http://hl7.org/fhir/days-of-week", "Tuesday"),
     Wed("wed", "http://hl7.org/fhir/days-of-week", "Wednesday"),
@@ -543,14 +541,12 @@ public data class Timing(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): DaysOfWeek =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DaysOfWeek")
+
+      public fun fromCodeOrNull(code: String?): DaysOfWeek? =
         when (code) {
           "mon" -> Mon
           "tue" -> Tue
@@ -559,17 +555,17 @@ public data class Timing(
           "fri" -> Fri
           "sat" -> Sat
           "sun" -> Sun
-          else -> throw IllegalArgumentException("Unknown code $code for enum DaysOfWeek")
+          else -> null
         }
     }
   }
 
   /** Real world event relating to the schedule. */
   public enum class EventTiming(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Morn("MORN", "http://hl7.org/fhir/event-timing", "Morning"),
     Morn_Early("MORN.early", "http://hl7.org/fhir/event-timing", "Early Morning"),
     Morn_Late("MORN.late", "http://hl7.org/fhir/event-timing", "Late Morning"),
@@ -599,14 +595,12 @@ public data class Timing(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): EventTiming =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum EventTiming")
+
+      public fun fromCodeOrNull(code: String?): EventTiming? =
         when (code) {
           "MORN" -> Morn
           "MORN.early" -> Morn_Early
@@ -634,7 +628,7 @@ public data class Timing(
           "PCM" -> Pcm
           "PCD" -> Pcd
           "PCV" -> Pcv
-          else -> throw IllegalArgumentException("Unknown code $code for enum EventTiming")
+          else -> null
         }
     }
   }

@@ -1148,10 +1148,10 @@ public data class Coverage(
 
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/fm-status", "Active"),
     Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
     Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
@@ -1159,52 +1159,46 @@ public data class Coverage(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum FinancialResourceStatusCodes"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): FinancialResourceStatusCodes? =
         when (code) {
           "active" -> Active
           "cancelled" -> Cancelled
           "draft" -> Draft
           "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
+          else -> null
         }
     }
   }
 
   /** The kind of coverage: insurance, selfpay or other. */
   public enum class Kind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Insurance("insurance", "http://hl7.org/fhir/coverage-kind", "Insurance"),
     Self_Pay("self-pay", "http://hl7.org/fhir/coverage-kind", "Self-pay"),
     Other("other", "http://hl7.org/fhir/coverage-kind", "Other");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): Kind =
+        fromCodeOrNull(code) ?: throw IllegalArgumentException("Unknown code $code for enum Kind")
+
+      public fun fromCodeOrNull(code: kotlin.String?): Kind? =
         when (code) {
           "insurance" -> Insurance
           "self-pay" -> Self_Pay
           "other" -> Other
-          else -> throw IllegalArgumentException("Unknown code $code for enum Kind")
+          else -> null
         }
     }
   }

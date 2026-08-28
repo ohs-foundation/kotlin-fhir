@@ -163,7 +163,7 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
     (value.name?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameSer, it)
     }
-    ((value.use.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.use.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.use.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.nameSer, it)
     }
@@ -179,7 +179,7 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
     (value.documentation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.nameSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.nameSer, it)
     }

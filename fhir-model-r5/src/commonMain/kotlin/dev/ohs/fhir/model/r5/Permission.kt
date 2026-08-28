@@ -1003,37 +1003,35 @@ public data class Permission(
 
   /** How a rule statement is applied, such as adding additional consent or removing consent. */
   public enum class ConsentProvisionType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Deny("deny", "http://hl7.org/fhir/consent-provision-type", "Deny"),
     Permit("permit", "http://hl7.org/fhir/consent-provision-type", "Permit");
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): ConsentProvisionType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ConsentProvisionType")
+
+      public fun fromCodeOrNull(code: String?): ConsentProvisionType? =
         when (code) {
           "deny" -> Deny
           "permit" -> Permit
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConsentProvisionType")
+          else -> null
         }
     }
   }
 
   /** How a resource reference is interpreted when testing consent restrictions. */
   public enum class ConsentDataMeaning(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Instance("instance", "http://hl7.org/fhir/consent-data-meaning", "Instance"),
     Related("related", "http://hl7.org/fhir/consent-data-meaning", "Related"),
     Dependents("dependents", "http://hl7.org/fhir/consent-data-meaning", "Dependents"),
@@ -1041,30 +1039,28 @@ public data class Permission(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): ConsentDataMeaning =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ConsentDataMeaning")
+
+      public fun fromCodeOrNull(code: String?): ConsentDataMeaning? =
         when (code) {
           "instance" -> Instance
           "related" -> Related
           "dependents" -> Dependents
           "authoredby" -> Authoredby
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConsentDataMeaning")
+          else -> null
         }
     }
   }
 
   /** Codes identifying the lifecycle stage of a product. */
   public enum class PermissionStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/permission-status", "Active"),
     Entered_In_Error(
       "entered-in-error",
@@ -1076,30 +1072,28 @@ public data class Permission(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): PermissionStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum PermissionStatus")
+
+      public fun fromCodeOrNull(code: String?): PermissionStatus? =
         when (code) {
           "active" -> Active
           "entered-in-error" -> Entered_In_Error
           "draft" -> Draft
           "rejected" -> Rejected
-          else -> throw IllegalArgumentException("Unknown code $code for enum PermissionStatus")
+          else -> null
         }
     }
   }
 
   /** Codes identifying rule combining algorithm. */
   public enum class PermissionRuleCombining(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Deny_Overrides(
       "deny-overrides",
       "http://hl7.org/fhir/permission-rule-combining",
@@ -1133,14 +1127,12 @@ public data class Permission(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): PermissionRuleCombining =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum PermissionRuleCombining")
+
+      public fun fromCodeOrNull(code: String?): PermissionRuleCombining? =
         when (code) {
           "deny-overrides" -> Deny_Overrides
           "permit-overrides" -> Permit_Overrides
@@ -1148,8 +1140,7 @@ public data class Permission(
           "ordered-permit-overrides" -> Ordered_Permit_Overrides
           "deny-unless-permit" -> Deny_Unless_Permit
           "permit-unless-deny" -> Permit_Unless_Deny
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum PermissionRuleCombining")
+          else -> null
         }
     }
   }

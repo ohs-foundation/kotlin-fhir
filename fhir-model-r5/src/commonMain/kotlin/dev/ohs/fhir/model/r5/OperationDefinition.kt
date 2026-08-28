@@ -1618,28 +1618,25 @@ public data class OperationDefinition(
 
   /** Whether an operation parameter is an input or an output parameter. */
   public enum class OperationParameterUse(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     In("in", "http://hl7.org/fhir/operation-parameter-use", "In"),
     Out("out", "http://hl7.org/fhir/operation-parameter-use", "Out");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): OperationParameterUse =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum OperationParameterUse")
+
+      public fun fromCodeOrNull(code: kotlin.String?): OperationParameterUse? =
         when (code) {
           "in" -> In
           "out" -> Out
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum OperationParameterUse")
+          else -> null
         }
     }
   }
@@ -1648,67 +1645,62 @@ public data class OperationDefinition(
    * Indicates that a parameter applies when the operation is being invoked at the specified level
    */
   public enum class OperationParameterScope(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Instance("instance", "http://hl7.org/fhir/operation-parameter-scope", "Instance"),
     Type("type", "http://hl7.org/fhir/operation-parameter-scope", "Type"),
     System("system", "http://hl7.org/fhir/operation-parameter-scope", "System");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): OperationParameterScope =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum OperationParameterScope")
+
+      public fun fromCodeOrNull(code: kotlin.String?): OperationParameterScope? =
         when (code) {
           "instance" -> Instance
           "type" -> Type
           "system" -> System
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum OperationParameterScope")
+          else -> null
         }
     }
   }
 
   /** Whether an operation is a normal operation or a query. */
   public enum class OperationKind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Operation("operation", "http://hl7.org/fhir/operation-kind", "Operation"),
     Query("query", "http://hl7.org/fhir/operation-kind", "Query");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): OperationKind =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum OperationKind")
+
+      public fun fromCodeOrNull(code: kotlin.String?): OperationKind? =
         when (code) {
           "operation" -> Operation
           "query" -> Query
-          else -> throw IllegalArgumentException("Unknown code $code for enum OperationKind")
+          else -> null
         }
     }
   }
 
   /** Current and past FHIR resource types (deleted or renamed), including abstract types */
   public enum class VersionIndependentResourceTypesAll(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Account("Account", "http://hl7.org/fhir/fhir-types", "Account"),
     ActivityDefinition(
       "ActivityDefinition",
@@ -2175,14 +2167,14 @@ public data class OperationDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): VersionIndependentResourceTypesAll =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum VersionIndependentResourceTypesAll"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): VersionIndependentResourceTypesAll? =
         when (code) {
           "Account" -> Account
           "ActivityDefinition" -> ActivityDefinition
@@ -2387,10 +2379,7 @@ public data class OperationDefinition(
           "Sequence" -> Sequence
           "ServiceDefinition" -> ServiceDefinition
           "SubstanceSpecification" -> SubstanceSpecification
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum VersionIndependentResourceTypesAll"
-            )
+          else -> null
         }
     }
   }

@@ -421,9 +421,7 @@ internal object EvidenceVariableCharacteristicSerializer :
     (value.timeFromStart)?.let {
       encoder.encodeSerializableElement(descriptor, 20, Hoisted.participantEffectiveDurationSer, it)
     }
-    ((value.groupMeasure?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 21, it)
-    }
+    ((value.groupMeasure?.value?.code))?.let { encoder.encodeStringElement(descriptor, 21, it) }
     (value.groupMeasure?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 22, Hoisted.descriptionSer, it)
     }
@@ -955,7 +953,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1110,7 +1108,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         Hoisted.relatedArtifactSer,
         value.relatedArtifact,
       )
-    ((value.type?.value?.getCode()))?.let {
+    ((value.type?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 48 + descriptorOffset, it)
     }
     (value.type?.toElement())?.let {

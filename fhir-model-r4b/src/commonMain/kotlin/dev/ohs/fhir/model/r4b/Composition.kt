@@ -1290,10 +1290,10 @@ public data class Composition(
 
   /** The way in which a person authenticated a composition. */
   public enum class CompositionAttestationMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Personal("personal", "http://hl7.org/fhir/composition-attestation-mode", "Personal"),
     Professional(
       "professional",
@@ -1305,31 +1305,30 @@ public data class Composition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CompositionAttestationMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException(
+            "Unknown code $code for enum CompositionAttestationMode"
+          )
+
+      public fun fromCodeOrNull(code: kotlin.String?): CompositionAttestationMode? =
         when (code) {
           "personal" -> Personal
           "professional" -> Professional
           "legal" -> Legal
           "official" -> Official
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CompositionAttestationMode")
+          else -> null
         }
     }
   }
 
   /** The type of relationship between documents. */
   public enum class DocumentRelationshipType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Replaces("replaces", "http://hl7.org/fhir/document-relationship-type", "Replaces"),
     Transforms("transforms", "http://hl7.org/fhir/document-relationship-type", "Transforms"),
     Signs("signs", "http://hl7.org/fhir/document-relationship-type", "Signs"),
@@ -1337,60 +1336,55 @@ public data class Composition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): DocumentRelationshipType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum DocumentRelationshipType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): DocumentRelationshipType? =
         when (code) {
           "replaces" -> Replaces
           "transforms" -> Transforms
           "signs" -> Signs
           "appends" -> Appends
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum DocumentRelationshipType")
+          else -> null
         }
     }
   }
 
   /** The processing mode that applies to this list. */
   public enum class ListMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Working("working", "http://hl7.org/fhir/list-mode", "Working List"),
     Snapshot("snapshot", "http://hl7.org/fhir/list-mode", "Snapshot List"),
     Changes("changes", "http://hl7.org/fhir/list-mode", "Change List");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ListMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ListMode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ListMode? =
         when (code) {
           "working" -> Working
           "snapshot" -> Snapshot
           "changes" -> Changes
-          else -> throw IllegalArgumentException("Unknown code $code for enum ListMode")
+          else -> null
         }
     }
   }
 
   /** The workflow/clinical status of the composition. */
   public enum class CompositionStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Preliminary("preliminary", "http://hl7.org/fhir/composition-status", "Preliminary"),
     Final("final", "http://hl7.org/fhir/composition-status", "Final"),
     Amended("amended", "http://hl7.org/fhir/composition-status", "Amended"),
@@ -1402,20 +1396,18 @@ public data class Composition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CompositionStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum CompositionStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): CompositionStatus? =
         when (code) {
           "preliminary" -> Preliminary
           "final" -> Final
           "amended" -> Amended
           "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum CompositionStatus")
+          else -> null
         }
     }
   }
@@ -1425,10 +1417,10 @@ public data class Composition(
    * with the definition for concept domain "Confidentiality".
    */
   public enum class Confidentiality(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     L("L", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "low"),
     M("M", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "moderate"),
     N("N", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "normal"),
@@ -1438,14 +1430,12 @@ public data class Composition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): Confidentiality =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum Confidentiality")
+
+      public fun fromCodeOrNull(code: kotlin.String?): Confidentiality? =
         when (code) {
           "L" -> L
           "M" -> M
@@ -1453,7 +1443,7 @@ public data class Composition(
           "R" -> R
           "U" -> U
           "V" -> V
-          else -> throw IllegalArgumentException("Unknown code $code for enum Confidentiality")
+          else -> null
         }
     }
   }

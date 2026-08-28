@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** All published FHIR Versions. */
 public enum class FHIRVersion(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   _0_01("0.01", "http://hl7.org/fhir/FHIR-version", "0.01"),
   _0_05("0.05", "http://hl7.org/fhir/FHIR-version", "0.05"),
   _0_06("0.06", "http://hl7.org/fhir/FHIR-version", "0.06"),
@@ -84,14 +85,12 @@ public enum class FHIRVersion(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): FHIRVersion =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum FHIRVersion")
+
+    public fun fromCodeOrNull(code: String?): FHIRVersion? =
       when (code) {
         "0.01" -> _0_01
         "0.05" -> _0_05
@@ -150,7 +149,7 @@ public enum class FHIRVersion(
         "5.0.0-ballot" -> _5_0_0_Ballot
         "5.0.0-snapshot3" -> _5_0_0_Snapshot3
         "5.0.0-draft-final" -> _5_0_0_Draft_Final
-        else -> throw IllegalArgumentException("Unknown code $code for enum FHIRVersion")
+        else -> null
       }
   }
 }

@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
 import kotlin.String
 
 /** The lifecycle status of an artifact. */
 public enum class PublicationStatus(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Draft("draft", "http://hl7.org/fhir/publication-status", "Draft"),
   Active("active", "http://hl7.org/fhir/publication-status", "Active"),
   Retired("retired", "http://hl7.org/fhir/publication-status", "Retired"),
@@ -31,20 +32,18 @@ public enum class PublicationStatus(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): PublicationStatus =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum PublicationStatus")
+
+    public fun fromCodeOrNull(code: String?): PublicationStatus? =
       when (code) {
         "draft" -> Draft
         "active" -> Active
         "retired" -> Retired
         "unknown" -> Unknown
-        else -> throw IllegalArgumentException("Unknown code $code for enum PublicationStatus")
+        else -> null
       }
   }
 }

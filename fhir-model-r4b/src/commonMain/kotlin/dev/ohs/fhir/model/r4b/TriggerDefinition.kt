@@ -216,10 +216,10 @@ public data class TriggerDefinition(
 
   /** The type of trigger. */
   public enum class TriggerType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Named_Event("named-event", "http://hl7.org/fhir/trigger-type", "Named Event"),
     Periodic("periodic", "http://hl7.org/fhir/trigger-type", "Periodic"),
     Data_Changed("data-changed", "http://hl7.org/fhir/trigger-type", "Data Changed"),
@@ -231,14 +231,12 @@ public data class TriggerDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): TriggerType =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum TriggerType")
+
+      public fun fromCodeOrNull(code: kotlin.String?): TriggerType? =
         when (code) {
           "named-event" -> Named_Event
           "periodic" -> Periodic
@@ -248,7 +246,7 @@ public data class TriggerDefinition(
           "data-removed" -> Data_Removed
           "data-accessed" -> Data_Accessed
           "data-access-ended" -> Data_Access_Ended
-          else -> throw IllegalArgumentException("Unknown code $code for enum TriggerType")
+          else -> null
         }
     }
   }

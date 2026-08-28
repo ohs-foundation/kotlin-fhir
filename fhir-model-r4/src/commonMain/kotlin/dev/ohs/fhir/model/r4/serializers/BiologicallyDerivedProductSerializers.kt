@@ -593,7 +593,7 @@ internal object BiologicallyDerivedProductStorageSerializer :
     (value.temperature?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
     }
-    ((value.scale?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.scale?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.scale?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.descriptionSer, it)
     }
@@ -886,7 +886,7 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.productCategory?.value?.getCode()))?.let {
+    ((value.productCategory?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.productCategory?.toElement())?.let {
@@ -905,7 +905,7 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
         it,
       )
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

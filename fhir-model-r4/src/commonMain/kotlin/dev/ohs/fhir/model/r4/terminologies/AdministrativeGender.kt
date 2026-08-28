@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
 import kotlin.String
 
 /** The gender of a person used for administrative purposes. */
 public enum class AdministrativeGender(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Male("male", "http://hl7.org/fhir/administrative-gender", "Male"),
   Female("female", "http://hl7.org/fhir/administrative-gender", "Female"),
   Other("other", "http://hl7.org/fhir/administrative-gender", "Other"),
@@ -31,20 +32,18 @@ public enum class AdministrativeGender(
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): AdministrativeGender =
+      fromCodeOrNull(code)
+        ?: throw IllegalArgumentException("Unknown code $code for enum AdministrativeGender")
+
+    public fun fromCodeOrNull(code: String?): AdministrativeGender? =
       when (code) {
         "male" -> Male
         "female" -> Female
         "other" -> Other
         "unknown" -> Unknown
-        else -> throw IllegalArgumentException("Unknown code $code for enum AdministrativeGender")
+        else -> null
       }
   }
 }

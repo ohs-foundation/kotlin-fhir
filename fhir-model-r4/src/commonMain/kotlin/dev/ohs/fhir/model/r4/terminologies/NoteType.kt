@@ -16,33 +16,31 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
 import kotlin.String
 
 /** The presentation types of notes. */
 public enum class NoteType(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Display("display", "http://hl7.org/fhir/note-type", "Display"),
   Print("print", "http://hl7.org/fhir/note-type", "Print (Form)"),
   Printoper("printoper", "http://hl7.org/fhir/note-type", "Print (Operator)");
 
   override fun toString(): String = code
 
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
-
   public companion object {
     public fun fromCode(code: String): NoteType =
+      fromCodeOrNull(code) ?: throw IllegalArgumentException("Unknown code $code for enum NoteType")
+
+    public fun fromCodeOrNull(code: String?): NoteType? =
       when (code) {
         "display" -> Display
         "print" -> Print
         "printoper" -> Printoper
-        else -> throw IllegalArgumentException("Unknown code $code for enum NoteType")
+        else -> null
       }
   }
 }

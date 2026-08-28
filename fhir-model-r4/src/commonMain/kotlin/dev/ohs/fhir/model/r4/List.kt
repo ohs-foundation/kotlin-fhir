@@ -610,58 +610,54 @@ public data class List(
 
   /** The current state of the list. */
   public enum class ListStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Current("current", "http://hl7.org/fhir/list-status", "Current"),
     Retired("retired", "http://hl7.org/fhir/list-status", "Retired"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/list-status", "Entered In Error");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ListStatus =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ListStatus")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ListStatus? =
         when (code) {
           "current" -> Current
           "retired" -> Retired
           "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum ListStatus")
+          else -> null
         }
     }
   }
 
   /** The processing mode that applies to this list. */
   public enum class ListMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Working("working", "http://hl7.org/fhir/list-mode", "Working List"),
     Snapshot("snapshot", "http://hl7.org/fhir/list-mode", "Snapshot List"),
     Changes("changes", "http://hl7.org/fhir/list-mode", "Change List");
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ListMode =
+        fromCodeOrNull(code)
+          ?: throw IllegalArgumentException("Unknown code $code for enum ListMode")
+
+      public fun fromCodeOrNull(code: kotlin.String?): ListMode? =
         when (code) {
           "working" -> Working
           "snapshot" -> Snapshot
           "changes" -> Changes
-          else -> throw IllegalArgumentException("Unknown code $code for enum ListMode")
+          else -> null
         }
     }
   }

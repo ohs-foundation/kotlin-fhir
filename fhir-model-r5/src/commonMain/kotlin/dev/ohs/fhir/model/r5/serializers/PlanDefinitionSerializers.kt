@@ -643,7 +643,7 @@ internal object PlanDefinitionActorOptionSerializer : KSerializer<PlanDefinition
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1097,7 +1097,7 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
     (value.textEquivalent?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.linkIdSer, it)
     }
-    ((value.priority?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+    ((value.priority?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.priority?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.linkIdSer, it)
     }
@@ -1168,31 +1168,25 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
     if (value.participant.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 34, Hoisted.participantSer, value.participant)
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 35, Hoisted.codeSer, it) }
-    ((value.groupingBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 36, it)
-    }
+    ((value.groupingBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 36, it) }
     (value.groupingBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 37, Hoisted.linkIdSer, it)
     }
-    ((value.selectionBehavior?.value?.getCode()))?.let {
+    ((value.selectionBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 38, it)
     }
     (value.selectionBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 39, Hoisted.linkIdSer, it)
     }
-    ((value.requiredBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 40, it)
-    }
+    ((value.requiredBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 40, it) }
     (value.requiredBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 41, Hoisted.linkIdSer, it)
     }
-    ((value.precheckBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 42, it)
-    }
+    ((value.precheckBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 42, it) }
     (value.precheckBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 43, Hoisted.linkIdSer, it)
     }
-    ((value.cardinalityBehavior?.value?.getCode()))?.let {
+    ((value.cardinalityBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 44, it)
     }
     (value.cardinalityBehavior?.toElement())?.let {
@@ -1392,7 +1386,7 @@ internal object PlanDefinitionActionConditionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.kind.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.kind.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.kind.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.kindSer, it)
     }
@@ -1761,13 +1755,11 @@ internal object PlanDefinitionActionRelatedActionSerializer :
     (value.targetId.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.targetIdSer, it)
     }
-    ((value.relationship.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.relationship.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.relationship.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.targetIdSer, it)
     }
-    ((value.endRelationship?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 7, it)
-    }
+    ((value.endRelationship?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.endRelationship?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.targetIdSer, it)
     }
@@ -1907,7 +1899,7 @@ internal object PlanDefinitionActionParticipantSerializer :
     (value.actorId?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorIdSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.actorIdSer, it)
     }
@@ -2658,7 +2650,7 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
     (value.type)?.let {
       encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, Hoisted.typeSer, it)
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

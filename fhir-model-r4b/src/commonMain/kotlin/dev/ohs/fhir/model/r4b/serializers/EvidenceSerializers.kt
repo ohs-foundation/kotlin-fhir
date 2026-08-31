@@ -1025,7 +1025,7 @@ internal object EvidenceStatisticModelCharacteristicVariableSerializer :
       Hoisted.variableDefinitionSer,
       value.variableDefinition,
     )
-    ((value.handling?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.handling?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.handling?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.handlingSer, it)
     }
@@ -1678,7 +1678,7 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
         }
       }
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

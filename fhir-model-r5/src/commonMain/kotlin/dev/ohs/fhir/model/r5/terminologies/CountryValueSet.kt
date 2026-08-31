@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /**
@@ -25,10 +26,10 @@ import kotlin.String
  * [ISO 3166](https://www.iso.org/iso-3166-country-codes.html).
  */
 public enum class CountryValueSet(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Ad("AD", "urn:iso:std:iso:3166", "Andorra"),
   Ae("AE", "urn:iso:std:iso:3166", "United Arab Emirates"),
   Af("AF", "urn:iso:std:iso:3166", "Afghanistan"),
@@ -778,12 +779,6 @@ public enum class CountryValueSet(
   _894("894", "urn:iso:std:iso:3166", "Zambia");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): CountryValueSet =

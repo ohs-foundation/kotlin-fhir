@@ -781,7 +781,7 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -899,13 +899,13 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    (value.base.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.base.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 45 + descriptorOffset, Hoisted.baseSer, it)
     }
     (value.base.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 46 + descriptorOffset, Hoisted.baseSer2, it)
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 47 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {
@@ -927,7 +927,7 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    ((value.processingMode?.value?.getCode()))?.let {
+    ((value.processingMode?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 51 + descriptorOffset, it)
     }
     (value.processingMode?.toElement())?.let {
@@ -949,7 +949,7 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    (value.target.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.target.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 55 + descriptorOffset, Hoisted.baseSer, it)
     }
     (value.target.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -977,13 +977,13 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    (value.comparator.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.comparator.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 61 + descriptorOffset, Hoisted.baseSer, it)
     }
     (value.comparator.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 62 + descriptorOffset, Hoisted.baseSer2, it)
     }
-    (value.modifier.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.modifier.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 63 + descriptorOffset, Hoisted.baseSer, it)
     }
     (value.modifier.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

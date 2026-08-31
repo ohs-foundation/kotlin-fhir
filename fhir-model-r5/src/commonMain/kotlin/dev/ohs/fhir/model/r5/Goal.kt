@@ -773,10 +773,10 @@ public data class Goal(
    * Codes that reflect the current state of a goal and whether the goal is still being targeted.
    */
   public enum class GoalLifecycleStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Proposed("proposed", "http://hl7.org/fhir/goal-status", "Proposed"),
     Planned("planned", "http://hl7.org/fhir/goal-status", "Planned"),
     Accepted("accepted", "http://hl7.org/fhir/goal-status", "Accepted"),
@@ -788,12 +788,6 @@ public data class Goal(
     Rejected("rejected", "http://hl7.org/fhir/goal-status", "Rejected");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): GoalLifecycleStatus =

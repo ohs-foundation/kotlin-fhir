@@ -16,12 +16,14 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
+
 /** Data types allowed to be used for search parameters. */
 public enum class SearchParamType(
-  private val code: kotlin.String,
-  private val system: kotlin.String,
-  private val display: kotlin.String?,
-) {
+  override val code: kotlin.String,
+  override val system: kotlin.String,
+  override val display: kotlin.String?,
+) : FhirEnum {
   Number("number", "http://hl7.org/fhir/search-param-type", "Number"),
   Date("date", "http://hl7.org/fhir/search-param-type", "Date/DateTime"),
   String("string", "http://hl7.org/fhir/search-param-type", "String"),
@@ -33,12 +35,6 @@ public enum class SearchParamType(
   Special("special", "http://hl7.org/fhir/search-param-type", "Special");
 
   override fun toString(): kotlin.String = code
-
-  public fun getCode(): kotlin.String = code
-
-  public fun getSystem(): kotlin.String = system
-
-  public fun getDisplay(): kotlin.String? = display
 
   public companion object {
     public fun fromCode(code: kotlin.String): SearchParamType =

@@ -460,7 +460,7 @@ internal object RelatedPersonSerializer : KSerializer<RelatedPerson> {
         Hoisted.telecomSer,
         value.telecom,
       )
-    ((value.gender?.value?.getCode()))?.let {
+    ((value.gender?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.gender?.toElement())?.let {

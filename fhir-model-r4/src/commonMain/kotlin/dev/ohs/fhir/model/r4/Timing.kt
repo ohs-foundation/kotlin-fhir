@@ -492,10 +492,10 @@ public data class Timing(
 
   /** A unit of time (units from UCUM). */
   public enum class UnitsOfTime(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     S("s", "http://unitsofmeasure.org", "秒"),
     Min("min", "http://unitsofmeasure.org", "分钟"),
     H("h", "http://unitsofmeasure.org", "小时"),
@@ -505,12 +505,6 @@ public data class Timing(
     A("a", "http://unitsofmeasure.org", "年");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): UnitsOfTime =
@@ -529,10 +523,10 @@ public data class Timing(
 
   /** The days of the week. */
   public enum class DaysOfWeek(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Mon("mon", "http://hl7.org/fhir/days-of-week", "Monday"),
     Tue("tue", "http://hl7.org/fhir/days-of-week", "Tuesday"),
     Wed("wed", "http://hl7.org/fhir/days-of-week", "Wednesday"),
@@ -542,12 +536,6 @@ public data class Timing(
     Sun("sun", "http://hl7.org/fhir/days-of-week", "Sunday");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): DaysOfWeek =
@@ -566,10 +554,10 @@ public data class Timing(
 
   /** Real world event relating to the schedule. */
   public enum class EventTiming(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Morn("MORN", "http://hl7.org/fhir/event-timing", "Morning"),
     Morn_Early("MORN.early", "http://hl7.org/fhir/event-timing", "Early Morning"),
     Morn_Late("MORN.late", "http://hl7.org/fhir/event-timing", "Late Morning"),
@@ -598,12 +586,6 @@ public data class Timing(
     Pcv("PCV", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "PCV");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): EventTiming =

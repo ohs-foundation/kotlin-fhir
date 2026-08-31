@@ -1371,7 +1371,7 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1382,7 +1382,7 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {

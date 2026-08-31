@@ -1384,10 +1384,10 @@ public data class ActivityDefinition(
 
   /** The type of participant for the action. */
   public enum class ActionParticipantType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Patient("patient", "http://hl7.org/fhir/action-participant-type", "Patient"),
     Practitioner("practitioner", "http://hl7.org/fhir/action-participant-type", "Practitioner"),
     Related_Person(
@@ -1398,12 +1398,6 @@ public data class ActivityDefinition(
     Device("device", "http://hl7.org/fhir/action-participant-type", "Device");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ActionParticipantType =
@@ -1420,10 +1414,10 @@ public data class ActivityDefinition(
 
   /** A list of all the request resource types defined in this version of the FHIR specification. */
   public enum class RequestResourceType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Appointment("Appointment", "http://hl7.org/fhir/request-resource-types", "Appointment"),
     AppointmentResponse(
       "AppointmentResponse",
@@ -1474,12 +1468,6 @@ public data class ActivityDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): RequestResourceType =
         when (code) {
@@ -1505,10 +1493,10 @@ public data class ActivityDefinition(
 
   /** Codes indicating the degree of authority/intentionality associated with a request. */
   public enum class RequestIntent(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
     Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
     Directive("directive", "http://hl7.org/fhir/request-intent", "Directive"),
@@ -1520,12 +1508,6 @@ public data class ActivityDefinition(
     Option("option", "http://hl7.org/fhir/request-intent", "Option");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): RequestIntent =
@@ -1546,22 +1528,16 @@ public data class ActivityDefinition(
 
   /** The clinical priority of a diagnostic order. */
   public enum class RequestPriority(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
     Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): RequestPriority =

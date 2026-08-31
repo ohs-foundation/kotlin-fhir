@@ -3248,7 +3248,7 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
         Hoisted.identifierSer,
         value.traceNumber,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -3268,7 +3268,7 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
     (value.subType)?.let {
       encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.typeSer, it)
     }
-    ((value.use.value?.getCode()))?.let {
+    ((value.use.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.use.toElement())?.let {
@@ -3305,7 +3305,7 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
     (value.request)?.let {
       encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, Hoisted.patientSer, it)
     }
-    ((value.outcome.value?.getCode()))?.let {
+    ((value.outcome.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.outcome.toElement())?.let {

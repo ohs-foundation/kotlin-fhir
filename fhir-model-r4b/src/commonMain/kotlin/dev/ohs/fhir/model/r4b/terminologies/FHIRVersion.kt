@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /** All published FHIR Versions. */
 public enum class FHIRVersion(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   _0_01("0.01", "http://hl7.org/fhir/FHIR-version", "0.01"),
   _0_05("0.05", "http://hl7.org/fhir/FHIR-version", "0.05"),
   _0_06("0.06", "http://hl7.org/fhir/FHIR-version", "0.06"),
@@ -53,12 +54,6 @@ public enum class FHIRVersion(
   _4_3_0("4.3.0", "http://hl7.org/fhir/FHIR-version", "4.3.0");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): FHIRVersion =

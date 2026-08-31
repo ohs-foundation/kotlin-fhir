@@ -759,10 +759,10 @@ public data class ResearchStudy(
 
   /** Codes that convey the current status of the research study. */
   public enum class ResearchStudyStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/research-study-status", "Active"),
     Administratively_Completed(
       "administratively-completed",
@@ -796,12 +796,6 @@ public data class ResearchStudy(
     Withdrawn("withdrawn", "http://hl7.org/fhir/research-study-status", "Withdrawn");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ResearchStudyStatus =

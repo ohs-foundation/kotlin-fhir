@@ -573,7 +573,7 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
         Hoisted.telecomSer,
         value.telecom,
       )
-    ((value.gender?.value?.getCode()))?.let {
+    ((value.gender?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.gender?.toElement())?.let {

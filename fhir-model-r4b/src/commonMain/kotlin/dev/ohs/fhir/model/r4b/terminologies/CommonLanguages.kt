@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /** This value set includes common codes from BCP-47 (http://tools.ietf.org/html/bcp47) */
 public enum class CommonLanguages(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Ar("ar", "urn:ietf:bcp:47", "Arabisk"),
   Bn("bn", "urn:ietf:bcp:47", "Bengali"),
   Cs("cs", "urn:ietf:bcp:47", "Czech"),
@@ -82,12 +83,6 @@ public enum class CommonLanguages(
   Zh_Tw("zh-TW", "urn:ietf:bcp:47", "Chinese (Taiwan)");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): CommonLanguages =

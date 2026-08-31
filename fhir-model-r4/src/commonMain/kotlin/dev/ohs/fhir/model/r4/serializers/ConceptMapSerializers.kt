@@ -475,7 +475,7 @@ internal object ConceptMapGroupElementTargetSerializer :
     (value.display?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, it)
     }
-    ((value.equivalence.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.equivalence.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.equivalence.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.codeSer, it)
     }
@@ -740,7 +740,7 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.mode.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.mode.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modeSer, it)
     }
@@ -1161,7 +1161,7 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

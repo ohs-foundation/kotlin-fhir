@@ -300,9 +300,7 @@ internal object EvidenceVariableCharacteristicSerializer :
     (value.timeFromStart)?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.timeFromStartSer, it)
     }
-    ((value.groupMeasure?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 15, it)
-    }
+    ((value.groupMeasure?.value?.code))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.groupMeasure?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.descriptionSer, it)
     }
@@ -1051,7 +1049,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1162,7 +1160,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         it,
       )
     }
-    ((value.characteristicCombination?.value?.getCode()))?.let {
+    ((value.characteristicCombination?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
     }
     (value.characteristicCombination?.toElement())?.let {
@@ -1180,7 +1178,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         Hoisted.characteristicSer,
         value.characteristic,
       )
-    ((value.handling?.value?.getCode()))?.let {
+    ((value.handling?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 44 + descriptorOffset, it)
     }
     (value.handling?.toElement())?.let {

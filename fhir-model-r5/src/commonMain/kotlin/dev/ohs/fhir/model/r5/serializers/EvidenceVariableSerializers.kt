@@ -742,7 +742,7 @@ internal object EvidenceVariableCharacteristicDefinitionByCombinationSerializer 
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -1648,7 +1648,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1840,7 +1840,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         Hoisted.characteristicSer,
         value.characteristic,
       )
-    ((value.handling?.value?.getCode()))?.let {
+    ((value.handling?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 56 + descriptorOffset, it)
     }
     (value.handling?.toElement())?.let {

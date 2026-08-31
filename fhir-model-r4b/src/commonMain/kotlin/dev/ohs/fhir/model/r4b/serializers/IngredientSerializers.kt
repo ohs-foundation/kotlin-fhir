@@ -142,7 +142,7 @@ internal object IngredientManufacturerSerializer : KSerializer<Ingredient.Manufa
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.role?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.role?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.role?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, it)
     }
@@ -918,7 +918,7 @@ internal object IngredientSerializer : KSerializer<Ingredient> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

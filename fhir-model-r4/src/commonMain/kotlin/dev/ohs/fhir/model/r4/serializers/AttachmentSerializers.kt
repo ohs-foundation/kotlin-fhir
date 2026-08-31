@@ -175,7 +175,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     (value.contentType?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentTypeSer, it)
     }
-    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.language?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.contentTypeSer, it)
     }

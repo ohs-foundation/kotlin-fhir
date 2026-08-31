@@ -174,7 +174,7 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
     (value.key.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.keySer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.keySer, it)
     }
@@ -1756,7 +1756,7 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

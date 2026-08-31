@@ -2603,7 +2603,7 @@ internal object ClaimSerializer : KSerializer<Claim> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -2623,7 +2623,7 @@ internal object ClaimSerializer : KSerializer<Claim> {
     (value.subType)?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.typeSer, it)
     }
-    ((value.use.value?.getCode()))?.let {
+    ((value.use.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.use.toElement())?.let {

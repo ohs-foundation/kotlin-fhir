@@ -721,10 +721,10 @@ public data class Communication(
 
   /** Codes identifying the lifecycle stage of an event. */
   public enum class EventStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Preparation("preparation", "http://hl7.org/fhir/event-status", "Preparation"),
     In_Progress("in-progress", "http://hl7.org/fhir/event-status", "In Progress"),
     Not_Done("not-done", "http://hl7.org/fhir/event-status", "Not Done"),
@@ -735,12 +735,6 @@ public data class Communication(
     Unknown("unknown", "http://hl7.org/fhir/event-status", "Unknown");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): EventStatus =
@@ -760,22 +754,16 @@ public data class Communication(
 
   /** Identifies the level of importance to be assigned to actioning the request. */
   public enum class RequestPriority(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
     Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): RequestPriority =

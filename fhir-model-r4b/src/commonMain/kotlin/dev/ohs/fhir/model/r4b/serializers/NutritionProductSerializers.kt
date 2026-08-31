@@ -827,7 +827,7 @@ internal object NutritionProductSerializer : KSerializer<NutritionProduct> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

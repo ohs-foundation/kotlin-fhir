@@ -222,10 +222,9 @@ internal object SubscriptionTopicResourceTriggerSerializer :
     (value.resource.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
     }
-    (value.supportedInteraction.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
-      ?.let {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.supportedInteractionSer, it)
-      }
+    (value.supportedInteraction.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.supportedInteractionSer, it)
+    }
     (value.supportedInteraction.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.supportedInteractionSer2, it)
     }
@@ -387,9 +386,7 @@ internal object SubscriptionTopicResourceTriggerQueryCriteriaSerializer :
     (value.previous?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.previousSer, it)
     }
-    ((value.resultForCreate?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 5, it)
-    }
+    ((value.resultForCreate?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.resultForCreate?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.previousSer, it)
     }
@@ -397,9 +394,7 @@ internal object SubscriptionTopicResourceTriggerQueryCriteriaSerializer :
     (value.current?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.previousSer, it)
     }
-    ((value.resultForDelete?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 9, it)
-    }
+    ((value.resultForDelete?.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.resultForDelete?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.previousSer, it)
     }
@@ -681,7 +676,7 @@ internal object SubscriptionTopicCanFilterBySerializer :
     (value.filterDefinition?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.descriptionSer, it)
     }
-    (value.modifier.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.modifier.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.modifierSer, it)
     }
     (value.modifier.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -1316,7 +1311,7 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

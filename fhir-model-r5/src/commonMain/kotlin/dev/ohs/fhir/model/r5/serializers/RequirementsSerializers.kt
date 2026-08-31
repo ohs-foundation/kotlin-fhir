@@ -270,7 +270,7 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
     (value.label?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.keySer, it)
     }
-    (value.conformance.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.conformance.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.conformanceSer, it)
     }
     (value.conformance.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -803,7 +803,7 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

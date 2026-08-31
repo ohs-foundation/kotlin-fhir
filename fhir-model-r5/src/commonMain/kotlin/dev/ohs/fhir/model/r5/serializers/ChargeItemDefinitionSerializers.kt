@@ -924,7 +924,7 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

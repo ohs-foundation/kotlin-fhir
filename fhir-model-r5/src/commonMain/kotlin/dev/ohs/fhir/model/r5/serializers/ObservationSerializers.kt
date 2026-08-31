@@ -166,7 +166,7 @@ internal object ObservationTriggeredBySerializer : KSerializer<Observation.Trigg
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.observationSer, value.observation)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it)
     }
@@ -1268,7 +1268,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

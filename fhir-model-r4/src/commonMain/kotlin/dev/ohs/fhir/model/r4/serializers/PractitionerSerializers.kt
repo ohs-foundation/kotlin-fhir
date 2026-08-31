@@ -457,7 +457,7 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
         Hoisted.addressSer,
         value.address,
       )
-    ((value.gender?.value?.getCode()))?.let {
+    ((value.gender?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.gender?.toElement())?.let {

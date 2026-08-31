@@ -447,7 +447,7 @@ internal object EvidenceReportRelatesToSerializer : KSerializer<EvidenceReport.R
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -761,7 +761,7 @@ internal object EvidenceReportSectionSerializer : KSerializer<EvidenceReport.Sec
     if (value.author.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.authorSer, value.author)
     (value.text)?.let { encoder.encodeSerializableElement(descriptor, 8, Hoisted.textSer, it) }
-    ((value.mode?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    ((value.mode?.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.mode?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.titleSer, it)
     }
@@ -1171,7 +1171,7 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

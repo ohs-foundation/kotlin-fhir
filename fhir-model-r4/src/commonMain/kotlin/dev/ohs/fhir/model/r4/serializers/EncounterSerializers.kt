@@ -143,7 +143,7 @@ internal object EncounterStatusHistorySerializer : KSerializer<Encounter.StatusH
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.status.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.statusSer, it)
     }
@@ -765,7 +765,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.locationSer, value.location)
-    ((value.status?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.status?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.status?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.statusSer, it)
     }
@@ -1145,7 +1145,7 @@ internal object EncounterSerializer : KSerializer<Encounter> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

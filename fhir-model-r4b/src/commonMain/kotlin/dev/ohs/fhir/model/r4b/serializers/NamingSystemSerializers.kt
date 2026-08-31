@@ -170,7 +170,7 @@ internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.Unique
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -489,7 +489,7 @@ internal object NamingSystemSerializer : KSerializer<NamingSystem> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -500,7 +500,7 @@ internal object NamingSystemSerializer : KSerializer<NamingSystem> {
         it,
       )
     }
-    ((value.kind.value?.getCode()))?.let {
+    ((value.kind.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.kind.toElement())?.let {

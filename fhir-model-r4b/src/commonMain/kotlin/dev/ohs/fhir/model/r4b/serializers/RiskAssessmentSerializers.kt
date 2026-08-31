@@ -589,7 +589,7 @@ internal object RiskAssessmentSerializer : KSerializer<RiskAssessment> {
     (value.parent)?.let {
       encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, Hoisted.basedOnSer, it)
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

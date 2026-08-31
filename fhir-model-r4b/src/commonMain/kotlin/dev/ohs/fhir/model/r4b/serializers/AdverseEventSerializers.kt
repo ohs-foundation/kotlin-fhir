@@ -637,7 +637,7 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
         it,
       )
     }
-    ((value.actuality.value?.getCode()))?.let {
+    ((value.actuality.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.actuality.toElement())?.let {

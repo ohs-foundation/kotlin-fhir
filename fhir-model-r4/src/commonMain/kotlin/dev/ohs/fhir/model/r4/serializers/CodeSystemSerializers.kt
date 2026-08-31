@@ -190,7 +190,7 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, it)
     }
-    (value.`operator`.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.`operator`.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.operatorSer, it)
     }
     (value.`operator`.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -333,7 +333,7 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.codeSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.codeSer, it)
     }
@@ -610,7 +610,7 @@ internal object CodeSystemConceptDesignationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.language?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.languageSer, it)
     }
@@ -1287,7 +1287,7 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1407,7 +1407,7 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
         it,
       )
     }
-    ((value.hierarchyMeaning?.value?.getCode()))?.let {
+    ((value.hierarchyMeaning?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 40 + descriptorOffset, it)
     }
     (value.hierarchyMeaning?.toElement())?.let {
@@ -1440,7 +1440,7 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
         it,
       )
     }
-    ((value.content.value?.getCode()))?.let {
+    ((value.content.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 46 + descriptorOffset, it)
     }
     (value.content.toElement())?.let {

@@ -176,7 +176,7 @@ internal object AvailabilityAvailableTimeSerializer : KSerializer<Availability.A
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    (value.daysOfWeek.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.daysOfWeek.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 2, Hoisted.daysOfWeekSer, it)
     }
     (value.daysOfWeek.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

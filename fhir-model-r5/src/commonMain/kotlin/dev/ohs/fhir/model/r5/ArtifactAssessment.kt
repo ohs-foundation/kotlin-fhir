@@ -659,10 +659,10 @@ public data class ArtifactAssessment(
 
   /** The type of information contained in a component of an artifact assessment. */
   public enum class ArtifactAssessmentInformationType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Comment("comment", "http://hl7.org/fhir/artifactassessment-information-type", "Comment"),
     Classifier(
       "classifier",
@@ -679,12 +679,6 @@ public data class ArtifactAssessment(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ArtifactAssessmentInformationType =
@@ -709,10 +703,10 @@ public data class ArtifactAssessment(
    * artifact.
    */
   public enum class ArtifactAssessmentWorkflowStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Submitted("submitted", "http://hl7.org/fhir/artifactassessment-workflow-status", "Submitted"),
     Triaged("triaged", "http://hl7.org/fhir/artifactassessment-workflow-status", "Triaged"),
     Waiting_For_Input(
@@ -742,12 +736,6 @@ public data class ArtifactAssessment(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): ArtifactAssessmentWorkflowStatus =
         when (code) {
@@ -775,10 +763,10 @@ public data class ArtifactAssessment(
    * suggested by the comment or change request.
    */
   public enum class ArtifactAssessmentDisposition(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Unresolved("unresolved", "http://hl7.org/fhir/artifactassessment-disposition", "Unresolved"),
     Not_Persuasive(
       "not-persuasive",
@@ -798,12 +786,6 @@ public data class ArtifactAssessment(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ArtifactAssessmentDisposition =

@@ -427,7 +427,7 @@ internal object ConsentProvisionSerializer : KSerializer<Consent.Provision> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -678,7 +678,7 @@ internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.D
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.meaning.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.meaning.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.meaning.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.meaningSer, it)
     }
@@ -981,7 +981,7 @@ internal object ConsentSerializer : KSerializer<Consent> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

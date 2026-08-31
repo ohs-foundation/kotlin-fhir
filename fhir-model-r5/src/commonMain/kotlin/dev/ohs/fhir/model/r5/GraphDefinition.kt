@@ -1179,10 +1179,10 @@ public data class GraphDefinition(
 
   /** Current and past FHIR resource types (deleted or renamed), including abstract types */
   public enum class VersionIndependentResourceTypesAll(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Account("Account", "http://hl7.org/fhir/fhir-types", "Account"),
     ActivityDefinition(
       "ActivityDefinition",
@@ -1649,12 +1649,6 @@ public data class GraphDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): VersionIndependentResourceTypesAll =
         when (code) {
@@ -1871,20 +1865,14 @@ public data class GraphDefinition(
 
   /** Defines how a compartment rule is used. */
   public enum class GraphCompartmentUse(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Where("where", "http://hl7.org/fhir/graph-compartment-use", "Where"),
     Requires("requires", "http://hl7.org/fhir/graph-compartment-use", "requires");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): GraphCompartmentUse =
@@ -1898,22 +1886,16 @@ public data class GraphDefinition(
 
   /** How a compartment must be linked. */
   public enum class GraphCompartmentRule(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Identical("identical", "http://hl7.org/fhir/graph-compartment-rule", "Identical"),
     Matching("matching", "http://hl7.org/fhir/graph-compartment-rule", "Matching"),
     Different("different", "http://hl7.org/fhir/graph-compartment-rule", "Different"),
     Custom("custom", "http://hl7.org/fhir/graph-compartment-rule", "Custom");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): GraphCompartmentRule =
@@ -1929,10 +1911,10 @@ public data class GraphDefinition(
 
   /** Which type a compartment definition describes. */
   public enum class CompartmentType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Patient("Patient", "http://hl7.org/fhir/compartment-type", "Patient"),
     Encounter("Encounter", "http://hl7.org/fhir/compartment-type", "Encounter"),
     RelatedPerson("RelatedPerson", "http://hl7.org/fhir/compartment-type", "RelatedPerson"),
@@ -1941,12 +1923,6 @@ public data class GraphDefinition(
     EpisodeOfCare("EpisodeOfCare", "http://hl7.org/fhir/compartment-type", "EpisodeOfCare");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CompartmentType =

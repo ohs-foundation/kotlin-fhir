@@ -846,10 +846,10 @@ public data class Invoice(
 
   /** Codes identifying the lifecycle stage of an Invoice. */
   public enum class InvoiceStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Draft("draft", "http://hl7.org/fhir/invoice-status", "draft"),
     Issued("issued", "http://hl7.org/fhir/invoice-status", "issued"),
     Balanced("balanced", "http://hl7.org/fhir/invoice-status", "balanced"),
@@ -857,12 +857,6 @@ public data class Invoice(
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/invoice-status", "entered in error");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): InvoiceStatus =

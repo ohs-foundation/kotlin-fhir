@@ -238,9 +238,7 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.informationType?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 3, it)
-    }
+    ((value.informationType?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.informationType?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.informationTypeSer, it)
     }
@@ -746,7 +744,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
         Hoisted.contentSer,
         value.content,
       )
-    ((value.workflowStatus?.value?.getCode()))?.let {
+    ((value.workflowStatus?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
     }
     (value.workflowStatus?.toElement())?.let {
@@ -757,7 +755,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
         it,
       )
     }
-    ((value.disposition?.value?.getCode()))?.let {
+    ((value.disposition?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 32 + descriptorOffset, it)
     }
     (value.disposition?.toElement())?.let {

@@ -634,10 +634,10 @@ public data class DeviceDispense(
 
   /** DeviceDispense Status Codes */
   public enum class DeviceDispenseStatusCodes(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Preparation("preparation", "http://hl7.org/fhir/devicedispense-status", "Preparation"),
     In_Progress("in-progress", "http://hl7.org/fhir/devicedispense-status", "In Progress"),
     Cancelled("cancelled", "http://hl7.org/fhir/devicedispense-status", "Cancelled"),
@@ -653,12 +653,6 @@ public data class DeviceDispense(
     Unknown("unknown", "http://hl7.org/fhir/devicedispense-status", "Unknown");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): DeviceDispenseStatusCodes =

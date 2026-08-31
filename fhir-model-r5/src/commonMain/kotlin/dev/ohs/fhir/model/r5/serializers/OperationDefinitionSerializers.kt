@@ -316,11 +316,11 @@ internal object OperationDefinitionParameterSerializer :
     (value.name.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    ((value.use.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.use.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.use.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }
-    (value.scope.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.scope.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.scopeSer, it)
     }
     (value.scope.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -338,11 +338,11 @@ internal object OperationDefinitionParameterSerializer :
     (value.documentation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.nameSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.nameSer, it)
     }
-    (value.allowedType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.allowedType.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 17, Hoisted.scopeSer, it)
     }
     (value.allowedType.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -354,7 +354,7 @@ internal object OperationDefinitionParameterSerializer :
     (value.targetProfile.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 20, Hoisted.scopeSer2, it)
     }
-    ((value.searchType?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 21, it) }
+    ((value.searchType?.value?.code))?.let { encoder.encodeStringElement(descriptor, 21, it) }
     (value.searchType?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 22, Hoisted.nameSer, it)
     }
@@ -498,7 +498,7 @@ internal object OperationDefinitionParameterBindingSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.strength.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.strength.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.strength.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.strengthSer, it)
     }
@@ -1325,7 +1325,7 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1336,7 +1336,7 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
         it,
       )
     }
-    ((value.kind.value?.getCode()))?.let {
+    ((value.kind.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.kind.toElement())?.let {
@@ -1487,7 +1487,7 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
         it,
       )
     }
-    (value.resource.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.resource.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 51 + descriptorOffset, Hoisted.resourceSer, it)
     }
     (value.resource.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

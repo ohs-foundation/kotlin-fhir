@@ -789,10 +789,10 @@ public data class ChargeItem(
 
   /** Codes identifying the lifecycle stage of a ChargeItem. */
   public enum class ChargeItemStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Planned("planned", "http://hl7.org/fhir/chargeitem-status", "Planned"),
     Billable("billable", "http://hl7.org/fhir/chargeitem-status", "Billable"),
     Not_Billable("not-billable", "http://hl7.org/fhir/chargeitem-status", "Not billable"),
@@ -806,12 +806,6 @@ public data class ChargeItem(
     Unknown("unknown", "http://hl7.org/fhir/chargeitem-status", "Unknown");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): ChargeItemStatus =

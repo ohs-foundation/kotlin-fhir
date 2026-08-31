@@ -3546,10 +3546,10 @@ public data class Contract(
 
   /** This value set contract specific codes for status. */
   public enum class ContractResourcePublicationStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Amended("amended", "http://hl7.org/fhir/contract-publicationstatus", "Amended"),
     Appended("appended", "http://hl7.org/fhir/contract-publicationstatus", "Appended"),
     Cancelled("cancelled", "http://hl7.org/fhir/contract-publicationstatus", "Cancelled"),
@@ -3571,12 +3571,6 @@ public data class Contract(
     Terminated("terminated", "http://hl7.org/fhir/contract-publicationstatus", "Terminated");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ContractResourcePublicationStatusCodes =
@@ -3606,10 +3600,10 @@ public data class Contract(
 
   /** This value set contract specific codes for status. */
   public enum class ContractResourceStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Amended("amended", "http://hl7.org/fhir/contract-status", "Amended"),
     Appended("appended", "http://hl7.org/fhir/contract-status", "Appended"),
     Cancelled("cancelled", "http://hl7.org/fhir/contract-status", "Cancelled"),
@@ -3627,12 +3621,6 @@ public data class Contract(
     Terminated("terminated", "http://hl7.org/fhir/contract-status", "Terminated");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ContractResourceStatusCodes =

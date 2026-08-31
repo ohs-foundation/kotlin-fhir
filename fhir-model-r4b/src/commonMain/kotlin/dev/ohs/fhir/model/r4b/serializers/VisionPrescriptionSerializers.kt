@@ -255,7 +255,7 @@ internal object VisionPrescriptionLensSpecificationSerializer :
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.productSer, value.product)
-    ((value.eye.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.eye.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.eye.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.eyeSer, it)
     }
@@ -441,7 +441,7 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
     (value.amount.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountSer, it)
     }
-    ((value.base.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.base.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.base.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.amountSer, it)
     }
@@ -714,7 +714,7 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

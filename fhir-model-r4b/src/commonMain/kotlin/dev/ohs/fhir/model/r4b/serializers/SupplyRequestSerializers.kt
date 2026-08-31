@@ -516,7 +516,7 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
@@ -530,7 +530,7 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.categorySer, it)
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

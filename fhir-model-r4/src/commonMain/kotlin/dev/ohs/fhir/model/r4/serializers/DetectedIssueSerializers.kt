@@ -544,7 +544,7 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -558,7 +558,7 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
     (value.code)?.let {
       encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.codeSer, it)
     }
-    ((value.severity?.value?.getCode()))?.let {
+    ((value.severity?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.severity?.toElement())?.let {

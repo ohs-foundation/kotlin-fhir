@@ -1265,7 +1265,7 @@ internal object RiskEvidenceSynthesisSerializer : KSerializer<RiskEvidenceSynthe
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

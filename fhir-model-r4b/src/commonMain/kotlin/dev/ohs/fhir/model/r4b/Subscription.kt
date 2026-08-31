@@ -532,10 +532,10 @@ public data class Subscription(
 
   /** The type of method used to execute a subscription. */
   public enum class SubscriptionChannelType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Rest_Hook("rest-hook", "http://hl7.org/fhir/subscription-channel-type", "Rest Hook"),
     Websocket("websocket", "http://hl7.org/fhir/subscription-channel-type", "Websocket"),
     Email("email", "http://hl7.org/fhir/subscription-channel-type", "Email"),
@@ -543,12 +543,6 @@ public data class Subscription(
     Message("message", "http://hl7.org/fhir/subscription-channel-type", "Message");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SubscriptionChannelType =
@@ -566,22 +560,16 @@ public data class Subscription(
 
   /** The status of a subscription. */
   public enum class SubscriptionStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Requested("requested", "http://hl7.org/fhir/subscription-status", "Requested"),
     Active("active", "http://hl7.org/fhir/subscription-status", "Active"),
     Error("error", "http://hl7.org/fhir/subscription-status", "Error"),
     Off("off", "http://hl7.org/fhir/subscription-status", "Off");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SubscriptionStatusCodes =

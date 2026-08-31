@@ -159,7 +159,7 @@ internal object ActivityDefinitionParticipantSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1050,7 +1050,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1269,7 +1269,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
     (value.library.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 56 + descriptorOffset, Hoisted.librarySer2, it)
     }
-    ((value.kind?.value?.getCode()))?.let {
+    ((value.kind?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 57 + descriptorOffset, it)
     }
     (value.kind?.toElement())?.let {
@@ -1299,7 +1299,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
         it,
       )
     }
-    ((value.intent?.value?.getCode()))?.let {
+    ((value.intent?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 62 + descriptorOffset, it)
     }
     (value.intent?.toElement())?.let {
@@ -1310,7 +1310,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
         it,
       )
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 64 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

@@ -1069,10 +1069,10 @@ public data class SearchParameter(
 
   /** Current and past FHIR resource types (deleted or renamed), including abstract types */
   public enum class VersionIndependentResourceTypesAll(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Account("Account", "http://hl7.org/fhir/fhir-types", "Account"),
     ActivityDefinition(
       "ActivityDefinition",
@@ -1539,12 +1539,6 @@ public data class SearchParameter(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): VersionIndependentResourceTypesAll =
         when (code) {
@@ -1764,21 +1758,15 @@ public data class SearchParameter(
    * query.
    */
   public enum class SearchProcessingModeType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Normal("normal", "http://hl7.org/fhir/search-processingmode", "Normal"),
     Phonetic("phonetic", "http://hl7.org/fhir/search-processingmode", "Phonetic"),
     Other("other", "http://hl7.org/fhir/search-processingmode", "Other");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SearchProcessingModeType =
@@ -1794,10 +1782,10 @@ public data class SearchParameter(
 
   /** What Search Comparator Codes are supported in search. */
   public enum class SearchComparator(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Eq("eq", "http://hl7.org/fhir/search-comparator", "Equals"),
     Ne("ne", "http://hl7.org/fhir/search-comparator", "Not Equals"),
     Gt("gt", "http://hl7.org/fhir/search-comparator", "Greater Than"),
@@ -1809,12 +1797,6 @@ public data class SearchParameter(
     Ap("ap", "http://hl7.org/fhir/search-comparator", "Approximately");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SearchComparator =
@@ -1835,10 +1817,10 @@ public data class SearchParameter(
 
   /** A supported modifier for a search parameter. */
   public enum class SearchModifierCode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Missing("missing", "http://hl7.org/fhir/search-modifier-code", "Missing"),
     Exact("exact", "http://hl7.org/fhir/search-modifier-code", "Exact"),
     Contains("contains", "http://hl7.org/fhir/search-modifier-code", "Contains"),
@@ -1856,12 +1838,6 @@ public data class SearchParameter(
     Iterate("iterate", "http://hl7.org/fhir/search-modifier-code", "Iterate");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SearchModifierCode =

@@ -618,7 +618,7 @@ internal object GroupSerializer : KSerializer<Group> {
         it,
       )
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

@@ -1043,7 +1043,7 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1054,7 +1054,7 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
         it,
       )
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

@@ -2547,7 +2547,7 @@ internal object TaskSerializer : KSerializer<Task> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -2574,7 +2574,7 @@ internal object TaskSerializer : KSerializer<Task> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -2585,7 +2585,7 @@ internal object TaskSerializer : KSerializer<Task> {
         it,
       )
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

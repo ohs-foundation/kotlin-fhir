@@ -1084,22 +1084,16 @@ public data class Patient(
 
   /** The type of link between this patient resource and another patient resource. */
   public enum class LinkType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Replaced_By("replaced-by", "http://hl7.org/fhir/link-type", "Replaced-by"),
     Replaces("replaces", "http://hl7.org/fhir/link-type", "Replaces"),
     Refer("refer", "http://hl7.org/fhir/link-type", "Refer"),
     Seealso("seealso", "http://hl7.org/fhir/link-type", "See also");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): LinkType =

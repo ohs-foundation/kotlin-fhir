@@ -188,11 +188,11 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
     (value.filterParameter.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.resourceTypeSer, it)
     }
-    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.comparator?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.comparator?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.resourceTypeSer, it)
     }
-    ((value.modifier?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    ((value.modifier?.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.modifier?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.resourceTypeSer, it)
     }
@@ -658,7 +658,7 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -781,7 +781,7 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
         it,
       )
     }
-    ((value.content?.value?.getCode()))?.let {
+    ((value.content?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 34 + descriptorOffset, it)
     }
     (value.content?.toElement())?.let {

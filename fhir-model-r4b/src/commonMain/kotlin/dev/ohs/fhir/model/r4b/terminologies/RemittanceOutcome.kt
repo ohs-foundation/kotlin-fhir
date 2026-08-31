@@ -16,26 +16,21 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /** The outcome of the processing. */
 public enum class RemittanceOutcome(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Queued("queued", "http://hl7.org/fhir/remittance-outcome", "Queued"),
   Complete("complete", "http://hl7.org/fhir/remittance-outcome", "Complete"),
   Error("error", "http://hl7.org/fhir/remittance-outcome", "Error"),
   Partial("partial", "http://hl7.org/fhir/remittance-outcome", "Partial");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): RemittanceOutcome =

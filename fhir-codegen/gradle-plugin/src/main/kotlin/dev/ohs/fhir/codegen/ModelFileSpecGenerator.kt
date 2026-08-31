@@ -365,9 +365,12 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
       .mapNotNull { element ->
         val valueSet = valueSetMap.getValue(element.getBindingValueSetUrl()!!)
         val valueSetName = valueSet.name.normalizeEnumName()
-        EnumTypeSpecGenerator.generate(valueSetName, valueSet)?.let { typeSpec ->
-          valueSetName to typeSpec
-        }
+        EnumTypeSpecGenerator.generate(
+            valueSetName,
+            valueSet,
+            codegenContext.packageName,
+          )
+          ?.let { typeSpec -> valueSetName to typeSpec }
       }
       .forEach { createEnumNameToTypeSpecEntry(it.first, it.second) }
   }

@@ -16,24 +16,19 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** What a specific Encounter/EpisodeOfCare `diagnosis.condition` is to be used for. */
 public enum class EncounterDiagnosisUse(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Working("working", "http://hl7.org/fhir/encounter-diagnosis-use", "Working"),
   Final("final", "http://hl7.org/fhir/encounter-diagnosis-use", "Final");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): EncounterDiagnosisUse =

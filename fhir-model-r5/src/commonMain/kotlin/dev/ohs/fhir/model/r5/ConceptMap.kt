@@ -2461,10 +2461,10 @@ public data class ConceptMap(
 
   /** The type of a ConceptMap mapping property value. */
   public enum class ConceptMapPropertyType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Coding("Coding", "http://hl7.org/fhir/conceptmap-property-type", "Coding (external reference)"),
     String("string", "http://hl7.org/fhir/conceptmap-property-type", "string"),
     Integer("integer", "http://hl7.org/fhir/conceptmap-property-type", "integer"),
@@ -2474,12 +2474,6 @@ public data class ConceptMap(
     Code("code", "http://hl7.org/fhir/conceptmap-property-type", "code");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ConceptMapPropertyType =
@@ -2499,10 +2493,10 @@ public data class ConceptMap(
 
   /** The type of a ConceptMap mapping attribute value. */
   public enum class ConceptMapAttributeType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Code("code", "http://hl7.org/fhir/conceptmap-attribute-type", "code"),
     Coding("Coding", "http://hl7.org/fhir/conceptmap-attribute-type", "Coding"),
     String("string", "http://hl7.org/fhir/conceptmap-attribute-type", "string"),
@@ -2510,12 +2504,6 @@ public data class ConceptMap(
     Quantity("Quantity", "http://hl7.org/fhir/conceptmap-attribute-type", "Quantity");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ConceptMapAttributeType =
@@ -2533,10 +2521,10 @@ public data class ConceptMap(
 
   /** Defines which action to take if there is no match in the group. */
   public enum class ConceptMapGroupUnmappedMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Use_Source_Code(
       "use-source-code",
       "http://hl7.org/fhir/conceptmap-unmapped-mode",
@@ -2546,12 +2534,6 @@ public data class ConceptMap(
     Other_Map("other-map", "http://hl7.org/fhir/conceptmap-unmapped-mode", "Other Map");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ConceptMapGroupUnmappedMode =

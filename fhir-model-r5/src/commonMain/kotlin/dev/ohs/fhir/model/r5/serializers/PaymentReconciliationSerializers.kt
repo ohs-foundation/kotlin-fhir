@@ -389,7 +389,7 @@ internal object PaymentReconciliationProcessNoteSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -841,7 +841,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       Hoisted.typeSer,
       value.type,
     )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -884,7 +884,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
     (value.requestor)?.let {
       encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, Hoisted.entererSer, it)
     }
-    ((value.outcome?.value?.getCode()))?.let {
+    ((value.outcome?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.outcome?.toElement())?.let {

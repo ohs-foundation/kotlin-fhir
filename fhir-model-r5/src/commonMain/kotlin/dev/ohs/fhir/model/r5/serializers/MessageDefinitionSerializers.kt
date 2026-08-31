@@ -167,7 +167,7 @@ internal object MessageDefinitionFocusSerializer : KSerializer<MessageDefinition
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -841,7 +841,7 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
     (value.replaces.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, Hoisted.replacesSer2, it)
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -990,7 +990,7 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
         }
       }
     }
-    ((value.category?.value?.getCode()))?.let {
+    ((value.category?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 50 + descriptorOffset, it)
     }
     (value.category?.toElement())?.let {
@@ -1008,7 +1008,7 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
         Hoisted.focusSer,
         value.focus,
       )
-    ((value.responseRequired?.value?.getCode()))?.let {
+    ((value.responseRequired?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 53 + descriptorOffset, it)
     }
     (value.responseRequired?.toElement())?.let {

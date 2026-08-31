@@ -1549,21 +1549,15 @@ public data class ConceptMap(
 
   /** Defines which action to take if there is no match in the group. */
   public enum class ConceptMapGroupUnmappedMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Provided("provided", "http://hl7.org/fhir/conceptmap-unmapped-mode", "Provided Code"),
     Fixed("fixed", "http://hl7.org/fhir/conceptmap-unmapped-mode", "Fixed Code"),
     Other_Map("other-map", "http://hl7.org/fhir/conceptmap-unmapped-mode", "Other Map");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ConceptMapGroupUnmappedMode =

@@ -228,7 +228,7 @@ internal object DeviceUdiCarrierSerializer : KSerializer<Device.UdiCarrier> {
     (value.carrierHRF?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.deviceIdentifierSer, it)
     }
-    ((value.entryType?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+    ((value.entryType?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.entryType?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.deviceIdentifierSer, it)
     }
@@ -328,7 +328,7 @@ internal object DeviceDeviceNameSerializer : KSerializer<Device.DeviceName> {
     (value.name.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }
@@ -1073,7 +1073,7 @@ internal object DeviceSerializer : KSerializer<Device> {
         Hoisted.udiCarrierSer,
         value.udiCarrier,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

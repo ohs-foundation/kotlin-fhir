@@ -579,7 +579,7 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -605,7 +605,7 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
         Hoisted.categorySer,
         value.category,
       )
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

@@ -240,7 +240,7 @@ internal object ObservationDefinitionQualifiedValueSerializer :
     }
     if (value.appliesTo.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.appliesToSer, value.appliesTo)
-    ((value.gender?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.gender?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.gender?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.genderSer, it)
     }
@@ -252,9 +252,7 @@ internal object ObservationDefinitionQualifiedValueSerializer :
     (value.condition?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.genderSer, it)
     }
-    ((value.rangeCategory?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 11, it)
-    }
+    ((value.rangeCategory?.value?.code))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.rangeCategory?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.genderSer, it)
     }
@@ -434,8 +432,9 @@ internal object ObservationDefinitionComponentSerializer :
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
-    (value.permittedDataType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
-      ?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.permittedDataTypeSer, it) }
+    (value.permittedDataType.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.permittedDataTypeSer, it)
+    }
     (value.permittedDataType.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.permittedDataTypeSer2, it)
     }
@@ -1176,7 +1175,7 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1375,15 +1374,14 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       Hoisted.jurisdictionSerInner,
       value.code,
     )
-    (value.permittedDataType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
-      ?.let {
-        encoder.encodeSerializableElement(
-          descriptor,
-          54 + descriptorOffset,
-          Hoisted.derivedFromCanonicalSer,
-          it,
-        )
-      }
+    (value.permittedDataType.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        54 + descriptorOffset,
+        Hoisted.derivedFromCanonicalSer,
+        it,
+      )
+    }
     (value.permittedDataType.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,

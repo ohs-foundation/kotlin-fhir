@@ -3696,21 +3696,15 @@ public data class ElementDefinition(
 
   /** How slices are interpreted when evaluating an instance. */
   public enum class SlicingRules(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Closed("closed", "http://hl7.org/fhir/resource-slicing-rules", "Closed"),
     Open("open", "http://hl7.org/fhir/resource-slicing-rules", "Open"),
     OpenAtEnd("openAtEnd", "http://hl7.org/fhir/resource-slicing-rules", "Open at End");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SlicingRules =
@@ -3725,10 +3719,10 @@ public data class ElementDefinition(
 
   /** How an element value is interpreted when discrimination is evaluated. */
   public enum class DiscriminatorType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Value("value", "http://hl7.org/fhir/discriminator-type", "Value"),
     Exists("exists", "http://hl7.org/fhir/discriminator-type", "Exists"),
     Pattern("pattern", "http://hl7.org/fhir/discriminator-type", "Pattern"),
@@ -3737,12 +3731,6 @@ public data class ElementDefinition(
     Position("position", "http://hl7.org/fhir/discriminator-type", "Position");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): DiscriminatorType =
@@ -3760,21 +3748,15 @@ public data class ElementDefinition(
 
   /** How resource references can be aggregated. */
   public enum class AggregationMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Contained("contained", "http://hl7.org/fhir/resource-aggregation-mode", "Contained"),
     Referenced("referenced", "http://hl7.org/fhir/resource-aggregation-mode", "Referenced"),
     Bundled("bundled", "http://hl7.org/fhir/resource-aggregation-mode", "Bundled");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): AggregationMode =
@@ -3792,10 +3774,10 @@ public data class ElementDefinition(
    * be used.
    */
   public enum class ReferenceVersionRules(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Either(
       "either",
       "http://hl7.org/fhir/reference-version-rules",
@@ -3809,12 +3791,6 @@ public data class ElementDefinition(
     Specific("specific", "http://hl7.org/fhir/reference-version-rules", "Version Specific");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ReferenceVersionRules =
@@ -3830,20 +3806,14 @@ public data class ElementDefinition(
 
   /** SHALL applications comply with this constraint? */
   public enum class ConstraintSeverity(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Error("error", "http://hl7.org/fhir/constraint-severity", "Error"),
     Warning("warning", "http://hl7.org/fhir/constraint-severity", "Warning");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ConstraintSeverity =
@@ -3857,10 +3827,10 @@ public data class ElementDefinition(
 
   /** Additional Binding Purpose */
   public enum class AdditionalBindingPurposeVS(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Maximum(
       "maximum",
       "http://hl7.org/fhir/CodeSystem/additional-binding-purpose",
@@ -3910,12 +3880,6 @@ public data class ElementDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): AdditionalBindingPurposeVS =
         when (code) {
@@ -3937,10 +3901,10 @@ public data class ElementDefinition(
 
   /** How a property is represented when serialized. */
   public enum class PropertyRepresentation(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     XmlAttr("xmlAttr", "http://hl7.org/fhir/property-representation", "XML Attribute"),
     XmlText("xmlText", "http://hl7.org/fhir/property-representation", "XML Text"),
     TypeAttr("typeAttr", "http://hl7.org/fhir/property-representation", "Type Attribute"),
@@ -3948,12 +3912,6 @@ public data class ElementDefinition(
     Xhtml("xhtml", "http://hl7.org/fhir/property-representation", "XHTML");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): PropertyRepresentation =

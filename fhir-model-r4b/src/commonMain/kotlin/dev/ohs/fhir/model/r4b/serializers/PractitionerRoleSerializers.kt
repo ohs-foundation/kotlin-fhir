@@ -200,7 +200,7 @@ internal object PractitionerRoleAvailableTimeSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.daysOfWeek.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.daysOfWeek.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.daysOfWeekSer, it)
     }
     (value.daysOfWeek.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

@@ -509,10 +509,10 @@ public data class SubscriptionStatus(
 
   /** State values for FHIR Subscriptions. */
   public enum class SubscriptionStatusCodes(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Requested("requested", "http://hl7.org/fhir/subscription-status", "Requested"),
     Active("active", "http://hl7.org/fhir/subscription-status", "Active"),
     Error("error", "http://hl7.org/fhir/subscription-status", "Error"),
@@ -524,12 +524,6 @@ public data class SubscriptionStatus(
     );
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): SubscriptionStatusCodes =
@@ -547,10 +541,10 @@ public data class SubscriptionStatus(
 
   /** The type of notification represented by the status message. */
   public enum class SubscriptionNotificationType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Handshake("handshake", "http://hl7.org/fhir/subscription-notification-type", "Handshake"),
     Heartbeat("heartbeat", "http://hl7.org/fhir/subscription-notification-type", "Heartbeat"),
     Event_Notification(
@@ -566,12 +560,6 @@ public data class SubscriptionStatus(
     Query_Event("query-event", "http://hl7.org/fhir/subscription-notification-type", "Query Event");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): SubscriptionNotificationType =

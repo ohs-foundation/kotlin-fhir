@@ -142,7 +142,7 @@ internal object BundleLinkSerializer : KSerializer<Bundle.Link> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.relation.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.relation.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.relation.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.relationSer, it)
     }
@@ -395,7 +395,7 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.mode?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.mode?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.mode?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modeSer, it)
     }
@@ -540,7 +540,7 @@ internal object BundleEntryRequestSerializer : KSerializer<Bundle.Entry.Request>
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.method.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.method.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.method.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.methodSer, it)
     }
@@ -883,7 +883,7 @@ internal object BundleSerializer : KSerializer<Bundle> {
     (value.identifier)?.let {
       encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.identifierSer, it)
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 7 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

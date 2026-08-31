@@ -1136,10 +1136,10 @@ public data class ImagingSelection(
 
   /** The type of 2D coordinates describing a 2D image region. */
   public enum class ImagingSelection2DGraphicType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Point("point", "http://hl7.org/fhir/imagingselection-2dgraphictype", "POINT"),
     Polyline("polyline", "http://hl7.org/fhir/imagingselection-2dgraphictype", "POLYLINE"),
     Interpolated(
@@ -1151,12 +1151,6 @@ public data class ImagingSelection(
     Ellipse("ellipse", "http://hl7.org/fhir/imagingselection-2dgraphictype", "ELLIPSE");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ImagingSelection2DGraphicType =
@@ -1176,10 +1170,10 @@ public data class ImagingSelection(
 
   /** The type of coordinates describing a 3D image region. */
   public enum class ImagingSelection3DGraphicType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Point("point", "http://hl7.org/fhir/imagingselection-3dgraphictype", "POINT"),
     Multipoint("multipoint", "http://hl7.org/fhir/imagingselection-3dgraphictype", "MULTIPOINT"),
     Polyline("polyline", "http://hl7.org/fhir/imagingselection-3dgraphictype", "POLYLINE"),
@@ -1188,12 +1182,6 @@ public data class ImagingSelection(
     Ellipsoid("ellipsoid", "http://hl7.org/fhir/imagingselection-3dgraphictype", "ELLIPSOID");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ImagingSelection3DGraphicType =
@@ -1214,10 +1202,10 @@ public data class ImagingSelection(
 
   /** The status of the ImagingSelection. */
   public enum class ImagingSelectionStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Available("available", "http://hl7.org/fhir/imagingselection-status", "Available"),
     Entered_In_Error(
       "entered-in-error",
@@ -1227,12 +1215,6 @@ public data class ImagingSelection(
     Unknown("unknown", "http://hl7.org/fhir/imagingselection-status", "Unknown");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ImagingSelectionStatus =

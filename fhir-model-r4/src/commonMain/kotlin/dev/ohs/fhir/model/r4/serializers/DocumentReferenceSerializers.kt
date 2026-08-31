@@ -144,7 +144,7 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -720,7 +720,7 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -731,7 +731,7 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
         it,
       )
     }
-    ((value.docStatus?.value?.getCode()))?.let {
+    ((value.docStatus?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.docStatus?.toElement())?.let {

@@ -847,21 +847,15 @@ public data class ClinicalImpression(
 
   /** Codes that reflect the current state of a clinical impression within its overall lifecycle. */
   public enum class ClinicalImpressionStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     In_Progress("in-progress", "http://hl7.org/fhir/event-status", "In Progress"),
     Completed("completed", "http://hl7.org/fhir/event-status", "Completed"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/event-status", "Entered in Error");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ClinicalImpressionStatus =

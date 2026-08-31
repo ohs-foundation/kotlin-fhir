@@ -1007,22 +1007,16 @@ public data class Specimen(
 
   /** Codes providing the status/availability of a specimen. */
   public enum class SpecimenStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Available("available", "http://hl7.org/fhir/specimen-status", "Available"),
     Unavailable("unavailable", "http://hl7.org/fhir/specimen-status", "Unavailable"),
     Unsatisfactory("unsatisfactory", "http://hl7.org/fhir/specimen-status", "Unsatisfactory"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/specimen-status", "Entered in Error");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SpecimenStatus =

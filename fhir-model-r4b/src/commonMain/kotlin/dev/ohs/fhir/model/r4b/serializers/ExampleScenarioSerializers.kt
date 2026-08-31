@@ -174,7 +174,7 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
     (value.actorId.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorIdSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.actorIdSer, it)
     }
@@ -337,7 +337,7 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
     (value.resourceId.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.resourceIdSer, it)
     }
-    ((value.resourceType.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.resourceType.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.resourceType.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.resourceIdSer, it)
     }
@@ -1596,7 +1596,7 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

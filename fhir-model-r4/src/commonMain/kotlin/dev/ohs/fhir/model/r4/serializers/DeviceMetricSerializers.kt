@@ -147,11 +147,11 @@ internal object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Cal
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
-    ((value.state?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.state?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.state?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, it)
     }
@@ -431,7 +431,7 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
     (value.parent)?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.sourceSer, it)
     }
-    ((value.operationalStatus?.value?.getCode()))?.let {
+    ((value.operationalStatus?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.operationalStatus?.toElement())?.let {
@@ -442,7 +442,7 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
         it,
       )
     }
-    ((value.color?.value?.getCode()))?.let {
+    ((value.color?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.color?.toElement())?.let {
@@ -453,7 +453,7 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
         it,
       )
     }
-    ((value.category.value?.getCode()))?.let {
+    ((value.category.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.category.toElement())?.let {

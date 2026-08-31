@@ -200,7 +200,7 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
     (value.onset?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.descriptionSer, it)
     }
-    ((value.severity?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    ((value.severity?.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.severity?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.descriptionSer, it)
     }
@@ -596,7 +596,7 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
         it,
       )
     }
-    ((value.type?.value?.getCode()))?.let {
+    ((value.type?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.type?.toElement())?.let {
@@ -607,13 +607,13 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
         it,
       )
     }
-    (value.category.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.category.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.categorySer, it)
     }
     (value.category.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.categorySer2, it)
     }
-    ((value.criticality?.value?.getCode()))?.let {
+    ((value.criticality?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.criticality?.toElement())?.let {

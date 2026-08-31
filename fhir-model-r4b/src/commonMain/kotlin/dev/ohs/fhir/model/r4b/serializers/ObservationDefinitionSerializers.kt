@@ -334,7 +334,7 @@ internal object ObservationDefinitionQualifiedIntervalSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.category?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.category?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.category?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.categorySer, it)
     }
@@ -344,7 +344,7 @@ internal object ObservationDefinitionQualifiedIntervalSerializer :
     }
     if (value.appliesTo.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.appliesToSer, value.appliesTo)
-    ((value.gender?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+    ((value.gender?.value?.code))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.gender?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.categorySer, it)
     }
@@ -719,15 +719,14 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
         Hoisted.identifierSer,
         value.identifier,
       )
-    (value.permittedDataType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
-      ?.let {
-        encoder.encodeSerializableElement(
-          descriptor,
-          13 + descriptorOffset,
-          Hoisted.permittedDataTypeSer,
-          it,
-        )
-      }
+    (value.permittedDataType.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        13 + descriptorOffset,
+        Hoisted.permittedDataTypeSer,
+        it,
+      )
+    }
     (value.permittedDataType.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,

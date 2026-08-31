@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** Currency codes from ISO 4217 (see https://www.iso.org/iso-4217-currency-codes.html) */
 public enum class Currencies(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Aed("AED", "urn:iso:std:iso:4217", "United Arab Emirates dirham"),
   Afn("AFN", "urn:iso:std:iso:4217", "Afghan afghani"),
   All("ALL", "urn:iso:std:iso:4217", "Albanian lek"),
@@ -208,12 +209,6 @@ public enum class Currencies(
   Zwl("ZWL", "urn:iso:std:iso:4217", "Zimbabwean dollar A/10");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): Currencies =

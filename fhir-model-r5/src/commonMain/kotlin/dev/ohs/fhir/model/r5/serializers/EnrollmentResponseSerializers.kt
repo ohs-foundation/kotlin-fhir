@@ -291,7 +291,7 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
@@ -305,7 +305,7 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
     (value.request)?.let {
       encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.requestSer, it)
     }
-    ((value.outcome?.value?.getCode()))?.let {
+    ((value.outcome?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.outcome?.toElement())?.let {

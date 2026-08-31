@@ -966,10 +966,10 @@ public data class NutritionIntake(
 
   /** Codes identifying the lifecycle stage of an event. */
   public enum class EventStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Preparation("preparation", "http://hl7.org/fhir/event-status", "Preparation"),
     In_Progress("in-progress", "http://hl7.org/fhir/event-status", "In Progress"),
     Not_Done("not-done", "http://hl7.org/fhir/event-status", "Not Done"),
@@ -980,12 +980,6 @@ public data class NutritionIntake(
     Unknown("unknown", "http://hl7.org/fhir/event-status", "Unknown");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): EventStatus =

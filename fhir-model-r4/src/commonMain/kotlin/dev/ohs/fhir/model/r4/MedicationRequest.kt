@@ -1332,10 +1332,10 @@ public data class MedicationRequest(
 
   /** MedicationRequest Status Codes */
   public enum class MedicationrequestStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "Active"),
     On_Hold("on-hold", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "On Hold"),
     Cancelled("cancelled", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "Cancelled"),
@@ -1350,12 +1350,6 @@ public data class MedicationRequest(
     Unknown("unknown", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "Unknown");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): MedicationrequestStatus =
@@ -1376,10 +1370,10 @@ public data class MedicationRequest(
 
   /** MedicationRequest Intent Codes */
   public enum class MedicationRequestIntent(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Proposal("proposal", "http://hl7.org/fhir/CodeSystem/medicationrequest-intent", "Proposal"),
     Plan("plan", "http://hl7.org/fhir/CodeSystem/medicationrequest-intent", "Plan"),
     Order("order", "http://hl7.org/fhir/CodeSystem/medicationrequest-intent", "Order"),
@@ -1407,12 +1401,6 @@ public data class MedicationRequest(
 
     override fun toString(): String = code
 
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
-
     public companion object {
       public fun fromCode(code: String): MedicationRequestIntent =
         when (code) {
@@ -1432,22 +1420,16 @@ public data class MedicationRequest(
 
   /** The clinical priority of a diagnostic order. */
   public enum class RequestPriority(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
     Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): RequestPriority =

@@ -186,10 +186,10 @@ public data class RelatedArtifact(
 
   /** The type of relationship to the related artifact. */
   public enum class RelatedArtifactType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Documentation("documentation", "http://hl7.org/fhir/related-artifact-type", "Documentation"),
     Justification("justification", "http://hl7.org/fhir/related-artifact-type", "Justification"),
     Citation("citation", "http://hl7.org/fhir/related-artifact-type", "Citation"),
@@ -200,12 +200,6 @@ public data class RelatedArtifact(
     Composed_Of("composed-of", "http://hl7.org/fhir/related-artifact-type", "Composed Of");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): RelatedArtifactType =

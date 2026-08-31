@@ -800,7 +800,7 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
     (value.textEquivalent?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.prefixSer, it)
     }
-    ((value.priority?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
+    ((value.priority?.value?.code))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.priority?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.prefixSer, it)
     }
@@ -880,31 +880,25 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
     (value.type)?.let {
       encoder.encodeSerializableElement(descriptor, 35, Hoisted.codeSerInner, it)
     }
-    ((value.groupingBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 36, it)
-    }
+    ((value.groupingBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 36, it) }
     (value.groupingBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 37, Hoisted.prefixSer, it)
     }
-    ((value.selectionBehavior?.value?.getCode()))?.let {
+    ((value.selectionBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 38, it)
     }
     (value.selectionBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 39, Hoisted.prefixSer, it)
     }
-    ((value.requiredBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 40, it)
-    }
+    ((value.requiredBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 40, it) }
     (value.requiredBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 41, Hoisted.prefixSer, it)
     }
-    ((value.precheckBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 42, it)
-    }
+    ((value.precheckBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 42, it) }
     (value.precheckBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 43, Hoisted.prefixSer, it)
     }
-    ((value.cardinalityBehavior?.value?.getCode()))?.let {
+    ((value.cardinalityBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 44, it)
     }
     (value.cardinalityBehavior?.toElement())?.let {
@@ -1096,7 +1090,7 @@ internal object PlanDefinitionActionConditionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.kind.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.kind.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.kind.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.kindSer, it)
     }
@@ -1232,7 +1226,7 @@ internal object PlanDefinitionActionRelatedActionSerializer :
     (value.actionId.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.actionIdSer, it)
     }
-    ((value.relationship.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.relationship.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.relationship.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.actionIdSer, it)
     }
@@ -1342,7 +1336,7 @@ internal object PlanDefinitionActionParticipantSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -2000,7 +1994,7 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
     (value.type)?.let {
       encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, Hoisted.typeSer, it)
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -352,7 +352,7 @@ internal object ConditionDefinitionPreconditionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -474,7 +474,7 @@ internal object ConditionDefinitionQuestionnaireSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.purpose.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.purpose.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.purpose.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.purposeSer, it)
     }
@@ -1138,7 +1138,7 @@ internal object ConditionDefinitionSerializer : KSerializer<ConditionDefinition>
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

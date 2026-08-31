@@ -1561,7 +1561,7 @@ internal object TestScriptSetupActionOperationSerializer :
     (value.encodeRequestUrl.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 17, Hoisted.resourceSer, it)
     }
-    ((value.method?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 18, it) }
+    ((value.method?.value?.code))?.let { encoder.encodeStringElement(descriptor, 18, it) }
     (value.method?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 19, Hoisted.resourceSer, it)
     }
@@ -2061,7 +2061,7 @@ internal object TestScriptSetupActionAssertSerializer :
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.labelSer, it)
     }
-    ((value.direction?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.direction?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.direction?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.labelSer, it)
     }
@@ -2083,7 +2083,7 @@ internal object TestScriptSetupActionAssertSerializer :
     (value.contentType?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.labelSer, it)
     }
-    ((value.defaultManualCompletion?.value?.getCode()))?.let {
+    ((value.defaultManualCompletion?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17, it)
     }
     (value.defaultManualCompletion?.toElement())?.let {
@@ -2105,7 +2105,7 @@ internal object TestScriptSetupActionAssertSerializer :
     (value.navigationLinks?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 26, Hoisted.labelSer, it)
     }
-    ((value.`operator`?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 27, it) }
+    ((value.`operator`?.value?.code))?.let { encoder.encodeStringElement(descriptor, 27, it) }
     (value.`operator`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 28, Hoisted.labelSer, it)
     }
@@ -2113,9 +2113,7 @@ internal object TestScriptSetupActionAssertSerializer :
     (value.path?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 30, Hoisted.labelSer, it)
     }
-    ((value.requestMethod?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 31, it)
-    }
+    ((value.requestMethod?.value?.code))?.let { encoder.encodeStringElement(descriptor, 31, it) }
     (value.requestMethod?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 32, Hoisted.labelSer, it)
     }
@@ -2127,7 +2125,7 @@ internal object TestScriptSetupActionAssertSerializer :
     (value.resource?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 36, Hoisted.labelSer, it)
     }
-    ((value.response?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 37, it) }
+    ((value.response?.value?.code))?.let { encoder.encodeStringElement(descriptor, 37, it) }
     (value.response?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 38, Hoisted.labelSer, it)
     }
@@ -3190,7 +3188,7 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

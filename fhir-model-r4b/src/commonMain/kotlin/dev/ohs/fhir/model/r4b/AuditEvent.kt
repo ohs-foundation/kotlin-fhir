@@ -1323,10 +1323,10 @@ public data class AuditEvent(
 
   /** The type of network access point of this agent in the audit event. */
   public enum class AuditEventAgentNetworkType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     _1("1", "http://hl7.org/fhir/network-type", "Machine Name"),
     _2("2", "http://hl7.org/fhir/network-type", "IP Address"),
     _3("3", "http://hl7.org/fhir/network-type", "Telephone Number"),
@@ -1334,12 +1334,6 @@ public data class AuditEvent(
     _5("5", "http://hl7.org/fhir/network-type", "URI");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): AuditEventAgentNetworkType =
@@ -1357,10 +1351,10 @@ public data class AuditEvent(
 
   /** Indicator for type of action performed during the event that generated the event. */
   public enum class AuditEventAction(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     C("C", "http://hl7.org/fhir/audit-event-action", "Create"),
     R("R", "http://hl7.org/fhir/audit-event-action", "Read/View/Print"),
     U("U", "http://hl7.org/fhir/audit-event-action", "Update"),
@@ -1368,12 +1362,6 @@ public data class AuditEvent(
     E("E", "http://hl7.org/fhir/audit-event-action", "Execute");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): AuditEventAction =
@@ -1390,22 +1378,16 @@ public data class AuditEvent(
 
   /** Indicates whether the event succeeded or failed. */
   public enum class AuditEventOutcome(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     _0("0", "http://hl7.org/fhir/audit-event-outcome", "Success"),
     _4("4", "http://hl7.org/fhir/audit-event-outcome", "Minor failure"),
     _8("8", "http://hl7.org/fhir/audit-event-outcome", "Serious failure"),
     _12("12", "http://hl7.org/fhir/audit-event-outcome", "Major failure");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): AuditEventOutcome =

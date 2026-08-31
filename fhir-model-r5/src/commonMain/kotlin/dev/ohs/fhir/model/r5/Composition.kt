@@ -1217,10 +1217,10 @@ public data class Composition(
 
   /** The workflow/clinical status of the composition. */
   public enum class CompositionStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Registered("registered", "http://hl7.org/fhir/composition-status", "Registered"),
     Partial("partial", "http://hl7.org/fhir/composition-status", "Partial"),
     Preliminary("preliminary", "http://hl7.org/fhir/composition-status", "Preliminary"),
@@ -1238,12 +1238,6 @@ public data class Composition(
     Unknown("unknown", "http://hl7.org/fhir/composition-status", "Unknown");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CompositionStatus =

@@ -664,7 +664,7 @@ internal object ResearchStudySerializer : KSerializer<ResearchStudy> {
         Hoisted.protocolSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

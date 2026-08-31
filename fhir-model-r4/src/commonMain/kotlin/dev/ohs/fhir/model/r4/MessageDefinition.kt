@@ -1021,10 +1021,10 @@ public data class MessageDefinition(
 
   /** The impact of the content of a message. */
   public enum class MessageSignificanceCategory(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Consequence("consequence", "http://hl7.org/fhir/message-significance-category", "Consequence"),
     Currency("currency", "http://hl7.org/fhir/message-significance-category", "Currency"),
     Notification(
@@ -1034,12 +1034,6 @@ public data class MessageDefinition(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): MessageSignificanceCategory =
@@ -1060,10 +1054,10 @@ public data class MessageDefinition(
    * to be returned in response to a message.
    */
   public enum class MessageheaderResponseRequest(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Always("always", "http://hl7.org/fhir/messageheader-response-request", "Always"),
     On_Error(
       "on-error",
@@ -1078,12 +1072,6 @@ public data class MessageDefinition(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): MessageheaderResponseRequest =

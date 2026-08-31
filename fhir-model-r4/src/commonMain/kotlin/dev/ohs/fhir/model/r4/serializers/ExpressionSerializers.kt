@@ -148,7 +148,7 @@ internal object ExpressionSerializer : KSerializer<Expression> {
     (value.name?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.descriptionSer, it)
     }
-    ((value.language.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.language.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.language.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.descriptionSer, it)
     }

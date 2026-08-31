@@ -187,10 +187,10 @@ public data class ContactPoint(
 
   /** Telecommunications form for contact point. */
   public enum class ContactPointSystem(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Phone("phone", "http://hl7.org/fhir/contact-point-system", "Phone"),
     Fax("fax", "http://hl7.org/fhir/contact-point-system", "Fax"),
     Email("email", "http://hl7.org/fhir/contact-point-system", "Email"),
@@ -200,12 +200,6 @@ public data class ContactPoint(
     Other("other", "http://hl7.org/fhir/contact-point-system", "Other");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ContactPointSystem =
@@ -224,10 +218,10 @@ public data class ContactPoint(
 
   /** Use of contact point. */
   public enum class ContactPointUse(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Home("home", "http://hl7.org/fhir/contact-point-use", "Home"),
     Work("work", "http://hl7.org/fhir/contact-point-use", "Work"),
     Temp("temp", "http://hl7.org/fhir/contact-point-use", "Temp"),
@@ -235,12 +229,6 @@ public data class ContactPoint(
     Mobile("mobile", "http://hl7.org/fhir/contact-point-use", "Mobile");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ContactPointUse =

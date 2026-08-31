@@ -541,7 +541,7 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -650,7 +650,7 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
         it,
       )
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

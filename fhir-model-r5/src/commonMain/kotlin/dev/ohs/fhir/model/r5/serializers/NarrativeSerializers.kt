@@ -110,7 +110,7 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.status.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.statusSer, it)
     }

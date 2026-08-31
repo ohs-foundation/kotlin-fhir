@@ -592,7 +592,7 @@ internal object ValueSetComposeIncludeConceptDesignationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.language?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.languageSer, it)
     }
@@ -723,7 +723,7 @@ internal object ValueSetComposeIncludeFilterSerializer :
     (value.`property`.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.propertySer, it)
     }
-    ((value.op.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.op.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.op.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.propertySer, it)
     }
@@ -1682,7 +1682,7 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

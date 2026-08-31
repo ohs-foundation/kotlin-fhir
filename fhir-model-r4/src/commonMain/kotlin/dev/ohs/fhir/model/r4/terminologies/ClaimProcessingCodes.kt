@@ -16,26 +16,21 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
 import kotlin.String
 
 /** This value set includes Claim Processing Outcome codes. */
 public enum class ClaimProcessingCodes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Queued("queued", "http://hl7.org/fhir/remittance-outcome", "Queued"),
   Complete("complete", "http://hl7.org/fhir/remittance-outcome", "Processing Complete"),
   Error("error", "http://hl7.org/fhir/remittance-outcome", "Error"),
   Partial("partial", "http://hl7.org/fhir/remittance-outcome", "Partial Processing");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): ClaimProcessingCodes =

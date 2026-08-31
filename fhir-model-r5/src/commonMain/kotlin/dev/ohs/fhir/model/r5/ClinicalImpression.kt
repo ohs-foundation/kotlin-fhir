@@ -677,10 +677,10 @@ public data class ClinicalImpression(
 
   /** Codes identifying the lifecycle stage of an event. */
   public enum class EventStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Preparation("preparation", "http://hl7.org/fhir/event-status", "Preparation"),
     In_Progress("in-progress", "http://hl7.org/fhir/event-status", "In Progress"),
     Not_Done("not-done", "http://hl7.org/fhir/event-status", "Not Done"),
@@ -691,12 +691,6 @@ public data class ClinicalImpression(
     Unknown("unknown", "http://hl7.org/fhir/event-status", "Unknown");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): EventStatus =

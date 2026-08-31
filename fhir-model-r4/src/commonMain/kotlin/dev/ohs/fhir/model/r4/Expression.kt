@@ -147,10 +147,10 @@ public data class Expression(
 
   /** The media type of the expression language. */
   public enum class ExpressionLanguage(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Text_Cql("text/cql", "http://hl7.org/fhir/expression-language", "CQL"),
     Text_Fhirpath("text/fhirpath", "http://hl7.org/fhir/expression-language", "FHIRPath"),
     Application_X_Fhir_Query(
@@ -160,12 +160,6 @@ public data class Expression(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ExpressionLanguage =

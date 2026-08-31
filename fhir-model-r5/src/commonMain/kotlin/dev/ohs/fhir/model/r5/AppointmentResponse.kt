@@ -475,10 +475,10 @@ public data class AppointmentResponse(
 
   /** The Participation status for a participant in response to a request for an appointment. */
   public enum class AppointmentResponseStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Accepted("accepted", "http://hl7.org/fhir/participationstatus", "Accepted"),
     Declined("declined", "http://hl7.org/fhir/participationstatus", "Declined"),
     Tentative("tentative", "http://hl7.org/fhir/participationstatus", "Tentative"),
@@ -490,12 +490,6 @@ public data class AppointmentResponse(
     );
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): AppointmentResponseStatus =

@@ -182,7 +182,7 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.use?.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.use?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.useSer, it)
     }

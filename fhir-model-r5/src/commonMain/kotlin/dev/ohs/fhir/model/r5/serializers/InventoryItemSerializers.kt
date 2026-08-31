@@ -168,7 +168,7 @@ internal object InventoryItemNameSerializer : KSerializer<InventoryItem.Name> {
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameTypeSer, value.nameType)
-    ((value.language.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.language.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.language.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.languageSer, it)
     }
@@ -374,7 +374,7 @@ internal object InventoryItemDescriptionSerializer : KSerializer<InventoryItem.D
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.language?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.languageSer, it)
     }
@@ -1246,7 +1246,7 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

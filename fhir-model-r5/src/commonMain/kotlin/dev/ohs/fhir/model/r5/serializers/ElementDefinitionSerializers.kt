@@ -210,7 +210,7 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
     (value.ordered?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
     }
-    ((value.rules.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.rules.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.rules.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.descriptionSer, it)
     }
@@ -305,7 +305,7 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
     }
@@ -581,13 +581,13 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
     (value.targetProfile.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.profileSer2, it)
     }
-    (value.aggregation.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.aggregation.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.profileSer, it)
     }
     (value.aggregation.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.profileSer2, it)
     }
-    ((value.versioning?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+    ((value.versioning?.value?.code))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.versioning?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.codeSer, it)
     }
@@ -1673,7 +1673,7 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
     (value.requirements?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.keySer, it)
     }
-    ((value.severity.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.severity.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.severity.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.keySer, it)
     }
@@ -1793,7 +1793,7 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.strength.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.strength.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.strength.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.strengthSer, it)
     }
@@ -1938,7 +1938,7 @@ internal object ElementDefinitionBindingAdditionalSerializer :
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.purpose.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.purpose.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.purpose.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.purposeSer, it)
     }
@@ -4454,7 +4454,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     (value.path.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.pathSer, it)
     }
-    (value.representation.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.representation.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.representationSer, it)
     }
     (value.representation.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

@@ -438,7 +438,7 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
@@ -449,7 +449,7 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
         it,
       )
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

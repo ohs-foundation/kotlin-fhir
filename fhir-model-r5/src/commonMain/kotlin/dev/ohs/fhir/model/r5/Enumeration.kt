@@ -48,6 +48,12 @@ public data class Enumeration<T : FhirEnum>(
     return null
   }
 
+  /**
+   * Returns this enumeration as an open [Code], preserving `id`, `extension`, and the code string
+   * of the value (generated enums stringify to their FHIR code).
+   */
+  public fun toCode(): Code = Code(id, extension, value?.toString())
+
   public companion object {
     public fun <T : FhirEnum> of(`value`: T?, element: Element?): Enumeration<T>? =
       if (value != null || element?.id != null || element?.extension?.isEmpty() == false) {
@@ -55,5 +61,13 @@ public data class Enumeration<T : FhirEnum>(
       } else {
         null
       }
+
+    /**
+     * Builds an [Enumeration] from an open [Code], preserving `id` and `extension` and parsing the
+     * code string with the enum's parser, e.g. `Enumeration.fromCode(expression.language,
+     * ExpressionLanguage::fromCode)`.
+     */
+    public fun <T : FhirEnum> fromCode(code: Code, parse: (String) -> T): Enumeration<T> =
+      Enumeration(code.id, code.extension, code.value?.let(parse))
   }
 }

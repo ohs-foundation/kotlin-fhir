@@ -71,10 +71,19 @@ class MoreElementsTest {
   @Test
   fun typeIsEnumeratedCode_extensibleBinding_staysOpenCode() {
     // Extensible bindings permit codes outside the value set (e.g. Expression.language
-    // carrying text/cql-identifier), so no closed enum must be generated. See #123.
+    // carrying text/cql-identifier), so the element must not be typed as a closed enum. See #123.
     val element =
       element(binding = Binding(strength = "extensible", valueSet = "$valueSetUrl|4.0.1"))
     assertFalse(element.typeIsEnumeratedCode(valueSetMap))
+  }
+
+  @Test
+  fun typeHasEnumVocabulary_extensibleBinding_stillEmitsEnum() {
+    // The enum class is still generated as a vocabulary of known codes even when the element
+    // itself is typed as open Code (bridged via Enumeration.toCode()/fromCode).
+    val element =
+      element(binding = Binding(strength = "extensible", valueSet = "$valueSetUrl|4.0.1"))
+    assertTrue(element.typeHasEnumVocabulary(valueSetMap))
   }
 
   @Test

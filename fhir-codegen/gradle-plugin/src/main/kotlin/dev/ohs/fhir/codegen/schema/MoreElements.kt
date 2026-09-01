@@ -63,25 +63,36 @@ private fun Element.getBindingExtension(url: String): Extension? {
 internal fun Element.getBindingValueSetUrl() = this.binding?.valueSet?.substringBeforeLast("|")
 
 /**
- * Determines if an enum should be generated for the element.
+ * Determines if the element's bound value set has an enum vocabulary worth generating — i.e. a
+ * `code` element bound to a known value set, regardless of binding strength. Used to decide whether
+ * the enum *class* is emitted (as a typed catalog of the known codes).
  *
- * An enum should be generated for the element if and only if the following requirements are met:
+ * The requirements are:
  * - The element's type is `code`.
- * - The element's binding strength is `required`. Weaker bindings (`extensible`, `preferred`,
- *   `example`) permit codes outside the value set, so a closed enum cannot represent legal
- *   instances (e.g. `Expression.language`, bound extensibly, carries `text/cql-identifier`
- *   throughout the WHO SMART Guidelines content); such elements stay as open `Code`.
  * - The element has an extension with the URL:
  *   `http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName`.
  * - The element's base path does **not** start with `"Resource."` or `"CanonicalResource."`.
  * - The element's name is not blank
  */
-internal fun Element.typeIsEnumeratedCode(valueSetMap: Map<String, ValueSet>): Boolean {
+internal fun Element.typeHasEnumVocabulary(valueSetMap: Map<String, ValueSet>): Boolean {
   return valueSetMap.containsKey(getBindingValueSetUrl()) &&
-    binding?.strength == "required" &&
     base?.path?.startsWith("Resource.") != true &&
     base?.path?.startsWith("CanonicalResource.") != true &&
     this.type?.count { it.code.equals("code", ignoreCase = true) } == 1
+}
+
+/**
+ * Determines if the element itself should be typed as `Enumeration<Enum>`.
+ *
+ * This requires [typeHasEnumVocabulary] and additionally that the binding strength is `required`.
+ * Weaker bindings (`extensible`, `preferred`, `example`) permit codes outside the value set, so a
+ * closed enum cannot represent legal instances (e.g. `Expression.language`, bound extensibly,
+ * carries `text/cql-identifier` throughout the WHO SMART Guidelines content); such elements are
+ * typed as the open `Code` instead, with the enum still generated as a vocabulary of known codes
+ * (bridged via `Enumeration.toCode()`/`fromCode`).
+ */
+internal fun Element.typeIsEnumeratedCode(valueSetMap: Map<String, ValueSet>): Boolean {
+  return typeHasEnumVocabulary(valueSetMap) && binding?.strength == "required"
 }
 
 /**

@@ -40,7 +40,7 @@ import dev.ohs.fhir.codegen.schema.normalizeEnumName
 import dev.ohs.fhir.codegen.schema.rootElements
 import dev.ohs.fhir.codegen.schema.sanitizeKDoc
 import dev.ohs.fhir.codegen.schema.serializableWithCustomSerializer
-import dev.ohs.fhir.codegen.schema.typeIsEnumeratedCode
+import dev.ohs.fhir.codegen.schema.typeHasEnumVocabulary
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -361,7 +361,7 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
     createEnumNameToTypeSpecEntry: (String, TypeSpec) -> Unit,
   ) {
     elements
-      .filter { it.typeIsEnumeratedCode(valueSetMap) && !it.isCommonBinding }
+      .filter { it.typeHasEnumVocabulary(valueSetMap) && !it.isCommonBinding }
       .mapNotNull { element ->
         val valueSet = valueSetMap.getValue(element.getBindingValueSetUrl()!!)
         val valueSetName = valueSet.name.normalizeEnumName()

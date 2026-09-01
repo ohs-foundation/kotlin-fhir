@@ -31,7 +31,7 @@ import dev.ohs.fhir.codegen.schema.capitalized
 import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.rootElements
 import dev.ohs.fhir.codegen.schema.sanitizeKDoc
-import dev.ohs.fhir.codegen.schema.typeIsEnumeratedCode
+import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
 /**
@@ -244,7 +244,7 @@ private class BuilderGenerator(
                 .apply {
                   for (element in elements) {
                     val name = element.getElementName()
-                    if (element.typeIsEnumeratedCode(valueSetMap)) {
+                    if (element.typeShouldBindToEnum(valueSetMap)) {
                       addStatement("%N = %N,", name, name)
                       continue
                     }
@@ -341,7 +341,7 @@ private class BuilderGenerator(
                 .forEach {
                   if (it.type?.singleOrNull()?.code in FhirPathType.getUris()) {
                     add("%N,", it.getElementName())
-                  } else if (it.typeIsEnumeratedCode(valueSetMap)) {
+                  } else if (it.typeShouldBindToEnum(valueSetMap)) {
                     if (it.max == "*") {
                       addStatement("%N.toMutableList(),", it.getElementName())
                     } else {
@@ -366,7 +366,7 @@ private class BuilderGenerator(
                 .filter { it.min == 0 }
                 .forEach {
                   val name = it.getElementName()
-                  if (it.typeIsEnumeratedCode(valueSetMap)) {
+                  if (it.typeShouldBindToEnum(valueSetMap)) {
                     if (it.max == "*") {
                       addStatement("%N = this@with.%N.toMutableList()", name, name)
                     } else {

@@ -63,18 +63,10 @@ private fun Element.getBindingExtension(url: String): Extension? {
 internal fun Element.getBindingValueSetUrl() = this.binding?.valueSet?.substringBeforeLast("|")
 
 /**
- * Determines if the element's bound value set has an enum vocabulary worth generating — i.e. a
- * `code` element bound to a known value set, regardless of binding strength. Used to decide whether
- * the enum *class* is emitted (as a typed catalog of the known codes).
- *
- * The requirements are:
- * - The element's type is `code`.
- * - The element has an extension with the URL:
- *   `http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName`.
- * - The element's base path does **not** start with `"Resource."` or `"CanonicalResource."`.
- * - The element's name is not blank
+ * Determines if an enum class should be generated for the element's bound value set, regardless of
+ * binding strength.
  */
-internal fun Element.typeHasEnumVocabulary(valueSetMap: Map<String, ValueSet>): Boolean {
+internal fun Element.typeShouldGenerateEnum(valueSetMap: Map<String, ValueSet>): Boolean {
   return valueSetMap.containsKey(getBindingValueSetUrl()) &&
     base?.path?.startsWith("Resource.") != true &&
     base?.path?.startsWith("CanonicalResource.") != true &&
@@ -82,17 +74,12 @@ internal fun Element.typeHasEnumVocabulary(valueSetMap: Map<String, ValueSet>): 
 }
 
 /**
- * Determines if the element itself should be typed as `Enumeration<Enum>`.
- *
- * This requires [typeHasEnumVocabulary] and additionally that the binding strength is `required`.
- * Weaker bindings (`extensible`, `preferred`, `example`) permit codes outside the value set, so a
- * closed enum cannot represent legal instances (e.g. `Expression.language`, bound extensibly,
- * carries `text/cql-identifier` throughout the WHO SMART Guidelines content); such elements are
- * typed as the open `Code` instead, with the enum still generated as a vocabulary of known codes
- * (bridged via `Enumeration.toCode()`/`fromCode`).
+ * Determines if the element should be typed as `Enumeration<T>` with the generated enum, i.e.
+ * [typeShouldGenerateEnum] and the binding strength is `required`. Elements with weaker bindings
+ * may carry codes outside the value set and are typed as `Code` instead.
  */
-internal fun Element.typeIsEnumeratedCode(valueSetMap: Map<String, ValueSet>): Boolean {
-  return typeHasEnumVocabulary(valueSetMap) && binding?.strength == "required"
+internal fun Element.typeShouldBindToEnum(valueSetMap: Map<String, ValueSet>): Boolean {
+  return typeShouldGenerateEnum(valueSetMap) && binding?.strength == "required"
 }
 
 /**

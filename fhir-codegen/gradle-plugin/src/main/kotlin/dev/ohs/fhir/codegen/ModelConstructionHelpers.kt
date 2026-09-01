@@ -27,7 +27,7 @@ import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.getPathSimpleNames
 import dev.ohs.fhir.codegen.schema.isCommonBinding
 import dev.ohs.fhir.codegen.schema.normalizeEnumName
-import dev.ohs.fhir.codegen.schema.typeIsEnumeratedCode
+import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
 /**
@@ -82,7 +82,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
     } else if ((element.max == "*" || propertyName == "extension")) {
       if (FhirPathType.containsFhirTypeCode(element.type?.singleOrNull()?.code ?: "")) {
         val fhirPathType = FhirPathType.getFromFhirTypeCode(element.type?.singleOrNull()?.code!!)!!
-        if (element.typeIsEnumeratedCode(codegenContext.valueSetMap)) {
+        if (element.typeShouldBindToEnum(codegenContext.valueSetMap)) {
           val enumClass = element.getEnumClass(modelClassName, codegenContext.valueSetMap)
           add(
             "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { index ->\n",
@@ -135,7 +135,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
   ) {
     val elementPropertyName = "_$propertyName"
     val modelDisplayName = modelClassName.simpleNames.joinToString(".")
-    if (element.typeIsEnumeratedCode(valueSetMap)) {
+    if (element.typeShouldBindToEnum(valueSetMap)) {
       val enumClass = element.getEnumClass(modelClassName, valueSetMap)
       if (element.min == 0) {
         add(

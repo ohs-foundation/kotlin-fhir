@@ -33,7 +33,7 @@ import dev.ohs.fhir.codegen.schema.getContentReferenceType
 import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.getPathSimpleNames
 import dev.ohs.fhir.codegen.schema.isBackboneElement
-import dev.ohs.fhir.codegen.schema.typeIsEnumeratedCode
+import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 
 /**
  * Emits the streaming-encode side of a serializer object — `serializeInternal(encoder, value)` and
@@ -380,7 +380,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
   ) {
     val typeCode = element.type!!.single().code
     val fhirPathType = FhirPathType.getFromFhirTypeCode(typeCode)!!
-    val isEnum = element.typeIsEnumeratedCode(codegenContext.valueSetMap)
+    val isEnum = element.typeShouldBindToEnum(codegenContext.valueSetMap)
     val isRequired = element.min == 1 && element.max == "1"
     val wireClassName: ClassName = fhirPathType.getWireType(modelClassName.packageName)
     val valueIdx = nameToIdx.getValue(propertyName)
@@ -441,7 +441,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
   ) {
     val typeCode = element.type!!.single().code
     val fhirPathType = FhirPathType.getFromFhirTypeCode(typeCode)!!
-    val isEnum = element.typeIsEnumeratedCode(codegenContext.valueSetMap)
+    val isEnum = element.typeShouldBindToEnum(codegenContext.valueSetMap)
     val wireClassName: ClassName = fhirPathType.getWireType(modelClassName.packageName)
     val valueIdx = nameToIdx.getValue(propertyName)
     val elementIdx = nameToIdx.getValue("_$propertyName")

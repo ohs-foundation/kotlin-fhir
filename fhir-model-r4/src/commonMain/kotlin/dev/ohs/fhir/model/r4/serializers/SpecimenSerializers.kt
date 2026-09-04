@@ -751,7 +751,7 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       accessionIdentifier = accessionIdentifier,
-      status = status?.let { Enumeration.of(Specimen.SpecimenStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Specimen.SpecimenStatus.fromCode(it) }, _status),
       type = type,
       subject = subject,
       receivedTime = DateTime.of(receivedTime?.let { FhirDateTime.fromString(it) }, _receivedTime),
@@ -836,7 +836,7 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
         it,
       )
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

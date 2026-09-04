@@ -304,15 +304,10 @@ internal object GraphDefinitionLinkTargetSerializer : KSerializer<GraphDefinitio
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          ResourceType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on GraphDefinition.Link.Target"
-              )
+        Enumeration.of(type?.let { ResourceType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on GraphDefinition.Link.Target"
           ),
-          _type,
-        ),
       params = R4String.of(params, _params),
       profile = Canonical.of(profile, _profile),
       compartment = compartment ?: listOf(),
@@ -331,7 +326,7 @@ internal object GraphDefinitionLinkTargetSerializer : KSerializer<GraphDefinitio
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -456,35 +451,20 @@ internal object GraphDefinitionLinkTargetCompartmentSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       use =
-        Enumeration.of(
-          GraphDefinition.GraphCompartmentUse.fromCode(
-            use
-              ?: throw SerializationException(
-                "Missing required property 'use' on GraphDefinition.Link.Target.Compartment"
-              )
+        Enumeration.of(use?.let { GraphDefinition.GraphCompartmentUse.fromCode(it) }, _use)
+          ?: throw SerializationException(
+            "Missing required property 'use' on GraphDefinition.Link.Target.Compartment"
           ),
-          _use,
-        ),
       code =
-        Enumeration.of(
-          GraphDefinition.CompartmentType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on GraphDefinition.Link.Target.Compartment"
-              )
+        Enumeration.of(code?.let { GraphDefinition.CompartmentType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on GraphDefinition.Link.Target.Compartment"
           ),
-          _code,
-        ),
       rule =
-        Enumeration.of(
-          GraphDefinition.GraphCompartmentRule.fromCode(
-            rule
-              ?: throw SerializationException(
-                "Missing required property 'rule' on GraphDefinition.Link.Target.Compartment"
-              )
+        Enumeration.of(rule?.let { GraphDefinition.GraphCompartmentRule.fromCode(it) }, _rule)
+          ?: throw SerializationException(
+            "Missing required property 'rule' on GraphDefinition.Link.Target.Compartment"
           ),
-          _rule,
-        ),
       expression = R4String.of(expression, _expression),
       description = R4String.of(description, _description),
     )
@@ -504,15 +484,15 @@ internal object GraphDefinitionLinkTargetCompartmentSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.use.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.use.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.use.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.useSer, it)
     }
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.useSer, it)
     }
-    ((value.rule.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.rule.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.rule.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.useSer, it)
     }
@@ -760,15 +740,8 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
         R4String.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on GraphDefinition"),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on GraphDefinition"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on GraphDefinition"),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
@@ -778,15 +751,8 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
       jurisdiction = jurisdiction ?: listOf(),
       purpose = Markdown.of(purpose, _purpose),
       start =
-        Enumeration.of(
-          ResourceType.fromCode(
-            start
-              ?: throw SerializationException(
-                "Missing required property 'start' on GraphDefinition"
-              )
-          ),
-          _start,
-        ),
+        Enumeration.of(start?.let { ResourceType.fromCode(it) }, _start)
+          ?: throw SerializationException("Missing required property 'start' on GraphDefinition"),
       profile = Canonical.of(profile, _profile),
       link = link ?: listOf(),
     )
@@ -877,7 +843,7 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -964,7 +930,7 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
         it,
       )
     }
-    ((value.start.value?.getCode()))?.let {
+    ((value.start.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 31 + descriptorOffset, it)
     }
     (value.start.toElement())?.let {

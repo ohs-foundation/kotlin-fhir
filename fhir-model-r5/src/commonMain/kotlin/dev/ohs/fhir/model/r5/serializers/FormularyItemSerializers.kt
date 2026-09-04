@@ -173,9 +173,10 @@ internal object FormularyItemSerializer : KSerializer<FormularyItem> {
       identifier = identifier ?: listOf(),
       code = code,
       status =
-        status?.let {
-          Enumeration.of(FormularyItem.FormularyItemStatusCodes.fromCode(it), _status)
-        },
+        Enumeration.of(
+          status?.let { FormularyItem.FormularyItemStatusCodes.fromCode(it) },
+          _status,
+        ),
     )
   }
 
@@ -245,7 +246,7 @@ internal object FormularyItemSerializer : KSerializer<FormularyItem> {
     (value.code)?.let {
       encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, Hoisted.codeSer, it)
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

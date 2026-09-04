@@ -932,28 +932,14 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
       replaces = replaces ?: listOf(),
       requisition = requisition,
       status =
-        Enumeration.of(
-          ServiceRequest.RequestStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ServiceRequest"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { ServiceRequest.RequestStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ServiceRequest"),
       intent =
-        Enumeration.of(
-          ServiceRequest.RequestIntent.fromCode(
-            intent
-              ?: throw SerializationException(
-                "Missing required property 'intent' on ServiceRequest"
-              )
-          ),
-          _intent,
-        ),
+        Enumeration.of(intent?.let { ServiceRequest.RequestIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on ServiceRequest"),
       category = category ?: listOf(),
       priority =
-        priority?.let { Enumeration.of(ServiceRequest.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { ServiceRequest.RequestPriority.fromCode(it) }, _priority),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),
       code = code,
       orderDetail = orderDetail ?: listOf(),
@@ -1108,7 +1094,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1119,7 +1105,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -1137,7 +1123,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
         Hoisted.categorySer,
         value.category,
       )
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

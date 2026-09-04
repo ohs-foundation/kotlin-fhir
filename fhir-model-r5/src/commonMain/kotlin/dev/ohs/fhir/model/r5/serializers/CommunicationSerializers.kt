@@ -506,17 +506,12 @@ internal object CommunicationSerializer : KSerializer<Communication> {
       partOf = partOf ?: listOf(),
       inResponseTo = inResponseTo ?: listOf(),
       status =
-        Enumeration.of(
-          Communication.EventStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Communication")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Communication.EventStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Communication"),
       statusReason = statusReason,
       category = category ?: listOf(),
       priority =
-        priority?.let { Enumeration.of(Communication.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { Communication.RequestPriority.fromCode(it) }, _priority),
       medium = medium ?: listOf(),
       subject = subject,
       topic = topic,
@@ -648,7 +643,7 @@ internal object CommunicationSerializer : KSerializer<Communication> {
         Hoisted.basedOnSer,
         value.inResponseTo,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -674,7 +669,7 @@ internal object CommunicationSerializer : KSerializer<Communication> {
         Hoisted.categorySer,
         value.category,
       )
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

@@ -402,14 +402,12 @@ internal object ChargeItemDefinitionPropertyGroupPriceComponentSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type =
         Enumeration.of(
-          ChargeItemDefinition.InvoicePriceComponentType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ChargeItemDefinition.PropertyGroup.PriceComponent"
-              )
-          ),
+          type?.let { ChargeItemDefinition.InvoicePriceComponentType.fromCode(it) },
           _type,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'type' on ChargeItemDefinition.PropertyGroup.PriceComponent"
+          ),
       code = code,
       factor = Decimal.of(factor, _factor),
       amount = amount,
@@ -430,7 +428,7 @@ internal object ChargeItemDefinitionPropertyGroupPriceComponentSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -827,15 +825,10 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
           Canonical.of(replaces?.getOrNull(index)?.let { it }, _replaces?.getOrNull(index))!!
         }),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ChargeItemDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ChargeItemDefinition"
           ),
-          _status,
-        ),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
@@ -996,7 +989,7 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

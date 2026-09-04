@@ -229,7 +229,7 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
       target =
         target ?: throw SerializationException("Missing required property 'target' on Person.Link"),
       assurance =
-        assurance?.let { Enumeration.of(Person.IdentityAssuranceLevel.fromCode(it), _assurance) },
+        Enumeration.of(assurance?.let { Person.IdentityAssuranceLevel.fromCode(it) }, _assurance),
     )
   }
 
@@ -245,7 +245,7 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.targetSer, value.target)
-    ((value.assurance?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.assurance?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.assurance?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.assuranceSer, it)
     }
@@ -464,7 +464,7 @@ internal object PersonSerializer : KSerializer<Person> {
       active = R5Boolean.of(active, _active),
       name = name ?: listOf(),
       telecom = telecom ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       birthDate = Date.of(birthDate?.let { FhirDate.fromString(it) }, _birthDate),
       deceased =
         Person.Deceased.from(
@@ -568,7 +568,7 @@ internal object PersonSerializer : KSerializer<Person> {
         Hoisted.telecomSer,
         value.telecom,
       )
-    ((value.gender?.value?.getCode()))?.let {
+    ((value.gender?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.gender?.toElement())?.let {

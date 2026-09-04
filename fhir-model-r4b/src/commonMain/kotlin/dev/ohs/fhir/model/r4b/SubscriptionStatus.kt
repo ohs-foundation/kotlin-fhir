@@ -491,22 +491,16 @@ public data class SubscriptionStatus(
 
   /** The status of a subscription. */
   public enum class SubscriptionStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Requested("requested", "http://hl7.org/fhir/subscription-status", "Requested"),
     Active("active", "http://hl7.org/fhir/subscription-status", "Active"),
     Error("error", "http://hl7.org/fhir/subscription-status", "Error"),
     Off("off", "http://hl7.org/fhir/subscription-status", "Off");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SubscriptionStatusCodes =
@@ -523,10 +517,10 @@ public data class SubscriptionStatus(
 
   /** The type of notification represented by the status message. */
   public enum class SubscriptionNotificationType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Handshake("handshake", "http://hl7.org/fhir/subscription-notification-type", "Handshake"),
     Heartbeat("heartbeat", "http://hl7.org/fhir/subscription-notification-type", "Heartbeat"),
     Event_Notification(
@@ -542,12 +536,6 @@ public data class SubscriptionStatus(
     Query_Event("query-event", "http://hl7.org/fhir/subscription-notification-type", "Query Event");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SubscriptionNotificationType =

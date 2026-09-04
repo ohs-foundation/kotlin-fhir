@@ -365,9 +365,12 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
       .mapNotNull { element ->
         val valueSet = valueSetMap.getValue(element.getBindingValueSetUrl()!!)
         val valueSetName = valueSet.name.normalizeEnumName()
-        EnumTypeSpecGenerator.generate(valueSetName, valueSet)?.let { typeSpec ->
-          valueSetName to typeSpec
-        }
+        EnumTypeSpecGenerator.generate(
+            valueSetName,
+            valueSet,
+            codegenContext.packageName,
+          )
+          ?.let { typeSpec -> valueSetName to typeSpec }
       }
       .forEach { createEnumNameToTypeSpecEntry(it.first, it.second) }
   }
@@ -574,8 +577,8 @@ private fun TypeSpec.Builder.addToElementFunction(
 
 /**
  * Adds an `of(value, element)` factory on a FHIR primitive's companion that merges the two wire
- * fields — the primitive value and its `_field` Element sidecar (id + extensions) — into a single
- * model object, or returns null when both are absent.
+ * fields — the primitive value and its `_field` Element (id + extensions) — into a single model
+ * object, or returns null when both are absent.
  *
  * For `birthDate`, the wire has `birthDate` (`LocalDate`) and `_birthDate` (`Element`); the model
  * has a single `birthDate: Date` (the FHIR primitive carrying both).
@@ -629,8 +632,8 @@ private fun TypeSpec.Builder.addOfFunction(
  * Adds an `of` function in the companion object in the `Xhtml` class to return a FHIR primitive
  * date type object from a Kotlin primitive string value and a FHIR `Element`.
  *
- * Same role as [addOfFunction] — merges the wire value and `_field` Element sidecar into a single
- * model object — but specialized for `Xhtml`, which cannot carry extensions.
+ * Same role as [addOfFunction] — merges the wire value and `_field` Element into a single model
+ * object — but specialized for `Xhtml`, which cannot carry extensions.
  */
 private fun TypeSpec.Builder.addOfFunctionForXhtml(
   className: ClassName,

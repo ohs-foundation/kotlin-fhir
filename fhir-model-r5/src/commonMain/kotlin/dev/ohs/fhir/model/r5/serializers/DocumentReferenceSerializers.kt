@@ -761,19 +761,15 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
       version = R5String.of(version, _version),
       basedOn = basedOn ?: listOf(),
       status =
-        Enumeration.of(
-          DocumentReferenceStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on DocumentReference"
-              )
+        Enumeration.of(status?.let { DocumentReferenceStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on DocumentReference"
           ),
-          _status,
-        ),
       docStatus =
-        docStatus?.let {
-          Enumeration.of(DocumentReference.CompositionStatus.fromCode(it), _docStatus)
-        },
+        Enumeration.of(
+          docStatus?.let { DocumentReference.CompositionStatus.fromCode(it) },
+          _docStatus,
+        ),
       modality = modality ?: listOf(),
       type = type,
       category = category ?: listOf(),
@@ -876,7 +872,7 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
         Hoisted.basedOnSer,
         value.basedOn,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -887,7 +883,7 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
         it,
       )
     }
-    ((value.docStatus?.value?.getCode()))?.let {
+    ((value.docStatus?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.docStatus?.toElement())?.let {

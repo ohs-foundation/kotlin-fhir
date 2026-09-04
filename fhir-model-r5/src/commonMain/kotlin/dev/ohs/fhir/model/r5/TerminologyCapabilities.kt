@@ -2091,10 +2091,10 @@ public data class TerminologyCapabilities(
    * represented in a code system resource.
    */
   public enum class CodeSystemContentMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Not_Present("not-present", "http://hl7.org/fhir/codesystem-content-mode", "Not Present"),
     Example("example", "http://hl7.org/fhir/codesystem-content-mode", "Example"),
     Fragment("fragment", "http://hl7.org/fhir/codesystem-content-mode", "Fragment"),
@@ -2102,12 +2102,6 @@ public data class TerminologyCapabilities(
     Supplement("supplement", "http://hl7.org/fhir/codesystem-content-mode", "Supplement");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CodeSystemContentMode =
@@ -2125,10 +2119,10 @@ public data class TerminologyCapabilities(
 
   /** This value set includes common codes from BCP-47 (see http://tools.ietf.org/html/bcp47) */
   public enum class CommonLanguages(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Ar("ar", "urn:ietf:bcp:47", "Arabisk"),
     Bg("bg", "urn:ietf:bcp:47", "Bulgarian"),
     Bg_Bg("bg-BG", "urn:ietf:bcp:47", "Bulgarian (Bulgaria)"),
@@ -2213,12 +2207,6 @@ public data class TerminologyCapabilities(
     Zh_Tw("zh-TW", "urn:ietf:bcp:47", "Chinese (Taiwan)");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CommonLanguages =
@@ -2312,21 +2300,15 @@ public data class TerminologyCapabilities(
 
   /** How a capability statement is intended to be used. */
   public enum class CapabilityStatementKind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Instance("instance", "http://hl7.org/fhir/capability-statement-kind", "Instance"),
     Capability("capability", "http://hl7.org/fhir/capability-statement-kind", "Capability"),
     Requirements("requirements", "http://hl7.org/fhir/capability-statement-kind", "Requirements");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CapabilityStatementKind =
@@ -2345,10 +2327,10 @@ public data class TerminologyCapabilities(
    * supported.
    */
   public enum class CodeSearchSupport(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     In_Compose("in-compose", "http://hl7.org/fhir/code-search-support", "In Compose"),
     In_Expansion("in-expansion", "http://hl7.org/fhir/code-search-support", "In Expansion"),
     In_Compose_Or_Expansion(
@@ -2358,12 +2340,6 @@ public data class TerminologyCapabilities(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CodeSearchSupport =

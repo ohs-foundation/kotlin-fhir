@@ -294,7 +294,7 @@ internal object PaymentReconciliationProcessNoteSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type?.let { Enumeration.of(NoteType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { NoteType.fromCode(it) }, _type),
       text = R4String.of(text, _text),
     )
   }
@@ -313,7 +313,7 @@ internal object PaymentReconciliationProcessNoteSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -540,14 +540,12 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          PaymentReconciliation.FinancialResourceStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on PaymentReconciliation"
-              )
-          ),
+          status?.let { PaymentReconciliation.FinancialResourceStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on PaymentReconciliation"
+          ),
       period = period,
       created =
         DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
@@ -557,7 +555,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       paymentIssuer = paymentIssuer,
       request = request,
       requestor = requestor,
-      outcome = outcome?.let { Enumeration.of(ClaimProcessingCodes.fromCode(it), _outcome) },
+      outcome = Enumeration.of(outcome?.let { ClaimProcessingCodes.fromCode(it) }, _outcome),
       disposition = R4String.of(disposition, _disposition),
       paymentDate =
         Date.of(paymentDate?.let { FhirDate.fromString(it) }, _paymentDate)
@@ -639,7 +637,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -688,7 +686,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
         it,
       )
     }
-    ((value.outcome?.value?.getCode()))?.let {
+    ((value.outcome?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.outcome?.toElement())?.let {

@@ -417,12 +417,8 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
       shortTitle = R4String.of(shortTitle, _shortTitle),
       subtitle = R4String.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Evidence")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Evidence"),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -577,7 +573,7 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

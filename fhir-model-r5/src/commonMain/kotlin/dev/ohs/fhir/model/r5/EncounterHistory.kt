@@ -603,10 +603,10 @@ public data class EncounterHistory(
 
   /** Current state of the encounter. */
   public enum class EncounterStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Planned("planned", "http://hl7.org/fhir/encounter-status", "Planned"),
     In_Progress("in-progress", "http://hl7.org/fhir/encounter-status", "In Progress"),
     On_Hold("on-hold", "http://hl7.org/fhir/encounter-status", "On Hold"),
@@ -622,12 +622,6 @@ public data class EncounterHistory(
     Unknown("unknown", "http://hl7.org/fhir/encounter-status", "Unknown");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): EncounterStatus =

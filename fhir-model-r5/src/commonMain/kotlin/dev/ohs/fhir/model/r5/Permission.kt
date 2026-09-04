@@ -1003,20 +1003,14 @@ public data class Permission(
 
   /** How a rule statement is applied, such as adding additional consent or removing consent. */
   public enum class ConsentProvisionType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Deny("deny", "http://hl7.org/fhir/consent-provision-type", "Deny"),
     Permit("permit", "http://hl7.org/fhir/consent-provision-type", "Permit");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): ConsentProvisionType =
@@ -1030,22 +1024,16 @@ public data class Permission(
 
   /** How a resource reference is interpreted when testing consent restrictions. */
   public enum class ConsentDataMeaning(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Instance("instance", "http://hl7.org/fhir/consent-data-meaning", "Instance"),
     Related("related", "http://hl7.org/fhir/consent-data-meaning", "Related"),
     Dependents("dependents", "http://hl7.org/fhir/consent-data-meaning", "Dependents"),
     Authoredby("authoredby", "http://hl7.org/fhir/consent-data-meaning", "AuthoredBy");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): ConsentDataMeaning =
@@ -1061,10 +1049,10 @@ public data class Permission(
 
   /** Codes identifying the lifecycle stage of a product. */
   public enum class PermissionStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/permission-status", "Active"),
     Entered_In_Error(
       "entered-in-error",
@@ -1075,12 +1063,6 @@ public data class Permission(
     Rejected("rejected", "http://hl7.org/fhir/permission-status", "Rejected");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): PermissionStatus =
@@ -1096,10 +1078,10 @@ public data class Permission(
 
   /** Codes identifying rule combining algorithm. */
   public enum class PermissionRuleCombining(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Deny_Overrides(
       "deny-overrides",
       "http://hl7.org/fhir/permission-rule-combining",
@@ -1132,12 +1114,6 @@ public data class Permission(
     );
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): PermissionRuleCombining =

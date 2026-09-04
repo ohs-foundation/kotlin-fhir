@@ -3856,12 +3856,8 @@ internal object CitationSerializer : KSerializer<Citation> {
       name = R4bString.of(name, _name),
       title = R4bString.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Citation")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Citation"),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -3993,7 +3989,7 @@ internal object CitationSerializer : KSerializer<Citation> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

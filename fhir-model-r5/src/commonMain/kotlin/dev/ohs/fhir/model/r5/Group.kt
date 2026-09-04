@@ -776,10 +776,10 @@ public data class Group(
 
   /** Types of resources that are part of group. */
   public enum class GroupType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Person("person", "http://hl7.org/fhir/group-type", "Person"),
     Animal("animal", "http://hl7.org/fhir/group-type", "Animal"),
     Practitioner("practitioner", "http://hl7.org/fhir/group-type", "Practitioner"),
@@ -792,12 +792,6 @@ public data class Group(
     Specimen("specimen", "http://hl7.org/fhir/group-type", "Specimen");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): GroupType =
@@ -819,20 +813,14 @@ public data class Group(
 
   /** Basis for membership in a group */
   public enum class GroupMembershipBasis(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Definitional("definitional", "http://hl7.org/fhir/group-membership-basis", "Definitional"),
     Enumerated("enumerated", "http://hl7.org/fhir/group-membership-basis", "Enumerated");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): GroupMembershipBasis =

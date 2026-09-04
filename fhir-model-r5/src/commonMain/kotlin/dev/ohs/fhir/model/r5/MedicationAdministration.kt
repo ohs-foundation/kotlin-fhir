@@ -971,10 +971,10 @@ public data class MedicationAdministration(
 
   /** MedicationAdministration Status Codes */
   public enum class MedicationAdministrationStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     In_Progress(
       "in-progress",
       "http://hl7.org/fhir/CodeSystem/medication-admin-status",
@@ -992,12 +992,6 @@ public data class MedicationAdministration(
     Unknown("unknown", "http://hl7.org/fhir/CodeSystem/medication-admin-status", "Unknown");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): MedicationAdministrationStatusCodes =

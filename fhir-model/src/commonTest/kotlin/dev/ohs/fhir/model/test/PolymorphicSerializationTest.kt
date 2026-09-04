@@ -16,6 +16,12 @@
 
 package dev.ohs.fhir.model.test
 
+import dev.ohs.fhir.model.r4.Patient as R4Patient
+import dev.ohs.fhir.model.r4.Resource as R4Resource
+import dev.ohs.fhir.model.r4b.Patient as R4bPatient
+import dev.ohs.fhir.model.r4b.Resource as R4bResource
+import dev.ohs.fhir.model.r5.Patient as R5Patient
+import dev.ohs.fhir.model.r5.Resource as R5Resource
 import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -51,15 +57,16 @@ private fun createPatientJsonWithoutResourceType(id: String) =
  */
 class PolymorphicSerializationTest :
   FunSpec({
-    fun <TResource : Any, TPatient : TResource> runIntegrityTests(
-      fhirVersionName: String,
+    fun <TResource : Any, TPatient : TResource> polymorphicSerializationTestSuite(
+      fhirVersion: String,
       createPatient: (String) -> TPatient,
       resourceSerializer: KSerializer<TResource>,
       patientSerializer: KSerializer<TPatient>,
     ) {
-      context("$fhirVersionName Resource Type Serialization") {
+      context("$fhirVersion Resource Type Serialization") {
+        val id = "patient-01"
+
         test("Polymorphic Resource serialization writes resourceType") {
-          val id = "patient-01"
           assertEquals(
             createPatientJson(id),
             testJson.encodeToString(resourceSerializer, createPatient(id)),
@@ -67,7 +74,6 @@ class PolymorphicSerializationTest :
         }
 
         test("Concrete Patient serialization writes resourceType") {
-          val id = "patient-01"
           assertEquals(
             createPatientJson(id),
             testJson.encodeToString(patientSerializer, createPatient(id)),
@@ -75,7 +81,6 @@ class PolymorphicSerializationTest :
         }
 
         test("Polymorphic Resource deserialization ingests resourceType") {
-          val id = "patient-01"
           assertEquals(
             createPatient(id),
             testJson.decodeFromString(resourceSerializer, createPatientJson(id)),
@@ -83,44 +88,39 @@ class PolymorphicSerializationTest :
         }
 
         test("Concrete Patient deserialization ingests resourceType") {
-          val id = "patient-01"
           assertEquals(
             createPatient(id),
             testJson.decodeFromString(patientSerializer, createPatientJson(id)),
           )
         }
 
-        // Missing-discriminator: JSON with no `resourceType` must be rejected on the polymorphic
-        // path because the polymorphic path can't pick an arm. (Note: the concrete path does not
-        // currently reject missing resourceType because custom deserializer generator doesn't
-        // enforce it).
         test("Polymorphic decode rejects JSON without resourceType") {
-          val id = "patient-01"
           assertFailsWith<SerializationException> {
-            testJson.decodeFromString(resourceSerializer, createPatientJsonWithoutResourceType(id))
+            testJson.decodeFromString(
+              resourceSerializer,
+              createPatientJsonWithoutResourceType(id),
+            )
           }
         }
       }
     }
 
-    runIntegrityTests(
-      fhirVersionName = "R4",
-      createPatient = { dev.ohs.fhir.model.r4.Patient(id = it) },
-      resourceSerializer = serializer<dev.ohs.fhir.model.r4.Resource>(),
-      patientSerializer = dev.ohs.fhir.model.r4.Patient.serializer(),
+    polymorphicSerializationTestSuite(
+      fhirVersion = "R4",
+      createPatient = { R4Patient(id = it) },
+      resourceSerializer = serializer<R4Resource>(),
+      patientSerializer = R4Patient.serializer(),
     )
-
-    runIntegrityTests(
-      fhirVersionName = "R4B",
-      createPatient = { dev.ohs.fhir.model.r4b.Patient(id = it) },
-      resourceSerializer = serializer<dev.ohs.fhir.model.r4b.Resource>(),
-      patientSerializer = dev.ohs.fhir.model.r4b.Patient.serializer(),
+    polymorphicSerializationTestSuite(
+      fhirVersion = "R4B",
+      createPatient = { R4bPatient(id = it) },
+      resourceSerializer = serializer<R4bResource>(),
+      patientSerializer = R4bPatient.serializer(),
     )
-
-    runIntegrityTests(
-      fhirVersionName = "R5",
-      createPatient = { dev.ohs.fhir.model.r5.Patient(id = it) },
-      resourceSerializer = serializer<dev.ohs.fhir.model.r5.Resource>(),
-      patientSerializer = dev.ohs.fhir.model.r5.Patient.serializer(),
+    polymorphicSerializationTestSuite(
+      fhirVersion = "R5",
+      createPatient = { R5Patient(id = it) },
+      resourceSerializer = serializer<R5Resource>(),
+      patientSerializer = R5Patient.serializer(),
     )
   })

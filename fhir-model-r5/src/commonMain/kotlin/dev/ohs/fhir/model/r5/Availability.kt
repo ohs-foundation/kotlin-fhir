@@ -301,10 +301,10 @@ public data class Availability(
 
   /** The days of the week. */
   public enum class DaysOfWeek(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Mon("mon", "http://hl7.org/fhir/days-of-week", "Monday"),
     Tue("tue", "http://hl7.org/fhir/days-of-week", "Tuesday"),
     Wed("wed", "http://hl7.org/fhir/days-of-week", "Wednesday"),
@@ -314,12 +314,6 @@ public data class Availability(
     Sun("sun", "http://hl7.org/fhir/days-of-week", "Sunday");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): DaysOfWeek =

@@ -341,7 +341,7 @@ internal object AuditEventAgentNetworkSerializer : KSerializer<AuditEvent.Agent.
       modifierExtension = modifierExtension ?: listOf(),
       address = R4String.of(address, _address),
       type =
-        type?.let { Enumeration.of(AuditEvent.AuditEventAgentNetworkType.fromCode(it), _type) },
+        Enumeration.of(type?.let { AuditEvent.AuditEventAgentNetworkType.fromCode(it) }, _type),
     )
   }
 
@@ -360,7 +360,7 @@ internal object AuditEventAgentNetworkSerializer : KSerializer<AuditEvent.Agent.
     (value.address?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.addressSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.addressSer, it)
     }
@@ -963,13 +963,13 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
       modifierExtension = modifierExtension ?: listOf(),
       type = type ?: throw SerializationException("Missing required property 'type' on AuditEvent"),
       subtype = subtype ?: listOf(),
-      action = action?.let { Enumeration.of(AuditEvent.AuditEventAction.fromCode(it), _action) },
+      action = Enumeration.of(action?.let { AuditEvent.AuditEventAction.fromCode(it) }, _action),
       period = period,
       recorded =
         Instant.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded)
           ?: throw SerializationException("Missing required property 'recorded' on AuditEvent"),
       outcome =
-        outcome?.let { Enumeration.of(AuditEvent.AuditEventOutcome.fromCode(it), _outcome) },
+        Enumeration.of(outcome?.let { AuditEvent.AuditEventOutcome.fromCode(it) }, _outcome),
       outcomeDesc = R4String.of(outcomeDesc, _outcomeDesc),
       purposeOfEvent = purposeOfEvent ?: listOf(),
       agent = agent ?: listOf(),
@@ -1048,7 +1048,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         Hoisted.subtypeSer,
         value.subtype,
       )
-    ((value.action?.value?.getCode()))?.let {
+    ((value.action?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.action?.toElement())?.let {
@@ -1073,7 +1073,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         it,
       )
     }
-    ((value.outcome?.value?.getCode()))?.let {
+    ((value.outcome?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.outcome?.toElement())?.let {

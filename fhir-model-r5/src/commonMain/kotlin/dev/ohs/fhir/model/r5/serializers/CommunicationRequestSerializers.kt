@@ -469,31 +469,22 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          CommunicationRequest.RequestStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on CommunicationRequest"
-              )
+        Enumeration.of(status?.let { CommunicationRequest.RequestStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on CommunicationRequest"
           ),
-          _status,
-        ),
       statusReason = statusReason,
       intent =
-        Enumeration.of(
-          CommunicationRequest.RequestIntent.fromCode(
-            intent
-              ?: throw SerializationException(
-                "Missing required property 'intent' on CommunicationRequest"
-              )
+        Enumeration.of(intent?.let { CommunicationRequest.RequestIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException(
+            "Missing required property 'intent' on CommunicationRequest"
           ),
-          _intent,
-        ),
       category = category ?: listOf(),
       priority =
-        priority?.let {
-          Enumeration.of(CommunicationRequest.RequestPriority.fromCode(it), _priority)
-        },
+        Enumeration.of(
+          priority?.let { CommunicationRequest.RequestPriority.fromCode(it) },
+          _priority,
+        ),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),
       medium = medium ?: listOf(),
       subject = subject,
@@ -599,7 +590,7 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -618,7 +609,7 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -636,7 +627,7 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
         Hoisted.categorySer,
         value.category,
       )
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

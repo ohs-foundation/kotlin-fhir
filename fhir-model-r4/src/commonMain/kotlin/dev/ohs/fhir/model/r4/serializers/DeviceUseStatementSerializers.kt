@@ -263,14 +263,12 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
       basedOn = basedOn ?: listOf(),
       status =
         Enumeration.of(
-          DeviceUseStatement.DeviceUseStatementStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on DeviceUseStatement"
-              )
-          ),
+          status?.let { DeviceUseStatement.DeviceUseStatementStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on DeviceUseStatement"
+          ),
       subject =
         subject
           ?: throw SerializationException(
@@ -367,7 +365,7 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
         Hoisted.basedOnSer,
         value.basedOn,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

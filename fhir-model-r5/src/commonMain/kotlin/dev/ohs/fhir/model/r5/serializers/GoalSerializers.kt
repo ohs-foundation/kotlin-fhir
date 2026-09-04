@@ -518,12 +518,9 @@ internal object GoalSerializer : KSerializer<Goal> {
       identifier = identifier ?: listOf(),
       lifecycleStatus =
         Enumeration.of(
-          Goal.GoalLifecycleStatus.fromCode(
-            lifecycleStatus
-              ?: throw SerializationException("Missing required property 'lifecycleStatus' on Goal")
-          ),
+          lifecycleStatus?.let { Goal.GoalLifecycleStatus.fromCode(it) },
           _lifecycleStatus,
-        ),
+        ) ?: throw SerializationException("Missing required property 'lifecycleStatus' on Goal"),
       achievementStatus = achievementStatus,
       category = category ?: listOf(),
       continuous = R5Boolean.of(continuous, _continuous),
@@ -611,7 +608,7 @@ internal object GoalSerializer : KSerializer<Goal> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.lifecycleStatus.value?.getCode()))?.let {
+    ((value.lifecycleStatus.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.lifecycleStatus.toElement())?.let {

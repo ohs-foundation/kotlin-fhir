@@ -489,22 +489,16 @@ public data class OperationOutcome(
 
   /** How the issue affects the success of the action. */
   public enum class IssueSeverity(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Fatal("fatal", "http://hl7.org/fhir/issue-severity", "Fatal"),
     Error("error", "http://hl7.org/fhir/issue-severity", "Error"),
     Warning("warning", "http://hl7.org/fhir/issue-severity", "Warning"),
     Information("information", "http://hl7.org/fhir/issue-severity", "Information");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): IssueSeverity =
@@ -520,10 +514,10 @@ public data class OperationOutcome(
 
   /** A code that describes the type of issue. */
   public enum class IssueType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Invalid("invalid", "http://hl7.org/fhir/issue-type", "Invalid Content"),
     Structure("structure", "http://hl7.org/fhir/issue-type", "Structural Issue"),
     Required("required", "http://hl7.org/fhir/issue-type", "Required element missing"),
@@ -557,12 +551,6 @@ public data class OperationOutcome(
     Informational("informational", "http://hl7.org/fhir/issue-type", "Informational Note");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): IssueType =

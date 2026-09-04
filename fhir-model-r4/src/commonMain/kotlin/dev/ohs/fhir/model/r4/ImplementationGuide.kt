@@ -2368,22 +2368,16 @@ public data class ImplementationGuide(
 
   /** A code that indicates how the page is generated. */
   public enum class GuidePageGeneration(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Html("html", "http://hl7.org/fhir/guide-page-generation", "HTML"),
     Markdown("markdown", "http://hl7.org/fhir/guide-page-generation", "Markdown"),
     Xml("xml", "http://hl7.org/fhir/guide-page-generation", "XML"),
     Generated("generated", "http://hl7.org/fhir/guide-page-generation", "Generated");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): GuidePageGeneration =
@@ -2399,10 +2393,10 @@ public data class ImplementationGuide(
 
   /** Code of parameter that is input to the guide. */
   public enum class GuideParameterCode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Apply("apply", "http://hl7.org/fhir/guide-parameter-code", "Apply Metadata Value"),
     Path_Resource("path-resource", "http://hl7.org/fhir/guide-parameter-code", "Resource Path"),
     Path_Pages("path-pages", "http://hl7.org/fhir/guide-parameter-code", "Pages Path"),
@@ -2432,12 +2426,6 @@ public data class ImplementationGuide(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): GuideParameterCode =
         when (code) {
@@ -2462,10 +2450,10 @@ public data class ImplementationGuide(
    * used (https://spdx.org/licenses/).
    */
   public enum class SPDXLicense(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Not_Open_Source("not-open-source", "http://hl7.org/fhir/spdx-license", "Not open source"),
     _0BSD("0BSD", "http://hl7.org/fhir/spdx-license", "BSD Zero Clause License"),
     Aal("AAL", "http://hl7.org/fhir/spdx-license", "Attribution Assurance License"),
@@ -3330,12 +3318,6 @@ public data class ImplementationGuide(
     Zpl_2_1("ZPL-2.1", "http://hl7.org/fhir/spdx-license", "Zope Public License 2.1");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SPDXLicense =

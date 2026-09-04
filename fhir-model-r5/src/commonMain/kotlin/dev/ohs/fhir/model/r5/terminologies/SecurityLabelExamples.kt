@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /**
@@ -24,10 +25,10 @@ import kotlin.String
  * combination of data and event codes.
  */
 public enum class SecurityLabelExamples(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   N("N", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "normal"),
   R("R", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "restricted"),
   Eth(
@@ -61,12 +62,6 @@ public enum class SecurityLabelExamples(
   );
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): SecurityLabelExamples =

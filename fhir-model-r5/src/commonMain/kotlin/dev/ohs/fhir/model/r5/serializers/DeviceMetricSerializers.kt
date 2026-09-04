@@ -126,11 +126,12 @@ internal object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Cal
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        type?.let { Enumeration.of(DeviceMetric.DeviceMetricCalibrationType.fromCode(it), _type) },
+        Enumeration.of(type?.let { DeviceMetric.DeviceMetricCalibrationType.fromCode(it) }, _type),
       state =
-        state?.let {
-          Enumeration.of(DeviceMetric.DeviceMetricCalibrationState.fromCode(it), _state)
-        },
+        Enumeration.of(
+          state?.let { DeviceMetric.DeviceMetricCalibrationState.fromCode(it) },
+          _state,
+        ),
       time = Instant.of(time?.let { FhirDateTime.fromString(it) }, _time),
     )
   }
@@ -146,11 +147,11 @@ internal object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Cal
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
-    ((value.state?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.state?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.state?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, it)
     }
@@ -336,23 +337,14 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
         device
           ?: throw SerializationException("Missing required property 'device' on DeviceMetric"),
       operationalStatus =
-        operationalStatus?.let {
-          Enumeration.of(
-            DeviceMetric.DeviceMetricOperationalStatus.fromCode(it),
-            _operationalStatus,
-          )
-        },
+        Enumeration.of(
+          operationalStatus?.let { DeviceMetric.DeviceMetricOperationalStatus.fromCode(it) },
+          _operationalStatus,
+        ),
       color = Code.of(color, _color),
       category =
-        Enumeration.of(
-          DeviceMetric.DeviceMetricCategory.fromCode(
-            category
-              ?: throw SerializationException(
-                "Missing required property 'category' on DeviceMetric"
-              )
-          ),
-          _category,
-        ),
+        Enumeration.of(category?.let { DeviceMetric.DeviceMetricCategory.fromCode(it) }, _category)
+          ?: throw SerializationException("Missing required property 'category' on DeviceMetric"),
       measurementFrequency = measurementFrequency,
       calibration = calibration ?: listOf(),
     )
@@ -436,7 +428,7 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
       Hoisted.deviceSer,
       value.device,
     )
-    ((value.operationalStatus?.value?.getCode()))?.let {
+    ((value.operationalStatus?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.operationalStatus?.toElement())?.let {
@@ -458,7 +450,7 @@ internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
         it,
       )
     }
-    ((value.category.value?.getCode()))?.let {
+    ((value.category.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.category.toElement())?.let {

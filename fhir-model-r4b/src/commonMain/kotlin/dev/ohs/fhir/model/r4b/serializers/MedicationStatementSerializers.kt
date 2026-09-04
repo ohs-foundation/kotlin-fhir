@@ -301,14 +301,12 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          MedicationStatement.MedicationStatementStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on MedicationStatement"
-              )
-          ),
+          status?.let { MedicationStatement.MedicationStatementStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on MedicationStatement"
+          ),
       statusReason = statusReason ?: listOf(),
       category = category,
       medication =
@@ -414,7 +412,7 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

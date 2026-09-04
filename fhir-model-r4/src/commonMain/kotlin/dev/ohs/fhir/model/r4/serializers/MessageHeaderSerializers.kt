@@ -392,15 +392,10 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
             "Missing required property 'identifier' on MessageHeader.Response"
           ),
       code =
-        Enumeration.of(
-          MessageHeader.ResponseType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on MessageHeader.Response"
-              )
+        Enumeration.of(code?.let { MessageHeader.ResponseType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on MessageHeader.Response"
           ),
-          _code,
-        ),
       details = details,
     )
   }
@@ -420,7 +415,7 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
     (value.identifier.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.identifierSer, it)
     }
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.identifierSer, it)
     }

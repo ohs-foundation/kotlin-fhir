@@ -306,13 +306,14 @@ internal object ObservationDefinitionQualifiedIntervalSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       category =
-        category?.let {
-          Enumeration.of(ObservationDefinition.ObservationRangeCategory.fromCode(it), _category)
-        },
+        Enumeration.of(
+          category?.let { ObservationDefinition.ObservationRangeCategory.fromCode(it) },
+          _category,
+        ),
       range = range,
       context = context,
       appliesTo = appliesTo ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       age = age,
       gestationalAge = gestationalAge,
       condition = R4String.of(condition, _condition),
@@ -333,7 +334,7 @@ internal object ObservationDefinitionQualifiedIntervalSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.category?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.category?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.category?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.categorySer, it)
     }
@@ -343,7 +344,7 @@ internal object ObservationDefinitionQualifiedIntervalSerializer :
     }
     if (value.appliesTo.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.appliesToSer, value.appliesTo)
-    ((value.gender?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+    ((value.gender?.value?.code))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.gender?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.categorySer, it)
     }
@@ -624,11 +625,11 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            ObservationDefinition.ObservationDataType.fromCode(
-              permittedDataType?.getOrNull(index)!!
-            ),
+            permittedDataType?.getOrNull(index)?.let {
+              ObservationDefinition.ObservationDataType.fromCode(it)
+            },
             _permittedDataType?.getOrNull(index),
-          )
+          )!!
         }),
       multipleResultsAllowed = R4Boolean.of(multipleResultsAllowed, _multipleResultsAllowed),
       method = method,
@@ -718,15 +719,14 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
         Hoisted.identifierSer,
         value.identifier,
       )
-    (value.permittedDataType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
-      ?.let {
-        encoder.encodeSerializableElement(
-          descriptor,
-          13 + descriptorOffset,
-          Hoisted.permittedDataTypeSer,
-          it,
-        )
-      }
+    (value.permittedDataType.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        13 + descriptorOffset,
+        Hoisted.permittedDataTypeSer,
+        it,
+      )
+    }
     (value.permittedDataType.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,

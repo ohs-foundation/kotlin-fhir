@@ -346,15 +346,8 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ResearchSubject"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ResearchSubject"),
       progress = progress ?: listOf(),
       period = period,
       study =
@@ -432,7 +425,7 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

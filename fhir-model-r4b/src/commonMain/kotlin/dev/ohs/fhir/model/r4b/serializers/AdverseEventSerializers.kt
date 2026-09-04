@@ -547,14 +547,9 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
       identifier = identifier,
       actuality =
         Enumeration.of(
-          AdverseEvent.AdverseEventActuality.fromCode(
-            actuality
-              ?: throw SerializationException(
-                "Missing required property 'actuality' on AdverseEvent"
-              )
-          ),
+          actuality?.let { AdverseEvent.AdverseEventActuality.fromCode(it) },
           _actuality,
-        ),
+        ) ?: throw SerializationException("Missing required property 'actuality' on AdverseEvent"),
       category = category ?: listOf(),
       event = event,
       subject =
@@ -642,7 +637,7 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
         it,
       )
     }
-    ((value.actuality.value?.getCode()))?.let {
+    ((value.actuality.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.actuality.toElement())?.let {

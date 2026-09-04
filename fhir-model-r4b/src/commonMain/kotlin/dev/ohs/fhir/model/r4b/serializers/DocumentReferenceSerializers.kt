@@ -121,15 +121,10 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          DocumentReference.DocumentRelationshipType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on DocumentReference.RelatesTo"
-              )
+        Enumeration.of(code?.let { DocumentReference.DocumentRelationshipType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on DocumentReference.RelatesTo"
           ),
-          _code,
-        ),
       target =
         target
           ?: throw SerializationException(
@@ -149,7 +144,7 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -630,19 +625,15 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
       masterIdentifier = masterIdentifier,
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          DocumentReferenceStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on DocumentReference"
-              )
+        Enumeration.of(status?.let { DocumentReferenceStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on DocumentReference"
           ),
-          _status,
-        ),
       docStatus =
-        docStatus?.let {
-          Enumeration.of(DocumentReference.CompositionStatus.fromCode(it), _docStatus)
-        },
+        Enumeration.of(
+          docStatus?.let { DocumentReference.CompositionStatus.fromCode(it) },
+          _docStatus,
+        ),
       type = type,
       category = category ?: listOf(),
       subject = subject,
@@ -729,7 +720,7 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -740,7 +731,7 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
         it,
       )
     }
-    ((value.docStatus?.value?.getCode()))?.let {
+    ((value.docStatus?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.docStatus?.toElement())?.let {

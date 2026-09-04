@@ -16,12 +16,14 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
+
 /** Allowed types for FHIR elements */
 public enum class ElementTypes(
-  private val code: kotlin.String,
-  private val system: kotlin.String,
-  private val display: kotlin.String?,
-) {
+  override val code: kotlin.String,
+  override val system: kotlin.String,
+  override val display: kotlin.String?,
+) : FhirEnum {
   String("string", "http://hl7.org/fhir/data-types", "string"),
   Boolean("boolean", "http://hl7.org/fhir/data-types", "boolean"),
   Date("date", "http://hl7.org/fhir/data-types", "date"),
@@ -403,12 +405,6 @@ public enum class ElementTypes(
   Parameters("Parameters", "http://hl7.org/fhir/resource-types", "Parameters");
 
   override fun toString(): kotlin.String = code
-
-  public fun getCode(): kotlin.String = code
-
-  public fun getSystem(): kotlin.String = system
-
-  public fun getDisplay(): kotlin.String? = display
 
   public companion object {
     public fun fromCode(code: kotlin.String): ElementTypes =

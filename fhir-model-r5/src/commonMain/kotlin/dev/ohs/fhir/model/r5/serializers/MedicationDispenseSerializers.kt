@@ -598,14 +598,12 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          MedicationDispense.MedicationDispenseStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on MedicationDispense"
-              )
-          ),
+          status?.let { MedicationDispense.MedicationDispenseStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on MedicationDispense"
+          ),
       notPerformedReason = notPerformedReason,
       statusChanged =
         DateTime.of(statusChanged?.let { FhirDateTime.fromString(it) }, _statusChanged),
@@ -720,7 +718,7 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

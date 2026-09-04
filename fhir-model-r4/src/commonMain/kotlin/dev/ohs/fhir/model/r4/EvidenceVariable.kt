@@ -1019,10 +1019,10 @@ public data class EvidenceVariable(
 
   /** Possible group measure aggregates (E.g. Mean, Median). */
   public enum class GroupMeasure(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Mean("mean", "http://hl7.org/fhir/group-measure", "Mean"),
     Median("median", "http://hl7.org/fhir/group-measure", "Median"),
     Mean_Of_Mean("mean-of-mean", "http://hl7.org/fhir/group-measure", "Mean of Study Means"),
@@ -1035,12 +1035,6 @@ public data class EvidenceVariable(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): GroupMeasure =
@@ -1061,21 +1055,15 @@ public data class EvidenceVariable(
    * Descriptive).
    */
   public enum class EvidenceVariableType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Dichotomous("dichotomous", "http://hl7.org/fhir/variable-type", "Dichotomous"),
     Continuous("continuous", "http://hl7.org/fhir/variable-type", "Continuous"),
     Descriptive("descriptive", "http://hl7.org/fhir/variable-type", "Descriptive");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): EvidenceVariableType =

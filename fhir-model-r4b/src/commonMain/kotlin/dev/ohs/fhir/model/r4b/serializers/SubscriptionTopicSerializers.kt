@@ -189,9 +189,11 @@ internal object SubscriptionTopicResourceTriggerSerializer :
           maxOf(supportedInteraction?.size ?: 0, _supportedInteraction?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            SubscriptionTopic.InteractionTrigger.fromCode(supportedInteraction?.getOrNull(index)!!),
+            supportedInteraction?.getOrNull(index)?.let {
+              SubscriptionTopic.InteractionTrigger.fromCode(it)
+            },
             _supportedInteraction?.getOrNull(index),
-          )
+          )!!
         }),
       queryCriteria = queryCriteria,
       fhirPathCriteria = R4bString.of(fhirPathCriteria, _fhirPathCriteria),
@@ -220,10 +222,9 @@ internal object SubscriptionTopicResourceTriggerSerializer :
     (value.resource.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
     }
-    (value.supportedInteraction.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
-      ?.let {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.supportedInteractionSer, it)
-      }
+    (value.supportedInteraction.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.supportedInteractionSer, it)
+    }
     (value.supportedInteraction.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.supportedInteractionSer2, it)
     }
@@ -353,14 +354,16 @@ internal object SubscriptionTopicResourceTriggerQueryCriteriaSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       previous = R4bString.of(previous, _previous),
       resultForCreate =
-        resultForCreate?.let {
-          Enumeration.of(SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(it), _resultForCreate)
-        },
+        Enumeration.of(
+          resultForCreate?.let { SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(it) },
+          _resultForCreate,
+        ),
       current = R4bString.of(current, _current),
       resultForDelete =
-        resultForDelete?.let {
-          Enumeration.of(SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(it), _resultForDelete)
-        },
+        Enumeration.of(
+          resultForDelete?.let { SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(it) },
+          _resultForDelete,
+        ),
       requireBoth = R4bBoolean.of(requireBoth, _requireBoth),
     )
   }
@@ -383,9 +386,7 @@ internal object SubscriptionTopicResourceTriggerQueryCriteriaSerializer :
     (value.previous?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.previousSer, it)
     }
-    ((value.resultForCreate?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 5, it)
-    }
+    ((value.resultForCreate?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.resultForCreate?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.previousSer, it)
     }
@@ -393,9 +394,7 @@ internal object SubscriptionTopicResourceTriggerQueryCriteriaSerializer :
     (value.current?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.previousSer, it)
     }
-    ((value.resultForDelete?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 9, it)
-    }
+    ((value.resultForDelete?.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.resultForDelete?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.previousSer, it)
     }
@@ -641,9 +640,11 @@ internal object SubscriptionTopicCanFilterBySerializer :
       modifier =
         (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            SubscriptionTopic.SubscriptionSearchModifier.fromCode(modifier?.getOrNull(index)!!),
+            modifier?.getOrNull(index)?.let {
+              SubscriptionTopic.SubscriptionSearchModifier.fromCode(it)
+            },
             _modifier?.getOrNull(index),
-          )
+          )!!
         }),
     )
   }
@@ -675,7 +676,7 @@ internal object SubscriptionTopicCanFilterBySerializer :
     (value.filterDefinition?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.descriptionSer, it)
     }
-    (value.modifier.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.modifier.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.modifierSer, it)
     }
     (value.modifier.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -1177,15 +1178,10 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
           Canonical.of(derivedFrom?.getOrNull(index)?.let { it }, _derivedFrom?.getOrNull(index))!!
         }),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on SubscriptionTopic"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on SubscriptionTopic"
           ),
-          _status,
-        ),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -1315,7 +1311,7 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

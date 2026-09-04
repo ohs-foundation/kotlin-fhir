@@ -199,9 +199,10 @@ internal object EnrollmentRequestSerializer : KSerializer<EnrollmentRequest> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        status?.let {
-          Enumeration.of(EnrollmentRequest.FinancialResourceStatusCodes.fromCode(it), _status)
-        },
+        Enumeration.of(
+          status?.let { EnrollmentRequest.FinancialResourceStatusCodes.fromCode(it) },
+          _status,
+        ),
       created = DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created),
       insurer = insurer,
       provider = provider,
@@ -273,7 +274,7 @@ internal object EnrollmentRequestSerializer : KSerializer<EnrollmentRequest> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

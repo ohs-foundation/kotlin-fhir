@@ -107,12 +107,8 @@ internal object ContributorSerializer : KSerializer<Contributor> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          Contributor.ContributorType.fromCode(
-            type ?: throw SerializationException("Missing required property 'type' on Contributor")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Contributor.ContributorType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Contributor"),
       name =
         R4String.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on Contributor"),
@@ -124,7 +120,7 @@ internal object ContributorSerializer : KSerializer<Contributor> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
     }

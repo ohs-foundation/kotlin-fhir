@@ -495,15 +495,10 @@ internal object ResearchDefinitionSerializer : KSerializer<ResearchDefinition> {
       shortTitle = R4String.of(shortTitle, _shortTitle),
       subtitle = R4String.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ResearchDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ResearchDefinition"
           ),
-          _status,
-        ),
       experimental = R4Boolean.of(experimental, _experimental),
       subject = ResearchDefinition.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
@@ -670,7 +665,7 @@ internal object ResearchDefinitionSerializer : KSerializer<ResearchDefinition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

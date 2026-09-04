@@ -1321,22 +1321,16 @@ public data class Consent(
 
   /** How a resource reference is interpreted when testing consent restrictions. */
   public enum class ConsentDataMeaning(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Instance("instance", "http://hl7.org/fhir/consent-data-meaning", "Instance"),
     Related("related", "http://hl7.org/fhir/consent-data-meaning", "Related"),
     Dependents("dependents", "http://hl7.org/fhir/consent-data-meaning", "Dependents"),
     Authoredby("authoredby", "http://hl7.org/fhir/consent-data-meaning", "AuthoredBy");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): ConsentDataMeaning =
@@ -1352,10 +1346,10 @@ public data class Consent(
 
   /** Indicates the state of the consent. */
   public enum class ConsentState(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Draft("draft", "http://hl7.org/fhir/consent-state-codes", "Pending"),
     Active("active", "http://hl7.org/fhir/consent-state-codes", "Active"),
     Inactive("inactive", "http://hl7.org/fhir/consent-state-codes", "Inactive"),
@@ -1368,12 +1362,6 @@ public data class Consent(
     Unknown("unknown", "http://hl7.org/fhir/consent-state-codes", "Unknown");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): ConsentState =
@@ -1391,20 +1379,14 @@ public data class Consent(
 
   /** How a rule statement is applied, such as adding additional consent or removing consent. */
   public enum class ConsentProvisionType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Deny("deny", "http://hl7.org/fhir/consent-provision-type", "Deny"),
     Permit("permit", "http://hl7.org/fhir/consent-provision-type", "Permit");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): ConsentProvisionType =

@@ -2602,18 +2602,13 @@ internal object TransportSerializer : KSerializer<Transport> {
       basedOn = basedOn ?: listOf(),
       groupIdentifier = groupIdentifier,
       partOf = partOf ?: listOf(),
-      status = status?.let { Enumeration.of(Transport.TransportStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Transport.TransportStatus.fromCode(it) }, _status),
       statusReason = statusReason,
       intent =
-        Enumeration.of(
-          Transport.TransportIntent.fromCode(
-            intent
-              ?: throw SerializationException("Missing required property 'intent' on Transport")
-          ),
-          _intent,
-        ),
+        Enumeration.of(intent?.let { Transport.TransportIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on Transport"),
       priority =
-        priority?.let { Enumeration.of(Transport.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { Transport.RequestPriority.fromCode(it) }, _priority),
       code = code,
       description = R5String.of(description, _description),
       focus = focus,
@@ -2755,7 +2750,7 @@ internal object TransportSerializer : KSerializer<Transport> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
@@ -2774,7 +2769,7 @@ internal object TransportSerializer : KSerializer<Transport> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -2785,7 +2780,7 @@ internal object TransportSerializer : KSerializer<Transport> {
         it,
       )
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

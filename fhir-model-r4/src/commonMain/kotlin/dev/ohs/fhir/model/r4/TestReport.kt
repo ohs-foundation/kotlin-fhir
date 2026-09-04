@@ -1488,21 +1488,15 @@ public data class TestReport(
 
   /** The type of participant. */
   public enum class TestReportParticipantType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Test_Engine("test-engine", "http://hl7.org/fhir/report-participant-type", "Test Engine"),
     Client("client", "http://hl7.org/fhir/report-participant-type", "Client"),
     Server("server", "http://hl7.org/fhir/report-participant-type", "Server");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TestReportParticipantType =
@@ -1518,10 +1512,10 @@ public data class TestReport(
 
   /** The results of executing an action. */
   public enum class TestReportActionResult(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Pass("pass", "http://hl7.org/fhir/report-action-result-codes", "Pass"),
     Skip("skip", "http://hl7.org/fhir/report-action-result-codes", "Skip"),
     Fail("fail", "http://hl7.org/fhir/report-action-result-codes", "Fail"),
@@ -1529,12 +1523,6 @@ public data class TestReport(
     Error("error", "http://hl7.org/fhir/report-action-result-codes", "Error");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TestReportActionResult =
@@ -1552,10 +1540,10 @@ public data class TestReport(
 
   /** The current status of the test report. */
   public enum class TestReportStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Completed("completed", "http://hl7.org/fhir/report-status-codes", "Completed"),
     In_Progress("in-progress", "http://hl7.org/fhir/report-status-codes", "In Progress"),
     Waiting("waiting", "http://hl7.org/fhir/report-status-codes", "Waiting"),
@@ -1567,12 +1555,6 @@ public data class TestReport(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TestReportStatus =
@@ -1589,21 +1571,15 @@ public data class TestReport(
 
   /** The reported execution result. */
   public enum class TestReportResult(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Pass("pass", "http://hl7.org/fhir/report-result-codes", "Pass"),
     Fail("fail", "http://hl7.org/fhir/report-result-codes", "Fail"),
     Pending("pending", "http://hl7.org/fhir/report-result-codes", "Pending");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TestReportResult =

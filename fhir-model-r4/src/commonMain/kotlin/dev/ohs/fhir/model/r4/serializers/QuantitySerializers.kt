@@ -128,7 +128,7 @@ internal object QuantitySerializer : KSerializer<Quantity> {
       extension = extension ?: listOf(),
       `value` = Decimal.of(`value`, _value),
       comparator =
-        comparator?.let { Enumeration.of(Quantity.QuantityComparator.fromCode(it), _comparator) },
+        Enumeration.of(comparator?.let { Quantity.QuantityComparator.fromCode(it) }, _comparator),
       unit = R4String.of(unit, _unit),
       system = Uri.of(system, _system),
       code = Code.of(code, _code),
@@ -145,7 +145,7 @@ internal object QuantitySerializer : KSerializer<Quantity> {
     (value.`value`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueSer, it)
     }
-    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.comparator?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.comparator?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
     }

@@ -458,7 +458,7 @@ internal object SubstanceSerializer : KSerializer<Substance> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = status?.let { Enumeration.of(Substance.FHIRSubstanceStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Substance.FHIRSubstanceStatus.fromCode(it) }, _status),
       category = category ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on Substance"),
       description = R4String.of(description, _description),
@@ -530,7 +530,7 @@ internal object SubstanceSerializer : KSerializer<Substance> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

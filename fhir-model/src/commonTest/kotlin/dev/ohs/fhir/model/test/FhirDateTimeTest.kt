@@ -16,43 +16,53 @@
 
 package dev.ohs.fhir.model.test
 
-import dev.ohs.fhir.model.r4.FhirDateTime
-import kotlin.test.Test
+import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class FhirDateTimeTest {
-  @Test
-  fun deserializingAndSerializingYear_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025")
+class FhirDateTimeTest :
+  FunSpec({
+    fun roundTrip(fromString: (String) -> Any, value: String) =
+      assertEquals(value, fromString(value).toString())
 
-  @Test
-  fun deserializingAndSerializingYearAndMonth_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025-09")
+    fun reject(fromString: (String) -> Any, value: String) =
+      assertFailsWith<IllegalStateException> { fromString(value) }
 
-  @Test
-  fun deserializingAndSerializingDate_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025-09-11")
+    fun fhirDateTimeTestSuite(fhirVersion: String, fromString: (String) -> Any) {
+      context("$fhirVersion FhirDateTime") {
+        test("deserializing and serializing year produces same string") {
+          roundTrip(fromString, "2025")
+        }
 
-  @Test
-  fun deserializingAndSerializingDateTime_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025-09-11T20:20:00Z")
+        test("deserializing and serializing year and month produces same string") {
+          roundTrip(fromString, "2025-09")
+        }
 
-  @Test
-  fun deserializingAndSerializingDateTimeWithMilliseconds_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025-09-11T20:20:00.001Z")
+        test("deserializing and serializing date produces same string") {
+          roundTrip(fromString, "2025-09-11")
+        }
 
-  @Test
-  fun deserializingDateTimeWithoutTimezone_shouldThrowError() {
-    assertFailsWith<IllegalStateException> { FhirDateTime.fromString("2025-09-11T20:20:00") }
-  }
+        test("deserializing and serializing date-time produces same string") {
+          roundTrip(fromString, "2025-09-11T20:20:00Z")
+        }
 
-  @Test
-  fun deserializingDateTimeWithMillisecondsWithoutTimezone_shouldThrowError() {
-    assertFailsWith<IllegalStateException> { FhirDateTime.fromString("2025-09-11T20:20:00.001") }
-  }
+        test("deserializing and serializing date-time with milliseconds produces same string") {
+          roundTrip(fromString, "2025-09-11T20:20:00.001Z")
+        }
 
-  private fun deserializeAndSerializeDateTime(string: String) {
-    assertEquals(string, FhirDateTime.Companion.fromString(string).toString())
-  }
-}
+        test("deserializing date-time without timezone throws IllegalStateException") {
+          reject(fromString, "2025-09-11T20:20:00")
+        }
+
+        test(
+          "deserializing date-time with milliseconds without timezone throws IllegalStateException"
+        ) {
+          reject(fromString, "2025-09-11T20:20:00.001")
+        }
+      }
+    }
+
+    fhirDateTimeTestSuite("R4", dev.ohs.fhir.model.r4.FhirDateTime::fromString)
+    fhirDateTimeTestSuite("R4B", dev.ohs.fhir.model.r4b.FhirDateTime::fromString)
+    fhirDateTimeTestSuite("R5", dev.ohs.fhir.model.r5.FhirDateTime::fromString)
+  })

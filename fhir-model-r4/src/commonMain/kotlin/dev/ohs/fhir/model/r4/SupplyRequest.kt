@@ -613,10 +613,10 @@ public data class SupplyRequest(
 
   /** Status of the supply request. */
   public enum class SupplyRequestStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Draft("draft", "http://hl7.org/fhir/supplyrequest-status", "Draft"),
     Active("active", "http://hl7.org/fhir/supplyrequest-status", "Active"),
     Suspended("suspended", "http://hl7.org/fhir/supplyrequest-status", "Suspended"),
@@ -630,12 +630,6 @@ public data class SupplyRequest(
     Unknown("unknown", "http://hl7.org/fhir/supplyrequest-status", "Unknown");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): SupplyRequestStatus =
@@ -654,22 +648,16 @@ public data class SupplyRequest(
 
   /** The clinical priority of a diagnostic order. */
   public enum class RequestPriority(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
     Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): RequestPriority =

@@ -81,7 +81,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
   ) {
     val propertyName = element.getElementName()
     // Choice type: emit per-expansion flat keys inline against the parent's composite encoder.
-    // Each expansion's value / sidecar is written to a flat descriptor slot on the parent instead
+    // Each expansion's value / element is written to a flat descriptor slot on the parent instead
     // of via a nested sub-object — there is no standalone choice-type serializer.
     if (element.type != null && element.type.size > 1) {
       emitChoiceTypeExpansionEncoding(codeBlock, element, modelClassName, nameToIdx, hoister)
@@ -341,7 +341,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         hoister,
         "${choiceFieldBaseName}Ser",
       )
-      // Sidecar expansion
+      // Element (_field) expansion
       if (elementIdx != null) {
         val elementClassName = ClassName(modelClassName.packageName, "Element")
         val elementSer =
@@ -392,7 +392,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
           add("(")
           if (isEnum) {
             add(
-              if (isRequired) "value.%N.value?.getCode()" else "value.%N?.value?.getCode()",
+              if (isRequired) "value.%N.value?.code" else "value.%N?.value?.code",
               propertyName,
             )
           } else {
@@ -406,7 +406,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     // The wire-encoded value is non-null only when both the wrapper itself is required AND its
     // `.value` field is non-null on the model side (which is true only for primitives whose own
     // StructureDefinition has `<Type>.value` with `min > 0`, atm only `xhtml`). Enums always
-    // go through a `?.getCode()` chain and stay nullable.
+    // go through a `?.code` chain and stay nullable.
     val wireIsNonNull = codegenContext.primitiveValueIsNonNull[typeCode] == true && !isEnum
     emitPrimitiveOrSerializableEncode(
       codeBlock,
@@ -479,7 +479,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     codeBlock.add("(")
     if (isEnum) {
       codeBlock.add(
-        "value.%N.map·{·it.value?.getCode()·}.takeUnless·{·it.all·{·it == null·}·}",
+        "value.%N.map·{·it.value?.code·}.takeUnless·{·it.all·{·it == null·}·}",
         propertyName,
       )
     } else {
@@ -492,7 +492,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       valueIdx,
       valueListSer,
     )
-    // element sidecars
+    // element (_field) lists
     codeBlock.add(
       "(value.%N.map·{·it.toElement()·}.takeUnless·{·it.all·{·it == null·}·})?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
       propertyName,

@@ -16,31 +16,37 @@
 
 package dev.ohs.fhir.model.test
 
-import dev.ohs.fhir.model.r4.FhirDate
-import kotlin.test.Test
+import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class FhirDateTest {
-  @Test
-  fun deserializingAndSerializingYear_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025")
+class FhirDateTest :
+  FunSpec({
+    fun roundTrip(fromString: (String) -> Any, value: String) =
+      assertEquals(value, fromString(value).toString())
 
-  @Test
-  fun deserializingAndSerializingYearAndMonth_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025-09")
+    fun reject(fromString: (String) -> Any, value: String) =
+      assertFailsWith<IllegalStateException> { fromString(value) }
 
-  @Test
-  fun deserializingAndSerializingDate_shouldProduceSameString() =
-    deserializeAndSerializeDateTime("2025-09-11")
+    fun fhirDateTestSuite(fhirVersion: String, fromString: (String) -> Any) {
+      context("$fhirVersion FhirDate") {
+        test("deserializing and serializing year produces same string") {
+          roundTrip(fromString, "2025")
+        }
+        test("deserializing and serializing year and month produces same string") {
+          roundTrip(fromString, "2025-09")
+        }
+        test("deserializing and serializing date produces same string") {
+          roundTrip(fromString, "2025-09-11")
+        }
+        test("deserializing invalid string throws") {
+          reject(fromString, "not-a-date")
+          reject(fromString, "")
+        }
+      }
+    }
 
-  @Test
-  fun deserializingInvalidString_shouldThrow() {
-    assertFailsWith<IllegalStateException> { FhirDate.fromString("not-a-date") }
-    assertFailsWith<IllegalStateException> { FhirDate.fromString("") }
-  }
-
-  private fun deserializeAndSerializeDateTime(string: String) {
-    assertEquals(string, FhirDate.Companion.fromString(string).toString())
-  }
-}
+    fhirDateTestSuite("R4", dev.ohs.fhir.model.r4.FhirDate::fromString)
+    fhirDateTestSuite("R4B", dev.ohs.fhir.model.r4b.FhirDate::fromString)
+    fhirDateTestSuite("R5", dev.ohs.fhir.model.r5.FhirDate::fromString)
+  })

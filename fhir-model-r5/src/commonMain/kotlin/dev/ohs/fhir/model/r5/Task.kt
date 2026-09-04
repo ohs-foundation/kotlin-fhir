@@ -1968,10 +1968,10 @@ public data class Task(
 
   /** The current status of the task. */
   public enum class TaskStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Draft("draft", "http://hl7.org/fhir/task-status", "Draft"),
     Requested("requested", "http://hl7.org/fhir/task-status", "Requested"),
     Received("received", "http://hl7.org/fhir/task-status", "Received"),
@@ -1986,12 +1986,6 @@ public data class Task(
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/task-status", "Entered in Error");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TaskStatus =
@@ -2015,10 +2009,10 @@ public data class Task(
 
   /** Distinguishes whether the task is a proposal, plan or full order. */
   public enum class TaskIntent(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Unknown("unknown", "http://hl7.org/fhir/task-intent", "Unknown"),
     Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
     Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
@@ -2030,12 +2024,6 @@ public data class Task(
     Option("option", "http://hl7.org/fhir/request-intent", "Option");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TaskIntent =
@@ -2056,22 +2044,16 @@ public data class Task(
 
   /** Identifies the level of importance to be assigned to actioning the request. */
   public enum class RequestPriority(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
     Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): RequestPriority =

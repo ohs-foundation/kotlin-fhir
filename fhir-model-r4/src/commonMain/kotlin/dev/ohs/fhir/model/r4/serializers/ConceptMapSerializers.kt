@@ -443,15 +443,10 @@ internal object ConceptMapGroupElementTargetSerializer :
       code = Code.of(code, _code),
       display = R4String.of(display, _display),
       equivalence =
-        Enumeration.of(
-          ConceptMapEquivalence.fromCode(
-            equivalence
-              ?: throw SerializationException(
-                "Missing required property 'equivalence' on ConceptMap.Group.Element.Target"
-              )
+        Enumeration.of(equivalence?.let { ConceptMapEquivalence.fromCode(it) }, _equivalence)
+          ?: throw SerializationException(
+            "Missing required property 'equivalence' on ConceptMap.Group.Element.Target"
           ),
-          _equivalence,
-        ),
       comment = R4String.of(comment, _comment),
       dependsOn = dependsOn ?: listOf(),
       product = product ?: listOf(),
@@ -480,7 +475,7 @@ internal object ConceptMapGroupElementTargetSerializer :
     (value.display?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, it)
     }
-    ((value.equivalence.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.equivalence.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.equivalence.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.codeSer, it)
     }
@@ -724,15 +719,10 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          ConceptMap.ConceptMapGroupUnmappedMode.fromCode(
-            mode
-              ?: throw SerializationException(
-                "Missing required property 'mode' on ConceptMap.Group.Unmapped"
-              )
+        Enumeration.of(mode?.let { ConceptMap.ConceptMapGroupUnmappedMode.fromCode(it) }, _mode)
+          ?: throw SerializationException(
+            "Missing required property 'mode' on ConceptMap.Group.Unmapped"
           ),
-          _mode,
-        ),
       code = Code.of(code, _code),
       display = R4String.of(display, _display),
       url = Canonical.of(url, _url),
@@ -750,7 +740,7 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.mode.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.mode.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modeSer, it)
     }
@@ -1040,13 +1030,8 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on ConceptMap")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ConceptMap"),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
@@ -1176,7 +1161,7 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

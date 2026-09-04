@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** All Resource Types that represent request resources */
 public enum class RequestResourceTypes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Appointment("Appointment", "http://hl7.org/fhir/fhir-types", "Appointment"),
   AppointmentResponse(
     "AppointmentResponse",
@@ -63,12 +64,6 @@ public enum class RequestResourceTypes(
   VisionPrescription("VisionPrescription", "http://hl7.org/fhir/fhir-types", "VisionPrescription");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): RequestResourceTypes =

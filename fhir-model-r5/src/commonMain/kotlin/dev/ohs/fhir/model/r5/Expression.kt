@@ -158,10 +158,10 @@ public data class Expression(
 
   /** The media type of the expression language. */
   public enum class ExpressionLanguage(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Text_Cql("text/cql", "urn:ietf:bcp:13", "CQL"),
     Text_Fhirpath("text/fhirpath", "urn:ietf:bcp:13", "FHIRPath"),
     Text_X_Fhir_Query("text/x-fhir-query", "urn:ietf:bcp:13", "FHIR Query"),
@@ -169,12 +169,6 @@ public data class Expression(
     Text_Cql_Expression("text/cql-expression", "urn:ietf:bcp:13", "CQL Expression");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ExpressionLanguage =

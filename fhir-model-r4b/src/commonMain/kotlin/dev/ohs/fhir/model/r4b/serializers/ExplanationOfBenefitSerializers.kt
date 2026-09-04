@@ -3720,7 +3720,7 @@ internal object ExplanationOfBenefitProcessNoteSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       number = PositiveInt.of(number, _number),
-      type = type?.let { Enumeration.of(NoteType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { NoteType.fromCode(it) }, _type),
       text = R4bString.of(text, _text),
       language = language,
     )
@@ -3744,7 +3744,7 @@ internal object ExplanationOfBenefitProcessNoteSerializer :
     (value.number?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.numberSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.numberSer, it)
     }
@@ -4565,14 +4565,12 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ExplanationOfBenefit"
-              )
-          ),
+          status?.let { ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on ExplanationOfBenefit"
+          ),
       type =
         type
           ?: throw SerializationException(
@@ -4580,15 +4578,10 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
           ),
       subType = subType,
       use =
-        Enumeration.of(
-          ExplanationOfBenefit.Use.fromCode(
-            use
-              ?: throw SerializationException(
-                "Missing required property 'use' on ExplanationOfBenefit"
-              )
+        Enumeration.of(use?.let { ExplanationOfBenefit.Use.fromCode(it) }, _use)
+          ?: throw SerializationException(
+            "Missing required property 'use' on ExplanationOfBenefit"
           ),
-          _use,
-        ),
       patient =
         patient
           ?: throw SerializationException(
@@ -4623,15 +4616,10 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
       claim = claim,
       claimResponse = claimResponse,
       outcome =
-        Enumeration.of(
-          RemittanceOutcome.fromCode(
-            outcome
-              ?: throw SerializationException(
-                "Missing required property 'outcome' on ExplanationOfBenefit"
-              )
+        Enumeration.of(outcome?.let { RemittanceOutcome.fromCode(it) }, _outcome)
+          ?: throw SerializationException(
+            "Missing required property 'outcome' on ExplanationOfBenefit"
           ),
-          _outcome,
-        ),
       disposition = R4bString.of(disposition, _disposition),
       preAuthRef =
         (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { index ->
@@ -4721,7 +4709,7 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -4741,7 +4729,7 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
     (value.subType)?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.typeSer, it)
     }
-    ((value.use.value?.getCode()))?.let {
+    ((value.use.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.use.toElement())?.let {
@@ -4829,7 +4817,7 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
     (value.claimResponse)?.let {
       encoder.encodeSerializableElement(descriptor, 34 + descriptorOffset, Hoisted.patientSer, it)
     }
-    ((value.outcome.value?.getCode()))?.let {
+    ((value.outcome.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
     }
     (value.outcome.toElement())?.let {

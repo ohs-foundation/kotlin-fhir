@@ -124,7 +124,7 @@ internal object IngredientManufacturerSerializer : KSerializer<Ingredient.Manufa
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      role = role?.let { Enumeration.of(IngredientManufacturerRole.fromCode(it), _role) },
+      role = Enumeration.of(role?.let { IngredientManufacturerRole.fromCode(it) }, _role),
       manufacturer =
         manufacturer
           ?: throw SerializationException(
@@ -144,7 +144,7 @@ internal object IngredientManufacturerSerializer : KSerializer<Ingredient.Manufa
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.role?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.role?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.role?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, it)
     }
@@ -977,13 +977,8 @@ internal object IngredientSerializer : KSerializer<Ingredient> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Ingredient")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Ingredient"),
       `for` = `for` ?: listOf(),
       role = role ?: throw SerializationException("Missing required property 'role' on Ingredient"),
       function = function ?: listOf(),
@@ -1061,7 +1056,7 @@ internal object IngredientSerializer : KSerializer<Ingredient> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

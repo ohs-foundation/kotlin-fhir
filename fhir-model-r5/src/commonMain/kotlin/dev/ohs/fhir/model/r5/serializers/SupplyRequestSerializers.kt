@@ -420,11 +420,11 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        status?.let { Enumeration.of(SupplyRequest.SupplyRequestStatus.fromCode(it), _status) },
+        Enumeration.of(status?.let { SupplyRequest.SupplyRequestStatus.fromCode(it) }, _status),
       basedOn = basedOn ?: listOf(),
       category = category,
       priority =
-        priority?.let { Enumeration.of(SupplyRequest.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { SupplyRequest.RequestPriority.fromCode(it) }, _priority),
       deliverFor = deliverFor,
       item =
         item ?: throw SerializationException("Missing required property 'item' on SupplyRequest"),
@@ -510,7 +510,7 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
@@ -531,7 +531,7 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.categorySer, it)
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

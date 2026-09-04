@@ -306,9 +306,10 @@ internal object EvidenceVariableCharacteristicSerializer :
         ),
       timeFromStart = timeFromStart,
       groupMeasure =
-        groupMeasure?.let {
-          Enumeration.of(EvidenceVariable.GroupMeasure.fromCode(it), _groupMeasure)
-        },
+        Enumeration.of(
+          groupMeasure?.let { EvidenceVariable.GroupMeasure.fromCode(it) },
+          _groupMeasure,
+        ),
     )
   }
 
@@ -420,9 +421,7 @@ internal object EvidenceVariableCharacteristicSerializer :
     (value.timeFromStart)?.let {
       encoder.encodeSerializableElement(descriptor, 20, Hoisted.participantEffectiveDurationSer, it)
     }
-    ((value.groupMeasure?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 21, it)
-    }
+    ((value.groupMeasure?.value?.code))?.let { encoder.encodeStringElement(descriptor, 21, it) }
     (value.groupMeasure?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 22, Hoisted.descriptionSer, it)
     }
@@ -802,15 +801,8 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       shortTitle = R4String.of(shortTitle, _shortTitle),
       subtitle = R4String.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EvidenceVariable"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on EvidenceVariable"),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -829,7 +821,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
       type =
-        type?.let { Enumeration.of(EvidenceVariable.EvidenceVariableType.fromCode(it), _type) },
+        Enumeration.of(type?.let { EvidenceVariable.EvidenceVariableType.fromCode(it) }, _type),
       characteristic = characteristic ?: listOf(),
     )
   }
@@ -961,7 +953,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1116,7 +1108,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         Hoisted.relatedArtifactSer,
         value.relatedArtifact,
       )
-    ((value.type?.value?.getCode()))?.let {
+    ((value.type?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 48 + descriptorOffset, it)
     }
     (value.type?.toElement())?.let {

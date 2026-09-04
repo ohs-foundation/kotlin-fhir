@@ -2738,22 +2738,14 @@ internal object TaskSerializer : KSerializer<Task> {
       groupIdentifier = groupIdentifier,
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          Task.TaskStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Task")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Task.TaskStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Task"),
       statusReason = statusReason,
       businessStatus = businessStatus,
       intent =
-        Enumeration.of(
-          Task.TaskIntent.fromCode(
-            intent ?: throw SerializationException("Missing required property 'intent' on Task")
-          ),
-          _intent,
-        ),
-      priority = priority?.let { Enumeration.of(Task.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(intent?.let { Task.TaskIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on Task"),
+      priority = Enumeration.of(priority?.let { Task.RequestPriority.fromCode(it) }, _priority),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),
       code = code,
       description = R5String.of(description, _description),
@@ -2886,7 +2878,7 @@ internal object TaskSerializer : KSerializer<Task> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -2913,7 +2905,7 @@ internal object TaskSerializer : KSerializer<Task> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -2924,7 +2916,7 @@ internal object TaskSerializer : KSerializer<Task> {
         it,
       )
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

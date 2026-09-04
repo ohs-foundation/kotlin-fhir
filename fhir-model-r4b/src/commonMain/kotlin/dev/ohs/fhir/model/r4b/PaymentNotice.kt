@@ -372,22 +372,16 @@ public data class PaymentNotice(
 
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/fm-status", "Active"),
     Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
     Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/fm-status", "Entered in Error");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): FinancialResourceStatusCodes =

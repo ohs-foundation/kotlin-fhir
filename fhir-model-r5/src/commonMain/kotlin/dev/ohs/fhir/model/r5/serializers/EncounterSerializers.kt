@@ -576,7 +576,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
             "Missing required property 'location' on Encounter.Location"
           ),
       status =
-        status?.let { Enumeration.of(Encounter.EncounterLocationStatus.fromCode(it), _status) },
+        Enumeration.of(status?.let { Encounter.EncounterLocationStatus.fromCode(it) }, _status),
       form = form,
       period = period,
     )
@@ -594,7 +594,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.locationSer, value.location)
-    ((value.status?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.status?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.status?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.statusSer, it)
     }
@@ -930,13 +930,8 @@ internal object EncounterSerializer : KSerializer<Encounter> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Encounter.EncounterStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Encounter")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Encounter.EncounterStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Encounter"),
       `class` = `class` ?: listOf(),
       priority = priority,
       type = type ?: listOf(),
@@ -1031,7 +1026,7 @@ internal object EncounterSerializer : KSerializer<Encounter> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

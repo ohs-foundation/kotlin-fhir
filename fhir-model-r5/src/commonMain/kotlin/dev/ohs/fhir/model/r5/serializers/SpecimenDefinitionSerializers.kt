@@ -214,14 +214,12 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       type = type,
       preference =
         Enumeration.of(
-          SpecimenDefinition.SpecimenContainedPreference.fromCode(
-            preference
-              ?: throw SerializationException(
-                "Missing required property 'preference' on SpecimenDefinition.TypeTested"
-              )
-          ),
+          preference?.let { SpecimenDefinition.SpecimenContainedPreference.fromCode(it) },
           _preference,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'preference' on SpecimenDefinition.TypeTested"
+          ),
       container = container,
       requirement = Markdown.of(requirement, _requirement),
       retentionTime = retentionTime,
@@ -248,7 +246,7 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.isDerivedSer, it)
     }
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
-    ((value.preference.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.preference.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.preference.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.isDerivedSer, it)
     }
@@ -1181,15 +1179,10 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
           Uri.of(derivedFromUri?.getOrNull(index)?.let { it }, _derivedFromUri?.getOrNull(index))!!
         }),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on SpecimenDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on SpecimenDefinition"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       subject = SpecimenDefinition.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
@@ -1374,7 +1367,7 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 26 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

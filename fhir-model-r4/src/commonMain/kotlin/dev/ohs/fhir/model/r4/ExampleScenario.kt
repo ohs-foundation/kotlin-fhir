@@ -1682,20 +1682,14 @@ public data class ExampleScenario(
 
   /** The type of actor - system or human. */
   public enum class ExampleScenarioActorType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Person("person", "http://hl7.org/fhir/examplescenario-actor-type", "Person"),
     Entity("entity", "http://hl7.org/fhir/examplescenario-actor-type", "System");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ExampleScenarioActorType =
@@ -1710,10 +1704,10 @@ public data class ExampleScenario(
 
   /** One of the resource types defined as part of this version of FHIR. */
   public enum class ResourceType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Account("Account", "http://hl7.org/fhir/resource-types", "Account"),
     ActivityDefinition(
       "ActivityDefinition",
@@ -2084,12 +2078,6 @@ public data class ExampleScenario(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ResourceType =

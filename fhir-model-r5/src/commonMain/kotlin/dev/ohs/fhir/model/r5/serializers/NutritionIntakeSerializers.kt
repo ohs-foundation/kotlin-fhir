@@ -744,15 +744,8 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          NutritionIntake.EventStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on NutritionIntake"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { NutritionIntake.EventStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on NutritionIntake"),
       statusReason = statusReason ?: listOf(),
       code = code,
       subject =
@@ -889,7 +882,7 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

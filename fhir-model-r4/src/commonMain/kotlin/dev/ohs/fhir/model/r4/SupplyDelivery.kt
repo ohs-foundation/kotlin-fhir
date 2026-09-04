@@ -568,10 +568,10 @@ public data class SupplyDelivery(
 
   /** Status of the supply delivery. */
   public enum class SupplyDeliveryStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     In_Progress("in-progress", "http://hl7.org/fhir/supplydelivery-status", "In Progress"),
     Completed("completed", "http://hl7.org/fhir/supplydelivery-status", "Delivered"),
     Abandoned("abandoned", "http://hl7.org/fhir/supplydelivery-status", "Abandoned"),
@@ -582,12 +582,6 @@ public data class SupplyDelivery(
     );
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): SupplyDeliveryStatus =

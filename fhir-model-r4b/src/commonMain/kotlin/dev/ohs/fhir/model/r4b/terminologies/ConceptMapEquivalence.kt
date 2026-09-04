@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /** The degree of equivalence between concepts. */
 public enum class ConceptMapEquivalence(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Relatedto("relatedto", "http://hl7.org/fhir/concept-map-equivalence", "Related To"),
   Equivalent("equivalent", "http://hl7.org/fhir/concept-map-equivalence", "Equivalent"),
   Equal("equal", "http://hl7.org/fhir/concept-map-equivalence", "Equal"),
@@ -36,12 +37,6 @@ public enum class ConceptMapEquivalence(
   Disjoint("disjoint", "http://hl7.org/fhir/concept-map-equivalence", "Disjoint");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): ConceptMapEquivalence =

@@ -4255,10 +4255,10 @@ public data class TestScript(
 
   /** The allowable request method or HTTP operation codes. */
   public enum class TestScriptRequestMethodCode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Delete("delete", "http://hl7.org/fhir/http-operations", "DELETE"),
     Get("get", "http://hl7.org/fhir/http-operations", "GET"),
     Options("options", "http://hl7.org/fhir/http-operations", "OPTIONS"),
@@ -4268,12 +4268,6 @@ public data class TestScript(
     Head("head", "http://hl7.org/fhir/http-operations", "HEAD");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TestScriptRequestMethodCode =
@@ -4295,20 +4289,14 @@ public data class TestScript(
 
   /** The type of direction to use for assertion. */
   public enum class AssertionDirectionType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Response("response", "http://hl7.org/fhir/assert-direction-codes", "response"),
     Request("request", "http://hl7.org/fhir/assert-direction-codes", "request");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): AssertionDirectionType =
@@ -4323,22 +4311,16 @@ public data class TestScript(
 
   /** The type of manual completion to use for assertion. */
   public enum class AssertionManualCompletionType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Fail("fail", "http://hl7.org/fhir/assert-manual-completion-codes", "Fail"),
     Pass("pass", "http://hl7.org/fhir/assert-manual-completion-codes", "Pass"),
     Skip("skip", "http://hl7.org/fhir/assert-manual-completion-codes", "Skip"),
     Stop("stop", "http://hl7.org/fhir/assert-manual-completion-codes", "Stop");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): AssertionManualCompletionType =
@@ -4357,10 +4339,10 @@ public data class TestScript(
 
   /** The type of operator to use for assertion. */
   public enum class AssertionOperatorType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Equals("equals", "http://hl7.org/fhir/assert-operator-codes", "equals"),
     NotEquals("notEquals", "http://hl7.org/fhir/assert-operator-codes", "notEquals"),
     In("in", "http://hl7.org/fhir/assert-operator-codes", "in"),
@@ -4375,12 +4357,6 @@ public data class TestScript(
     ManualEval("manualEval", "http://hl7.org/fhir/assert-operator-codes", "manualEvaluate");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): AssertionOperatorType =
@@ -4405,10 +4381,10 @@ public data class TestScript(
 
   /** The type of response code to use for assertion. */
   public enum class AssertionResponseTypes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Continue("continue", "http://hl7.org/fhir/assert-response-code-types", "Continue"),
     SwitchingProtocols(
       "switchingProtocols",
@@ -4559,12 +4535,6 @@ public data class TestScript(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): AssertionResponseTypes =

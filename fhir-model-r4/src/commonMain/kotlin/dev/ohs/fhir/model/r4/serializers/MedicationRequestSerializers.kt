@@ -953,28 +953,24 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          MedicationRequest.MedicationrequestStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on MedicationRequest"
-              )
-          ),
+          status?.let { MedicationRequest.MedicationrequestStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on MedicationRequest"
+          ),
       statusReason = statusReason,
       intent =
         Enumeration.of(
-          MedicationRequest.MedicationRequestIntent.fromCode(
-            intent
-              ?: throw SerializationException(
-                "Missing required property 'intent' on MedicationRequest"
-              )
-          ),
+          intent?.let { MedicationRequest.MedicationRequestIntent.fromCode(it) },
           _intent,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'intent' on MedicationRequest"
+          ),
       category = category ?: listOf(),
       priority =
-        priority?.let { Enumeration.of(MedicationRequest.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { MedicationRequest.RequestPriority.fromCode(it) }, _priority),
       doNotPerform = R4Boolean.of(doNotPerform, _doNotPerform),
       reported =
         MedicationRequest.Reported.from(
@@ -1094,7 +1090,7 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1113,7 +1109,7 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -1131,7 +1127,7 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
         Hoisted.categorySer,
         value.category,
       )
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

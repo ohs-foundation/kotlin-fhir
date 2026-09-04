@@ -227,9 +227,9 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
       conformance =
         (kotlin.collections.List(maxOf(conformance?.size ?: 0, _conformance?.size ?: 0)) { index ->
           Enumeration.of(
-            Requirements.ConformanceExpectation.fromCode(conformance?.getOrNull(index)!!),
+            conformance?.getOrNull(index)?.let { Requirements.ConformanceExpectation.fromCode(it) },
             _conformance?.getOrNull(index),
-          )
+          )!!
         }),
       conditionality = R5Boolean.of(conditionality, _conditionality),
       requirement =
@@ -270,7 +270,7 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
     (value.label?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.keySer, it)
     }
-    (value.conformance.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.conformance.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.conformanceSer, it)
     }
     (value.conformance.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -646,13 +646,8 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Requirements")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Requirements"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R5String.of(publisher, _publisher),
@@ -808,7 +803,7 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

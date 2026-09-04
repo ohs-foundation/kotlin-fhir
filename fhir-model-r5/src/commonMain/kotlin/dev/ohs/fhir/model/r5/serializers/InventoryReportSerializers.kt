@@ -488,25 +488,16 @@ internal object InventoryReportSerializer : KSerializer<InventoryReport> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          InventoryReport.InventoryReportStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on InventoryReport"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { InventoryReport.InventoryReportStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on InventoryReport"),
       countType =
         Enumeration.of(
-          InventoryReport.InventoryCountType.fromCode(
-            countType
-              ?: throw SerializationException(
-                "Missing required property 'countType' on InventoryReport"
-              )
-          ),
+          countType?.let { InventoryReport.InventoryCountType.fromCode(it) },
           _countType,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'countType' on InventoryReport"
+          ),
       operationType = operationType,
       operationTypeReason = operationTypeReason,
       reportedDateTime =
@@ -584,7 +575,7 @@ internal object InventoryReportSerializer : KSerializer<InventoryReport> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -595,7 +586,7 @@ internal object InventoryReportSerializer : KSerializer<InventoryReport> {
         it,
       )
     }
-    ((value.countType.value?.getCode()))?.let {
+    ((value.countType.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.countType.toElement())?.let {

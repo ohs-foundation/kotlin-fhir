@@ -865,13 +865,8 @@ internal object ObservationSerializer : KSerializer<Observation> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          Observation.ObservationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Observation")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Observation.ObservationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Observation"),
       category = category ?: listOf(),
       code =
         code ?: throw SerializationException("Missing required property 'code' on Observation"),
@@ -992,7 +987,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

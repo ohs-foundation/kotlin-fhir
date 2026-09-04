@@ -487,7 +487,7 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      kind = kind?.let { Enumeration.of(CarePlan.CarePlanActivityKind.fromCode(it), _kind) },
+      kind = Enumeration.of(kind?.let { CarePlan.CarePlanActivityKind.fromCode(it) }, _kind),
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
@@ -510,15 +510,10 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
       reasonReference = reasonReference ?: listOf(),
       goal = goal ?: listOf(),
       status =
-        Enumeration.of(
-          CarePlan.CarePlanActivityStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on CarePlan.Activity.Detail"
-              )
+        Enumeration.of(status?.let { CarePlan.CarePlanActivityStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on CarePlan.Activity.Detail"
           ),
-          _status,
-        ),
       statusReason = statusReason,
       doNotPerform = R4Boolean.of(doNotPerform, _doNotPerform),
       scheduled =
@@ -547,7 +542,7 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.kind?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.kind?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.kind?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.kindSer, it)
     }
@@ -575,7 +570,7 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
       )
     if (value.goal.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.reasonReferenceSer, value.goal)
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+    ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.status.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.kindSer, it)
     }
@@ -987,19 +982,11 @@ internal object CarePlanSerializer : KSerializer<CarePlan> {
       replaces = replaces ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          CarePlan.RequestStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on CarePlan")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { CarePlan.RequestStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on CarePlan"),
       intent =
-        Enumeration.of(
-          CarePlan.CarePlanIntent.fromCode(
-            intent ?: throw SerializationException("Missing required property 'intent' on CarePlan")
-          ),
-          _intent,
-        ),
+        Enumeration.of(intent?.let { CarePlan.CarePlanIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on CarePlan"),
       category = category ?: listOf(),
       title = R4String.of(title, _title),
       description = R4String.of(description, _description),
@@ -1135,7 +1122,7 @@ internal object CarePlanSerializer : KSerializer<CarePlan> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1146,7 +1133,7 @@ internal object CarePlanSerializer : KSerializer<CarePlan> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {

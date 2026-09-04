@@ -1898,7 +1898,7 @@ internal object ClaimResponseProcessNoteSerializer : KSerializer<ClaimResponse.P
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       number = PositiveInt.of(number, _number),
-      type = type?.let { Enumeration.of(NoteType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { NoteType.fromCode(it) }, _type),
       text =
         R4String.of(text, _text)
           ?: throw SerializationException(
@@ -1923,7 +1923,7 @@ internal object ClaimResponseProcessNoteSerializer : KSerializer<ClaimResponse.P
     (value.number?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.numberSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.numberSer, it)
     }
@@ -2504,22 +2504,15 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          ClaimResponse.FinancialResourceStatusCodes.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on ClaimResponse")
-          ),
+          status?.let { ClaimResponse.FinancialResourceStatusCodes.fromCode(it) },
           _status,
-        ),
+        ) ?: throw SerializationException("Missing required property 'status' on ClaimResponse"),
       type =
         type ?: throw SerializationException("Missing required property 'type' on ClaimResponse"),
       subType = subType,
       use =
-        Enumeration.of(
-          ClaimResponse.Use.fromCode(
-            use ?: throw SerializationException("Missing required property 'use' on ClaimResponse")
-          ),
-          _use,
-        ),
+        Enumeration.of(use?.let { ClaimResponse.Use.fromCode(it) }, _use)
+          ?: throw SerializationException("Missing required property 'use' on ClaimResponse"),
       patient =
         patient
           ?: throw SerializationException("Missing required property 'patient' on ClaimResponse"),
@@ -2532,15 +2525,8 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
       requestor = requestor,
       request = request,
       outcome =
-        Enumeration.of(
-          ClaimResponse.ClaimProcessingCodes.fromCode(
-            outcome
-              ?: throw SerializationException(
-                "Missing required property 'outcome' on ClaimResponse"
-              )
-          ),
-          _outcome,
-        ),
+        Enumeration.of(outcome?.let { ClaimResponse.ClaimProcessingCodes.fromCode(it) }, _outcome)
+          ?: throw SerializationException("Missing required property 'outcome' on ClaimResponse"),
       disposition = R4String.of(disposition, _disposition),
       preAuthRef = R4String.of(preAuthRef, _preAuthRef),
       preAuthPeriod = preAuthPeriod,
@@ -2623,7 +2609,7 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -2643,7 +2629,7 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
     (value.subType)?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.typeSer, it)
     }
-    ((value.use.value?.getCode()))?.let {
+    ((value.use.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.use.toElement())?.let {
@@ -2683,7 +2669,7 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
     (value.request)?.let {
       encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, Hoisted.patientSer, it)
     }
-    ((value.outcome.value?.getCode()))?.let {
+    ((value.outcome.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.outcome.toElement())?.let {

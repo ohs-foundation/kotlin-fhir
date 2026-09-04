@@ -3182,10 +3182,10 @@ public data class ValueSet(
 
   /** The kind of operation to perform as a part of a property based filter. */
   public enum class FilterOperator(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     EqualTo("=", "http://hl7.org/fhir/filter-operator", "Equals"),
     Is_A("is-a", "http://hl7.org/fhir/filter-operator", "Is A (by subsumption)"),
     Descendent_Of(
@@ -3207,12 +3207,6 @@ public data class ValueSet(
     Exists("exists", "http://hl7.org/fhir/filter-operator", "Exists");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): FilterOperator =

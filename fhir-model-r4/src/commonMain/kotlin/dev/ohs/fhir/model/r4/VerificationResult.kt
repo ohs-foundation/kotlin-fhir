@@ -833,10 +833,10 @@ public data class VerificationResult(
 
   /** The validation status of the target */
   public enum class Status(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Attested("attested", "http://hl7.org/fhir/CodeSystem/status", "Attested"),
     Validated("validated", "http://hl7.org/fhir/CodeSystem/status", "Validated"),
     In_Process("in-process", "http://hl7.org/fhir/CodeSystem/status", "In process"),
@@ -845,12 +845,6 @@ public data class VerificationResult(
     Reval_Fail("reval-fail", "http://hl7.org/fhir/CodeSystem/status", "Re-Validation failed");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): Status =

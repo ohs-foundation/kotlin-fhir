@@ -910,10 +910,10 @@ public data class MolecularSequence(
 
   /** Type for orientation. */
   public enum class OrientationType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Sense("sense", "http://hl7.org/fhir/orientation-type", "Sense orientation of referenceSeq"),
     Antisense(
       "antisense",
@@ -922,12 +922,6 @@ public data class MolecularSequence(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): OrientationType =
@@ -941,20 +935,14 @@ public data class MolecularSequence(
 
   /** Type for strand. */
   public enum class StrandType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Watson("watson", "http://hl7.org/fhir/strand-type", "Watson strand of starting sequence"),
     Crick("crick", "http://hl7.org/fhir/strand-type", "Crick strand of starting sequence");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): StrandType =
@@ -968,21 +956,15 @@ public data class MolecularSequence(
 
   /** Type if a sequence -- DNA, RNA, or amino acid sequence. */
   public enum class SequenceType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Aa("aa", "http://hl7.org/fhir/sequence-type", "AA Sequence"),
     Dna("dna", "http://hl7.org/fhir/sequence-type", "DNA Sequence"),
     Rna("rna", "http://hl7.org/fhir/sequence-type", "RNA Sequence");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SequenceType =

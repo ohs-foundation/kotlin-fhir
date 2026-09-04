@@ -271,9 +271,10 @@ internal object EffectEvidenceSynthesisResultsByExposureSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       description = R4String.of(description, _description),
       exposureState =
-        exposureState?.let {
-          Enumeration.of(EffectEvidenceSynthesis.ExposureState.fromCode(it), _exposureState)
-        },
+        Enumeration.of(
+          exposureState?.let { EffectEvidenceSynthesis.ExposureState.fromCode(it) },
+          _exposureState,
+        ),
       variantState = variantState,
       riskEvidenceSynthesis =
         riskEvidenceSynthesis
@@ -301,9 +302,7 @@ internal object EffectEvidenceSynthesisResultsByExposureSerializer :
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, it)
     }
-    ((value.exposureState?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 5, it)
-    }
+    ((value.exposureState?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.exposureState?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
     }
@@ -1280,15 +1279,10 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EffectEvidenceSynthesis"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on EffectEvidenceSynthesis"
           ),
-          _status,
-        ),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -1440,7 +1434,7 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

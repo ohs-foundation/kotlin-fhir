@@ -368,7 +368,7 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        status?.let { Enumeration.of(SupplyDelivery.SupplyDeliveryStatus.fromCode(it), _status) },
+        Enumeration.of(status?.let { SupplyDelivery.SupplyDeliveryStatus.fromCode(it) }, _status),
       patient = patient,
       type = type,
       suppliedItem = suppliedItem,
@@ -461,7 +461,7 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

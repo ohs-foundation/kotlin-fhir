@@ -1207,12 +1207,8 @@ internal object TestPlanSerializer : KSerializer<TestPlan> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on TestPlan")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on TestPlan"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R5String.of(publisher, _publisher),
@@ -1361,7 +1357,7 @@ internal object TestPlanSerializer : KSerializer<TestPlan> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

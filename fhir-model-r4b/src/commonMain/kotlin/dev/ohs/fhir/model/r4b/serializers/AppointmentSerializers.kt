@@ -144,17 +144,12 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
       type = type ?: listOf(),
       actor = actor,
       required =
-        required?.let { Enumeration.of(Appointment.ParticipantRequired.fromCode(it), _required) },
+        Enumeration.of(required?.let { Appointment.ParticipantRequired.fromCode(it) }, _required),
       status =
-        Enumeration.of(
-          Appointment.ParticipationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on Appointment.Participant"
-              )
+        Enumeration.of(status?.let { Appointment.ParticipationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on Appointment.Participant"
           ),
-          _status,
-        ),
       period = period,
     )
   }
@@ -173,11 +168,11 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
     if (value.type.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, it) }
-    ((value.required?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.required?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.required?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.requiredSer, it)
     }
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.status.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.requiredSer, it)
     }
@@ -528,13 +523,8 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Appointment.AppointmentStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Appointment")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Appointment.AppointmentStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Appointment"),
       cancelationReason = cancelationReason,
       serviceCategory = serviceCategory ?: listOf(),
       serviceType = serviceType ?: listOf(),
@@ -621,7 +611,7 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

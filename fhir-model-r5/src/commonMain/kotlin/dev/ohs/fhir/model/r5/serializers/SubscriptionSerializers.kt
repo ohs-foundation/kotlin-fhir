@@ -158,9 +158,9 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
             "Missing required property 'filterParameter' on Subscription.FilterBy"
           ),
       comparator =
-        comparator?.let { Enumeration.of(Subscription.SearchComparator.fromCode(it), _comparator) },
+        Enumeration.of(comparator?.let { Subscription.SearchComparator.fromCode(it) }, _comparator),
       modifier =
-        modifier?.let { Enumeration.of(Subscription.SearchModifierCode.fromCode(it), _modifier) },
+        Enumeration.of(modifier?.let { Subscription.SearchModifierCode.fromCode(it) }, _modifier),
       `value` =
         R5String.of(`value`, _value)
           ?: throw SerializationException(
@@ -188,11 +188,11 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
     (value.filterParameter.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.resourceTypeSer, it)
     }
-    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.comparator?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.comparator?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.resourceTypeSer, it)
     }
-    ((value.modifier?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    ((value.modifier?.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.modifier?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.resourceTypeSer, it)
     }
@@ -555,13 +555,8 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
       identifier = identifier ?: listOf(),
       name = R5String.of(name, _name),
       status =
-        Enumeration.of(
-          Subscription.SubscriptionStatusCodes.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Subscription")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Subscription.SubscriptionStatusCodes.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Subscription"),
       topic =
         Canonical.of(topic, _topic)
           ?: throw SerializationException("Missing required property 'topic' on Subscription"),
@@ -581,9 +576,10 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
       timeout = UnsignedInt.of(timeout, _timeout),
       contentType = Code.of(contentType, _contentType),
       content =
-        content?.let {
-          Enumeration.of(Subscription.SubscriptionPayloadContent.fromCode(it), _content)
-        },
+        Enumeration.of(
+          content?.let { Subscription.SubscriptionPayloadContent.fromCode(it) },
+          _content,
+        ),
       maxCount = PositiveInt.of(maxCount, _maxCount),
     )
   }
@@ -662,7 +658,7 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -785,7 +781,7 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
         it,
       )
     }
-    ((value.content?.value?.getCode()))?.let {
+    ((value.content?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 34 + descriptorOffset, it)
     }
     (value.content?.toElement())?.let {

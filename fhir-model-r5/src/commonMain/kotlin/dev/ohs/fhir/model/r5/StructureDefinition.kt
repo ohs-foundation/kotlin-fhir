@@ -1472,21 +1472,15 @@ public data class StructureDefinition(
 
   /** How an extension context is interpreted. */
   public enum class ExtensionContextType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Fhirpath("fhirpath", "http://hl7.org/fhir/extension-context-type", "FHIRPath"),
     Element("element", "http://hl7.org/fhir/extension-context-type", "Element ID"),
     Extension("extension", "http://hl7.org/fhir/extension-context-type", "Extension URL");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ExtensionContextType =
@@ -1501,10 +1495,10 @@ public data class StructureDefinition(
 
   /** Defines the type of structure that a definition is describing. */
   public enum class StructureDefinitionKind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Primitive_Type(
       "primitive-type",
       "http://hl7.org/fhir/structure-definition-kind",
@@ -1519,12 +1513,6 @@ public data class StructureDefinition(
     Logical("logical", "http://hl7.org/fhir/structure-definition-kind", "Logical");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): StructureDefinitionKind =
@@ -1541,20 +1529,14 @@ public data class StructureDefinition(
 
   /** How a type relates to its baseDefinition. */
   public enum class TypeDerivationRule(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Specialization("specialization", "http://hl7.org/fhir/type-derivation-rule", "Specialization"),
     Constraint("constraint", "http://hl7.org/fhir/type-derivation-rule", "Constraint");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TypeDerivationRule =

@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** All Resource Types that represent participant resources */
 public enum class ParticipantResourceTypes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   CareTeam("CareTeam", "http://hl7.org/fhir/fhir-types", "CareTeam"),
   Device("Device", "http://hl7.org/fhir/fhir-types", "Device"),
   Group("Group", "http://hl7.org/fhir/fhir-types", "Group"),
@@ -36,12 +37,6 @@ public enum class ParticipantResourceTypes(
   RelatedPerson("RelatedPerson", "http://hl7.org/fhir/fhir-types", "RelatedPerson");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): ParticipantResourceTypes =

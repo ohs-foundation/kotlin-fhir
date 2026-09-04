@@ -1003,13 +1003,8 @@ internal object GenomicStudySerializer : KSerializer<GenomicStudy> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          GenomicStudy.GenomicStudyStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on GenomicStudy")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { GenomicStudy.GenomicStudyStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on GenomicStudy"),
       type = type ?: listOf(),
       subject =
         subject
@@ -1091,7 +1086,7 @@ internal object GenomicStudySerializer : KSerializer<GenomicStudy> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

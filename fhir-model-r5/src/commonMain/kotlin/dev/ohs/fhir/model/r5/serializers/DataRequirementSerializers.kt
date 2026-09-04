@@ -387,9 +387,10 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
       path = R5String.of(path, _path),
       searchParam = R5String.of(searchParam, _searchParam),
       comparator =
-        comparator?.let {
-          Enumeration.of(DataRequirement.ValueFilterComparator.fromCode(it), _comparator)
-        },
+        Enumeration.of(
+          comparator?.let { DataRequirement.ValueFilterComparator.fromCode(it) },
+          _comparator,
+        ),
       `value` =
         DataRequirement.ValueFilter.Value.from(
           DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
@@ -411,7 +412,7 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
     (value.searchParam?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.pathSer, it)
     }
-    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.comparator?.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.comparator?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.pathSer, it)
     }
@@ -504,15 +505,10 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
             "Missing required property 'path' on DataRequirement.Sort"
           ),
       direction =
-        Enumeration.of(
-          DataRequirement.SortDirection.fromCode(
-            direction
-              ?: throw SerializationException(
-                "Missing required property 'direction' on DataRequirement.Sort"
-              )
+        Enumeration.of(direction?.let { DataRequirement.SortDirection.fromCode(it) }, _direction)
+          ?: throw SerializationException(
+            "Missing required property 'direction' on DataRequirement.Sort"
           ),
-          _direction,
-        ),
     )
   }
 
@@ -524,7 +520,7 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
     (value.path.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.pathSer, it)
     }
-    ((value.direction.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.direction.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.direction.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.pathSer, it)
     }
@@ -692,13 +688,8 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          FHIRTypes.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on DataRequirement")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { FHIRTypes.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on DataRequirement"),
       profile =
         (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
           Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!
@@ -720,7 +711,7 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
     }

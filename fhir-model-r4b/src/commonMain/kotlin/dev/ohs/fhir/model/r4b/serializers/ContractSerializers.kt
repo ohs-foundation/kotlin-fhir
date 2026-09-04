@@ -188,14 +188,12 @@ internal object ContractContentDefinitionSerializer : KSerializer<Contract.Conte
         DateTime.of(publicationDate?.let { FhirDateTime.fromString(it) }, _publicationDate),
       publicationStatus =
         Enumeration.of(
-          Contract.ContractResourcePublicationStatusCodes.fromCode(
-            publicationStatus
-              ?: throw SerializationException(
-                "Missing required property 'publicationStatus' on Contract.ContentDefinition"
-              )
-          ),
+          publicationStatus?.let { Contract.ContractResourcePublicationStatusCodes.fromCode(it) },
           _publicationStatus,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'publicationStatus' on Contract.ContentDefinition"
+          ),
       copyright = Markdown.of(copyright, _copyright),
     )
   }
@@ -222,9 +220,7 @@ internal object ContractContentDefinitionSerializer : KSerializer<Contract.Conte
     (value.publicationDate?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.publicationDateSer, it)
     }
-    ((value.publicationStatus.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 8, it)
-    }
+    ((value.publicationStatus.value?.code))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.publicationStatus.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.publicationDateSer, it)
     }
@@ -3456,7 +3452,7 @@ internal object ContractSerializer : KSerializer<Contract> {
       url = Uri.of(url, _url),
       version = R4bString.of(version, _version),
       status =
-        status?.let { Enumeration.of(Contract.ContractResourceStatusCodes.fromCode(it), _status) },
+        Enumeration.of(status?.let { Contract.ContractResourceStatusCodes.fromCode(it) }, _status),
       legalState = legalState,
       instantiatesCanonical = instantiatesCanonical,
       instantiatesUri = Uri.of(instantiatesUri, _instantiatesUri),
@@ -3576,7 +3572,7 @@ internal object ContractSerializer : KSerializer<Contract> {
         it,
       )
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

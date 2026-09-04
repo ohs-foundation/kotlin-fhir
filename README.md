@@ -125,14 +125,84 @@ follows:
 
 Since all FHIR data types are defined using FHIRPath types in their StructureDefinitions, mapping
 FHIRPath types to Kotlin effectively covers all FHIR data types. For brevity, the full FHIR data
-type mapping to Kotlin is omitted here. However, notable exceptions exist where the FHIR data type
-uses a FHIRPath type that is either inconsistent with the base data type, or is unsuitable for
-represent the data in Kotlin. These exceptions are listed below:
+type mapping to Kotlin is omitted here.
 
-| FHIR data type <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | FHIRPath type <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
-|------------------------------------------------------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| positiveInt                                                                  | System.String                                                               | Kotlin.Int                                                                  |
-| unsignedInt                                                                  | System.String                                                               | Kotlin.Int                                                                  |
+> [!NOTE]
+> The only exceptions are `positiveInt` and `unsignedInt`, which are mapped to `kotlin.Int` in the
+> generated code despite the FHIRPath `System.String` type in the FHIR specification.
+
+### Mapping FHIR ValueSets to Kotlin
+
+Kotlin enums classes are only generated for `ValueSet`s that are explicitly referenced by elements
+in the FHIR data model via [binding](https://hl7.org/fhir/R5/terminologies.html#binding).
+Unreferenced value sets are excluded from code generation.
+
+The generated enum classes implement the `FhirEnum` interface, with enum constants derived
+from the `code` property of expanded `CodeSystem` concepts in the
+[expansion packages](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/).
+
+As with other [primitive data types](#mapping-fhir-primitive-data-types-to-kotlin), a wrapper class
+`Enumeration<T>` is generated to hold the element's `id` and `extension`s alongside the actual enum
+value (`T : FhirEnum`):
+
+| FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
+|----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| Bound `ValueSet` (e.g. `administrative-gender`)                            | `enum class` implementing `FhirEnum` (e.g. `AdministrativeGender`)             |
+| Bound element with `id` and `extension`s (e.g. `Patient.gender`)           | `Enumeration<T : FhirEnum>` (e.g. `Enumeration<AdministrativeGender>`)         |
+
+Depending on their binding scope, generated enums are placed in one of two locations:
+- **Shared enums** (`dev.ohs.fhir.model.<r4|r4b|r5>.terminologies`): Generated for elements with a
+  [common binding](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html)
+  (e.g. `AdministrativeGender`).
+- **Local enums**: Nested inside their parent class for elements with non-common bindings (e.g.
+  `HumanName.NameUse`).
+
+#### Enum Naming and Content
+
+The enum constants are derived from `ValueSet` definitions in the expansion packages for
+[R4](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4.expansions/package),
+[R4B](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4b.expansions/package),
+and
+[R5](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r5.expansions/package).
+Each `ValueSet` includes codes from one or more `CodeSystem` resources it references.
+
+| FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
+|----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| ValueSet JSON file (e.g. `ValueSet-resource-types.json`)                   | Kotlin .kt file (e.g. `ResourceType`)                                          |
+| ValueSet (e.g. `ResourceType`)                                             | Kotlin class (e.g. `enum class ResourceType`)                                  |
+
+To comply with Kotlin’s enum naming convention, which requires names to start with a letter and
+avoid special characters, each code is transformed using a set of formatting rules. This includes
+handling numeric codes, special characters, and FHIR URLs. After all transformations, the final name
+is converted to PascalCase to match Kotlin style guidelines.
+
+| Rule # |                                          Description                                          |                                                           Example Input                                                           |     Example Output     |
+|--------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|------------------------|
+| 1      | For codes that are full URLs, extract and return the last segment after the dot               | `http://hl7.org/fhirpath/System.DateTime` from [CodeSystem-fhirpath-types](http://hl7.org/fhir/R5/codesystem-fhirpath-types.html) | `DateTime`             |
+| 2      | Specific special characters are replaced with readable keywords                               | `>=` from   [CodeSystem-quantity-comparator](http://hl7.org/fhir/R5/codesystem-quantity-comparator.html)                          | `GreaterThanOrEqualTo` |
+|        |                                                                                               | `>`                                                                                                                               | `GreaterThan`          |
+|        |                                                                                               | `<`                                                                                                                               | `LessThan`             |
+|        |                                                                                               | `<=`                                                                                                                              | `LessThanOrEqualTo`    |
+|        |                                                                                               | `!=` or `<>`                                                                                                                      | `NotEqualTo`           |
+|        |                                                                                               | `=`                                                                                                                               | `EqualTo`              |
+|        |                                                                                               | `*`                                                                                                                               | `Multiply`             |
+|        |                                                                                               | `+`                                                                                                                               | `Plus`                 |
+|        |                                                                                               | `-`                                                                                                                               | `Minus`                |
+|        |                                                                                               | `/`                                                                                                                               | `Divide`               |
+|        |                                                                                               | `%`                                                                                                                               | `Percent`              |
+| 3.1    | Replace all non-alphanumeric characters including dashes (`-`) and dots (`.`) with underscore | `4.0.1` from [CodeSystem-FHIR-version](http://hl7.org/fhir/R5/codesystem-FHIR-version.html)                                       | `4_0_1`                |
+| 3.2    | Prefix codes starting with a digit with an underscore                                         | `4.0.1` from [CodeSystem-FHIR-version](http://hl7.org/fhir/R5/codesystem-FHIR-version.html)                                       | `_4_0_1`               |
+| 3.3    | Apply PascalCase to each segment between underscores while preserving the underscores         | `entered-in-error` from [CodeSystem-document-reference-status](http://hl7.org/fhir/R5/codesystem-document-reference-status.html)  | `Entered_In_Error`     |
+
+#### Excluded ValueSets from Enum Generation
+
+The following FHIR value sets are excluded from Kotlin enum generation.
+
+|                                        ValueSet URL                                        |                                           Reason for Exclusion                                            | Affected Version(s) |
+|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|---------------------|
+| [`http://hl7.org/fhir/ValueSet/mimetypes`](http://hl7.org/fhir/ValueSet/mimetypes)         | This value set cannot be expanded because of the way it is defined - it has an infinite number of members | `R4`, `R4B`, `R5`   |
+| [`http://hl7.org/fhir/ValueSet/all-languages`](http://hl7.org/fhir/ValueSet/all-languages) | This value set cannot be expanded because of the way it is defined - it has an infinite number of members | `R4`, `R4B`, `R5`   |
+| [`http://hl7.org/fhir/ValueSet/use-context`](http://hl7.org/fhir/ValueSet/use-context)     | This value set has >3800 codes when expanded; generated enum class code cannot compile.                   | `R4`, `R4B`, `R5`   |
 
 ### Mapping FHIR data structure to Kotlin
 
@@ -189,66 +259,6 @@ inherits from `DomainResource`, which inherits from `Resource`.
 > `Procedure`, and each resource defines its own distinct status value set. These structural
 > discrepancies make interface inheritance impractical in Kotlin.
 
-### Mapping FHIR ValueSets to Kotlin Enums
-
-Kotlin enums classes are generated for value sets referenced by elements via
-[binding](https://hl7.org/fhir/R5/terminologies.html#binding). The constants in the generated enum
-classes are derived from the `code` property of the expanded `CodeSystem` concepts in the
-[expansion packages](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/). The
-value sets that are not bound to elements are excluded from code generation.
-
-#### Shared vs. Local Enums
-
-- If the `StructureDefinition` defines an element with a [**common binding**](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html), a **shared enum** is generated and placed in the `dev.ohs.fhir.model.<r4|r4b|r5>.terminologies` package.
-  **Example:** `AdministrativeGender`
-- If the element uses a **non-common binding**, a **local enum** is created inside the associated parent class.
-  **Example:** `NameUse` inside the `HumanName` class
-
-#### Enum Naming and Content
-
-The enum constants are derived from `ValueSet` definitions in the expansion packages for
-[R4](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4.expansions/package),
-[R4B](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4b.expansions/package),
-and
-[R5](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r5.expansions/package).
-Each `ValueSet` includes codes from one or more `CodeSystem` resources it references.
-
-| FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
-|----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
-| ValueSet JSON file (e.g. `ValueSet-resource-types.json`)                   | Kotlin .kt file (e.g. `ResourceType`)                                          |
-| ValueSet (e.g. `ResourceType`)                                             | Kotlin class (e.g. `enum class ResourceType`)                                  |
-
-To comply with Kotlin’s enum naming convention—which requires names to start with a letter and avoid special characters—each code is transformed using a set of formatting rules.
-This includes handling numeric codes, special characters, and FHIR URLs. After all transformations, the final name is converted to PascalCase to match Kotlin style guidelines.
-
-| Rule # |                                          Description                                          |                                                           Example Input                                                           |     Example Output     |
-|--------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|------------------------|
-| 1      | For codes that are full URLs, extract and return the last segment after the dot               | `http://hl7.org/fhirpath/System.DateTime` from [CodeSystem-fhirpath-types](http://hl7.org/fhir/R5/codesystem-fhirpath-types.html) | `DateTime`             |
-| 2      | Specific special characters are replaced with readable keywords                               | `>=` from   [CodeSystem-quantity-comparator](http://hl7.org/fhir/R5/codesystem-quantity-comparator.html)                          | `GreaterThanOrEqualTo` |
-|        |                                                                                               | `>`                                                                                                                               | `GreaterThan`          |
-|        |                                                                                               | `<`                                                                                                                               | `LessThan`             |
-|        |                                                                                               | `<=`                                                                                                                              | `LessThanOrEqualTo`    |
-|        |                                                                                               | `!=` or `<>`                                                                                                                      | `NotEqualTo`           |
-|        |                                                                                               | `=`                                                                                                                               | `EqualTo`              |
-|        |                                                                                               | `*`                                                                                                                               | `Multiply`             |
-|        |                                                                                               | `+`                                                                                                                               | `Plus`                 |
-|        |                                                                                               | `-`                                                                                                                               | `Minus`                |
-|        |                                                                                               | `/`                                                                                                                               | `Divide`               |
-|        |                                                                                               | `%`                                                                                                                               | `Percent`              |
-| 3.1    | Replace all non-alphanumeric characters including dashes (`-`) and dots (`.`) with underscore | `4.0.1` from [CodeSystem-FHIR-version](http://hl7.org/fhir/R5/codesystem-FHIR-version.html)                                       | `4_0_1`                |
-| 3.2    | Prefix codes starting with a digit with an underscore                                         | `4.0.1` from [CodeSystem-FHIR-version](http://hl7.org/fhir/R5/codesystem-FHIR-version.html)                                       | `_4_0_1`               |
-| 3.3    | Apply PascalCase to each segment between underscores while preserving the underscores         | `entered-in-error` from [CodeSystem-document-reference-status](http://hl7.org/fhir/R5/codesystem-document-reference-status.html)  | `Entered_In_Error`     |
-
-#### Excluded ValueSets from Enum Generation
-
-The following FHIR value sets are excluded from Kotlin enum generation.
-
-|                                        ValueSet URL                                        |                                           Reason for Exclusion                                            | Affected Version(s) |
-|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|---------------------|
-| [`http://hl7.org/fhir/ValueSet/mimetypes`](http://hl7.org/fhir/ValueSet/mimetypes)         | This value set cannot be expanded because of the way it is defined - it has an infinite number of members | `R4`, `R4B`, `R5`   |
-| [`http://hl7.org/fhir/ValueSet/all-languages`](http://hl7.org/fhir/ValueSet/all-languages) | This value set cannot be expanded because of the way it is defined - it has an infinite number of members | `R4`, `R4B`, `R5`   |
-| [`http://hl7.org/fhir/ValueSet/use-context`](http://hl7.org/fhir/ValueSet/use-context)     | This value set has >3800 codes when expanded; generated enum class code cannot compile.                   | `R4`, `R4B`, `R5`   |
-
 ### Mapping FHIR search parameters to Kotlin
 
 In FHIR, search parameters define how resources can be queried (e.g. in
@@ -289,7 +299,7 @@ FHIR resource or element containing primitive data types cannot be directly mapp
 
 To address this, the library generates a custom `KSerializer` per FHIR type (e.g.
 `PatientSerializer`). Each serializer describes the flat FHIR JSON wire shape via
-`buildClassSerialDescriptor` — one descriptor slot per wire key, including the `_field` sidecar
+`buildClassSerialDescriptor` — one descriptor slot per wire key, including the `_field` Element
 keys for primitive extensions (e.g. `gender` + `_gender`).
 
 Choice types (e.g. `Patient.multipleBirth`) are expanded into per-expansion keys on the same flat
@@ -945,10 +955,20 @@ equivalence is maintained.
 
 #### Unit tests
 
-These tests use inline test data and do not require filesystem access:
+These tests use inline test data, run across all platforms, and are parameterized across FHIR versions (R4, R4B, R5):
 
-- **Primitive types** (`FhirDateTest`, `FhirDateTimeTest`, `FhirDecimalTest`) — Custom primitive types (`FhirDate`, `FhirDateTime`, `FhirDecimal`)
-- **Serialization** (`PolymorphicSerializationTest`, `SerializationExceptionTest`, `JsonConfigurationTest`, `IndexOrderingTest`) — Polymorphism, property validation, and format-specific behavior (JSON and ProtoBuf)
+- **Primitive types:**
+  - `FhirDateTest`: Date parsing and formatting (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`).
+  - `FhirDateTimeTest`: DateTime parsing, timezone validation, and millisecond precision.
+  - `FhirDecimalTest`: Lexical precision, scientific notation, `BigDecimal` conversions, and arithmetic.
+- **Serialization:**
+  - `PolymorphicSerializationTest`: `resourceType` discriminator handling.
+  - `EnumerationSerializationTest`: Enum element extensions (`_field`) and missing-value lists.
+  - `SerializationExceptionTest`: Missing required property validation.
+  - `IndexOrderingTest`: Serializer descriptor slot indexing and field tag alignment in ProtoBuf.
+  - `JsonConfigurationTest`: Behavior with custom `Json { ... }` configurations.
+- **Search parameters:**
+  - `SearchParamTest`: Value extraction for choice types, filtered contexts, and type expressions.
 
 #### Platform coverage and CI
 

@@ -672,14 +672,12 @@ internal object QuestionnaireResponseSerializer : KSerializer<QuestionnaireRespo
       questionnaire = Canonical.of(questionnaire, _questionnaire),
       status =
         Enumeration.of(
-          QuestionnaireResponse.QuestionnaireResponseStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on QuestionnaireResponse"
-              )
-          ),
+          status?.let { QuestionnaireResponse.QuestionnaireResponseStatus.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on QuestionnaireResponse"
+          ),
       subject = subject,
       encounter = encounter,
       authored = DateTime.of(authored?.let { FhirDateTime.fromString(it) }, _authored),
@@ -778,7 +776,7 @@ internal object QuestionnaireResponseSerializer : KSerializer<QuestionnaireRespo
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

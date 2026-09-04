@@ -162,9 +162,10 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
       description = R4bString.of(description, _description),
       onset = DateTime.of(onset?.let { FhirDateTime.fromString(it) }, _onset),
       severity =
-        severity?.let {
-          Enumeration.of(AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(it), _severity)
-        },
+        Enumeration.of(
+          severity?.let { AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(it) },
+          _severity,
+        ),
       exposureRoute = exposureRoute,
       note = note ?: listOf(),
     )
@@ -199,7 +200,7 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
     (value.onset?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.descriptionSer, it)
     }
-    ((value.severity?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    ((value.severity?.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.severity?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.descriptionSer, it)
     }
@@ -477,21 +478,21 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
       clinicalStatus = clinicalStatus,
       verificationStatus = verificationStatus,
       type =
-        type?.let { Enumeration.of(AllergyIntolerance.AllergyIntoleranceType.fromCode(it), _type) },
+        Enumeration.of(type?.let { AllergyIntolerance.AllergyIntoleranceType.fromCode(it) }, _type),
       category =
         (kotlin.collections.List(maxOf(category?.size ?: 0, _category?.size ?: 0)) { index ->
           Enumeration.of(
-            AllergyIntolerance.AllergyIntoleranceCategory.fromCode(category?.getOrNull(index)!!),
+            category?.getOrNull(index)?.let {
+              AllergyIntolerance.AllergyIntoleranceCategory.fromCode(it)
+            },
             _category?.getOrNull(index),
-          )
+          )!!
         }),
       criticality =
-        criticality?.let {
-          Enumeration.of(
-            AllergyIntolerance.AllergyIntoleranceCriticality.fromCode(it),
-            _criticality,
-          )
-        },
+        Enumeration.of(
+          criticality?.let { AllergyIntolerance.AllergyIntoleranceCriticality.fromCode(it) },
+          _criticality,
+        ),
       code = code,
       patient =
         patient
@@ -596,7 +597,7 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
         it,
       )
     }
-    ((value.type?.value?.getCode()))?.let {
+    ((value.type?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.type?.toElement())?.let {
@@ -607,13 +608,13 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
         it,
       )
     }
-    (value.category.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.category.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.categorySer, it)
     }
     (value.category.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.categorySer2, it)
     }
-    ((value.criticality?.value?.getCode()))?.let {
+    ((value.criticality?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.criticality?.toElement())?.let {

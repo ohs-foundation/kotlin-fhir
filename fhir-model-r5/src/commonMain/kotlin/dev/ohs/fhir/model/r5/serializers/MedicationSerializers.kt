@@ -484,7 +484,7 @@ internal object MedicationSerializer : KSerializer<Medication> {
       identifier = identifier ?: listOf(),
       code = code,
       status =
-        status?.let { Enumeration.of(Medication.MedicationStatusCodes.fromCode(it), _status) },
+        Enumeration.of(status?.let { Medication.MedicationStatusCodes.fromCode(it) }, _status),
       marketingAuthorizationHolder = marketingAuthorizationHolder,
       doseForm = doseForm,
       totalVolume = totalVolume,
@@ -560,7 +560,7 @@ internal object MedicationSerializer : KSerializer<Medication> {
     (value.code)?.let {
       encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, Hoisted.codeSer, it)
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

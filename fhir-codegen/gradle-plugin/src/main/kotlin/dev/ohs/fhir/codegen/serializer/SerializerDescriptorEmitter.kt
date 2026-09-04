@@ -28,15 +28,15 @@ import dev.ohs.fhir.codegen.CodegenContext
 /**
  * Builds the `descriptor` property and the shared `buildDescriptor` helper for a streaming
  * serializer. The descriptor mirrors the flat FHIR JSON wire shape — one element per JSON key,
- * including `_sidecar` pairs and choice-type expansions. Cross-type descriptor cycles are broken
- * via `lazyDescriptor { ... }` where [TypeGraphAnalyzer] flags an edge as cyclic.
+ * including `_field` Element pairs and choice-type expansions. Cross-type descriptor cycles are
+ * broken via `lazyDescriptor { ... }` where [TypeGraphAnalyzer] flags an edge as cyclic.
  */
 internal class SerializerDescriptorEmitter(private val codegenContext: CodegenContext) {
 
   /**
    * Emits `override val descriptor` as a flat `buildClassSerialDescriptor(name) { element(...) ...
-   * }` reflecting the actual JSON wire shape (one element per JSON key, including `_sidecar` pairs
-   * and choice type expansions). For resource types, `resourceType` is descriptor[0].
+   * }` reflecting the actual JSON wire shape (one element per JSON key, including `_field` Element
+   * pairs and choice type expansions). For resource types, `resourceType` is descriptor[0].
    *
    * Every element is marked `isOptional = true` — FHIR JSON omits absent keys, and streaming
    * encoders skip optional elements when we don't call `encodeXxxElement`, so this matches the wire

@@ -230,9 +230,10 @@ internal object EvidenceVariableCharacteristicSerializer :
       exclude = R4bBoolean.of(exclude, _exclude),
       timeFromStart = timeFromStart,
       groupMeasure =
-        groupMeasure?.let {
-          Enumeration.of(EvidenceVariable.GroupMeasure.fromCode(it), _groupMeasure)
-        },
+        Enumeration.of(
+          groupMeasure?.let { EvidenceVariable.GroupMeasure.fromCode(it) },
+          _groupMeasure,
+        ),
     )
   }
 
@@ -299,9 +300,7 @@ internal object EvidenceVariableCharacteristicSerializer :
     (value.timeFromStart)?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.timeFromStartSer, it)
     }
-    ((value.groupMeasure?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 15, it)
-    }
+    ((value.groupMeasure?.value?.code))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.groupMeasure?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.descriptionSer, it)
     }
@@ -892,15 +891,8 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       shortTitle = R4bString.of(shortTitle, _shortTitle),
       subtitle = R4bString.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EvidenceVariable"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on EvidenceVariable"),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       description = Markdown.of(description, _description),
       note = note ?: listOf(),
@@ -914,17 +906,18 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       relatedArtifact = relatedArtifact ?: listOf(),
       `actual` = R4bBoolean.of(`actual`, _actual),
       characteristicCombination =
-        characteristicCombination?.let {
-          Enumeration.of(
-            EvidenceVariable.CharacteristicCombination.fromCode(it),
-            _characteristicCombination,
-          )
-        },
+        Enumeration.of(
+          characteristicCombination?.let {
+            EvidenceVariable.CharacteristicCombination.fromCode(it)
+          },
+          _characteristicCombination,
+        ),
       characteristic = characteristic ?: listOf(),
       handling =
-        handling?.let {
-          Enumeration.of(EvidenceVariable.EvidenceVariableHandling.fromCode(it), _handling)
-        },
+        Enumeration.of(
+          handling?.let { EvidenceVariable.EvidenceVariableHandling.fromCode(it) },
+          _handling,
+        ),
       category = category ?: listOf(),
     )
   }
@@ -1056,7 +1049,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1167,7 +1160,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         it,
       )
     }
-    ((value.characteristicCombination?.value?.getCode()))?.let {
+    ((value.characteristicCombination?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
     }
     (value.characteristicCombination?.toElement())?.let {
@@ -1185,7 +1178,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         Hoisted.characteristicSer,
         value.characteristic,
       )
-    ((value.handling?.value?.getCode()))?.let {
+    ((value.handling?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 44 + descriptorOffset, it)
     }
     (value.handling?.toElement())?.let {

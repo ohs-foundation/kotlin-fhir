@@ -1204,22 +1204,16 @@ public data class CoverageEligibilityResponse(
 
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/fm-status", "Active"),
     Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
     Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/fm-status", "Entered in Error");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
@@ -1238,10 +1232,10 @@ public data class CoverageEligibilityResponse(
 
   /** A code specifying the types of information being requested. */
   public enum class EligibilityResponsePurpose(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Auth_Requirements(
       "auth-requirements",
       "http://hl7.org/fhir/eligibilityresponse-purpose",
@@ -1256,12 +1250,6 @@ public data class CoverageEligibilityResponse(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): EligibilityResponsePurpose =

@@ -121,9 +121,9 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
       id = id,
       extension = extension ?: listOf(),
       system =
-        system?.let { Enumeration.of(ContactPoint.ContactPointSystem.fromCode(it), _system) },
+        Enumeration.of(system?.let { ContactPoint.ContactPointSystem.fromCode(it) }, _system),
       `value` = R4bString.of(`value`, _value),
-      use = use?.let { Enumeration.of(ContactPoint.ContactPointUse.fromCode(it), _use) },
+      use = Enumeration.of(use?.let { ContactPoint.ContactPointUse.fromCode(it) }, _use),
       rank = PositiveInt.of(rank, _rank),
       period = period,
     )
@@ -133,7 +133,7 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.system?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.system?.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.system?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.systemSer, it)
     }
@@ -141,7 +141,7 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
     (value.`value`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.systemSer, it)
     }
-    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.use?.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.use?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.systemSer, it)
     }

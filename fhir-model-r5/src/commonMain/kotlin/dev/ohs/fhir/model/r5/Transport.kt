@@ -1739,10 +1739,10 @@ public data class Transport(
 
   /** Status of the transport */
   public enum class TransportStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     In_Progress("in-progress", "http://hl7.org/fhir/transport-status", "In Progress"),
     Completed("completed", "http://hl7.org/fhir/transport-status", "Completed"),
     Abandoned("abandoned", "http://hl7.org/fhir/transport-status", "Abandoned"),
@@ -1755,12 +1755,6 @@ public data class Transport(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TransportStatus =
@@ -1778,10 +1772,10 @@ public data class Transport(
 
   /** Distinguishes whether the transport is a proposal, plan or full order. */
   public enum class TransportIntent(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Unknown("unknown", "http://hl7.org/fhir/transport-intent", "Unknown"),
     Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
     Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
@@ -1793,12 +1787,6 @@ public data class Transport(
     Option("option", "http://hl7.org/fhir/request-intent", "Option");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TransportIntent =
@@ -1819,22 +1807,16 @@ public data class Transport(
 
   /** Identifies the level of importance to be assigned to actioning the request. */
   public enum class RequestPriority(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
     Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
     Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
     Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): RequestPriority =

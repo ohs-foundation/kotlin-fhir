@@ -452,14 +452,12 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type =
         Enumeration.of(
-          DeviceDefinition.DeviceDefinitionRegulatoryIdentifierType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on DeviceDefinition.RegulatoryIdentifier"
-              )
-          ),
+          type?.let { DeviceDefinition.DeviceDefinitionRegulatoryIdentifierType.fromCode(it) },
           _type,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'type' on DeviceDefinition.RegulatoryIdentifier"
+          ),
       deviceIdentifier =
         R5String.of(deviceIdentifier, _deviceIdentifier)
           ?: throw SerializationException(
@@ -492,7 +490,7 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -586,15 +584,10 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
             "Missing required property 'name' on DeviceDefinition.DeviceName"
           ),
       type =
-        Enumeration.of(
-          DeviceDefinition.DeviceNameType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on DeviceDefinition.DeviceName"
-              )
+        Enumeration.of(type?.let { DeviceDefinition.DeviceNameType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on DeviceDefinition.DeviceName"
           ),
-          _type,
-        ),
     )
   }
 
@@ -613,7 +606,7 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
     (value.name.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }
@@ -2049,9 +2042,10 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
             "Missing required property 'recall' on DeviceDefinition.CorrectiveAction"
           ),
       scope =
-        scope?.let {
-          Enumeration.of(DeviceDefinition.DeviceCorrectiveActionScope.fromCode(it), _scope)
-        },
+        Enumeration.of(
+          scope?.let { DeviceDefinition.DeviceCorrectiveActionScope.fromCode(it) },
+          _scope,
+        ),
       period =
         period
           ?: throw SerializationException(
@@ -2078,7 +2072,7 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
     (value.recall.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.recallSer, it)
     }
-    ((value.scope?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.scope?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.scope?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.recallSer, it)
     }
@@ -2624,11 +2618,11 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
           maxOf(productionIdentifierInUDI?.size ?: 0, _productionIdentifierInUDI?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            DeviceDefinition.DeviceProductionIdentifierInUDI.fromCode(
-              productionIdentifierInUDI?.getOrNull(index)!!
-            ),
+            productionIdentifierInUDI?.getOrNull(index)?.let {
+              DeviceDefinition.DeviceProductionIdentifierInUDI.fromCode(it)
+            },
             _productionIdentifierInUDI?.getOrNull(index),
-          )
+          )!!
         }),
       guideline = guideline,
       correctiveAction = correctiveAction,
@@ -2860,9 +2854,7 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
         Hoisted.materialSer,
         value.material,
       )
-    (value.productionIdentifierInUDI
-        .map { it.value?.getCode() }
-        .takeUnless { it.all { it == null } })
+    (value.productionIdentifierInUDI.map { it.value?.code }.takeUnless { it.all { it == null } })
       ?.let {
         encoder.encodeSerializableElement(
           descriptor,

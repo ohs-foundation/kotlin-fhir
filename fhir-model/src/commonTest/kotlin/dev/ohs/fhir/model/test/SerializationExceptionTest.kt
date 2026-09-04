@@ -28,26 +28,46 @@ import kotlinx.serialization.serializer
 
 class SerializationExceptionTest :
   FunSpec({
-    fun <TResource : Any> runMissingPropertyTests(
-      fhirVersionName: String,
+    val questionnaireWithoutStatusJson =
+      """
+      {
+        "resourceType": "Questionnaire",
+        "title": "Sample"
+      }
+      """
+        .trimIndent()
+
+    val questionnaireWithoutLinkIdJson =
+      """
+      {
+        "resourceType": "Questionnaire",
+        "status": "draft",
+        "item": [
+          {
+            "text": "Question"
+          }
+        ]
+      }
+      """
+        .trimIndent()
+
+    fun <TResource : Any> serializationExceptionTestSuite(
+      fhirVersion: String,
       resourceSerializer: KSerializer<TResource>,
     ) {
-      context("$fhirVersionName Missing Required Properties") {
-        test("$fhirVersionName missing required enum property throws SerializationException") {
-          val json = """{"resourceType":"Questionnaire","title":"Sample"}"""
+      context("$fhirVersion Missing Required Properties") {
+        test("missing required enum property throws SerializationException") {
           val exception =
             assertFailsWith<SerializationException> {
-              testJson.decodeFromString(resourceSerializer, json)
+              testJson.decodeFromString(resourceSerializer, questionnaireWithoutStatusJson)
             }
           assertEquals("Missing required property 'status' on Questionnaire", exception.message)
         }
 
-        test("$fhirVersionName missing required primitive property throws SerializationException") {
-          val json =
-            """{"resourceType":"Questionnaire","status":"draft","item":[{"text":"Question"}]}"""
+        test("missing required primitive property throws SerializationException") {
           val exception =
             assertFailsWith<SerializationException> {
-              testJson.decodeFromString(resourceSerializer, json)
+              testJson.decodeFromString(resourceSerializer, questionnaireWithoutLinkIdJson)
             }
           assertEquals(
             "Missing required property 'linkId' on Questionnaire.Item",
@@ -57,7 +77,7 @@ class SerializationExceptionTest :
       }
     }
 
-    runMissingPropertyTests("R4", serializer<R4Resource>())
-    runMissingPropertyTests("R4B", serializer<R4bResource>())
-    runMissingPropertyTests("R5", serializer<R5Resource>())
+    serializationExceptionTestSuite("R4", serializer<R4Resource>())
+    serializationExceptionTestSuite("R4B", serializer<R4bResource>())
+    serializationExceptionTestSuite("R5", serializer<R5Resource>())
   })

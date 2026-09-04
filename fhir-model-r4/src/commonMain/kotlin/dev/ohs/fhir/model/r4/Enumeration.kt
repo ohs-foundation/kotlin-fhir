@@ -16,7 +16,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import kotlin.Enum
 import kotlin.String
 import kotlin.collections.List
 
@@ -30,7 +29,7 @@ import kotlin.collections.List
  *   strict set of governance applied to the definition and use of extensions.
  * @param value The actual value
  */
-public data class Enumeration<T : Enum<*>>(
+public data class Enumeration<T : FhirEnum>(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,
   /**
@@ -50,7 +49,11 @@ public data class Enumeration<T : Enum<*>>(
   }
 
   public companion object {
-    public fun <T : Enum<*>> of(`value`: T, element: Element?): Enumeration<T> =
-      Enumeration(element?.id, element?.extension ?: listOf(), value = value)
+    public fun <T : FhirEnum> of(`value`: T?, element: Element?): Enumeration<T>? =
+      if (value != null || element?.id != null || element?.extension?.isEmpty() == false) {
+        Enumeration(element?.id, element?.extension ?: listOf(), value = value)
+      } else {
+        null
+      }
   }
 }

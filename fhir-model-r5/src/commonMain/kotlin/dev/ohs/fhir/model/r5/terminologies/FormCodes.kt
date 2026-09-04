@@ -16,24 +16,19 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /** This value set includes a sample set of Forms codes. */
 public enum class FormCodes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   _1("1", "http://terminology.hl7.org/CodeSystem/forms-codes", "Form #1"),
   _2("2", "http://terminology.hl7.org/CodeSystem/forms-codes", "Form #1");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): FormCodes =

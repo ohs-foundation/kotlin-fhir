@@ -1081,9 +1081,9 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
       modifierExtension = modifierExtension ?: listOf(),
       category = category ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on AuditEvent"),
-      action = action?.let { Enumeration.of(AuditEvent.AuditEventAction.fromCode(it), _action) },
+      action = Enumeration.of(action?.let { AuditEvent.AuditEventAction.fromCode(it) }, _action),
       severity =
-        severity?.let { Enumeration.of(AuditEvent.AuditEventSeverity.fromCode(it), _severity) },
+        Enumeration.of(severity?.let { AuditEvent.AuditEventSeverity.fromCode(it) }, _severity),
       occurred =
         AuditEvent.Occurred.from(
           occurredPeriod,
@@ -1173,7 +1173,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
       Hoisted.categorySerInner,
       value.code,
     )
-    ((value.action?.value?.getCode()))?.let {
+    ((value.action?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.action?.toElement())?.let {
@@ -1184,7 +1184,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         it,
       )
     }
-    ((value.severity?.value?.getCode()))?.let {
+    ((value.severity?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.severity?.toElement())?.let {

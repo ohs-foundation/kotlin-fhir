@@ -181,13 +181,8 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          RelatedArtifact.RelatedArtifactType.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on RelatedArtifact")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { RelatedArtifact.RelatedArtifactType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on RelatedArtifact"),
       classifier = classifier ?: listOf(),
       label = R5String.of(label, _label),
       display = R5String.of(display, _display),
@@ -196,9 +191,10 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
       resource = Canonical.of(resource, _resource),
       resourceReference = resourceReference,
       publicationStatus =
-        publicationStatus?.let {
-          Enumeration.of(PublicationStatus.fromCode(it), _publicationStatus)
-        },
+        Enumeration.of(
+          publicationStatus?.let { PublicationStatus.fromCode(it) },
+          _publicationStatus,
+        ),
       publicationDate = Date.of(publicationDate?.let { FhirDate.fromString(it) }, _publicationDate),
     )
   }
@@ -207,7 +203,7 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
     }
@@ -235,7 +231,7 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
     (value.resourceReference)?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.resourceReferenceSer, it)
     }
-    ((value.publicationStatus?.value?.getCode()))?.let {
+    ((value.publicationStatus?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15, it)
     }
     (value.publicationStatus?.toElement())?.let {

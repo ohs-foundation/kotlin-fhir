@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /** One of the resource types defined as part of this version of FHIR. */
 public enum class ResourceType(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Resource("Resource", "http://hl7.org/fhir/resource-types", "Resource"),
   Binary("Binary", "http://hl7.org/fhir/resource-types", "Binary"),
   Bundle("Bundle", "http://hl7.org/fhir/resource-types", "Bundle"),
@@ -337,12 +338,6 @@ public enum class ResourceType(
   Parameters("Parameters", "http://hl7.org/fhir/resource-types", "Parameters");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): ResourceType =

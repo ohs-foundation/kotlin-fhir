@@ -572,15 +572,8 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
       title = R5String.of(title, _title),
       derivedFrom = Canonical.of(derivedFrom, _derivedFrom),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on SearchParameter"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on SearchParameter"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R5String.of(publisher, _publisher),
@@ -601,46 +594,46 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
       base =
         (kotlin.collections.List(maxOf(base?.size ?: 0, _base?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.VersionIndependentResourceTypesAll.fromCode(base?.getOrNull(index)!!),
+            base?.getOrNull(index)?.let {
+              SearchParameter.VersionIndependentResourceTypesAll.fromCode(it)
+            },
             _base?.getOrNull(index),
-          )
+          )!!
         }),
       type =
-        Enumeration.of(
-          SearchParamType.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on SearchParameter")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { SearchParamType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on SearchParameter"),
       expression = R5String.of(expression, _expression),
       processingMode =
-        processingMode?.let {
-          Enumeration.of(SearchParameter.SearchProcessingModeType.fromCode(it), _processingMode)
-        },
+        Enumeration.of(
+          processingMode?.let { SearchParameter.SearchProcessingModeType.fromCode(it) },
+          _processingMode,
+        ),
       constraint = R5String.of(constraint, _constraint),
       target =
         (kotlin.collections.List(maxOf(target?.size ?: 0, _target?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.VersionIndependentResourceTypesAll.fromCode(target?.getOrNull(index)!!),
+            target?.getOrNull(index)?.let {
+              SearchParameter.VersionIndependentResourceTypesAll.fromCode(it)
+            },
             _target?.getOrNull(index),
-          )
+          )!!
         }),
       multipleOr = R5Boolean.of(multipleOr, _multipleOr),
       multipleAnd = R5Boolean.of(multipleAnd, _multipleAnd),
       comparator =
         (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.SearchComparator.fromCode(comparator?.getOrNull(index)!!),
+            comparator?.getOrNull(index)?.let { SearchParameter.SearchComparator.fromCode(it) },
             _comparator?.getOrNull(index),
-          )
+          )!!
         }),
       modifier =
         (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.SearchModifierCode.fromCode(modifier?.getOrNull(index)!!),
+            modifier?.getOrNull(index)?.let { SearchParameter.SearchModifierCode.fromCode(it) },
             _modifier?.getOrNull(index),
-          )
+          )!!
         }),
       chain =
         (kotlin.collections.List(maxOf(chain?.size ?: 0, _chain?.size ?: 0)) { index ->
@@ -788,7 +781,7 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -906,13 +899,13 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    (value.base.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.base.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 45 + descriptorOffset, Hoisted.baseSer, it)
     }
     (value.base.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 46 + descriptorOffset, Hoisted.baseSer2, it)
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 47 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {
@@ -934,7 +927,7 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    ((value.processingMode?.value?.getCode()))?.let {
+    ((value.processingMode?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 51 + descriptorOffset, it)
     }
     (value.processingMode?.toElement())?.let {
@@ -956,7 +949,7 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    (value.target.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.target.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 55 + descriptorOffset, Hoisted.baseSer, it)
     }
     (value.target.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -984,13 +977,13 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    (value.comparator.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.comparator.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 61 + descriptorOffset, Hoisted.baseSer, it)
     }
     (value.comparator.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 62 + descriptorOffset, Hoisted.baseSer2, it)
     }
-    (value.modifier.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.modifier.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 63 + descriptorOffset, Hoisted.baseSer, it)
     }
     (value.modifier.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

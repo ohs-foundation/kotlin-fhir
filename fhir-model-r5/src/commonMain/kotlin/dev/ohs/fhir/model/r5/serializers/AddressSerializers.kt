@@ -154,8 +154,8 @@ internal object AddressSerializer : KSerializer<Address> {
     return Address(
       id = id,
       extension = extension ?: listOf(),
-      use = use?.let { Enumeration.of(Address.AddressUse.fromCode(it), _use) },
-      type = type?.let { Enumeration.of(Address.AddressType.fromCode(it), _type) },
+      use = Enumeration.of(use?.let { Address.AddressUse.fromCode(it) }, _use),
+      type = Enumeration.of(type?.let { Address.AddressType.fromCode(it) }, _type),
       text = R5String.of(text, _text),
       line =
         (kotlin.collections.List(maxOf(line?.size ?: 0, _line?.size ?: 0)) { index ->
@@ -174,11 +174,11 @@ internal object AddressSerializer : KSerializer<Address> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.use?.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.use?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.useSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.useSer, it)
     }

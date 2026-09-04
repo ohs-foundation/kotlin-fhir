@@ -398,10 +398,10 @@ public data class ImmunizationEvaluation(
    * evaluation for vaccine administration event.
    */
   public enum class ImmunizationEvaluationStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Completed("completed", "http://hl7.org/fhir/CodeSystem/medication-admin-status", "Completed"),
     Entered_In_Error(
       "entered-in-error",
@@ -410,12 +410,6 @@ public data class ImmunizationEvaluation(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ImmunizationEvaluationStatusCodes =

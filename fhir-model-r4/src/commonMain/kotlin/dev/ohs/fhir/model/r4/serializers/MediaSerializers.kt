@@ -306,12 +306,8 @@ internal object MediaSerializer : KSerializer<Media> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          Media.EventStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Media")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Media.EventStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Media"),
       type = type,
       modality = modality,
       view = view,
@@ -415,7 +411,7 @@ internal object MediaSerializer : KSerializer<Media> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

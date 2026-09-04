@@ -481,12 +481,8 @@ internal object LibrarySerializer : KSerializer<Library> {
       title = R5String.of(title, _title),
       subtitle = R5String.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Library")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Library"),
       experimental = R5Boolean.of(experimental, _experimental),
       type = type ?: throw SerializationException("Missing required property 'type' on Library"),
       subject = Library.Subject.from(subjectCodeableConcept, subjectReference),
@@ -655,7 +651,7 @@ internal object LibrarySerializer : KSerializer<Library> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

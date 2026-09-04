@@ -528,22 +528,16 @@ public data class DeviceMetric(
 
   /** Describes the type of a metric calibration. */
   public enum class DeviceMetricCalibrationType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Unspecified("unspecified", "http://hl7.org/fhir/metric-calibration-type", "Unspecified"),
     Offset("offset", "http://hl7.org/fhir/metric-calibration-type", "Offset"),
     Gain("gain", "http://hl7.org/fhir/metric-calibration-type", "Gain"),
     Two_Point("two-point", "http://hl7.org/fhir/metric-calibration-type", "Two Point");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): DeviceMetricCalibrationType =
@@ -562,10 +556,10 @@ public data class DeviceMetric(
 
   /** Describes the state of a metric calibration. */
   public enum class DeviceMetricCalibrationState(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Not_Calibrated(
       "not-calibrated",
       "http://hl7.org/fhir/metric-calibration-state",
@@ -580,12 +574,6 @@ public data class DeviceMetric(
     Unspecified("unspecified", "http://hl7.org/fhir/metric-calibration-state", "Unspecified");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): DeviceMetricCalibrationState =
@@ -604,10 +592,10 @@ public data class DeviceMetric(
 
   /** Describes the operational status of the DeviceMetric. */
   public enum class DeviceMetricOperationalStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     On("on", "http://hl7.org/fhir/metric-operational-status", "On"),
     Off("off", "http://hl7.org/fhir/metric-operational-status", "Off"),
     Standby("standby", "http://hl7.org/fhir/metric-operational-status", "Standby"),
@@ -618,12 +606,6 @@ public data class DeviceMetric(
     );
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): DeviceMetricOperationalStatus =
@@ -642,22 +624,16 @@ public data class DeviceMetric(
 
   /** Describes the category of the metric. */
   public enum class DeviceMetricCategory(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Measurement("measurement", "http://hl7.org/fhir/metric-category", "Measurement"),
     Setting("setting", "http://hl7.org/fhir/metric-category", "Setting"),
     Calculation("calculation", "http://hl7.org/fhir/metric-category", "Calculation"),
     Unspecified("unspecified", "http://hl7.org/fhir/metric-category", "Unspecified");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): DeviceMetricCategory =

@@ -878,15 +878,10 @@ internal object AdministrableProductDefinitionSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on AdministrableProductDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on AdministrableProductDefinition"
           ),
-          _status,
-        ),
       formOf = formOf ?: listOf(),
       administrableDoseForm = administrableDoseForm,
       unitOfPresentation = unitOfPresentation,
@@ -961,7 +956,7 @@ internal object AdministrableProductDefinitionSerializer :
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

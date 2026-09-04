@@ -16,15 +16,17 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
+
 /**
  * A list of all the concrete types defined in this version of the FHIR specification - Abstract
  * Types, Data Types and Resource Types.
  */
 public enum class FHIRAllTypes(
-  private val code: kotlin.String,
-  private val system: kotlin.String,
-  private val display: kotlin.String?,
-) {
+  override val code: kotlin.String,
+  override val system: kotlin.String,
+  override val display: kotlin.String?,
+) : FhirEnum {
   Address("Address", "http://hl7.org/fhir/data-types", "Address"),
   Age("Age", "http://hl7.org/fhir/data-types", "Age"),
   Annotation("Annotation", "http://hl7.org/fhir/data-types", "Annotation"),
@@ -440,12 +442,6 @@ public enum class FHIRAllTypes(
   Any("Any", "http://hl7.org/fhir/abstract-types", "Any");
 
   override fun toString(): kotlin.String = code
-
-  public fun getCode(): kotlin.String = code
-
-  public fun getSystem(): kotlin.String = system
-
-  public fun getDisplay(): kotlin.String? = display
 
   public companion object {
     public fun fromCode(code: kotlin.String): FHIRAllTypes =

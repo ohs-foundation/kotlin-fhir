@@ -1774,27 +1774,13 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
       basedOn = basedOn ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          NutritionOrder.RequestStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on NutritionOrder"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { NutritionOrder.RequestStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on NutritionOrder"),
       intent =
-        Enumeration.of(
-          NutritionOrder.RequestIntent.fromCode(
-            intent
-              ?: throw SerializationException(
-                "Missing required property 'intent' on NutritionOrder"
-              )
-          ),
-          _intent,
-        ),
+        Enumeration.of(intent?.let { NutritionOrder.RequestIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on NutritionOrder"),
       priority =
-        priority?.let { Enumeration.of(NutritionOrder.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { NutritionOrder.RequestPriority.fromCode(it) }, _priority),
       subject =
         subject
           ?: throw SerializationException("Missing required property 'subject' on NutritionOrder"),
@@ -1942,7 +1928,7 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1953,7 +1939,7 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -1964,7 +1950,7 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
         it,
       )
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

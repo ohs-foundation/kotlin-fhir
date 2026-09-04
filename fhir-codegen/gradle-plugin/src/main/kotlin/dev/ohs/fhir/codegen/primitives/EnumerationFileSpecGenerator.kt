@@ -20,7 +20,6 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
@@ -126,20 +125,6 @@ object EnumerationFileSpecGenerator {
               .build()
           )
           val codeClassName = ClassName(packageName, "Code")
-          addFunction(
-            FunSpec.builder("toCode")
-              .returns(codeClassName)
-              .addKdoc(
-                """
-                Returns this enumeration as an open [Code], preserving `id`, `extension`, and the
-                code string of the value (generated enums stringify to their FHIR code).
-                """
-                  .trimIndent()
-                  .sanitizeKDoc()
-              )
-              .addStatement("return Code(id, extension, value?.toString())")
-              .build()
-          )
           addType(
             TypeSpec.companionObjectBuilder()
               .addFunction(
@@ -156,32 +141,6 @@ object EnumerationFileSpecGenerator {
                   )
                   .addStatement(
                     "return if (value != null || element?.id != null || element?.extension?.isEmpty() == false) { Enumeration(element?.id, element?.extension ?: listOf(), value = value) } else { null }"
-                  )
-                  .build()
-              )
-              .addFunction(
-                FunSpec.builder("fromCode")
-                  .addTypeVariable(typeVariable)
-                  .addParameter(ParameterSpec.builder("code", codeClassName).build())
-                  .addParameter(
-                    ParameterSpec.builder(
-                        "parse",
-                        LambdaTypeName.get(parameters = arrayOf(STRING), returnType = typeVariable),
-                      )
-                      .build()
-                  )
-                  .returns(ClassName("", "Enumeration").parameterizedBy(typeVariable))
-                  .addKdoc(
-                    """
-                    Builds an [Enumeration] from an open [Code], preserving `id` and `extension` and
-                    parsing the code string with the enum's parser, e.g.
-                    `Enumeration.fromCode(expression.language, ExpressionLanguage::fromCode)`.
-                    """
-                      .trimIndent()
-                      .sanitizeKDoc()
-                  )
-                  .addStatement(
-                    "return Enumeration(code.id, code.extension, code.value?.let(parse))"
                   )
                   .build()
               )

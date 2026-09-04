@@ -352,19 +352,11 @@ internal object ListSerializer : KSerializer<R4bList> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          R4bList.ListStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on List")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { R4bList.ListStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on List"),
       mode =
-        Enumeration.of(
-          R4bList.ListMode.fromCode(
-            mode ?: throw SerializationException("Missing required property 'mode' on List")
-          ),
-          _mode,
-        ),
+        Enumeration.of(mode?.let { R4bList.ListMode.fromCode(it) }, _mode)
+          ?: throw SerializationException("Missing required property 'mode' on List"),
       title = R4bString.of(title, _title),
       code = code,
       subject = subject,
@@ -441,7 +433,7 @@ internal object ListSerializer : KSerializer<R4bList> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -452,7 +444,7 @@ internal object ListSerializer : KSerializer<R4bList> {
         it,
       )
     }
-    ((value.mode.value?.getCode()))?.let {
+    ((value.mode.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.mode.toElement())?.let {

@@ -379,7 +379,7 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      mode = mode?.let { Enumeration.of(Bundle.SearchEntryMode.fromCode(it), _mode) },
+      mode = Enumeration.of(mode?.let { Bundle.SearchEntryMode.fromCode(it) }, _mode),
       score = Decimal.of(score, _score),
     )
   }
@@ -395,7 +395,7 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.mode?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.mode?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.mode?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modeSer, it)
     }
@@ -513,15 +513,10 @@ internal object BundleEntryRequestSerializer : KSerializer<Bundle.Entry.Request>
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       method =
-        Enumeration.of(
-          Bundle.HTTPVerb.fromCode(
-            method
-              ?: throw SerializationException(
-                "Missing required property 'method' on Bundle.Entry.Request"
-              )
+        Enumeration.of(method?.let { Bundle.HTTPVerb.fromCode(it) }, _method)
+          ?: throw SerializationException(
+            "Missing required property 'method' on Bundle.Entry.Request"
           ),
-          _method,
-        ),
       url =
         Uri.of(url, _url)
           ?: throw SerializationException(
@@ -545,7 +540,7 @@ internal object BundleEntryRequestSerializer : KSerializer<Bundle.Entry.Request>
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.method.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.method.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.method.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.methodSer, it)
     }
@@ -838,12 +833,8 @@ internal object BundleSerializer : KSerializer<Bundle> {
       language = Code.of(language, _language),
       identifier = identifier,
       type =
-        Enumeration.of(
-          Bundle.BundleType.fromCode(
-            type ?: throw SerializationException("Missing required property 'type' on Bundle")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Bundle.BundleType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Bundle"),
       timestamp = Instant.of(FhirDateTime.fromString(timestamp), _timestamp),
       total = UnsignedInt.of(total, _total),
       link = link ?: listOf(),
@@ -887,7 +878,7 @@ internal object BundleSerializer : KSerializer<Bundle> {
     (value.identifier)?.let {
       encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.identifierSer, it)
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 7 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

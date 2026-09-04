@@ -128,22 +128,16 @@ public data class Narrative(
 
   /** The status of a resource narrative. */
   public enum class NarrativeStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Generated("generated", "http://hl7.org/fhir/narrative-status", "Generated"),
     Extensions("extensions", "http://hl7.org/fhir/narrative-status", "Extensions"),
     Additional("additional", "http://hl7.org/fhir/narrative-status", "Additional"),
     Empty("empty", "http://hl7.org/fhir/narrative-status", "Empty");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): NarrativeStatus =

@@ -384,15 +384,8 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ActorDefinition"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ActorDefinition"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -404,13 +397,8 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       type =
-        Enumeration.of(
-          ActorDefinition.ExampleScenarioActorType.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on ActorDefinition")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { ActorDefinition.ExampleScenarioActorType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on ActorDefinition"),
       documentation = Markdown.of(documentation, _documentation),
       reference =
         (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { index ->
@@ -553,7 +541,7 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -662,7 +650,7 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
         it,
       )
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

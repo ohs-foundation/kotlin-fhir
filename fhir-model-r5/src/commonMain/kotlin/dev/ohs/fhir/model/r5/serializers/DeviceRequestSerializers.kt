@@ -566,17 +566,12 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
-      status = status?.let { Enumeration.of(DeviceRequest.RequestStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { DeviceRequest.RequestStatus.fromCode(it) }, _status),
       intent =
-        Enumeration.of(
-          DeviceRequest.RequestIntent.fromCode(
-            intent
-              ?: throw SerializationException("Missing required property 'intent' on DeviceRequest")
-          ),
-          _intent,
-        ),
+        Enumeration.of(intent?.let { DeviceRequest.RequestIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on DeviceRequest"),
       priority =
-        priority?.let { Enumeration.of(DeviceRequest.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { DeviceRequest.RequestPriority.fromCode(it) }, _priority),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),
       code =
         code ?: throw SerializationException("Missing required property 'code' on DeviceRequest"),
@@ -722,7 +717,7 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
         it,
       )
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
@@ -733,7 +728,7 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -744,7 +739,7 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
         it,
       )
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

@@ -1304,13 +1304,8 @@ internal object ResearchStudySerializer : KSerializer<ResearchStudy> {
       relatedArtifact = relatedArtifact ?: listOf(),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on ResearchStudy")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ResearchStudy"),
       primaryPurposeType = primaryPurposeType,
       phase = phase,
       studyDesign = studyDesign ?: listOf(),
@@ -1479,7 +1474,7 @@ internal object ResearchStudySerializer : KSerializer<ResearchStudy> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -180,15 +180,10 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
       description = R4String.of(description, _description),
       ordered = R4Boolean.of(ordered, _ordered),
       rules =
-        Enumeration.of(
-          ElementDefinition.SlicingRules.fromCode(
-            rules
-              ?: throw SerializationException(
-                "Missing required property 'rules' on ElementDefinition.Slicing"
-              )
+        Enumeration.of(rules?.let { ElementDefinition.SlicingRules.fromCode(it) }, _rules)
+          ?: throw SerializationException(
+            "Missing required property 'rules' on ElementDefinition.Slicing"
           ),
-          _rules,
-        ),
     )
   }
 
@@ -211,7 +206,7 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
     (value.ordered?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
     }
-    ((value.rules.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.rules.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.rules.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.descriptionSer, it)
     }
@@ -287,15 +282,10 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          ElementDefinition.DiscriminatorType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ElementDefinition.Slicing.Discriminator"
-              )
+        Enumeration.of(type?.let { ElementDefinition.DiscriminatorType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ElementDefinition.Slicing.Discriminator"
           ),
-          _type,
-        ),
       path =
         R4String.of(path, _path)
           ?: throw SerializationException(
@@ -311,7 +301,7 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
     }
@@ -555,14 +545,15 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
       aggregation =
         (kotlin.collections.List(maxOf(aggregation?.size ?: 0, _aggregation?.size ?: 0)) { index ->
           Enumeration.of(
-            ElementDefinition.AggregationMode.fromCode(aggregation?.getOrNull(index)!!),
+            aggregation?.getOrNull(index)?.let { ElementDefinition.AggregationMode.fromCode(it) },
             _aggregation?.getOrNull(index),
-          )
+          )!!
         }),
       versioning =
-        versioning?.let {
-          Enumeration.of(ElementDefinition.ReferenceVersionRules.fromCode(it), _versioning)
-        },
+        Enumeration.of(
+          versioning?.let { ElementDefinition.ReferenceVersionRules.fromCode(it) },
+          _versioning,
+        ),
     )
   }
 
@@ -586,13 +577,13 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
     (value.targetProfile.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.profileSer2, it)
     }
-    (value.aggregation.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.aggregation.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.profileSer, it)
     }
     (value.aggregation.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.profileSer2, it)
     }
-    ((value.versioning?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+    ((value.versioning?.value?.code))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.versioning?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.codeSer, it)
     }
@@ -1560,14 +1551,12 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
       requirements = R4String.of(requirements, _requirements),
       severity =
         Enumeration.of(
-          ElementDefinition.ConstraintSeverity.fromCode(
-            severity
-              ?: throw SerializationException(
-                "Missing required property 'severity' on ElementDefinition.Constraint"
-              )
-          ),
+          severity?.let { ElementDefinition.ConstraintSeverity.fromCode(it) },
           _severity,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'severity' on ElementDefinition.Constraint"
+          ),
       human =
         R4String.of(human, _human)
           ?: throw SerializationException(
@@ -1591,7 +1580,7 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
     (value.requirements?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.keySer, it)
     }
-    ((value.severity.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.severity.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.severity.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.keySer, it)
     }
@@ -1686,15 +1675,10 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
       id = id,
       extension = extension ?: listOf(),
       strength =
-        Enumeration.of(
-          BindingStrength.fromCode(
-            strength
-              ?: throw SerializationException(
-                "Missing required property 'strength' on ElementDefinition.Binding"
-              )
+        Enumeration.of(strength?.let { BindingStrength.fromCode(it) }, _strength)
+          ?: throw SerializationException(
+            "Missing required property 'strength' on ElementDefinition.Binding"
           ),
-          _strength,
-        ),
       description = R4String.of(description, _description),
       valueSet = Canonical.of(valueSet, _valueSet),
     )
@@ -1704,7 +1688,7 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.strength.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.strength.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.strength.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.strengthSer, it)
     }
@@ -3752,9 +3736,11 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
         (kotlin.collections.List(maxOf(representation?.size ?: 0, _representation?.size ?: 0)) {
           index ->
           Enumeration.of(
-            ElementDefinition.PropertyRepresentation.fromCode(representation?.getOrNull(index)!!),
+            representation?.getOrNull(index)?.let {
+              ElementDefinition.PropertyRepresentation.fromCode(it)
+            },
             _representation?.getOrNull(index),
-          )
+          )!!
         }),
       sliceName = R4String.of(sliceName, _sliceName),
       sliceIsConstraining = R4Boolean.of(sliceIsConstraining, _sliceIsConstraining),
@@ -3990,7 +3976,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     (value.path.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.pathSer, it)
     }
-    (value.representation.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.representation.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.representationSer, it)
     }
     (value.representation.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

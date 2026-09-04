@@ -622,10 +622,10 @@ public data class Endpoint(
 
   /** The status of the endpoint. */
   public enum class EndpointStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/endpoint-status", "Active"),
     Suspended("suspended", "http://hl7.org/fhir/endpoint-status", "Suspended"),
     Error("error", "http://hl7.org/fhir/endpoint-status", "Error"),
@@ -633,12 +633,6 @@ public data class Endpoint(
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/endpoint-status", "Entered in error");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): EndpointStatus =

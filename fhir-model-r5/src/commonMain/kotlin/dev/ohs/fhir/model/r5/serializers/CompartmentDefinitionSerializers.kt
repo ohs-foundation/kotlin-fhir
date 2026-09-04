@@ -156,15 +156,10 @@ internal object CompartmentDefinitionResourceSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          ResourceType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on CompartmentDefinition.Resource"
-              )
+        Enumeration.of(code?.let { ResourceType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on CompartmentDefinition.Resource"
           ),
-          _code,
-        ),
       `param` =
         (kotlin.collections.List(maxOf(`param`?.size ?: 0, _param?.size ?: 0)) { index ->
           R5String.of(`param`?.getOrNull(index)?.let { it }, _param?.getOrNull(index))!!
@@ -189,7 +184,7 @@ internal object CompartmentDefinitionResourceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -488,15 +483,10 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
           ),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on CompartmentDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on CompartmentDefinition"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -505,15 +495,10 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
       useContext = useContext ?: listOf(),
       purpose = Markdown.of(purpose, _purpose),
       code =
-        Enumeration.of(
-          CompartmentDefinition.CompartmentType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on CompartmentDefinition"
-              )
+        Enumeration.of(code?.let { CompartmentDefinition.CompartmentType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on CompartmentDefinition"
           ),
-          _code,
-        ),
       search =
         R5Boolean.of(search, _search)
           ?: throw SerializationException(
@@ -643,7 +628,7 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -723,7 +708,7 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
         it,
       )
     }
-    ((value.code.value?.getCode()))?.let {
+    ((value.code.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
     }
     (value.code.toElement())?.let {

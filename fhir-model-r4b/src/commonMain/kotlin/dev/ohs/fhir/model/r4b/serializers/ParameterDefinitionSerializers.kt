@@ -141,28 +141,16 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
       extension = extension ?: listOf(),
       name = Code.of(name, _name),
       use =
-        Enumeration.of(
-          ParameterDefinition.OperationParameterUse.fromCode(
-            use
-              ?: throw SerializationException(
-                "Missing required property 'use' on ParameterDefinition"
-              )
-          ),
-          _use,
-        ),
+        Enumeration.of(use?.let { ParameterDefinition.OperationParameterUse.fromCode(it) }, _use)
+          ?: throw SerializationException("Missing required property 'use' on ParameterDefinition"),
       min = Integer.of(min, _min),
       max = R4bString.of(max, _max),
       documentation = R4bString.of(documentation, _documentation),
       type =
-        Enumeration.of(
-          FHIRAllTypes.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ParameterDefinition"
-              )
+        Enumeration.of(type?.let { FHIRAllTypes.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ParameterDefinition"
           ),
-          _type,
-        ),
       profile = Canonical.of(profile, _profile),
     )
   }
@@ -175,7 +163,7 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
     (value.name?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameSer, it)
     }
-    ((value.use.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.use.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.use.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.nameSer, it)
     }
@@ -191,7 +179,7 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
     (value.documentation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.nameSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.nameSer, it)
     }

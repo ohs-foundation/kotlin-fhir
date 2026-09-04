@@ -2745,10 +2745,10 @@ public data class DeviceDefinition(
 
   /** Regulatory Identifier type */
   public enum class DeviceDefinitionRegulatoryIdentifierType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Basic("basic", "http://hl7.org/fhir/devicedefinition-regulatory-identifier-type", "Basic"),
     Master("master", "http://hl7.org/fhir/devicedefinition-regulatory-identifier-type", "Master"),
     License(
@@ -2758,12 +2758,6 @@ public data class DeviceDefinition(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): DeviceDefinitionRegulatoryIdentifierType =
@@ -2781,10 +2775,10 @@ public data class DeviceDefinition(
 
   /** The type of name the device is referred by. */
   public enum class DeviceNameType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Registered_Name("registered-name", "http://hl7.org/fhir/device-nametype", "Registered name"),
     User_Friendly_Name(
       "user-friendly-name",
@@ -2799,12 +2793,6 @@ public data class DeviceDefinition(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): DeviceNameType =
         when (code) {
@@ -2818,10 +2806,10 @@ public data class DeviceDefinition(
 
   /** Device - Corrective action scope */
   public enum class DeviceCorrectiveActionScope(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Model("model", "http://hl7.org/fhir/device-correctiveactionscope", "Model"),
     Lot_Numbers("lot-numbers", "http://hl7.org/fhir/device-correctiveactionscope", "Lot Numbers"),
     Serial_Numbers(
@@ -2831,12 +2819,6 @@ public data class DeviceDefinition(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): DeviceCorrectiveActionScope =
@@ -2854,10 +2836,10 @@ public data class DeviceDefinition(
 
   /** Device Production Identifier in UDI */
   public enum class DeviceProductionIdentifierInUDI(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Lot_Number("lot-number", "http://hl7.org/fhir/device-productidentifierinudi", "Lot Number"),
     Manufactured_Date(
       "manufactured-date",
@@ -2886,12 +2868,6 @@ public data class DeviceDefinition(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): DeviceProductionIdentifierInUDI =

@@ -128,15 +128,10 @@ internal object TestReportParticipantSerializer : KSerializer<TestReport.Partici
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          TestReport.TestReportParticipantType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on TestReport.Participant"
-              )
+        Enumeration.of(type?.let { TestReport.TestReportParticipantType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on TestReport.Participant"
           ),
-          _type,
-        ),
       uri =
         Uri.of(uri, _uri)
           ?: throw SerializationException(
@@ -157,7 +152,7 @@ internal object TestReportParticipantSerializer : KSerializer<TestReport.Partici
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -445,15 +440,10 @@ internal object TestReportSetupActionOperationSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       result =
-        Enumeration.of(
-          TestReport.TestReportActionResult.fromCode(
-            result
-              ?: throw SerializationException(
-                "Missing required property 'result' on TestReport.Setup.Action.Operation"
-              )
+        Enumeration.of(result?.let { TestReport.TestReportActionResult.fromCode(it) }, _result)
+          ?: throw SerializationException(
+            "Missing required property 'result' on TestReport.Setup.Action.Operation"
           ),
-          _result,
-        ),
       message = Markdown.of(message, _message),
       detail = Uri.of(detail, _detail),
     )
@@ -473,7 +463,7 @@ internal object TestReportSetupActionOperationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.result.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.result.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.result.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.resultSer, it)
     }
@@ -582,15 +572,10 @@ internal object TestReportSetupActionAssertSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       result =
-        Enumeration.of(
-          TestReport.TestReportActionResult.fromCode(
-            result
-              ?: throw SerializationException(
-                "Missing required property 'result' on TestReport.Setup.Action.Assert"
-              )
+        Enumeration.of(result?.let { TestReport.TestReportActionResult.fromCode(it) }, _result)
+          ?: throw SerializationException(
+            "Missing required property 'result' on TestReport.Setup.Action.Assert"
           ),
-          _result,
-        ),
       message = Markdown.of(message, _message),
       detail = R5String.of(detail, _detail),
       requirement = requirement ?: listOf(),
@@ -611,7 +596,7 @@ internal object TestReportSetupActionAssertSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.result.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.result.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.result.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.resultSer, it)
     }
@@ -1349,24 +1334,14 @@ internal object TestReportSerializer : KSerializer<TestReport> {
       identifier = identifier,
       name = R5String.of(name, _name),
       status =
-        Enumeration.of(
-          TestReport.TestReportStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on TestReport")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { TestReport.TestReportStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on TestReport"),
       testScript =
         Canonical.of(testScript, _testScript)
           ?: throw SerializationException("Missing required property 'testScript' on TestReport"),
       result =
-        Enumeration.of(
-          TestReport.TestReportResult.fromCode(
-            result
-              ?: throw SerializationException("Missing required property 'result' on TestReport")
-          ),
-          _result,
-        ),
+        Enumeration.of(result?.let { TestReport.TestReportResult.fromCode(it) }, _result)
+          ?: throw SerializationException("Missing required property 'result' on TestReport"),
       score = Decimal.of(score, _score),
       tester = R5String.of(tester, _tester),
       issued = DateTime.of(FhirDateTime.fromString(issued), _issued),
@@ -1452,7 +1427,7 @@ internal object TestReportSerializer : KSerializer<TestReport> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1474,7 +1449,7 @@ internal object TestReportSerializer : KSerializer<TestReport> {
         it,
       )
     }
-    ((value.result.value?.getCode()))?.let {
+    ((value.result.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.result.toElement())?.let {

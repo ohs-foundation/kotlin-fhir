@@ -270,12 +270,8 @@ internal object SlotSerializer : KSerializer<Slot> {
       schedule =
         schedule ?: throw SerializationException("Missing required property 'schedule' on Slot"),
       status =
-        Enumeration.of(
-          Slot.SlotStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Slot")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Slot.SlotStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Slot"),
       start =
         Instant.of(FhirDateTime.fromString(start), _start)
           ?: throw SerializationException("Missing required property 'start' on Slot"),
@@ -385,7 +381,7 @@ internal object SlotSerializer : KSerializer<Slot> {
       Hoisted.scheduleSer,
       value.schedule,
     )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

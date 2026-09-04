@@ -1262,10 +1262,10 @@ public data class CarePlan(
    * plan activity.
    */
   public enum class CarePlanActivityKind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Appointment("Appointment", "http://hl7.org/fhir/resource-types", "Appointment"),
     CommunicationRequest(
       "CommunicationRequest",
@@ -1289,12 +1289,6 @@ public data class CarePlan(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): CarePlanActivityKind =
         when (code) {
@@ -1313,10 +1307,10 @@ public data class CarePlan(
 
   /** Codes that reflect the current state of a care plan activity within its overall life cycle. */
   public enum class CarePlanActivityStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Not_Started("not-started", "http://hl7.org/fhir/care-plan-activity-status", "Not Started"),
     Scheduled("scheduled", "http://hl7.org/fhir/care-plan-activity-status", "Scheduled"),
     In_Progress("in-progress", "http://hl7.org/fhir/care-plan-activity-status", "In Progress"),
@@ -1332,12 +1326,6 @@ public data class CarePlan(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CarePlanActivityStatus =
@@ -1359,10 +1347,10 @@ public data class CarePlan(
 
   /** Codes identifying the lifecycle stage of a request. */
   public enum class RequestStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Draft("draft", "http://hl7.org/fhir/request-status", "Draft"),
     Active("active", "http://hl7.org/fhir/request-status", "Active"),
     On_Hold("on-hold", "http://hl7.org/fhir/request-status", "On Hold"),
@@ -1372,12 +1360,6 @@ public data class CarePlan(
     Unknown("unknown", "http://hl7.org/fhir/request-status", "Unknown");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): RequestStatus =
@@ -1396,22 +1378,16 @@ public data class CarePlan(
 
   /** Codes indicating the degree of authority/intentionality associated with a care plan. */
   public enum class CarePlanIntent(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
     Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
     Order("order", "http://hl7.org/fhir/request-intent", "Order"),
     Option("option", "http://hl7.org/fhir/request-intent", "Option");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CarePlanIntent =

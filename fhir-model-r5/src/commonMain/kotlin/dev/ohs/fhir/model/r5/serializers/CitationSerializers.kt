@@ -1397,15 +1397,10 @@ internal object CitationCitedArtifactRelatesToSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          Citation.RelatedArtifactTypeExpanded.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on Citation.CitedArtifact.RelatesTo"
-              )
+        Enumeration.of(type?.let { Citation.RelatedArtifactTypeExpanded.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on Citation.CitedArtifact.RelatesTo"
           ),
-          _type,
-        ),
       classifier = classifier ?: listOf(),
       label = R5String.of(label, _label),
       display = R5String.of(display, _display),
@@ -1430,7 +1425,7 @@ internal object CitationCitedArtifactRelatesToSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -3116,12 +3111,8 @@ internal object CitationSerializer : KSerializer<Citation> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Citation")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Citation"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -3278,7 +3269,7 @@ internal object CitationSerializer : KSerializer<Citation> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

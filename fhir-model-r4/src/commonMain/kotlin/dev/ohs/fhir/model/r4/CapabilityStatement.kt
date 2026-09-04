@@ -3014,20 +3014,14 @@ public data class CapabilityStatement(
 
   /** The mode of a RESTful capability statement. */
   public enum class RestfulCapabilityMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Client("client", "http://hl7.org/fhir/restful-capability-mode", "Client"),
     Server("server", "http://hl7.org/fhir/restful-capability-mode", "Server");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): RestfulCapabilityMode =
@@ -3042,10 +3036,10 @@ public data class CapabilityStatement(
 
   /** How the system supports versioning for a resource. */
   public enum class ResourceVersionPolicy(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     No_Version("no-version", "http://hl7.org/fhir/versioning-policy", "No VersionId Support"),
     Versioned("versioned", "http://hl7.org/fhir/versioning-policy", "Versioned"),
     Versioned_Update(
@@ -3055,12 +3049,6 @@ public data class CapabilityStatement(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ResourceVersionPolicy =
@@ -3076,10 +3064,10 @@ public data class CapabilityStatement(
 
   /** A code that indicates how the server supports conditional read. */
   public enum class ConditionalReadStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Not_Supported("not-supported", "http://hl7.org/fhir/conditional-read-status", "Not Supported"),
     Modified_Since(
       "modified-since",
@@ -3090,12 +3078,6 @@ public data class CapabilityStatement(
     Full_Support("full-support", "http://hl7.org/fhir/conditional-read-status", "Full Support");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ConditionalReadStatus =
@@ -3112,10 +3094,10 @@ public data class CapabilityStatement(
 
   /** A code that indicates how the server supports conditional delete. */
   public enum class ConditionalDeleteStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Not_Supported(
       "not-supported",
       "http://hl7.org/fhir/conditional-delete-status",
@@ -3129,12 +3111,6 @@ public data class CapabilityStatement(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ConditionalDeleteStatus =
@@ -3150,10 +3126,10 @@ public data class CapabilityStatement(
 
   /** A set of flags that defines how references are supported. */
   public enum class ReferenceHandlingPolicy(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Literal("literal", "http://hl7.org/fhir/reference-handling-policy", "Literal References"),
     Logical("logical", "http://hl7.org/fhir/reference-handling-policy", "Logical References"),
     Resolves("resolves", "http://hl7.org/fhir/reference-handling-policy", "Resolves References"),
@@ -3165,12 +3141,6 @@ public data class CapabilityStatement(
     Local("local", "http://hl7.org/fhir/reference-handling-policy", "Local References Only");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ReferenceHandlingPolicy =
@@ -3188,10 +3158,10 @@ public data class CapabilityStatement(
 
   /** Operations supported by REST at the type or instance level. */
   public enum class TypeRestfulInteraction(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Read("read", "http://hl7.org/fhir/restful-interaction", "read"),
     Vread("vread", "http://hl7.org/fhir/restful-interaction", "vread"),
     Update("update", "http://hl7.org/fhir/restful-interaction", "update"),
@@ -3207,12 +3177,6 @@ public data class CapabilityStatement(
     Search_Type("search-type", "http://hl7.org/fhir/restful-interaction", "search-type");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TypeRestfulInteraction =
@@ -3234,22 +3198,16 @@ public data class CapabilityStatement(
 
   /** Operations supported by REST at the system level. */
   public enum class SystemRestfulInteraction(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Transaction("transaction", "http://hl7.org/fhir/restful-interaction", "transaction"),
     Batch("batch", "http://hl7.org/fhir/restful-interaction", "batch"),
     Search_System("search-system", "http://hl7.org/fhir/restful-interaction", "search-system"),
     History_System("history-system", "http://hl7.org/fhir/restful-interaction", "history-system");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SystemRestfulInteraction =
@@ -3266,20 +3224,14 @@ public data class CapabilityStatement(
 
   /** The mode of a message capability statement. */
   public enum class EventCapabilityMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Sender("sender", "http://hl7.org/fhir/event-capability-mode", "Sender"),
     Receiver("receiver", "http://hl7.org/fhir/event-capability-mode", "Receiver");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): EventCapabilityMode =
@@ -3293,20 +3245,14 @@ public data class CapabilityStatement(
 
   /** Whether the application produces or consumes documents. */
   public enum class DocumentMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Producer("producer", "http://hl7.org/fhir/document-mode", "Producer"),
     Consumer("consumer", "http://hl7.org/fhir/document-mode", "Consumer");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): DocumentMode =
@@ -3320,21 +3266,15 @@ public data class CapabilityStatement(
 
   /** How a capability statement is intended to be used. */
   public enum class CapabilityStatementKind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Instance("instance", "http://hl7.org/fhir/capability-statement-kind", "Instance"),
     Capability("capability", "http://hl7.org/fhir/capability-statement-kind", "Capability"),
     Requirements("requirements", "http://hl7.org/fhir/capability-statement-kind", "Requirements");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CapabilityStatementKind =

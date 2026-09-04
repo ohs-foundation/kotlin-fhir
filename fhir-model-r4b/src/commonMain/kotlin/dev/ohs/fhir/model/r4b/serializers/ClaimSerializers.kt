@@ -2503,21 +2503,13 @@ internal object ClaimSerializer : KSerializer<Claim> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Claim.FinancialResourceStatusCodes.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Claim")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Claim.FinancialResourceStatusCodes.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Claim"),
       type = type ?: throw SerializationException("Missing required property 'type' on Claim"),
       subType = subType,
       use =
-        Enumeration.of(
-          Claim.Use.fromCode(
-            use ?: throw SerializationException("Missing required property 'use' on Claim")
-          ),
-          _use,
-        ),
+        Enumeration.of(use?.let { Claim.Use.fromCode(it) }, _use)
+          ?: throw SerializationException("Missing required property 'use' on Claim"),
       patient =
         patient ?: throw SerializationException("Missing required property 'patient' on Claim"),
       billablePeriod = billablePeriod,
@@ -2611,7 +2603,7 @@ internal object ClaimSerializer : KSerializer<Claim> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -2631,7 +2623,7 @@ internal object ClaimSerializer : KSerializer<Claim> {
     (value.subType)?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.typeSer, it)
     }
-    ((value.use.value?.getCode()))?.let {
+    ((value.use.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.use.toElement())?.let {

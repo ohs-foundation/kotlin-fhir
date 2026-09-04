@@ -163,7 +163,7 @@ internal object PatientContactSerializer : KSerializer<Patient.Contact> {
       name = name,
       telecom = telecom ?: listOf(),
       address = address,
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       organization = organization,
       period = period,
     )
@@ -188,7 +188,7 @@ internal object PatientContactSerializer : KSerializer<Patient.Contact> {
     (value.address)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.addressSer, it)
     }
-    ((value.gender?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.gender?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.gender?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.genderSer, it)
     }
@@ -386,12 +386,8 @@ internal object PatientLinkSerializer : KSerializer<Patient.Link> {
       other =
         other ?: throw SerializationException("Missing required property 'other' on Patient.Link"),
       type =
-        Enumeration.of(
-          Patient.LinkType.fromCode(
-            type ?: throw SerializationException("Missing required property 'type' on Patient.Link")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Patient.LinkType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Patient.Link"),
     )
   }
 
@@ -407,7 +403,7 @@ internal object PatientLinkSerializer : KSerializer<Patient.Link> {
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.otherSer, value.other)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it)
     }
@@ -665,7 +661,7 @@ internal object PatientSerializer : KSerializer<Patient> {
       active = R5Boolean.of(active, _active),
       name = name ?: listOf(),
       telecom = telecom ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       birthDate = Date.of(FhirDate.fromString(birthDate), _birthDate),
       deceased =
         Patient.Deceased.from(
@@ -776,7 +772,7 @@ internal object PatientSerializer : KSerializer<Patient> {
         Hoisted.telecomSer,
         value.telecom,
       )
-    ((value.gender?.value?.getCode()))?.let {
+    ((value.gender?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.gender?.toElement())?.let {

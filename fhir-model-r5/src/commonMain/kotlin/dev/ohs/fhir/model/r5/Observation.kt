@@ -1686,21 +1686,15 @@ public data class Observation(
 
   /** Codes providing the type of triggeredBy observation. */
   public enum class TriggeredBytype(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Reflex("reflex", "http://hl7.org/fhir/observation-triggeredbytype", "Reflex"),
     Repeat("repeat", "http://hl7.org/fhir/observation-triggeredbytype", "Repeat (per policy)"),
     Re_Run("re-run", "http://hl7.org/fhir/observation-triggeredbytype", "Re-run (per policy)");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): TriggeredBytype =
@@ -1715,10 +1709,10 @@ public data class Observation(
 
   /** Codes providing the status of an observation. */
   public enum class ObservationStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Registered("registered", "http://hl7.org/fhir/observation-status", "Registered"),
     Preliminary("preliminary", "http://hl7.org/fhir/observation-status", "Preliminary"),
     Final("final", "http://hl7.org/fhir/observation-status", "Final"),
@@ -1733,12 +1727,6 @@ public data class Observation(
     Unknown("unknown", "http://hl7.org/fhir/observation-status", "Unknown");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ObservationStatus =

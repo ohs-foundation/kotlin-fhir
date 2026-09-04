@@ -1001,7 +1001,7 @@ internal object EvidenceStatisticModelCharacteristicVariableSerializer :
             "Missing required property 'variableDefinition' on Evidence.Statistic.ModelCharacteristic.Variable"
           ),
       handling =
-        handling?.let { Enumeration.of(Evidence.EvidenceVariableHandling.fromCode(it), _handling) },
+        Enumeration.of(handling?.let { Evidence.EvidenceVariableHandling.fromCode(it) }, _handling),
       valueCategory = valueCategory ?: listOf(),
       valueQuantity = valueQuantity ?: listOf(),
       valueRange = valueRange ?: listOf(),
@@ -1028,7 +1028,7 @@ internal object EvidenceStatisticModelCharacteristicVariableSerializer :
       Hoisted.variableDefinitionSer,
       value.variableDefinition,
     )
-    ((value.handling?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.handling?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.handling?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.handlingSer, it)
     }
@@ -1607,12 +1607,8 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
       title = R5String.of(title, _title),
       citeAs = Evidence.CiteAs.from(citeAsReference, Markdown.of(citeAsMarkdown, _citeAsMarkdown)),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Evidence")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Evidence"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
@@ -1792,7 +1788,7 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
         }
       }
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

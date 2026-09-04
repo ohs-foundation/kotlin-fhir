@@ -950,10 +950,10 @@ public data class NutritionProduct(
 
   /** Codes identifying the lifecycle stage of a product. */
   public enum class NutritionProductStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/nutritionproduct-status", "Active"),
     Inactive("inactive", "http://hl7.org/fhir/nutritionproduct-status", "Inactive"),
     Entered_In_Error(
@@ -963,12 +963,6 @@ public data class NutritionProduct(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): NutritionProductStatus =

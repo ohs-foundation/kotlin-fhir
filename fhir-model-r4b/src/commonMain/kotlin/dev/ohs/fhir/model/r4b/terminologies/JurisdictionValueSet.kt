@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /**
@@ -28,10 +29,10 @@ import kotlin.String
  * [UN Standard country or area codes for statistical use (M49)](http://unstats.un.org/unsd/methods/m49/m49.htm).
  */
 public enum class JurisdictionValueSet(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Ad("AD", "urn:iso:std:iso:3166", "Andorra"),
   Ae("AE", "urn:iso:std:iso:3166", "United Arab Emirates"),
   Af("AF", "urn:iso:std:iso:3166", "Afghanistan"),
@@ -1858,12 +1859,6 @@ public enum class JurisdictionValueSet(
   _061("061", "http://unstats.un.org/unsd/methods/m49/m49.htm", "Polynesia");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): JurisdictionValueSet =

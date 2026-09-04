@@ -905,10 +905,10 @@ public data class MedicationDispense(
 
   /** MedicationDispense Status Codes */
   public enum class MedicationDispenseStatusCodes(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Preparation(
       "preparation",
       "http://hl7.org/fhir/CodeSystem/medicationdispense-status",
@@ -932,12 +932,6 @@ public data class MedicationDispense(
     Unknown("unknown", "http://hl7.org/fhir/CodeSystem/medicationdispense-status", "Unknown");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): MedicationDispenseStatusCodes =

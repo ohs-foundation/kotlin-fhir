@@ -161,9 +161,9 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
       `operator` =
         (kotlin.collections.List(maxOf(`operator`?.size ?: 0, _operator?.size ?: 0)) { index ->
           Enumeration.of(
-            CodeSystem.FilterOperator.fromCode(`operator`?.getOrNull(index)!!),
+            `operator`?.getOrNull(index)?.let { CodeSystem.FilterOperator.fromCode(it) },
             _operator?.getOrNull(index),
-          )
+          )!!
         }),
       `value` =
         R4String.of(`value`, _value)
@@ -190,7 +190,7 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, it)
     }
-    (value.`operator`.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.`operator`.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.operatorSer, it)
     }
     (value.`operator`.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -303,15 +303,10 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
       uri = Uri.of(uri, _uri),
       description = R4String.of(description, _description),
       type =
-        Enumeration.of(
-          CodeSystem.PropertyType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on CodeSystem.Property"
-              )
+        Enumeration.of(type?.let { CodeSystem.PropertyType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on CodeSystem.Property"
           ),
-          _type,
-        ),
     )
   }
 
@@ -338,7 +333,7 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.codeSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.codeSer, it)
     }
@@ -591,7 +586,7 @@ internal object CodeSystemConceptDesignationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      language = language?.let { Enumeration.of(CommonLanguages.fromCode(it), _language) },
+      language = Enumeration.of(language?.let { CommonLanguages.fromCode(it) }, _language),
       use = use,
       `value` =
         R4String.of(`value`, _value)
@@ -615,7 +610,7 @@ internal object CodeSystemConceptDesignationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.language?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.languageSer, it)
     }
@@ -1156,13 +1151,8 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on CodeSystem")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on CodeSystem"),
       experimental = R4Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
@@ -1175,19 +1165,15 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
       caseSensitive = R4Boolean.of(caseSensitive, _caseSensitive),
       valueSet = Canonical.of(valueSet, _valueSet),
       hierarchyMeaning =
-        hierarchyMeaning?.let {
-          Enumeration.of(CodeSystem.CodeSystemHierarchyMeaning.fromCode(it), _hierarchyMeaning)
-        },
+        Enumeration.of(
+          hierarchyMeaning?.let { CodeSystem.CodeSystemHierarchyMeaning.fromCode(it) },
+          _hierarchyMeaning,
+        ),
       compositional = R4Boolean.of(compositional, _compositional),
       versionNeeded = R4Boolean.of(versionNeeded, _versionNeeded),
       content =
-        Enumeration.of(
-          CodeSystem.CodeSystemContentMode.fromCode(
-            content
-              ?: throw SerializationException("Missing required property 'content' on CodeSystem")
-          ),
-          _content,
-        ),
+        Enumeration.of(content?.let { CodeSystem.CodeSystemContentMode.fromCode(it) }, _content)
+          ?: throw SerializationException("Missing required property 'content' on CodeSystem"),
       supplements = Canonical.of(supplements, _supplements),
       count = UnsignedInt.of(count, _count),
       filter = filter ?: listOf(),
@@ -1301,7 +1287,7 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1421,7 +1407,7 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
         it,
       )
     }
-    ((value.hierarchyMeaning?.value?.getCode()))?.let {
+    ((value.hierarchyMeaning?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 40 + descriptorOffset, it)
     }
     (value.hierarchyMeaning?.toElement())?.let {
@@ -1454,7 +1440,7 @@ internal object CodeSystemSerializer : KSerializer<CodeSystem> {
         it,
       )
     }
-    ((value.content.value?.getCode()))?.let {
+    ((value.content.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 46 + descriptorOffset, it)
     }
     (value.content.toElement())?.let {

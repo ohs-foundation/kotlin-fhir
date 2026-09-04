@@ -23,7 +23,6 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.TypeVariableName
@@ -53,9 +52,7 @@ object EnumerationFileSpecGenerator {
               R5 -> "PrimitiveType"
               else -> error("Enum generation is not supported for version: $version")
             }
-          // Define T with upper bound of Enum<*>
-          val typeVariable =
-            TypeVariableName("T", ClassName("kotlin", "Enum").parameterizedBy(STAR))
+          val typeVariable = TypeVariableName("T", ClassName(packageName, "FhirEnum"))
           val extensionClassName = ClassName(packageName, "Extension")
           val elementClassName = ClassName(packageName, "Element")
           addTypeVariable(typeVariable)
@@ -132,13 +129,17 @@ object EnumerationFileSpecGenerator {
               .addFunction(
                 FunSpec.builder("of")
                   .addTypeVariable(typeVariable)
-                  .addParameter(ParameterSpec.builder("value", typeVariable).build())
+                  .addParameter(
+                    ParameterSpec.builder("value", typeVariable.copy(nullable = true)).build()
+                  )
                   .addParameter(
                     ParameterSpec.builder("element", elementClassName.copy(nullable = true)).build()
                   )
-                  .returns(ClassName("", "Enumeration").parameterizedBy(typeVariable))
+                  .returns(
+                    ClassName("", "Enumeration").parameterizedBy(typeVariable).copy(nullable = true)
+                  )
                   .addStatement(
-                    "return Enumeration(element?.id, element?.extension ?: listOf(), value = value)"
+                    "return if (value != null || element?.id != null || element?.extension?.isEmpty() == false) { Enumeration(element?.id, element?.extension ?: listOf(), value = value) } else { null }"
                   )
                   .build()
               )

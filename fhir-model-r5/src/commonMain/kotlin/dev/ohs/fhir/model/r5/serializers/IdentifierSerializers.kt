@@ -119,7 +119,7 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
     return Identifier(
       id = id,
       extension = extension ?: listOf(),
-      use = use?.let { Enumeration.of(Identifier.IdentifierUse.fromCode(it), _use) },
+      use = Enumeration.of(use?.let { Identifier.IdentifierUse.fromCode(it) }, _use),
       type = type,
       system = Uri.of(system, _system),
       `value` = R5String.of(`value`, _value),
@@ -132,7 +132,7 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
+    ((value.use?.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.use?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.useSer, it)
     }

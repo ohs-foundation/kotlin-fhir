@@ -1208,21 +1208,15 @@ public data class MeasureReport(
 
   /** The status of the measure report. */
   public enum class MeasureReportStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Complete("complete", "http://hl7.org/fhir/measure-report-status", "Complete"),
     Pending("pending", "http://hl7.org/fhir/measure-report-status", "Pending"),
     Error("error", "http://hl7.org/fhir/measure-report-status", "Error");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): MeasureReportStatus =
@@ -1237,10 +1231,10 @@ public data class MeasureReport(
 
   /** The type of the measure report. */
   public enum class MeasureReportType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Individual("individual", "http://hl7.org/fhir/measure-report-type", "Individual"),
     Subject_List("subject-list", "http://hl7.org/fhir/measure-report-type", "Subject List"),
     Summary("summary", "http://hl7.org/fhir/measure-report-type", "Summary"),
@@ -1251,12 +1245,6 @@ public data class MeasureReport(
     );
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): MeasureReportType =

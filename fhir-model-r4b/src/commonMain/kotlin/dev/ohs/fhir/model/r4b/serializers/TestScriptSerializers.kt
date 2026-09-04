@@ -1358,7 +1358,7 @@ internal object TestScriptSetupActionOperationSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type = type,
-      resource = resource?.let { Enumeration.of(FHIRDefinedType.fromCode(it), _resource) },
+      resource = Enumeration.of(resource?.let { FHIRDefinedType.fromCode(it) }, _resource),
       label = R4bString.of(label, _label),
       description = R4bString.of(description, _description),
       accept = Code.of(accept, _accept),
@@ -1370,9 +1370,10 @@ internal object TestScriptSetupActionOperationSerializer :
             "Missing required property 'encodeRequestUrl' on TestScript.Setup.Action.Operation"
           ),
       method =
-        method?.let {
-          Enumeration.of(TestScript.TestScriptRequestMethodCode.fromCode(it), _method)
-        },
+        Enumeration.of(
+          method?.let { TestScript.TestScriptRequestMethodCode.fromCode(it) },
+          _method,
+        ),
       origin = Integer.of(origin, _origin),
       params = R4bString.of(params, _params),
       requestHeader = requestHeader ?: listOf(),
@@ -1399,7 +1400,7 @@ internal object TestScriptSetupActionOperationSerializer :
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    ((value.resource?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.resource?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.resource?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.resourceSer, it)
     }
@@ -1427,7 +1428,7 @@ internal object TestScriptSetupActionOperationSerializer :
     (value.encodeRequestUrl.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 17, Hoisted.resourceSer, it)
     }
-    ((value.method?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 18, it) }
+    ((value.method?.value?.code))?.let { encoder.encodeStringElement(descriptor, 18, it) }
     (value.method?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 19, Hoisted.resourceSer, it)
     }
@@ -1827,9 +1828,10 @@ internal object TestScriptSetupActionAssertSerializer :
       label = R4bString.of(label, _label),
       description = R4bString.of(description, _description),
       direction =
-        direction?.let {
-          Enumeration.of(TestScript.AssertionDirectionType.fromCode(it), _direction)
-        },
+        Enumeration.of(
+          direction?.let { TestScript.AssertionDirectionType.fromCode(it) },
+          _direction,
+        ),
       compareToSourceId = R4bString.of(compareToSourceId, _compareToSourceId),
       compareToSourceExpression =
         R4bString.of(compareToSourceExpression, _compareToSourceExpression),
@@ -1840,18 +1842,20 @@ internal object TestScriptSetupActionAssertSerializer :
       minimumId = R4bString.of(minimumId, _minimumId),
       navigationLinks = R4bBoolean.of(navigationLinks, _navigationLinks),
       `operator` =
-        `operator`?.let {
-          Enumeration.of(TestScript.AssertionOperatorType.fromCode(it), _operator)
-        },
+        Enumeration.of(
+          `operator`?.let { TestScript.AssertionOperatorType.fromCode(it) },
+          _operator,
+        ),
       path = R4bString.of(path, _path),
       requestMethod =
-        requestMethod?.let {
-          Enumeration.of(TestScript.TestScriptRequestMethodCode.fromCode(it), _requestMethod)
-        },
+        Enumeration.of(
+          requestMethod?.let { TestScript.TestScriptRequestMethodCode.fromCode(it) },
+          _requestMethod,
+        ),
       requestURL = R4bString.of(requestURL, _requestURL),
-      resource = resource?.let { Enumeration.of(FHIRDefinedType.fromCode(it), _resource) },
+      resource = Enumeration.of(resource?.let { FHIRDefinedType.fromCode(it) }, _resource),
       response =
-        response?.let { Enumeration.of(TestScript.AssertionResponseTypes.fromCode(it), _response) },
+        Enumeration.of(response?.let { TestScript.AssertionResponseTypes.fromCode(it) }, _response),
       responseCode = R4bString.of(responseCode, _responseCode),
       sourceId = Id.of(sourceId, _sourceId),
       validateProfileId = Id.of(validateProfileId, _validateProfileId),
@@ -1886,7 +1890,7 @@ internal object TestScriptSetupActionAssertSerializer :
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.labelSer, it)
     }
-    ((value.direction?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+    ((value.direction?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.direction?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.labelSer, it)
     }
@@ -1924,7 +1928,7 @@ internal object TestScriptSetupActionAssertSerializer :
     (value.navigationLinks?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 24, Hoisted.labelSer, it)
     }
-    ((value.`operator`?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 25, it) }
+    ((value.`operator`?.value?.code))?.let { encoder.encodeStringElement(descriptor, 25, it) }
     (value.`operator`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 26, Hoisted.labelSer, it)
     }
@@ -1932,9 +1936,7 @@ internal object TestScriptSetupActionAssertSerializer :
     (value.path?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 28, Hoisted.labelSer, it)
     }
-    ((value.requestMethod?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 29, it)
-    }
+    ((value.requestMethod?.value?.code))?.let { encoder.encodeStringElement(descriptor, 29, it) }
     (value.requestMethod?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 30, Hoisted.labelSer, it)
     }
@@ -1942,11 +1944,11 @@ internal object TestScriptSetupActionAssertSerializer :
     (value.requestURL?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 32, Hoisted.labelSer, it)
     }
-    ((value.resource?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 33, it) }
+    ((value.resource?.value?.code))?.let { encoder.encodeStringElement(descriptor, 33, it) }
     (value.resource?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 34, Hoisted.labelSer, it)
     }
-    ((value.response?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 35, it) }
+    ((value.response?.value?.code))?.let { encoder.encodeStringElement(descriptor, 35, it) }
     (value.response?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 36, Hoisted.labelSer, it)
     }
@@ -2676,13 +2678,8 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
           ?: throw SerializationException("Missing required property 'name' on TestScript"),
       title = R4bString.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on TestScript")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on TestScript"),
       experimental = R4bBoolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4bString.of(publisher, _publisher),
@@ -2808,7 +2805,7 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -212,11 +212,12 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        status?.let {
-          Enumeration.of(EnrollmentResponse.FinancialResourceStatusCodes.fromCode(it), _status)
-        },
+        Enumeration.of(
+          status?.let { EnrollmentResponse.FinancialResourceStatusCodes.fromCode(it) },
+          _status,
+        ),
       request = request,
-      outcome = outcome?.let { Enumeration.of(ClaimProcessingCodes.fromCode(it), _outcome) },
+      outcome = Enumeration.of(outcome?.let { ClaimProcessingCodes.fromCode(it) }, _outcome),
       disposition = R4String.of(disposition, _disposition),
       created = DateTime.of(FhirDateTime.fromString(created), _created),
       organization = organization,
@@ -287,7 +288,7 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
@@ -301,7 +302,7 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
     (value.request)?.let {
       encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.requestSer, it)
     }
-    ((value.outcome?.value?.getCode()))?.let {
+    ((value.outcome?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.outcome?.toElement())?.let {

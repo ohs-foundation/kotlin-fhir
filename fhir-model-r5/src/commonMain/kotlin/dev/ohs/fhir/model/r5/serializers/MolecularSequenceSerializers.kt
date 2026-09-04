@@ -391,10 +391,11 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
       windowStart = Integer.of(windowStart, _windowStart),
       windowEnd = Integer.of(windowEnd, _windowEnd),
       orientation =
-        orientation?.let {
-          Enumeration.of(MolecularSequence.OrientationType.fromCode(it), _orientation)
-        },
-      strand = strand?.let { Enumeration.of(MolecularSequence.StrandType.fromCode(it), _strand) },
+        Enumeration.of(
+          orientation?.let { MolecularSequence.OrientationType.fromCode(it) },
+          _orientation,
+        ),
+      strand = Enumeration.of(strand?.let { MolecularSequence.StrandType.fromCode(it) }, _strand),
     )
   }
 
@@ -441,11 +442,11 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
     (value.windowEnd?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.sequenceStringSer, it)
     }
-    ((value.orientation?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+    ((value.orientation?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.orientation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.sequenceStringSer, it)
     }
-    ((value.strand?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+    ((value.strand?.value?.code))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.strand?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.sequenceStringSer, it)
     }
@@ -756,7 +757,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      type = type?.let { Enumeration.of(MolecularSequence.SequenceType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { MolecularSequence.SequenceType.fromCode(it) }, _type),
       subject = subject,
       focus = focus ?: listOf(),
       specimen = specimen,
@@ -831,7 +832,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.type?.value?.getCode()))?.let {
+    ((value.type?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.type?.toElement())?.let {

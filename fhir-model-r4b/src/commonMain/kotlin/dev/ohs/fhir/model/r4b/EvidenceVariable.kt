@@ -1193,10 +1193,10 @@ public data class EvidenceVariable(
 
   /** Possible group measure aggregates (E.g. Mean, Median). */
   public enum class GroupMeasure(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Mean("mean", "http://hl7.org/fhir/group-measure", "Mean"),
     Median("median", "http://hl7.org/fhir/group-measure", "Median"),
     Mean_Of_Mean("mean-of-mean", "http://hl7.org/fhir/group-measure", "Mean of Study Means"),
@@ -1209,12 +1209,6 @@ public data class EvidenceVariable(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): GroupMeasure =
@@ -1232,20 +1226,14 @@ public data class EvidenceVariable(
 
   /** Logical grouping of characteristics. */
   public enum class CharacteristicCombination(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Intersection("intersection", "http://hl7.org/fhir/characteristic-combination", "intersection"),
     Union("union", "http://hl7.org/fhir/characteristic-combination", "union");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CharacteristicCombination =
@@ -1263,10 +1251,10 @@ public data class EvidenceVariable(
    * Dichotomous, Continuous, Descriptive).
    */
   public enum class EvidenceVariableHandling(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Continuous("continuous", "http://hl7.org/fhir/variable-handling", "continuous variable"),
     Dichotomous("dichotomous", "http://hl7.org/fhir/variable-handling", "dichotomous variable"),
     Ordinal("ordinal", "http://hl7.org/fhir/variable-handling", "ordinal variable"),
@@ -1277,12 +1265,6 @@ public data class EvidenceVariable(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): EvidenceVariableHandling =

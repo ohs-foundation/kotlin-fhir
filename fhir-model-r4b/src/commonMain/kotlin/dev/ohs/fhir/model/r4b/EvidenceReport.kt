@@ -1356,10 +1356,10 @@ public data class EvidenceReport(
 
   /** The type of relationship between reports. */
   public enum class ReportRelationshipType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Replaces("replaces", "http://hl7.org/fhir/report-relation-type", "Replaces"),
     Amends("amends", "http://hl7.org/fhir/report-relation-type", "Amends"),
     Appends("appends", "http://hl7.org/fhir/report-relation-type", "Appends"),
@@ -1374,12 +1374,6 @@ public data class EvidenceReport(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ReportRelationshipType =
@@ -1400,21 +1394,15 @@ public data class EvidenceReport(
 
   /** The processing mode that applies to this list. */
   public enum class ListMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Working("working", "http://hl7.org/fhir/list-mode", "Working List"),
     Snapshot("snapshot", "http://hl7.org/fhir/list-mode", "Snapshot List"),
     Changes("changes", "http://hl7.org/fhir/list-mode", "Change List");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ListMode =

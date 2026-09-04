@@ -658,10 +658,10 @@ public data class EpisodeOfCare(
 
   /** The status of the episode of care. */
   public enum class EpisodeOfCareStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Planned("planned", "http://hl7.org/fhir/episode-of-care-status", "Planned"),
     Waitlist("waitlist", "http://hl7.org/fhir/episode-of-care-status", "Waitlist"),
     Active("active", "http://hl7.org/fhir/episode-of-care-status", "Active"),
@@ -675,12 +675,6 @@ public data class EpisodeOfCare(
     );
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): EpisodeOfCareStatus =

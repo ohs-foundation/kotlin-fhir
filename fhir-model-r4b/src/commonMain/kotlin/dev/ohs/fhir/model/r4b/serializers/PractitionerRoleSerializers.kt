@@ -176,9 +176,9 @@ internal object PractitionerRoleAvailableTimeSerializer :
       daysOfWeek =
         (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            PractitionerRole.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(index)!!),
+            daysOfWeek?.getOrNull(index)?.let { PractitionerRole.DaysOfWeek.fromCode(it) },
             _daysOfWeek?.getOrNull(index),
-          )
+          )!!
         }),
       allDay = R4bBoolean.of(allDay, _allDay),
       availableStartTime = Time.of(availableStartTime, _availableStartTime),
@@ -200,7 +200,7 @@ internal object PractitionerRoleAvailableTimeSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.daysOfWeek.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.daysOfWeek.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.daysOfWeekSer, it)
     }
     (value.daysOfWeek.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

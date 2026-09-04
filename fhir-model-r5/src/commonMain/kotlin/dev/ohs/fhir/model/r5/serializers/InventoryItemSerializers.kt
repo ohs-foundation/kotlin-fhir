@@ -146,15 +146,10 @@ internal object InventoryItemNameSerializer : KSerializer<InventoryItem.Name> {
             "Missing required property 'nameType' on InventoryItem.Name"
           ),
       language =
-        Enumeration.of(
-          InventoryItem.CommonLanguages.fromCode(
-            language
-              ?: throw SerializationException(
-                "Missing required property 'language' on InventoryItem.Name"
-              )
+        Enumeration.of(language?.let { InventoryItem.CommonLanguages.fromCode(it) }, _language)
+          ?: throw SerializationException(
+            "Missing required property 'language' on InventoryItem.Name"
           ),
-          _language,
-        ),
       name =
         R5String.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on InventoryItem.Name"),
@@ -173,7 +168,7 @@ internal object InventoryItemNameSerializer : KSerializer<InventoryItem.Name> {
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameTypeSer, value.nameType)
-    ((value.language.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.language.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.language.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.languageSer, it)
     }
@@ -363,7 +358,7 @@ internal object InventoryItemDescriptionSerializer : KSerializer<InventoryItem.D
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       language =
-        language?.let { Enumeration.of(InventoryItem.CommonLanguages.fromCode(it), _language) },
+        Enumeration.of(language?.let { InventoryItem.CommonLanguages.fromCode(it) }, _language),
       description = R5String.of(description, _description),
     )
   }
@@ -379,7 +374,7 @@ internal object InventoryItemDescriptionSerializer : KSerializer<InventoryItem.D
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.language?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.languageSer, it)
     }
@@ -1171,13 +1166,8 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          InventoryItem.InventoryItemStatusCodes.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on InventoryItem")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { InventoryItem.InventoryItemStatusCodes.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on InventoryItem"),
       category = category ?: listOf(),
       code = code ?: listOf(),
       name = name ?: listOf(),
@@ -1256,7 +1246,7 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

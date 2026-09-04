@@ -370,7 +370,7 @@ internal object PaymentReconciliationProcessNoteSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type?.let { Enumeration.of(NoteType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { NoteType.fromCode(it) }, _type),
       text = R5String.of(text, _text),
     )
   }
@@ -389,7 +389,7 @@ internal object PaymentReconciliationProcessNoteSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -721,14 +721,12 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
           ),
       status =
         Enumeration.of(
-          PaymentReconciliation.FinancialResourceStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on PaymentReconciliation"
-              )
-          ),
+          status?.let { PaymentReconciliation.FinancialResourceStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on PaymentReconciliation"
+          ),
       kind = kind,
       period = period,
       created =
@@ -742,9 +740,10 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       request = request,
       requestor = requestor,
       outcome =
-        outcome?.let {
-          Enumeration.of(PaymentReconciliation.PaymentOutcome.fromCode(it), _outcome)
-        },
+        Enumeration.of(
+          outcome?.let { PaymentReconciliation.PaymentOutcome.fromCode(it) },
+          _outcome,
+        ),
       disposition = R5String.of(disposition, _disposition),
       date =
         Date.of(FhirDate.fromString(date), _date)
@@ -842,7 +841,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       Hoisted.typeSer,
       value.type,
     )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -885,7 +884,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
     (value.requestor)?.let {
       encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, Hoisted.entererSer, it)
     }
-    ((value.outcome?.value?.getCode()))?.let {
+    ((value.outcome?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.outcome?.toElement())?.let {

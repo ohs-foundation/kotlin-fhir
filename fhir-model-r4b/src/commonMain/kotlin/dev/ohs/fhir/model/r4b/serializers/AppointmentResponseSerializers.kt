@@ -231,14 +231,12 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
       actor = actor,
       participantStatus =
         Enumeration.of(
-          AppointmentResponse.ParticipationStatus.fromCode(
-            participantStatus
-              ?: throw SerializationException(
-                "Missing required property 'participantStatus' on AppointmentResponse"
-              )
-          ),
+          participantStatus?.let { AppointmentResponse.ParticipationStatus.fromCode(it) },
           _participantStatus,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'participantStatus' on AppointmentResponse"
+          ),
       comment = R4bString.of(comment, _comment),
     )
   }
@@ -349,7 +347,7 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
         it,
       )
     }
-    ((value.participantStatus.value?.getCode()))?.let {
+    ((value.participantStatus.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.participantStatus.toElement())?.let {

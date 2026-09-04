@@ -183,13 +183,14 @@ internal object MolecularSequenceReferenceSeqSerializer :
       chromosome = chromosome,
       genomeBuild = R4String.of(genomeBuild, _genomeBuild),
       orientation =
-        orientation?.let {
-          Enumeration.of(MolecularSequence.OrientationType.fromCode(it), _orientation)
-        },
+        Enumeration.of(
+          orientation?.let { MolecularSequence.OrientationType.fromCode(it) },
+          _orientation,
+        ),
       referenceSeqId = referenceSeqId,
       referenceSeqPointer = referenceSeqPointer,
       referenceSeqString = R4String.of(referenceSeqString, _referenceSeqString),
-      strand = strand?.let { Enumeration.of(MolecularSequence.StrandType.fromCode(it), _strand) },
+      strand = Enumeration.of(strand?.let { MolecularSequence.StrandType.fromCode(it) }, _strand),
       windowStart = Integer.of(windowStart, _windowStart),
       windowEnd = Integer.of(windowEnd, _windowEnd),
     )
@@ -216,7 +217,7 @@ internal object MolecularSequenceReferenceSeqSerializer :
     (value.genomeBuild?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.genomeBuildSer, it)
     }
-    ((value.orientation?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.orientation?.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.orientation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.genomeBuildSer, it)
     }
@@ -230,7 +231,7 @@ internal object MolecularSequenceReferenceSeqSerializer :
     (value.referenceSeqString?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.genomeBuildSer, it)
     }
-    ((value.strand?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+    ((value.strand?.value?.code))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.strand?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.genomeBuildSer, it)
     }
@@ -581,15 +582,10 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          MolecularSequence.QualityType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on MolecularSequence.Quality"
-              )
+        Enumeration.of(type?.let { MolecularSequence.QualityType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on MolecularSequence.Quality"
           ),
-          _type,
-        ),
       standardSequence = standardSequence,
       start = Integer.of(start, _start),
       end = Integer.of(end, _end),
@@ -618,7 +614,7 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1028,15 +1024,10 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          MolecularSequence.RepositoryType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on MolecularSequence.Repository"
-              )
+        Enumeration.of(type?.let { MolecularSequence.RepositoryType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on MolecularSequence.Repository"
           ),
-          _type,
-        ),
       url = Uri.of(url, _url),
       name = R4String.of(name, _name),
       datasetId = R4String.of(datasetId, _datasetId),
@@ -1056,7 +1047,7 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1657,7 +1648,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      type = type?.let { Enumeration.of(MolecularSequence.SequenceType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { MolecularSequence.SequenceType.fromCode(it) }, _type),
       coordinateSystem =
         Integer.of(coordinateSystem, _coordinateSystem)
           ?: throw SerializationException(
@@ -1742,7 +1733,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.type?.value?.getCode()))?.let {
+    ((value.type?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.type?.toElement())?.let {

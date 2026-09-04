@@ -960,21 +960,11 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          MeasureReport.MeasureReportStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on MeasureReport")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { MeasureReport.MeasureReportStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on MeasureReport"),
       type =
-        Enumeration.of(
-          MeasureReport.MeasureReportType.fromCode(
-            type
-              ?: throw SerializationException("Missing required property 'type' on MeasureReport")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { MeasureReport.MeasureReportType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on MeasureReport"),
       measure =
         Canonical.of(measure, _measure)
           ?: throw SerializationException("Missing required property 'measure' on MeasureReport"),
@@ -1053,7 +1043,7 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1064,7 +1054,7 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
         it,
       )
     }
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

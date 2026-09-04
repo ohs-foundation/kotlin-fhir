@@ -745,13 +745,8 @@ internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          ImagingStudy.ImagingStudyStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on ImagingStudy")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { ImagingStudy.ImagingStudyStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ImagingStudy"),
       modality = modality ?: listOf(),
       subject =
         subject
@@ -836,7 +831,7 @@ internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

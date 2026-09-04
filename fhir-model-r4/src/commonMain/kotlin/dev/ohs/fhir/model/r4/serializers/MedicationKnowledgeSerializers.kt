@@ -2340,9 +2340,10 @@ internal object MedicationKnowledgeSerializer : KSerializer<MedicationKnowledge>
       modifierExtension = modifierExtension ?: listOf(),
       code = code,
       status =
-        status?.let {
-          Enumeration.of(MedicationKnowledge.MedicationKnowledgeStatusCodes.fromCode(it), _status)
-        },
+        Enumeration.of(
+          status?.let { MedicationKnowledge.MedicationKnowledgeStatusCodes.fromCode(it) },
+          _status,
+        ),
       manufacturer = manufacturer,
       doseForm = doseForm,
       amount = amount,
@@ -2428,7 +2429,7 @@ internal object MedicationKnowledgeSerializer : KSerializer<MedicationKnowledge>
     (value.code)?.let {
       encoder.encodeSerializableElement(descriptor, 10 + descriptorOffset, Hoisted.codeSer, it)
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

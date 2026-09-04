@@ -1243,10 +1243,10 @@ public data class Bundle(
    * https://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1
    */
   public enum class LinkRelationTypes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     About(
       "about",
       "http://hl7.org/fhir/CodeSystem/iana-link-relations",
@@ -2105,12 +2105,6 @@ public data class Bundle(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): LinkRelationTypes =
         when (code) {
@@ -2244,21 +2238,15 @@ public data class Bundle(
    * requirement, or to convey information or warning information about the search process.
    */
   public enum class SearchEntryMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Match("match", "http://hl7.org/fhir/search-entry-mode", "Match"),
     Include("include", "http://hl7.org/fhir/search-entry-mode", "Include"),
     Outcome("outcome", "http://hl7.org/fhir/search-entry-mode", "Outcome");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): SearchEntryMode =
@@ -2276,10 +2264,10 @@ public data class Bundle(
    * details.
    */
   public enum class HTTPVerb(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Get("GET", "http://hl7.org/fhir/http-verb", "GET"),
     Head("HEAD", "http://hl7.org/fhir/http-verb", "HEAD"),
     Post("POST", "http://hl7.org/fhir/http-verb", "POST"),
@@ -2288,12 +2276,6 @@ public data class Bundle(
     Patch("PATCH", "http://hl7.org/fhir/http-verb", "PATCH");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): HTTPVerb =
@@ -2311,10 +2293,10 @@ public data class Bundle(
 
   /** Indicates the purpose of a bundle - how it is intended to be used. */
   public enum class BundleType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Document("document", "http://hl7.org/fhir/bundle-type", "Document"),
     Message("message", "http://hl7.org/fhir/bundle-type", "Message"),
     Transaction("transaction", "http://hl7.org/fhir/bundle-type", "Transaction"),
@@ -2335,12 +2317,6 @@ public data class Bundle(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): BundleType =

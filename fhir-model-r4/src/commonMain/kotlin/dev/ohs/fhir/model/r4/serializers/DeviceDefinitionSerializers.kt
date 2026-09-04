@@ -274,15 +274,10 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
             "Missing required property 'name' on DeviceDefinition.DeviceName"
           ),
       type =
-        Enumeration.of(
-          DeviceDefinition.DeviceNameType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on DeviceDefinition.DeviceName"
-              )
+        Enumeration.of(type?.let { DeviceDefinition.DeviceNameType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on DeviceDefinition.DeviceName"
           ),
-          _type,
-        ),
     )
   }
 
@@ -301,7 +296,7 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
     (value.name.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }

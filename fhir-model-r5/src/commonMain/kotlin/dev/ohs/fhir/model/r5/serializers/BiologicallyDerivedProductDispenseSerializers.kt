@@ -376,14 +376,14 @@ internal object BiologicallyDerivedProductDispenseSerializer :
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          BiologicallyDerivedProductDispense.BiologicallyDerivedProductDispenseCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on BiologicallyDerivedProductDispense"
-              )
-          ),
+          status?.let {
+            BiologicallyDerivedProductDispense.BiologicallyDerivedProductDispenseCodes.fromCode(it)
+          },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on BiologicallyDerivedProductDispense"
+          ),
       originRelationshipType = originRelationshipType,
       product =
         product
@@ -484,7 +484,7 @@ internal object BiologicallyDerivedProductDispenseSerializer :
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

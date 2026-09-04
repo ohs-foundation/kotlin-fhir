@@ -261,15 +261,10 @@ internal object StructureDefinitionContextSerializer : KSerializer<StructureDefi
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          StructureDefinition.ExtensionContextType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on StructureDefinition.Context"
-              )
+        Enumeration.of(type?.let { StructureDefinition.ExtensionContextType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on StructureDefinition.Context"
           ),
-          _type,
-        ),
       expression =
         R5String.of(expression, _expression)
           ?: throw SerializationException(
@@ -289,7 +284,7 @@ internal object StructureDefinitionContextSerializer : KSerializer<StructureDefi
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -871,15 +866,10 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
           ),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on StructureDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on StructureDefinition"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -891,18 +881,16 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       keyword = keyword ?: listOf(),
-      fhirVersion = fhirVersion?.let { Enumeration.of(FHIRVersion.fromCode(it), _fhirVersion) },
+      fhirVersion = Enumeration.of(fhirVersion?.let { FHIRVersion.fromCode(it) }, _fhirVersion),
       mapping = mapping ?: listOf(),
       kind =
         Enumeration.of(
-          StructureDefinition.StructureDefinitionKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on StructureDefinition"
-              )
-          ),
+          kind?.let { StructureDefinition.StructureDefinitionKind.fromCode(it) },
           _kind,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'kind' on StructureDefinition"
+          ),
       `abstract` =
         R5Boolean.of(`abstract`, _abstract)
           ?: throw SerializationException(
@@ -925,9 +913,10 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
           ),
       baseDefinition = Canonical.of(baseDefinition, _baseDefinition),
       derivation =
-        derivation?.let {
-          Enumeration.of(StructureDefinition.TypeDerivationRule.fromCode(it), _derivation)
-        },
+        Enumeration.of(
+          derivation?.let { StructureDefinition.TypeDerivationRule.fromCode(it) },
+          _derivation,
+        ),
       snapshot = snapshot,
       differential = differential,
     )
@@ -1060,7 +1049,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1176,7 +1165,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
         Hoisted.keywordSer,
         value.keyword,
       )
-    ((value.fhirVersion?.value?.getCode()))?.let {
+    ((value.fhirVersion?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 42 + descriptorOffset, it)
     }
     (value.fhirVersion?.toElement())?.let {
@@ -1194,7 +1183,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
         Hoisted.mappingSer,
         value.mapping,
       )
-    ((value.kind.value?.getCode()))?.let {
+    ((value.kind.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 45 + descriptorOffset, it)
     }
     (value.kind.toElement())?.let {
@@ -1259,7 +1248,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
         it,
       )
     }
-    ((value.derivation?.value?.getCode()))?.let {
+    ((value.derivation?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 56 + descriptorOffset, it)
     }
     (value.derivation?.toElement())?.let {

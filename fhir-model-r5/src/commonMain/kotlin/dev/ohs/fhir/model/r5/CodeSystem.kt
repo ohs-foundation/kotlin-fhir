@@ -1898,10 +1898,10 @@ public data class CodeSystem(
 
   /** The kind of operation to perform as a part of a property based filter. */
   public enum class FilterOperator(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     EqualTo("=", "http://hl7.org/fhir/filter-operator", "Equals"),
     Is_A("is-a", "http://hl7.org/fhir/filter-operator", "Is A (by subsumption)"),
     Descendent_Of(
@@ -1924,12 +1924,6 @@ public data class CodeSystem(
 
     override fun toString(): kotlin.String = code
 
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
-
     public companion object {
       public fun fromCode(code: kotlin.String): FilterOperator =
         when (code) {
@@ -1951,10 +1945,10 @@ public data class CodeSystem(
 
   /** The type of a property value. */
   public enum class PropertyType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Code("code", "http://hl7.org/fhir/concept-property-type", "code (internal reference)"),
     Coding("Coding", "http://hl7.org/fhir/concept-property-type", "Coding (external reference)"),
     String("string", "http://hl7.org/fhir/concept-property-type", "string"),
@@ -1964,12 +1958,6 @@ public data class CodeSystem(
     Decimal("decimal", "http://hl7.org/fhir/concept-property-type", "decimal");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): PropertyType =
@@ -1988,10 +1976,10 @@ public data class CodeSystem(
 
   /** The meaning of the hierarchy of concepts in a code system. */
   public enum class CodeSystemHierarchyMeaning(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Grouped_By("grouped-by", "http://hl7.org/fhir/codesystem-hierarchy-meaning", "Grouped By"),
     Is_A("is-a", "http://hl7.org/fhir/codesystem-hierarchy-meaning", "Is-A"),
     Part_Of("part-of", "http://hl7.org/fhir/codesystem-hierarchy-meaning", "Part Of"),
@@ -2002,12 +1990,6 @@ public data class CodeSystem(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CodeSystemHierarchyMeaning =
@@ -2027,10 +2009,10 @@ public data class CodeSystem(
    * represented in a code system resource.
    */
   public enum class CodeSystemContentMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Not_Present("not-present", "http://hl7.org/fhir/codesystem-content-mode", "Not Present"),
     Example("example", "http://hl7.org/fhir/codesystem-content-mode", "Example"),
     Fragment("fragment", "http://hl7.org/fhir/codesystem-content-mode", "Fragment"),
@@ -2038,12 +2020,6 @@ public data class CodeSystem(
     Supplement("supplement", "http://hl7.org/fhir/codesystem-content-mode", "Supplement");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CodeSystemContentMode =

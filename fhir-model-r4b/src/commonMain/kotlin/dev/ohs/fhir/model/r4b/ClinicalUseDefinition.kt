@@ -1359,10 +1359,10 @@ public data class ClinicalUseDefinition(
 
   /** Overall defining type of this clinical use definition. */
   public enum class ClinicalUseDefinitionType(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Indication("indication", "http://hl7.org/fhir/clinical-use-definition-type", "Indication"),
     Contraindication(
       "contraindication",
@@ -1378,12 +1378,6 @@ public data class ClinicalUseDefinition(
     Warning("warning", "http://hl7.org/fhir/clinical-use-definition-type", "Warning");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): ClinicalUseDefinitionType =

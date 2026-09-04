@@ -436,15 +436,10 @@ internal object EvidenceReportRelatesToSerializer : KSerializer<EvidenceReport.R
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          EvidenceReport.ReportRelationshipType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on EvidenceReport.RelatesTo"
-              )
+        Enumeration.of(code?.let { EvidenceReport.ReportRelationshipType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on EvidenceReport.RelatesTo"
           ),
-          _code,
-        ),
       target =
         EvidenceReport.RelatesTo.Target.from(targetIdentifier, targetReference)
           ?: throw SerializationException(
@@ -464,7 +459,7 @@ internal object EvidenceReportRelatesToSerializer : KSerializer<EvidenceReport.R
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
@@ -631,7 +626,7 @@ internal object EvidenceReportSectionSerializer : KSerializer<EvidenceReport.Sec
       focusReference = focusReference,
       author = author ?: listOf(),
       text = text,
-      mode = mode?.let { Enumeration.of(EvidenceReport.ListMode.fromCode(it), _mode) },
+      mode = Enumeration.of(mode?.let { EvidenceReport.ListMode.fromCode(it) }, _mode),
       orderedBy = orderedBy,
       entryClassifier = entryClassifier ?: listOf(),
       entryReference = entryReference ?: listOf(),
@@ -663,7 +658,7 @@ internal object EvidenceReportSectionSerializer : KSerializer<EvidenceReport.Sec
     if (value.author.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.authorSer, value.author)
     (value.text)?.let { encoder.encodeSerializableElement(descriptor, 8, Hoisted.textSer, it) }
-    ((value.mode?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    ((value.mode?.value?.code))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.mode?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.titleSer, it)
     }
@@ -984,15 +979,8 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
       modifierExtension = modifierExtension ?: listOf(),
       url = Uri.of(url, _url),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EvidenceReport"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on EvidenceReport"),
       useContext = useContext ?: listOf(),
       identifier = identifier ?: listOf(),
       relatedIdentifier = relatedIdentifier ?: listOf(),
@@ -1080,7 +1068,7 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

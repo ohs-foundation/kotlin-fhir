@@ -373,7 +373,7 @@ internal object CareTeamSerializer : KSerializer<CareTeam> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = status?.let { Enumeration.of(CareTeam.CareTeamStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { CareTeam.CareTeamStatus.fromCode(it) }, _status),
       category = category ?: listOf(),
       name = R4String.of(name, _name),
       subject = subject,
@@ -451,7 +451,7 @@ internal object CareTeamSerializer : KSerializer<CareTeam> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

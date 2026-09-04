@@ -837,13 +837,13 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       accessionIdentifier = accessionIdentifier,
-      status = status?.let { Enumeration.of(Specimen.SpecimenStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Specimen.SpecimenStatus.fromCode(it) }, _status),
       type = type,
       subject = subject,
       receivedTime = DateTime.of(FhirDateTime.fromString(receivedTime), _receivedTime),
       parent = parent ?: listOf(),
       request = request ?: listOf(),
-      combined = combined?.let { Enumeration.of(SpecimenCombined.fromCode(it), _combined) },
+      combined = Enumeration.of(combined?.let { SpecimenCombined.fromCode(it) }, _combined),
       role = role ?: listOf(),
       feature = feature ?: listOf(),
       collection = collection,
@@ -925,7 +925,7 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
         it,
       )
     }
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
@@ -967,7 +967,7 @@ internal object SpecimenSerializer : KSerializer<Specimen> {
         Hoisted.parentSer,
         value.request,
       )
-    ((value.combined?.value?.getCode()))?.let {
+    ((value.combined?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.combined?.toElement())?.let {

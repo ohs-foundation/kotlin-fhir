@@ -1455,10 +1455,10 @@ public data class AuditEvent(
 
   /** Indicator for type of action performed during the event that generated the event. */
   public enum class AuditEventAction(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     C("C", "http://hl7.org/fhir/audit-event-action", "Create"),
     R("R", "http://hl7.org/fhir/audit-event-action", "Read"),
     U("U", "http://hl7.org/fhir/audit-event-action", "Update"),
@@ -1466,12 +1466,6 @@ public data class AuditEvent(
     E("E", "http://hl7.org/fhir/audit-event-action", "Execute");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): AuditEventAction =
@@ -1488,10 +1482,10 @@ public data class AuditEvent(
 
   /** The severity of the audit entry. */
   public enum class AuditEventSeverity(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Emergency("emergency", "http://hl7.org/fhir/audit-event-severity", "Emergency"),
     Alert("alert", "http://hl7.org/fhir/audit-event-severity", "Alert"),
     Critical("critical", "http://hl7.org/fhir/audit-event-severity", "Critical"),
@@ -1502,12 +1496,6 @@ public data class AuditEvent(
     Debug("debug", "http://hl7.org/fhir/audit-event-severity", "Debug");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): AuditEventSeverity =

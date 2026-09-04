@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /**
@@ -23,10 +24,10 @@ import kotlin.String
  * file translations.xml)
  */
 public enum class OperationOutcomeCodes(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Delete_Multiple_Matches(
     "DELETE_MULTIPLE_MATCHES",
     "http://hl7.org/fhir/operation-outcome",
@@ -264,12 +265,6 @@ public enum class OperationOutcomeCodes(
   );
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): OperationOutcomeCodes =

@@ -180,14 +180,12 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       type = type,
       preference =
         Enumeration.of(
-          SpecimenDefinition.SpecimenContainedPreference.fromCode(
-            preference
-              ?: throw SerializationException(
-                "Missing required property 'preference' on SpecimenDefinition.TypeTested"
-              )
-          ),
+          preference?.let { SpecimenDefinition.SpecimenContainedPreference.fromCode(it) },
           _preference,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'preference' on SpecimenDefinition.TypeTested"
+          ),
       container = container,
       requirement = R4String.of(requirement, _requirement),
       retentionTime = retentionTime,
@@ -212,7 +210,7 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.isDerivedSer, it)
     }
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
-    ((value.preference.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.preference.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.preference.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.isDerivedSer, it)
     }

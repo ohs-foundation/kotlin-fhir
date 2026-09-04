@@ -260,15 +260,10 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          ResourceType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ImplementationGuide.Global"
-              )
+        Enumeration.of(type?.let { ResourceType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ImplementationGuide.Global"
           ),
-          _type,
-        ),
       profile =
         Canonical.of(profile, _profile)
           ?: throw SerializationException(
@@ -288,7 +283,7 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -732,9 +727,9 @@ internal object ImplementationGuideDefinitionResourceSerializer :
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            fhirVersion?.getOrNull(index)?.let { FHIRVersion.fromCode(it) },
             _fhirVersion?.getOrNull(index),
-          )
+          )!!
         }),
       name = R5String.of(name, _name),
       description = Markdown.of(description, _description),
@@ -762,7 +757,7 @@ internal object ImplementationGuideDefinitionResourceSerializer :
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, value.reference)
-    (value.fhirVersion.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.fhirVersion.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.fhirVersionSer, it)
     }
     (value.fhirVersion.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -936,14 +931,12 @@ internal object ImplementationGuideDefinitionPageSerializer :
           ),
       generation =
         Enumeration.of(
-          ImplementationGuide.GuidePageGeneration.fromCode(
-            generation
-              ?: throw SerializationException(
-                "Missing required property 'generation' on ImplementationGuide.Definition.Page"
-              )
-          ),
+          generation?.let { ImplementationGuide.GuidePageGeneration.fromCode(it) },
           _generation,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'generation' on ImplementationGuide.Definition.Page"
+          ),
       page = page ?: listOf(),
     )
   }
@@ -991,7 +984,7 @@ internal object ImplementationGuideDefinitionPageSerializer :
     (value.title.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.sourceUrlSer, it)
     }
-    ((value.generation.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+    ((value.generation.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.generation.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.sourceUrlSer, it)
     }
@@ -2042,15 +2035,10 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
           ),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ImplementationGuide"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ImplementationGuide"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -2067,13 +2055,13 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
             "Missing required property 'packageId' on ImplementationGuide"
           ),
       license =
-        license?.let { Enumeration.of(ImplementationGuide.SPDXLicense.fromCode(it), _license) },
+        Enumeration.of(license?.let { ImplementationGuide.SPDXLicense.fromCode(it) }, _license),
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            fhirVersion?.getOrNull(index)?.let { FHIRVersion.fromCode(it) },
             _fhirVersion?.getOrNull(index),
-          )
+          )!!
         }),
       dependsOn = dependsOn ?: listOf(),
       global = global ?: listOf(),
@@ -2209,7 +2197,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -2329,7 +2317,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
         it,
       )
     }
-    ((value.license?.value?.getCode()))?.let {
+    ((value.license?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 43 + descriptorOffset, it)
     }
     (value.license?.toElement())?.let {
@@ -2340,7 +2328,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
         it,
       )
     }
-    (value.fhirVersion.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.fhirVersion.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,
         45 + descriptorOffset,

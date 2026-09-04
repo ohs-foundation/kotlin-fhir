@@ -427,14 +427,12 @@ internal object ImagingSelectionInstanceImageRegion2DSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       regionType =
         Enumeration.of(
-          ImagingSelection.ImagingSelection2DGraphicType.fromCode(
-            regionType
-              ?: throw SerializationException(
-                "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion2D"
-              )
-          ),
+          regionType?.let { ImagingSelection.ImagingSelection2DGraphicType.fromCode(it) },
           _regionType,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion2D"
+          ),
       coordinate =
         (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { index ->
           Decimal.of(coordinate?.getOrNull(index)?.let { it }, _coordinate?.getOrNull(index))!!
@@ -456,7 +454,7 @@ internal object ImagingSelectionInstanceImageRegion2DSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.regionType.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.regionType.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.regionType.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.regionTypeSer, it)
     }
@@ -563,14 +561,12 @@ internal object ImagingSelectionInstanceImageRegion3DSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       regionType =
         Enumeration.of(
-          ImagingSelection.ImagingSelection3DGraphicType.fromCode(
-            regionType
-              ?: throw SerializationException(
-                "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion3D"
-              )
-          ),
+          regionType?.let { ImagingSelection.ImagingSelection3DGraphicType.fromCode(it) },
           _regionType,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion3D"
+          ),
       coordinate =
         (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { index ->
           Decimal.of(coordinate?.getOrNull(index)?.let { it }, _coordinate?.getOrNull(index))!!
@@ -592,7 +588,7 @@ internal object ImagingSelectionInstanceImageRegion3DSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.regionType.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.regionType.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.regionType.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.regionTypeSer, it)
     }
@@ -845,14 +841,9 @@ internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          ImagingSelection.ImagingSelectionStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ImagingSelection"
-              )
-          ),
+          status?.let { ImagingSelection.ImagingSelectionStatus.fromCode(it) },
           _status,
-        ),
+        ) ?: throw SerializationException("Missing required property 'status' on ImagingSelection"),
       subject = subject,
       issued = Instant.of(FhirDateTime.fromString(issued), _issued),
       performer = performer ?: listOf(),
@@ -936,7 +927,7 @@ internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -864,10 +864,10 @@ public data class QuestionnaireResponse(
 
   /** Lifecycle status of the questionnaire response. */
   public enum class QuestionnaireResponseStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     In_Progress("in-progress", "http://hl7.org/fhir/questionnaire-answers-status", "In Progress"),
     Completed("completed", "http://hl7.org/fhir/questionnaire-answers-status", "Completed"),
     Amended("amended", "http://hl7.org/fhir/questionnaire-answers-status", "Amended"),
@@ -879,12 +879,6 @@ public data class QuestionnaireResponse(
     Stopped("stopped", "http://hl7.org/fhir/questionnaire-answers-status", "Stopped");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): QuestionnaireResponseStatus =

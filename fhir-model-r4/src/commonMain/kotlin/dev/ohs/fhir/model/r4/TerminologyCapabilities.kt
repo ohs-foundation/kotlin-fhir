@@ -1954,21 +1954,15 @@ public data class TerminologyCapabilities(
 
   /** How a capability statement is intended to be used. */
   public enum class CapabilityStatementKind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Instance("instance", "http://hl7.org/fhir/capability-statement-kind", "Instance"),
     Capability("capability", "http://hl7.org/fhir/capability-statement-kind", "Capability"),
     Requirements("requirements", "http://hl7.org/fhir/capability-statement-kind", "Requirements");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CapabilityStatementKind =
@@ -1987,20 +1981,14 @@ public data class TerminologyCapabilities(
    * supported.
    */
   public enum class CodeSearchSupport(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Explicit("explicit", "http://hl7.org/fhir/code-search-support", "Explicit Codes"),
     All("all", "http://hl7.org/fhir/code-search-support", "Implicit Codes");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CodeSearchSupport =

@@ -204,17 +204,15 @@ internal object ObservationDefinitionQualifiedValueSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       context = context,
       appliesTo = appliesTo ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       age = age,
       gestationalAge = gestationalAge,
       condition = R5String.of(condition, _condition),
       rangeCategory =
-        rangeCategory?.let {
-          Enumeration.of(
-            ObservationDefinition.ObservationRangeCategory.fromCode(it),
-            _rangeCategory,
-          )
-        },
+        Enumeration.of(
+          rangeCategory?.let { ObservationDefinition.ObservationRangeCategory.fromCode(it) },
+          _rangeCategory,
+        ),
       range = range,
       validCodedValueSet = Canonical.of(validCodedValueSet, _validCodedValueSet),
       normalCodedValueSet = Canonical.of(normalCodedValueSet, _normalCodedValueSet),
@@ -242,7 +240,7 @@ internal object ObservationDefinitionQualifiedValueSerializer :
     }
     if (value.appliesTo.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.appliesToSer, value.appliesTo)
-    ((value.gender?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.gender?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.gender?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.genderSer, it)
     }
@@ -254,9 +252,7 @@ internal object ObservationDefinitionQualifiedValueSerializer :
     (value.condition?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.genderSer, it)
     }
-    ((value.rangeCategory?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 11, it)
-    }
+    ((value.rangeCategory?.value?.code))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.rangeCategory?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.genderSer, it)
     }
@@ -410,11 +406,11 @@ internal object ObservationDefinitionComponentSerializer :
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            ObservationDefinition.ObservationDataType.fromCode(
-              permittedDataType?.getOrNull(index)!!
-            ),
+            permittedDataType?.getOrNull(index)?.let {
+              ObservationDefinition.ObservationDataType.fromCode(it)
+            },
             _permittedDataType?.getOrNull(index),
-          )
+          )!!
         }),
       permittedUnit = permittedUnit ?: listOf(),
       qualifiedValue = qualifiedValue ?: listOf(),
@@ -436,8 +432,9 @@ internal object ObservationDefinitionComponentSerializer :
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
-    (value.permittedDataType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
-      ?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.permittedDataTypeSer, it) }
+    (value.permittedDataType.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.permittedDataTypeSer, it)
+    }
     (value.permittedDataType.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.permittedDataTypeSer2, it)
     }
@@ -985,15 +982,10 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ObservationDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ObservationDefinition"
           ),
-          _status,
-        ),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -1034,11 +1026,11 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            ObservationDefinition.ObservationDataType.fromCode(
-              permittedDataType?.getOrNull(index)!!
-            ),
+            permittedDataType?.getOrNull(index)?.let {
+              ObservationDefinition.ObservationDataType.fromCode(it)
+            },
             _permittedDataType?.getOrNull(index),
-          )
+          )!!
         }),
       multipleResultsAllowed = R5Boolean.of(multipleResultsAllowed, _multipleResultsAllowed),
       bodySite = bodySite,
@@ -1183,7 +1175,7 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1382,15 +1374,14 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       Hoisted.jurisdictionSerInner,
       value.code,
     )
-    (value.permittedDataType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
-      ?.let {
-        encoder.encodeSerializableElement(
-          descriptor,
-          54 + descriptorOffset,
-          Hoisted.derivedFromCanonicalSer,
-          it,
-        )
-      }
+    (value.permittedDataType.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        54 + descriptorOffset,
+        Hoisted.derivedFromCanonicalSer,
+        it,
+      )
+    }
     (value.permittedDataType.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,

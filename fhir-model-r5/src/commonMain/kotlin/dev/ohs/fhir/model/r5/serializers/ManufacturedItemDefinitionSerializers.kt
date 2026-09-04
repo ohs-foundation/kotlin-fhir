@@ -774,15 +774,10 @@ internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedI
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on ManufacturedItemDefinition"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on ManufacturedItemDefinition"
           ),
-          _status,
-        ),
       name = R5String.of(name, _name),
       manufacturedDoseForm =
         manufacturedDoseForm
@@ -861,7 +856,7 @@ internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedI
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

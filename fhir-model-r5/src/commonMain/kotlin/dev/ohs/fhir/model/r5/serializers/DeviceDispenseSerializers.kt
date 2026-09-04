@@ -392,14 +392,9 @@ internal object DeviceDispenseSerializer : KSerializer<DeviceDispense> {
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          DeviceDispense.DeviceDispenseStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on DeviceDispense"
-              )
-          ),
+          status?.let { DeviceDispense.DeviceDispenseStatusCodes.fromCode(it) },
           _status,
-        ),
+        ) ?: throw SerializationException("Missing required property 'status' on DeviceDispense"),
       statusReason = statusReason,
       category = category ?: listOf(),
       device =
@@ -501,7 +496,7 @@ internal object DeviceDispenseSerializer : KSerializer<DeviceDispense> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

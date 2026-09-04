@@ -1959,10 +1959,10 @@ public data class Evidence(
    * Dichotomous, Continuous, Descriptive).
    */
   public enum class EvidenceVariableHandling(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Continuous("continuous", "http://hl7.org/fhir/variable-handling", "continuous variable"),
     Dichotomous("dichotomous", "http://hl7.org/fhir/variable-handling", "dichotomous variable"),
     Ordinal("ordinal", "http://hl7.org/fhir/variable-handling", "ordinal variable"),
@@ -1973,12 +1973,6 @@ public data class Evidence(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): EvidenceVariableHandling =

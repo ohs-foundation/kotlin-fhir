@@ -16,14 +16,15 @@
 
 package dev.ohs.fhir.model.r4.terminologies
 
+import dev.ohs.fhir.model.r4.FhirEnum
 import kotlin.String
 
 /** One of the resource types defined as part of this version of FHIR. */
 public enum class ResourceType(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Account("Account", "http://hl7.org/fhir/resource-types", "Account"),
   ActivityDefinition(
     "ActivityDefinition",
@@ -370,12 +371,6 @@ public enum class ResourceType(
   );
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): ResourceType =

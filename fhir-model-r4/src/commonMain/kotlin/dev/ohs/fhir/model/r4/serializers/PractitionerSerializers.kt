@@ -354,7 +354,7 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
       name = name ?: listOf(),
       telecom = telecom ?: listOf(),
       address = address ?: listOf(),
-      gender = gender?.let { Enumeration.of(AdministrativeGender.fromCode(it), _gender) },
+      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
       birthDate = Date.of(FhirDate.fromString(birthDate), _birthDate),
       photo = photo ?: listOf(),
       qualification = qualification ?: listOf(),
@@ -457,7 +457,7 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
         Hoisted.addressSer,
         value.address,
       )
-    ((value.gender?.value?.getCode()))?.let {
+    ((value.gender?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.gender?.toElement())?.let {

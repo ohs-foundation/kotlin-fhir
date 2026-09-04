@@ -659,13 +659,8 @@ internal object CompositionSerializer : KSerializer<Composition> {
       identifier = identifier ?: listOf(),
       version = R5String.of(version, _version),
       status =
-        Enumeration.of(
-          Composition.CompositionStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Composition")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Composition.CompositionStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Composition"),
       type =
         type ?: throw SerializationException("Missing required property 'type' on Composition"),
       category = category ?: listOf(),
@@ -772,7 +767,7 @@ internal object CompositionSerializer : KSerializer<Composition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

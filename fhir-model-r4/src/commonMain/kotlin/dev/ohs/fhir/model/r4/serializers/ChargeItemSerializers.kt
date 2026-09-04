@@ -497,13 +497,8 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
           )!!
         }),
       status =
-        Enumeration.of(
-          ChargeItem.ChargeItemStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on ChargeItem")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { ChargeItem.ChargeItemStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ChargeItem"),
       partOf = partOf ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on ChargeItem"),
       subject =
@@ -631,7 +626,7 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

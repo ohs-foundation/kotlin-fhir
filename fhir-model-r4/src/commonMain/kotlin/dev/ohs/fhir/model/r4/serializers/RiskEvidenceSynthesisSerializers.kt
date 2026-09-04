@@ -1120,15 +1120,10 @@ internal object RiskEvidenceSynthesisSerializer : KSerializer<RiskEvidenceSynthe
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on RiskEvidenceSynthesis"
-              )
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on RiskEvidenceSynthesis"
           ),
-          _status,
-        ),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -1270,7 +1265,7 @@ internal object RiskEvidenceSynthesisSerializer : KSerializer<RiskEvidenceSynthe
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

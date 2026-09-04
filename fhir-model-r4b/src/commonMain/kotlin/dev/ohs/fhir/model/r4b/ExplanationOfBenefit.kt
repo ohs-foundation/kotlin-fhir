@@ -4953,10 +4953,10 @@ public data class ExplanationOfBenefit(
 
   /** A code specifying the state of the resource instance. */
   public enum class ExplanationOfBenefitStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/explanationofbenefit-status", "Active"),
     Cancelled("cancelled", "http://hl7.org/fhir/explanationofbenefit-status", "Cancelled"),
     Draft("draft", "http://hl7.org/fhir/explanationofbenefit-status", "Draft"),
@@ -4967,12 +4967,6 @@ public data class ExplanationOfBenefit(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ExplanationOfBenefitStatus =
@@ -4989,21 +4983,15 @@ public data class ExplanationOfBenefit(
 
   /** The purpose of the Claim: predetermination, preauthorization, claim. */
   public enum class Use(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Claim("claim", "http://hl7.org/fhir/claim-use", "Claim"),
     Preauthorization("preauthorization", "http://hl7.org/fhir/claim-use", "Preauthorization"),
     Predetermination("predetermination", "http://hl7.org/fhir/claim-use", "Predetermination");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): Use =

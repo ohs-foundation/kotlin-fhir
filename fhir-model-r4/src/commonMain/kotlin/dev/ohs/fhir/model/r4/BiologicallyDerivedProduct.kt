@@ -954,21 +954,15 @@ public data class BiologicallyDerivedProduct(
 
   /** BiologicallyDerived Product Storage Scale. */
   public enum class BiologicallyDerivedProductStorageScale(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Farenheit("farenheit", "http://hl7.org/fhir/product-storage-scale", "Fahrenheit"),
     Celsius("celsius", "http://hl7.org/fhir/product-storage-scale", "Celsius"),
     Kelvin("kelvin", "http://hl7.org/fhir/product-storage-scale", "Kelvin");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): BiologicallyDerivedProductStorageScale =
@@ -986,10 +980,10 @@ public data class BiologicallyDerivedProduct(
 
   /** Biologically Derived Product Category. */
   public enum class BiologicallyDerivedProductCategory(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Organ("organ", "http://hl7.org/fhir/product-category", "Organ"),
     Tissue("tissue", "http://hl7.org/fhir/product-category", "Tissue"),
     Fluid("fluid", "http://hl7.org/fhir/product-category", "Fluid"),
@@ -997,12 +991,6 @@ public data class BiologicallyDerivedProduct(
     BiologicalAgent("biologicalAgent", "http://hl7.org/fhir/product-category", "BiologicalAgent");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): BiologicallyDerivedProductCategory =
@@ -1022,20 +1010,14 @@ public data class BiologicallyDerivedProduct(
 
   /** Biologically Derived Product Status. */
   public enum class BiologicallyDerivedProductStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Available("available", "http://hl7.org/fhir/product-status", "Available"),
     Unavailable("unavailable", "http://hl7.org/fhir/product-status", "Unavailable");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): BiologicallyDerivedProductStatus =

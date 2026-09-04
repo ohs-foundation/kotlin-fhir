@@ -146,15 +146,10 @@ internal object ObservationTriggeredBySerializer : KSerializer<Observation.Trigg
             "Missing required property 'observation' on Observation.TriggeredBy"
           ),
       type =
-        Enumeration.of(
-          Observation.TriggeredBytype.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on Observation.TriggeredBy"
-              )
+        Enumeration.of(type?.let { Observation.TriggeredBytype.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on Observation.TriggeredBy"
           ),
-          _type,
-        ),
       reason = R5String.of(reason, _reason),
     )
   }
@@ -171,7 +166,7 @@ internal object ObservationTriggeredBySerializer : KSerializer<Observation.Trigg
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.observationSer, value.observation)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it)
     }
@@ -1117,13 +1112,8 @@ internal object ObservationSerializer : KSerializer<Observation> {
       triggeredBy = triggeredBy ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          Observation.ObservationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Observation")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Observation.ObservationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Observation"),
       category = category ?: listOf(),
       code =
         code ?: throw SerializationException("Missing required property 'code' on Observation"),
@@ -1278,7 +1268,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
         Hoisted.basedOnSer,
         value.partOf,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

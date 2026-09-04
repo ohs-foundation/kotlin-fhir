@@ -221,15 +221,10 @@ internal object VisionPrescriptionLensSpecificationSerializer :
             "Missing required property 'product' on VisionPrescription.LensSpecification"
           ),
       eye =
-        Enumeration.of(
-          VisionPrescription.VisionEyes.fromCode(
-            eye
-              ?: throw SerializationException(
-                "Missing required property 'eye' on VisionPrescription.LensSpecification"
-              )
+        Enumeration.of(eye?.let { VisionPrescription.VisionEyes.fromCode(it) }, _eye)
+          ?: throw SerializationException(
+            "Missing required property 'eye' on VisionPrescription.LensSpecification"
           ),
-          _eye,
-        ),
       sphere = Decimal.of(sphere, _sphere),
       cylinder = Decimal.of(cylinder, _cylinder),
       axis = Integer.of(axis, _axis),
@@ -260,7 +255,7 @@ internal object VisionPrescriptionLensSpecificationSerializer :
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.productSer, value.product)
-    ((value.eye.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.eye.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.eye.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.eyeSer, it)
     }
@@ -419,15 +414,10 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
             "Missing required property 'amount' on VisionPrescription.LensSpecification.Prism"
           ),
       base =
-        Enumeration.of(
-          VisionPrescription.VisionBase.fromCode(
-            base
-              ?: throw SerializationException(
-                "Missing required property 'base' on VisionPrescription.LensSpecification.Prism"
-              )
+        Enumeration.of(base?.let { VisionPrescription.VisionBase.fromCode(it) }, _base)
+          ?: throw SerializationException(
+            "Missing required property 'base' on VisionPrescription.LensSpecification.Prism"
           ),
-          _base,
-        ),
     )
   }
 
@@ -451,7 +441,7 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
     (value.amount.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountSer, it)
     }
-    ((value.base.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.base.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.base.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.amountSer, it)
     }
@@ -630,14 +620,12 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          VisionPrescription.FinancialResourceStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on VisionPrescription"
-              )
-          ),
+          status?.let { VisionPrescription.FinancialResourceStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on VisionPrescription"
+          ),
       created =
         DateTime.of(FhirDateTime.fromString(created), _created)
           ?: throw SerializationException(
@@ -726,7 +714,7 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -1753,10 +1753,10 @@ public data class Questionnaire(
 
   /** Distinguishes groups from questions and display text and indicates data type for questions. */
   public enum class QuestionnaireItemType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Group("group", "http://hl7.org/fhir/item-type", "Group"),
     Display("display", "http://hl7.org/fhir/item-type", "Display"),
     Question("question", "http://hl7.org/fhir/item-type", "Question"),
@@ -1776,12 +1776,6 @@ public data class Questionnaire(
     Quantity("quantity", "http://hl7.org/fhir/item-type", "Quantity");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): QuestionnaireItemType =
@@ -1811,20 +1805,14 @@ public data class Questionnaire(
 
   /** Controls how multiple enableWhen values are interpreted - whether all or any must be true. */
   public enum class EnableWhenBehavior(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     All("all", "http://hl7.org/fhir/questionnaire-enable-behavior", "All"),
     Any("any", "http://hl7.org/fhir/questionnaire-enable-behavior", "Any");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): EnableWhenBehavior =
@@ -1838,10 +1826,10 @@ public data class Questionnaire(
 
   /** The criteria by which a question is enabled. */
   public enum class QuestionnaireItemOperator(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Exists("exists", "http://hl7.org/fhir/questionnaire-enable-operator", "Exists"),
     EqualTo("=", "http://hl7.org/fhir/questionnaire-enable-operator", "Equals"),
     NotEqualTo("!=", "http://hl7.org/fhir/questionnaire-enable-operator", "Not Equals"),
@@ -1855,12 +1843,6 @@ public data class Questionnaire(
     LessThanOrEqualTo("<=", "http://hl7.org/fhir/questionnaire-enable-operator", "Less or Equals");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): QuestionnaireItemOperator =

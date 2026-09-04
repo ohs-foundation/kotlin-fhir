@@ -26,7 +26,7 @@ import dev.ohs.fhir.codegen.schema.Element
  * A single wire-level field — one slot in the streaming encode/decode descriptor.
  *
  * Mapping from FHIR elements to wire fields:
- * - Primitive → `(value, _sidecar)` pair of `WireField`s.
+ * - Primitive → `(value, _field)` pair of `WireField`s.
  * - Choice type (`foo[x]`) → per-expansion pairs (`fooBoolean` + `_fooBoolean`, `fooDateTime` +
  *   `_fooDateTime`, …) expanded directly into the flat wire shape. Encode dispatches via
  *   `emitChoiceTypeExpansionEncoding`; decode reads expansion locals and synthesizes the sealed
@@ -40,8 +40,8 @@ internal data class WireField(
   val typeName: TypeName,
   /** Owning parent element. */
   val element: Element,
-  /** Is this the `_field` sidecar (carries id/extension for a primitive). */
-  val isElementSidecar: Boolean = false,
+  /** Is this the `_field` element (carries id/extension for a primitive). */
+  val isElementField: Boolean = false,
   val defaultValue: String? = "null",
 )
 
@@ -64,7 +64,7 @@ internal fun CodegenContext.buildJsonWireFields(
         name = info.name,
         typeName = info.typeName,
         element = element,
-        isElementSidecar = info.name.startsWith("_"),
+        isElementField = info.name.startsWith("_"),
         defaultValue = info.defaultValue,
       )
     }

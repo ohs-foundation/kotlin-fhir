@@ -589,12 +589,8 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Invoice.InvoiceStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Invoice")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Invoice.InvoiceStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Invoice"),
       cancelledReason = R5String.of(cancelledReason, _cancelledReason),
       type = type,
       subject = subject,
@@ -678,7 +674,7 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

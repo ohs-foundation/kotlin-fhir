@@ -286,12 +286,8 @@ internal object EndpointSerializer : KSerializer<Endpoint> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Endpoint.EndpointStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Endpoint")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Endpoint.EndpointStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Endpoint"),
       connectionType =
         connectionType
           ?: throw SerializationException("Missing required property 'connectionType' on Endpoint"),
@@ -381,7 +377,7 @@ internal object EndpointSerializer : KSerializer<Endpoint> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -1246,14 +1246,12 @@ internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinit
       identifier = identifier ?: listOf(),
       type =
         Enumeration.of(
-          ClinicalUseDefinition.ClinicalUseDefinitionType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on ClinicalUseDefinition"
-              )
-          ),
+          type?.let { ClinicalUseDefinition.ClinicalUseDefinitionType.fromCode(it) },
           _type,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'type' on ClinicalUseDefinition"
+          ),
       category = category ?: listOf(),
       subject = subject ?: listOf(),
       status = status,
@@ -1329,7 +1327,7 @@ internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinit
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.type.value?.getCode()))?.let {
+    ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {

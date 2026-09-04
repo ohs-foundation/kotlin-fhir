@@ -707,7 +707,7 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       description = R4bString.of(description, _description),
       textEquivalent = R4bString.of(textEquivalent, _textEquivalent),
       priority =
-        priority?.let { Enumeration.of(PlanDefinition.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { PlanDefinition.RequestPriority.fromCode(it) }, _priority),
       code = code ?: listOf(),
       reason = reason ?: listOf(),
       documentation = documentation ?: listOf(),
@@ -738,28 +738,30 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       participant = participant ?: listOf(),
       type = type,
       groupingBehavior =
-        groupingBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionGroupingBehavior.fromCode(it), _groupingBehavior)
-        },
+        Enumeration.of(
+          groupingBehavior?.let { PlanDefinition.ActionGroupingBehavior.fromCode(it) },
+          _groupingBehavior,
+        ),
       selectionBehavior =
-        selectionBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionSelectionBehavior.fromCode(it), _selectionBehavior)
-        },
+        Enumeration.of(
+          selectionBehavior?.let { PlanDefinition.ActionSelectionBehavior.fromCode(it) },
+          _selectionBehavior,
+        ),
       requiredBehavior =
-        requiredBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionRequiredBehavior.fromCode(it), _requiredBehavior)
-        },
+        Enumeration.of(
+          requiredBehavior?.let { PlanDefinition.ActionRequiredBehavior.fromCode(it) },
+          _requiredBehavior,
+        ),
       precheckBehavior =
-        precheckBehavior?.let {
-          Enumeration.of(PlanDefinition.ActionPrecheckBehavior.fromCode(it), _precheckBehavior)
-        },
+        Enumeration.of(
+          precheckBehavior?.let { PlanDefinition.ActionPrecheckBehavior.fromCode(it) },
+          _precheckBehavior,
+        ),
       cardinalityBehavior =
-        cardinalityBehavior?.let {
-          Enumeration.of(
-            PlanDefinition.ActionCardinalityBehavior.fromCode(it),
-            _cardinalityBehavior,
-          )
-        },
+        Enumeration.of(
+          cardinalityBehavior?.let { PlanDefinition.ActionCardinalityBehavior.fromCode(it) },
+          _cardinalityBehavior,
+        ),
       definition =
         PlanDefinition.Action.Definition.from(
           Canonical.of(definitionCanonical, _definitionCanonical),
@@ -798,7 +800,7 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
     (value.textEquivalent?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.prefixSer, it)
     }
-    ((value.priority?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
+    ((value.priority?.value?.code))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.priority?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.prefixSer, it)
     }
@@ -878,31 +880,25 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
     (value.type)?.let {
       encoder.encodeSerializableElement(descriptor, 35, Hoisted.codeSerInner, it)
     }
-    ((value.groupingBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 36, it)
-    }
+    ((value.groupingBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 36, it) }
     (value.groupingBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 37, Hoisted.prefixSer, it)
     }
-    ((value.selectionBehavior?.value?.getCode()))?.let {
+    ((value.selectionBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 38, it)
     }
     (value.selectionBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 39, Hoisted.prefixSer, it)
     }
-    ((value.requiredBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 40, it)
-    }
+    ((value.requiredBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 40, it) }
     (value.requiredBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 41, Hoisted.prefixSer, it)
     }
-    ((value.precheckBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 42, it)
-    }
+    ((value.precheckBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 42, it) }
     (value.precheckBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 43, Hoisted.prefixSer, it)
     }
-    ((value.cardinalityBehavior?.value?.getCode()))?.let {
+    ((value.cardinalityBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 44, it)
     }
     (value.cardinalityBehavior?.toElement())?.let {
@@ -1072,15 +1068,10 @@ internal object PlanDefinitionActionConditionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       kind =
-        Enumeration.of(
-          PlanDefinition.ActionConditionKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on PlanDefinition.Action.Condition"
-              )
+        Enumeration.of(kind?.let { PlanDefinition.ActionConditionKind.fromCode(it) }, _kind)
+          ?: throw SerializationException(
+            "Missing required property 'kind' on PlanDefinition.Action.Condition"
           ),
-          _kind,
-        ),
       expression = expression,
     )
   }
@@ -1099,7 +1090,7 @@ internal object PlanDefinitionActionConditionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.kind.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.kind.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.kind.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.kindSer, it)
     }
@@ -1207,14 +1198,12 @@ internal object PlanDefinitionActionRelatedActionSerializer :
           ),
       relationship =
         Enumeration.of(
-          PlanDefinition.ActionRelationshipType.fromCode(
-            relationship
-              ?: throw SerializationException(
-                "Missing required property 'relationship' on PlanDefinition.Action.RelatedAction"
-              )
-          ),
+          relationship?.let { PlanDefinition.ActionRelationshipType.fromCode(it) },
           _relationship,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'relationship' on PlanDefinition.Action.RelatedAction"
+          ),
       offset = PlanDefinition.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
     )
   }
@@ -1237,7 +1226,7 @@ internal object PlanDefinitionActionRelatedActionSerializer :
     (value.actionId.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.actionIdSer, it)
     }
-    ((value.relationship.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.relationship.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.relationship.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.actionIdSer, it)
     }
@@ -1325,15 +1314,10 @@ internal object PlanDefinitionActionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          PlanDefinition.ActionParticipantType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on PlanDefinition.Action.Participant"
-              )
+        Enumeration.of(type?.let { PlanDefinition.ActionParticipantType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on PlanDefinition.Action.Participant"
           ),
-          _type,
-        ),
       role = role,
     )
   }
@@ -1352,7 +1336,7 @@ internal object PlanDefinitionActionParticipantSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -1855,15 +1839,8 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
       subtitle = R4bString.of(subtitle, _subtitle),
       type = type,
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on PlanDefinition"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on PlanDefinition"),
       experimental = R4bBoolean.of(experimental, _experimental),
       subject =
         PlanDefinition.Subject.from(
@@ -2017,7 +1994,7 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
     (value.type)?.let {
       encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, Hoisted.typeSer, it)
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

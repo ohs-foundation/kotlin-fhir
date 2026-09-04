@@ -895,23 +895,21 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          CoverageEligibilityRequest.FinancialResourceStatusCodes.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on CoverageEligibilityRequest"
-              )
-          ),
+          status?.let { CoverageEligibilityRequest.FinancialResourceStatusCodes.fromCode(it) },
           _status,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'status' on CoverageEligibilityRequest"
+          ),
       priority = priority,
       purpose =
         (kotlin.collections.List(maxOf(purpose?.size ?: 0, _purpose?.size ?: 0)) { index ->
           Enumeration.of(
-            CoverageEligibilityRequest.EligibilityRequestPurpose.fromCode(
-              purpose?.getOrNull(index)!!
-            ),
+            purpose?.getOrNull(index)?.let {
+              CoverageEligibilityRequest.EligibilityRequestPurpose.fromCode(it)
+            },
             _purpose?.getOrNull(index),
-          )
+          )!!
         }),
       patient =
         patient
@@ -1005,7 +1003,7 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1019,7 +1017,7 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
     (value.priority)?.let {
       encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.prioritySer, it)
     }
-    (value.purpose.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.purpose.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.purposeSer, it)
     }
     (value.purpose.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

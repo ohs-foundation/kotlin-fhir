@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r5.terminologies
 
+import dev.ohs.fhir.model.r5.FhirEnum
 import kotlin.String
 
 /**
@@ -25,10 +26,10 @@ import kotlin.String
  * competences for actions. Functional roles are bound to the realization or performance of actions.
  */
 public enum class SecurityRoleType(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Regulated_Health_Professionals(
     "regulated-health-professionals",
     "sample-security-structural-roles",
@@ -56,12 +57,6 @@ public enum class SecurityRoleType(
   );
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): SecurityRoleType =

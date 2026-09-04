@@ -165,25 +165,15 @@ internal object OperationOutcomeIssueSerializer : KSerializer<OperationOutcome.I
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       severity =
-        Enumeration.of(
-          OperationOutcome.IssueSeverity.fromCode(
-            severity
-              ?: throw SerializationException(
-                "Missing required property 'severity' on OperationOutcome.Issue"
-              )
+        Enumeration.of(severity?.let { OperationOutcome.IssueSeverity.fromCode(it) }, _severity)
+          ?: throw SerializationException(
+            "Missing required property 'severity' on OperationOutcome.Issue"
           ),
-          _severity,
-        ),
       code =
-        Enumeration.of(
-          OperationOutcome.IssueType.fromCode(
-            code
-              ?: throw SerializationException(
-                "Missing required property 'code' on OperationOutcome.Issue"
-              )
+        Enumeration.of(code?.let { OperationOutcome.IssueType.fromCode(it) }, _code)
+          ?: throw SerializationException(
+            "Missing required property 'code' on OperationOutcome.Issue"
           ),
-          _code,
-        ),
       details = details,
       diagnostics = R4String.of(diagnostics, _diagnostics),
       location =
@@ -208,11 +198,11 @@ internal object OperationOutcomeIssueSerializer : KSerializer<OperationOutcome.I
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.severity.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.severity.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.severity.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.severitySer, it)
     }
-    ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.code.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.severitySer, it)
     }

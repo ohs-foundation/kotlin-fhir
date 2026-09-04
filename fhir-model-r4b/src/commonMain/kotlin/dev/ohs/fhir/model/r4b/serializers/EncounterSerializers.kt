@@ -120,15 +120,10 @@ internal object EncounterStatusHistorySerializer : KSerializer<Encounter.StatusH
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          Encounter.EncounterStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on Encounter.StatusHistory"
-              )
+        Enumeration.of(status?.let { Encounter.EncounterStatus.fromCode(it) }, _status)
+          ?: throw SerializationException(
+            "Missing required property 'status' on Encounter.StatusHistory"
           ),
-          _status,
-        ),
       period =
         period
           ?: throw SerializationException(
@@ -148,7 +143,7 @@ internal object EncounterStatusHistorySerializer : KSerializer<Encounter.StatusH
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.status.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.statusSer, it)
     }
@@ -752,7 +747,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
             "Missing required property 'location' on Encounter.Location"
           ),
       status =
-        status?.let { Enumeration.of(Encounter.EncounterLocationStatus.fromCode(it), _status) },
+        Enumeration.of(status?.let { Encounter.EncounterLocationStatus.fromCode(it) }, _status),
       physicalType = physicalType,
       period = period,
     )
@@ -770,7 +765,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(descriptor, 3, Hoisted.locationSer, value.location)
-    ((value.status?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.status?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.status?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.statusSer, it)
     }
@@ -1060,13 +1055,8 @@ internal object EncounterSerializer : KSerializer<Encounter> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Encounter.EncounterStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Encounter")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Encounter.EncounterStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Encounter"),
       statusHistory = statusHistory ?: listOf(),
       `class` =
         `class` ?: throw SerializationException("Missing required property 'class' on Encounter"),
@@ -1155,7 +1145,7 @@ internal object EncounterSerializer : KSerializer<Encounter> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

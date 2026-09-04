@@ -426,15 +426,8 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
       title = R4bString.of(title, _title),
       subtitle = R4bString.of(subtitle, _subtitle),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status
-              ?: throw SerializationException(
-                "Missing required property 'status' on EventDefinition"
-              )
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on EventDefinition"),
       experimental = R4bBoolean.of(experimental, _experimental),
       subject = EventDefinition.Subject.from(subjectCodeableConcept, subjectReference),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
@@ -575,7 +568,7 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

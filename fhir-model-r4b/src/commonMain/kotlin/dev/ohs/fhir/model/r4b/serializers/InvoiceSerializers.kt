@@ -396,15 +396,10 @@ internal object InvoiceLineItemPriceComponentSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          Invoice.InvoicePriceComponentType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on Invoice.LineItem.PriceComponent"
-              )
+        Enumeration.of(type?.let { Invoice.InvoicePriceComponentType.fromCode(it) }, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on Invoice.LineItem.PriceComponent"
           ),
-          _type,
-        ),
       code = code,
       factor = Decimal.of(factor, _factor),
       amount = amount,
@@ -425,7 +420,7 @@ internal object InvoiceLineItemPriceComponentSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -662,12 +657,8 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          Invoice.InvoiceStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on Invoice")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Invoice.InvoiceStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Invoice"),
       cancelledReason = R4bString.of(cancelledReason, _cancelledReason),
       type = type,
       subject = subject,
@@ -748,7 +739,7 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

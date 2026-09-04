@@ -762,10 +762,10 @@ public data class Appointment(
 
   /** Is the Participant required to attend the appointment. */
   public enum class ParticipantRequired(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Required("required", "http://hl7.org/fhir/participantrequired", "Required"),
     Optional("optional", "http://hl7.org/fhir/participantrequired", "Optional"),
     Information_Only(
@@ -775,12 +775,6 @@ public data class Appointment(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ParticipantRequired =
@@ -795,22 +789,16 @@ public data class Appointment(
 
   /** The Participation status of an appointment. */
   public enum class ParticipationStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Accepted("accepted", "http://hl7.org/fhir/participationstatus", "Accepted"),
     Declined("declined", "http://hl7.org/fhir/participationstatus", "Declined"),
     Tentative("tentative", "http://hl7.org/fhir/participationstatus", "Tentative"),
     Needs_Action("needs-action", "http://hl7.org/fhir/participationstatus", "Needs Action");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ParticipationStatus =
@@ -826,10 +814,10 @@ public data class Appointment(
 
   /** The free/busy status of an appointment. */
   public enum class AppointmentStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Proposed("proposed", "http://hl7.org/fhir/appointmentstatus", "Proposed"),
     Pending("pending", "http://hl7.org/fhir/appointmentstatus", "Pending"),
     Booked("booked", "http://hl7.org/fhir/appointmentstatus", "Booked"),
@@ -846,12 +834,6 @@ public data class Appointment(
     Waitlist("waitlist", "http://hl7.org/fhir/appointmentstatus", "Waitlisted");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): AppointmentStatus =

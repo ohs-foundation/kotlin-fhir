@@ -122,14 +122,12 @@ internal object CatalogEntryRelatedEntrySerializer : KSerializer<CatalogEntry.Re
       modifierExtension = modifierExtension ?: listOf(),
       relationtype =
         Enumeration.of(
-          CatalogEntry.CatalogEntryRelationType.fromCode(
-            relationtype
-              ?: throw SerializationException(
-                "Missing required property 'relationtype' on CatalogEntry.RelatedEntry"
-              )
-          ),
+          relationtype?.let { CatalogEntry.CatalogEntryRelationType.fromCode(it) },
           _relationtype,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'relationtype' on CatalogEntry.RelatedEntry"
+          ),
       item =
         item
           ?: throw SerializationException(
@@ -149,7 +147,7 @@ internal object CatalogEntryRelatedEntrySerializer : KSerializer<CatalogEntry.Re
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.relationtype.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.relationtype.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.relationtype.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.relationtypeSer, it)
     }
@@ -400,7 +398,7 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
           ),
       additionalIdentifier = additionalIdentifier ?: listOf(),
       classification = classification ?: listOf(),
-      status = status?.let { Enumeration.of(PublicationStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status),
       validityPeriod = validityPeriod,
       validTo = DateTime.of(FhirDateTime.fromString(validTo), _validTo),
       lastUpdated = DateTime.of(FhirDateTime.fromString(lastUpdated), _lastUpdated),
@@ -507,7 +505,7 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
         Hoisted.classificationSer,
         value.classification,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

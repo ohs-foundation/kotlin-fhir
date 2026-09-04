@@ -818,22 +818,16 @@ public data class FamilyMemberHistory(
 
   /** A code that identifies the status of the family history record. */
   public enum class FamilyHistoryStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Partial("partial", "http://hl7.org/fhir/history-status", "Partial"),
     Completed("completed", "http://hl7.org/fhir/history-status", "Completed"),
     Entered_In_Error("entered-in-error", "http://hl7.org/fhir/history-status", "Entered in Error"),
     Health_Unknown("health-unknown", "http://hl7.org/fhir/history-status", "Health Unknown");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): FamilyHistoryStatus =

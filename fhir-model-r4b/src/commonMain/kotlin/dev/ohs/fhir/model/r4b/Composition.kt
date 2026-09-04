@@ -1290,10 +1290,10 @@ public data class Composition(
 
   /** The way in which a person authenticated a composition. */
   public enum class CompositionAttestationMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Personal("personal", "http://hl7.org/fhir/composition-attestation-mode", "Personal"),
     Professional(
       "professional",
@@ -1304,12 +1304,6 @@ public data class Composition(
     Official("official", "http://hl7.org/fhir/composition-attestation-mode", "Official");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CompositionAttestationMode =
@@ -1326,22 +1320,16 @@ public data class Composition(
 
   /** The type of relationship between documents. */
   public enum class DocumentRelationshipType(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Replaces("replaces", "http://hl7.org/fhir/document-relationship-type", "Replaces"),
     Transforms("transforms", "http://hl7.org/fhir/document-relationship-type", "Transforms"),
     Signs("signs", "http://hl7.org/fhir/document-relationship-type", "Signs"),
     Appends("appends", "http://hl7.org/fhir/document-relationship-type", "Appends");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): DocumentRelationshipType =
@@ -1358,21 +1346,15 @@ public data class Composition(
 
   /** The processing mode that applies to this list. */
   public enum class ListMode(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Working("working", "http://hl7.org/fhir/list-mode", "Working List"),
     Snapshot("snapshot", "http://hl7.org/fhir/list-mode", "Snapshot List"),
     Changes("changes", "http://hl7.org/fhir/list-mode", "Change List");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): ListMode =
@@ -1387,10 +1369,10 @@ public data class Composition(
 
   /** The workflow/clinical status of the composition. */
   public enum class CompositionStatus(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Preliminary("preliminary", "http://hl7.org/fhir/composition-status", "Preliminary"),
     Final("final", "http://hl7.org/fhir/composition-status", "Final"),
     Amended("amended", "http://hl7.org/fhir/composition-status", "Amended"),
@@ -1401,12 +1383,6 @@ public data class Composition(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): CompositionStatus =
@@ -1425,10 +1401,10 @@ public data class Composition(
    * with the definition for concept domain "Confidentiality".
    */
   public enum class Confidentiality(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     L("L", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "low"),
     M("M", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "moderate"),
     N("N", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "normal"),
@@ -1437,12 +1413,6 @@ public data class Composition(
     V("V", "http://terminology.hl7.org/CodeSystem/v3-Confidentiality", "very restricted");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): Confidentiality =

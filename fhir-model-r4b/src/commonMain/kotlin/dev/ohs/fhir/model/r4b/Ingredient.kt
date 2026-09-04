@@ -1023,10 +1023,10 @@ public data class Ingredient(
    * this is not the manufacturing process role.
    */
   public enum class IngredientManufacturerRole(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Allowed(
       "allowed",
       "http://hl7.org/fhir/ingredient-manufacturer-role",
@@ -1044,12 +1044,6 @@ public data class Ingredient(
     );
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): IngredientManufacturerRole =

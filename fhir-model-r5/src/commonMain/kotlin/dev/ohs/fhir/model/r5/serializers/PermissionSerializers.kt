@@ -242,7 +242,7 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type = type?.let { Enumeration.of(Permission.ConsentProvisionType.fromCode(it), _type) },
+      type = Enumeration.of(type?.let { Permission.ConsentProvisionType.fromCode(it) }, _type),
       `data` = `data` ?: listOf(),
       activity = activity ?: listOf(),
       limit = limit ?: listOf(),
@@ -260,7 +260,7 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
@@ -485,15 +485,10 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       meaning =
-        Enumeration.of(
-          Permission.ConsentDataMeaning.fromCode(
-            meaning
-              ?: throw SerializationException(
-                "Missing required property 'meaning' on Permission.Rule.Data.Resource"
-              )
+        Enumeration.of(meaning?.let { Permission.ConsentDataMeaning.fromCode(it) }, _meaning)
+          ?: throw SerializationException(
+            "Missing required property 'meaning' on Permission.Rule.Data.Resource"
           ),
-          _meaning,
-        ),
       reference =
         reference
           ?: throw SerializationException(
@@ -513,7 +508,7 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.meaning.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.meaning.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.meaning.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.meaningSer, it)
     }
@@ -789,13 +784,8 @@ internal object PermissionSerializer : KSerializer<Permission> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          Permission.PermissionStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on Permission")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { Permission.PermissionStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on Permission"),
       asserter = asserter,
       date =
         (kotlin.collections.List(maxOf(date?.size ?: 0, _date?.size ?: 0)) { index ->
@@ -808,12 +798,9 @@ internal object PermissionSerializer : KSerializer<Permission> {
       justification = justification,
       combining =
         Enumeration.of(
-          Permission.PermissionRuleCombining.fromCode(
-            combining
-              ?: throw SerializationException("Missing required property 'combining' on Permission")
-          ),
+          combining?.let { Permission.PermissionRuleCombining.fromCode(it) },
           _combining,
-        ),
+        ) ?: throw SerializationException("Missing required property 'combining' on Permission"),
       rule = rule ?: listOf(),
     )
   }
@@ -874,7 +861,7 @@ internal object PermissionSerializer : KSerializer<Permission> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -905,7 +892,7 @@ internal object PermissionSerializer : KSerializer<Permission> {
         it,
       )
     }
-    ((value.combining.value?.getCode()))?.let {
+    ((value.combining.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.combining.toElement())?.let {

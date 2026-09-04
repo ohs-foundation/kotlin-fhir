@@ -3846,10 +3846,10 @@ public data class Citation(
 
   /** The type of relationship to the cited artifact. */
   public enum class RelatedArtifactTypeExpanded(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Documentation("documentation", "http://hl7.org/fhir/related-artifact-type", "Documentation"),
     Justification("justification", "http://hl7.org/fhir/related-artifact-type", "Justification"),
     Citation("citation", "http://hl7.org/fhir/related-artifact-type", "Citation"),
@@ -3902,12 +3902,6 @@ public data class Citation(
     Reprint_Of("reprint-of", "http://hl7.org/fhir/related-artifact-type-expanded", "Reprint Of");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): RelatedArtifactTypeExpanded =

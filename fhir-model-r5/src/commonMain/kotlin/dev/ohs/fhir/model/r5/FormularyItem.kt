@@ -318,10 +318,10 @@ public data class FormularyItem(
 
   /** FormularyItem Status Codes */
   public enum class FormularyItemStatusCodes(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/CodeSystem/formularyitem-status", "Active"),
     Entered_In_Error(
       "entered-in-error",
@@ -331,12 +331,6 @@ public data class FormularyItem(
     Inactive("inactive", "http://hl7.org/fhir/CodeSystem/formularyitem-status", "Inactive");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): FormularyItemStatusCodes =

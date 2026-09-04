@@ -157,22 +157,16 @@ public data class Count(
 
   /** How the Quantity should be understood and represented. */
   public enum class QuantityComparator(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     LessThan("<", "http://hl7.org/fhir/quantity-comparator", "Less than"),
     LessThanOrEqualTo("<=", "http://hl7.org/fhir/quantity-comparator", "Less or Equal to"),
     GreaterThanOrEqualTo(">=", "http://hl7.org/fhir/quantity-comparator", "Greater or Equal to"),
     GreaterThan(">", "http://hl7.org/fhir/quantity-comparator", "Greater than");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): QuantityComparator =

@@ -270,18 +270,18 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       duration = Decimal.of(duration, _duration),
       durationMax = Decimal.of(durationMax, _durationMax),
       durationUnit =
-        durationUnit?.let { Enumeration.of(Timing.UnitsOfTime.fromCode(it), _durationUnit) },
+        Enumeration.of(durationUnit?.let { Timing.UnitsOfTime.fromCode(it) }, _durationUnit),
       frequency = PositiveInt.of(frequency, _frequency),
       frequencyMax = PositiveInt.of(frequencyMax, _frequencyMax),
       period = Decimal.of(period, _period),
       periodMax = Decimal.of(periodMax, _periodMax),
-      periodUnit = periodUnit?.let { Enumeration.of(Timing.UnitsOfTime.fromCode(it), _periodUnit) },
+      periodUnit = Enumeration.of(periodUnit?.let { Timing.UnitsOfTime.fromCode(it) }, _periodUnit),
       dayOfWeek =
         (kotlin.collections.List(maxOf(dayOfWeek?.size ?: 0, _dayOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            Timing.DaysOfWeek.fromCode(dayOfWeek?.getOrNull(index)!!),
+            dayOfWeek?.getOrNull(index)?.let { Timing.DaysOfWeek.fromCode(it) },
             _dayOfWeek?.getOrNull(index),
-          )
+          )!!
         }),
       timeOfDay =
         (kotlin.collections.List(maxOf(timeOfDay?.size ?: 0, _timeOfDay?.size ?: 0)) { index ->
@@ -290,9 +290,9 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       `when` =
         (kotlin.collections.List(maxOf(`when`?.size ?: 0, _when?.size ?: 0)) { index ->
           Enumeration.of(
-            Timing.EventTiming.fromCode(`when`?.getOrNull(index)!!),
+            `when`?.getOrNull(index)?.let { Timing.EventTiming.fromCode(it) },
             _when?.getOrNull(index),
-          )
+          )!!
         }),
       offset = UnsignedInt.of(offset, _offset),
     )
@@ -334,9 +334,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     (value.durationMax?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.countSer, it)
     }
-    ((value.durationUnit?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 13, it)
-    }
+    ((value.durationUnit?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.durationUnit?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.countSer, it)
     }
@@ -360,11 +358,11 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     (value.periodMax?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 22, Hoisted.countSer, it)
     }
-    ((value.periodUnit?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 23, it) }
+    ((value.periodUnit?.value?.code))?.let { encoder.encodeStringElement(descriptor, 23, it) }
     (value.periodUnit?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 24, Hoisted.countSer, it)
     }
-    (value.dayOfWeek.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.dayOfWeek.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 25, Hoisted.dayOfWeekSer, it)
     }
     (value.dayOfWeek.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -376,7 +374,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     (value.timeOfDay.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 28, Hoisted.dayOfWeekSer2, it)
     }
-    (value.`when`.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
+    (value.`when`.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 29, Hoisted.dayOfWeekSer, it)
     }
     (value.`when`.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {

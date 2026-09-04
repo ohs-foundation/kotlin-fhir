@@ -1422,20 +1422,14 @@ public data class OperationDefinition(
 
   /** Whether an operation parameter is an input or an output parameter. */
   public enum class OperationParameterUse(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     In("in", "http://hl7.org/fhir/operation-parameter-use", "In"),
     Out("out", "http://hl7.org/fhir/operation-parameter-use", "Out");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): OperationParameterUse =
@@ -1450,20 +1444,14 @@ public data class OperationDefinition(
 
   /** Whether an operation is a normal operation or a query. */
   public enum class OperationKind(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Operation("operation", "http://hl7.org/fhir/operation-kind", "Operation"),
     Query("query", "http://hl7.org/fhir/operation-kind", "Query");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): OperationKind =

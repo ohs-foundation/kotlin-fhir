@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.model.r4b.terminologies
 
+import dev.ohs.fhir.model.r4b.FhirEnum
 import kotlin.String
 
 /**
@@ -33,10 +34,10 @@ import kotlin.String
  * these are example FHIR codes.
  */
 public enum class ParticipationRoleType(
-  private val code: String,
-  private val system: String,
-  private val display: String?,
-) {
+  override val code: String,
+  override val system: String,
+  override val display: String?,
+) : FhirEnum {
   Amender("AMENDER", "http://terminology.hl7.org/CodeSystem/contractsignertypecodes", "Amender"),
   Coauth("COAUTH", "http://terminology.hl7.org/CodeSystem/contractsignertypecodes", "Co-Author"),
   Cont("CONT", "http://terminology.hl7.org/CodeSystem/contractsignertypecodes", "Contact"),
@@ -199,12 +200,6 @@ public enum class ParticipationRoleType(
   _110155("110155", "http://dicom.nema.org/resources/ontology/DCM", "Source Media");
 
   override fun toString(): String = code
-
-  public fun getCode(): String = code
-
-  public fun getSystem(): String = system
-
-  public fun getDisplay(): String? = display
 
   public companion object {
     public fun fromCode(code: String): ParticipationRoleType =

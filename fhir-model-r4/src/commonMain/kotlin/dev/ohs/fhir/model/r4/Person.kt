@@ -510,22 +510,16 @@ public data class Person(
    * Authentication Levels.
    */
   public enum class IdentityAssuranceLevel(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Level1("level1", "http://hl7.org/fhir/identity-assuranceLevel", "Level 1"),
     Level2("level2", "http://hl7.org/fhir/identity-assuranceLevel", "Level 2"),
     Level3("level3", "http://hl7.org/fhir/identity-assuranceLevel", "Level 3"),
     Level4("level4", "http://hl7.org/fhir/identity-assuranceLevel", "Level 4");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): IdentityAssuranceLevel =

@@ -309,7 +309,7 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
       description = R4String.of(description, _description),
       textEquivalent = R4String.of(textEquivalent, _textEquivalent),
       priority =
-        priority?.let { Enumeration.of(RequestGroup.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { RequestGroup.RequestPriority.fromCode(it) }, _priority),
       code = code ?: listOf(),
       documentation = documentation ?: listOf(),
       condition = condition ?: listOf(),
@@ -326,25 +326,30 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
       participant = participant ?: listOf(),
       type = type,
       groupingBehavior =
-        groupingBehavior?.let {
-          Enumeration.of(RequestGroup.ActionGroupingBehavior.fromCode(it), _groupingBehavior)
-        },
+        Enumeration.of(
+          groupingBehavior?.let { RequestGroup.ActionGroupingBehavior.fromCode(it) },
+          _groupingBehavior,
+        ),
       selectionBehavior =
-        selectionBehavior?.let {
-          Enumeration.of(RequestGroup.ActionSelectionBehavior.fromCode(it), _selectionBehavior)
-        },
+        Enumeration.of(
+          selectionBehavior?.let { RequestGroup.ActionSelectionBehavior.fromCode(it) },
+          _selectionBehavior,
+        ),
       requiredBehavior =
-        requiredBehavior?.let {
-          Enumeration.of(RequestGroup.ActionRequiredBehavior.fromCode(it), _requiredBehavior)
-        },
+        Enumeration.of(
+          requiredBehavior?.let { RequestGroup.ActionRequiredBehavior.fromCode(it) },
+          _requiredBehavior,
+        ),
       precheckBehavior =
-        precheckBehavior?.let {
-          Enumeration.of(RequestGroup.ActionPrecheckBehavior.fromCode(it), _precheckBehavior)
-        },
+        Enumeration.of(
+          precheckBehavior?.let { RequestGroup.ActionPrecheckBehavior.fromCode(it) },
+          _precheckBehavior,
+        ),
       cardinalityBehavior =
-        cardinalityBehavior?.let {
-          Enumeration.of(RequestGroup.ActionCardinalityBehavior.fromCode(it), _cardinalityBehavior)
-        },
+        Enumeration.of(
+          cardinalityBehavior?.let { RequestGroup.ActionCardinalityBehavior.fromCode(it) },
+          _cardinalityBehavior,
+        ),
       resource = resource,
       action = action ?: listOf(),
     )
@@ -377,7 +382,7 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
     (value.textEquivalent?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.prefixSer, it)
     }
-    ((value.priority?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
+    ((value.priority?.value?.code))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.priority?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.prefixSer, it)
     }
@@ -428,31 +433,25 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
     (value.type)?.let {
       encoder.encodeSerializableElement(descriptor, 25, Hoisted.codeSerInner, it)
     }
-    ((value.groupingBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 26, it)
-    }
+    ((value.groupingBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 26, it) }
     (value.groupingBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 27, Hoisted.prefixSer, it)
     }
-    ((value.selectionBehavior?.value?.getCode()))?.let {
+    ((value.selectionBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 28, it)
     }
     (value.selectionBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 29, Hoisted.prefixSer, it)
     }
-    ((value.requiredBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 30, it)
-    }
+    ((value.requiredBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 30, it) }
     (value.requiredBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 31, Hoisted.prefixSer, it)
     }
-    ((value.precheckBehavior?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 32, it)
-    }
+    ((value.precheckBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 32, it) }
     (value.precheckBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 33, Hoisted.prefixSer, it)
     }
-    ((value.cardinalityBehavior?.value?.getCode()))?.let {
+    ((value.cardinalityBehavior?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 34, it)
     }
     (value.cardinalityBehavior?.toElement())?.let {
@@ -576,15 +575,10 @@ internal object RequestGroupActionConditionSerializer : KSerializer<RequestGroup
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       kind =
-        Enumeration.of(
-          RequestGroup.ActionConditionKind.fromCode(
-            kind
-              ?: throw SerializationException(
-                "Missing required property 'kind' on RequestGroup.Action.Condition"
-              )
+        Enumeration.of(kind?.let { RequestGroup.ActionConditionKind.fromCode(it) }, _kind)
+          ?: throw SerializationException(
+            "Missing required property 'kind' on RequestGroup.Action.Condition"
           ),
-          _kind,
-        ),
       expression = expression,
     )
   }
@@ -600,7 +594,7 @@ internal object RequestGroupActionConditionSerializer : KSerializer<RequestGroup
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.kind.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.kind.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.kind.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.kindSer, it)
     }
@@ -708,14 +702,12 @@ internal object RequestGroupActionRelatedActionSerializer :
           ),
       relationship =
         Enumeration.of(
-          RequestGroup.ActionRelationshipType.fromCode(
-            relationship
-              ?: throw SerializationException(
-                "Missing required property 'relationship' on RequestGroup.Action.RelatedAction"
-              )
-          ),
+          relationship?.let { RequestGroup.ActionRelationshipType.fromCode(it) },
           _relationship,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'relationship' on RequestGroup.Action.RelatedAction"
+          ),
       offset = RequestGroup.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
     )
   }
@@ -738,7 +730,7 @@ internal object RequestGroupActionRelatedActionSerializer :
     (value.actionId.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.actionIdSer, it)
     }
-    ((value.relationship.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.relationship.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.relationship.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.actionIdSer, it)
     }
@@ -1053,23 +1045,13 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          RequestGroup.RequestStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on RequestGroup")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { RequestGroup.RequestStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on RequestGroup"),
       intent =
-        Enumeration.of(
-          RequestGroup.RequestIntent.fromCode(
-            intent
-              ?: throw SerializationException("Missing required property 'intent' on RequestGroup")
-          ),
-          _intent,
-        ),
+        Enumeration.of(intent?.let { RequestGroup.RequestIntent.fromCode(it) }, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on RequestGroup"),
       priority =
-        priority?.let { Enumeration.of(RequestGroup.RequestPriority.fromCode(it), _priority) },
+        Enumeration.of(priority?.let { RequestGroup.RequestPriority.fromCode(it) }, _priority),
       code = code,
       subject = subject,
       encounter = encounter,
@@ -1199,7 +1181,7 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -1210,7 +1192,7 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
         it,
       )
     }
-    ((value.intent.value?.getCode()))?.let {
+    ((value.intent.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.intent.toElement())?.let {
@@ -1221,7 +1203,7 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
         it,
       )
     }
-    ((value.priority?.value?.getCode()))?.let {
+    ((value.priority?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {

@@ -758,15 +758,10 @@ internal object ValueSetComposeIncludeFilterSerializer :
             "Missing required property 'property' on ValueSet.Compose.Include.Filter"
           ),
       op =
-        Enumeration.of(
-          ValueSet.FilterOperator.fromCode(
-            op
-              ?: throw SerializationException(
-                "Missing required property 'op' on ValueSet.Compose.Include.Filter"
-              )
+        Enumeration.of(op?.let { ValueSet.FilterOperator.fromCode(it) }, _op)
+          ?: throw SerializationException(
+            "Missing required property 'op' on ValueSet.Compose.Include.Filter"
           ),
-          _op,
-        ),
       `value` =
         R5String.of(`value`, _value)
           ?: throw SerializationException(
@@ -793,7 +788,7 @@ internal object ValueSetComposeIncludeFilterSerializer :
     (value.`property`.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.propertySer, it)
     }
-    ((value.op.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.op.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.op.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.propertySer, it)
     }
@@ -2452,12 +2447,8 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       status =
-        Enumeration.of(
-          PublicationStatus.fromCode(
-            status ?: throw SerializationException("Missing required property 'status' on ValueSet")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on ValueSet"),
       experimental = R5Boolean.of(experimental, _experimental),
       date = DateTime.of(FhirDateTime.fromString(date), _date),
       publisher = R5String.of(publisher, _publisher),
@@ -2613,7 +2604,7 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
         it,
       )
     }
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {

@@ -611,10 +611,10 @@ public data class DeviceUsage(
 
   /** A coded concept indicating the current status of the Device Usage. */
   public enum class DeviceUsageStatus(
-    private val code: String,
-    private val system: String,
-    private val display: String?,
-  ) {
+    override val code: String,
+    override val system: String,
+    override val display: String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/deviceusage-status", "Active"),
     Completed("completed", "http://hl7.org/fhir/deviceusage-status", "Completed"),
     Not_Done("not-done", "http://hl7.org/fhir/deviceusage-status", "Not done"),
@@ -628,12 +628,6 @@ public data class DeviceUsage(
     On_Hold("on-hold", "http://hl7.org/fhir/deviceusage-status", "On Hold");
 
     override fun toString(): String = code
-
-    public fun getCode(): String = code
-
-    public fun getSystem(): String = system
-
-    public fun getDisplay(): String? = display
 
     public companion object {
       public fun fromCode(code: String): DeviceUsageStatus =

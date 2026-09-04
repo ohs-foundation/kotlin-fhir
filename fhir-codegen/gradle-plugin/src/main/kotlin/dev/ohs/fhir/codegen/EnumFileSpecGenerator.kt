@@ -42,7 +42,8 @@ class EnumFileSpecGenerator(val codegenContext: CodegenContext) {
       ?.mapNotNull { element ->
         val valueSet = codegenContext.valueSetMap.getValue(element.getBindingValueSetUrl()!!)
         val valueSetName = valueSet.name.normalizeEnumName()
-        val enumTypeSpec = EnumTypeSpecGenerator.generate(valueSetName, valueSet)
+        val enumTypeSpec =
+          EnumTypeSpecGenerator.generate(valueSetName, valueSet, codegenContext.packageName)
         enumTypeSpec?.let {
           FileSpec.builder(
               packageName = "${codegenContext.packageName}.terminologies",

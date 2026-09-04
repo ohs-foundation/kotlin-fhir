@@ -206,12 +206,12 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       informationType =
-        informationType?.let {
-          Enumeration.of(
-            ArtifactAssessment.ArtifactAssessmentInformationType.fromCode(it),
-            _informationType,
-          )
-        },
+        Enumeration.of(
+          informationType?.let {
+            ArtifactAssessment.ArtifactAssessmentInformationType.fromCode(it)
+          },
+          _informationType,
+        ),
       summary = Markdown.of(summary, _summary),
       type = type,
       classifier = classifier ?: listOf(),
@@ -238,9 +238,7 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.informationType?.value?.getCode()))?.let {
-      encoder.encodeStringElement(descriptor, 3, it)
-    }
+    ((value.informationType?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.informationType?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.informationTypeSer, it)
     }
@@ -549,19 +547,15 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
           ),
       content = content ?: listOf(),
       workflowStatus =
-        workflowStatus?.let {
-          Enumeration.of(
-            ArtifactAssessment.ArtifactAssessmentWorkflowStatus.fromCode(it),
-            _workflowStatus,
-          )
-        },
+        Enumeration.of(
+          workflowStatus?.let { ArtifactAssessment.ArtifactAssessmentWorkflowStatus.fromCode(it) },
+          _workflowStatus,
+        ),
       disposition =
-        disposition?.let {
-          Enumeration.of(
-            ArtifactAssessment.ArtifactAssessmentDisposition.fromCode(it),
-            _disposition,
-          )
-        },
+        Enumeration.of(
+          disposition?.let { ArtifactAssessment.ArtifactAssessmentDisposition.fromCode(it) },
+          _disposition,
+        ),
     )
   }
 
@@ -750,7 +744,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
         Hoisted.contentSer,
         value.content,
       )
-    ((value.workflowStatus?.value?.getCode()))?.let {
+    ((value.workflowStatus?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
     }
     (value.workflowStatus?.toElement())?.let {
@@ -761,7 +755,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
         it,
       )
     }
-    ((value.disposition?.value?.getCode()))?.let {
+    ((value.disposition?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 32 + descriptorOffset, it)
     }
     (value.disposition?.toElement())?.let {

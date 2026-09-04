@@ -269,14 +269,12 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
       actor = actor,
       participantStatus =
         Enumeration.of(
-          AppointmentResponse.AppointmentResponseStatus.fromCode(
-            participantStatus
-              ?: throw SerializationException(
-                "Missing required property 'participantStatus' on AppointmentResponse"
-              )
-          ),
+          participantStatus?.let { AppointmentResponse.AppointmentResponseStatus.fromCode(it) },
           _participantStatus,
-        ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'participantStatus' on AppointmentResponse"
+          ),
       comment = Markdown.of(comment, _comment),
       recurring = R5Boolean.of(recurring, _recurring),
       occurrenceDate = Date.of(FhirDate.fromString(occurrenceDate), _occurrenceDate),
@@ -401,7 +399,7 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
         it,
       )
     }
-    ((value.participantStatus.value?.getCode()))?.let {
+    ((value.participantStatus.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.participantStatus.toElement())?.let {

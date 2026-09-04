@@ -115,12 +115,8 @@ internal object LinkageItemSerializer : KSerializer<Linkage.Item> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          Linkage.LinkageType.fromCode(
-            type ?: throw SerializationException("Missing required property 'type' on Linkage.Item")
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Linkage.LinkageType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Linkage.Item"),
       resource =
         resource
           ?: throw SerializationException("Missing required property 'resource' on Linkage.Item"),
@@ -138,7 +134,7 @@ internal object LinkageItemSerializer : KSerializer<Linkage.Item> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }

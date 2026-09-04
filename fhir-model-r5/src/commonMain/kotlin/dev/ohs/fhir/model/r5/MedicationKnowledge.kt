@@ -3015,10 +3015,10 @@ public data class MedicationKnowledge(
 
   /** MedicationKnowledge Status Codes */
   public enum class MedicationKnowledgeStatusCodes(
-    private val code: kotlin.String,
-    private val system: kotlin.String,
-    private val display: kotlin.String?,
-  ) {
+    override val code: kotlin.String,
+    override val system: kotlin.String,
+    override val display: kotlin.String?,
+  ) : FhirEnum {
     Active("active", "http://hl7.org/fhir/CodeSystem/medicationknowledge-status", "Active"),
     Entered_In_Error(
       "entered-in-error",
@@ -3028,12 +3028,6 @@ public data class MedicationKnowledge(
     Inactive("inactive", "http://hl7.org/fhir/CodeSystem/medicationknowledge-status", "Inactive");
 
     override fun toString(): kotlin.String = code
-
-    public fun getCode(): kotlin.String = code
-
-    public fun getSystem(): kotlin.String = system
-
-    public fun getDisplay(): kotlin.String? = display
 
     public companion object {
       public fun fromCode(code: kotlin.String): MedicationKnowledgeStatusCodes =

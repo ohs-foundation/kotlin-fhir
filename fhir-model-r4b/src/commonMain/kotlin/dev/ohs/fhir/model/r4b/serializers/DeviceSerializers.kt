@@ -193,7 +193,7 @@ internal object DeviceUdiCarrierSerializer : KSerializer<Device.UdiCarrier> {
       jurisdiction = Uri.of(jurisdiction, _jurisdiction),
       carrierAIDC = Base64Binary.of(carrierAIDC, _carrierAIDC),
       carrierHRF = R4bString.of(carrierHRF, _carrierHRF),
-      entryType = entryType?.let { Enumeration.of(Device.UDIEntryType.fromCode(it), _entryType) },
+      entryType = Enumeration.of(entryType?.let { Device.UDIEntryType.fromCode(it) }, _entryType),
     )
   }
 
@@ -228,7 +228,7 @@ internal object DeviceUdiCarrierSerializer : KSerializer<Device.UdiCarrier> {
     (value.carrierHRF?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.deviceIdentifierSer, it)
     }
-    ((value.entryType?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+    ((value.entryType?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.entryType?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.deviceIdentifierSer, it)
     }
@@ -308,15 +308,8 @@ internal object DeviceDeviceNameSerializer : KSerializer<Device.DeviceName> {
         R4bString.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on Device.DeviceName"),
       type =
-        Enumeration.of(
-          Device.DeviceNameType.fromCode(
-            type
-              ?: throw SerializationException(
-                "Missing required property 'type' on Device.DeviceName"
-              )
-          ),
-          _type,
-        ),
+        Enumeration.of(type?.let { Device.DeviceNameType.fromCode(it) }, _type)
+          ?: throw SerializationException("Missing required property 'type' on Device.DeviceName"),
     )
   }
 
@@ -335,7 +328,7 @@ internal object DeviceDeviceNameSerializer : KSerializer<Device.DeviceName> {
     (value.name.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }
@@ -976,7 +969,7 @@ internal object DeviceSerializer : KSerializer<Device> {
       identifier = identifier ?: listOf(),
       definition = definition,
       udiCarrier = udiCarrier ?: listOf(),
-      status = status?.let { Enumeration.of(Device.FHIRDeviceStatus.fromCode(it), _status) },
+      status = Enumeration.of(status?.let { Device.FHIRDeviceStatus.fromCode(it) }, _status),
       statusReason = statusReason ?: listOf(),
       distinctIdentifier = R4bString.of(distinctIdentifier, _distinctIdentifier),
       manufacturer = R4bString.of(manufacturer, _manufacturer),
@@ -1080,7 +1073,7 @@ internal object DeviceSerializer : KSerializer<Device> {
         Hoisted.udiCarrierSer,
         value.udiCarrier,
       )
-    ((value.status?.value?.getCode()))?.let {
+    ((value.status?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {

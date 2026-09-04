@@ -458,18 +458,14 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          DetectedIssue.ObservationStatus.fromCode(
-            status
-              ?: throw SerializationException("Missing required property 'status' on DetectedIssue")
-          ),
-          _status,
-        ),
+        Enumeration.of(status?.let { DetectedIssue.ObservationStatus.fromCode(it) }, _status)
+          ?: throw SerializationException("Missing required property 'status' on DetectedIssue"),
       code = code,
       severity =
-        severity?.let {
-          Enumeration.of(DetectedIssue.DetectedIssueSeverity.fromCode(it), _severity)
-        },
+        Enumeration.of(
+          severity?.let { DetectedIssue.DetectedIssueSeverity.fromCode(it) },
+          _severity,
+        ),
       patient = patient,
       identified =
         DetectedIssue.Identified.from(
@@ -548,7 +544,7 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    ((value.status.value?.getCode()))?.let {
+    ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
@@ -562,7 +558,7 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
     (value.code)?.let {
       encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.codeSer, it)
     }
-    ((value.severity?.value?.getCode()))?.let {
+    ((value.severity?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.severity?.toElement())?.let {

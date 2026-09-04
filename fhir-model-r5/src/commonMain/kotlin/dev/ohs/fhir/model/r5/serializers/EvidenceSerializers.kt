@@ -1610,9 +1610,9 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
         Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
           ?: throw SerializationException("Missing required property 'status' on Evidence"),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       author = author ?: listOf(),

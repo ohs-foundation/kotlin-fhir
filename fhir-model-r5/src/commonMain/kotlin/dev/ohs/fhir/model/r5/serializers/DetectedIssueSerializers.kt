@@ -227,7 +227,7 @@ internal object DetectedIssueMitigationSerializer : KSerializer<DetectedIssue.Mi
           ?: throw SerializationException(
             "Missing required property 'action' on DetectedIssue.Mitigation"
           ),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       author = author,
       note = note ?: listOf(),
     )
@@ -498,7 +498,7 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
       encounter = encounter,
       identified =
         DetectedIssue.Identified.from(
-          DateTime.of(FhirDateTime.fromString(identifiedDateTime), _identifiedDateTime),
+          DateTime.of(identifiedDateTime?.let { FhirDateTime.fromString(it) }, _identifiedDateTime),
           identifiedPeriod,
         ),
       author = author,

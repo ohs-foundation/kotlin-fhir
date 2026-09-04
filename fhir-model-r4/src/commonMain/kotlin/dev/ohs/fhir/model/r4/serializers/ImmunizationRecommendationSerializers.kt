@@ -467,7 +467,7 @@ internal object ImmunizationRecommendationRecommendationDateCriterionSerializer 
             "Missing required property 'code' on ImmunizationRecommendation.Recommendation.DateCriterion"
           ),
       `value` =
-        DateTime.of(FhirDateTime.fromString(`value`), _value)
+        DateTime.of(`value`?.let { FhirDateTime.fromString(it) }, _value)
           ?: throw SerializationException(
             "Missing required property 'value' on ImmunizationRecommendation.Recommendation.DateCriterion"
           ),
@@ -654,7 +654,7 @@ internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationR
             "Missing required property 'patient' on ImmunizationRecommendation"
           ),
       date =
-        DateTime.of(FhirDateTime.fromString(date), _date)
+        DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date)
           ?: throw SerializationException(
             "Missing required property 'date' on ImmunizationRecommendation"
           ),

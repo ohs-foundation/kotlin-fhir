@@ -894,7 +894,8 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
             "Missing required property 'status' on MedicationRequest"
           ),
       statusReason = statusReason,
-      statusChanged = DateTime.of(FhirDateTime.fromString(statusChanged), _statusChanged),
+      statusChanged =
+        DateTime.of(statusChanged?.let { FhirDateTime.fromString(it) }, _statusChanged),
       intent =
         Enumeration.of(
           intent?.let { MedicationRequest.MedicationRequestIntent.fromCode(it) },
@@ -920,7 +921,7 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
       informationSource = informationSource ?: listOf(),
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),
-      authoredOn = DateTime.of(FhirDateTime.fromString(authoredOn), _authoredOn),
+      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
       requester = requester,
       reported = R5Boolean.of(reported, _reported),
       performerType = performerType,

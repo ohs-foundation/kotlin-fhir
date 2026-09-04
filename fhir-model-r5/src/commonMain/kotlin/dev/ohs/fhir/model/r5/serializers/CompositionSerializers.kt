@@ -129,7 +129,7 @@ internal object CompositionAttesterSerializer : KSerializer<Composition.Attester
           ?: throw SerializationException(
             "Missing required property 'mode' on Composition.Attester"
           ),
-      time = DateTime.of(FhirDateTime.fromString(time), _time),
+      time = DateTime.of(time?.let { FhirDateTime.fromString(it) }, _time),
       party = party,
     )
   }
@@ -667,7 +667,7 @@ internal object CompositionSerializer : KSerializer<Composition> {
       subject = subject ?: listOf(),
       encounter = encounter,
       date =
-        DateTime.of(FhirDateTime.fromString(date), _date)
+        DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date)
           ?: throw SerializationException("Missing required property 'date' on Composition"),
       useContext = useContext ?: listOf(),
       author = author ?: listOf(),

@@ -137,7 +137,7 @@ internal object SignatureSerializer : KSerializer<Signature> {
       id = id,
       extension = extension ?: listOf(),
       type = type ?: listOf(),
-      `when` = Instant.of(FhirDateTime.fromString(`when`), _when),
+      `when` = Instant.of(`when`?.let { FhirDateTime.fromString(it) }, _when),
       who = who,
       onBehalfOf = onBehalfOf,
       targetFormat = Code.of(targetFormat, _targetFormat),

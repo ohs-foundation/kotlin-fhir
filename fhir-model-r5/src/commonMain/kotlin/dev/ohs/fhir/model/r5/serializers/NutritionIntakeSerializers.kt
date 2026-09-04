@@ -754,10 +754,10 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
       encounter = encounter,
       occurrence =
         NutritionIntake.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
         ),
-      recorded = DateTime.of(FhirDateTime.fromString(recorded), _recorded),
+      recorded = DateTime.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded),
       reported =
         NutritionIntake.Reported.from(
           R5Boolean.of(reportedBoolean, _reportedBoolean),

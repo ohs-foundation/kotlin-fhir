@@ -145,7 +145,7 @@ internal object MetaSerializer : KSerializer<Meta> {
       id = id,
       extension = extension ?: listOf(),
       versionId = Id.of(versionId, _versionId),
-      lastUpdated = Instant.of(FhirDateTime.fromString(lastUpdated), _lastUpdated),
+      lastUpdated = Instant.of(lastUpdated?.let { FhirDateTime.fromString(it) }, _lastUpdated),
       source = Uri.of(source, _source),
       profile =
         (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->

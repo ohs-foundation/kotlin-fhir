@@ -260,7 +260,7 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
       substance = substance,
       manifestation = manifestation ?: listOf(),
       description = R5String.of(description, _description),
-      onset = DateTime.of(FhirDateTime.fromString(onset), _onset),
+      onset = DateTime.of(onset?.let { FhirDateTime.fromString(it) }, _onset),
       severity =
         Enumeration.of(
           severity?.let { AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(it) },
@@ -607,15 +607,16 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
       encounter = encounter,
       onset =
         AllergyIntolerance.Onset.from(
-          DateTime.of(FhirDateTime.fromString(onsetDateTime), _onsetDateTime),
+          DateTime.of(onsetDateTime?.let { FhirDateTime.fromString(it) }, _onsetDateTime),
           onsetAge,
           onsetPeriod,
           onsetRange,
           R5String.of(onsetString, _onsetString),
         ),
-      recordedDate = DateTime.of(FhirDateTime.fromString(recordedDate), _recordedDate),
+      recordedDate = DateTime.of(recordedDate?.let { FhirDateTime.fromString(it) }, _recordedDate),
       participant = participant ?: listOf(),
-      lastOccurrence = DateTime.of(FhirDateTime.fromString(lastOccurrence), _lastOccurrence),
+      lastOccurrence =
+        DateTime.of(lastOccurrence?.let { FhirDateTime.fromString(it) }, _lastOccurrence),
       note = note ?: listOf(),
       reaction = reaction ?: listOf(),
     )

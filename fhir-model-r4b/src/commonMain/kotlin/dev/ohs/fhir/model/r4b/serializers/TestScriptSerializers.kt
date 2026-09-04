@@ -2681,7 +2681,7 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
         Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
           ?: throw SerializationException("Missing required property 'status' on TestScript"),
       experimental = R4bBoolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),

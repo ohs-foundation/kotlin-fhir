@@ -288,7 +288,7 @@ internal object GuidanceResponseSerializer : KSerializer<GuidanceResponse> {
       subject = subject,
       encounter = encounter,
       occurrenceDateTime =
-        DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+        DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
       performer = performer,
       reason = reason ?: listOf(),
       note = note ?: listOf(),

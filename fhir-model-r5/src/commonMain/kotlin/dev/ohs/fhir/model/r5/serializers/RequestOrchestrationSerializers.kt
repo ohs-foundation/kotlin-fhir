@@ -396,7 +396,7 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
       relatedAction = relatedAction ?: listOf(),
       timing =
         RequestOrchestration.Action.Timing.from(
-          DateTime.of(FhirDateTime.fromString(timingDateTime), _timingDateTime),
+          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
           timingAge,
           timingPeriod,
           timingDuration,
@@ -1721,7 +1721,7 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
       code = code,
       subject = subject,
       encounter = encounter,
-      authoredOn = DateTime.of(FhirDateTime.fromString(authoredOn), _authoredOn),
+      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
       author = author,
       reason = reason ?: listOf(),
       goal = goal ?: listOf(),

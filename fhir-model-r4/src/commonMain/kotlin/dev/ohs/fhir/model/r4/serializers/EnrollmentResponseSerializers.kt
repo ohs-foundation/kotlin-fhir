@@ -219,7 +219,7 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
       request = request,
       outcome = Enumeration.of(outcome?.let { ClaimProcessingCodes.fromCode(it) }, _outcome),
       disposition = R4String.of(disposition, _disposition),
-      created = DateTime.of(FhirDateTime.fromString(created), _created),
+      created = DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created),
       organization = organization,
       requestProvider = requestProvider,
     )

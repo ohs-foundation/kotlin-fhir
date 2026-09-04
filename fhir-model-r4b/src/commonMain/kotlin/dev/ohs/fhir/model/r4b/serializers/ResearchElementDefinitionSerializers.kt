@@ -407,7 +407,10 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
         R4bString.of(studyEffectiveDescription, _studyEffectiveDescription),
       studyEffective =
         ResearchElementDefinition.Characteristic.StudyEffective.from(
-          DateTime.of(FhirDateTime.fromString(studyEffectiveDateTime), _studyEffectiveDateTime),
+          DateTime.of(
+            studyEffectiveDateTime?.let { FhirDateTime.fromString(it) },
+            _studyEffectiveDateTime,
+          ),
           studyEffectivePeriod,
           studyEffectiveDuration,
           studyEffectiveTiming,
@@ -423,7 +426,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
       participantEffective =
         ResearchElementDefinition.Characteristic.ParticipantEffective.from(
           DateTime.of(
-            FhirDateTime.fromString(participantEffectiveDateTime),
+            participantEffectiveDateTime?.let { FhirDateTime.fromString(it) },
             _participantEffectiveDateTime,
           ),
           participantEffectivePeriod,
@@ -1047,7 +1050,7 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
           ),
       experimental = R4bBoolean.of(experimental, _experimental),
       subject = ResearchElementDefinition.Subject.from(subjectCodeableConcept, subjectReference),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -1060,8 +1063,8 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
       purpose = Markdown.of(purpose, _purpose),
       usage = R4bString.of(usage, _usage),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       topic = topic ?: listOf(),
       author = author ?: listOf(),

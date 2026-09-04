@@ -429,7 +429,7 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
             "Missing required property 'status' on CompartmentDefinition"
           ),
       experimental = R4Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),

@@ -598,7 +598,7 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
       supportingInformation = supportingInformation ?: listOf(),
       effective =
         MedicationAdministration.Effective.from(
-          DateTime.of(FhirDateTime.fromString(effectiveDateTime), _effectiveDateTime),
+          DateTime.of(effectiveDateTime?.let { FhirDateTime.fromString(it) }, _effectiveDateTime),
           effectivePeriod,
         )
           ?: throw SerializationException(

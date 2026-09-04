@@ -616,7 +616,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           ?: throw SerializationException(
             "Missing required property 'patient' on FamilyMemberHistory"
           ),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       name = R4String.of(name, _name),
       relationship =
         relationship
@@ -627,7 +627,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       born =
         FamilyMemberHistory.Born.from(
           bornPeriod,
-          Date.of(FhirDate.fromString(bornDate), _bornDate),
+          Date.of(bornDate?.let { FhirDate.fromString(it) }, _bornDate),
           R4String.of(bornString, _bornString),
         ),
       age = FamilyMemberHistory.Age.from(ageAge, ageRange, R4String.of(ageString, _ageString)),
@@ -637,7 +637,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           R4Boolean.of(deceasedBoolean, _deceasedBoolean),
           deceasedAge,
           deceasedRange,
-          Date.of(FhirDate.fromString(deceasedDate), _deceasedDate),
+          Date.of(deceasedDate?.let { FhirDate.fromString(it) }, _deceasedDate),
           R4String.of(deceasedString, _deceasedString),
         ),
       reasonCode = reasonCode ?: listOf(),

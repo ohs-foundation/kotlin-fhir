@@ -236,13 +236,13 @@ internal object PaymentNoticeSerializer : KSerializer<PaymentNotice> {
       request = request,
       response = response,
       created =
-        DateTime.of(FhirDateTime.fromString(created), _created)
+        DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
           ?: throw SerializationException("Missing required property 'created' on PaymentNotice"),
       provider = provider,
       payment =
         payment
           ?: throw SerializationException("Missing required property 'payment' on PaymentNotice"),
-      paymentDate = Date.of(FhirDate.fromString(paymentDate), _paymentDate),
+      paymentDate = Date.of(paymentDate?.let { FhirDate.fromString(it) }, _paymentDate),
       payee = payee,
       recipient =
         recipient

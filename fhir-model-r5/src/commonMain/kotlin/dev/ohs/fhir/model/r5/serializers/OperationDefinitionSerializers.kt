@@ -1150,7 +1150,7 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
             "Missing required property 'kind' on OperationDefinition"
           ),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),

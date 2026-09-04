@@ -840,7 +840,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
             "Missing required property 'status' on StructureDefinition"
           ),
       experimental = R4Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),

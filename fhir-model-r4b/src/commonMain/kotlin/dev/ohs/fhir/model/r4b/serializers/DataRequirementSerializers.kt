@@ -248,7 +248,7 @@ internal object DataRequirementDateFilterSerializer : KSerializer<DataRequiremen
       searchParam = R4bString.of(searchParam, _searchParam),
       `value` =
         DataRequirement.DateFilter.Value.from(
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           valuePeriod,
           valueDuration,
         ),

@@ -145,8 +145,8 @@ internal object ResearchSubjectProgressSerializer : KSerializer<ResearchSubject.
       subjectState = subjectState,
       milestone = milestone,
       reason = reason,
-      startDate = DateTime.of(FhirDateTime.fromString(startDate), _startDate),
-      endDate = DateTime.of(FhirDateTime.fromString(endDate), _endDate),
+      startDate = DateTime.of(startDate?.let { FhirDateTime.fromString(it) }, _startDate),
+      endDate = DateTime.of(endDate?.let { FhirDateTime.fromString(it) }, _endDate),
     )
   }
 

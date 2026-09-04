@@ -605,7 +605,8 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
             "Missing required property 'status' on MedicationDispense"
           ),
       notPerformedReason = notPerformedReason,
-      statusChanged = DateTime.of(FhirDateTime.fromString(statusChanged), _statusChanged),
+      statusChanged =
+        DateTime.of(statusChanged?.let { FhirDateTime.fromString(it) }, _statusChanged),
       category = category ?: listOf(),
       medication =
         medication
@@ -625,9 +626,10 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
       type = type,
       quantity = quantity,
       daysSupply = daysSupply,
-      recorded = DateTime.of(FhirDateTime.fromString(recorded), _recorded),
-      whenPrepared = DateTime.of(FhirDateTime.fromString(whenPrepared), _whenPrepared),
-      whenHandedOver = DateTime.of(FhirDateTime.fromString(whenHandedOver), _whenHandedOver),
+      recorded = DateTime.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded),
+      whenPrepared = DateTime.of(whenPrepared?.let { FhirDateTime.fromString(it) }, _whenPrepared),
+      whenHandedOver =
+        DateTime.of(whenHandedOver?.let { FhirDateTime.fromString(it) }, _whenHandedOver),
       destination = destination,
       `receiver` = `receiver` ?: listOf(),
       note = note ?: listOf(),

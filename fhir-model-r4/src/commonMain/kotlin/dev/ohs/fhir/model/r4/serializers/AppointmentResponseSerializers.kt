@@ -225,8 +225,8 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
           ?: throw SerializationException(
             "Missing required property 'appointment' on AppointmentResponse"
           ),
-      start = Instant.of(FhirDateTime.fromString(start), _start),
-      end = Instant.of(FhirDateTime.fromString(end), _end),
+      start = Instant.of(start?.let { FhirDateTime.fromString(it) }, _start),
+      end = Instant.of(end?.let { FhirDateTime.fromString(it) }, _end),
       participantType = participantType ?: listOf(),
       actor = actor,
       participantStatus =

@@ -483,7 +483,7 @@ internal object TimingSerializer : KSerializer<Timing> {
       event =
         (kotlin.collections.List(maxOf(event?.size ?: 0, _event?.size ?: 0)) { index ->
           DateTime.of(
-            event?.getOrNull(index)?.let { FhirDateTime.fromString(it) },
+            event?.getOrNull(index)?.let { it?.let { FhirDateTime.fromString(it) } },
             _event?.getOrNull(index),
           )!!
         }),

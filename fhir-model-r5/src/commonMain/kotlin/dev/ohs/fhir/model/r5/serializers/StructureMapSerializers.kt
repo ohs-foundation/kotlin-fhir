@@ -1317,9 +1317,9 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
           R5Boolean.of(valueBoolean, _valueBoolean),
           Integer.of(valueInteger, _valueInteger),
           Decimal.of(valueDecimal, _valueDecimal),
-          Date.of(FhirDate.fromString(valueDate), _valueDate),
+          Date.of(valueDate?.let { FhirDate.fromString(it) }, _valueDate),
           Time.of(valueTime, _valueTime),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
         )
           ?: throw SerializationException(
             "Missing required property 'value' on StructureMap.Group.Rule.Target.Parameter"
@@ -1823,7 +1823,7 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
         Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
           ?: throw SerializationException("Missing required property 'status' on StructureMap"),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),

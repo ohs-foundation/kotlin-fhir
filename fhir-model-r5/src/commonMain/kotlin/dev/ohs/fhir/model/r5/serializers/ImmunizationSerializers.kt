@@ -327,7 +327,7 @@ internal object ImmunizationReactionSerializer : KSerializer<Immunization.Reacti
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       manifestation = manifestation,
       reported = R5Boolean.of(reported, _reported),
     )
@@ -856,7 +856,7 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
       administeredProduct = administeredProduct,
       manufacturer = manufacturer,
       lotNumber = R5String.of(lotNumber, _lotNumber),
-      expirationDate = Date.of(FhirDate.fromString(expirationDate), _expirationDate),
+      expirationDate = Date.of(expirationDate?.let { FhirDate.fromString(it) }, _expirationDate),
       patient =
         patient
           ?: throw SerializationException("Missing required property 'patient' on Immunization"),
@@ -864,7 +864,7 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
       supportingInformation = supportingInformation ?: listOf(),
       occurrence =
         Immunization.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           R5String.of(occurrenceString, _occurrenceString),
         ) ?: throw SerializationException("Missing required property 'occurrence' on Immunization"),
       primarySource = R5Boolean.of(primarySource, _primarySource),

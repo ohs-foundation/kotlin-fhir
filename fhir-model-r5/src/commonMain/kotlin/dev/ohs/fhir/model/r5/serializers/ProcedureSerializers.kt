@@ -683,14 +683,14 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
       encounter = encounter,
       occurrence =
         Procedure.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
           R5String.of(occurrenceString, _occurrenceString),
           occurrenceAge,
           occurrenceRange,
           occurrenceTiming,
         ),
-      recorded = DateTime.of(FhirDateTime.fromString(recorded), _recorded),
+      recorded = DateTime.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded),
       recorder = recorder,
       reported =
         Procedure.Reported.from(R5Boolean.of(reportedBoolean, _reportedBoolean), reportedReference),

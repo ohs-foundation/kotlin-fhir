@@ -127,7 +127,7 @@ internal object SubstanceInstanceSerializer : KSerializer<Substance.Instance> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
-      expiry = DateTime.of(FhirDateTime.fromString(expiry), _expiry),
+      expiry = DateTime.of(expiry?.let { FhirDateTime.fromString(it) }, _expiry),
       quantity = quantity,
     )
   }

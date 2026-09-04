@@ -434,11 +434,11 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
       parameter = parameter ?: listOf(),
       occurrence =
         SupplyRequest.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
           occurrenceTiming,
         ),
-      authoredOn = DateTime.of(FhirDateTime.fromString(authoredOn), _authoredOn),
+      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
       requester = requester,
       supplier = supplier ?: listOf(),
       reason = reason ?: listOf(),

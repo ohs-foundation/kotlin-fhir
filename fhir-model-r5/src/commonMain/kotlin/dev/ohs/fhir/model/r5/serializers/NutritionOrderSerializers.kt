@@ -1787,7 +1787,7 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),
       dateTime =
-        DateTime.of(FhirDateTime.fromString(dateTime), _dateTime)
+        DateTime.of(dateTime?.let { FhirDateTime.fromString(it) }, _dateTime)
           ?: throw SerializationException("Missing required property 'dateTime' on NutritionOrder"),
       orderer = orderer,
       performer = performer ?: listOf(),

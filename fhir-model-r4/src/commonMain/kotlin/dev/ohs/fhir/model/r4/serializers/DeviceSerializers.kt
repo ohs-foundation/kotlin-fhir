@@ -973,8 +973,10 @@ internal object DeviceSerializer : KSerializer<Device> {
       statusReason = statusReason ?: listOf(),
       distinctIdentifier = R4String.of(distinctIdentifier, _distinctIdentifier),
       manufacturer = R4String.of(manufacturer, _manufacturer),
-      manufactureDate = DateTime.of(FhirDateTime.fromString(manufactureDate), _manufactureDate),
-      expirationDate = DateTime.of(FhirDateTime.fromString(expirationDate), _expirationDate),
+      manufactureDate =
+        DateTime.of(manufactureDate?.let { FhirDateTime.fromString(it) }, _manufactureDate),
+      expirationDate =
+        DateTime.of(expirationDate?.let { FhirDateTime.fromString(it) }, _expirationDate),
       lotNumber = R4String.of(lotNumber, _lotNumber),
       serialNumber = R4String.of(serialNumber, _serialNumber),
       deviceName = deviceName ?: listOf(),

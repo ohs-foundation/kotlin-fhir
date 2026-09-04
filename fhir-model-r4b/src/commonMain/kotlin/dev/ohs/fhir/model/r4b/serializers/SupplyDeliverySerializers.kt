@@ -374,7 +374,7 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
       suppliedItem = suppliedItem,
       occurrence =
         SupplyDelivery.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
           occurrenceTiming,
         ),

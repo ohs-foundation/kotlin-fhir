@@ -138,7 +138,7 @@ internal object CoverageEligibilityResponseEventSerializer :
           ),
       `when` =
         CoverageEligibilityResponse.Event.When.from(
-          DateTime.of(FhirDateTime.fromString(whenDateTime), _whenDateTime),
+          DateTime.of(whenDateTime?.let { FhirDateTime.fromString(it) }, _whenDateTime),
           whenPeriod,
         )
           ?: throw SerializationException(
@@ -1165,11 +1165,11 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
       event = event ?: listOf(),
       serviced =
         CoverageEligibilityResponse.Serviced.from(
-          Date.of(FhirDate.fromString(servicedDate), _servicedDate),
+          Date.of(servicedDate?.let { FhirDate.fromString(it) }, _servicedDate),
           servicedPeriod,
         ),
       created =
-        DateTime.of(FhirDateTime.fromString(created), _created)
+        DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
           ?: throw SerializationException(
             "Missing required property 'created' on CoverageEligibilityResponse"
           ),

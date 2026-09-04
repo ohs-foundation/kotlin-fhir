@@ -154,7 +154,7 @@ internal object BiologicallyDerivedProductCollectionSerializer :
       source = source,
       collected =
         BiologicallyDerivedProduct.Collection.Collected.from(
-          DateTime.of(FhirDateTime.fromString(collectedDateTime), _collectedDateTime),
+          DateTime.of(collectedDateTime?.let { FhirDateTime.fromString(it) }, _collectedDateTime),
           collectedPeriod,
         ),
     )
@@ -633,7 +633,8 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
       processingFacility = processingFacility ?: listOf(),
       division = R5String.of(division, _division),
       productStatus = productStatus,
-      expirationDate = DateTime.of(FhirDateTime.fromString(expirationDate), _expirationDate),
+      expirationDate =
+        DateTime.of(expirationDate?.let { FhirDateTime.fromString(it) }, _expirationDate),
       collection = collection,
       storageTempRequirements = storageTempRequirements,
       `property` = `property` ?: listOf(),

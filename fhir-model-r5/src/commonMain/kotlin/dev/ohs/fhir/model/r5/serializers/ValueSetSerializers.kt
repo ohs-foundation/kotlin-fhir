@@ -169,7 +169,7 @@ internal object ValueSetComposeSerializer : KSerializer<ValueSet.Compose> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      lockedDate = Date.of(FhirDate.fromString(lockedDate), _lockedDate),
+      lockedDate = Date.of(lockedDate?.let { FhirDate.fromString(it) }, _lockedDate),
       inactive = R5Boolean.of(inactive, _inactive),
       include = include ?: listOf(),
       exclude = exclude ?: listOf(),
@@ -932,7 +932,7 @@ internal object ValueSetExpansionSerializer : KSerializer<ValueSet.Expansion> {
       identifier = Uri.of(identifier, _identifier),
       next = Uri.of(next, _next),
       timestamp =
-        DateTime.of(FhirDateTime.fromString(timestamp), _timestamp)
+        DateTime.of(timestamp?.let { FhirDateTime.fromString(it) }, _timestamp)
           ?: throw SerializationException(
             "Missing required property 'timestamp' on ValueSet.Expansion"
           ),
@@ -1136,7 +1136,7 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
           Decimal.of(valueDecimal, _valueDecimal),
           Uri.of(valueUri, _valueUri),
           Code.of(valueCode, _valueCode),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
         ),
     )
   }
@@ -1661,7 +1661,7 @@ internal object ValueSetExpansionContainsPropertySerializer :
           R5String.of(valueString, _valueString),
           Integer.of(valueInteger, _valueInteger),
           R5Boolean.of(valueBoolean, _valueBoolean),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           Decimal.of(valueDecimal, _valueDecimal),
         )
           ?: throw SerializationException(
@@ -1881,7 +1881,7 @@ internal object ValueSetExpansionContainsPropertySubPropertySerializer :
           R5String.of(valueString, _valueString),
           Integer.of(valueInteger, _valueInteger),
           R5Boolean.of(valueBoolean, _valueBoolean),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           Decimal.of(valueDecimal, _valueDecimal),
         )
           ?: throw SerializationException(
@@ -2450,7 +2450,7 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
         Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
           ?: throw SerializationException("Missing required property 'status' on ValueSet"),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -2460,8 +2460,8 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       topic = topic ?: listOf(),
       author = author ?: listOf(),

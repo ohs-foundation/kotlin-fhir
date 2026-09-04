@@ -355,7 +355,7 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
       telecom = telecom ?: listOf(),
       address = address ?: listOf(),
       gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
-      birthDate = Date.of(FhirDate.fromString(birthDate), _birthDate),
+      birthDate = Date.of(birthDate?.let { FhirDate.fromString(it) }, _birthDate),
       photo = photo ?: listOf(),
       qualification = qualification ?: listOf(),
       communication = communication ?: listOf(),

@@ -532,8 +532,8 @@ internal object NutritionProductInstanceSerializer : KSerializer<NutritionProduc
       identifier = identifier ?: listOf(),
       name = R5String.of(name, _name),
       lotNumber = R5String.of(lotNumber, _lotNumber),
-      expiry = DateTime.of(FhirDateTime.fromString(expiry), _expiry),
-      useBy = DateTime.of(FhirDateTime.fromString(useBy), _useBy),
+      expiry = DateTime.of(expiry?.let { FhirDateTime.fromString(it) }, _expiry),
+      useBy = DateTime.of(useBy?.let { FhirDateTime.fromString(it) }, _useBy),
       biologicalSourceEvent = biologicalSourceEvent,
     )
   }

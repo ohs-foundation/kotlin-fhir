@@ -147,7 +147,7 @@ internal object CapabilityStatementSoftwareSerializer : KSerializer<CapabilitySt
             "Missing required property 'name' on CapabilityStatement.Software"
           ),
       version = R5String.of(version, _version),
-      releaseDate = DateTime.of(FhirDateTime.fromString(releaseDate), _releaseDate),
+      releaseDate = DateTime.of(releaseDate?.let { FhirDateTime.fromString(it) }, _releaseDate),
     )
   }
 
@@ -2537,7 +2537,7 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
           ),
       experimental = R5Boolean.of(experimental, _experimental),
       date =
-        DateTime.of(FhirDateTime.fromString(date), _date)
+        DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date)
           ?: throw SerializationException(
             "Missing required property 'date' on CapabilityStatement"
           ),

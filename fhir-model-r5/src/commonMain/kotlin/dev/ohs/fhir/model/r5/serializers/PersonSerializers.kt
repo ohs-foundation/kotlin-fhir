@@ -465,11 +465,11 @@ internal object PersonSerializer : KSerializer<Person> {
       name = name ?: listOf(),
       telecom = telecom ?: listOf(),
       gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
-      birthDate = Date.of(FhirDate.fromString(birthDate), _birthDate),
+      birthDate = Date.of(birthDate?.let { FhirDate.fromString(it) }, _birthDate),
       deceased =
         Person.Deceased.from(
           R5Boolean.of(deceasedBoolean, _deceasedBoolean),
-          DateTime.of(FhirDateTime.fromString(deceasedDateTime), _deceasedDateTime),
+          DateTime.of(deceasedDateTime?.let { FhirDateTime.fromString(it) }, _deceasedDateTime),
         ),
       address = address ?: listOf(),
       maritalStatus = maritalStatus,

@@ -163,7 +163,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
       size = UnsignedInt.of(size, _size),
       hash = Base64Binary.of(hash, _hash),
       title = R4String.of(title, _title),
-      creation = DateTime.of(FhirDateTime.fromString(creation), _creation),
+      creation = DateTime.of(creation?.let { FhirDateTime.fromString(it) }, _creation),
     )
   }
 

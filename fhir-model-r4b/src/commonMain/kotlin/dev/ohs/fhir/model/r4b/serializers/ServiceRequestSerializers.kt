@@ -538,7 +538,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
       encounter = encounter,
       occurrence =
         ServiceRequest.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
           occurrenceTiming,
         ),
@@ -547,7 +547,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           R4bBoolean.of(asNeededBoolean, _asNeededBoolean),
           asNeededCodeableConcept,
         ),
-      authoredOn = DateTime.of(FhirDateTime.fromString(authoredOn), _authoredOn),
+      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
       requester = requester,
       performerType = performerType,
       performer = performer ?: listOf(),

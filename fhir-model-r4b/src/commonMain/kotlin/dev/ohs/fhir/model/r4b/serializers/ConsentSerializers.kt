@@ -237,7 +237,8 @@ internal object ConsentVerificationSerializer : KSerializer<Consent.Verification
             "Missing required property 'verified' on Consent.Verification"
           ),
       verifiedWith = verifiedWith,
-      verificationDate = DateTime.of(FhirDateTime.fromString(verificationDate), _verificationDate),
+      verificationDate =
+        DateTime.of(verificationDate?.let { FhirDateTime.fromString(it) }, _verificationDate),
     )
   }
 
@@ -907,7 +908,7 @@ internal object ConsentSerializer : KSerializer<Consent> {
       scope = scope ?: throw SerializationException("Missing required property 'scope' on Consent"),
       category = category ?: listOf(),
       patient = patient,
-      dateTime = DateTime.of(FhirDateTime.fromString(dateTime), _dateTime),
+      dateTime = DateTime.of(dateTime?.let { FhirDateTime.fromString(it) }, _dateTime),
       performer = performer ?: listOf(),
       organization = organization ?: listOf(),
       source = Consent.Source.from(sourceAttachment, sourceReference),

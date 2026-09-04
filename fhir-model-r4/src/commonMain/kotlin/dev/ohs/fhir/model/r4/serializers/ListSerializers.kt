@@ -132,7 +132,7 @@ internal object ListEntrySerializer : KSerializer<R4List.Entry> {
       modifierExtension = modifierExtension ?: listOf(),
       flag = flag,
       deleted = R4Boolean.of(deleted, _deleted),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       item = item ?: throw SerializationException("Missing required property 'item' on List.Entry"),
     )
   }
@@ -361,7 +361,7 @@ internal object ListSerializer : KSerializer<R4List> {
       code = code,
       subject = subject,
       encounter = encounter,
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       source = source,
       orderedBy = orderedBy,
       note = note ?: listOf(),

@@ -790,7 +790,7 @@ internal object PermissionSerializer : KSerializer<Permission> {
       date =
         (kotlin.collections.List(maxOf(date?.size ?: 0, _date?.size ?: 0)) { index ->
           DateTime.of(
-            date?.getOrNull(index)?.let { FhirDateTime.fromString(it) },
+            date?.getOrNull(index)?.let { it?.let { FhirDateTime.fromString(it) } },
             _date?.getOrNull(index),
           )!!
         }),

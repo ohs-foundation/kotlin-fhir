@@ -273,10 +273,10 @@ internal object SlotSerializer : KSerializer<Slot> {
         Enumeration.of(status?.let { Slot.SlotStatus.fromCode(it) }, _status)
           ?: throw SerializationException("Missing required property 'status' on Slot"),
       start =
-        Instant.of(FhirDateTime.fromString(start), _start)
+        Instant.of(start?.let { FhirDateTime.fromString(it) }, _start)
           ?: throw SerializationException("Missing required property 'start' on Slot"),
       end =
-        Instant.of(FhirDateTime.fromString(end), _end)
+        Instant.of(end?.let { FhirDateTime.fromString(it) }, _end)
           ?: throw SerializationException("Missing required property 'end' on Slot"),
       overbooked = R4bBoolean.of(overbooked, _overbooked),
       comment = R4bString.of(comment, _comment),

@@ -637,7 +637,7 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
       type = type,
       category = category ?: listOf(),
       subject = subject,
-      date = Instant.of(FhirDateTime.fromString(date), _date),
+      date = Instant.of(date?.let { FhirDateTime.fromString(it) }, _date),
       author = author ?: listOf(),
       authenticator = authenticator,
       custodian = custodian,

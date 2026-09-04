@@ -22,13 +22,13 @@ import kotlin.test.assertFailsWith
 
 class FhirDateTimeTest :
   FunSpec({
-    fun roundTrip(fromString: (String?) -> Any?, value: String) =
+    fun roundTrip(fromString: (String) -> Any, value: String) =
       assertEquals(value, fromString(value).toString())
 
-    fun reject(fromString: (String?) -> Any?, value: String) =
+    fun reject(fromString: (String) -> Any, value: String) =
       assertFailsWith<IllegalStateException> { fromString(value) }
 
-    fun fhirDateTimeTestSuite(fhirVersion: String, fromString: (String?) -> Any?) {
+    fun fhirDateTimeTestSuite(fhirVersion: String, fromString: (String) -> Any) {
       context("$fhirVersion FhirDateTime") {
         test("deserializing and serializing year produces same string") {
           roundTrip(fromString, "2025")

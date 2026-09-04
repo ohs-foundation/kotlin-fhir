@@ -248,7 +248,7 @@ internal object DataRequirementDateFilterSerializer : KSerializer<DataRequiremen
       searchParam = R5String.of(searchParam, _searchParam),
       `value` =
         DataRequirement.DateFilter.Value.from(
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           valuePeriod,
           valueDuration,
         ),
@@ -393,7 +393,7 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
         ),
       `value` =
         DataRequirement.ValueFilter.Value.from(
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           valuePeriod,
           valueDuration,
         ),

@@ -315,10 +315,10 @@ internal object MediaSerializer : KSerializer<Media> {
       encounter = encounter,
       created =
         Media.Created.from(
-          DateTime.of(FhirDateTime.fromString(createdDateTime), _createdDateTime),
+          DateTime.of(createdDateTime?.let { FhirDateTime.fromString(it) }, _createdDateTime),
           createdPeriod,
         ),
-      issued = Instant.of(FhirDateTime.fromString(issued), _issued),
+      issued = Instant.of(issued?.let { FhirDateTime.fromString(it) }, _issued),
       `operator` = `operator`,
       reasonCode = reasonCode ?: listOf(),
       bodySite = bodySite,

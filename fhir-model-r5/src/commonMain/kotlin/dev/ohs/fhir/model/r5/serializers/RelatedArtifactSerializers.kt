@@ -195,7 +195,7 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
           publicationStatus?.let { PublicationStatus.fromCode(it) },
           _publicationStatus,
         ),
-      publicationDate = Date.of(FhirDate.fromString(publicationDate), _publicationDate),
+      publicationDate = Date.of(publicationDate?.let { FhirDate.fromString(it) }, _publicationDate),
     )
   }
 

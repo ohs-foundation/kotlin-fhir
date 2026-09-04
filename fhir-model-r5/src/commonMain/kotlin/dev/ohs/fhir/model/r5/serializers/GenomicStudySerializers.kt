@@ -288,7 +288,7 @@ internal object GenomicStudyAnalysisSerializer : KSerializer<GenomicStudy.Analys
       title = R5String.of(title, _title),
       focus = focus ?: listOf(),
       specimen = specimen ?: listOf(),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       note = note ?: listOf(),
       protocolPerformed = protocolPerformed,
       regionsStudied = regionsStudied ?: listOf(),
@@ -1010,7 +1010,7 @@ internal object GenomicStudySerializer : KSerializer<GenomicStudy> {
         subject
           ?: throw SerializationException("Missing required property 'subject' on GenomicStudy"),
       encounter = encounter,
-      startDate = DateTime.of(FhirDateTime.fromString(startDate), _startDate),
+      startDate = DateTime.of(startDate?.let { FhirDateTime.fromString(it) }, _startDate),
       basedOn = basedOn ?: listOf(),
       referrer = referrer,
       interpreter = interpreter ?: listOf(),

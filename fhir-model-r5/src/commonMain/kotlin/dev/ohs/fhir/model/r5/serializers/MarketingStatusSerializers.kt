@@ -130,7 +130,7 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
         status
           ?: throw SerializationException("Missing required property 'status' on MarketingStatus"),
       dateRange = dateRange,
-      restoreDate = DateTime.of(FhirDateTime.fromString(restoreDate), _restoreDate),
+      restoreDate = DateTime.of(restoreDate?.let { FhirDateTime.fromString(it) }, _restoreDate),
     )
   }
 

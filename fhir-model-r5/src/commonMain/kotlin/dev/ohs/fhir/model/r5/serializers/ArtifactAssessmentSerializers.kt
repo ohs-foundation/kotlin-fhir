@@ -532,10 +532,10 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
           citeAsReference,
           Markdown.of(citeAsMarkdown, _citeAsMarkdown),
         ),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       artifact =
         ArtifactAssessment.Artifact.from(
           artifactReference,

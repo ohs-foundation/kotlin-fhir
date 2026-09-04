@@ -347,8 +347,10 @@ internal object EncounterHistorySerializer : KSerializer<EncounterHistory> {
       subject = subject,
       subjectStatus = subjectStatus,
       actualPeriod = actualPeriod,
-      plannedStartDate = DateTime.of(FhirDateTime.fromString(plannedStartDate), _plannedStartDate),
-      plannedEndDate = DateTime.of(FhirDateTime.fromString(plannedEndDate), _plannedEndDate),
+      plannedStartDate =
+        DateTime.of(plannedStartDate?.let { FhirDateTime.fromString(it) }, _plannedStartDate),
+      plannedEndDate =
+        DateTime.of(plannedEndDate?.let { FhirDateTime.fromString(it) }, _plannedEndDate),
       length = length,
       location = location ?: listOf(),
     )

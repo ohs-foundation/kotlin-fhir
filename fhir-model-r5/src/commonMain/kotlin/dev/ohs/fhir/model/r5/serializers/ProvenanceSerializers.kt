@@ -476,9 +476,9 @@ internal object ProvenanceSerializer : KSerializer<Provenance> {
       occurred =
         Provenance.Occurred.from(
           occurredPeriod,
-          DateTime.of(FhirDateTime.fromString(occurredDateTime), _occurredDateTime),
+          DateTime.of(occurredDateTime?.let { FhirDateTime.fromString(it) }, _occurredDateTime),
         ),
-      recorded = Instant.of(FhirDateTime.fromString(recorded), _recorded),
+      recorded = Instant.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded),
       policy =
         (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { index ->
           Uri.of(policy?.getOrNull(index)?.let { it }, _policy?.getOrNull(index))!!

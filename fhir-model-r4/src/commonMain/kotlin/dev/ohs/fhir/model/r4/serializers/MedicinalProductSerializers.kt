@@ -526,7 +526,8 @@ internal object MedicinalProductManufacturingBusinessOperationSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       operationType = operationType,
       authorisationReferenceNumber = authorisationReferenceNumber,
-      effectiveDate = DateTime.of(FhirDateTime.fromString(effectiveDate), _effectiveDate),
+      effectiveDate =
+        DateTime.of(effectiveDate?.let { FhirDateTime.fromString(it) }, _effectiveDate),
       confidentialityIndicator = confidentialityIndicator,
       manufacturer = manufacturer ?: listOf(),
       regulator = regulator,
@@ -697,7 +698,7 @@ internal object MedicinalProductSpecialDesignationSerializer :
           indicationReference,
         ),
       status = status,
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       species = species,
     )
   }

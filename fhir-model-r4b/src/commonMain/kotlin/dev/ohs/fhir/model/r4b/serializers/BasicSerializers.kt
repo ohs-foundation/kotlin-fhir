@@ -185,7 +185,7 @@ internal object BasicSerializer : KSerializer<Basic> {
       identifier = identifier ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on Basic"),
       subject = subject,
-      created = Date.of(FhirDate.fromString(created), _created),
+      created = Date.of(created?.let { FhirDate.fromString(it) }, _created),
       author = author,
     )
   }

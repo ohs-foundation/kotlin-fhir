@@ -221,7 +221,7 @@ internal object PaymentReconciliationAllocationSerializer :
       type = type,
       submitter = submitter,
       response = response,
-      date = Date.of(FhirDate.fromString(date), _date),
+      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
       responsible = responsible,
       payee = payee,
       amount = amount,
@@ -730,7 +730,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       kind = kind,
       period = period,
       created =
-        DateTime.of(FhirDateTime.fromString(created), _created)
+        DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
           ?: throw SerializationException(
             "Missing required property 'created' on PaymentReconciliation"
           ),
@@ -746,7 +746,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
         ),
       disposition = R5String.of(disposition, _disposition),
       date =
-        Date.of(FhirDate.fromString(date), _date)
+        Date.of(date?.let { FhirDate.fromString(it) }, _date)
           ?: throw SerializationException(
             "Missing required property 'date' on PaymentReconciliation"
           ),
@@ -754,7 +754,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       method = method,
       cardBrand = R5String.of(cardBrand, _cardBrand),
       accountNumber = R5String.of(accountNumber, _accountNumber),
-      expirationDate = Date.of(FhirDate.fromString(expirationDate), _expirationDate),
+      expirationDate = Date.of(expirationDate?.let { FhirDate.fromString(it) }, _expirationDate),
       processor = R5String.of(processor, _processor),
       referenceNumber = R5String.of(referenceNumber, _referenceNumber),
       authorization = R5String.of(authorization, _authorization),

@@ -342,7 +342,7 @@ internal object SubstanceDefinitionPropertySerializer : KSerializer<SubstanceDef
         SubstanceDefinition.Property.Value.from(
           valueCodeableConcept,
           valueQuantity,
-          Date.of(FhirDate.fromString(valueDate), _valueDate),
+          Date.of(valueDate?.let { FhirDate.fromString(it) }, _valueDate),
           R4bBoolean.of(valueBoolean, _valueBoolean),
           valueAttachment,
         ),
@@ -935,7 +935,7 @@ internal object SubstanceDefinitionCodeSerializer : KSerializer<SubstanceDefinit
       modifierExtension = modifierExtension ?: listOf(),
       code = code,
       status = status,
-      statusDate = DateTime.of(FhirDateTime.fromString(statusDate), _statusDate),
+      statusDate = DateTime.of(statusDate?.let { FhirDateTime.fromString(it) }, _statusDate),
       note = note ?: listOf(),
       source = source ?: listOf(),
     )
@@ -1265,7 +1265,7 @@ internal object SubstanceDefinitionNameOfficialSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       authority = authority,
       status = status,
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
     )
   }
 

@@ -132,7 +132,7 @@ internal object DocumentReferenceAttesterSerializer : KSerializer<DocumentRefere
           ?: throw SerializationException(
             "Missing required property 'mode' on DocumentReference.Attester"
           ),
-      time = DateTime.of(FhirDateTime.fromString(time), _time),
+      time = DateTime.of(time?.let { FhirDateTime.fromString(it) }, _time),
       party = party,
     )
   }
@@ -780,7 +780,7 @@ internal object DocumentReferenceSerializer : KSerializer<DocumentReference> {
       facilityType = facilityType,
       practiceSetting = practiceSetting,
       period = period,
-      date = Instant.of(FhirDateTime.fromString(date), _date),
+      date = Instant.of(date?.let { FhirDateTime.fromString(it) }, _date),
       author = author ?: listOf(),
       attester = attester ?: listOf(),
       custodian = custodian,

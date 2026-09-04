@@ -150,7 +150,7 @@ internal object BiologicallyDerivedProductCollectionSerializer :
       source = source,
       collected =
         BiologicallyDerivedProduct.Collection.Collected.from(
-          DateTime.of(FhirDateTime.fromString(collectedDateTime), _collectedDateTime),
+          DateTime.of(collectedDateTime?.let { FhirDateTime.fromString(it) }, _collectedDateTime),
           collectedPeriod,
         ),
     )
@@ -291,7 +291,7 @@ internal object BiologicallyDerivedProductProcessingSerializer :
       additive = additive,
       time =
         BiologicallyDerivedProduct.Processing.Time.from(
-          DateTime.of(FhirDateTime.fromString(timeDateTime), _timeDateTime),
+          DateTime.of(timeDateTime?.let { FhirDateTime.fromString(it) }, _timeDateTime),
           timePeriod,
         ),
     )
@@ -426,7 +426,7 @@ internal object BiologicallyDerivedProductManipulationSerializer :
       description = R4bString.of(description, _description),
       time =
         BiologicallyDerivedProduct.Manipulation.Time.from(
-          DateTime.of(FhirDateTime.fromString(timeDateTime), _timeDateTime),
+          DateTime.of(timeDateTime?.let { FhirDateTime.fromString(it) }, _timeDateTime),
           timePeriod,
         ),
     )

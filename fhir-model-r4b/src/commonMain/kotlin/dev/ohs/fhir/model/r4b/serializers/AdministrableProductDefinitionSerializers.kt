@@ -168,7 +168,7 @@ internal object AdministrableProductDefinitionPropertySerializer :
         AdministrableProductDefinition.Property.Value.from(
           valueCodeableConcept,
           valueQuantity,
-          Date.of(FhirDate.fromString(valueDate), _valueDate),
+          Date.of(valueDate?.let { FhirDate.fromString(it) }, _valueDate),
           R4bBoolean.of(valueBoolean, _valueBoolean),
           valueAttachment,
         ),

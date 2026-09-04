@@ -143,7 +143,7 @@ internal object ClaimResponseEventSerializer : KSerializer<ClaimResponse.Event> 
           ),
       `when` =
         ClaimResponse.Event.When.from(
-          DateTime.of(FhirDateTime.fromString(whenDateTime), _whenDateTime),
+          DateTime.of(whenDateTime?.let { FhirDateTime.fromString(it) }, _whenDateTime),
           whenPeriod,
         )
           ?: throw SerializationException(
@@ -1333,7 +1333,7 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       programCode = programCode ?: listOf(),
       serviced =
         ClaimResponse.AddItem.Serviced.from(
-          Date.of(FhirDate.fromString(servicedDate), _servicedDate),
+          Date.of(servicedDate?.let { FhirDate.fromString(it) }, _servicedDate),
           servicedPeriod,
         ),
       location =
@@ -2341,7 +2341,7 @@ internal object ClaimResponsePaymentSerializer : KSerializer<ClaimResponse.Payme
           ),
       adjustment = adjustment,
       adjustmentReason = adjustmentReason,
-      date = Date.of(FhirDate.fromString(date), _date),
+      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
       amount =
         amount
           ?: throw SerializationException(
@@ -3147,7 +3147,7 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
         patient
           ?: throw SerializationException("Missing required property 'patient' on ClaimResponse"),
       created =
-        DateTime.of(FhirDateTime.fromString(created), _created)
+        DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
           ?: throw SerializationException("Missing required property 'created' on ClaimResponse"),
       insurer = insurer,
       requestor = requestor,

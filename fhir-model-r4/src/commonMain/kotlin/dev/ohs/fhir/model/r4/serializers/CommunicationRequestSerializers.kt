@@ -481,10 +481,10 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
       payload = payload ?: listOf(),
       occurrence =
         CommunicationRequest.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
         ),
-      authoredOn = DateTime.of(FhirDateTime.fromString(authoredOn), _authoredOn),
+      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
       requester = requester,
       recipient = recipient ?: listOf(),
       sender = sender,

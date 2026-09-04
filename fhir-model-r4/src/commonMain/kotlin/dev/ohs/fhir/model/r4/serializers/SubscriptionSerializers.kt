@@ -361,7 +361,7 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
         Enumeration.of(status?.let { Subscription.SubscriptionStatus.fromCode(it) }, _status)
           ?: throw SerializationException("Missing required property 'status' on Subscription"),
       contact = contact ?: listOf(),
-      end = Instant.of(FhirDateTime.fromString(end), _end),
+      end = Instant.of(end?.let { FhirDateTime.fromString(it) }, _end),
       reason =
         R4String.of(reason, _reason)
           ?: throw SerializationException("Missing required property 'reason' on Subscription"),

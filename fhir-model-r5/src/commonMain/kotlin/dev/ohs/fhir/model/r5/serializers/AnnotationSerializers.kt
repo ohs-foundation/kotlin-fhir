@@ -130,7 +130,7 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
       id = id,
       extension = extension ?: listOf(),
       author = Annotation.Author.from(authorReference, R5String.of(authorString, _authorString)),
-      time = DateTime.of(FhirDateTime.fromString(time), _time),
+      time = DateTime.of(time?.let { FhirDateTime.fromString(it) }, _time),
       text =
         Markdown.of(text, _text)
           ?: throw SerializationException("Missing required property 'text' on Annotation"),

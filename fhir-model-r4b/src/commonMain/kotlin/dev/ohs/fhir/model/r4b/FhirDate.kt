@@ -42,8 +42,12 @@ public sealed interface FhirDate {
   }
 
   public companion object {
-    public fun fromString(string: String?): FhirDate? {
-      if (string == null) return null
+    /**
+     * Parses a FHIR date string (`YYYY`, `YYYY-MM`, or `YYYY-MM-DD`).
+     *
+     * @throws IllegalStateException if [string] is not a valid FHIR date.
+     */
+    public fun fromString(string: String): FhirDate {
       if (string.matches(Regex("\\d{4}"))) {
         return Year(string.toInt())
       } else if (string.matches(Regex("\\d{4}-\\d{2}"))) {

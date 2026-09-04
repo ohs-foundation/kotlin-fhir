@@ -888,7 +888,7 @@ internal object EvidenceVariableCharacteristicTimeFromEventSerializer :
         EvidenceVariable.Characteristic.TimeFromEvent.Event.from(
           eventCodeableConcept,
           eventReference,
-          DateTime.of(FhirDateTime.fromString(eventDateTime), _eventDateTime),
+          DateTime.of(eventDateTime?.let { FhirDateTime.fromString(it) }, _eventDateTime),
           Id.of(eventId, _eventId),
         ),
       quantity = quantity,
@@ -1480,7 +1480,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
           ?: throw SerializationException("Missing required property 'status' on EvidenceVariable"),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       publisher = R5String.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -1489,8 +1489,8 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
-      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
-      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       author = author ?: listOf(),
       editor = editor ?: listOf(),

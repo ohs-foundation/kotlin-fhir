@@ -185,7 +185,8 @@ internal object ContractContentDefinitionSerializer : KSerializer<Contract.Conte
           ),
       subType = subType,
       publisher = publisher,
-      publicationDate = DateTime.of(FhirDateTime.fromString(publicationDate), _publicationDate),
+      publicationDate =
+        DateTime.of(publicationDate?.let { FhirDateTime.fromString(it) }, _publicationDate),
       publicationStatus =
         Enumeration.of(
           publicationStatus?.let { Contract.ContractResourcePublicationStatusCodes.fromCode(it) },
@@ -401,7 +402,7 @@ internal object ContractTermSerializer : KSerializer<Contract.Term> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
-      issued = DateTime.of(FhirDateTime.fromString(issued), _issued),
+      issued = DateTime.of(issued?.let { FhirDateTime.fromString(it) }, _issued),
       applies = applies,
       topic = Contract.Term.Topic.from(topicCodeableConcept, topicReference),
       type = type,
@@ -1155,8 +1156,8 @@ internal object ContractTermOfferAnswerSerializer : KSerializer<Contract.Term.Of
           R5Boolean.of(valueBoolean, _valueBoolean),
           Decimal.of(valueDecimal, _valueDecimal),
           Integer.of(valueInteger, _valueInteger),
-          Date.of(FhirDate.fromString(valueDate), _valueDate),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          Date.of(valueDate?.let { FhirDate.fromString(it) }, _valueDate),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           Time.of(valueTime, _valueTime),
           R5String.of(valueString, _valueString),
           Uri.of(valueUri, _valueUri),
@@ -1894,14 +1895,15 @@ internal object ContractTermAssetValuedItemSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       entity = Contract.Term.Asset.ValuedItem.Entity.from(entityCodeableConcept, entityReference),
       identifier = identifier,
-      effectiveTime = DateTime.of(FhirDateTime.fromString(effectiveTime), _effectiveTime),
+      effectiveTime =
+        DateTime.of(effectiveTime?.let { FhirDateTime.fromString(it) }, _effectiveTime),
       quantity = quantity,
       unitPrice = unitPrice,
       factor = Decimal.of(factor, _factor),
       points = Decimal.of(points, _points),
       net = net,
       payment = R5String.of(payment, _payment),
-      paymentDate = DateTime.of(FhirDateTime.fromString(paymentDate), _paymentDate),
+      paymentDate = DateTime.of(paymentDate?.let { FhirDateTime.fromString(it) }, _paymentDate),
       responsible = responsible,
       recipient = recipient,
       linkId =
@@ -2329,7 +2331,7 @@ internal object ContractTermActionSerializer : KSerializer<Contract.Term.Action>
         }),
       occurrence =
         Contract.Term.Action.Occurrence.from(
-          DateTime.of(FhirDateTime.fromString(occurrenceDateTime), _occurrenceDateTime),
+          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
           occurrencePeriod,
           occurrenceTiming,
         ),
@@ -3422,7 +3424,7 @@ internal object ContractSerializer : KSerializer<Contract> {
       instantiatesCanonical = instantiatesCanonical,
       instantiatesUri = Uri.of(instantiatesUri, _instantiatesUri),
       contentDerivative = contentDerivative,
-      issued = DateTime.of(FhirDateTime.fromString(issued), _issued),
+      issued = DateTime.of(issued?.let { FhirDateTime.fromString(it) }, _issued),
       applies = applies,
       expirationType = expirationType,
       subject = subject ?: listOf(),

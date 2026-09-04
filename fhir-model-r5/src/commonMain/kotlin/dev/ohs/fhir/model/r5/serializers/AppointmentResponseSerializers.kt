@@ -263,8 +263,8 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
             "Missing required property 'appointment' on AppointmentResponse"
           ),
       proposedNewTime = R5Boolean.of(proposedNewTime, _proposedNewTime),
-      start = Instant.of(FhirDateTime.fromString(start), _start),
-      end = Instant.of(FhirDateTime.fromString(end), _end),
+      start = Instant.of(start?.let { FhirDateTime.fromString(it) }, _start),
+      end = Instant.of(end?.let { FhirDateTime.fromString(it) }, _end),
       participantType = participantType ?: listOf(),
       actor = actor,
       participantStatus =
@@ -277,7 +277,7 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
           ),
       comment = Markdown.of(comment, _comment),
       recurring = R5Boolean.of(recurring, _recurring),
-      occurrenceDate = Date.of(FhirDate.fromString(occurrenceDate), _occurrenceDate),
+      occurrenceDate = Date.of(occurrenceDate?.let { FhirDate.fromString(it) }, _occurrenceDate),
       recurrenceId = PositiveInt.of(recurrenceId, _recurrenceId),
     )
   }

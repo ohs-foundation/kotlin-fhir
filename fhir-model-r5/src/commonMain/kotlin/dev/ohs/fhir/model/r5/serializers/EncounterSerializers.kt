@@ -947,8 +947,10 @@ internal object EncounterSerializer : KSerializer<Encounter> {
       appointment = appointment ?: listOf(),
       virtualService = virtualService ?: listOf(),
       actualPeriod = actualPeriod,
-      plannedStartDate = DateTime.of(FhirDateTime.fromString(plannedStartDate), _plannedStartDate),
-      plannedEndDate = DateTime.of(FhirDateTime.fromString(plannedEndDate), _plannedEndDate),
+      plannedStartDate =
+        DateTime.of(plannedStartDate?.let { FhirDateTime.fromString(it) }, _plannedStartDate),
+      plannedEndDate =
+        DateTime.of(plannedEndDate?.let { FhirDateTime.fromString(it) }, _plannedEndDate),
       length = length,
       reason = reason ?: listOf(),
       diagnosis = diagnosis ?: listOf(),

@@ -166,7 +166,8 @@ internal object VerificationResultPrimarySourceSerializer :
       type = type ?: listOf(),
       communicationMethod = communicationMethod ?: listOf(),
       validationStatus = validationStatus,
-      validationDate = DateTime.of(FhirDateTime.fromString(validationDate), _validationDate),
+      validationDate =
+        DateTime.of(validationDate?.let { FhirDateTime.fromString(it) }, _validationDate),
       canPushUpdates = canPushUpdates,
       pushTypeAvailable = pushTypeAvailable ?: listOf(),
     )
@@ -335,7 +336,7 @@ internal object VerificationResultAttestationSerializer :
       who = who,
       onBehalfOf = onBehalfOf,
       communicationMethod = communicationMethod,
-      date = Date.of(FhirDate.fromString(date), _date),
+      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
       sourceIdentityCertificate =
         R4bString.of(sourceIdentityCertificate, _sourceIdentityCertificate),
       proxyIdentityCertificate = R4bString.of(proxyIdentityCertificate, _proxyIdentityCertificate),
@@ -760,12 +761,13 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
           ?: throw SerializationException(
             "Missing required property 'status' on VerificationResult"
           ),
-      statusDate = DateTime.of(FhirDateTime.fromString(statusDate), _statusDate),
+      statusDate = DateTime.of(statusDate?.let { FhirDateTime.fromString(it) }, _statusDate),
       validationType = validationType,
       validationProcess = validationProcess ?: listOf(),
       frequency = frequency,
-      lastPerformed = DateTime.of(FhirDateTime.fromString(lastPerformed), _lastPerformed),
-      nextScheduled = Date.of(FhirDate.fromString(nextScheduled), _nextScheduled),
+      lastPerformed =
+        DateTime.of(lastPerformed?.let { FhirDateTime.fromString(it) }, _lastPerformed),
+      nextScheduled = Date.of(nextScheduled?.let { FhirDate.fromString(it) }, _nextScheduled),
       failureAction = failureAction,
       primarySource = primarySource ?: listOf(),
       attestation = attestation,

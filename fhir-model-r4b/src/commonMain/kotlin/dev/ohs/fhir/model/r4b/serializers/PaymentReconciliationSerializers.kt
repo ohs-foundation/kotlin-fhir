@@ -170,7 +170,7 @@ internal object PaymentReconciliationDetailSerializer : KSerializer<PaymentRecon
       request = request,
       submitter = submitter,
       response = response,
-      date = Date.of(FhirDate.fromString(date), _date),
+      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
       responsible = responsible,
       payee = payee,
       amount = amount,
@@ -548,7 +548,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
           ),
       period = period,
       created =
-        DateTime.of(FhirDateTime.fromString(created), _created)
+        DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
           ?: throw SerializationException(
             "Missing required property 'created' on PaymentReconciliation"
           ),
@@ -558,7 +558,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
       outcome = Enumeration.of(outcome?.let { RemittanceOutcome.fromCode(it) }, _outcome),
       disposition = R4bString.of(disposition, _disposition),
       paymentDate =
-        Date.of(FhirDate.fromString(paymentDate), _paymentDate)
+        Date.of(paymentDate?.let { FhirDate.fromString(it) }, _paymentDate)
           ?: throw SerializationException(
             "Missing required property 'paymentDate' on PaymentReconciliation"
           ),

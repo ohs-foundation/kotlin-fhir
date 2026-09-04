@@ -97,8 +97,8 @@ internal object PeriodSerializer : KSerializer<Period> {
     return Period(
       id = id,
       extension = extension ?: listOf(),
-      start = DateTime.of(FhirDateTime.fromString(start), _start),
-      end = DateTime.of(FhirDateTime.fromString(end), _end),
+      start = DateTime.of(start?.let { FhirDateTime.fromString(it) }, _start),
+      end = DateTime.of(end?.let { FhirDateTime.fromString(it) }, _end),
     )
   }
 

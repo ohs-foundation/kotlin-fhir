@@ -18,13 +18,17 @@ package dev.ohs.fhir.model.test
 
 import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class FhirDateTest :
   FunSpec({
-    fun roundTrip(fromString: (String) -> String, value: String) =
-      assertEquals(value, fromString(value))
+    fun roundTrip(fromString: (String) -> Any, value: String) =
+      assertEquals(value, fromString(value).toString())
 
-    fun fhirDateTestSuite(fhirVersion: String, fromString: (String) -> String) {
+    fun reject(fromString: (String) -> Any, value: String) =
+      assertFailsWith<IllegalStateException> { fromString(value) }
+
+    fun fhirDateTestSuite(fhirVersion: String, fromString: (String) -> Any) {
       context("$fhirVersion FhirDate") {
         test("deserializing and serializing year produces same string") {
           roundTrip(fromString, "2025")
@@ -35,10 +39,14 @@ class FhirDateTest :
         test("deserializing and serializing date produces same string") {
           roundTrip(fromString, "2025-09-11")
         }
+        test("deserializing invalid string throws") {
+          reject(fromString, "not-a-date")
+          reject(fromString, "")
+        }
       }
     }
 
-    fhirDateTestSuite("R4") { dev.ohs.fhir.model.r4.FhirDate.fromString(it).toString() }
-    fhirDateTestSuite("R4B") { dev.ohs.fhir.model.r4b.FhirDate.fromString(it).toString() }
-    fhirDateTestSuite("R5") { dev.ohs.fhir.model.r5.FhirDate.fromString(it).toString() }
+    fhirDateTestSuite("R4", dev.ohs.fhir.model.r4.FhirDate::fromString)
+    fhirDateTestSuite("R4B", dev.ohs.fhir.model.r4b.FhirDate::fromString)
+    fhirDateTestSuite("R5", dev.ohs.fhir.model.r5.FhirDate::fromString)
   })

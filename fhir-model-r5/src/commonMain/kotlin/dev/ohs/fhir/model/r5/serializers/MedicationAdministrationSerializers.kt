@@ -599,14 +599,14 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
       supportingInformation = supportingInformation ?: listOf(),
       occurence =
         MedicationAdministration.Occurence.from(
-          DateTime.of(FhirDateTime.fromString(occurenceDateTime), _occurenceDateTime),
+          DateTime.of(occurenceDateTime?.let { FhirDateTime.fromString(it) }, _occurenceDateTime),
           occurencePeriod,
           occurenceTiming,
         )
           ?: throw SerializationException(
             "Missing required property 'occurence' on MedicationAdministration"
           ),
-      recorded = DateTime.of(FhirDateTime.fromString(recorded), _recorded),
+      recorded = DateTime.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded),
       isSubPotent = R5Boolean.of(isSubPotent, _isSubPotent),
       subPotentReason = subPotentReason ?: listOf(),
       performer = performer ?: listOf(),

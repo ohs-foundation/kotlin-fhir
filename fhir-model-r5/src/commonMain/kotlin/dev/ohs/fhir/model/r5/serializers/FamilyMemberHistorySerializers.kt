@@ -483,7 +483,7 @@ internal object FamilyMemberHistoryProcedureSerializer :
           performedRange,
           performedPeriod,
           R5String.of(performedString, _performedString),
-          DateTime.of(FhirDateTime.fromString(performedDateTime), _performedDateTime),
+          DateTime.of(performedDateTime?.let { FhirDateTime.fromString(it) }, _performedDateTime),
         ),
       note = note ?: listOf(),
     )
@@ -932,7 +932,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           ?: throw SerializationException(
             "Missing required property 'patient' on FamilyMemberHistory"
           ),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       participant = participant ?: listOf(),
       name = R5String.of(name, _name),
       relationship =
@@ -944,7 +944,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       born =
         FamilyMemberHistory.Born.from(
           bornPeriod,
-          Date.of(FhirDate.fromString(bornDate), _bornDate),
+          Date.of(bornDate?.let { FhirDate.fromString(it) }, _bornDate),
           R5String.of(bornString, _bornString),
         ),
       age = FamilyMemberHistory.Age.from(ageAge, ageRange, R5String.of(ageString, _ageString)),
@@ -954,7 +954,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           R5Boolean.of(deceasedBoolean, _deceasedBoolean),
           deceasedAge,
           deceasedRange,
-          Date.of(FhirDate.fromString(deceasedDate), _deceasedDate),
+          Date.of(deceasedDate?.let { FhirDate.fromString(it) }, _deceasedDate),
           R5String.of(deceasedString, _deceasedString),
         ),
       reason = reason ?: listOf(),

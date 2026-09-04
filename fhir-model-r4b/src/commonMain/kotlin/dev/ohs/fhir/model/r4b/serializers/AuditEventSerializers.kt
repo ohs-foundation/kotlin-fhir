@@ -966,7 +966,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
       action = Enumeration.of(action?.let { AuditEvent.AuditEventAction.fromCode(it) }, _action),
       period = period,
       recorded =
-        Instant.of(FhirDateTime.fromString(recorded), _recorded)
+        Instant.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded)
           ?: throw SerializationException("Missing required property 'recorded' on AuditEvent"),
       outcome =
         Enumeration.of(outcome?.let { AuditEvent.AuditEventOutcome.fromCode(it) }, _outcome),

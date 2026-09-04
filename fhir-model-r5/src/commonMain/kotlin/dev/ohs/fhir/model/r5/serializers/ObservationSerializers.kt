@@ -525,7 +525,7 @@ internal object ObservationComponentSerializer : KSerializer<Observation.Compone
           valueRatio,
           valueSampledData,
           Time.of(valueTime, _valueTime),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           valuePeriod,
           valueAttachment,
           valueReference,
@@ -1122,12 +1122,12 @@ internal object ObservationSerializer : KSerializer<Observation> {
       encounter = encounter,
       effective =
         Observation.Effective.from(
-          DateTime.of(FhirDateTime.fromString(effectiveDateTime), _effectiveDateTime),
+          DateTime.of(effectiveDateTime?.let { FhirDateTime.fromString(it) }, _effectiveDateTime),
           effectivePeriod,
           effectiveTiming,
-          Instant.of(FhirDateTime.fromString(effectiveInstant), _effectiveInstant),
+          Instant.of(effectiveInstant?.let { FhirDateTime.fromString(it) }, _effectiveInstant),
         ),
-      issued = Instant.of(FhirDateTime.fromString(issued), _issued),
+      issued = Instant.of(issued?.let { FhirDateTime.fromString(it) }, _issued),
       performer = performer ?: listOf(),
       `value` =
         Observation.Value.from(
@@ -1140,7 +1140,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
           valueRatio,
           valueSampledData,
           Time.of(valueTime, _valueTime),
-          DateTime.of(FhirDateTime.fromString(valueDateTime), _valueDateTime),
+          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
           valuePeriod,
           valueAttachment,
           valueReference,

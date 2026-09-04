@@ -550,10 +550,10 @@ internal object ClinicalImpressionSerializer : KSerializer<ClinicalImpression> {
       encounter = encounter,
       effective =
         ClinicalImpression.Effective.from(
-          DateTime.of(FhirDateTime.fromString(effectiveDateTime), _effectiveDateTime),
+          DateTime.of(effectiveDateTime?.let { FhirDateTime.fromString(it) }, _effectiveDateTime),
           effectivePeriod,
         ),
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       assessor = assessor,
       previous = previous,
       problem = problem ?: listOf(),

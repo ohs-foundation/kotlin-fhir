@@ -663,7 +663,7 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
       type = type,
       subject = subject,
       recipient = recipient,
-      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
       participant = participant ?: listOf(),
       issuer = issuer,
       account = account,

@@ -75,7 +75,7 @@ object FhirDateSerializerFileSpecGenerator {
               .addModifiers(KModifier.OVERRIDE)
               .addParameter("decoder", ClassName("kotlinx.serialization.encoding", "Decoder"))
               .returns(fhirDateClassName)
-              .addStatement("return %T.fromString(decoder.decodeString())!!", fhirDateClassName)
+              .addStatement("return %T.fromString(decoder.decodeString())", fhirDateClassName)
               .build()
           )
           .build()

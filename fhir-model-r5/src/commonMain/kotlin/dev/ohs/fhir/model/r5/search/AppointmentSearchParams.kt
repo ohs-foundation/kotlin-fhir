@@ -250,12 +250,23 @@ public object AppointmentSearchParams {
     SearchParam(
       name = "group",
       type = SearchParamType.Reference,
-      expression = "Appointment.participant.actor.where(resolve() is Group)",
+      expression =
+        "Appointment.participant.actor.where(resolve() is Group) | Appointment.subject.where(resolve() is Group)",
       target = listOf(Group::class),
       extractor = { resource ->
-        resource.participant
-          .mapNotNull { it.actor }
-          .filter { it.reference?.value?.contains("Group/") == true }
+        buildList {
+            addAll(
+              resource.participant
+                .mapNotNull { it.actor }
+                .filter { it.reference?.value?.contains("Group/") == true }
+            )
+            addAll(
+              listOfNotNull(resource.subject).filter {
+                it.reference?.value?.contains("Group/") == true
+              }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -292,12 +303,23 @@ public object AppointmentSearchParams {
     SearchParam(
       name = "patient",
       type = SearchParamType.Reference,
-      expression = "Appointment.participant.actor.where(resolve() is Patient)",
+      expression =
+        "Appointment.participant.actor.where(resolve() is Patient) | Appointment.subject.where(resolve() is Patient)",
       target = listOf(Patient::class),
       extractor = { resource ->
-        resource.participant
-          .mapNotNull { it.actor }
-          .filter { it.reference?.value?.contains("Patient/") == true }
+        buildList {
+            addAll(
+              resource.participant
+                .mapNotNull { it.actor }
+                .filter { it.reference?.value?.contains("Patient/") == true }
+            )
+            addAll(
+              listOfNotNull(resource.subject).filter {
+                it.reference?.value?.contains("Patient/") == true
+              }
+            )
+          }
+          .distinct()
       },
     )
 

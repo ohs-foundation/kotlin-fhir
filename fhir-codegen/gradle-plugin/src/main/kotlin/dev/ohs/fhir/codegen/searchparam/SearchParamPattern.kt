@@ -18,12 +18,13 @@ package dev.ohs.fhir.codegen.searchparam
 
 import dev.ohs.fhir.codegen.FhirPathExpressionResolver
 import dev.ohs.fhir.codegen.ResolvedExpression
+import dev.ohs.fhir.codegen.primitives.FhirPathType
 
 /**
  * Classification of a FHIRPath search-parameter expression after parsing.
  *
  * Each case carries the inputs needed by the renderer. Anything the parser cannot match collapses
- * to [Unsupported], which the renderer emits as `List<Any>` / `return emptyList()`.
+ * to [Unsupported], whose generated extractor throws `NotImplementedError`.
  */
 internal sealed interface SearchParamPattern {
   /** A simple dotted path like `Patient.name.given`. */
@@ -61,17 +62,86 @@ internal sealed interface SearchParamPattern {
     val isFieldNullable: Boolean = true,
   ) : SearchParamPattern
 
-  /** Anything not matched by the parsers above. Renders as `List<Any>` / `return emptyList()`. */
+  /**
+   * A union (`A | B | …`) of supported branches. Extraction runs each branch and concatenates the
+   * results in expression order, removing duplicates like the FHIRPath `|` operator. Unsupported
+   * branches are dropped during parsing, so a union may extract fewer branches than its expression
+   * lists; see `docs/search-parameter-patterns.md` for the parameters extracted partially.
+   */
+  data class Union(val branches: List<SearchParamPattern>) : SearchParamPattern
+
+  /** Anything not matched by the parsers above. Renders as a `throw NotImplementedError(...)`. */
   data object Unsupported : SearchParamPattern
 }
 
 /**
- * Classifies [expression] into a [SearchParamPattern] by trying each shape in priority order.
+ * Classifies [expression] into a [SearchParamPattern].
  *
- * Order: simple dotted path → element cast → element (no cast) → `.where(resolve() is …)` →
- * `.where(field='…')` (with optional post-path) → [SearchParamPattern.Unsupported].
+ * A union (`A | B | …`) becomes [SearchParamPattern.Union] of its supported branches; unsupported
+ * branches are dropped, a single surviving branch is returned directly, and the expression is
+ * [SearchParamPattern.Unsupported] only when no branch is supported. A single expression is matched
+ * against each shape in priority order: simple dotted path → element cast → element (no cast) →
+ * `.where(resolve() is …)` → `.where(field='…')` (with optional post-path) →
+ * [SearchParamPattern.Unsupported].
  */
 internal fun parseSearchParamExpression(
+  expression: String,
+  resourceName: String,
+  resolver: FhirPathExpressionResolver,
+): SearchParamPattern {
+  val parts = splitTopLevelUnion(expression)
+  if (parts.size > 1) {
+    val branches =
+      parts
+        .map { parseSingleExpression(it, resourceName, resolver) }
+        .filter { it != SearchParamPattern.Unsupported }
+    return when {
+      branches.isEmpty() -> SearchParamPattern.Unsupported
+      branches.size == 1 -> branches.single()
+      else -> SearchParamPattern.Union(branches)
+    }
+  }
+  return parseSingleExpression(expression, resourceName, resolver)
+}
+
+/**
+ * Splits [expression] into union branches on `|`, ignoring any `|` inside parentheses or inside
+ * single-quoted string literals. For example, `(A.ofType(X)) | (A.ofType(Y))` yields two branches,
+ * but the `|` in `where(code='a|b')` does not split. Returns the trimmed non-empty branches; a
+ * single-element list means the expression is not a union.
+ */
+internal fun splitTopLevelUnion(expression: String): List<String> {
+  val parts = mutableListOf<String>()
+  val current = StringBuilder()
+  var depth = 0
+  var inString = false
+  for (c in expression) {
+    when {
+      c == '\'' -> {
+        inString = !inString
+        current.append(c)
+      }
+      inString -> current.append(c)
+      c == '(' -> {
+        depth++
+        current.append(c)
+      }
+      c == ')' -> {
+        depth--
+        current.append(c)
+      }
+      c == '|' && depth == 0 -> {
+        parts.add(current.toString())
+        current.clear()
+      }
+      else -> current.append(c)
+    }
+  }
+  parts.add(current.toString())
+  return parts.map { it.trim() }.filter { it.isNotEmpty() }
+}
+
+private fun parseSingleExpression(
   expression: String,
   resourceName: String,
   resolver: FhirPathExpressionResolver,
@@ -119,13 +189,25 @@ internal fun parseSearchParamExpression(
               .resolve("$elementType.${whereResult.filterField}", elementType)
               ?.segments
               ?.lastOrNull()
-          return SearchParamPattern.WhereFilter(
-            resolved,
-            whereResult.filterField,
-            whereResult.filterValue,
-            postPath,
-            isFieldNullable = fieldSegment?.isNullable ?: true,
-          )
+          // A supported filter compiles to `filter { it.<field>?.value?.toString() == "<value>" }`,
+          // which requires the field to be a primitive type whose raw value is exposed via
+          // `.value`. Example: in `Device.identifier.where(type='SNO')`, the field
+          // `Identifier.type` is a CodeableConcept with no `.value`, so no compilable filter
+          // can be generated. Such expressions are classified as unsupported, and their
+          // parameters render as a `NotImplementedError` throw instead of a partial or
+          // non-compiling extractor.
+          val fieldTypeCode = fieldSegment?.leafTypeCode
+          if (
+            fieldTypeCode != null && FhirPathType.entries.any { fieldTypeCode in it.fhirTypeCodes }
+          ) {
+            return SearchParamPattern.WhereFilter(
+              resolved,
+              whereResult.filterField,
+              whereResult.filterValue,
+              postPath,
+              isFieldNullable = fieldSegment.isNullable,
+            )
+          }
         }
       }
     }

@@ -148,7 +148,6 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Provenance
-import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.QuestionnaireResponse
 import dev.ohs.fhir.model.r5.RegulatedAuthorization
@@ -382,13 +381,22 @@ public object PlanDefinitionSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<PlanDefinition, Quantity> =
+  public val contextQuantity: SearchParam<PlanDefinition, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(PlanDefinition.useContext.value.ofType(Quantity))",
+      expression =
+        "(PlanDefinition.useContext.value.ofType(Quantity)) | (PlanDefinition.useContext.value.ofType(Range))",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -424,11 +432,12 @@ public object PlanDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val definition: SearchParam<PlanDefinition, Canonical> =
+  public val definition: SearchParam<PlanDefinition, Any> =
     SearchParam(
       name = "definition",
       type = SearchParamType.Reference,
-      expression = "PlanDefinition.action.definition.ofType(canonical)",
+      expression =
+        "PlanDefinition.action.definition.ofType(canonical) | PlanDefinition.action.definition.ofType(uri)",
       target =
         listOf(
           ObservationDefinition::class,
@@ -439,9 +448,19 @@ public object PlanDefinitionSearchParams {
           SpecimenDefinition::class,
         ),
       extractor = { resource ->
-        resource.action.mapNotNull {
-          (it.definition as? PlanDefinition.Action.Definition.Canonical)?.value
-        }
+        buildList {
+            addAll(
+              resource.action.mapNotNull {
+                (it.definition as? PlanDefinition.Action.Definition.Canonical)?.value
+              }
+            )
+            addAll(
+              resource.action.mapNotNull {
+                (it.definition as? PlanDefinition.Action.Definition.Uri)?.value
+              }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -449,7 +468,8 @@ public object PlanDefinitionSearchParams {
     SearchParam(
       name = "depends-on",
       type = SearchParamType.Reference,
-      expression = "PlanDefinition.relatedArtifact.where(type='depends-on').resource",
+      expression =
+        "PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library",
       target =
         listOf(
           Account::class,
@@ -612,9 +632,15 @@ public object PlanDefinitionSearchParams {
           VisionPrescription::class,
         ),
       extractor = { resource ->
-        resource.relatedArtifact
-          .filter { it.type.value?.toString() == "depends-on" }
-          .mapNotNull { it.resource }
+        buildList {
+            addAll(
+              resource.relatedArtifact
+                .filter { it.type.value?.toString() == "depends-on" }
+                .mapNotNull { it.resource }
+            )
+            addAll(resource.library)
+          }
+          .distinct()
       },
     )
 

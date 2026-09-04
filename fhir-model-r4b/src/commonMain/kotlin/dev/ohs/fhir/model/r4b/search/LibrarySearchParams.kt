@@ -136,7 +136,6 @@ import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Procedure
 import dev.ohs.fhir.model.r4b.Provenance
-import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.Questionnaire
 import dev.ohs.fhir.model.r4b.QuestionnaireResponse
 import dev.ohs.fhir.model.r4b.RegulatedAuthorization
@@ -354,13 +353,21 @@ public object LibrarySearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<Library, Quantity> =
+  public val contextQuantity: SearchParam<Library, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(Library.useContext.value as Quantity)",
+      expression = "(Library.useContext.value as Quantity) | (Library.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

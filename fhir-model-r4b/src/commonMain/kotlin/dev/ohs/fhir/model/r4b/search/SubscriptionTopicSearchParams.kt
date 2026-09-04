@@ -42,12 +42,18 @@ public object SubscriptionTopicSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val derivedOrSelf: SearchParam<SubscriptionTopic, Uri> =
+  public val derivedOrSelf: SearchParam<SubscriptionTopic, Any> =
     SearchParam(
       name = "derived-or-self",
       type = SearchParamType.Uri,
-      expression = "SubscriptionTopic.url",
-      extractor = { resource -> listOf(resource.url) },
+      expression = "SubscriptionTopic.url | SubscriptionTopic.derivedFrom",
+      extractor = { resource ->
+        buildList {
+            addAll(listOf(resource.url))
+            addAll(resource.derivedFrom)
+          }
+          .distinct()
+      },
     )
 
   public val identifier: SearchParam<SubscriptionTopic, Identifier> =

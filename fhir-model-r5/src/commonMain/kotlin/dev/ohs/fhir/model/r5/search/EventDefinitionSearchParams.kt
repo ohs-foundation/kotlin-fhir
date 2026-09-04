@@ -148,7 +148,6 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Provenance
-import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.QuestionnaireResponse
 import dev.ohs.fhir.model.r5.RegulatedAuthorization
@@ -382,13 +381,22 @@ public object EventDefinitionSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<EventDefinition, Quantity> =
+  public val contextQuantity: SearchParam<EventDefinition, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(EventDefinition.useContext.value.ofType(Quantity))",
+      expression =
+        "(EventDefinition.useContext.value.ofType(Quantity)) | (EventDefinition.useContext.value.ofType(Range))",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

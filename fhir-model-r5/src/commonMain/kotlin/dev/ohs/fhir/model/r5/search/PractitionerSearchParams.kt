@@ -163,8 +163,14 @@ public object PractitionerSearchParams {
     SearchParam(
       name = "identifier",
       type = SearchParamType.Token,
-      expression = "Practitioner.identifier",
-      extractor = { resource -> resource.identifier },
+      expression = "Practitioner.identifier | Practitioner.qualification.identifier",
+      extractor = { resource ->
+        buildList {
+            addAll(resource.identifier)
+            addAll(resource.qualification.flatMap { it.identifier })
+          }
+          .distinct()
+      },
     )
 
   public val name: SearchParam<Practitioner, HumanName> =

@@ -32,6 +32,7 @@ import dev.ohs.fhir.codegen.searchparam.SearchParamExtractFromFunctionBodyEmitte
 import dev.ohs.fhir.codegen.searchparam.SearchParamPattern
 import dev.ohs.fhir.codegen.searchparam.SearchParamTypeResolver
 import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
+import dev.ohs.fhir.codegen.searchparam.splitTopLevelUnion
 
 /**
  * Generates per-resource search parameter container objects.
@@ -225,22 +226,23 @@ object ResourceSearchParamFileSpecGenerator {
 }
 
 /**
- * Extracts the FHIRPath expression portion relevant to a specific resource from a potentially
- * multi-resource expression.
+ * Extracts the parts of a FHIRPath expression that belong to [resourceName].
  *
- * For example, given the expression: `AllergyIntolerance.code | Condition.code | Patient.name` and
- * resource name "Patient", returns "Patient.name".
+ * Many spec expressions cover several resources: for `AllergyIntolerance.code | Condition.code |
+ * Patient.name` and resource "Patient", this returns `Patient.name`. When several branches belong
+ * to the same resource, all of them are kept: for `Observation.value.ofType(dateTime) |
+ * Observation.value.ofType(Period)` and resource "Observation", both branches are returned, so
+ * extraction covers the whole union rather than only the first branch.
  *
- * If the expression is already single-resource, returns it as-is.
+ * If no branch starts with the resource name, returns the expression unchanged.
  */
 private fun SearchParameterDefinition.extractExpressionForResource(resourceName: String): String {
   val expr = expression ?: return ""
-  val parts = expr.split("|").map { it.trim() }
-  // Find the part that starts with the resource name
-  val resourcePart = parts.firstOrNull {
-    it.startsWith("$resourceName.") || it.startsWith("($resourceName.")
-  }
-  return resourcePart ?: expr
+  val resourceParts =
+    splitTopLevelUnion(expr).filter {
+      it.startsWith("$resourceName.") || it.startsWith("($resourceName.")
+    }
+  return if (resourceParts.isEmpty()) expr else resourceParts.joinToString(" | ")
 }
 
 /**

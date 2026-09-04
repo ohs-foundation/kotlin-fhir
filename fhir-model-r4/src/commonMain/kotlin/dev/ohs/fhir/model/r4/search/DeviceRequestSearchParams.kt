@@ -373,13 +373,19 @@ public object DeviceRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.encounter) },
     )
 
-  public val eventDate: SearchParam<DeviceRequest, DateTime> =
+  public val eventDate: SearchParam<DeviceRequest, Any> =
     SearchParam(
       name = "event-date",
       type = SearchParamType.Date,
-      expression = "(DeviceRequest.occurrence as dateTime)",
+      expression = "(DeviceRequest.occurrence as dateTime) | (DeviceRequest.occurrence as Period)",
       extractor = { resource ->
-        listOfNotNull((resource.occurrence as? DeviceRequest.Occurrence.DateTime)?.value)
+        buildList {
+            addAll(
+              listOfNotNull((resource.occurrence as? DeviceRequest.Occurrence.DateTime)?.value)
+            )
+            addAll(listOfNotNull((resource.occurrence as? DeviceRequest.Occurrence.Period)?.value))
+          }
+          .distinct()
       },
     )
 

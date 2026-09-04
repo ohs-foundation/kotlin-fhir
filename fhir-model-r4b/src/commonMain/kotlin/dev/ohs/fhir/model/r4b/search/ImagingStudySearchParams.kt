@@ -95,9 +95,15 @@ public object ImagingStudySearchParams {
     SearchParam(
       name = "endpoint",
       type = SearchParamType.Reference,
-      expression = "ImagingStudy.endpoint",
+      expression = "ImagingStudy.endpoint | ImagingStudy.series.endpoint",
       target = listOf(Endpoint::class),
-      extractor = { resource -> resource.endpoint },
+      extractor = { resource ->
+        buildList {
+            addAll(resource.endpoint)
+            addAll(resource.series.flatMap { it.endpoint })
+          }
+          .distinct()
+      },
     )
 
   public val identifier: SearchParam<ImagingStudy, Identifier> =

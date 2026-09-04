@@ -814,7 +814,7 @@ public object CompositionSearchParams {
     SearchParam(
       name = "section-text",
       type = SearchParamType.Special,
-      expression = "Composition.section.text",
+      expression = "Composition.section.text | Composition.section.section.text",
       extractor = { resource -> resource.section.mapNotNull { it.text } },
     )
 

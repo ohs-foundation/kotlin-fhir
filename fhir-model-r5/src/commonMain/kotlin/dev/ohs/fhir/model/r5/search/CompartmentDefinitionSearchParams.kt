@@ -26,7 +26,6 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.CompartmentDefinition
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
-import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
@@ -57,13 +56,22 @@ public object CompartmentDefinitionSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<CompartmentDefinition, Quantity> =
+  public val contextQuantity: SearchParam<CompartmentDefinition, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(CompartmentDefinition.useContext.value.ofType(Quantity))",
+      expression =
+        "(CompartmentDefinition.useContext.value.ofType(Quantity)) | (CompartmentDefinition.useContext.value.ofType(Range))",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

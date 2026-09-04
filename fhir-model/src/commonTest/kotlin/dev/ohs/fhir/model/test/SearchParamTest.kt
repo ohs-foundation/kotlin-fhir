@@ -29,9 +29,11 @@ import dev.ohs.fhir.model.r4b.search.ActivityDefinitionSearchParams as R4bActivi
 import dev.ohs.fhir.model.r4b.search.ObservationSearchParams as R4bObservationSearchParams
 import dev.ohs.fhir.model.r4b.search.PatientSearchParams as R4bPatientSearchParams
 import dev.ohs.fhir.model.r5.ActivityDefinition as R5ActivityDefinition
+import dev.ohs.fhir.model.r5.Device as R5Device
 import dev.ohs.fhir.model.r5.Observation as R5Observation
 import dev.ohs.fhir.model.r5.Patient as R5Patient
 import dev.ohs.fhir.model.r5.search.ActivityDefinitionSearchParams as R5ActivityDefinitionSearchParams
+import dev.ohs.fhir.model.r5.search.DeviceSearchParams as R5DeviceSearchParams
 import dev.ohs.fhir.model.r5.search.ObservationSearchParams as R5ObservationSearchParams
 import dev.ohs.fhir.model.r5.search.PatientSearchParams as R5PatientSearchParams
 import io.kotest.core.spec.style.FunSpec
@@ -104,6 +106,84 @@ class SearchParamTest :
       """
         .trimIndent()
 
+    val observationWithDateTimeJson =
+      """
+      {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "text": "Onset"
+        },
+        "valueDateTime": "2026-08-12T09:30:00Z"
+      }
+      """
+        .trimIndent()
+
+    val observationWithPeriodJson =
+      """
+      {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "text": "Onset"
+        },
+        "valuePeriod": {
+          "start": "2026-08-01"
+        }
+      }
+      """
+        .trimIndent()
+
+    val activityDefinitionWithRangeAndQuantityJson =
+      """
+      {
+        "resourceType": "ActivityDefinition",
+        "status": "draft",
+        "useContext": [
+          {
+            "code": {
+              "code": "age"
+            },
+            "valueRange": {
+              "low": {
+                "unit": "months"
+              }
+            }
+          },
+          {
+            "code": {
+              "code": "age"
+            },
+            "valueQuantity": {
+              "unit": "years"
+            }
+          }
+        ]
+      }
+      """
+        .trimIndent()
+
+    val deviceWithSerialNumberJson =
+      """
+      {
+        "resourceType": "Device",
+        "serialNumber": "SN-123",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "SNO"
+                }
+              ]
+            },
+            "value": "SN-456"
+          }
+        ]
+      }
+      """
+        .trimIndent()
+
     fun <TObservation : Any, TActivity : Any, TPatient : Any> searchParamTestSuite(
       fhirVersion: String,
       observationSerializer: KSerializer<TObservation>,
@@ -111,6 +191,7 @@ class SearchParamTest :
       patientSerializer: KSerializer<TPatient>,
       extractValueQuantity: (TObservation) -> List<*>,
       extractValueConcept: (TObservation) -> List<*>,
+      extractValueDate: (TObservation) -> List<*>,
       extractContext: (TActivity) -> List<*>,
       extractContextQuantity: (TActivity) -> List<*>,
       extractDeathDate: (TPatient) -> List<*>,
@@ -154,6 +235,39 @@ class SearchParamTest :
             testJson.decodeFromString(patientSerializer, patientWithDeceasedDateTimeJson)
           assertEquals(1, extractDeathDate(patient).size)
         }
+
+        // Observation.value as dateTime | Observation.value as Period
+        test("extracting union with first branch type returns extracted value") {
+          val observation =
+            testJson.decodeFromString(observationSerializer, observationWithDateTimeJson)
+          assertEquals(
+            listOf("DateTime"),
+            extractValueDate(observation).map { it!!::class.simpleName },
+          )
+        }
+
+        test("extracting union with second branch type returns extracted value") {
+          val observation =
+            testJson.decodeFromString(observationSerializer, observationWithPeriodJson)
+          assertEquals(
+            listOf("Period"),
+            extractValueDate(observation).map { it!!::class.simpleName },
+          )
+        }
+
+        // (ActivityDefinition.useContext.value as Quantity) | (... as Range). Results follow the
+        // branch order in the expression: all Quantity values first, then all Range values.
+        test("extracting union with values in both branches concatenates in expression order") {
+          val activity =
+            testJson.decodeFromString(
+              activitySerializer,
+              activityDefinitionWithRangeAndQuantityJson,
+            )
+          assertEquals(
+            listOf("Quantity", "Range"),
+            extractContextQuantity(activity).map { it!!::class.simpleName },
+          )
+        }
       }
     }
 
@@ -164,6 +278,7 @@ class SearchParamTest :
       patientSerializer = R4Patient.serializer(),
       extractValueQuantity = { R4ObservationSearchParams.valueQuantity.extractFrom(it) },
       extractValueConcept = { R4ObservationSearchParams.valueConcept.extractFrom(it) },
+      extractValueDate = { R4ObservationSearchParams.valueDate.extractFrom(it) },
       extractContext = { R4ActivityDefinitionSearchParams.context.extractFrom(it) },
       extractContextQuantity = {
         R4ActivityDefinitionSearchParams.contextQuantity.extractFrom(it)
@@ -177,6 +292,7 @@ class SearchParamTest :
       patientSerializer = R4bPatient.serializer(),
       extractValueQuantity = { R4bObservationSearchParams.valueQuantity.extractFrom(it) },
       extractValueConcept = { R4bObservationSearchParams.valueConcept.extractFrom(it) },
+      extractValueDate = { R4bObservationSearchParams.valueDate.extractFrom(it) },
       extractContext = { R4bActivityDefinitionSearchParams.context.extractFrom(it) },
       extractContextQuantity = {
         R4bActivityDefinitionSearchParams.contextQuantity.extractFrom(it)
@@ -190,10 +306,24 @@ class SearchParamTest :
       patientSerializer = R5Patient.serializer(),
       extractValueQuantity = { R5ObservationSearchParams.valueQuantity.extractFrom(it) },
       extractValueConcept = { R5ObservationSearchParams.valueConcept.extractFrom(it) },
+      extractValueDate = { R5ObservationSearchParams.valueDate.extractFrom(it) },
       extractContext = { R5ActivityDefinitionSearchParams.context.extractFrom(it) },
       extractContextQuantity = {
         R5ActivityDefinitionSearchParams.contextQuantity.extractFrom(it)
       },
       extractDeathDate = { R5PatientSearchParams.deathDate.extractFrom(it) },
     )
+
+    context("R5 Search Parameters") {
+      // serial-number is `Device.serialNumber | Device.identifier.where(type='SNO')`. The second
+      // branch is not supported and is skipped, so only the serialNumber value is extracted. See
+      // "Partially extracted unions" in docs/search-parameter-patterns.md.
+      test("extracting partially supported union returns only supported branch values") {
+        val device = testJson.decodeFromString(R5Device.serializer(), deviceWithSerialNumberJson)
+        assertEquals(
+          listOf("SN-123"),
+          R5DeviceSearchParams.serialNumber.extractFrom(device).map { it.value },
+        )
+      }
+    }
   })

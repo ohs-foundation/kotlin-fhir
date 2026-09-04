@@ -24,7 +24,6 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.CodeableConcept
-import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -61,15 +60,26 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.collection?.bodySite?.reference) },
     )
 
-  public val collected: SearchParam<Specimen, DateTime> =
+  public val collected: SearchParam<Specimen, Any> =
     SearchParam(
       name = "collected",
       type = SearchParamType.Date,
-      expression = "Specimen.collection.collected.ofType(dateTime)",
+      expression =
+        "Specimen.collection.collected.ofType(dateTime) | Specimen.collection.collected.ofType(Period)",
       extractor = { resource ->
-        listOfNotNull(
-          (resource.collection?.collected as? Specimen.Collection.Collected.DateTime)?.value
-        )
+        buildList {
+            addAll(
+              listOfNotNull(
+                (resource.collection?.collected as? Specimen.Collection.Collected.DateTime)?.value
+              )
+            )
+            addAll(
+              listOfNotNull(
+                (resource.collection?.collected as? Specimen.Collection.Collected.Period)?.value
+              )
+            )
+          }
+          .distinct()
       },
     )
 

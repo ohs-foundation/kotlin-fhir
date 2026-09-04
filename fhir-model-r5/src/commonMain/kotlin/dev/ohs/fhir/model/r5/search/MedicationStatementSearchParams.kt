@@ -22,7 +22,6 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
-import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -65,13 +64,22 @@ public object MedicationStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.medication.concept) },
     )
 
-  public val effective: SearchParam<MedicationStatement, DateTime> =
+  public val effective: SearchParam<MedicationStatement, Any> =
     SearchParam(
       name = "effective",
       type = SearchParamType.Date,
-      expression = "MedicationStatement.effective.ofType(dateTime)",
+      expression =
+        "MedicationStatement.effective.ofType(dateTime) | MedicationStatement.effective.ofType(Period)",
       extractor = { resource ->
-        listOfNotNull((resource.effective as? MedicationStatement.Effective.DateTime)?.value)
+        buildList {
+            addAll(
+              listOfNotNull((resource.effective as? MedicationStatement.Effective.DateTime)?.value)
+            )
+            addAll(
+              listOfNotNull((resource.effective as? MedicationStatement.Effective.Period)?.value)
+            )
+          }
+          .distinct()
       },
     )
 

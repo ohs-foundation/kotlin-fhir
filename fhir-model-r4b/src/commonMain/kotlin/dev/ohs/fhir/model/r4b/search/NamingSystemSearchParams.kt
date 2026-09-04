@@ -28,7 +28,6 @@ import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.NamingSystem
 import dev.ohs.fhir.model.r4b.Period
-import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
@@ -58,13 +57,22 @@ public object NamingSystemSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<NamingSystem, Quantity> =
+  public val contextQuantity: SearchParam<NamingSystem, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(NamingSystem.useContext.value as Quantity)",
+      expression =
+        "(NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

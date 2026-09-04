@@ -427,13 +427,24 @@ public object CommunicationRequestSearchParams {
       extractor = { resource -> resource.medium },
     )
 
-  public val occurrence: SearchParam<CommunicationRequest, DateTime> =
+  public val occurrence: SearchParam<CommunicationRequest, Any> =
     SearchParam(
       name = "occurrence",
       type = SearchParamType.Date,
-      expression = "CommunicationRequest.occurrence.ofType(dateTime)",
+      expression =
+        "CommunicationRequest.occurrence.ofType(dateTime) | CommunicationRequest.occurrence.ofType(Period)",
       extractor = { resource ->
-        listOfNotNull((resource.occurrence as? CommunicationRequest.Occurrence.DateTime)?.value)
+        buildList {
+            addAll(
+              listOfNotNull(
+                (resource.occurrence as? CommunicationRequest.Occurrence.DateTime)?.value
+              )
+            )
+            addAll(
+              listOfNotNull((resource.occurrence as? CommunicationRequest.Occurrence.Period)?.value)
+            )
+          }
+          .distinct()
       },
     )
 

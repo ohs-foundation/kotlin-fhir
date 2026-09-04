@@ -30,7 +30,6 @@ import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionContainsSerializer
 import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionParameterSerializer
 import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionSerializer
 import dev.ohs.fhir.model.r4.serializers.ValueSetSerializer
-import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -690,7 +689,7 @@ public data class ValueSet(
            *
            * In the absence of a language, the resource language applies.
            */
-          public val language: Enumeration<CommonLanguages>? = null,
+          public val language: Code? = null,
           /**
            * A code that represents types of uses of designations.
            *
@@ -708,7 +707,7 @@ public data class ValueSet(
                 extension = this@with.extension.map { it.toBuilder() }.toMutableList()
                 modifierExtension =
                   this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                language = this@with.language
+                language = this@with.language?.toBuilder()
                 use = this@with.use?.toBuilder()
               }
             }
@@ -763,7 +762,7 @@ public data class ValueSet(
              *
              * In the absence of a language, the resource language applies.
              */
-            public var language: Enumeration<CommonLanguages>? = null
+            public var language: Code.Builder? = null
 
             /**
              * A code that represents types of uses of designations.
@@ -778,7 +777,7 @@ public data class ValueSet(
                 id = id,
                 extension = extension.map { it.build() },
                 modifierExtension = modifierExtension.map { it.build() },
-                language = language,
+                language = language?.build(),
                 use = use?.build(),
                 `value` = `value`.build(),
               )

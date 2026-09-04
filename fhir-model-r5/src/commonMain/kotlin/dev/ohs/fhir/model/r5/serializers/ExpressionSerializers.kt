@@ -24,7 +24,6 @@ package dev.ohs.fhir.model.r5.serializers
 
 import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.Element
-import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Expression
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.String as R5String
@@ -128,8 +127,7 @@ internal object ExpressionSerializer : KSerializer<Expression> {
       extension = extension ?: listOf(),
       description = R5String.of(description, _description),
       name = Code.of(name, _name),
-      language =
-        Enumeration.of(language?.let { Expression.ExpressionLanguage.fromCode(it) }, _language),
+      language = Code.of(language, _language),
       expression = R5String.of(expression, _expression),
       reference = Uri.of(reference, _reference),
     )
@@ -147,7 +145,7 @@ internal object ExpressionSerializer : KSerializer<Expression> {
     (value.name?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.descriptionSer, it)
     }
-    ((value.language?.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.descriptionSer, it)
     }

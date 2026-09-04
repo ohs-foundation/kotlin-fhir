@@ -63,20 +63,23 @@ private fun Element.getBindingExtension(url: String): Extension? {
 internal fun Element.getBindingValueSetUrl() = this.binding?.valueSet?.substringBeforeLast("|")
 
 /**
- * Determines if an enum should be generated for the element.
- *
- * An enum should be generated for the element if and only if the following requirements are met:
- * - The element's type is `code`.
- * - The element has an extension with the URL:
- *   `http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName`.
- * - The element's base path does **not** start with `"Resource."` or `"CanonicalResource."`.
- * - The element's name is not blank
+ * Determines if an enum class should be generated for the element's bound value set, regardless of
+ * binding strength.
  */
-internal fun Element.typeIsEnumeratedCode(valueSetMap: Map<String, ValueSet>): Boolean {
+internal fun Element.typeShouldGenerateEnum(valueSetMap: Map<String, ValueSet>): Boolean {
   return valueSetMap.containsKey(getBindingValueSetUrl()) &&
     base?.path?.startsWith("Resource.") != true &&
     base?.path?.startsWith("CanonicalResource.") != true &&
     this.type?.count { it.code.equals("code", ignoreCase = true) } == 1
+}
+
+/**
+ * Determines if the element should be typed as `Enumeration<T>` with the generated enum, i.e.
+ * [typeShouldGenerateEnum] and the binding strength is `required`. Elements with weaker bindings
+ * may carry codes outside the value set and are typed as `Code` instead.
+ */
+internal fun Element.typeShouldBindToEnum(valueSetMap: Map<String, ValueSet>): Boolean {
+  return typeShouldGenerateEnum(valueSetMap) && binding?.strength == "required"
 }
 
 /**

@@ -46,7 +46,6 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.UnsignedInt
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
-import dev.ohs.fhir.model.r4b.terminologies.CommonLanguages
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -586,7 +585,7 @@ internal object CodeSystemConceptDesignationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      language = Enumeration.of(language?.let { CommonLanguages.fromCode(it) }, _language),
+      language = Code.of(language, _language),
       use = use,
       `value` =
         R4bString.of(`value`, _value)
@@ -610,7 +609,7 @@ internal object CodeSystemConceptDesignationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.language?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.languageSer, it)
     }

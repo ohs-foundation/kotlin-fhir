@@ -32,7 +32,7 @@ import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.isBackboneElement
 import dev.ohs.fhir.codegen.schema.isCommonBinding
 import dev.ohs.fhir.codegen.schema.normalizeEnumName
-import dev.ohs.fhir.codegen.schema.typeIsEnumeratedCode
+import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
 /** Represents a property representing a data element in the generated class. */
@@ -261,7 +261,7 @@ internal class PropertyMapper(
    * Returns `null`, if the [element] is not an enumeration.
    */
   private fun getEnumType(element: Element): TypeName? {
-    if (!element.typeIsEnumeratedCode(valueSetMap)) {
+    if (!element.typeShouldBindToEnum(valueSetMap)) {
       return null
     }
 

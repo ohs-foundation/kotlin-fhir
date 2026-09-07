@@ -176,11 +176,12 @@ supported. Example: `Resource.deceased.exists() and Resource.deceased != false`.
 
 ### Multi-resource union without a resource prefix
 
-In a union expression (`A | B | ...`), the branches starting with the parameter's resource are
-extracted and their results concatenated; branches for other resources are ignored. These
-parameters have no branch starting with the resource at all, so there is nothing to extract.
-Example: `InsurancePlan`'s `name` parameter has expression `name | alias`, and neither `name` nor
-`alias` starts with `InsurancePlan.`.
+`extractFrom()` only evaluates the branches of a union (`A | B | ...`) that start with the
+parameter's resource type, such as `InsurancePlan.`. A branch without that prefix is dropped on its
+own; it does not make the whole parameter unsupported. FHIR itself does not require this prefix.
+
+These parameters are unsupported because none of their branches start with the resource type. For
+example, `InsurancePlan`'s `name` parameter has expression `name | alias`.
 
 **Total:** 3 (R4: 1, R4B: 1, R5: 1)
 

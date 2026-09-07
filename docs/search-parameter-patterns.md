@@ -8,17 +8,17 @@ functions during code generation.
 
 The following FHIRPath patterns produce a typed `extractFrom()` function:
 
-| Pattern                            | Example                                       |
-|:-----------------------------------|:----------------------------------------------|
-| Simple property                    | `Patient.birthDate`                           |
-| Nested path                        | `Patient.address.city`                        |
-| List property                      | `Patient.identifier`                          |
-| Element cast `(X.path as Type)`    | `(Patient.deceased as dateTime)`              |
-| Element cast `X.path.as(Type)`     | `Condition.onset.as(dateTime)`                |
-| Element cast `X.path.ofType(Type)` | `Observation.value.ofType(Quantity)`          |
-| Choice element (no cast)           | `ChargeItem.occurrence`                       |
-| `where(resolve() is Type)` filter  | `Account.subject.where(resolve() is Patient)` |
-| `where(field='value')` filter      | `Patient.telecom.where(system='email')`       |
+| Pattern                            | Example                                                                  |
+|:-----------------------------------|:-------------------------------------------------------------------------|
+| Simple property                    | `Patient.birthDate`                                                      |
+| Nested path                        | `Patient.address.city`                                                   |
+| List property                      | `Patient.identifier`                                                     |
+| Element cast `(X.path as Type)`    | `(Patient.deceased as dateTime)`                                         |
+| Element cast `X.path.as(Type)`     | `Condition.onset.as(dateTime)`                                           |
+| Element cast `X.path.ofType(Type)` | `Observation.value.ofType(Quantity)`                                     |
+| Choice element (no cast)           | `ChargeItem.occurrence`                                                  |
+| `where(resolve() is Type)` filter  | `Account.subject.where(resolve() is Patient)`                            |
+| `where(field='value')` filter      | `Patient.telecom.where(system='email')`                                  |
 | Union of the patterns above        | `Observation.value.ofType(dateTime) \| Observation.value.ofType(Period)` |
 
 > [!NOTE]
@@ -62,12 +62,11 @@ following categories:
 - [`.extension('url')` access](#extension-url-access) (20)
 - [Composite search parameters with no component path](#composite-search-parameters-with-no-component-path) (13)
 - [Boolean logic](#boolean-logic) (5)
-- [Multi-resource union without a resource prefix](#multi-resource-union-without-a-resource-prefix) (3)
 - [Other `where(...)` conditions](#other-where-conditions) (3)
 - [Union with no supported branch](#union-with-no-supported-branch) (1)
 - [Indexed access](#indexed-access) (7)
-- [Bare paths without the resource name](#bare-paths-without-the-resource-name) (4)
-- [Paths through a `contentReference` element](#paths-through-a-contentreference-element) (3)
+- [Missing resource type](#missing-resource-type) (7)
+- [`contentReference` elements](#contentreference-elements) (3)
 
 ### Empty FHIRPath expression
 
@@ -176,23 +175,6 @@ supported. Example: `Resource.deceased.exists() and Resource.deceased != false`.
 | R5      | `Person`       | `deceased` | `token` | _(none)_ | `Person.deceased.exists() and Person.deceased != false`             | `SearchParameter-Person-deceased.json`       | `http://hl7.org/fhir/SearchParameter/Person-deceased`       |
 | R5      | `Practitioner` | `deceased` | `token` | _(none)_ | `Practitioner.deceased.exists() and Practitioner.deceased != false` | `SearchParameter-Practitioner-deceased.json` | `http://hl7.org/fhir/SearchParameter/Practitioner-deceased` |
 
-### Multi-resource union without a resource prefix
-
-`extractFrom()` only evaluates the branches of a union (`A | B | ...`) that start with the
-parameter's resource type, such as `InsurancePlan.`. A branch without that prefix is dropped on its
-own; it does not make the whole parameter unsupported. FHIR itself does not require this prefix.
-
-These parameters are unsupported because none of their branches start with the resource type. For
-example, `InsurancePlan`'s `name` parameter has expression `name | alias`.
-
-**Total:** 3 (R4: 1, R4B: 1, R5: 1)
-
-| Version | Resource           | Param name | Type     | Target   | Expression                                                                                                                                                                                    | Source JSON                                   | Canonical URL                                                |
-|:--------|:-------------------|:-----------|:---------|:---------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------|:-------------------------------------------------------------|
-| R4      | `InsurancePlan`    | `name`     | `string` | _(none)_ | `name \| alias`                                                                                                                                                                               | `SearchParameter-InsurancePlan-name.json`     | `http://hl7.org/fhir/SearchParameter/InsurancePlan-name`     |
-| R4B     | `InsurancePlan`    | `name`     | `string` | _(none)_ | `name \| alias`                                                                                                                                                                               | `SearchParameter-InsurancePlan-name.json`     | `http://hl7.org/fhir/SearchParameter/InsurancePlan-name`     |
-| R5      | `EvidenceVariable` | `topic`    | `token`  | _(none)_ | `ActivityDefinition.topic \| CodeSystem.topic \| ConceptMap.topic \| EventDefinition.topic \| Library.topic \| Measure.topic \| NamingSystem.topic \| PlanDefinition.topic \| ValueSet.topic` | `SearchParameter-MetadataResource-topic.json` | `http://hl7.org/fhir/SearchParameter/MetadataResource-topic` |
-
 ### Other `where(...)` conditions
 
 `where(...)` supports two conditions: `where(<field>='<value>')` and `where(resolve() is <Type>)`.
@@ -217,13 +199,12 @@ a cast.
 **Total:** 1 (R5: 1)
 
 | Version | Resource      | Param name       | Type     | Target   | Expression                                                                             | Source JSON                                       | Canonical URL                                                    |
-|:--------|:--------------|:-----------------|:---------|:---------|:----------------------------------------------------------------------------------------|:---------------------------------------------------|:------------------------------------------------------------------|
+|:--------|:--------------|:-----------------|:---------|:---------|:---------------------------------------------------------------------------------------|:--------------------------------------------------|:-----------------------------------------------------------------|
 | R5      | `Observation` | `value-markdown` | `string` | _(none)_ | `Observation.value.ofType(markdown) \| Observation.value.ofType(CodeableConcept).text` | `SearchParameter-Observation-value-markdown.json` | `http://hl7.org/fhir/SearchParameter/Observation-value-markdown` |
 
 ### Indexed access
 
-The path picks one element by position, like `Bundle.entry[0]`. `extractFrom()` cannot pick by
-position.
+The implementation does not support indexed access (e.g. `Bundle.entry[0]`).
 
 **Total:** 7 (R4: 2, R4B: 2, R5: 3)
 
@@ -237,25 +218,29 @@ position.
 | R5      | `Bundle`        | `example-constraint`  | `reference` | `Composition`   | `Bundle.entry[0].resource`                         | `SearchParameter-example-constraint.json`              | `http://hl7.org/fhir/SearchParameter/example-constraint`              |
 | R5      | `Bundle`        | `message`             | `reference` | `MessageHeader` | `Bundle.entry[0].resource as MessageHeader`        | `SearchParameter-Bundle-message.json`                  | `http://hl7.org/fhir/SearchParameter/Bundle-message`                  |
 
-### Bare paths without the resource name
+### Missing resource type
 
-The path does not start with the resource name, like `id` or `requestedPeriod`. `extractFrom()`
-needs the resource name at the start. FHIR does not.
+The implementation does not support property access without a resource type prefix (e.g.
+`id`, `requestedPeriod`, or `name | alias`), or when the resource type is omitted from a shared
+union entirely (e.g. `EvidenceVariable` in `MetadataResource.topic`).
 
-**Total:** 4 (R4: 1, R4B: 1, R5: 2)
+**Total:** 7 (R4: 2, R4B: 2, R5: 3)
 
-| Version | Resource        | Param name            | Type        | Target          | Expression                                         | Source JSON                                            | Canonical URL                                                         |
-|:--------|:----------------|:----------------------|:------------|:----------------|:---------------------------------------------------|:-------------------------------------------------------|:----------------------------------------------------------------------|
-| R4      | `Resource`      | `_id`                 | `token`     | _(none)_        | `id`                                               | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
-| R4B     | `Resource`      | `_id`                 | `token`     | _(none)_        | `id`                                               | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
-| R5      | `Appointment`   | `requested-period`    | `date`      | _(none)_        | `requestedPeriod`                                  | `SearchParameter-Appointment-requested-period.json`    | `http://hl7.org/fhir/SearchParameter/Appointment-requested-period`    |
-| R5      | `Resource`      | `_id`                 | `token`     | _(none)_        | `id`                                               | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
+| Version | Resource           | Param name         | Type     | Target   | Expression                                                                                                                                                                                    | Source JSON                                            | Canonical URL                                                         |
+|:--------|:-------------------|:-------------------|:---------|:---------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------|:----------------------------------------------------------------------|
+| R4      | `InsurancePlan`    | `name`             | `string` | _(none)_ | `name \| alias`                                                                                                                                                                               | `SearchParameter-InsurancePlan-name.json`              | `http://hl7.org/fhir/SearchParameter/InsurancePlan-name`              |
+| R4      | `Resource`         | `_id`              | `token`  | _(none)_ | `id`                                                                                                                                                                                          | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
+| R4B     | `InsurancePlan`    | `name`             | `string` | _(none)_ | `name \| alias`                                                                                                                                                                               | `SearchParameter-InsurancePlan-name.json`              | `http://hl7.org/fhir/SearchParameter/InsurancePlan-name`              |
+| R4B     | `Resource`         | `_id`              | `token`  | _(none)_ | `id`                                                                                                                                                                                          | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
+| R5      | `Appointment`      | `requested-period` | `date`   | _(none)_ | `requestedPeriod`                                                                                                                                                                             | `SearchParameter-Appointment-requested-period.json`    | `http://hl7.org/fhir/SearchParameter/Appointment-requested-period`    |
+| R5      | `EvidenceVariable` | `topic`            | `token`  | _(none)_ | `ActivityDefinition.topic \| CodeSystem.topic \| ConceptMap.topic \| EventDefinition.topic \| Library.topic \| Measure.topic \| NamingSystem.topic \| PlanDefinition.topic \| ValueSet.topic` | `SearchParameter-MetadataResource-topic.json`          | `http://hl7.org/fhir/SearchParameter/MetadataResource-topic`          |
+| R5      | `Resource`         | `_id`              | `token`  | _(none)_ | `id`                                                                                                                                                                                          | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
 
-### Paths through a `contentReference` element
+### `contentReference` elements
 
-In the spec, `product` has no type. It says "same as `dependsOn`" instead (`contentReference`).
-The code that builds `extractFrom()` does not understand this yet, so it stops at `product`.
-`excludedStructure` (same as `includedStructure`) has the same problem.
+A `contentReference` reuses another element's structure instead of defining an explicit type. The
+implementation does not support navigating paths through these elements (e.g.
+`ConceptMap...target.product` or `BodyStructure.excludedStructure`).
 
 **Total:** 3 (R4: 1, R4B: 1, R5: 1)
 

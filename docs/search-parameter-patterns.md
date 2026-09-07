@@ -65,7 +65,9 @@ following categories:
 - [Multi-resource union without a resource prefix](#multi-resource-union-without-a-resource-prefix) (3)
 - [Other `where(...)` conditions](#other-where-conditions) (3)
 - [Union with no supported branch](#union-with-no-supported-branch) (1)
-- [Other patterns (indexed access, bare paths)](#other-patterns-indexed-access-bare-paths) (14)
+- [Indexed access](#indexed-access) (7)
+- [Bare paths without the resource name](#bare-paths-without-the-resource-name) (4)
+- [Paths through a `contentReference` element](#paths-through-a-contentreference-element) (3)
 
 ### Empty FHIRPath expression
 
@@ -218,29 +220,47 @@ a cast.
 |:--------|:--------------|:-----------------|:---------|:---------|:----------------------------------------------------------------------------------------|:---------------------------------------------------|:------------------------------------------------------------------|
 | R5      | `Observation` | `value-markdown` | `string` | _(none)_ | `Observation.value.ofType(markdown) \| Observation.value.ofType(CodeableConcept).text` | `SearchParameter-Observation-value-markdown.json` | `http://hl7.org/fhir/SearchParameter/Observation-value-markdown` |
 
-### Other patterns (indexed access, bare paths)
+### Indexed access
 
-Two shapes aren't supported:
+The path picks one element by position, like `Bundle.entry[0]`. `extractFrom()` cannot pick by
+position.
 
-1. Indexed access with `[N]`, like `Bundle.entry[0].resource`.
-2. Bare paths that don't start with the resource name, like `id` (for `Resource`'s `_id` parameter)
-  or `requestedPeriod` (for `Appointment`'s `requested-period` parameter).
-
-**Total:** 14 (R4: 4, R4B: 4, R5: 6)
+**Total:** 7 (R4: 2, R4B: 2, R5: 3)
 
 | Version | Resource        | Param name            | Type        | Target          | Expression                                         | Source JSON                                            | Canonical URL                                                         |
 |:--------|:----------------|:----------------------|:------------|:----------------|:---------------------------------------------------|:-------------------------------------------------------|:----------------------------------------------------------------------|
 | R4      | `Bundle`        | `composition`         | `reference` | `Composition`   | `Bundle.entry[0].resource`                         | `SearchParameter-Bundle-composition.json`              | `http://hl7.org/fhir/SearchParameter/Bundle-composition`              |
 | R4      | `Bundle`        | `message`             | `reference` | `MessageHeader` | `Bundle.entry[0].resource`                         | `SearchParameter-Bundle-message.json`                  | `http://hl7.org/fhir/SearchParameter/Bundle-message`                  |
-| R4      | `ConceptMap`    | `product`             | `uri`       | _(none)_        | `ConceptMap.group.element.target.product.property` | `SearchParameter-ConceptMap-product.json`              | `http://hl7.org/fhir/SearchParameter/ConceptMap-product`              |
-| R4      | `Resource`      | `_id`                 | `token`     | _(none)_        | `id`                                               | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
 | R4B     | `Bundle`        | `composition`         | `reference` | _(none)_        | `Bundle.entry[0].resource`                         | `SearchParameter-Bundle-composition.json`              | `http://hl7.org/fhir/SearchParameter/Bundle-composition`              |
 | R4B     | `Bundle`        | `message`             | `reference` | _(none)_        | `Bundle.entry[0].resource`                         | `SearchParameter-Bundle-message.json`                  | `http://hl7.org/fhir/SearchParameter/Bundle-message`                  |
-| R4B     | `ConceptMap`    | `product`             | `uri`       | _(none)_        | `ConceptMap.group.element.target.product.property` | `SearchParameter-ConceptMap-product.json`              | `http://hl7.org/fhir/SearchParameter/ConceptMap-product`              |
-| R4B     | `Resource`      | `_id`                 | `token`     | _(none)_        | `id`                                               | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
-| R5      | `Appointment`   | `requested-period`    | `date`      | _(none)_        | `requestedPeriod`                                  | `SearchParameter-Appointment-requested-period.json`    | `http://hl7.org/fhir/SearchParameter/Appointment-requested-period`    |
-| R5      | `BodyStructure` | `excluded_structure`  | `token`     | _(none)_        | `BodyStructure.excludedStructure.structure`        | `SearchParameter-BodyStructure-excludedstructure.json` | `http://hl7.org/fhir/SearchParameter/BodyStructure-excludedstructure` |
 | R5      | `Bundle`        | `composition`         | `reference` | `Composition`   | `Bundle.entry[0].resource as Composition`          | `SearchParameter-Bundle-composition.json`              | `http://hl7.org/fhir/SearchParameter/Bundle-composition`              |
 | R5      | `Bundle`        | `example-constraint`  | `reference` | `Composition`   | `Bundle.entry[0].resource`                         | `SearchParameter-example-constraint.json`              | `http://hl7.org/fhir/SearchParameter/example-constraint`              |
 | R5      | `Bundle`        | `message`             | `reference` | `MessageHeader` | `Bundle.entry[0].resource as MessageHeader`        | `SearchParameter-Bundle-message.json`                  | `http://hl7.org/fhir/SearchParameter/Bundle-message`                  |
+
+### Bare paths without the resource name
+
+The path does not start with the resource name, like `id` or `requestedPeriod`. `extractFrom()`
+needs the resource name at the start. FHIR does not.
+
+**Total:** 4 (R4: 1, R4B: 1, R5: 2)
+
+| Version | Resource        | Param name            | Type        | Target          | Expression                                         | Source JSON                                            | Canonical URL                                                         |
+|:--------|:----------------|:----------------------|:------------|:----------------|:---------------------------------------------------|:-------------------------------------------------------|:----------------------------------------------------------------------|
+| R4      | `Resource`      | `_id`                 | `token`     | _(none)_        | `id`                                               | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
+| R4B     | `Resource`      | `_id`                 | `token`     | _(none)_        | `id`                                               | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
+| R5      | `Appointment`   | `requested-period`    | `date`      | _(none)_        | `requestedPeriod`                                  | `SearchParameter-Appointment-requested-period.json`    | `http://hl7.org/fhir/SearchParameter/Appointment-requested-period`    |
 | R5      | `Resource`      | `_id`                 | `token`     | _(none)_        | `id`                                               | `SearchParameter-Resource-id.json`                     | `http://hl7.org/fhir/SearchParameter/Resource-id`                     |
+
+### Paths through a `contentReference` element
+
+In the spec, `product` has no type. It says "same as `dependsOn`" instead (`contentReference`).
+The code that builds `extractFrom()` does not understand this yet, so it stops at `product`.
+`excludedStructure` (same as `includedStructure`) has the same problem.
+
+**Total:** 3 (R4: 1, R4B: 1, R5: 1)
+
+| Version | Resource        | Param name            | Type        | Target          | Expression                                         | Source JSON                                            | Canonical URL                                                         |
+|:--------|:----------------|:----------------------|:------------|:----------------|:---------------------------------------------------|:-------------------------------------------------------|:----------------------------------------------------------------------|
+| R4      | `ConceptMap`    | `product`             | `uri`       | _(none)_        | `ConceptMap.group.element.target.product.property` | `SearchParameter-ConceptMap-product.json`              | `http://hl7.org/fhir/SearchParameter/ConceptMap-product`              |
+| R4B     | `ConceptMap`    | `product`             | `uri`       | _(none)_        | `ConceptMap.group.element.target.product.property` | `SearchParameter-ConceptMap-product.json`              | `http://hl7.org/fhir/SearchParameter/ConceptMap-product`              |
+| R5      | `BodyStructure` | `excluded_structure`  | `token`     | _(none)_        | `BodyStructure.excludedStructure.structure`        | `SearchParameter-BodyStructure-excludedstructure.json` | `http://hl7.org/fhir/SearchParameter/BodyStructure-excludedstructure` |

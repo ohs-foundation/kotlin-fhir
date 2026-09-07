@@ -1,6 +1,7 @@
 # Kotlin FHIR
 
 [![tests](https://github.com/ohs-foundation/kotlin-fhir/actions/workflows/run-tests.yml/badge.svg)](https://github.com/ohs-foundation/kotlin-fhir/actions/workflows/run-tests.yml)
+[![codegen](https://github.com/ohs-foundation/kotlin-fhir/actions/workflows/verify-codegen.yml/badge.svg)](https://github.com/ohs-foundation/kotlin-fhir/actions/workflows/verify-codegen.yml)
 [![fhir-model (R4, R4B, R5)](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model?color=blue&label=fhir-model)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model)
 [![FHIR R4](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4?color=green&label=fhir-model-r4)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4)
 [![FHIR R4B](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-r4b?color=orange&label=fhir-model-r4b)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-r4b)

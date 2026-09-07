@@ -48,11 +48,7 @@ private val skippedR4BTestCaseNameToReasonMap =
   )
 
 /** A map from the test case name to the reason why the test case is skipped in R5. */
-private val skippedR5CaseNameToReasonMap =
-  mapOf(
-    "ChargeItemDefinition-ebm.json" to
-      "Unknown code 'text/CQL' for enum ExpressionLanguage; codes are case-sensitive"
-  )
+private val skippedR5CaseNameToReasonMap = emptyMap<String, String>()
 
 private val plainJson = Json { prettyPrint = true }
 

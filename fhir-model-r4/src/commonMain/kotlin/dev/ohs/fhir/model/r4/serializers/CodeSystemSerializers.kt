@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Decimal
 import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.ExtensibleEnumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
 import dev.ohs.fhir.model.r4.FhirDecimal
@@ -46,6 +47,7 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.UnsignedInt
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -585,7 +587,7 @@ internal object CodeSystemConceptDesignationSerializer :
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      language = Code.of(language, _language),
+      language = ExtensibleEnumeration.of<CommonLanguages>(language, _language),
       use = use,
       `value` =
         R4String.of(`value`, _value)
@@ -609,7 +611,7 @@ internal object CodeSystemConceptDesignationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.language?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    ((value.language?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.languageSer, it)
     }

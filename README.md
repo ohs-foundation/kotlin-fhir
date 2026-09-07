@@ -141,26 +141,27 @@ The generated enum classes implement the `FhirEnum` interface, with enum constan
 from the `code` property of expanded `CodeSystem` concepts in the
 [expansion packages](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/).
 
-As with other [primitive data types](#mapping-fhir-primitive-data-types-to-kotlin), a wrapper class
-`Enumeration<T>` is generated to hold the element's `id` and `extension`s alongside the actual enum
-value (`T : FhirEnum`):
+As with other [primitive data types](#mapping-fhir-primitive-data-types-to-kotlin), wrapper classes
+are generated to hold the element's `id` and `extension`s alongside the enum value (`T : FhirEnum`):
 
 | FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
 |----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
 | Bound `ValueSet` (e.g. `administrative-gender`)                            | `enum class` implementing `FhirEnum` (e.g. `AdministrativeGender`)             |
-| Bound element with `id` and `extension`s (e.g. `Patient.gender`)           | `Enumeration<T : FhirEnum>` (e.g. `Enumeration<AdministrativeGender>`)         |
+| Element with `required` binding (e.g. `Patient.gender`)                     | `Enumeration<T : FhirEnum>` (e.g. `Enumeration<AdministrativeGender>`)         |
+| Element with `extensible` or `preferred` binding (e.g. `Expression.language`) | `ExtensibleEnumeration<T : FhirEnum>` (e.g. `ExtensibleEnumeration<ExpressionLanguage>`) |
 
 How an element is typed depends on its
 [binding strength](https://hl7.org/fhir/R5/terminologies.html#strength):
 
 - **`required` binding**: instances may only carry codes from the value set, so the element is
-  typed `Enumeration<T>` (e.g. `Patient.gender` is `Enumeration<AdministrativeGender>`).
-- **Weaker bindings** (`extensible`, `preferred`, `example`): instances may legally carry codes
-  outside the value set, so the element is typed as the open `Code` instead and deserialization
-  preserves any code (e.g. `Expression.language` carrying `text/cql-identifier`). The enum class
-  is still generated, and `Enumeration.toCode()` / `Enumeration.fromCode(code, parse)` convert
-  between the two representations. Note that `fromCode` throws if the code string is not in the
-  enum's value set.
+  typed `Enumeration<T>` (e.g. `Patient.gender` is `Enumeration<AdministrativeGender>`). Deserialization
+  enforces that the code belongs to the bound value set.
+- **`extensible` and `preferred` bindings**: instances may carry codes outside the value set, so
+  the element is typed as `ExtensibleEnumeration<T>` (e.g. `Expression.language`), a sealed interface
+  representing either a `Predefined(value: T)` enum constant or a `Custom(code: String)` outside the
+  value set.
+- **`example` bindings** (and bindings without expansions): instances are free to use any code, so
+  the element is typed as the open `Code` primitive.
 
 Depending on their binding scope, generated enums are placed in one of two locations:
 - **Shared enums** (`dev.ohs.fhir.model.<r4|r4b|r5>.terminologies`): Generated for elements with a
@@ -973,6 +974,7 @@ These tests use inline test data, run across all platforms, and are parameterize
   - `FhirDateTest`: Date parsing and formatting (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`).
   - `FhirDateTimeTest`: DateTime parsing, timezone validation, and millisecond precision.
   - `FhirDecimalTest`: Lexical precision, scientific notation, `BigDecimal` conversions, and arithmetic.
+  - `ExtensibleEnumerationTest`: Sealed hierarchy (`Predefined` / `Custom`) and companion factory resolution for extensible value set bindings.
 - **Serialization:**
   - `PolymorphicSerializationTest`: `resourceType` discriminator handling.
   - `EnumerationSerializationTest`: Enum element extensions (`_field`) and missing-value lists.

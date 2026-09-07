@@ -33,6 +33,7 @@ import dev.ohs.fhir.codegen.schema.getContentReferenceType
 import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.getPathSimpleNames
 import dev.ohs.fhir.codegen.schema.isBackboneElement
+import dev.ohs.fhir.codegen.schema.isExtensibleBinding
 import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 
 /**
@@ -391,10 +392,17 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         .apply {
           add("(")
           if (isEnum) {
-            add(
-              if (isRequired) "value.%N.value?.code" else "value.%N?.value?.code",
-              propertyName,
-            )
+            if (element.isExtensibleBinding) {
+              add(
+                if (isRequired) "value.%N.code" else "value.%N?.code",
+                propertyName,
+              )
+            } else {
+              add(
+                if (isRequired) "value.%N.value?.code" else "value.%N?.value?.code",
+                propertyName,
+              )
+            }
           } else {
             add("value.%N", propertyName)
             if (!isRequired) add("?")
@@ -478,10 +486,17 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     // values
     codeBlock.add("(")
     if (isEnum) {
-      codeBlock.add(
-        "value.%N.map·{·it.value?.code·}.takeUnless·{·it.all·{·it == null·}·}",
-        propertyName,
-      )
+      if (element.isExtensibleBinding) {
+        codeBlock.add(
+          "value.%N.map·{·it.code·}.takeUnless·{·it.all·{·it == null·}·}",
+          propertyName,
+        )
+      } else {
+        codeBlock.add(
+          "value.%N.map·{·it.value?.code·}.takeUnless·{·it.all·{·it == null·}·}",
+          propertyName,
+        )
+      }
     } else {
       codeBlock.add("value.%N.map·{·it", propertyName)
       fhirPathType.addCodeToEncodeModelToWire(codeBlock)

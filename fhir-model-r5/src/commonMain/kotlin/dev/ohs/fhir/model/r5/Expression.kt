@@ -63,7 +63,7 @@ public data class Expression(
    */
   public val name: Code? = null,
   /** The media type of the language for the expression. */
-  public val language: Code? = null,
+  public val language: ExtensibleEnumeration<ExpressionLanguage>? = null,
   /**
    * An expression in the specified language that returns a value.
    *
@@ -86,7 +86,7 @@ public data class Expression(
         extension = this@with.extension.map { it.toBuilder() }.toMutableList()
         description = this@with.description?.toBuilder()
         name = this@with.name?.toBuilder()
-        language = this@with.language?.toBuilder()
+        language = this@with.language
         expression = this@with.expression?.toBuilder()
         reference = this@with.reference?.toBuilder()
       }
@@ -126,7 +126,7 @@ public data class Expression(
     public open var name: Code.Builder? = null
 
     /** The media type of the language for the expression. */
-    public open var language: Code.Builder? = null
+    public open var language: ExtensibleEnumeration<ExpressionLanguage>? = null
 
     /**
      * An expression in the specified language that returns a value.
@@ -150,7 +150,7 @@ public data class Expression(
         extension = extension.map { it.build() },
         description = description?.build(),
         name = name?.build(),
-        language = language?.build(),
+        language = language,
         expression = expression?.build(),
         reference = reference?.build(),
       )

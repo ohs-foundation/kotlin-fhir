@@ -27,11 +27,13 @@ import dev.ohs.fhir.model.r4.Base64Binary
 import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.ExtensibleEnumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.UnsignedInt
 import dev.ohs.fhir.model.r4.Url
+import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -155,7 +157,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
       id = id,
       extension = extension ?: listOf(),
       contentType = Code.of(contentType, _contentType),
-      language = Code.of(language, _language),
+      language = ExtensibleEnumeration.of<CommonLanguages>(language, _language),
       `data` = Base64Binary.of(`data`, _data),
       url = Url.of(url, _url),
       size = UnsignedInt.of(size, _size),
@@ -173,7 +175,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     (value.contentType?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentTypeSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    ((value.language?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.language?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.contentTypeSer, it)
     }

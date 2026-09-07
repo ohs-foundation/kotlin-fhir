@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptSerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemFilterSerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemPropertySerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemSerializer
+import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -831,7 +832,7 @@ public data class CodeSystem(
        *
        * In the absence of a language, the resource language applies.
        */
-      public val language: Code? = null,
+      public val language: ExtensibleEnumeration<CommonLanguages>? = null,
       /**
        * A code that details how this designation would be used.
        *
@@ -848,7 +849,7 @@ public data class CodeSystem(
             id = this@with.id
             extension = this@with.extension.map { it.toBuilder() }.toMutableList()
             modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            language = this@with.language?.toBuilder()
+            language = this@with.language
             use = this@with.use?.toBuilder()
           }
         }
@@ -902,7 +903,7 @@ public data class CodeSystem(
          *
          * In the absence of a language, the resource language applies.
          */
-        public var language: Code.Builder? = null
+        public var language: ExtensibleEnumeration<CommonLanguages>? = null
 
         /**
          * A code that details how this designation would be used.
@@ -917,7 +918,7 @@ public data class CodeSystem(
             id = id,
             extension = extension.map { it.build() },
             modifierExtension = modifierExtension.map { it.build() },
-            language = language?.build(),
+            language = language,
             use = use?.build(),
             `value` = `value`.build(),
           )

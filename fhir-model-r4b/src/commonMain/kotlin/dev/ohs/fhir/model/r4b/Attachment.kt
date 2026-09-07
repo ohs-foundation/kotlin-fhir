@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.AttachmentSerializer
+import dev.ohs.fhir.model.r4b.terminologies.CommonLanguages
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -57,7 +58,7 @@ public data class Attachment(
    */
   public val contentType: Code? = null,
   /** The human language of the content. The value can be any valid value according to BCP 47. */
-  public val language: Code? = null,
+  public val language: ExtensibleEnumeration<CommonLanguages>? = null,
   /**
    * The actual data of the attachment - a sequence of bytes, base64 encoded.
    *
@@ -104,7 +105,7 @@ public data class Attachment(
         id = this@with.id
         extension = this@with.extension.map { it.toBuilder() }.toMutableList()
         contentType = this@with.contentType?.toBuilder()
-        language = this@with.language?.toBuilder()
+        language = this@with.language
         `data` = this@with.`data`?.toBuilder()
         url = this@with.url?.toBuilder()
         size = this@with.size?.toBuilder()
@@ -143,7 +144,7 @@ public data class Attachment(
     public open var contentType: Code.Builder? = null
 
     /** The human language of the content. The value can be any valid value according to BCP 47. */
-    public open var language: Code.Builder? = null
+    public open var language: ExtensibleEnumeration<CommonLanguages>? = null
 
     /**
      * The actual data of the attachment - a sequence of bytes, base64 encoded.
@@ -195,7 +196,7 @@ public data class Attachment(
         id = id,
         extension = extension.map { it.build() },
         contentType = contentType?.build(),
-        language = language?.build(),
+        language = language,
         `data` = `data`?.build(),
         url = url?.build(),
         size = size?.build(),

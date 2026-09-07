@@ -63,7 +63,7 @@ public data class Expression(
    */
   public val name: Id? = null,
   /** The media type of the language for the expression. */
-  public val language: Code,
+  public val language: ExtensibleEnumeration<ExpressionLanguage>,
   /** An expression in the specified language that returns a value. */
   public val expression: String? = null,
   /**
@@ -76,7 +76,7 @@ public data class Expression(
 ) : Element() {
   public fun toBuilder(): Builder =
     with(this) {
-      Builder(language.toBuilder()).apply {
+      Builder(language).apply {
         id = this@with.id
         extension = this@with.extension.map { it.toBuilder() }.toMutableList()
         description = this@with.description?.toBuilder()
@@ -88,7 +88,7 @@ public data class Expression(
 
   public open class Builder(
     /** The media type of the language for the expression. */
-    public open var language: Code.Builder
+    public open var language: ExtensibleEnumeration<ExpressionLanguage>
   ) {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
@@ -139,7 +139,7 @@ public data class Expression(
         extension = extension.map { it.build() },
         description = description?.build(),
         name = name?.build(),
-        language = language.build(),
+        language = language,
         expression = expression?.build(),
         reference = reference?.build(),
       )

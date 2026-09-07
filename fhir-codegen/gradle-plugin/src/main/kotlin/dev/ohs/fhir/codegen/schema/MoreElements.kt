@@ -73,13 +73,19 @@ internal fun Element.typeShouldGenerateEnum(valueSetMap: Map<String, ValueSet>):
     this.type?.count { it.code.equals("code", ignoreCase = true) } == 1
 }
 
+/** Returns true if the element is bound to an extensible or preferred value set. */
+internal val Element.isExtensibleBinding: Boolean
+  get() = binding?.strength == "extensible" || binding?.strength == "preferred"
+
 /**
- * Determines if the element should be typed as `Enumeration<T>` with the generated enum, i.e.
- * [typeShouldGenerateEnum] and the binding strength is `required`. Elements with weaker bindings
- * may carry codes outside the value set and are typed as `Code` instead.
+ * Determines if the element should be typed as `Enumeration<T>` or `ExtensibleEnumeration<T>` with
+ * the generated enum, i.e. [typeShouldGenerateEnum] and the binding strength is `required`,
+ * `extensible`, or `preferred`. Elements with weaker bindings (e.g. `example`) may carry arbitrary
+ * codes outside the value set and are typed as `Code` instead.
  */
 internal fun Element.typeShouldBindToEnum(valueSetMap: Map<String, ValueSet>): Boolean {
-  return typeShouldGenerateEnum(valueSetMap) && binding?.strength == "required"
+  return typeShouldGenerateEnum(valueSetMap) &&
+    (binding?.strength == "required" || isExtensibleBinding)
 }
 
 /**

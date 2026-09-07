@@ -41,11 +41,7 @@ private val skippedR4BTestCaseNameToReasonMap =
   )
 
 /** A map from the test case name to the reason why the test case is skipped in R5. */
-private val skippedR5TestCaseNameToReasonMap =
-  mapOf(
-    "ChargeItemDefinition-ebm.json" to
-      "Unknown code 'text/CQL' for enum ExpressionLanguage; codes are case-sensitive"
-  )
+private val skippedR5TestCaseNameToReasonMap = emptyMap<String, String>()
 
 open class BuilderRoundTripTest :
   FunSpec({

@@ -131,15 +131,26 @@ public object GroupSearchParams {
       extractor = { resource -> listOf(resource.type) },
     )
 
-  public val `value`: SearchParam<Group, CodeableConcept> =
+  public val `value`: SearchParam<Group, Any> =
     SearchParam(
       name = "value",
       type = SearchParamType.Token,
-      expression = "(Group.characteristic.value as CodeableConcept)",
+      expression =
+        "(Group.characteristic.value as CodeableConcept) | (Group.characteristic.value as boolean)",
       extractor = { resource ->
-        resource.characteristic.mapNotNull {
-          (it.`value` as? Group.Characteristic.Value.CodeableConcept)?.value
-        }
+        buildList {
+            addAll(
+              resource.characteristic.mapNotNull {
+                (it.`value` as? Group.Characteristic.Value.CodeableConcept)?.value
+              }
+            )
+            addAll(
+              resource.characteristic.mapNotNull {
+                (it.`value` as? Group.Characteristic.Value.Boolean)?.value
+              }
+            )
+          }
+          .distinct()
       },
     )
 

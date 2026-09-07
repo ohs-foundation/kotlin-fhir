@@ -28,7 +28,6 @@ import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Composition
 import dev.ohs.fhir.model.r5.Condition
-import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
@@ -84,13 +83,19 @@ public object ProcedureSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val date: SearchParam<Procedure, DateTime> =
+  public val date: SearchParam<Procedure, Any> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
-      expression = "Procedure.occurrence.ofType(dateTime)",
+      expression =
+        "Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing)",
       extractor = { resource ->
-        listOfNotNull((resource.occurrence as? Procedure.Occurrence.DateTime)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.occurrence as? Procedure.Occurrence.DateTime)?.value))
+            addAll(listOfNotNull((resource.occurrence as? Procedure.Occurrence.Period)?.value))
+            addAll(listOfNotNull((resource.occurrence as? Procedure.Occurrence.Timing)?.value))
+          }
+          .distinct()
       },
     )
 

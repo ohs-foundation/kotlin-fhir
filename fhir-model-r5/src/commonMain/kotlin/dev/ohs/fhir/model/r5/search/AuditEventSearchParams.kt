@@ -482,8 +482,14 @@ public object AuditEventSearchParams {
     SearchParam(
       name = "purpose",
       type = SearchParamType.Token,
-      expression = "AuditEvent.authorization",
-      extractor = { resource -> resource.authorization },
+      expression = "AuditEvent.authorization | AuditEvent.agent.authorization",
+      extractor = { resource ->
+        buildList {
+            addAll(resource.authorization)
+            addAll(resource.agent.flatMap { it.authorization })
+          }
+          .distinct()
+      },
     )
 
   public val source: SearchParam<AuditEvent, Reference> =

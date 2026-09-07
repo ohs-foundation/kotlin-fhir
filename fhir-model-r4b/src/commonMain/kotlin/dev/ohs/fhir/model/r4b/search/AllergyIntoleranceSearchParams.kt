@@ -67,8 +67,14 @@ public object AllergyIntoleranceSearchParams {
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
-      expression = "AllergyIntolerance.code",
-      extractor = { resource -> listOfNotNull(resource.code) },
+      expression = "AllergyIntolerance.code | AllergyIntolerance.reaction.substance",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.code))
+            addAll(resource.reaction.mapNotNull { it.substance })
+          }
+          .distinct()
+      },
     )
 
   public val criticality: SearchParam<AllergyIntolerance, Any> =

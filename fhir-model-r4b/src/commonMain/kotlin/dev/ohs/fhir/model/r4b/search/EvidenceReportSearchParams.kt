@@ -25,7 +25,6 @@ import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.EvidenceReport
 import dev.ohs.fhir.model.r4b.Identifier
-import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
@@ -48,13 +47,22 @@ public object EvidenceReportSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<EvidenceReport, Quantity> =
+  public val contextQuantity: SearchParam<EvidenceReport, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(EvidenceReport.useContext.value as Quantity)",
+      expression =
+        "(EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

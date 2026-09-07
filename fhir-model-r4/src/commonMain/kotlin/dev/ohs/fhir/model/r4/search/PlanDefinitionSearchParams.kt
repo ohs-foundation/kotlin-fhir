@@ -138,7 +138,6 @@ import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Procedure
 import dev.ohs.fhir.model.r4.Provenance
-import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.Questionnaire
 import dev.ohs.fhir.model.r4.QuestionnaireResponse
 import dev.ohs.fhir.model.r4.RelatedPerson
@@ -356,13 +355,22 @@ public object PlanDefinitionSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<PlanDefinition, Quantity> =
+  public val contextQuantity: SearchParam<PlanDefinition, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(PlanDefinition.useContext.value as Quantity)",
+      expression =
+        "(PlanDefinition.useContext.value as Quantity) | (PlanDefinition.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -411,7 +419,8 @@ public object PlanDefinitionSearchParams {
     SearchParam(
       name = "depends-on",
       type = SearchParamType.Reference,
-      expression = "PlanDefinition.relatedArtifact.where(type='depends-on').resource",
+      expression =
+        "PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library",
       target =
         listOf(
           Library::class,
@@ -561,9 +570,15 @@ public object PlanDefinitionSearchParams {
           VisionPrescription::class,
         ),
       extractor = { resource ->
-        resource.relatedArtifact
-          .filter { it.type.value?.toString() == "depends-on" }
-          .mapNotNull { it.resource }
+        buildList {
+            addAll(
+              resource.relatedArtifact
+                .filter { it.type.value?.toString() == "depends-on" }
+                .mapNotNull { it.resource }
+            )
+            addAll(resource.library)
+          }
+          .distinct()
       },
     )
 

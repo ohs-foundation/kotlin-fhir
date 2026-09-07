@@ -148,7 +148,6 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Provenance
-import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.QuestionnaireResponse
 import dev.ohs.fhir.model.r5.RegulatedAuthorization
@@ -201,9 +200,15 @@ public object ValueSetSearchParams {
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
-      expression = "ValueSet.expansion.contains.code",
+      expression = "ValueSet.expansion.contains.code | ValueSet.compose.include.concept.code",
       extractor = { resource ->
-        (resource.expansion?.contains ?: emptyList()).mapNotNull { it.code }
+        buildList {
+            addAll((resource.expansion?.contains ?: emptyList()).mapNotNull { it.code })
+            addAll(
+              (resource.compose?.include ?: emptyList()).flatMap { it.concept }.map { it.code }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -219,13 +224,22 @@ public object ValueSetSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<ValueSet, Quantity> =
+  public val contextQuantity: SearchParam<ValueSet, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(ValueSet.useContext.value.ofType(Quantity))",
+      expression =
+        "(ValueSet.useContext.value.ofType(Quantity)) | (ValueSet.useContext.value.ofType(Range))",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

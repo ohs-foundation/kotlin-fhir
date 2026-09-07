@@ -124,13 +124,19 @@ public object ChargeItemSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val occurrence: SearchParam<ChargeItem, DateTime> =
+  public val occurrence: SearchParam<ChargeItem, Any> =
     SearchParam(
       name = "occurrence",
       type = SearchParamType.Date,
-      expression = "ChargeItem.occurrence.ofType(dateTime)",
+      expression =
+        "ChargeItem.occurrence.ofType(dateTime) | ChargeItem.occurrence.ofType(Period) | ChargeItem.occurrence.ofType(Timing)",
       extractor = { resource ->
-        listOfNotNull((resource.occurrence as? ChargeItem.Occurrence.DateTime)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.occurrence as? ChargeItem.Occurrence.DateTime)?.value))
+            addAll(listOfNotNull((resource.occurrence as? ChargeItem.Occurrence.Period)?.value))
+            addAll(listOfNotNull((resource.occurrence as? ChargeItem.Occurrence.Timing)?.value))
+          }
+          .distinct()
       },
     )
 

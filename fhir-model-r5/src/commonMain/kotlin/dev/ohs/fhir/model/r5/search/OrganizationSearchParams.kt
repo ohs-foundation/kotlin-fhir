@@ -111,16 +111,28 @@ public object OrganizationSearchParams {
     SearchParam(
       name = "identifier",
       type = SearchParamType.Token,
-      expression = "Organization.identifier",
-      extractor = { resource -> resource.identifier },
+      expression = "Organization.identifier | Organization.qualification.identifier",
+      extractor = { resource ->
+        buildList {
+            addAll(resource.identifier)
+            addAll(resource.qualification.flatMap { it.identifier })
+          }
+          .distinct()
+      },
     )
 
   public val name: SearchParam<Organization, String> =
     SearchParam(
       name = "name",
       type = SearchParamType.String,
-      expression = "Organization.name",
-      extractor = { resource -> listOfNotNull(resource.name) },
+      expression = "Organization.name | Organization.alias",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.name))
+            addAll(resource.alias)
+          }
+          .distinct()
+      },
     )
 
   public val partof: SearchParam<Organization, Reference> =

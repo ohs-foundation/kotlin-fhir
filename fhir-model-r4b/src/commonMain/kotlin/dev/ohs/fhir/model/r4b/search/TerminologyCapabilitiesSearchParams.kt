@@ -25,7 +25,6 @@ import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Markdown
-import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.TerminologyCapabilities
 import dev.ohs.fhir.model.r4b.Uri
@@ -49,13 +48,22 @@ public object TerminologyCapabilitiesSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<TerminologyCapabilities, Quantity> =
+  public val contextQuantity: SearchParam<TerminologyCapabilities, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(TerminologyCapabilities.useContext.value as Quantity)",
+      expression =
+        "(TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

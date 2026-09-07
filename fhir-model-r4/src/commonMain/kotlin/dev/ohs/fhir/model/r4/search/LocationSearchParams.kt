@@ -106,8 +106,14 @@ public object LocationSearchParams {
     SearchParam(
       name = "name",
       type = SearchParamType.String,
-      expression = "Location.name",
-      extractor = { resource -> listOfNotNull(resource.name) },
+      expression = "Location.name | Location.alias",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.name))
+            addAll(resource.alias)
+          }
+          .distinct()
+      },
     )
 
   public val near: SearchParam<Location, Location.Position> =

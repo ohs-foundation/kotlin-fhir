@@ -27,7 +27,6 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Period
-import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
@@ -43,8 +42,14 @@ public object QuestionnaireSearchParams {
     SearchParam(
       name = "combo-code",
       type = SearchParamType.Token,
-      expression = "Questionnaire.code",
-      extractor = { resource -> resource.code },
+      expression = "Questionnaire.code | Questionnaire.item.code",
+      extractor = { resource ->
+        buildList {
+            addAll(resource.code)
+            addAll(resource.item.flatMap { it.code })
+          }
+          .distinct()
+      },
     )
 
   public val context: SearchParam<Questionnaire, CodeableConcept> =
@@ -59,13 +64,22 @@ public object QuestionnaireSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<Questionnaire, Quantity> =
+  public val contextQuantity: SearchParam<Questionnaire, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(Questionnaire.useContext.value.ofType(Quantity))",
+      expression =
+        "(Questionnaire.useContext.value.ofType(Quantity)) | (Questionnaire.useContext.value.ofType(Range))",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

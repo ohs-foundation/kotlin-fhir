@@ -28,7 +28,6 @@ import dev.ohs.fhir.model.r4b.ConceptMap
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
-import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
@@ -53,13 +52,22 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<ConceptMap, Quantity> =
+  public val contextQuantity: SearchParam<ConceptMap, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(ConceptMap.useContext.value as Quantity)",
+      expression =
+        "(ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

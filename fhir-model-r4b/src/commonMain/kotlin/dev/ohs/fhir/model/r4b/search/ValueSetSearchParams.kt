@@ -26,7 +26,6 @@ import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
-import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
@@ -42,9 +41,15 @@ public object ValueSetSearchParams {
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
-      expression = "ValueSet.expansion.contains.code",
+      expression = "ValueSet.expansion.contains.code | ValueSet.compose.include.concept.code",
       extractor = { resource ->
-        (resource.expansion?.contains ?: emptyList()).mapNotNull { it.code }
+        buildList {
+            addAll((resource.expansion?.contains ?: emptyList()).mapNotNull { it.code })
+            addAll(
+              (resource.compose?.include ?: emptyList()).flatMap { it.concept }.map { it.code }
+            )
+          }
+          .distinct()
       },
     )
 
@@ -60,13 +65,21 @@ public object ValueSetSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<ValueSet, Quantity> =
+  public val contextQuantity: SearchParam<ValueSet, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(ValueSet.useContext.value as Quantity)",
+      expression = "(ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

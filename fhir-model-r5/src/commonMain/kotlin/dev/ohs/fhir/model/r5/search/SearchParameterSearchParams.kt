@@ -27,7 +27,6 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
-import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.SearchParameter
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
@@ -76,13 +75,22 @@ public object SearchParameterSearchParams {
       },
     )
 
-  public val contextQuantity: SearchParam<SearchParameter, Quantity> =
+  public val contextQuantity: SearchParam<SearchParameter, Any> =
     SearchParam(
       name = "context-quantity",
       type = SearchParamType.Quantity,
-      expression = "(SearchParameter.useContext.value.ofType(Quantity))",
+      expression =
+        "(SearchParameter.useContext.value.ofType(Quantity)) | (SearchParameter.useContext.value.ofType(Range))",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+        buildList {
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
+            )
+            addAll(
+              resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Range)?.value }
+            )
+          }
+          .distinct()
       },
     )
 

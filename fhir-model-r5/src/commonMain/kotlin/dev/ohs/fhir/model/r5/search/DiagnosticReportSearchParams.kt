@@ -25,7 +25,6 @@ import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CarePlan
 import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
-import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
@@ -96,13 +95,20 @@ public object DiagnosticReportSearchParams {
       extractor = { resource -> resource.conclusionCode },
     )
 
-  public val date: SearchParam<DiagnosticReport, DateTime> =
+  public val date: SearchParam<DiagnosticReport, Any> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
-      expression = "DiagnosticReport.effective.ofType(dateTime)",
+      expression =
+        "DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period)",
       extractor = { resource ->
-        listOfNotNull((resource.effective as? DiagnosticReport.Effective.DateTime)?.value)
+        buildList {
+            addAll(
+              listOfNotNull((resource.effective as? DiagnosticReport.Effective.DateTime)?.value)
+            )
+            addAll(listOfNotNull((resource.effective as? DiagnosticReport.Effective.Period)?.value))
+          }
+          .distinct()
       },
     )
 

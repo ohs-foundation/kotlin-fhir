@@ -211,8 +211,14 @@ public object DocumentManifestSearchParams {
     SearchParam(
       name = "identifier",
       type = SearchParamType.Token,
-      expression = "DocumentManifest.masterIdentifier",
-      extractor = { resource -> listOfNotNull(resource.masterIdentifier) },
+      expression = "DocumentManifest.masterIdentifier | DocumentManifest.identifier",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.masterIdentifier))
+            addAll(resource.identifier)
+          }
+          .distinct()
+      },
     )
 
   public val item: SearchParam<DocumentManifest, Reference> =

@@ -476,11 +476,12 @@ public object RequestOrchestrationSearchParams {
       extractor = { resource -> listOf(resource.intent) },
     )
 
-  public val participant: SearchParam<RequestOrchestration, Reference> =
+  public val participant: SearchParam<RequestOrchestration, Any> =
     SearchParam(
       name = "participant",
       type = SearchParamType.Reference,
-      expression = "RequestOrchestration.action.participant.actor.ofType(Reference)",
+      expression =
+        "RequestOrchestration.action.participant.actor.ofType(Reference) | RequestOrchestration.action.participant.actor.ofType(canonical)",
       target =
         listOf(
           CareTeam::class,
@@ -498,11 +499,23 @@ public object RequestOrchestrationSearchParams {
           Patient::class,
         ),
       extractor = { resource ->
-        resource.action
-          .flatMap { it.participant }
-          .mapNotNull {
-            (it.actor as? RequestOrchestration.Action.Participant.Actor.Reference)?.value
+        buildList {
+            addAll(
+              resource.action
+                .flatMap { it.participant }
+                .mapNotNull {
+                  (it.actor as? RequestOrchestration.Action.Participant.Actor.Reference)?.value
+                }
+            )
+            addAll(
+              resource.action
+                .flatMap { it.participant }
+                .mapNotNull {
+                  (it.actor as? RequestOrchestration.Action.Participant.Actor.Canonical)?.value
+                }
+            )
           }
+          .distinct()
       },
     )
 

@@ -23,7 +23,6 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Condition
-import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.Encounter
@@ -53,13 +52,26 @@ public object MedicationAdministrationSearchParams {
       extractor = { resource -> listOfNotNull(resource.medication.concept) },
     )
 
-  public val date: SearchParam<MedicationAdministration, DateTime> =
+  public val date: SearchParam<MedicationAdministration, Any> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
-      expression = "MedicationAdministration.occurence.ofType(dateTime)",
+      expression =
+        "MedicationAdministration.occurence.ofType(dateTime) | MedicationAdministration.occurence.ofType(Period)",
       extractor = { resource ->
-        listOfNotNull((resource.occurence as? MedicationAdministration.Occurence.DateTime)?.value)
+        buildList {
+            addAll(
+              listOfNotNull(
+                (resource.occurence as? MedicationAdministration.Occurence.DateTime)?.value
+              )
+            )
+            addAll(
+              listOfNotNull(
+                (resource.occurence as? MedicationAdministration.Occurence.Period)?.value
+              )
+            )
+          }
+          .distinct()
       },
     )
 

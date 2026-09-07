@@ -61,7 +61,6 @@ import dev.ohs.fhir.model.r5.Contract
 import dev.ohs.fhir.model.r5.Coverage
 import dev.ohs.fhir.model.r5.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r5.CoverageEligibilityResponse
-import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.DetectedIssue
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DeviceAssociation
@@ -222,13 +221,20 @@ public object DetectedIssueSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val identified: SearchParam<DetectedIssue, DateTime> =
+  public val identified: SearchParam<DetectedIssue, Any> =
     SearchParam(
       name = "identified",
       type = SearchParamType.Date,
-      expression = "DetectedIssue.identified.ofType(dateTime)",
+      expression =
+        "DetectedIssue.identified.ofType(dateTime) | DetectedIssue.identified.ofType(Period)",
       extractor = { resource ->
-        listOfNotNull((resource.identified as? DetectedIssue.Identified.DateTime)?.value)
+        buildList {
+            addAll(
+              listOfNotNull((resource.identified as? DetectedIssue.Identified.DateTime)?.value)
+            )
+            addAll(listOfNotNull((resource.identified as? DetectedIssue.Identified.Period)?.value))
+          }
+          .distinct()
       },
     )
 

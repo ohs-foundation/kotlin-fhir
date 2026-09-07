@@ -47,8 +47,19 @@ public object SubstanceSearchParams {
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
-      expression = "Substance.code.concept",
-      extractor = { resource -> listOfNotNull(resource.code.concept) },
+      expression =
+        "Substance.code.concept | (Substance.ingredient.substance.ofType(CodeableConcept))",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.code.concept))
+            addAll(
+              resource.ingredient.mapNotNull {
+                (it.substance as? Substance.Ingredient.Substance.CodeableConcept)?.value
+              }
+            )
+          }
+          .distinct()
+      },
     )
 
   public val codeReference: SearchParam<Substance, Reference> =

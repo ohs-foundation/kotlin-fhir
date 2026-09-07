@@ -37,8 +37,21 @@ public object DeviceDefinitionSearchParams {
     SearchParam(
       name = "device-name",
       type = SearchParamType.String,
-      expression = "DeviceDefinition.deviceName.name",
-      extractor = { resource -> resource.deviceName.map { it.name } },
+      expression =
+        "DeviceDefinition.deviceName.name | DeviceDefinition.classification.type.coding.display | DeviceDefinition.classification.type.text",
+      extractor = { resource ->
+        buildList {
+            addAll(resource.deviceName.map { it.name })
+            addAll(
+              resource.classification
+                .map { it.type }
+                .flatMap { it.coding }
+                .mapNotNull { it.display }
+            )
+            addAll(resource.classification.map { it.type }.mapNotNull { it.text })
+          }
+          .distinct()
+      },
     )
 
   public val identifier: SearchParam<DeviceDefinition, Identifier> =

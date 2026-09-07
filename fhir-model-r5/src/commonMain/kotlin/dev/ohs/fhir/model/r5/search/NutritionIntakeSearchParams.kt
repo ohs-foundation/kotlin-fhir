@@ -22,7 +22,6 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
-import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Encounter
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -48,13 +47,22 @@ public object NutritionIntakeSearchParams {
       extractor = { resource -> listOfNotNull(resource.code) },
     )
 
-  public val date: SearchParam<NutritionIntake, DateTime> =
+  public val date: SearchParam<NutritionIntake, Any> =
     SearchParam(
       name = "date",
       type = SearchParamType.Date,
-      expression = "NutritionIntake.occurrence.ofType(dateTime)",
+      expression =
+        "NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period)",
       extractor = { resource ->
-        listOfNotNull((resource.occurrence as? NutritionIntake.Occurrence.DateTime)?.value)
+        buildList {
+            addAll(
+              listOfNotNull((resource.occurrence as? NutritionIntake.Occurrence.DateTime)?.value)
+            )
+            addAll(
+              listOfNotNull((resource.occurrence as? NutritionIntake.Occurrence.Period)?.value)
+            )
+          }
+          .distinct()
       },
     )
 

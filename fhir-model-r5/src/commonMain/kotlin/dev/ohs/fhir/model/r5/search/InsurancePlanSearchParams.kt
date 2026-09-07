@@ -120,8 +120,14 @@ public object InsurancePlanSearchParams {
     SearchParam(
       name = "name",
       type = SearchParamType.String,
-      expression = "InsurancePlan.name",
-      extractor = { resource -> listOfNotNull(resource.name) },
+      expression = "InsurancePlan.name | InsurancePlan.alias",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.name))
+            addAll(resource.alias)
+          }
+          .distinct()
+      },
     )
 
   public val ownedBy: SearchParam<InsurancePlan, Reference> =

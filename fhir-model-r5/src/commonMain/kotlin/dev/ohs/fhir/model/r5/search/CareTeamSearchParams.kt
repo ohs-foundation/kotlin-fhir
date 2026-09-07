@@ -73,7 +73,8 @@ public object CareTeamSearchParams {
     SearchParam(
       name = "name",
       type = SearchParamType.String,
-      expression = "CareTeam.name",
+      expression =
+        "CareTeam.name | CareTeam.extension('http://hl7.org/fhir/StructureDefinition/careteam-alias').value",
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 

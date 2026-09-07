@@ -25,7 +25,6 @@ import dev.ohs.fhir.model.r4b.Account
 import dev.ohs.fhir.model.r4b.ActivityDefinition
 import dev.ohs.fhir.model.r4b.AdministrableProductDefinition
 import dev.ohs.fhir.model.r4b.AdverseEvent
-import dev.ohs.fhir.model.r4b.Age
 import dev.ohs.fhir.model.r4b.AllergyIntolerance
 import dev.ohs.fhir.model.r4b.Appointment
 import dev.ohs.fhir.model.r4b.AppointmentResponse
@@ -168,28 +167,37 @@ import dev.ohs.fhir.model.r4b.ValueSet
 import dev.ohs.fhir.model.r4b.VerificationResult
 import dev.ohs.fhir.model.r4b.VisionPrescription
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
+import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [Condition] resource type. */
 public object ConditionSearchParams {
-  public val abatementAge: SearchParam<Condition, Age> =
+  public val abatementAge: SearchParam<Condition, Any> =
     SearchParam(
       name = "abatement-age",
       type = SearchParamType.Quantity,
-      expression = "Condition.abatement.as(Age)",
+      expression = "Condition.abatement.as(Age) | Condition.abatement.as(Range)",
       extractor = { resource ->
-        listOfNotNull((resource.abatement as? Condition.Abatement.Age)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.abatement as? Condition.Abatement.Age)?.value))
+            addAll(listOfNotNull((resource.abatement as? Condition.Abatement.Range)?.value))
+          }
+          .distinct()
       },
     )
 
-  public val abatementDate: SearchParam<Condition, DateTime> =
+  public val abatementDate: SearchParam<Condition, Any> =
     SearchParam(
       name = "abatement-date",
       type = SearchParamType.Date,
-      expression = "Condition.abatement.as(dateTime)",
+      expression = "Condition.abatement.as(dateTime) | Condition.abatement.as(Period)",
       extractor = { resource ->
-        listOfNotNull((resource.abatement as? Condition.Abatement.DateTime)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.abatement as? Condition.Abatement.DateTime)?.value))
+            addAll(listOfNotNull((resource.abatement as? Condition.Abatement.Period)?.value))
+          }
+          .distinct()
       },
     )
 
@@ -421,21 +429,31 @@ public object ConditionSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val onsetAge: SearchParam<Condition, Age> =
+  public val onsetAge: SearchParam<Condition, Any> =
     SearchParam(
       name = "onset-age",
       type = SearchParamType.Quantity,
-      expression = "Condition.onset.as(Age)",
-      extractor = { resource -> listOfNotNull((resource.onset as? Condition.Onset.Age)?.value) },
+      expression = "Condition.onset.as(Age) | Condition.onset.as(Range)",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull((resource.onset as? Condition.Onset.Age)?.value))
+            addAll(listOfNotNull((resource.onset as? Condition.Onset.Range)?.value))
+          }
+          .distinct()
+      },
     )
 
-  public val onsetDate: SearchParam<Condition, DateTime> =
+  public val onsetDate: SearchParam<Condition, Any> =
     SearchParam(
       name = "onset-date",
       type = SearchParamType.Date,
-      expression = "Condition.onset.as(dateTime)",
+      expression = "Condition.onset.as(dateTime) | Condition.onset.as(Period)",
       extractor = { resource ->
-        listOfNotNull((resource.onset as? Condition.Onset.DateTime)?.value)
+        buildList {
+            addAll(listOfNotNull((resource.onset as? Condition.Onset.DateTime)?.value))
+            addAll(listOfNotNull((resource.onset as? Condition.Onset.Period)?.value))
+          }
+          .distinct()
       },
     )
 

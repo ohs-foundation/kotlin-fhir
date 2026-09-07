@@ -113,8 +113,14 @@ public object OrganizationSearchParams {
     SearchParam(
       name = "name",
       type = SearchParamType.String,
-      expression = "Organization.name",
-      extractor = { resource -> listOfNotNull(resource.name) },
+      expression = "Organization.name | Organization.alias",
+      extractor = { resource ->
+        buildList {
+            addAll(listOfNotNull(resource.name))
+            addAll(resource.alias)
+          }
+          .distinct()
+      },
     )
 
   public val partof: SearchParam<Organization, Reference> =

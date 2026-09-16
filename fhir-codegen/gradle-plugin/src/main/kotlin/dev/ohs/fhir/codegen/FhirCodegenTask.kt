@@ -84,8 +84,9 @@ abstract class FhirCodegenTask : DefaultTask() {
         }
         .map { json.decodeFromString<ValueSet>(it.readText(Charsets.UTF_8)) }
         .filter {
-          // Refer to the section "Excluded ValueSets from Enum Generation" on the README file for
-          // the reasons for exclusion
+          // Excluded from enum generation (see docs/enum-generation.md for details):
+          // - mimetypes and all-languages are infinite value sets
+          // - use-context has >3800 codes when expanded and exceeds compiler limits
           it.urlPart != "http://hl7.org/fhir/ValueSet/mimetypes" &&
             it.urlPart != "http://hl7.org/fhir/ValueSet/all-languages" &&
             it.urlPart != "http://hl7.org/fhir/ValueSet/use-context"

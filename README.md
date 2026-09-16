@@ -14,24 +14,24 @@ Kotlin FHIR is a lean and fast implementation of the
 
 ## Key features
 
-* Lightweight & fast with a minimal footprint and zero bloat[^1]
-* Clean, modern & elegant Kotlin code with minimalistic class definitions
-* Code generation[^2] from FHIR specifications for completeness and maintainability
-* JSON only[^3], no [XML](https://build.fhir.org/xml.html)
-  or [Turtle](https://build.fhir.org/rdf.html) dependencies
-* Multiplatform support for Android, iOS and web development, with JVM, native
-  code and JavaScript targets
+* Lightweight & fast with a small footprint and zero bloat[^bloat]
+* Clean & modern Kotlin code with minimalistic class definitions
+* Code generation[^generation] from FHIR specifications for completeness and maintainability
+* JSON serialization[^serialization], no [XML](https://build.fhir.org/xml.html) or
+  [Turtle](https://build.fhir.org/rdf.html) dependencies
+* Multiplatform support across Mobile (Android, iOS), Server & Desktop (JVM, macOS, Linux), and Web
+  (JavaScript, WebAssembly)
 * Support for multiple FHIR versions
 
-[^1]: No dependencies on logging, XML, or networking libraries or any platform-specific
+[^bloat]: No dependencies on logging, XML, or networking libraries or any platform-specific
 dependencies. Only essential Kotlin Multiplatform dependencies are included, e.g.,
 [`kotlinx.serialization`](https://github.com/Kotlin/kotlinx.serialization),
 [`kotlinx.datetime`](https://github.com/Kotlin/kotlinx-datetime), and
 [Kotlin Multiplatform BigNum](https://github.com/ionspin/kotlin-multiplatform-bignum).
 
-[^2]: Using [KotlinPoet](https://square.github.io/kotlinpoet/).
+[^generation]: Using [KotlinPoet](https://square.github.io/kotlinpoet/).
 
-[^3]: It is also possible to serialize to other formats
+[^serialization]: It is also possible to serialize to other formats
 [`kotlinx.serialization`](https://github.com/Kotlin/kotlinx.serialization) supports, such as
 [protocol buffers](https://protobuf.dev/). However, there is no XML or Turtle support.
 
@@ -86,30 +86,27 @@ Each library artifact is published with platform-specific variants. The table be
 ### Mapping FHIR primitive data types to Kotlin
 
 In FHIR, primitive data types (e.g. in [R4](https://hl7.org/fhir/R4/datatypes.html)) are defined
-using StructureDefinitions[^4]. For instance, the `date` type is defined in
+using StructureDefinitions. For instance, the `date` type is defined in
 `StructureDefinition-date.json`. While primitive, these types may include an `id` and `extension`s,
 preventing direct mapping to Kotlin's primitive types. To resolve this issue, the library generates
-a distinct Kotlin class for each FHIR primitive data type, for example, the `Date` class in`Date.kt`
-file for the `date` type.
-
-[^4]: A "JSON Definition" link to the StructureDefinition is now included for each FHIR primitive
-data type in the [Data Types](https://build.fhir.org/datatypes.html) page in FHIR CI-BUILD.
+a distinct Kotlin class for each FHIR primitive data type, for example, the `Date` class in
+`Date.kt` file for the `date` type.
 
 However, the actual values within these FHIR primitive data types defined using FHIRPath types (e.g.
 the `integer.value` element in `StructureDefinition-integer.json` has the FHIRPath type
 `System.Integer`) still need to be mapped to Kotlin types in the generated code. The mapping is as
 follows:
 
-| FHIRPath type <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin data model type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> | Kotlin wire type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
-|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| System.Boolean                                                              | kotlin.Boolean                                                                         | kotlin.Boolean                                                                   |
-| System.String                                                               | kotlin.String                                                                          | kotlin.String                                                                    |
-| System.Integer                                                              | kotlin.Int                                                                             | kotlin.Int                                                                       |
-| System.Long                                                                 | kotlin.Long                                                                            | kotlin.String                                                                    |
-| System.Decimal                                                              | FhirDecimal                                                                            | FhirDecimal                                                                      |
-| System.Date                                                                 | FhirDate                                                                               | kotlin.String                                                                    |
-| System.Time                                                                 | kotlinx.datetime.LocalTime                                                             | kotlinx.datetime.LocalTime                                                       |
-| System.DateTime                                                             | FhirDateTime                                                                           | kotlin.String                                                                    |
+| FHIRPath type <img src="images/fhir.png" alt="fhir" style="height: 1em"/> | Kotlin data model type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> | Kotlin wire type <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
+|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| System.Boolean                                                            | kotlin.Boolean                                                                         | kotlin.Boolean                                                                   |
+| System.String                                                             | kotlin.String                                                                          | kotlin.String                                                                    |
+| System.Integer                                                            | kotlin.Int                                                                             | kotlin.Int                                                                       |
+| System.Long                                                               | kotlin.Long                                                                            | kotlin.String                                                                    |
+| System.Decimal                                                            | FhirDecimal                                                                            | FhirDecimal                                                                      |
+| System.Date                                                               | FhirDate                                                                               | kotlin.String                                                                    |
+| System.Time                                                               | kotlinx.datetime.LocalTime                                                             | kotlinx.datetime.LocalTime                                                       |
+| System.DateTime                                                           | FhirDateTime                                                                           | kotlin.String                                                                    |
 
 > [!NOTE]
 > The `System.Decimal` type is mapped to `FhirDecimal`, which wraps the
@@ -145,10 +142,10 @@ from the `code` property of expanded `CodeSystem` concepts in the
 As with other [primitive data types](#mapping-fhir-primitive-data-types-to-kotlin), wrapper classes
 are generated to hold the element's `id` and `extension`s alongside the enum value (`T : FhirEnum`):
 
-| FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
-|----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
-| Bound `ValueSet` (e.g. `administrative-gender`)                            | `enum class` implementing `FhirEnum` (e.g. `AdministrativeGender`)             |
-| Element with `required` binding (e.g. `Patient.gender`)                     | `Enumeration<T : FhirEnum>` (e.g. `Enumeration<AdministrativeGender>`)         |
+| FHIR concept <img src="images/fhir.png" alt="fhir" style="height: 1em"/>      | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/>           |
+|-------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| Bound `ValueSet` (e.g. `administrative-gender`)                               | `enum class` implementing `FhirEnum` (e.g. `AdministrativeGender`)                       |
+| Element with `required` binding (e.g. `Patient.gender`)                       | `Enumeration<T : FhirEnum>` (e.g. `Enumeration<AdministrativeGender>`)                   |
 | Element with `extensible` or `preferred` binding (e.g. `Expression.language`) | `ExtensibleEnumeration<T : FhirEnum>` (e.g. `ExtensibleEnumeration<ExpressionLanguage>`) |
 
 How an element is typed depends on its
@@ -171,52 +168,12 @@ Depending on their binding scope, generated enums are placed in one of two locat
 - **Local enums**: Nested inside their parent class for elements with non-common bindings (e.g.
   `HumanName.NameUse`).
 
-#### Enum Naming and Content
+Enum constant names are derived from the codes defined in the `ValueSet` expansions. To comply with
+Kotlin naming conventions, codes are normalized into PascalCase valid identifiers (handling special
+characters, numeric prefixes, and FHIR URLs).
 
-The enum constants are derived from `ValueSet` definitions in the expansion packages for
-[R4](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4.expansions/package),
-[R4B](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4b.expansions/package),
-and
-[R5](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r5.expansions/package).
-Each `ValueSet` includes codes from one or more `CodeSystem` resources it references.
-
-| FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
-|----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
-| ValueSet JSON file (e.g. `ValueSet-resource-types.json`)                   | Kotlin .kt file (e.g. `ResourceType`)                                          |
-| ValueSet (e.g. `ResourceType`)                                             | Kotlin class (e.g. `enum class ResourceType`)                                  |
-
-To comply with Kotlin’s enum naming convention, which requires names to start with a letter and
-avoid special characters, each code is transformed using a set of formatting rules. This includes
-handling numeric codes, special characters, and FHIR URLs. After all transformations, the final name
-is converted to PascalCase to match Kotlin style guidelines.
-
-| Rule # |                                          Description                                          |                                                           Example Input                                                           |     Example Output     |
-|--------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|------------------------|
-| 1      | For codes that are full URLs, extract and return the last segment after the dot               | `http://hl7.org/fhirpath/System.DateTime` from [CodeSystem-fhirpath-types](http://hl7.org/fhir/R5/codesystem-fhirpath-types.html) | `DateTime`             |
-| 2      | Specific special characters are replaced with readable keywords                               | `>=` from   [CodeSystem-quantity-comparator](http://hl7.org/fhir/R5/codesystem-quantity-comparator.html)                          | `GreaterThanOrEqualTo` |
-|        |                                                                                               | `>`                                                                                                                               | `GreaterThan`          |
-|        |                                                                                               | `<`                                                                                                                               | `LessThan`             |
-|        |                                                                                               | `<=`                                                                                                                              | `LessThanOrEqualTo`    |
-|        |                                                                                               | `!=` or `<>`                                                                                                                      | `NotEqualTo`           |
-|        |                                                                                               | `=`                                                                                                                               | `EqualTo`              |
-|        |                                                                                               | `*`                                                                                                                               | `Multiply`             |
-|        |                                                                                               | `+`                                                                                                                               | `Plus`                 |
-|        |                                                                                               | `-`                                                                                                                               | `Minus`                |
-|        |                                                                                               | `/`                                                                                                                               | `Divide`               |
-|        |                                                                                               | `%`                                                                                                                               | `Percent`              |
-| 3.1    | Replace all non-alphanumeric characters including dashes (`-`) and dots (`.`) with underscore | `4.0.1` from [CodeSystem-FHIR-version](http://hl7.org/fhir/R5/codesystem-FHIR-version.html)                                       | `4_0_1`                |
-| 3.2    | Prefix codes starting with a digit with an underscore                                         | `4.0.1` from [CodeSystem-FHIR-version](http://hl7.org/fhir/R5/codesystem-FHIR-version.html)                                       | `_4_0_1`               |
-| 3.3    | Apply PascalCase to each segment between underscores while preserving the underscores         | `entered-in-error` from [CodeSystem-document-reference-status](http://hl7.org/fhir/R5/codesystem-document-reference-status.html)  | `Entered_In_Error`     |
-
-#### Excluded ValueSets from Enum Generation
-
-The following FHIR value sets are excluded from Kotlin enum generation.
-
-|                                        ValueSet URL                                        |                                           Reason for Exclusion                                            | Affected Version(s) |
-|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|---------------------|
-| [`http://hl7.org/fhir/ValueSet/mimetypes`](http://hl7.org/fhir/ValueSet/mimetypes)         | This value set cannot be expanded because of the way it is defined - it has an infinite number of members | `R4`, `R4B`, `R5`   |
-| [`http://hl7.org/fhir/ValueSet/all-languages`](http://hl7.org/fhir/ValueSet/all-languages) | This value set cannot be expanded because of the way it is defined - it has an infinite number of members | `R4`, `R4B`, `R5`   |
-| [`http://hl7.org/fhir/ValueSet/use-context`](http://hl7.org/fhir/ValueSet/use-context)     | This value set has >3800 codes when expanded; generated enum class code cannot compile.                   | `R4`, `R4B`, `R5`   |
+For the complete list of naming transformation rules and excluded value sets, see
+[Enum Generation](docs/enum-generation.md).
 
 ### Mapping FHIR data structure to Kotlin
 
@@ -227,12 +184,12 @@ represented as nested data classes since they are never reused outside the Struc
 each occurrence of a choice type (e.g. in [R4](https://hl7.org/fhir/R4/formats.html#choice)), a
 single sealed interface is generated with a subclass for each type.
 
-| FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> |                  Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/>                   |
-|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| StructureDefinition JSON file (e.g. `StructureDefinition-Patient.json`)    | Kotlin .kt file (e.g. `Patient.kt`)                                                                               |
-| StructureDefinition (e.g. `Patient`)                                       | Kotlin data class (e.g. `data class Patient`)                                                                     |
-| BackboneElement (e.g. `Patient.contact`)                                   | Nested Kotlin data class (e.g. `data class Contact` nested under `Patient`)                                       |
-| Choice of data types (e.g. `Patient.deceased[x]`)                          | Sealed interface (e.g. `sealed interface Deceased` nested under `Patient` with subtypes `Boolean` and `DateTime`) |
+| FHIR concept <img src="images/fhir.png" alt="fhir" style="height: 1em"/> |                  Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/>                   |
+|--------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| StructureDefinition JSON file (e.g. `StructureDefinition-Patient.json`)  | Kotlin .kt file (e.g. `Patient.kt`)                                                                               |
+| StructureDefinition (e.g. `Patient`)                                     | Kotlin data class (e.g. `data class Patient`)                                                                     |
+| BackboneElement (e.g. `Patient.contact`)                                 | Nested Kotlin data class (e.g. `data class Contact` nested under `Patient`)                                       |
+| Choice of data types (e.g. `Patient.deceased[x]`)                        | Sealed interface (e.g. `sealed interface Deceased` nested under `Patient` with subtypes `Boolean` and `DateTime`) |
 
 The generated FHIR resource classes are Kotlin
 [data classes](https://kotlinlang.org/docs/data-classes.html). They are compact and readable, with
@@ -312,9 +269,9 @@ in [R4](https://hl7.org/fhir/R4/json.html#primitive)). As a result, the Kotlin d
 FHIR resource or element containing primitive data types cannot be directly mapped to JSON.
 
 To address this, the library generates a custom `KSerializer` per FHIR type (e.g.
-`PatientSerializer`). Each serializer describes the flat FHIR JSON wire shape via
-`buildClassSerialDescriptor` — one descriptor slot per wire key, including the `_field` Element
-keys for primitive extensions (e.g. `gender` + `_gender`).
+`PatientSerializer`). Each serializer defines a `SerialDescriptor` that maps both primitive values
+and companion extension properties (e.g. `gender` and `_gender`) to distinct descriptor elements
+in JSON.
 
 Choice types (e.g. `Patient.multipleBirth`) are expanded into per-expansion keys on the same flat
 descriptor (`multipleBirthBoolean`, `_multipleBirthBoolean`, `multipleBirthInteger`,
@@ -504,10 +461,10 @@ mentioned [earlier](#mapping-fhir-primitive-data-types-to-kotlin).
 
 ### Adding the library dependency to your project
 
-To use the Kotlin FHIR model in your project, first make sure `mavenCentral()`[^5] is listed in
+To use the Kotlin FHIR model in your project, first make sure `mavenCentral()`[^maven] is listed in
 your repositories:
 
-[^5]: Early versions of this library (up to `1.0.0-beta02`) were published under the group ID
+[^maven]: Early versions of this library (up to `1.0.0-beta02`) were published under the group ID
 `com.google.fhir` on [Google Maven](https://maven.google.com/web/index.html?q=fhir-model).
 
 ```
@@ -518,7 +475,7 @@ repositories {
 }
 ```
 
-Then pick the right artifact along two axes:
+Then choose the appropriate artifact for your project:
 
 1. **FHIR version** — depend on only the version(s) you need: `fhir-model-r4`, `fhir-model-r4b`,
    `fhir-model-r5`, or `fhir-model` for all three.
@@ -952,20 +909,20 @@ executed:
 2. Serialization round-trip test:
    - Deserialization: Deserialize the JSON into a FHIR resource object.
    - Serialization: Serialize the object back into JSON.
-   - Verification: The regenerated JSON is compared character by character[^7] with the original
-     JSON.
+   - Verification: The regenerated JSON is compared character by character[^character] with the
+     original JSON.
 3. Builder round-trip test:
    - Deserialization: Deserialize the JSON into a resource object.
    - Conversion to builder: Convert the object into a builder using `toBuilder()` function.
    - Conversion to resource: Build a new FHIR resource object using `build()` function
    - Verification: The reconstructed object from the builder is equal to the original object.
 
-[^7]: There are several exceptions. The FHIR specification allows for some variability in data
-representation, which may lead to differences between the original and newly serialized JSON. For
-example, non-standard JSON property ordering, additional trailing zeros in datetime and time, and
-the use of `+00:00` instead of `Z` for zero UTC offset. The serialization process normalizes these
-variations, resulting in potentially different JSON output. However, in all of these cases, semantic
-equivalence is maintained.
+[^character]: There are several exceptions. The FHIR specification allows for some variability in
+data representation, which may lead to differences between the original and newly serialized JSON.
+For example, non-standard JSON property ordering, additional trailing zeros in datetime and time,
+and the use of `+00:00` instead of `Z` for zero UTC offset. The serialization process normalizes
+these variations, resulting in potentially different JSON output. However, in all of these cases,
+semantic equivalence is maintained.
 
 #### Unit tests
 

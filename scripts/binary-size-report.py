@@ -1,0 +1,412 @@
+#!/usr/bin/env python3
+"""Analyze fhir-model JVM JAR binary sizes and produce a JSON report.
+
+Usage:
+    python3 scripts/binary-size-report.py [--output binary-size.json]
+
+Scans fhir-model-r4, fhir-model-r4b, fhir-model-r5 JVM JARs and emits a JSON
+file with total + per-category .class file counts and sizes (uncompressed and
+compressed).  The optional --compare flag takes a baseline JSON and prints a
+markdown diff table to stdout.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+import zipfile
+from pathlib import Path
+
+
+# ---------------------------------------------------------------------------
+# Category classifier
+# ---------------------------------------------------------------------------
+
+def classify(filename: str) -> str:
+    """Classify a .class file into a human-readable category."""
+    base = filename.rsplit("/", 1)[-1] if "/" in filename else filename
+
+    # Serializer-related
+    if "Serializer" in base:
+        if "$Hoisted" in base:
+            return "Serializers ($Hoisted)"
+        if "PolymorphicSerializer" in base:
+            return "Serializers (Polymorphic)"
+        if "$Companion" in base:
+            return "Serializers (Companion)"
+        return "Serializers"
+
+    # Search params
+    if "SearchParams" in base or "/search/" in filename:
+        return "SearchParams"
+
+    # Builder
+    if "$Builder" in base:
+        return "Builders"
+
+    # DefaultImpls (usually choice type interface bridges)
+    if "$DefaultImpls" in base:
+        return "Choice Types ($DefaultImpls)"
+
+    # Companion on non-serializer classes
+    if "$Companion" in base:
+        return "Companions"
+
+    # Remaining nested classes — heuristic for choice type subclasses
+    # Choice type subclasses are nested inside a sealed interface that is
+    # itself nested inside a model class, e.g. Patient$Deceased$Boolean.class
+    # We detect them by depth of $ nesting >= 2 and not matching other cats.
+    dollar_depth = base.count("$")
+    if dollar_depth >= 2:
+        return "Choice Type Subclasses"
+
+    # Top-level or single-nested classes (models, backbones, enums, etc.)
+    return "Models & Other"
+
+
+# ---------------------------------------------------------------------------
+# JAR analysis
+# ---------------------------------------------------------------------------
+
+def analyze_jar(jar_path: str) -> dict:
+    """Return per-category and total size info for a single JAR."""
+    categories: dict[str, dict] = {}
+    total_classes = 0
+    total_uncompressed = 0
+    total_compressed = 0
+
+    with zipfile.ZipFile(jar_path, "r") as zf:
+        for info in zf.infolist():
+            if not info.filename.endswith(".class"):
+                continue
+            cat = classify(info.filename)
+            if cat not in categories:
+                categories[cat] = {
+                    "class_count": 0,
+                    "uncompressed_bytes": 0,
+                    "compressed_bytes": 0,
+                }
+            categories[cat]["class_count"] += 1
+            categories[cat]["uncompressed_bytes"] += info.file_size
+            categories[cat]["compressed_bytes"] += info.compress_size
+            total_classes += 1
+            total_uncompressed += info.file_size
+            total_compressed += info.compress_size
+
+    return {
+        "jar_compressed_bytes": os.path.getsize(jar_path),
+        "total_classes": total_classes,
+        "total_uncompressed_bytes": total_uncompressed,
+        "total_compressed_bytes": total_compressed,
+        "categories": dict(sorted(categories.items())),
+    }
+
+
+def build_report(root: str) -> dict:
+    """Build a full report for all fhir-model modules."""
+    modules = ["fhir-model-r4", "fhir-model-r4b", "fhir-model-r5"]
+    report: dict = {}
+    for mod in modules:
+        jar = os.path.join(root, mod, "build", "libs", f"{mod}-jvm.jar")
+        if os.path.isfile(jar):
+            report[mod] = analyze_jar(jar)
+        else:
+            print(f"⚠️  JAR not found, skipping: {jar}", file=sys.stderr)
+    return report
+
+
+# ---------------------------------------------------------------------------
+# Markdown comparison
+# ---------------------------------------------------------------------------
+
+def fmt_bytes(b: int) -> str:
+    """Format bytes as human-readable string."""
+    if abs(b) >= 1_048_576:
+        return f"{b / 1_048_576:.2f} MB"
+    if abs(b) >= 1_024:
+        return f"{b / 1_024:.1f} KB"
+    return f"{b} B"
+
+
+def fmt_delta(current: int, baseline: int) -> str:
+    """Format a delta with sign and percentage, e.g. '-2.24 MB, -13.9%'."""
+    delta = current - baseline
+    if baseline == 0:
+        pct = "new"
+    else:
+        pct = f"{delta / baseline * 100:+.1f}%"
+    sign = "+" if delta > 0 else ""
+    return f"{sign}{fmt_bytes(delta)}, {pct}"
+
+
+def _short_name(mod: str) -> str:
+    """Return a short display name for a module, e.g. 'R4'."""
+    return mod.replace("fhir-model-", "").upper()
+
+
+
+
+def compare_markdown(current: dict, baseline: dict) -> str:
+    """Generate a concise markdown comparison across all modules."""
+    lines: list[str] = []
+    lines.append("## 📦 JVM Binary Size Report\n")
+
+    all_mods = sorted(set(list(current.keys()) + list(baseline.keys())))
+
+    # --- First pass: compute totals ---
+    sum_cur_cls = sum_base_cls = 0
+    sum_cur_comp = sum_base_comp = 0
+    sum_cur_unc = sum_base_unc = 0
+    rows: list[tuple] = []  # (name, cur, base)
+
+    for mod in all_mods:
+        cur = current.get(mod)
+        base = baseline.get(mod)
+        name = _short_name(mod)
+        rows.append((name, cur, base))
+
+        if cur is not None:
+            sum_cur_cls += cur["total_classes"]
+            sum_cur_comp += cur["total_compressed_bytes"]
+            sum_cur_unc += cur["total_uncompressed_bytes"]
+        if base is not None:
+            sum_base_cls += base["total_classes"]
+            sum_base_comp += base["total_compressed_bytes"]
+            sum_base_unc += base["total_uncompressed_bytes"]
+
+    # --- Second pass: emit table ---
+    lines.append("| Module | Classes | Compressed | Uncompressed |")
+    lines.append("| :--- | ---: | ---: | ---: |")
+
+    for name, cur, base in rows:
+        if cur is None:
+            lines.append(f"| {name} | *removed* | *removed* | *removed* |")
+            continue
+        if base is None:
+            lines.append(
+                f"| {name} | {cur['total_classes']} *(new)* "
+                f"| {fmt_bytes(cur['total_compressed_bytes'])} *(new)* "
+                f"| {fmt_bytes(cur['total_uncompressed_bytes'])} *(new)* |"
+            )
+            continue
+
+        cc, bc = cur["total_classes"], base["total_classes"]
+        c_comp, b_comp = cur["total_compressed_bytes"], base["total_compressed_bytes"]
+        c_unc, b_unc = cur["total_uncompressed_bytes"], base["total_uncompressed_bytes"]
+
+        cls_delta = f" ({cc - bc:+d}, {(cc - bc) / bc * 100:+.1f}%)" if cc != bc else ""
+        comp_delta = f" ({fmt_delta(c_comp, b_comp)})" if c_comp != b_comp else ""
+        unc_delta = f" ({fmt_delta(c_unc, b_unc)})" if c_unc != b_unc else ""
+
+        lines.append(
+            f"| {name} "
+            f"| {cc}{cls_delta} "
+            f"| {fmt_bytes(c_comp)}{comp_delta} "
+            f"| {fmt_bytes(c_unc)}{unc_delta} |"
+        )
+
+    # Combined total row
+    delta_comp = sum_cur_comp - sum_base_comp
+    if delta_comp < 0:
+        indicator = "🟢"
+    elif delta_comp == 0:
+        indicator = "⚪"
+    else:
+        indicator = "🔴"
+
+    total_cls_delta = sum_cur_cls - sum_base_cls
+    cls_d = f" ({total_cls_delta:+d}, {total_cls_delta / sum_base_cls * 100:+.1f}%)" if total_cls_delta != 0 and sum_base_cls != 0 else ""
+    comp_d = f" ({fmt_delta(sum_cur_comp, sum_base_comp)})" if delta_comp != 0 else ""
+    unc_d = f" ({fmt_delta(sum_cur_unc, sum_base_unc)})" if sum_cur_unc != sum_base_unc else ""
+
+    lines.append(
+        f"| **{indicator} Total** "
+        f"| **{sum_cur_cls}{cls_d}** "
+        f"| **{fmt_bytes(sum_cur_comp)}{comp_d}** "
+        f"| **{fmt_bytes(sum_cur_unc)}{unc_d}** |"
+    )
+    lines.append("")
+
+    # --- Per-category breakdown (collapsed, only if anything changed) ---
+    any_change = (sum_cur_comp != sum_base_comp or sum_cur_unc != sum_base_unc
+                  or sum_cur_cls != sum_base_cls)
+    if any_change:
+        lines.append("<details><summary>Per-category breakdown</summary>\n")
+
+        for mod in all_mods:
+            cur = current.get(mod)
+            base = baseline.get(mod)
+            if cur is None or base is None:
+                continue
+
+            name = _short_name(mod)
+            c_comp = cur["total_compressed_bytes"]
+            b_comp = base["total_compressed_bytes"]
+            c_unc = cur["total_uncompressed_bytes"]
+            b_unc = base["total_uncompressed_bytes"]
+            mod_cls = cur["total_classes"]
+            if c_comp == b_comp and c_unc == b_unc and mod_cls == base["total_classes"]:
+                lines.append(f"**{name}**: no change\n")
+                continue
+
+            lines.append(f"**{name}**\n")
+            lines.append("| Category | Classes | Compressed | Uncompressed |")
+            lines.append("| :--- | ---: | ---: | ---: |")
+
+            all_cats = sorted(
+                set(
+                    list(cur.get("categories", {}).keys())
+                    + list(base.get("categories", {}).keys())
+                )
+            )
+            zero = {"class_count": 0, "uncompressed_bytes": 0, "compressed_bytes": 0}
+            for cat in all_cats:
+                cc = cur.get("categories", {}).get(cat, zero)
+                bc = base.get("categories", {}).get(cat, zero)
+                c_cls, b_cls = cc["class_count"], bc["class_count"]
+                c_cb, b_cb = cc["compressed_bytes"], bc["compressed_bytes"]
+                c_ub, b_ub = cc["uncompressed_bytes"], bc["uncompressed_bytes"]
+
+                cls_d = f" ({c_cls - b_cls:+d}, {(c_cls - b_cls) / b_cls * 100:+.1f}%)" if c_cls != b_cls and b_cls != 0 else (f" ({c_cls - b_cls:+d})" if c_cls != b_cls else "")
+                comp_d = f" ({fmt_delta(c_cb, b_cb)})" if c_cb != b_cb else ""
+                unc_d = f" ({fmt_delta(c_ub, b_ub)})" if c_ub != b_ub else ""
+
+                lines.append(
+                    f"| {cat} "
+                    f"| {c_cls}{cls_d} "
+                    f"| {fmt_bytes(c_cb)}{comp_d} "
+                    f"| {fmt_bytes(c_ub)}{unc_d} |"
+                )
+            lines.append("")
+
+        lines.append("</details>\n")
+
+    return "\n".join(lines)
+
+
+def standalone_markdown(current: dict) -> str:
+    """Generate a standalone markdown report (no baseline comparison)."""
+    lines: list[str] = []
+    lines.append("## 📦 JVM Binary Size Report\n")
+    lines.append("*No baseline from `main` yet — showing absolute sizes.*\n")
+
+    # First pass: compute totals
+    sum_cls = sum_comp = sum_unc = 0
+    for cur in current.values():
+        sum_cls += cur["total_classes"]
+        sum_comp += cur["total_compressed_bytes"]
+        sum_unc += cur["total_uncompressed_bytes"]
+
+    # Summary table
+    lines.append("| Module | Classes | Compressed | Uncompressed |")
+    lines.append("| :--- | ---: | ---: | ---: |")
+
+    for mod in sorted(current.keys()):
+        cur = current[mod]
+        name = _short_name(mod)
+        cls = cur["total_classes"]
+        comp = cur["total_compressed_bytes"]
+        unc = cur["total_uncompressed_bytes"]
+        lines.append(
+            f"| {name} "
+            f"| {cls} "
+            f"| {fmt_bytes(comp)} "
+            f"| {fmt_bytes(unc)} |"
+        )
+
+    lines.append(
+        f"| **Total** | **{sum_cls}** | **{fmt_bytes(sum_comp)}** | **{fmt_bytes(sum_unc)}** |"
+    )
+    lines.append("")
+
+    # Category breakdown (collapsed)
+    lines.append("<details><summary>Per-category breakdown</summary>\n")
+    for mod in sorted(current.keys()):
+        cur = current[mod]
+        name = _short_name(mod)
+        cats = cur.get("categories", {})
+        if not cats:
+            continue
+        lines.append(f"**{name}**\n")
+        lines.append("| Category | Classes | Compressed | Uncompressed |")
+        lines.append("| :--- | ---: | ---: | ---: |")
+        for cat in sorted(cats.keys()):
+            cc = cats[cat]
+            lines.append(
+                f"| {cat} "
+                f"| {cc['class_count']} "
+                f"| {fmt_bytes(cc['compressed_bytes'])} "
+                f"| {fmt_bytes(cc['uncompressed_bytes'])} |"
+            )
+        lines.append("")
+
+    lines.append("</details>\n")
+
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--root",
+        default=os.environ.get("GITHUB_WORKSPACE", "."),
+        help="Project root directory (default: GITHUB_WORKSPACE or cwd)",
+    )
+    parser.add_argument(
+        "--output",
+        default="binary-size.json",
+        help="Path to write the JSON report (default: binary-size.json)",
+    )
+    parser.add_argument(
+        "--compare",
+        default=None,
+        help="Path to a baseline JSON to compare against",
+    )
+    parser.add_argument(
+        "--markdown-output",
+        default=None,
+        help="Path to write the markdown report (default: stdout)",
+    )
+    args = parser.parse_args()
+
+    report = build_report(args.root)
+
+    # Write JSON
+    output_path = Path(args.output)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w") as f:
+        json.dump(report, f, indent=2)
+    print(f"✅ JSON report written to {output_path}", file=sys.stderr)
+
+    # Generate markdown
+    if args.compare and os.path.isfile(args.compare):
+        with open(args.compare) as f:
+            baseline = json.load(f)
+        md = compare_markdown(report, baseline)
+    else:
+        if args.compare:
+            print(
+                f"⚠️  Baseline not found at {args.compare}, generating standalone report",
+                file=sys.stderr,
+            )
+        md = standalone_markdown(report)
+
+    # Output markdown
+    if args.markdown_output:
+        md_path = Path(args.markdown_output)
+        md_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(md_path, "w") as f:
+            f.write(md)
+        print(f"✅ Markdown report written to {md_path}", file=sys.stderr)
+    else:
+        print(md)
+
+
+if __name__ == "__main__":
+    main()

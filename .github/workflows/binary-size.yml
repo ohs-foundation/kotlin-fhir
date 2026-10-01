@@ -1,0 +1,116 @@
+name: Report Binary Size
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  binary-size:
+    name: Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Fetch origin/main for Spotless ratchet
+        run: git fetch origin main
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 21
+
+      - name: Add swap space
+        run: |
+          sudo swapoff -a || true
+          sudo rm -f /mnt/swapfile
+          sudo dd if=/dev/zero of=/mnt/swapfile bs=1M count=16384
+          sudo chmod 600 /mnt/swapfile
+          sudo mkswap /mnt/swapfile
+          sudo swapon /mnt/swapfile
+          free -h
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build JVM JARs
+        env:
+          GRADLE_OPTS: -Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8
+        run: >-
+          ./gradlew
+          :fhir-model-r4:jvmJar
+          :fhir-model-r4b:jvmJar
+          :fhir-model-r5:jvmJar
+          --stacktrace
+          --no-daemon
+          --no-parallel
+          --no-configuration-cache
+          --build-cache
+          -Dorg.gradle.jvmargs="-Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
+          -Dorg.gradle.workers.max=1
+          -Dkotlin.daemon.enabled=false
+
+      # --- Restore baseline from main (if available) ---
+
+      - name: Restore baseline from main
+        if: github.event_name == 'pull_request'
+        id: restore-baseline
+        uses: actions/cache/restore@v4
+        with:
+          path: baseline-binary-size.json
+          key: binary-size-main-will-not-match
+          restore-keys: |
+            binary-size-main-
+
+      # --- Generate current report ---
+
+      - name: Generate binary size report
+        run: |
+          python3 scripts/binary-size-report.py \
+            --root . \
+            --output binary-size.json \
+            --compare baseline-binary-size.json \
+            --markdown-output binary-size-report.md
+
+      # --- Post to Job Summary (always) ---
+
+      - name: Post to Job Summary
+        run: cat binary-size-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      # --- Post / update PR comment ---
+
+      - name: Post PR comment
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: binary-size
+          path: binary-size-report.md
+
+      # --- Save baseline on main push ---
+
+      - name: Save baseline for main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: cp binary-size.json baseline-binary-size.json
+
+      - name: Cache baseline
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v4
+        with:
+          path: baseline-binary-size.json
+          key: binary-size-main-${{ github.sha }}

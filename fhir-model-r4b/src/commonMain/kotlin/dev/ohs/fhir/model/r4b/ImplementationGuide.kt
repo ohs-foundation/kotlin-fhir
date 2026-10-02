@@ -283,7 +283,7 @@ public data class ImplementationGuide(
    * The license that applies to this Implementation Guide, using an SPDX license code, or
    * 'not-open-source'.
    */
-  public val license: Enumeration<SPDXLicense>? = null,
+  public val license: ExtensibleEnumeration<SPDXLicense>? = null,
   /**
    * The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes
    * how to use. The value of this element is the formal version of the specification, without the
@@ -2308,7 +2308,7 @@ public data class ImplementationGuide(
      * The license that applies to this Implementation Guide, using an SPDX license code, or
      * 'not-open-source'.
      */
-    public var license: Enumeration<SPDXLicense>? = null
+    public var license: ExtensibleEnumeration<SPDXLicense>? = null
 
     /**
      * Another implementation guide that this implementation depends on. Typically, an

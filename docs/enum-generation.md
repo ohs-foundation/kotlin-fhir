@@ -50,3 +50,14 @@ The following FHIR value sets are excluded from Kotlin enum generation:
 | [`http://hl7.org/fhir/ValueSet/mimetypes`](http://hl7.org/fhir/ValueSet/mimetypes)         | This value set is infinite                                                 | `R4`, `R4B`, `R5`   |
 | [`http://hl7.org/fhir/ValueSet/all-languages`](http://hl7.org/fhir/ValueSet/all-languages) | This value set is infinite                                                 | `R4`, `R4B`, `R5`   |
 | [`http://hl7.org/fhir/ValueSet/use-context`](http://hl7.org/fhir/ValueSet/use-context)     | This value set has >3800 codes when expanded, and hence cannot be compiled | `R4`, `R4B`, `R5`   |
+
+## Required bindings generated as extensible
+
+Elements with a `required` binding are normally typed as `Enumeration<T>`, which rejects codes outside the value
+set. The following value sets have a `required` binding whose description allows other codes, so elements bound to
+them are typed as `ExtensibleEnumeration<T>` instead. Codes in the value set are still available as enum constants;
+other codes are kept as `ExtensibleEnumeration.Custom`.
+
+| ValueSet URL                                                                             | Reason                                                                                                                                                                                                                   | Affected Version(s) |
+|:-----------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------|
+| [`http://hl7.org/fhir/ValueSet/spdx-license`](http://hl7.org/fhir/ValueSet/spdx-license) | The binding of `ImplementationGuide.license` states "The binding is required but new SPDX license Identifiers are allowed to be used". The value set is a fixed list, and SPDX has added identifiers since it was published | `R4`, `R4B`, `R5`   |

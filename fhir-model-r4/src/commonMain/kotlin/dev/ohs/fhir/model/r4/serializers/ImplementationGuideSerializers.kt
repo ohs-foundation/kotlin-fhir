@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r4.ContactDetail
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.ExtensibleEnumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
 import dev.ohs.fhir.model.r4.Id
@@ -1978,8 +1979,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
           ?: throw SerializationException(
             "Missing required property 'packageId' on ImplementationGuide"
           ),
-      license =
-        Enumeration.of(license?.let { ImplementationGuide.SPDXLicense.fromCode(it) }, _license),
+      license = ExtensibleEnumeration.of<ImplementationGuide.SPDXLicense>(license, _license),
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
@@ -2191,7 +2191,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
         it,
       )
     }
-    ((value.license?.value?.code))?.let {
+    ((value.license?.code))?.let {
       encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
     }
     (value.license?.toElement())?.let {

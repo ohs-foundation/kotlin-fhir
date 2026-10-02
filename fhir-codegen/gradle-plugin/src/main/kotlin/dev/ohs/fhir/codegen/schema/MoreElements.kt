@@ -73,9 +73,27 @@ internal fun Element.typeShouldGenerateEnum(valueSetMap: Map<String, ValueSet>):
     this.type?.count { it.code.equals("code", ignoreCase = true) } == 1
 }
 
-/** Returns true if the element is bound to an extensible or preferred value set. */
+/**
+ * Value sets with a `required` binding whose binding description nevertheless allows codes outside
+ * the value set. Elements bound to them are generated like extensible bindings (see
+ * docs/enum-generation.md).
+ */
+private val REQUIRED_VALUE_SETS_GENERATED_AS_EXTENSIBLE =
+  setOf(
+    // "The binding is required but new SPDX license Identifiers are allowed to be used"
+    "http://hl7.org/fhir/ValueSet/spdx-license"
+  )
+
+/**
+ * Returns true if the element is bound to an extensible or preferred value set, or to one of the
+ * [REQUIRED_VALUE_SETS_GENERATED_AS_EXTENSIBLE].
+ */
 internal val Element.isExtensibleBinding: Boolean
-  get() = binding?.strength == "extensible" || binding?.strength == "preferred"
+  get() =
+    binding?.strength == "extensible" ||
+      binding?.strength == "preferred" ||
+      (binding?.strength == "required" &&
+        getBindingValueSetUrl() in REQUIRED_VALUE_SETS_GENERATED_AS_EXTENSIBLE)
 
 /**
  * Determines if the element should be typed as `Enumeration<T>` or `ExtensibleEnumeration<T>` with

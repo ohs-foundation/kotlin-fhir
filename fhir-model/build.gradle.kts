@@ -18,7 +18,12 @@ plugins {
 kotlin {
     jvmToolchain(21)
 
-    jvm()
+    jvm {
+        compilerOptions {
+            // Pin the published bytecode level so it doesn't silently track the toolchain (21).
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
     wasmJs {
         browser {
             val rootDirPath = project.rootDir.path
@@ -50,8 +55,9 @@ kotlin {
         withHostTestBuilder {}.configure {}
 
         compilerOptions {
-            // Test dependencies (kotest) ship JVM 11 bytecode with inline functions,
-            // which cannot be inlined into JVM 1.8 output. Build for JVM 11.
+            // Test dependency kotest requires JVM 11 bytecode.
+            // This does not impact the generated code per FHIR version since it is re-exported
+            // (via api dependencies) rather than recompiled in this module.
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }

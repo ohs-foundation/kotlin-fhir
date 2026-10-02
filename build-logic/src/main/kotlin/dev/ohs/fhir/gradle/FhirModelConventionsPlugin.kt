@@ -64,7 +64,12 @@ class FhirModelConventionsPlugin : Plugin<Project> {
       extensions.configure<KotlinMultiplatformExtension> {
         jvmToolchain(21)
 
-        jvm()
+        jvm {
+          compilerOptions {
+            // Pin the published bytecode level so it doesn't silently track the toolchain (21).
+            jvmTarget.set(JvmTarget.JVM_11)
+          }
+        }
         wasmJs {
           browser {
             val rootDirPath = project.rootDir.path

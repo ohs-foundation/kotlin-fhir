@@ -1,0 +1,36 @@
+name: Post Binary Size Comment
+
+# Runs after "Report Binary Size" completes on a PR.
+# workflow_run always executes in the context of the base branch (main),
+# so the GITHUB_TOKEN has write access even for fork PRs.
+
+on:
+  workflow_run:
+    workflows: [ "Report Binary Size" ]
+    types: [ completed ]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  comment:
+    name: Post PR comment
+    runs-on: ubuntu-latest
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Download report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: binary-size-report
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Post or update PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: binary-size
+          path: binary-size-report.md
+          number: ${{ github.event.workflow_run.pull_requests[0].number }}

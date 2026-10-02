@@ -12,7 +12,6 @@ concurrency:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   binary-size:
@@ -88,19 +87,18 @@ jobs:
             --compare baseline-binary-size.json \
             --markdown-output binary-size-report.md
 
-      # --- Post to Job Summary (always) ---
+      # --- Post to Job Summary ---
 
       - name: Post to Job Summary
         run: cat binary-size-report.md >> "$GITHUB_STEP_SUMMARY"
 
-      # --- Post / update PR comment ---
+      # --- Upload report as artifact for the comment workflow ---
 
-      - name: Post PR comment
+      - name: Upload report artifact
         if: github.event_name == 'pull_request'
-        continue-on-error: true
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: actions/upload-artifact@v4
         with:
-          header: binary-size
+          name: binary-size-report
           path: binary-size-report.md
 
       # --- Save baseline on main push ---

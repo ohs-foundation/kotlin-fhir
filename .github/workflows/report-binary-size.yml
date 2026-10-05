@@ -87,6 +87,21 @@ jobs:
             --compare baseline-binary-size.json \
             --markdown-output binary-size-report.md
 
+      # --- Upload raw JSON and append link to markdown report ---
+
+      - name: Upload raw JSON artifact
+        id: upload-json
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-size-json
+          path: binary-size.json
+
+      - name: Append artifact link to report
+        if: steps.upload-json.outputs.artifact-url != ''
+        run: |
+          echo "" >> binary-size-report.md
+          echo "[📥 Download raw JSON report](${{ steps.upload-json.outputs.artifact-url }})" >> binary-size-report.md
+
       # --- Post to Job Summary ---
 
       - name: Post to Job Summary

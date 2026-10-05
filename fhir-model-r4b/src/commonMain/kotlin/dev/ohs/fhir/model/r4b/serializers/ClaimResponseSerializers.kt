@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
 import dev.ohs.fhir.model.r4b.FhirDecimal
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Money
@@ -2450,14 +2451,10 @@ internal object ClaimResponseErrorSerializer : KSerializer<ClaimResponse.Error> 
   }
 }
 
-internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ClaimResponse") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ClaimResponse")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -2557,19 +2554,7 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): ClaimResponse =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ClaimResponse) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ClaimResponse")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2876,7 +2861,7 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -3092,20 +3077,4 @@ internal object ClaimResponseSerializer : KSerializer<ClaimResponse> {
         value.error,
       )
   }
-}
-
-internal object ClaimResponsePolymorphicSerializer : KSerializer<ClaimResponse> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ClaimResponse") { ClaimResponseSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: ClaimResponse) {
-    encoder.encodeStructure(descriptor) {
-      ClaimResponseSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ClaimResponse =
-    decoder.decodeStructure(descriptor) {
-      ClaimResponseSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

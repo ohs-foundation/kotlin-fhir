@@ -34,6 +34,7 @@ import dev.ohs.fhir.model.r5.DeviceDefinition
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.Markdown
@@ -2386,14 +2387,10 @@ internal object DeviceDefinitionChargeItemSerializer : KSerializer<DeviceDefinit
   }
 }
 
-internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DeviceDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object DeviceDefinitionSerializer : FhirResourceSerializer<DeviceDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("DeviceDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -2538,19 +2535,7 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): DeviceDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: DeviceDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "DeviceDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2884,7 +2869,7 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -3115,22 +3100,4 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
         value.chargeItem,
       )
   }
-}
-
-internal object DeviceDefinitionPolymorphicSerializer : KSerializer<DeviceDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DeviceDefinition") {
-      DeviceDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: DeviceDefinition) {
-    encoder.encodeStructure(descriptor) {
-      DeviceDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): DeviceDefinition =
-    decoder.decodeStructure(descriptor) {
-      DeviceDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

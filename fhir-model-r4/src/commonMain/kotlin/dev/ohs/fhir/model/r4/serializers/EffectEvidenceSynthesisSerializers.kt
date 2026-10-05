@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDate
 import dev.ohs.fhir.model.r4.FhirDateTime
 import dev.ohs.fhir.model.r4.FhirDecimal
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Integer
 import dev.ohs.fhir.model.r4.Markdown
@@ -990,14 +991,11 @@ internal object EffectEvidenceSynthesisCertaintyCertaintySubcomponentSerializer 
   }
 }
 
-internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSynthesis> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EffectEvidenceSynthesis") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object EffectEvidenceSynthesisSerializer :
+  FhirResourceSerializer<EffectEvidenceSynthesis> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("EffectEvidenceSynthesis")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1128,19 +1126,7 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
     )
   }
 
-  override fun deserialize(decoder: Decoder): EffectEvidenceSynthesis =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EffectEvidenceSynthesis) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "EffectEvidenceSynthesis")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1500,7 +1486,7 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1760,23 +1746,4 @@ internal object EffectEvidenceSynthesisSerializer : KSerializer<EffectEvidenceSy
         value.certainty,
       )
   }
-}
-
-internal object EffectEvidenceSynthesisPolymorphicSerializer :
-  KSerializer<EffectEvidenceSynthesis> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EffectEvidenceSynthesis") {
-      EffectEvidenceSynthesisSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EffectEvidenceSynthesis) {
-    encoder.encodeStructure(descriptor) {
-      EffectEvidenceSynthesisSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): EffectEvidenceSynthesis =
-    decoder.decodeStructure(descriptor) {
-      EffectEvidenceSynthesisSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

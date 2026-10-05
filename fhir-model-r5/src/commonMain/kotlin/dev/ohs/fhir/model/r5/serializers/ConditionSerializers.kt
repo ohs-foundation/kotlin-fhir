@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
@@ -302,14 +303,10 @@ internal object ConditionStageSerializer : KSerializer<Condition.Stage> {
   }
 }
 
-internal object ConditionSerializer : KSerializer<Condition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Condition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ConditionSerializer : FhirResourceSerializer<Condition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Condition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -387,19 +384,7 @@ internal object ConditionSerializer : KSerializer<Condition> {
     b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): Condition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Condition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Condition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -665,7 +650,7 @@ internal object ConditionSerializer : KSerializer<Condition> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -912,20 +897,4 @@ internal object ConditionSerializer : KSerializer<Condition> {
         value.note,
       )
   }
-}
-
-internal object ConditionPolymorphicSerializer : KSerializer<Condition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Condition") { ConditionSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Condition) {
-    encoder.encodeStructure(descriptor) {
-      ConditionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Condition =
-    decoder.decodeStructure(descriptor) {
-      ConditionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

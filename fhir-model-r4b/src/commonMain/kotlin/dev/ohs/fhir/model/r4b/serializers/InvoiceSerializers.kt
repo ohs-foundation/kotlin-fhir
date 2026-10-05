@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
 import dev.ohs.fhir.model.r4b.FhirDecimal
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Invoice
 import dev.ohs.fhir.model.r4b.Markdown
@@ -463,14 +464,10 @@ internal object InvoiceLineItemPriceComponentSerializer :
   }
 }
 
-internal object InvoiceSerializer : KSerializer<Invoice> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Invoice") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Invoice")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -533,19 +530,7 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
     b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): Invoice =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Invoice) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Invoice")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -734,7 +719,7 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -866,20 +851,4 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
         value.note,
       )
   }
-}
-
-internal object InvoicePolymorphicSerializer : KSerializer<Invoice> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Invoice") { InvoiceSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Invoice) {
-    encoder.encodeStructure(descriptor) {
-      InvoiceSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Invoice =
-    decoder.decodeStructure(descriptor) {
-      InvoiceSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

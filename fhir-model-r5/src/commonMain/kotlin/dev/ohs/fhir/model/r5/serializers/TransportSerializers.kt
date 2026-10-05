@@ -52,6 +52,7 @@ import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
 import dev.ohs.fhir.model.r5.FhirDecimal
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.HumanName
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
@@ -1779,14 +1780,10 @@ internal object TransportOutputSerializer : KSerializer<Transport.Output> {
   }
 }
 
-internal object TransportSerializer : KSerializer<Transport> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Transport") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object TransportSerializer : FhirResourceSerializer<Transport> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Transport")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1880,19 +1877,7 @@ internal object TransportSerializer : KSerializer<Transport> {
     b.element("history", Reference.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): Transport =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Transport) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Transport")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2218,7 +2203,7 @@ internal object TransportSerializer : KSerializer<Transport> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2450,20 +2435,4 @@ internal object TransportSerializer : KSerializer<Transport> {
       encoder.encodeSerializableElement(descriptor, 50 + descriptorOffset, ReferenceSerializer, it)
     }
   }
-}
-
-internal object TransportPolymorphicSerializer : KSerializer<Transport> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Transport") { TransportSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Transport) {
-    encoder.encodeStructure(descriptor) {
-      TransportSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Transport =
-    decoder.decodeStructure(descriptor) {
-      TransportSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

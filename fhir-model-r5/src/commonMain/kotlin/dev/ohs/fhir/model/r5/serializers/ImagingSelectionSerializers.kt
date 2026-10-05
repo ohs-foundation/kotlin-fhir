@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
 import dev.ohs.fhir.model.r5.FhirDecimal
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingSelection
@@ -681,14 +682,10 @@ internal object ImagingSelectionInstanceImageRegion3DSerializer :
   }
 }
 
-internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ImagingSelection") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelection> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ImagingSelection")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -760,19 +757,7 @@ internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): ImagingSelection =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ImagingSelection) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ImagingSelection")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -996,7 +981,7 @@ internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1152,22 +1137,4 @@ internal object ImagingSelectionSerializer : KSerializer<ImagingSelection> {
         value.instance,
       )
   }
-}
-
-internal object ImagingSelectionPolymorphicSerializer : KSerializer<ImagingSelection> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ImagingSelection") {
-      ImagingSelectionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ImagingSelection) {
-    encoder.encodeStructure(descriptor) {
-      ImagingSelectionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ImagingSelection =
-    decoder.decodeStructure(descriptor) {
-      ImagingSelectionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
@@ -188,14 +189,10 @@ internal object CommunicationRequestPayloadSerializer : KSerializer<Communicatio
   }
 }
 
-internal object CommunicationRequestSerializer : KSerializer<CommunicationRequest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CommunicationRequest") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object CommunicationRequestSerializer : FhirResourceSerializer<CommunicationRequest> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("CommunicationRequest")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -280,19 +277,7 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
     b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): CommunicationRequest =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CommunicationRequest) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "CommunicationRequest")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -559,7 +544,7 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -754,22 +739,4 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
         value.note,
       )
   }
-}
-
-internal object CommunicationRequestPolymorphicSerializer : KSerializer<CommunicationRequest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CommunicationRequest") {
-      CommunicationRequestSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CommunicationRequest) {
-    encoder.encodeStructure(descriptor) {
-      CommunicationRequestSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): CommunicationRequest =
-    decoder.decodeStructure(descriptor) {
-      CommunicationRequestSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

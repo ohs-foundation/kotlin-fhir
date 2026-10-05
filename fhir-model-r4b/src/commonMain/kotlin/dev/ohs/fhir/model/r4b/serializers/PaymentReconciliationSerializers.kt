@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Money
@@ -356,14 +357,10 @@ internal object PaymentReconciliationProcessNoteSerializer :
   }
 }
 
-internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PaymentReconciliation") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object PaymentReconciliationSerializer : FhirResourceSerializer<PaymentReconciliation> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("PaymentReconciliation")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -422,19 +419,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
     )
   }
 
-  override fun deserialize(decoder: Decoder): PaymentReconciliation =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: PaymentReconciliation) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "PaymentReconciliation")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -629,7 +614,7 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -756,22 +741,4 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
         value.processNote,
       )
   }
-}
-
-internal object PaymentReconciliationPolymorphicSerializer : KSerializer<PaymentReconciliation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PaymentReconciliation") {
-      PaymentReconciliationSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: PaymentReconciliation) {
-    encoder.encodeStructure(descriptor) {
-      PaymentReconciliationSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): PaymentReconciliation =
-    decoder.decodeStructure(descriptor) {
-      PaymentReconciliationSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

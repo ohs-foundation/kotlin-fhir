@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Integer64
 import dev.ohs.fhir.model.r5.Meta
@@ -205,14 +206,10 @@ internal object SubscriptionStatusNotificationEventSerializer :
   }
 }
 
-internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubscriptionStatus") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object SubscriptionStatusSerializer : FhirResourceSerializer<SubscriptionStatus> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("SubscriptionStatus")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -258,19 +255,7 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): SubscriptionStatus =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SubscriptionStatus) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "SubscriptionStatus")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -405,7 +390,7 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -496,22 +481,4 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
         value.error,
       )
   }
-}
-
-internal object SubscriptionStatusPolymorphicSerializer : KSerializer<SubscriptionStatus> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubscriptionStatus") {
-      SubscriptionStatusSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SubscriptionStatus) {
-    encoder.encodeStructure(descriptor) {
-      SubscriptionStatusSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): SubscriptionStatus =
-    decoder.decodeStructure(descriptor) {
-      SubscriptionStatusSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

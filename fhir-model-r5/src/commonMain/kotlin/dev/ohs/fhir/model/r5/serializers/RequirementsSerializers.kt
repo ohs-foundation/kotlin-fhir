@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
@@ -389,14 +390,10 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
   }
 }
 
-internal object RequirementsSerializer : KSerializer<Requirements> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Requirements") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object RequirementsSerializer : FhirResourceSerializer<Requirements> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Requirements")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -499,19 +496,7 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Requirements =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Requirements) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Requirements")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -804,7 +789,7 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1028,20 +1013,4 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
         value.statement,
       )
   }
-}
-
-internal object RequirementsPolymorphicSerializer : KSerializer<Requirements> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Requirements") { RequirementsSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Requirements) {
-    encoder.encodeStructure(descriptor) {
-      RequirementsSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Requirements =
-    decoder.decodeStructure(descriptor) {
-      RequirementsSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

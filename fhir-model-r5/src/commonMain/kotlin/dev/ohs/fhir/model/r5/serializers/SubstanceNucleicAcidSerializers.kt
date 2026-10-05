@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.Meta
@@ -519,14 +520,10 @@ internal object SubstanceNucleicAcidSubunitSugarSerializer :
   }
 }
 
-internal object SubstanceNucleicAcidSerializer : KSerializer<SubstanceNucleicAcid> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubstanceNucleicAcid") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object SubstanceNucleicAcidSerializer : FhirResourceSerializer<SubstanceNucleicAcid> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("SubstanceNucleicAcid")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -562,19 +559,7 @@ internal object SubstanceNucleicAcidSerializer : KSerializer<SubstanceNucleicAci
     )
   }
 
-  override fun deserialize(decoder: Decoder): SubstanceNucleicAcid =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SubstanceNucleicAcid) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "SubstanceNucleicAcid")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -689,7 +674,7 @@ internal object SubstanceNucleicAcidSerializer : KSerializer<SubstanceNucleicAci
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -771,22 +756,4 @@ internal object SubstanceNucleicAcidSerializer : KSerializer<SubstanceNucleicAci
         value.subunit,
       )
   }
-}
-
-internal object SubstanceNucleicAcidPolymorphicSerializer : KSerializer<SubstanceNucleicAcid> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubstanceNucleicAcid") {
-      SubstanceNucleicAcidSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SubstanceNucleicAcid) {
-    encoder.encodeStructure(descriptor) {
-      SubstanceNucleicAcidSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): SubstanceNucleicAcid =
-    decoder.decodeStructure(descriptor) {
-      SubstanceNucleicAcidSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

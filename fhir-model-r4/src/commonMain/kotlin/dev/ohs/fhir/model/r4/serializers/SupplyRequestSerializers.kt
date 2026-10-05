@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
@@ -213,14 +214,10 @@ internal object SupplyRequestParameterSerializer : KSerializer<SupplyRequest.Par
   }
 }
 
-internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SupplyRequest") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object SupplyRequestSerializer : FhirResourceSerializer<SupplyRequest> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("SupplyRequest")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -287,19 +284,7 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
     b.element("deliverTo", Reference.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): SupplyRequest =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SupplyRequest) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "SupplyRequest")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -511,7 +496,7 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -684,20 +669,4 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
       encoder.encodeSerializableElement(descriptor, 31 + descriptorOffset, ReferenceSerializer, it)
     }
   }
-}
-
-internal object SupplyRequestPolymorphicSerializer : KSerializer<SupplyRequest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SupplyRequest") { SupplyRequestSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: SupplyRequest) {
-    encoder.encodeStructure(descriptor) {
-      SupplyRequestSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): SupplyRequest =
-    decoder.decodeStructure(descriptor) {
-      SupplyRequestSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

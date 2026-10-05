@@ -34,6 +34,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Immunization
 import dev.ohs.fhir.model.r5.Meta
@@ -570,14 +571,10 @@ internal object ImmunizationProtocolAppliedSerializer : KSerializer<Immunization
   }
 }
 
-internal object ImmunizationSerializer : KSerializer<Immunization> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Immunization") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ImmunizationSerializer : FhirResourceSerializer<Immunization> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Immunization")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -672,19 +669,7 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Immunization =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Immunization) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Immunization")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1015,7 +1000,7 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1267,20 +1252,4 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
         value.protocolApplied,
       )
   }
-}
-
-internal object ImmunizationPolymorphicSerializer : KSerializer<Immunization> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Immunization") { ImmunizationSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Immunization) {
-    encoder.encodeStructure(descriptor) {
-      ImmunizationSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Immunization =
-    decoder.decodeStructure(descriptor) {
-      ImmunizationSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

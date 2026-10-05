@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
@@ -177,14 +178,10 @@ internal object SupplyDeliverySuppliedItemSerializer : KSerializer<SupplyDeliver
   }
 }
 
-internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SupplyDelivery") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object SupplyDeliverySerializer : FhirResourceSerializer<SupplyDelivery> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("SupplyDelivery")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -236,19 +233,7 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): SupplyDelivery =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SupplyDelivery) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "SupplyDelivery")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -422,7 +407,7 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -560,20 +545,4 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
         value.`receiver`,
       )
   }
-}
-
-internal object SupplyDeliveryPolymorphicSerializer : KSerializer<SupplyDelivery> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SupplyDelivery") { SupplyDeliverySerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: SupplyDelivery) {
-    encoder.encodeStructure(descriptor) {
-      SupplyDeliverySerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): SupplyDelivery =
-    decoder.decodeStructure(descriptor) {
-      SupplyDeliverySerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

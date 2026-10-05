@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Expression
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
@@ -1529,14 +1530,10 @@ internal object RequestOrchestrationActionDynamicValueSerializer :
   }
 }
 
-internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestration> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RequestOrchestration") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object RequestOrchestrationSerializer : FhirResourceSerializer<RequestOrchestration> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("RequestOrchestration")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1617,19 +1614,7 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
     )
   }
 
-  override fun deserialize(decoder: Decoder): RequestOrchestration =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: RequestOrchestration) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "RequestOrchestration")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1896,7 +1881,7 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2068,22 +2053,4 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
         value.action,
       )
   }
-}
-
-internal object RequestOrchestrationPolymorphicSerializer : KSerializer<RequestOrchestration> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RequestOrchestration") {
-      RequestOrchestrationSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: RequestOrchestration) {
-    encoder.encodeStructure(descriptor) {
-      RequestOrchestrationSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): RequestOrchestration =
-    decoder.decodeStructure(descriptor) {
-      RequestOrchestrationSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

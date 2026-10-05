@@ -34,6 +34,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Integer
 import dev.ohs.fhir.model.r4b.Markdown
@@ -933,14 +934,11 @@ internal object PackagedProductDefinitionPackageContainedItemSerializer :
   }
 }
 
-internal object PackagedProductDefinitionSerializer : KSerializer<PackagedProductDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PackagedProductDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object PackagedProductDefinitionSerializer :
+  FhirResourceSerializer<PackagedProductDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("PackagedProductDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1017,19 +1015,7 @@ internal object PackagedProductDefinitionSerializer : KSerializer<PackagedProduc
     )
   }
 
-  override fun deserialize(decoder: Decoder): PackagedProductDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: PackagedProductDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "PackagedProductDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1228,7 +1214,7 @@ internal object PackagedProductDefinitionSerializer : KSerializer<PackagedProduc
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1372,23 +1358,4 @@ internal object PackagedProductDefinitionSerializer : KSerializer<PackagedProduc
       )
     }
   }
-}
-
-internal object PackagedProductDefinitionPolymorphicSerializer :
-  KSerializer<PackagedProductDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PackagedProductDefinition") {
-      PackagedProductDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: PackagedProductDefinition) {
-    encoder.encodeStructure(descriptor) {
-      PackagedProductDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): PackagedProductDefinition =
-    decoder.decodeStructure(descriptor) {
-      PackagedProductDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

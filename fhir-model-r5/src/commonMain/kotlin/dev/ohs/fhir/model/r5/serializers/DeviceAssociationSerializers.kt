@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceAssociation
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
@@ -182,14 +183,10 @@ internal object DeviceAssociationOperationSerializer : KSerializer<DeviceAssocia
   }
 }
 
-internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DeviceAssociation") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object DeviceAssociationSerializer : FhirResourceSerializer<DeviceAssociation> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("DeviceAssociation")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -239,19 +236,7 @@ internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): DeviceAssociation =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: DeviceAssociation) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "DeviceAssociation")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -399,7 +384,7 @@ internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -495,22 +480,4 @@ internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
         value.operation,
       )
   }
-}
-
-internal object DeviceAssociationPolymorphicSerializer : KSerializer<DeviceAssociation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DeviceAssociation") {
-      DeviceAssociationSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: DeviceAssociation) {
-    encoder.encodeStructure(descriptor) {
-      DeviceAssociationSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): DeviceAssociation =
-    decoder.decodeStructure(descriptor) {
-      DeviceAssociationSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

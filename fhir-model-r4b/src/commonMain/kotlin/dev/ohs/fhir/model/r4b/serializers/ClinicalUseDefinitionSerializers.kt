@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4b.CodeableReference
 import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Meta
@@ -1152,14 +1153,10 @@ internal object ClinicalUseDefinitionWarningSerializer :
   }
 }
 
-internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ClinicalUseDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ClinicalUseDefinitionSerializer : FhirResourceSerializer<ClinicalUseDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ClinicalUseDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1228,19 +1225,7 @@ internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinit
     )
   }
 
-  override fun deserialize(decoder: Decoder): ClinicalUseDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ClinicalUseDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ClinicalUseDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1425,7 +1410,7 @@ internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinit
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1554,22 +1539,4 @@ internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinit
       )
     }
   }
-}
-
-internal object ClinicalUseDefinitionPolymorphicSerializer : KSerializer<ClinicalUseDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ClinicalUseDefinition") {
-      ClinicalUseDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ClinicalUseDefinition) {
-    encoder.encodeStructure(descriptor) {
-      ClinicalUseDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ClinicalUseDefinition =
-    decoder.decodeStructure(descriptor) {
-      ClinicalUseDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

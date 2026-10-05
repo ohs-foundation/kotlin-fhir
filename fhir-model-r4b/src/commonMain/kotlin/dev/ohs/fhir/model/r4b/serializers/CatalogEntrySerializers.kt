@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Narrative
@@ -174,14 +175,10 @@ internal object CatalogEntryRelatedEntrySerializer : KSerializer<CatalogEntry.Re
   }
 }
 
-internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CatalogEntry") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object CatalogEntrySerializer : FhirResourceSerializer<CatalogEntry> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("CatalogEntry")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -247,19 +244,7 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): CatalogEntry =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CatalogEntry) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "CatalogEntry")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -444,7 +429,7 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -574,20 +559,4 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
         value.relatedEntry,
       )
   }
-}
-
-internal object CatalogEntryPolymorphicSerializer : KSerializer<CatalogEntry> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CatalogEntry") { CatalogEntrySerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: CatalogEntry) {
-    encoder.encodeStructure(descriptor) {
-      CatalogEntrySerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): CatalogEntry =
-    decoder.decodeStructure(descriptor) {
-      CatalogEntrySerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

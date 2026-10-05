@@ -34,6 +34,7 @@ import dev.ohs.fhir.model.r5.ElementDefinition
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
@@ -534,14 +535,10 @@ internal object StructureDefinitionDifferentialSerializer :
   }
 }
 
-internal object StructureDefinitionSerializer : KSerializer<StructureDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("StructureDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object StructureDefinitionSerializer : FhirResourceSerializer<StructureDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("StructureDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -656,19 +653,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
     )
   }
 
-  override fun deserialize(decoder: Decoder): StructureDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: StructureDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "StructureDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1023,7 +1008,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1277,22 +1262,4 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
       )
     }
   }
-}
-
-internal object StructureDefinitionPolymorphicSerializer : KSerializer<StructureDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("StructureDefinition") {
-      StructureDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: StructureDefinition) {
-    encoder.encodeStructure(descriptor) {
-      StructureDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): StructureDefinition =
-    decoder.decodeStructure(descriptor) {
-      StructureDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

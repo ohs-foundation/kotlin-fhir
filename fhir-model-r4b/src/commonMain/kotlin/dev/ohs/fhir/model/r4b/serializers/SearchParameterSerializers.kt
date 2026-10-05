@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Narrative
@@ -182,14 +183,10 @@ internal object SearchParameterComponentSerializer : KSerializer<SearchParameter
   }
 }
 
-internal object SearchParameterSerializer : KSerializer<SearchParameter> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SearchParameter") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object SearchParameterSerializer : FhirResourceSerializer<SearchParameter> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("SearchParameter")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -298,19 +295,7 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): SearchParameter =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SearchParameter) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "SearchParameter")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -689,7 +674,7 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -940,22 +925,4 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         value.component,
       )
   }
-}
-
-internal object SearchParameterPolymorphicSerializer : KSerializer<SearchParameter> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SearchParameter") {
-      SearchParameterSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SearchParameter) {
-    encoder.encodeStructure(descriptor) {
-      SearchParameterSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): SearchParameter =
-    decoder.decodeStructure(descriptor) {
-      SearchParameterSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Narrative
@@ -46,28 +47,18 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
-internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DeviceUseStatement") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object DeviceUseStatementSerializer : FhirResourceSerializer<DeviceUseStatement> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("DeviceUseStatement")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -126,19 +117,7 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
     b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): DeviceUseStatement =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: DeviceUseStatement) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "DeviceUseStatement")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -343,7 +322,7 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -499,22 +478,4 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
         value.note,
       )
   }
-}
-
-internal object DeviceUseStatementPolymorphicSerializer : KSerializer<DeviceUseStatement> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DeviceUseStatement") {
-      DeviceUseStatementSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: DeviceUseStatement) {
-    encoder.encodeStructure(descriptor) {
-      DeviceUseStatementSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): DeviceUseStatement =
-    decoder.decodeStructure(descriptor) {
-      DeviceUseStatementSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

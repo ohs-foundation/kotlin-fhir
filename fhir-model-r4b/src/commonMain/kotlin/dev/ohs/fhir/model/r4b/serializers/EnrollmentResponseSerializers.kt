@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4b.EnrollmentResponse
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Narrative
@@ -44,28 +45,18 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
-internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EnrollmentResponse") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object EnrollmentResponseSerializer : FhirResourceSerializer<EnrollmentResponse> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("EnrollmentResponse")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -106,19 +97,7 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
     b.element("requestProvider", Reference.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): EnrollmentResponse =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EnrollmentResponse) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "EnrollmentResponse")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -246,7 +225,7 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -333,22 +312,4 @@ internal object EnrollmentResponseSerializer : KSerializer<EnrollmentResponse> {
       encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ReferenceSerializer, it)
     }
   }
-}
-
-internal object EnrollmentResponsePolymorphicSerializer : KSerializer<EnrollmentResponse> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EnrollmentResponse") {
-      EnrollmentResponseSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EnrollmentResponse) {
-    encoder.encodeStructure(descriptor) {
-      EnrollmentResponseSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): EnrollmentResponse =
-    decoder.decodeStructure(descriptor) {
-      EnrollmentResponseSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

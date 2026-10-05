@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImplementationGuide
@@ -1886,14 +1887,10 @@ internal object ImplementationGuideManifestPageSerializer :
   }
 }
 
-internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ImplementationGuide") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ImplementationGuideSerializer : FhirResourceSerializer<ImplementationGuide> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ImplementationGuide")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -2001,19 +1998,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
     )
   }
 
-  override fun deserialize(decoder: Decoder): ImplementationGuide =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ImplementationGuide) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ImplementationGuide")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2316,7 +2301,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2541,22 +2526,4 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
       )
     }
   }
-}
-
-internal object ImplementationGuidePolymorphicSerializer : KSerializer<ImplementationGuide> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ImplementationGuide") {
-      ImplementationGuideSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ImplementationGuide) {
-    encoder.encodeStructure(descriptor) {
-      ImplementationGuideSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ImplementationGuide =
-    decoder.decodeStructure(descriptor) {
-      ImplementationGuideSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

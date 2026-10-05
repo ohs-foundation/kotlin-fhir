@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Meta
@@ -498,14 +499,10 @@ internal object ServiceRequestPatientInstructionSerializer :
   }
 }
 
-internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ServiceRequest") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ServiceRequest")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -647,19 +644,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): ServiceRequest =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ServiceRequest) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ServiceRequest")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1086,7 +1071,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1424,20 +1409,4 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
         value.relevantHistory,
       )
   }
-}
-
-internal object ServiceRequestPolymorphicSerializer : KSerializer<ServiceRequest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ServiceRequest") { ServiceRequestSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: ServiceRequest) {
-    encoder.encodeStructure(descriptor) {
-      ServiceRequestSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ServiceRequest =
-    decoder.decodeStructure(descriptor) {
-      ServiceRequestSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

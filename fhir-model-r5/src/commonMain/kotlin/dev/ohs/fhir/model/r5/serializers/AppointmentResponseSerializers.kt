@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Markdown
@@ -49,28 +50,18 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
-internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AppointmentResponse") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object AppointmentResponseSerializer : FhirResourceSerializer<AppointmentResponse> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("AppointmentResponse")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -123,19 +114,7 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
     b.element("_recurrenceId", Element.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): AppointmentResponse =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: AppointmentResponse) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "AppointmentResponse")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -301,7 +280,7 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -419,22 +398,4 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
       encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ElementSerializer, it)
     }
   }
-}
-
-internal object AppointmentResponsePolymorphicSerializer : KSerializer<AppointmentResponse> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AppointmentResponse") {
-      AppointmentResponseSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: AppointmentResponse) {
-    encoder.encodeStructure(descriptor) {
-      AppointmentResponseSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): AppointmentResponse =
-    decoder.decodeStructure(descriptor) {
-      AppointmentResponseSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

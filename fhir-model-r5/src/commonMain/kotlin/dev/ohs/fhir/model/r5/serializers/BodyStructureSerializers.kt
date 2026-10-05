@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.CodeableReference
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Meta
@@ -580,14 +581,10 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFro
   }
 }
 
-internal object BodyStructureSerializer : KSerializer<BodyStructure> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("BodyStructure") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("BodyStructure")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -638,19 +635,7 @@ internal object BodyStructureSerializer : KSerializer<BodyStructure> {
     b.element("patient", Reference.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): BodyStructure =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: BodyStructure) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "BodyStructure")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -792,7 +777,7 @@ internal object BodyStructureSerializer : KSerializer<BodyStructure> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -893,20 +878,4 @@ internal object BodyStructureSerializer : KSerializer<BodyStructure> {
       value.patient,
     )
   }
-}
-
-internal object BodyStructurePolymorphicSerializer : KSerializer<BodyStructure> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("BodyStructure") { BodyStructureSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: BodyStructure) {
-    encoder.encodeStructure(descriptor) {
-      BodyStructureSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): BodyStructure =
-    decoder.decodeStructure(descriptor) {
-      BodyStructureSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

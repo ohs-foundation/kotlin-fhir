@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
@@ -255,14 +256,10 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
   }
 }
 
-internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AllergyIntolerance") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyIntolerance> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("AllergyIntolerance")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -326,19 +323,7 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): AllergyIntolerance =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: AllergyIntolerance) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "AllergyIntolerance")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -587,7 +572,7 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -787,22 +772,4 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
         value.reaction,
       )
   }
-}
-
-internal object AllergyIntolerancePolymorphicSerializer : KSerializer<AllergyIntolerance> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AllergyIntolerance") {
-      AllergyIntoleranceSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: AllergyIntolerance) {
-    encoder.encodeStructure(descriptor) {
-      AllergyIntoleranceSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): AllergyIntolerance =
-    decoder.decodeStructure(descriptor) {
-      AllergyIntoleranceSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
 import dev.ohs.fhir.model.r5.FhirDecimal
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.InventoryItem
@@ -968,14 +969,10 @@ internal object InventoryItemInstanceSerializer : KSerializer<InventoryItem.Inst
   }
 }
 
-internal object InventoryItemSerializer : KSerializer<InventoryItem> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("InventoryItem") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("InventoryItem")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1057,19 +1054,7 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
     b.element("productReference", Reference.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): InventoryItem =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: InventoryItem) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "InventoryItem")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1269,7 +1254,7 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1408,20 +1393,4 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
       encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, ReferenceSerializer, it)
     }
   }
-}
-
-internal object InventoryItemPolymorphicSerializer : KSerializer<InventoryItem> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("InventoryItem") { InventoryItemSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: InventoryItem) {
-    encoder.encodeStructure(descriptor) {
-      InventoryItemSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): InventoryItem =
-    decoder.decodeStructure(descriptor) {
-      InventoryItemSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

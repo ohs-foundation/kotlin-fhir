@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.NamingSystem
@@ -210,14 +211,10 @@ internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.Unique
   }
 }
 
-internal object NamingSystemSerializer : KSerializer<NamingSystem> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("NamingSystem") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("NamingSystem")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -279,19 +276,7 @@ internal object NamingSystemSerializer : KSerializer<NamingSystem> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): NamingSystem =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: NamingSystem) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "NamingSystem")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -472,7 +457,7 @@ internal object NamingSystemSerializer : KSerializer<NamingSystem> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -601,20 +586,4 @@ internal object NamingSystemSerializer : KSerializer<NamingSystem> {
         value.uniqueId,
       )
   }
-}
-
-internal object NamingSystemPolymorphicSerializer : KSerializer<NamingSystem> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("NamingSystem") { NamingSystemSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: NamingSystem) {
-    encoder.encodeStructure(descriptor) {
-      NamingSystemSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): NamingSystem =
-    decoder.decodeStructure(descriptor) {
-      NamingSystemSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

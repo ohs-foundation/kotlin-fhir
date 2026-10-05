@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.Meta
@@ -988,14 +989,10 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
   }
 }
 
-internal object AuditEventSerializer : KSerializer<AuditEvent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AuditEvent") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object AuditEventSerializer : FhirResourceSerializer<AuditEvent> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("AuditEvent")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1063,19 +1060,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): AuditEvent =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: AuditEvent) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "AuditEvent")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1276,7 +1261,7 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1426,20 +1411,4 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         value.entity,
       )
   }
-}
-
-internal object AuditEventPolymorphicSerializer : KSerializer<AuditEvent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AuditEvent") { AuditEventSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: AuditEvent) {
-    encoder.encodeStructure(descriptor) {
-      AuditEventSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): AuditEvent =
-    decoder.decodeStructure(descriptor) {
-      AuditEventSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

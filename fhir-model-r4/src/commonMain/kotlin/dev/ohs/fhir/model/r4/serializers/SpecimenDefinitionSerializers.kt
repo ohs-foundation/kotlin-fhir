@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4.Duration
 import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
@@ -763,14 +764,10 @@ internal object SpecimenDefinitionTypeTestedHandlingSerializer :
   }
 }
 
-internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SpecimenDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object SpecimenDefinitionSerializer : FhirResourceSerializer<SpecimenDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("SpecimenDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -816,19 +813,7 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): SpecimenDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SpecimenDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "SpecimenDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -951,7 +936,7 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1036,22 +1021,4 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
         value.typeTested,
       )
   }
-}
-
-internal object SpecimenDefinitionPolymorphicSerializer : KSerializer<SpecimenDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SpecimenDefinition") {
-      SpecimenDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SpecimenDefinition) {
-    encoder.encodeStructure(descriptor) {
-      SpecimenDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): SpecimenDefinition =
-    decoder.decodeStructure(descriptor) {
-      SpecimenDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

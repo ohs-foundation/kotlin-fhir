@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Integer
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
@@ -912,14 +913,10 @@ internal object SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializ
   }
 }
 
-internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubstancePolymer") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object SubstancePolymerSerializer : FhirResourceSerializer<SubstancePolymer> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("SubstancePolymer")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -971,19 +968,7 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): SubstancePolymer =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SubstancePolymer) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "SubstancePolymer")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1130,7 +1115,7 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1230,22 +1215,4 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
         value.repeat,
       )
   }
-}
-
-internal object SubstancePolymerPolymorphicSerializer : KSerializer<SubstancePolymer> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubstancePolymer") {
-      SubstancePolymerSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: SubstancePolymer) {
-    encoder.encodeStructure(descriptor) {
-      SubstancePolymerSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): SubstancePolymer =
-    decoder.decodeStructure(descriptor) {
-      SubstancePolymerSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

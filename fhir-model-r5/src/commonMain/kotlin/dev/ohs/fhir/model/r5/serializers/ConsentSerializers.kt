@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r5.Expression
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
@@ -861,14 +862,10 @@ internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.D
   }
 }
 
-internal object ConsentSerializer : KSerializer<Consent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Consent") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ConsentSerializer : FhirResourceSerializer<Consent> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Consent")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -954,19 +951,7 @@ internal object ConsentSerializer : KSerializer<Consent> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Consent =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Consent) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Consent")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1199,7 +1184,7 @@ internal object ConsentSerializer : KSerializer<Consent> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1362,20 +1347,4 @@ internal object ConsentSerializer : KSerializer<Consent> {
         value.provision,
       )
   }
-}
-
-internal object ConsentPolymorphicSerializer : KSerializer<Consent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Consent") { ConsentSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Consent) {
-    encoder.encodeStructure(descriptor) {
-      ConsentSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Consent =
-    decoder.decodeStructure(descriptor) {
-      ConsentSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

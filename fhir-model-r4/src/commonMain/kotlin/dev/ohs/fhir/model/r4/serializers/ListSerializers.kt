@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.List as R4List
 import dev.ohs.fhir.model.r4.Meta
@@ -49,7 +50,7 @@ import kotlin.collections.List as CollectionsList
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.ListSerializer as builtinsListSerializer
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -84,8 +85,7 @@ internal object ListEntrySerializer : KSerializer<R4List.Entry> {
       element("item", Reference.serializer().descriptor, isOptional = true)
     }
 
-  internal val listSerializer: KSerializer<CollectionsList<R4List.Entry>> =
-    builtinsListSerializer(this)
+  internal val listSerializer: KSerializer<CollectionsList<R4List.Entry>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): R4List.Entry =
     decoder.decodeStructure(descriptor) {
@@ -190,14 +190,10 @@ internal object ListEntrySerializer : KSerializer<R4List.Entry> {
   }
 }
 
-internal object ListSerializer : KSerializer<R4List> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("List") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ListSerializer : FhirResourceSerializer<R4List> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("List")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -247,19 +243,7 @@ internal object ListSerializer : KSerializer<R4List> {
     b.element("emptyReason", CodeableConcept.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): R4List =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: R4List) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "List")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -434,7 +418,7 @@ internal object ListSerializer : KSerializer<R4List> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -559,20 +543,4 @@ internal object ListSerializer : KSerializer<R4List> {
       )
     }
   }
-}
-
-internal object ListPolymorphicSerializer : KSerializer<R4List> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("List") { ListSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: R4List) {
-    encoder.encodeStructure(descriptor) {
-      ListSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): R4List =
-    decoder.decodeStructure(descriptor) {
-      ListSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

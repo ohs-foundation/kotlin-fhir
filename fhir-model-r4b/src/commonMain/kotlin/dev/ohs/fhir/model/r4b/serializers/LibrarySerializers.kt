@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Library
 import dev.ohs.fhir.model.r4b.Markdown
@@ -57,28 +58,18 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
-internal object LibrarySerializer : KSerializer<Library> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Library") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object LibrarySerializer : FhirResourceSerializer<Library> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Library")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -202,19 +193,7 @@ internal object LibrarySerializer : KSerializer<Library> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Library =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Library) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Library")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -546,7 +525,7 @@ internal object LibrarySerializer : KSerializer<Library> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -800,20 +779,4 @@ internal object LibrarySerializer : KSerializer<Library> {
         value.content,
       )
   }
-}
-
-internal object LibraryPolymorphicSerializer : KSerializer<Library> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Library") { LibrarySerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Library) {
-    encoder.encodeStructure(descriptor) {
-      LibrarySerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Library =
-    decoder.decodeStructure(descriptor) {
-      LibrarySerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

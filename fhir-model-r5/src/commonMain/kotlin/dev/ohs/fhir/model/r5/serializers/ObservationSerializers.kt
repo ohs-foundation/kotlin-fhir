@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Integer
@@ -676,14 +677,10 @@ internal object ObservationComponentSerializer : KSerializer<Observation.Compone
   }
 }
 
-internal object ObservationSerializer : KSerializer<Observation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Observation") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ObservationSerializer : FhirResourceSerializer<Observation> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Observation")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -797,19 +794,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Observation =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Observation) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Observation")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1219,7 +1204,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1620,20 +1605,4 @@ internal object ObservationSerializer : KSerializer<Observation> {
         value.component,
       )
   }
-}
-
-internal object ObservationPolymorphicSerializer : KSerializer<Observation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Observation") { ObservationSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Observation) {
-    encoder.encodeStructure(descriptor) {
-      ObservationSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Observation =
-    decoder.decodeStructure(descriptor) {
-      ObservationSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

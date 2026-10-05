@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
@@ -286,14 +287,10 @@ internal object EpisodeOfCareDiagnosisSerializer : KSerializer<EpisodeOfCare.Dia
   }
 }
 
-internal object EpisodeOfCareSerializer : KSerializer<EpisodeOfCare> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EpisodeOfCare") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object EpisodeOfCareSerializer : FhirResourceSerializer<EpisodeOfCare> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("EpisodeOfCare")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -351,19 +348,7 @@ internal object EpisodeOfCareSerializer : KSerializer<EpisodeOfCare> {
     b.element("account", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): EpisodeOfCare =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EpisodeOfCare) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "EpisodeOfCare")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -534,7 +519,7 @@ internal object EpisodeOfCareSerializer : KSerializer<EpisodeOfCare> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -651,20 +636,4 @@ internal object EpisodeOfCareSerializer : KSerializer<EpisodeOfCare> {
         value.account,
       )
   }
-}
-
-internal object EpisodeOfCarePolymorphicSerializer : KSerializer<EpisodeOfCare> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EpisodeOfCare") { EpisodeOfCareSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: EpisodeOfCare) {
-    encoder.encodeStructure(descriptor) {
-      EpisodeOfCareSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): EpisodeOfCare =
-    decoder.decodeStructure(descriptor) {
-      EpisodeOfCareSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
 import dev.ohs.fhir.model.r4.FhirDecimal
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
@@ -258,14 +259,10 @@ internal object RiskAssessmentPredictionSerializer : KSerializer<RiskAssessment.
   }
 }
 
-internal object RiskAssessmentSerializer : KSerializer<RiskAssessment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RiskAssessment") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("RiskAssessment")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -327,19 +324,7 @@ internal object RiskAssessmentSerializer : KSerializer<RiskAssessment> {
     b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): RiskAssessment =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: RiskAssessment) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "RiskAssessment")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -553,7 +538,7 @@ internal object RiskAssessmentSerializer : KSerializer<RiskAssessment> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -715,20 +700,4 @@ internal object RiskAssessmentSerializer : KSerializer<RiskAssessment> {
         value.note,
       )
   }
-}
-
-internal object RiskAssessmentPolymorphicSerializer : KSerializer<RiskAssessment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RiskAssessment") { RiskAssessmentSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: RiskAssessment) {
-    encoder.encodeStructure(descriptor) {
-      RiskAssessmentSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): RiskAssessment =
-    decoder.decodeStructure(descriptor) {
-      RiskAssessmentSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

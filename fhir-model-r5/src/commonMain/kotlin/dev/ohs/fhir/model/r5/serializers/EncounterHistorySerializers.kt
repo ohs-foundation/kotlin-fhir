@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
@@ -168,14 +169,10 @@ internal object EncounterHistoryLocationSerializer : KSerializer<EncounterHistor
   }
 }
 
-internal object EncounterHistorySerializer : KSerializer<EncounterHistory> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EncounterHistory") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHistory> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("EncounterHistory")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -232,19 +229,7 @@ internal object EncounterHistorySerializer : KSerializer<EncounterHistory> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): EncounterHistory =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EncounterHistory) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "EncounterHistory")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -422,7 +407,7 @@ internal object EncounterHistorySerializer : KSerializer<EncounterHistory> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -541,22 +526,4 @@ internal object EncounterHistorySerializer : KSerializer<EncounterHistory> {
         value.location,
       )
   }
-}
-
-internal object EncounterHistoryPolymorphicSerializer : KSerializer<EncounterHistory> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EncounterHistory") {
-      EncounterHistorySerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EncounterHistory) {
-    encoder.encodeStructure(descriptor) {
-      EncounterHistorySerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): EncounterHistory =
-    decoder.decodeStructure(descriptor) {
-      EncounterHistorySerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

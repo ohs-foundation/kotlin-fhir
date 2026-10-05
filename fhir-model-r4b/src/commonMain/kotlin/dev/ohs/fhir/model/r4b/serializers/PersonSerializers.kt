@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.HumanName
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
@@ -168,14 +169,10 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
   }
 }
 
-internal object PersonSerializer : KSerializer<Person> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Person") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object PersonSerializer : FhirResourceSerializer<Person> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Person")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -225,19 +222,7 @@ internal object PersonSerializer : KSerializer<Person> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Person =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Person) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Person")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -389,7 +374,7 @@ internal object PersonSerializer : KSerializer<Person> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -495,20 +480,4 @@ internal object PersonSerializer : KSerializer<Person> {
         value.link,
       )
   }
-}
-
-internal object PersonPolymorphicSerializer : KSerializer<Person> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Person") { PersonSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Person) {
-    encoder.encodeStructure(descriptor) {
-      PersonSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Person =
-    decoder.decodeStructure(descriptor) {
-      PersonSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

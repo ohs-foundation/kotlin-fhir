@@ -50,6 +50,7 @@ import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
 import dev.ohs.fhir.model.r4b.FhirDecimal
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.HumanName
 import dev.ohs.fhir.model.r4b.Id
 import dev.ohs.fhir.model.r4b.Identifier
@@ -1643,14 +1644,10 @@ internal object TaskOutputSerializer : KSerializer<Task.Output> {
   }
 }
 
-internal object TaskSerializer : KSerializer<Task> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Task") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object TaskSerializer : FhirResourceSerializer<Task> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Task")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1742,19 +1739,7 @@ internal object TaskSerializer : KSerializer<Task> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Task =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Task) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Task")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2070,7 +2055,7 @@ internal object TaskSerializer : KSerializer<Task> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2295,20 +2280,4 @@ internal object TaskSerializer : KSerializer<Task> {
         value.output,
       )
   }
-}
-
-internal object TaskPolymorphicSerializer : KSerializer<Task> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Task") { TaskSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Task) {
-    encoder.encodeStructure(descriptor) {
-      TaskSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Task =
-    decoder.decodeStructure(descriptor) {
-      TaskSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.MedicationStatement
@@ -178,14 +179,10 @@ internal object MedicationStatementAdherenceSerializer :
   }
 }
 
-internal object MedicationStatementSerializer : KSerializer<MedicationStatement> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MedicationStatement") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object MedicationStatementSerializer : FhirResourceSerializer<MedicationStatement> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("MedicationStatement")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -261,19 +258,7 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
     )
   }
 
-  override fun deserialize(decoder: Decoder): MedicationStatement =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: MedicationStatement) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "MedicationStatement")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -521,7 +506,7 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -704,22 +689,4 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
       )
     }
   }
-}
-
-internal object MedicationStatementPolymorphicSerializer : KSerializer<MedicationStatement> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MedicationStatement") {
-      MedicationStatementSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: MedicationStatement) {
-    encoder.encodeStructure(descriptor) {
-      MedicationStatementSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): MedicationStatement =
-    decoder.decodeStructure(descriptor) {
-      MedicationStatementSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

@@ -52,20 +52,16 @@ internal class SerializerDescriptorEmitter(private val codegenContext: CodegenCo
     wireFields: List<WireField>,
     includeResourceType: Boolean,
   ): PropertySpec {
-    val body = run {
-      val builder = CodeBlock.builder()
-      builder.add("%M(%S) {\n", buildClassSerialDescriptorMemberName, className.simpleName)
-      builder.indent()
+    val body =
       if (includeResourceType) {
-        builder.add(
-          "element(%S, %T.serializer().descriptor, isOptional = false)\n",
-          "resourceType",
-          ClassName("kotlin", "String"),
-        )
-        // Wire fields go through the shared `buildDescriptor` helper so `XPolymorphicSerializer`
-        // can reuse the same element list.
-        builder.add("buildDescriptor(this)\n")
+        // Delegate to `FhirResourceSerializer.buildResourceDescriptor` (which adds slot-0
+        // `resourceType` and calls `buildDescriptor(this)`) to avoid emitting a per-resource
+        // `buildClassSerialDescriptor` lambda on every resource serializer class.
+        CodeBlock.of("buildResourceDescriptor(%S)", className.simpleName)
       } else {
+        val builder = CodeBlock.builder()
+        builder.add("%M(%S) {\n", buildClassSerialDescriptorMemberName, className.simpleName)
+        builder.indent()
         for (wireField in wireFields) {
           builder.add(
             "element(%S, %L, isOptional = true)\n",
@@ -73,18 +69,17 @@ internal class SerializerDescriptorEmitter(private val codegenContext: CodegenCo
             descriptorFor(wireField.typeName, className),
           )
         }
+        builder.unindent()
+        builder.add("}\n")
+        builder.build()
       }
-      builder.unindent()
-      builder.add("}\n")
-      builder.build()
-    }
     return PropertySpec.builder("descriptor", serialDescriptorClassName)
       .addModifiers(KModifier.OVERRIDE)
       .initializer(body)
       .build()
   }
 
-  /** `internal fun buildDescriptor(b)` — wire-field elements only, shared between both variants. */
+  /** `override fun buildDescriptor(b)` — wire-field elements only, shared between both variants. */
   fun buildBuildDescriptorFun(className: ClassName, wireFields: List<WireField>): FunSpec {
     val classSerialDescriptorBuilderClassName =
       ClassName(KOTLINX_SERIALIZATION_DESCRIPTORS, "ClassSerialDescriptorBuilder")
@@ -97,7 +92,7 @@ internal class SerializerDescriptorEmitter(private val codegenContext: CodegenCo
       )
     }
     return FunSpec.builder("buildDescriptor")
-      .addModifiers(KModifier.INTERNAL)
+      .addModifiers(KModifier.OVERRIDE)
       .addParameter("b", classSerialDescriptorBuilderClassName)
       .addCode(codeBlock.build())
       .build()

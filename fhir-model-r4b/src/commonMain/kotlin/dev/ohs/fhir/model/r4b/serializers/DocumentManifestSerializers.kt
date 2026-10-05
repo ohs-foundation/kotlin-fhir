@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Narrative
@@ -157,14 +158,10 @@ internal object DocumentManifestRelatedSerializer : KSerializer<DocumentManifest
   }
 }
 
-internal object DocumentManifestSerializer : KSerializer<DocumentManifest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DocumentManifest") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object DocumentManifestSerializer : FhirResourceSerializer<DocumentManifest> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("DocumentManifest")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -217,19 +214,7 @@ internal object DocumentManifestSerializer : KSerializer<DocumentManifest> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): DocumentManifest =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: DocumentManifest) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "DocumentManifest")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -400,7 +385,7 @@ internal object DocumentManifestSerializer : KSerializer<DocumentManifest> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -520,22 +505,4 @@ internal object DocumentManifestSerializer : KSerializer<DocumentManifest> {
         value.related,
       )
   }
-}
-
-internal object DocumentManifestPolymorphicSerializer : KSerializer<DocumentManifest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DocumentManifest") {
-      DocumentManifestSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: DocumentManifest) {
-    encoder.encodeStructure(descriptor) {
-      DocumentManifestSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): DocumentManifest =
-    decoder.decodeStructure(descriptor) {
-      DocumentManifestSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

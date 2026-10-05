@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Meta
@@ -1027,14 +1028,10 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
   }
 }
 
-internal object AppointmentSerializer : KSerializer<Appointment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Appointment") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Appointment")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1154,19 +1151,7 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Appointment =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Appointment) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Appointment")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1516,7 +1501,7 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1769,20 +1754,4 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
         value.recurrenceTemplate,
       )
   }
-}
-
-internal object AppointmentPolymorphicSerializer : KSerializer<Appointment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Appointment") { AppointmentSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Appointment) {
-    encoder.encodeStructure(descriptor) {
-      AppointmentSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Appointment =
-    decoder.decodeStructure(descriptor) {
-      AppointmentSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

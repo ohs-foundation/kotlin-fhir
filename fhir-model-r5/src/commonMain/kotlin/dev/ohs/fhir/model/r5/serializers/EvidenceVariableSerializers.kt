@@ -38,6 +38,7 @@ import dev.ohs.fhir.model.r5.Expression
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
@@ -1104,14 +1105,10 @@ internal object EvidenceVariableCategorySerializer : KSerializer<EvidenceVariabl
   }
 }
 
-internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EvidenceVariable") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVariable> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("EvidenceVariable")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1227,19 +1224,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): EvidenceVariable =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EvidenceVariable) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "EvidenceVariable")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1561,7 +1546,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1812,22 +1797,4 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         value.category,
       )
   }
-}
-
-internal object EvidenceVariablePolymorphicSerializer : KSerializer<EvidenceVariable> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EvidenceVariable") {
-      EvidenceVariableSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EvidenceVariable) {
-    encoder.encodeStructure(descriptor) {
-      EvidenceVariableSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): EvidenceVariable =
-    decoder.decodeStructure(descriptor) {
-      EvidenceVariableSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

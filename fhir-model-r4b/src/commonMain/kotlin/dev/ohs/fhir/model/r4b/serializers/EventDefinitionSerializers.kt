@@ -34,6 +34,7 @@ import dev.ohs.fhir.model.r4b.EventDefinition
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Meta
@@ -55,28 +56,18 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
-internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EventDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object EventDefinitionSerializer : FhirResourceSerializer<EventDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("EventDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -189,19 +180,7 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): EventDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EventDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "EventDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -503,7 +482,7 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -737,22 +716,4 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
         value.trigger,
       )
   }
-}
-
-internal object EventDefinitionPolymorphicSerializer : KSerializer<EventDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EventDefinition") {
-      EventDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EventDefinition) {
-    encoder.encodeStructure(descriptor) {
-      EventDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): EventDefinition =
-    decoder.decodeStructure(descriptor) {
-      EventDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

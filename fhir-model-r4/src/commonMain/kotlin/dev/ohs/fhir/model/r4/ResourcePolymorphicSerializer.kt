@@ -21,156 +21,158 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.AccountPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ActivityDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.AdverseEventPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.AllergyIntolerancePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.AppointmentPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.AppointmentResponsePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.AuditEventPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.BasicPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.BinaryPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.BodyStructurePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.BundlePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CapabilityStatementPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CarePlanPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CareTeamPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CatalogEntryPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ChargeItemDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ChargeItemPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ClaimPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ClaimResponsePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ClinicalImpressionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CodeSystemPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CommunicationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CommunicationRequestPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CompartmentDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CompositionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ConceptMapPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ConditionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ConsentPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ContractPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityRequestPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityResponsePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.CoveragePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.DetectedIssuePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.DeviceMetricPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.DevicePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.DeviceRequestPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.DeviceUseStatementPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.DiagnosticReportPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.DocumentManifestPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.DocumentReferencePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.EffectEvidenceSynthesisPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.EncounterPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.EndpointPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.EnrollmentRequestPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.EnrollmentResponsePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.EpisodeOfCarePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.EventDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.EvidencePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.EvidenceVariablePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ExampleScenarioPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ExplanationOfBenefitPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.FamilyMemberHistoryPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.FlagPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.GoalPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.GraphDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.GroupPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.GuidanceResponsePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.HealthcareServicePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ImagingStudyPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ImmunizationEvaluationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ImmunizationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ImmunizationRecommendationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ImplementationGuidePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.InsurancePlanPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.InvoicePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.LibraryPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.LinkagePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ListPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.LocationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MeasurePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MeasureReportPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MediaPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicationDispensePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicationRequestPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicationStatementPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductContraindicationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductIndicationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductIngredientPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductInteractionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductManufacturedPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductPackagedPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductPharmaceuticalPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductUndesirableEffectPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MessageDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MessageHeaderPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.MolecularSequencePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.NamingSystemPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.NutritionOrderPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ObservationDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ObservationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.OperationDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.OperationOutcomePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.OrganizationAffiliationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.OrganizationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ParametersPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.PatientPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.PaymentNoticePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.PaymentReconciliationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.PersonPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.PlanDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.PractitionerPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.PractitionerRolePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ProcedurePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ProvenancePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.QuestionnairePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.QuestionnaireResponsePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.RelatedPersonPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.RequestGroupPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ResearchDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ResearchElementDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ResearchStudyPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ResearchSubjectPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.RiskAssessmentPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.RiskEvidenceSynthesisPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SchedulePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SearchParameterPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ServiceRequestPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SlotPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SpecimenDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SpecimenPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.StructureDefinitionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.StructureMapPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SubscriptionPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SubstanceNucleicAcidPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SubstancePolymerPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SubstancePolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SubstanceProteinPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SubstanceReferenceInformationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SubstanceSourceMaterialPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SubstanceSpecificationPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SupplyDeliveryPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.SupplyRequestPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.TaskPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.TerminologyCapabilitiesPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.TestReportPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.TestScriptPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.ValueSetPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.VerificationResultPolymorphicSerializer
-import dev.ohs.fhir.model.r4.serializers.VisionPrescriptionPolymorphicSerializer
+import dev.ohs.fhir.model.r4.serializers.AccountSerializer
+import dev.ohs.fhir.model.r4.serializers.ActivityDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.AdverseEventSerializer
+import dev.ohs.fhir.model.r4.serializers.AllergyIntoleranceSerializer
+import dev.ohs.fhir.model.r4.serializers.AppointmentResponseSerializer
+import dev.ohs.fhir.model.r4.serializers.AppointmentSerializer
+import dev.ohs.fhir.model.r4.serializers.AuditEventSerializer
+import dev.ohs.fhir.model.r4.serializers.BasicSerializer
+import dev.ohs.fhir.model.r4.serializers.BinarySerializer
+import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductSerializer
+import dev.ohs.fhir.model.r4.serializers.BodyStructureSerializer
+import dev.ohs.fhir.model.r4.serializers.BundleSerializer
+import dev.ohs.fhir.model.r4.serializers.CapabilityStatementSerializer
+import dev.ohs.fhir.model.r4.serializers.CarePlanSerializer
+import dev.ohs.fhir.model.r4.serializers.CareTeamSerializer
+import dev.ohs.fhir.model.r4.serializers.CatalogEntrySerializer
+import dev.ohs.fhir.model.r4.serializers.ChargeItemDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.ChargeItemSerializer
+import dev.ohs.fhir.model.r4.serializers.ClaimResponseSerializer
+import dev.ohs.fhir.model.r4.serializers.ClaimSerializer
+import dev.ohs.fhir.model.r4.serializers.ClinicalImpressionSerializer
+import dev.ohs.fhir.model.r4.serializers.CodeSystemSerializer
+import dev.ohs.fhir.model.r4.serializers.CommunicationRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.CommunicationSerializer
+import dev.ohs.fhir.model.r4.serializers.CompartmentDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.CompositionSerializer
+import dev.ohs.fhir.model.r4.serializers.ConceptMapSerializer
+import dev.ohs.fhir.model.r4.serializers.ConditionSerializer
+import dev.ohs.fhir.model.r4.serializers.ConsentSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityResponseSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageSerializer
+import dev.ohs.fhir.model.r4.serializers.DetectedIssueSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceMetricSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceUseStatementSerializer
+import dev.ohs.fhir.model.r4.serializers.DiagnosticReportSerializer
+import dev.ohs.fhir.model.r4.serializers.DocumentManifestSerializer
+import dev.ohs.fhir.model.r4.serializers.DocumentReferenceSerializer
+import dev.ohs.fhir.model.r4.serializers.EffectEvidenceSynthesisSerializer
+import dev.ohs.fhir.model.r4.serializers.EncounterSerializer
+import dev.ohs.fhir.model.r4.serializers.EndpointSerializer
+import dev.ohs.fhir.model.r4.serializers.EnrollmentRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.EnrollmentResponseSerializer
+import dev.ohs.fhir.model.r4.serializers.EpisodeOfCareSerializer
+import dev.ohs.fhir.model.r4.serializers.EventDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.EvidenceSerializer
+import dev.ohs.fhir.model.r4.serializers.EvidenceVariableSerializer
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioSerializer
+import dev.ohs.fhir.model.r4.serializers.ExplanationOfBenefitSerializer
+import dev.ohs.fhir.model.r4.serializers.FamilyMemberHistorySerializer
+import dev.ohs.fhir.model.r4.serializers.FlagSerializer
+import dev.ohs.fhir.model.r4.serializers.GoalSerializer
+import dev.ohs.fhir.model.r4.serializers.GraphDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.GroupSerializer
+import dev.ohs.fhir.model.r4.serializers.GuidanceResponseSerializer
+import dev.ohs.fhir.model.r4.serializers.HealthcareServiceSerializer
+import dev.ohs.fhir.model.r4.serializers.ImagingStudySerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationEvaluationSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationRecommendationSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideSerializer
+import dev.ohs.fhir.model.r4.serializers.InsurancePlanSerializer
+import dev.ohs.fhir.model.r4.serializers.InvoiceSerializer
+import dev.ohs.fhir.model.r4.serializers.LibrarySerializer
+import dev.ohs.fhir.model.r4.serializers.LinkageSerializer
+import dev.ohs.fhir.model.r4.serializers.ListSerializer
+import dev.ohs.fhir.model.r4.serializers.LocationSerializer
+import dev.ohs.fhir.model.r4.serializers.MeasureReportSerializer
+import dev.ohs.fhir.model.r4.serializers.MeasureSerializer
+import dev.ohs.fhir.model.r4.serializers.MediaSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationDispenseSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationStatementSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductContraindicationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductIndicationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductIngredientSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductInteractionSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductManufacturedSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductPackagedSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductPharmaceuticalSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductUndesirableEffectSerializer
+import dev.ohs.fhir.model.r4.serializers.MessageDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.MessageHeaderSerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceSerializer
+import dev.ohs.fhir.model.r4.serializers.NamingSystemSerializer
+import dev.ohs.fhir.model.r4.serializers.NutritionOrderSerializer
+import dev.ohs.fhir.model.r4.serializers.ObservationDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.ObservationSerializer
+import dev.ohs.fhir.model.r4.serializers.OperationDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.OperationOutcomeSerializer
+import dev.ohs.fhir.model.r4.serializers.OrganizationAffiliationSerializer
+import dev.ohs.fhir.model.r4.serializers.OrganizationSerializer
+import dev.ohs.fhir.model.r4.serializers.ParametersSerializer
+import dev.ohs.fhir.model.r4.serializers.PatientSerializer
+import dev.ohs.fhir.model.r4.serializers.PaymentNoticeSerializer
+import dev.ohs.fhir.model.r4.serializers.PaymentReconciliationSerializer
+import dev.ohs.fhir.model.r4.serializers.PersonSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.PractitionerRoleSerializer
+import dev.ohs.fhir.model.r4.serializers.PractitionerSerializer
+import dev.ohs.fhir.model.r4.serializers.ProcedureSerializer
+import dev.ohs.fhir.model.r4.serializers.ProvenanceSerializer
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireResponseSerializer
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireSerializer
+import dev.ohs.fhir.model.r4.serializers.RelatedPersonSerializer
+import dev.ohs.fhir.model.r4.serializers.RequestGroupSerializer
+import dev.ohs.fhir.model.r4.serializers.ResearchDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.ResearchElementDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.ResearchStudySerializer
+import dev.ohs.fhir.model.r4.serializers.ResearchSubjectSerializer
+import dev.ohs.fhir.model.r4.serializers.RiskAssessmentSerializer
+import dev.ohs.fhir.model.r4.serializers.RiskEvidenceSynthesisSerializer
+import dev.ohs.fhir.model.r4.serializers.ScheduleSerializer
+import dev.ohs.fhir.model.r4.serializers.SearchParameterSerializer
+import dev.ohs.fhir.model.r4.serializers.ServiceRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.SlotSerializer
+import dev.ohs.fhir.model.r4.serializers.SpecimenDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.SpecimenSerializer
+import dev.ohs.fhir.model.r4.serializers.StructureDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.StructureMapSerializer
+import dev.ohs.fhir.model.r4.serializers.SubscriptionSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceNucleicAcidSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstancePolymerSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceProteinSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceReferenceInformationSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSourceMaterialSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSpecificationSerializer
+import dev.ohs.fhir.model.r4.serializers.SupplyDeliverySerializer
+import dev.ohs.fhir.model.r4.serializers.SupplyRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.TaskSerializer
+import dev.ohs.fhir.model.r4.serializers.TerminologyCapabilitiesSerializer
+import dev.ohs.fhir.model.r4.serializers.TestReportSerializer
+import dev.ohs.fhir.model.r4.serializers.TestScriptSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetSerializer
+import dev.ohs.fhir.model.r4.serializers.VerificationResultSerializer
+import dev.ohs.fhir.model.r4.serializers.VisionPrescriptionSerializer
+import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.Map
+import kotlin.collections.associateBy
 import kotlin.collections.mapOf
 import kotlin.reflect.KClass
 import kotlinx.serialization.DeserializationStrategy
@@ -178,16 +180,74 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.SerialKind
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
+import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.`internal`.AbstractPolymorphicSerializer
 import kotlinx.serialization.json.JsonClassDiscriminator
+
+internal interface FhirResourceSerializer<T : Resource> : KSerializer<T> {
+  public fun buildDescriptor(b: ClassSerialDescriptorBuilder)
+
+  public fun buildResourceDescriptor(serialName: String): SerialDescriptor =
+    buildClassSerialDescriptor(serialName) {
+      element("resourceType", String.serializer().descriptor, isOptional = false)
+      buildDescriptor(this)
+    }
+
+  public fun deserializeInternal(
+    decoder: CompositeDecoder,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
+  ): T
+
+  public fun serializeInternal(
+    encoder: CompositeEncoder,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
+    `value`: T,
+  )
+
+  override fun deserialize(decoder: Decoder): T =
+    decoder.decodeStructure(descriptor) {
+      deserializeInternal(this, descriptor, 1)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: T) {
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, descriptor.serialName)
+      serializeInternal(this, descriptor, 1, value)
+    }
+  }
+}
+
+internal class FhirResourcePolymorphicSerializer<T : Resource>(
+  private val `delegate`: FhirResourceSerializer<T>
+) : KSerializer<T> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor(delegate.descriptor.serialName) { delegate.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: T) {
+    encoder.encodeStructure(descriptor) {
+      delegate.serializeInternal(this, descriptor, 0, value)
+    }
+  }
+
+  override fun deserialize(decoder: Decoder): T =
+    decoder.decodeStructure(descriptor) {
+      delegate.deserializeInternal(this, descriptor, 0)
+    }
+}
 
 @OptIn(
   InternalSerializationApi::class,
@@ -196,307 +256,197 @@ import kotlinx.serialization.json.JsonClassDiscriminator
 internal object ResourcePolymorphicSerializer : AbstractPolymorphicSerializer<Resource>() {
   override val baseClass: KClass<Resource> = Resource::class
 
-  private val byName: Map<String, KSerializer<out Resource>> =
-    mapOf(
-      "Account" to AccountPolymorphicSerializer,
-      "ActivityDefinition" to ActivityDefinitionPolymorphicSerializer,
-      "AdverseEvent" to AdverseEventPolymorphicSerializer,
-      "AllergyIntolerance" to AllergyIntolerancePolymorphicSerializer,
-      "Appointment" to AppointmentPolymorphicSerializer,
-      "AppointmentResponse" to AppointmentResponsePolymorphicSerializer,
-      "AuditEvent" to AuditEventPolymorphicSerializer,
-      "Basic" to BasicPolymorphicSerializer,
-      "Binary" to BinaryPolymorphicSerializer,
-      "BiologicallyDerivedProduct" to BiologicallyDerivedProductPolymorphicSerializer,
-      "BodyStructure" to BodyStructurePolymorphicSerializer,
-      "Bundle" to BundlePolymorphicSerializer,
-      "CapabilityStatement" to CapabilityStatementPolymorphicSerializer,
-      "CarePlan" to CarePlanPolymorphicSerializer,
-      "CareTeam" to CareTeamPolymorphicSerializer,
-      "CatalogEntry" to CatalogEntryPolymorphicSerializer,
-      "ChargeItem" to ChargeItemPolymorphicSerializer,
-      "ChargeItemDefinition" to ChargeItemDefinitionPolymorphicSerializer,
-      "Claim" to ClaimPolymorphicSerializer,
-      "ClaimResponse" to ClaimResponsePolymorphicSerializer,
-      "ClinicalImpression" to ClinicalImpressionPolymorphicSerializer,
-      "CodeSystem" to CodeSystemPolymorphicSerializer,
-      "Communication" to CommunicationPolymorphicSerializer,
-      "CommunicationRequest" to CommunicationRequestPolymorphicSerializer,
-      "CompartmentDefinition" to CompartmentDefinitionPolymorphicSerializer,
-      "Composition" to CompositionPolymorphicSerializer,
-      "ConceptMap" to ConceptMapPolymorphicSerializer,
-      "Condition" to ConditionPolymorphicSerializer,
-      "Consent" to ConsentPolymorphicSerializer,
-      "Contract" to ContractPolymorphicSerializer,
-      "Coverage" to CoveragePolymorphicSerializer,
-      "CoverageEligibilityRequest" to CoverageEligibilityRequestPolymorphicSerializer,
-      "CoverageEligibilityResponse" to CoverageEligibilityResponsePolymorphicSerializer,
-      "DetectedIssue" to DetectedIssuePolymorphicSerializer,
-      "Device" to DevicePolymorphicSerializer,
-      "DeviceDefinition" to DeviceDefinitionPolymorphicSerializer,
-      "DeviceMetric" to DeviceMetricPolymorphicSerializer,
-      "DeviceRequest" to DeviceRequestPolymorphicSerializer,
-      "DeviceUseStatement" to DeviceUseStatementPolymorphicSerializer,
-      "DiagnosticReport" to DiagnosticReportPolymorphicSerializer,
-      "DocumentManifest" to DocumentManifestPolymorphicSerializer,
-      "DocumentReference" to DocumentReferencePolymorphicSerializer,
-      "EffectEvidenceSynthesis" to EffectEvidenceSynthesisPolymorphicSerializer,
-      "Encounter" to EncounterPolymorphicSerializer,
-      "Endpoint" to EndpointPolymorphicSerializer,
-      "EnrollmentRequest" to EnrollmentRequestPolymorphicSerializer,
-      "EnrollmentResponse" to EnrollmentResponsePolymorphicSerializer,
-      "EpisodeOfCare" to EpisodeOfCarePolymorphicSerializer,
-      "EventDefinition" to EventDefinitionPolymorphicSerializer,
-      "Evidence" to EvidencePolymorphicSerializer,
-      "EvidenceVariable" to EvidenceVariablePolymorphicSerializer,
-      "ExampleScenario" to ExampleScenarioPolymorphicSerializer,
-      "ExplanationOfBenefit" to ExplanationOfBenefitPolymorphicSerializer,
-      "FamilyMemberHistory" to FamilyMemberHistoryPolymorphicSerializer,
-      "Flag" to FlagPolymorphicSerializer,
-      "Goal" to GoalPolymorphicSerializer,
-      "GraphDefinition" to GraphDefinitionPolymorphicSerializer,
-      "Group" to GroupPolymorphicSerializer,
-      "GuidanceResponse" to GuidanceResponsePolymorphicSerializer,
-      "HealthcareService" to HealthcareServicePolymorphicSerializer,
-      "ImagingStudy" to ImagingStudyPolymorphicSerializer,
-      "Immunization" to ImmunizationPolymorphicSerializer,
-      "ImmunizationEvaluation" to ImmunizationEvaluationPolymorphicSerializer,
-      "ImmunizationRecommendation" to ImmunizationRecommendationPolymorphicSerializer,
-      "ImplementationGuide" to ImplementationGuidePolymorphicSerializer,
-      "InsurancePlan" to InsurancePlanPolymorphicSerializer,
-      "Invoice" to InvoicePolymorphicSerializer,
-      "Library" to LibraryPolymorphicSerializer,
-      "Linkage" to LinkagePolymorphicSerializer,
-      "List" to ListPolymorphicSerializer,
-      "Location" to LocationPolymorphicSerializer,
-      "Measure" to MeasurePolymorphicSerializer,
-      "MeasureReport" to MeasureReportPolymorphicSerializer,
-      "Media" to MediaPolymorphicSerializer,
-      "Medication" to MedicationPolymorphicSerializer,
-      "MedicationAdministration" to MedicationAdministrationPolymorphicSerializer,
-      "MedicationDispense" to MedicationDispensePolymorphicSerializer,
-      "MedicationKnowledge" to MedicationKnowledgePolymorphicSerializer,
-      "MedicationRequest" to MedicationRequestPolymorphicSerializer,
-      "MedicationStatement" to MedicationStatementPolymorphicSerializer,
-      "MedicinalProduct" to MedicinalProductPolymorphicSerializer,
-      "MedicinalProductAuthorization" to MedicinalProductAuthorizationPolymorphicSerializer,
-      "MedicinalProductContraindication" to MedicinalProductContraindicationPolymorphicSerializer,
-      "MedicinalProductIndication" to MedicinalProductIndicationPolymorphicSerializer,
-      "MedicinalProductIngredient" to MedicinalProductIngredientPolymorphicSerializer,
-      "MedicinalProductInteraction" to MedicinalProductInteractionPolymorphicSerializer,
-      "MedicinalProductManufactured" to MedicinalProductManufacturedPolymorphicSerializer,
-      "MedicinalProductPackaged" to MedicinalProductPackagedPolymorphicSerializer,
-      "MedicinalProductPharmaceutical" to MedicinalProductPharmaceuticalPolymorphicSerializer,
-      "MedicinalProductUndesirableEffect" to MedicinalProductUndesirableEffectPolymorphicSerializer,
-      "MessageDefinition" to MessageDefinitionPolymorphicSerializer,
-      "MessageHeader" to MessageHeaderPolymorphicSerializer,
-      "MolecularSequence" to MolecularSequencePolymorphicSerializer,
-      "NamingSystem" to NamingSystemPolymorphicSerializer,
-      "NutritionOrder" to NutritionOrderPolymorphicSerializer,
-      "Observation" to ObservationPolymorphicSerializer,
-      "ObservationDefinition" to ObservationDefinitionPolymorphicSerializer,
-      "OperationDefinition" to OperationDefinitionPolymorphicSerializer,
-      "OperationOutcome" to OperationOutcomePolymorphicSerializer,
-      "Organization" to OrganizationPolymorphicSerializer,
-      "OrganizationAffiliation" to OrganizationAffiliationPolymorphicSerializer,
-      "Parameters" to ParametersPolymorphicSerializer,
-      "Patient" to PatientPolymorphicSerializer,
-      "PaymentNotice" to PaymentNoticePolymorphicSerializer,
-      "PaymentReconciliation" to PaymentReconciliationPolymorphicSerializer,
-      "Person" to PersonPolymorphicSerializer,
-      "PlanDefinition" to PlanDefinitionPolymorphicSerializer,
-      "Practitioner" to PractitionerPolymorphicSerializer,
-      "PractitionerRole" to PractitionerRolePolymorphicSerializer,
-      "Procedure" to ProcedurePolymorphicSerializer,
-      "Provenance" to ProvenancePolymorphicSerializer,
-      "Questionnaire" to QuestionnairePolymorphicSerializer,
-      "QuestionnaireResponse" to QuestionnaireResponsePolymorphicSerializer,
-      "RelatedPerson" to RelatedPersonPolymorphicSerializer,
-      "RequestGroup" to RequestGroupPolymorphicSerializer,
-      "ResearchDefinition" to ResearchDefinitionPolymorphicSerializer,
-      "ResearchElementDefinition" to ResearchElementDefinitionPolymorphicSerializer,
-      "ResearchStudy" to ResearchStudyPolymorphicSerializer,
-      "ResearchSubject" to ResearchSubjectPolymorphicSerializer,
-      "RiskAssessment" to RiskAssessmentPolymorphicSerializer,
-      "RiskEvidenceSynthesis" to RiskEvidenceSynthesisPolymorphicSerializer,
-      "Schedule" to SchedulePolymorphicSerializer,
-      "SearchParameter" to SearchParameterPolymorphicSerializer,
-      "ServiceRequest" to ServiceRequestPolymorphicSerializer,
-      "Slot" to SlotPolymorphicSerializer,
-      "Specimen" to SpecimenPolymorphicSerializer,
-      "SpecimenDefinition" to SpecimenDefinitionPolymorphicSerializer,
-      "StructureDefinition" to StructureDefinitionPolymorphicSerializer,
-      "StructureMap" to StructureMapPolymorphicSerializer,
-      "Subscription" to SubscriptionPolymorphicSerializer,
-      "Substance" to SubstancePolymorphicSerializer,
-      "SubstanceNucleicAcid" to SubstanceNucleicAcidPolymorphicSerializer,
-      "SubstancePolymer" to SubstancePolymerPolymorphicSerializer,
-      "SubstanceProtein" to SubstanceProteinPolymorphicSerializer,
-      "SubstanceReferenceInformation" to SubstanceReferenceInformationPolymorphicSerializer,
-      "SubstanceSourceMaterial" to SubstanceSourceMaterialPolymorphicSerializer,
-      "SubstanceSpecification" to SubstanceSpecificationPolymorphicSerializer,
-      "SupplyDelivery" to SupplyDeliveryPolymorphicSerializer,
-      "SupplyRequest" to SupplyRequestPolymorphicSerializer,
-      "Task" to TaskPolymorphicSerializer,
-      "TerminologyCapabilities" to TerminologyCapabilitiesPolymorphicSerializer,
-      "TestReport" to TestReportPolymorphicSerializer,
-      "TestScript" to TestScriptPolymorphicSerializer,
-      "ValueSet" to ValueSetPolymorphicSerializer,
-      "VerificationResult" to VerificationResultPolymorphicSerializer,
-      "VisionPrescription" to VisionPrescriptionPolymorphicSerializer,
-    )
-
   private val byClass: Map<KClass<*>, KSerializer<out Resource>> =
     mapOf(
-      Account::class to AccountPolymorphicSerializer,
-      ActivityDefinition::class to ActivityDefinitionPolymorphicSerializer,
-      AdverseEvent::class to AdverseEventPolymorphicSerializer,
-      AllergyIntolerance::class to AllergyIntolerancePolymorphicSerializer,
-      Appointment::class to AppointmentPolymorphicSerializer,
-      AppointmentResponse::class to AppointmentResponsePolymorphicSerializer,
-      AuditEvent::class to AuditEventPolymorphicSerializer,
-      Basic::class to BasicPolymorphicSerializer,
-      Binary::class to BinaryPolymorphicSerializer,
-      BiologicallyDerivedProduct::class to BiologicallyDerivedProductPolymorphicSerializer,
-      BodyStructure::class to BodyStructurePolymorphicSerializer,
-      Bundle::class to BundlePolymorphicSerializer,
-      CapabilityStatement::class to CapabilityStatementPolymorphicSerializer,
-      CarePlan::class to CarePlanPolymorphicSerializer,
-      CareTeam::class to CareTeamPolymorphicSerializer,
-      CatalogEntry::class to CatalogEntryPolymorphicSerializer,
-      ChargeItem::class to ChargeItemPolymorphicSerializer,
-      ChargeItemDefinition::class to ChargeItemDefinitionPolymorphicSerializer,
-      Claim::class to ClaimPolymorphicSerializer,
-      ClaimResponse::class to ClaimResponsePolymorphicSerializer,
-      ClinicalImpression::class to ClinicalImpressionPolymorphicSerializer,
-      CodeSystem::class to CodeSystemPolymorphicSerializer,
-      Communication::class to CommunicationPolymorphicSerializer,
-      CommunicationRequest::class to CommunicationRequestPolymorphicSerializer,
-      CompartmentDefinition::class to CompartmentDefinitionPolymorphicSerializer,
-      Composition::class to CompositionPolymorphicSerializer,
-      ConceptMap::class to ConceptMapPolymorphicSerializer,
-      Condition::class to ConditionPolymorphicSerializer,
-      Consent::class to ConsentPolymorphicSerializer,
-      Contract::class to ContractPolymorphicSerializer,
-      Coverage::class to CoveragePolymorphicSerializer,
-      CoverageEligibilityRequest::class to CoverageEligibilityRequestPolymorphicSerializer,
-      CoverageEligibilityResponse::class to CoverageEligibilityResponsePolymorphicSerializer,
-      DetectedIssue::class to DetectedIssuePolymorphicSerializer,
-      Device::class to DevicePolymorphicSerializer,
-      DeviceDefinition::class to DeviceDefinitionPolymorphicSerializer,
-      DeviceMetric::class to DeviceMetricPolymorphicSerializer,
-      DeviceRequest::class to DeviceRequestPolymorphicSerializer,
-      DeviceUseStatement::class to DeviceUseStatementPolymorphicSerializer,
-      DiagnosticReport::class to DiagnosticReportPolymorphicSerializer,
-      DocumentManifest::class to DocumentManifestPolymorphicSerializer,
-      DocumentReference::class to DocumentReferencePolymorphicSerializer,
-      EffectEvidenceSynthesis::class to EffectEvidenceSynthesisPolymorphicSerializer,
-      Encounter::class to EncounterPolymorphicSerializer,
-      Endpoint::class to EndpointPolymorphicSerializer,
-      EnrollmentRequest::class to EnrollmentRequestPolymorphicSerializer,
-      EnrollmentResponse::class to EnrollmentResponsePolymorphicSerializer,
-      EpisodeOfCare::class to EpisodeOfCarePolymorphicSerializer,
-      EventDefinition::class to EventDefinitionPolymorphicSerializer,
-      Evidence::class to EvidencePolymorphicSerializer,
-      EvidenceVariable::class to EvidenceVariablePolymorphicSerializer,
-      ExampleScenario::class to ExampleScenarioPolymorphicSerializer,
-      ExplanationOfBenefit::class to ExplanationOfBenefitPolymorphicSerializer,
-      FamilyMemberHistory::class to FamilyMemberHistoryPolymorphicSerializer,
-      Flag::class to FlagPolymorphicSerializer,
-      Goal::class to GoalPolymorphicSerializer,
-      GraphDefinition::class to GraphDefinitionPolymorphicSerializer,
-      Group::class to GroupPolymorphicSerializer,
-      GuidanceResponse::class to GuidanceResponsePolymorphicSerializer,
-      HealthcareService::class to HealthcareServicePolymorphicSerializer,
-      ImagingStudy::class to ImagingStudyPolymorphicSerializer,
-      Immunization::class to ImmunizationPolymorphicSerializer,
-      ImmunizationEvaluation::class to ImmunizationEvaluationPolymorphicSerializer,
-      ImmunizationRecommendation::class to ImmunizationRecommendationPolymorphicSerializer,
-      ImplementationGuide::class to ImplementationGuidePolymorphicSerializer,
-      InsurancePlan::class to InsurancePlanPolymorphicSerializer,
-      Invoice::class to InvoicePolymorphicSerializer,
-      Library::class to LibraryPolymorphicSerializer,
-      Linkage::class to LinkagePolymorphicSerializer,
-      List::class to ListPolymorphicSerializer,
-      Location::class to LocationPolymorphicSerializer,
-      Measure::class to MeasurePolymorphicSerializer,
-      MeasureReport::class to MeasureReportPolymorphicSerializer,
-      Media::class to MediaPolymorphicSerializer,
-      Medication::class to MedicationPolymorphicSerializer,
-      MedicationAdministration::class to MedicationAdministrationPolymorphicSerializer,
-      MedicationDispense::class to MedicationDispensePolymorphicSerializer,
-      MedicationKnowledge::class to MedicationKnowledgePolymorphicSerializer,
-      MedicationRequest::class to MedicationRequestPolymorphicSerializer,
-      MedicationStatement::class to MedicationStatementPolymorphicSerializer,
-      MedicinalProduct::class to MedicinalProductPolymorphicSerializer,
-      MedicinalProductAuthorization::class to MedicinalProductAuthorizationPolymorphicSerializer,
+      Account::class to FhirResourcePolymorphicSerializer(AccountSerializer),
+      ActivityDefinition::class to FhirResourcePolymorphicSerializer(ActivityDefinitionSerializer),
+      AdverseEvent::class to FhirResourcePolymorphicSerializer(AdverseEventSerializer),
+      AllergyIntolerance::class to FhirResourcePolymorphicSerializer(AllergyIntoleranceSerializer),
+      Appointment::class to FhirResourcePolymorphicSerializer(AppointmentSerializer),
+      AppointmentResponse::class to
+        FhirResourcePolymorphicSerializer(AppointmentResponseSerializer),
+      AuditEvent::class to FhirResourcePolymorphicSerializer(AuditEventSerializer),
+      Basic::class to FhirResourcePolymorphicSerializer(BasicSerializer),
+      Binary::class to FhirResourcePolymorphicSerializer(BinarySerializer),
+      BiologicallyDerivedProduct::class to
+        FhirResourcePolymorphicSerializer(BiologicallyDerivedProductSerializer),
+      BodyStructure::class to FhirResourcePolymorphicSerializer(BodyStructureSerializer),
+      Bundle::class to FhirResourcePolymorphicSerializer(BundleSerializer),
+      CapabilityStatement::class to
+        FhirResourcePolymorphicSerializer(CapabilityStatementSerializer),
+      CarePlan::class to FhirResourcePolymorphicSerializer(CarePlanSerializer),
+      CareTeam::class to FhirResourcePolymorphicSerializer(CareTeamSerializer),
+      CatalogEntry::class to FhirResourcePolymorphicSerializer(CatalogEntrySerializer),
+      ChargeItem::class to FhirResourcePolymorphicSerializer(ChargeItemSerializer),
+      ChargeItemDefinition::class to
+        FhirResourcePolymorphicSerializer(ChargeItemDefinitionSerializer),
+      Claim::class to FhirResourcePolymorphicSerializer(ClaimSerializer),
+      ClaimResponse::class to FhirResourcePolymorphicSerializer(ClaimResponseSerializer),
+      ClinicalImpression::class to FhirResourcePolymorphicSerializer(ClinicalImpressionSerializer),
+      CodeSystem::class to FhirResourcePolymorphicSerializer(CodeSystemSerializer),
+      Communication::class to FhirResourcePolymorphicSerializer(CommunicationSerializer),
+      CommunicationRequest::class to
+        FhirResourcePolymorphicSerializer(CommunicationRequestSerializer),
+      CompartmentDefinition::class to
+        FhirResourcePolymorphicSerializer(CompartmentDefinitionSerializer),
+      Composition::class to FhirResourcePolymorphicSerializer(CompositionSerializer),
+      ConceptMap::class to FhirResourcePolymorphicSerializer(ConceptMapSerializer),
+      Condition::class to FhirResourcePolymorphicSerializer(ConditionSerializer),
+      Consent::class to FhirResourcePolymorphicSerializer(ConsentSerializer),
+      Contract::class to FhirResourcePolymorphicSerializer(ContractSerializer),
+      Coverage::class to FhirResourcePolymorphicSerializer(CoverageSerializer),
+      CoverageEligibilityRequest::class to
+        FhirResourcePolymorphicSerializer(CoverageEligibilityRequestSerializer),
+      CoverageEligibilityResponse::class to
+        FhirResourcePolymorphicSerializer(CoverageEligibilityResponseSerializer),
+      DetectedIssue::class to FhirResourcePolymorphicSerializer(DetectedIssueSerializer),
+      Device::class to FhirResourcePolymorphicSerializer(DeviceSerializer),
+      DeviceDefinition::class to FhirResourcePolymorphicSerializer(DeviceDefinitionSerializer),
+      DeviceMetric::class to FhirResourcePolymorphicSerializer(DeviceMetricSerializer),
+      DeviceRequest::class to FhirResourcePolymorphicSerializer(DeviceRequestSerializer),
+      DeviceUseStatement::class to FhirResourcePolymorphicSerializer(DeviceUseStatementSerializer),
+      DiagnosticReport::class to FhirResourcePolymorphicSerializer(DiagnosticReportSerializer),
+      DocumentManifest::class to FhirResourcePolymorphicSerializer(DocumentManifestSerializer),
+      DocumentReference::class to FhirResourcePolymorphicSerializer(DocumentReferenceSerializer),
+      EffectEvidenceSynthesis::class to
+        FhirResourcePolymorphicSerializer(EffectEvidenceSynthesisSerializer),
+      Encounter::class to FhirResourcePolymorphicSerializer(EncounterSerializer),
+      Endpoint::class to FhirResourcePolymorphicSerializer(EndpointSerializer),
+      EnrollmentRequest::class to FhirResourcePolymorphicSerializer(EnrollmentRequestSerializer),
+      EnrollmentResponse::class to FhirResourcePolymorphicSerializer(EnrollmentResponseSerializer),
+      EpisodeOfCare::class to FhirResourcePolymorphicSerializer(EpisodeOfCareSerializer),
+      EventDefinition::class to FhirResourcePolymorphicSerializer(EventDefinitionSerializer),
+      Evidence::class to FhirResourcePolymorphicSerializer(EvidenceSerializer),
+      EvidenceVariable::class to FhirResourcePolymorphicSerializer(EvidenceVariableSerializer),
+      ExampleScenario::class to FhirResourcePolymorphicSerializer(ExampleScenarioSerializer),
+      ExplanationOfBenefit::class to
+        FhirResourcePolymorphicSerializer(ExplanationOfBenefitSerializer),
+      FamilyMemberHistory::class to
+        FhirResourcePolymorphicSerializer(FamilyMemberHistorySerializer),
+      Flag::class to FhirResourcePolymorphicSerializer(FlagSerializer),
+      Goal::class to FhirResourcePolymorphicSerializer(GoalSerializer),
+      GraphDefinition::class to FhirResourcePolymorphicSerializer(GraphDefinitionSerializer),
+      Group::class to FhirResourcePolymorphicSerializer(GroupSerializer),
+      GuidanceResponse::class to FhirResourcePolymorphicSerializer(GuidanceResponseSerializer),
+      HealthcareService::class to FhirResourcePolymorphicSerializer(HealthcareServiceSerializer),
+      ImagingStudy::class to FhirResourcePolymorphicSerializer(ImagingStudySerializer),
+      Immunization::class to FhirResourcePolymorphicSerializer(ImmunizationSerializer),
+      ImmunizationEvaluation::class to
+        FhirResourcePolymorphicSerializer(ImmunizationEvaluationSerializer),
+      ImmunizationRecommendation::class to
+        FhirResourcePolymorphicSerializer(ImmunizationRecommendationSerializer),
+      ImplementationGuide::class to
+        FhirResourcePolymorphicSerializer(ImplementationGuideSerializer),
+      InsurancePlan::class to FhirResourcePolymorphicSerializer(InsurancePlanSerializer),
+      Invoice::class to FhirResourcePolymorphicSerializer(InvoiceSerializer),
+      Library::class to FhirResourcePolymorphicSerializer(LibrarySerializer),
+      Linkage::class to FhirResourcePolymorphicSerializer(LinkageSerializer),
+      List::class to FhirResourcePolymorphicSerializer(ListSerializer),
+      Location::class to FhirResourcePolymorphicSerializer(LocationSerializer),
+      Measure::class to FhirResourcePolymorphicSerializer(MeasureSerializer),
+      MeasureReport::class to FhirResourcePolymorphicSerializer(MeasureReportSerializer),
+      Media::class to FhirResourcePolymorphicSerializer(MediaSerializer),
+      Medication::class to FhirResourcePolymorphicSerializer(MedicationSerializer),
+      MedicationAdministration::class to
+        FhirResourcePolymorphicSerializer(MedicationAdministrationSerializer),
+      MedicationDispense::class to FhirResourcePolymorphicSerializer(MedicationDispenseSerializer),
+      MedicationKnowledge::class to
+        FhirResourcePolymorphicSerializer(MedicationKnowledgeSerializer),
+      MedicationRequest::class to FhirResourcePolymorphicSerializer(MedicationRequestSerializer),
+      MedicationStatement::class to
+        FhirResourcePolymorphicSerializer(MedicationStatementSerializer),
+      MedicinalProduct::class to FhirResourcePolymorphicSerializer(MedicinalProductSerializer),
+      MedicinalProductAuthorization::class to
+        FhirResourcePolymorphicSerializer(MedicinalProductAuthorizationSerializer),
       MedicinalProductContraindication::class to
-        MedicinalProductContraindicationPolymorphicSerializer,
-      MedicinalProductIndication::class to MedicinalProductIndicationPolymorphicSerializer,
-      MedicinalProductIngredient::class to MedicinalProductIngredientPolymorphicSerializer,
-      MedicinalProductInteraction::class to MedicinalProductInteractionPolymorphicSerializer,
-      MedicinalProductManufactured::class to MedicinalProductManufacturedPolymorphicSerializer,
-      MedicinalProductPackaged::class to MedicinalProductPackagedPolymorphicSerializer,
-      MedicinalProductPharmaceutical::class to MedicinalProductPharmaceuticalPolymorphicSerializer,
+        FhirResourcePolymorphicSerializer(MedicinalProductContraindicationSerializer),
+      MedicinalProductIndication::class to
+        FhirResourcePolymorphicSerializer(MedicinalProductIndicationSerializer),
+      MedicinalProductIngredient::class to
+        FhirResourcePolymorphicSerializer(MedicinalProductIngredientSerializer),
+      MedicinalProductInteraction::class to
+        FhirResourcePolymorphicSerializer(MedicinalProductInteractionSerializer),
+      MedicinalProductManufactured::class to
+        FhirResourcePolymorphicSerializer(MedicinalProductManufacturedSerializer),
+      MedicinalProductPackaged::class to
+        FhirResourcePolymorphicSerializer(MedicinalProductPackagedSerializer),
+      MedicinalProductPharmaceutical::class to
+        FhirResourcePolymorphicSerializer(MedicinalProductPharmaceuticalSerializer),
       MedicinalProductUndesirableEffect::class to
-        MedicinalProductUndesirableEffectPolymorphicSerializer,
-      MessageDefinition::class to MessageDefinitionPolymorphicSerializer,
-      MessageHeader::class to MessageHeaderPolymorphicSerializer,
-      MolecularSequence::class to MolecularSequencePolymorphicSerializer,
-      NamingSystem::class to NamingSystemPolymorphicSerializer,
-      NutritionOrder::class to NutritionOrderPolymorphicSerializer,
-      Observation::class to ObservationPolymorphicSerializer,
-      ObservationDefinition::class to ObservationDefinitionPolymorphicSerializer,
-      OperationDefinition::class to OperationDefinitionPolymorphicSerializer,
-      OperationOutcome::class to OperationOutcomePolymorphicSerializer,
-      Organization::class to OrganizationPolymorphicSerializer,
-      OrganizationAffiliation::class to OrganizationAffiliationPolymorphicSerializer,
-      Parameters::class to ParametersPolymorphicSerializer,
-      Patient::class to PatientPolymorphicSerializer,
-      PaymentNotice::class to PaymentNoticePolymorphicSerializer,
-      PaymentReconciliation::class to PaymentReconciliationPolymorphicSerializer,
-      Person::class to PersonPolymorphicSerializer,
-      PlanDefinition::class to PlanDefinitionPolymorphicSerializer,
-      Practitioner::class to PractitionerPolymorphicSerializer,
-      PractitionerRole::class to PractitionerRolePolymorphicSerializer,
-      Procedure::class to ProcedurePolymorphicSerializer,
-      Provenance::class to ProvenancePolymorphicSerializer,
-      Questionnaire::class to QuestionnairePolymorphicSerializer,
-      QuestionnaireResponse::class to QuestionnaireResponsePolymorphicSerializer,
-      RelatedPerson::class to RelatedPersonPolymorphicSerializer,
-      RequestGroup::class to RequestGroupPolymorphicSerializer,
-      ResearchDefinition::class to ResearchDefinitionPolymorphicSerializer,
-      ResearchElementDefinition::class to ResearchElementDefinitionPolymorphicSerializer,
-      ResearchStudy::class to ResearchStudyPolymorphicSerializer,
-      ResearchSubject::class to ResearchSubjectPolymorphicSerializer,
-      RiskAssessment::class to RiskAssessmentPolymorphicSerializer,
-      RiskEvidenceSynthesis::class to RiskEvidenceSynthesisPolymorphicSerializer,
-      Schedule::class to SchedulePolymorphicSerializer,
-      SearchParameter::class to SearchParameterPolymorphicSerializer,
-      ServiceRequest::class to ServiceRequestPolymorphicSerializer,
-      Slot::class to SlotPolymorphicSerializer,
-      Specimen::class to SpecimenPolymorphicSerializer,
-      SpecimenDefinition::class to SpecimenDefinitionPolymorphicSerializer,
-      StructureDefinition::class to StructureDefinitionPolymorphicSerializer,
-      StructureMap::class to StructureMapPolymorphicSerializer,
-      Subscription::class to SubscriptionPolymorphicSerializer,
-      Substance::class to SubstancePolymorphicSerializer,
-      SubstanceNucleicAcid::class to SubstanceNucleicAcidPolymorphicSerializer,
-      SubstancePolymer::class to SubstancePolymerPolymorphicSerializer,
-      SubstanceProtein::class to SubstanceProteinPolymorphicSerializer,
-      SubstanceReferenceInformation::class to SubstanceReferenceInformationPolymorphicSerializer,
-      SubstanceSourceMaterial::class to SubstanceSourceMaterialPolymorphicSerializer,
-      SubstanceSpecification::class to SubstanceSpecificationPolymorphicSerializer,
-      SupplyDelivery::class to SupplyDeliveryPolymorphicSerializer,
-      SupplyRequest::class to SupplyRequestPolymorphicSerializer,
-      Task::class to TaskPolymorphicSerializer,
-      TerminologyCapabilities::class to TerminologyCapabilitiesPolymorphicSerializer,
-      TestReport::class to TestReportPolymorphicSerializer,
-      TestScript::class to TestScriptPolymorphicSerializer,
-      ValueSet::class to ValueSetPolymorphicSerializer,
-      VerificationResult::class to VerificationResultPolymorphicSerializer,
-      VisionPrescription::class to VisionPrescriptionPolymorphicSerializer,
+        FhirResourcePolymorphicSerializer(MedicinalProductUndesirableEffectSerializer),
+      MessageDefinition::class to FhirResourcePolymorphicSerializer(MessageDefinitionSerializer),
+      MessageHeader::class to FhirResourcePolymorphicSerializer(MessageHeaderSerializer),
+      MolecularSequence::class to FhirResourcePolymorphicSerializer(MolecularSequenceSerializer),
+      NamingSystem::class to FhirResourcePolymorphicSerializer(NamingSystemSerializer),
+      NutritionOrder::class to FhirResourcePolymorphicSerializer(NutritionOrderSerializer),
+      Observation::class to FhirResourcePolymorphicSerializer(ObservationSerializer),
+      ObservationDefinition::class to
+        FhirResourcePolymorphicSerializer(ObservationDefinitionSerializer),
+      OperationDefinition::class to
+        FhirResourcePolymorphicSerializer(OperationDefinitionSerializer),
+      OperationOutcome::class to FhirResourcePolymorphicSerializer(OperationOutcomeSerializer),
+      Organization::class to FhirResourcePolymorphicSerializer(OrganizationSerializer),
+      OrganizationAffiliation::class to
+        FhirResourcePolymorphicSerializer(OrganizationAffiliationSerializer),
+      Parameters::class to FhirResourcePolymorphicSerializer(ParametersSerializer),
+      Patient::class to FhirResourcePolymorphicSerializer(PatientSerializer),
+      PaymentNotice::class to FhirResourcePolymorphicSerializer(PaymentNoticeSerializer),
+      PaymentReconciliation::class to
+        FhirResourcePolymorphicSerializer(PaymentReconciliationSerializer),
+      Person::class to FhirResourcePolymorphicSerializer(PersonSerializer),
+      PlanDefinition::class to FhirResourcePolymorphicSerializer(PlanDefinitionSerializer),
+      Practitioner::class to FhirResourcePolymorphicSerializer(PractitionerSerializer),
+      PractitionerRole::class to FhirResourcePolymorphicSerializer(PractitionerRoleSerializer),
+      Procedure::class to FhirResourcePolymorphicSerializer(ProcedureSerializer),
+      Provenance::class to FhirResourcePolymorphicSerializer(ProvenanceSerializer),
+      Questionnaire::class to FhirResourcePolymorphicSerializer(QuestionnaireSerializer),
+      QuestionnaireResponse::class to
+        FhirResourcePolymorphicSerializer(QuestionnaireResponseSerializer),
+      RelatedPerson::class to FhirResourcePolymorphicSerializer(RelatedPersonSerializer),
+      RequestGroup::class to FhirResourcePolymorphicSerializer(RequestGroupSerializer),
+      ResearchDefinition::class to FhirResourcePolymorphicSerializer(ResearchDefinitionSerializer),
+      ResearchElementDefinition::class to
+        FhirResourcePolymorphicSerializer(ResearchElementDefinitionSerializer),
+      ResearchStudy::class to FhirResourcePolymorphicSerializer(ResearchStudySerializer),
+      ResearchSubject::class to FhirResourcePolymorphicSerializer(ResearchSubjectSerializer),
+      RiskAssessment::class to FhirResourcePolymorphicSerializer(RiskAssessmentSerializer),
+      RiskEvidenceSynthesis::class to
+        FhirResourcePolymorphicSerializer(RiskEvidenceSynthesisSerializer),
+      Schedule::class to FhirResourcePolymorphicSerializer(ScheduleSerializer),
+      SearchParameter::class to FhirResourcePolymorphicSerializer(SearchParameterSerializer),
+      ServiceRequest::class to FhirResourcePolymorphicSerializer(ServiceRequestSerializer),
+      Slot::class to FhirResourcePolymorphicSerializer(SlotSerializer),
+      Specimen::class to FhirResourcePolymorphicSerializer(SpecimenSerializer),
+      SpecimenDefinition::class to FhirResourcePolymorphicSerializer(SpecimenDefinitionSerializer),
+      StructureDefinition::class to
+        FhirResourcePolymorphicSerializer(StructureDefinitionSerializer),
+      StructureMap::class to FhirResourcePolymorphicSerializer(StructureMapSerializer),
+      Subscription::class to FhirResourcePolymorphicSerializer(SubscriptionSerializer),
+      Substance::class to FhirResourcePolymorphicSerializer(SubstanceSerializer),
+      SubstanceNucleicAcid::class to
+        FhirResourcePolymorphicSerializer(SubstanceNucleicAcidSerializer),
+      SubstancePolymer::class to FhirResourcePolymorphicSerializer(SubstancePolymerSerializer),
+      SubstanceProtein::class to FhirResourcePolymorphicSerializer(SubstanceProteinSerializer),
+      SubstanceReferenceInformation::class to
+        FhirResourcePolymorphicSerializer(SubstanceReferenceInformationSerializer),
+      SubstanceSourceMaterial::class to
+        FhirResourcePolymorphicSerializer(SubstanceSourceMaterialSerializer),
+      SubstanceSpecification::class to
+        FhirResourcePolymorphicSerializer(SubstanceSpecificationSerializer),
+      SupplyDelivery::class to FhirResourcePolymorphicSerializer(SupplyDeliverySerializer),
+      SupplyRequest::class to FhirResourcePolymorphicSerializer(SupplyRequestSerializer),
+      Task::class to FhirResourcePolymorphicSerializer(TaskSerializer),
+      TerminologyCapabilities::class to
+        FhirResourcePolymorphicSerializer(TerminologyCapabilitiesSerializer),
+      TestReport::class to FhirResourcePolymorphicSerializer(TestReportSerializer),
+      TestScript::class to FhirResourcePolymorphicSerializer(TestScriptSerializer),
+      ValueSet::class to FhirResourcePolymorphicSerializer(ValueSetSerializer),
+      VerificationResult::class to FhirResourcePolymorphicSerializer(VerificationResultSerializer),
+      VisionPrescription::class to FhirResourcePolymorphicSerializer(VisionPrescriptionSerializer),
     )
+
+  private val byName: Map<String, KSerializer<out Resource>> =
+    byClass.values.associateBy { it.descriptor.serialName }
 
   override val descriptor: SerialDescriptor =
     buildSerialDescriptor("Resource", PolymorphicKind.SEALED) {
@@ -512,7 +462,8 @@ internal object ResourcePolymorphicSerializer : AbstractPolymorphicSerializer<Re
       annotations = listOf(JsonClassDiscriminator("resourceType"))
     }
 
-  internal val listSerializer: KSerializer<kotlin.collections.List<Resource>> = ListSerializer(this)
+  internal val listSerializer: KSerializer<kotlin.collections.List<Resource>> =
+    kotlinx.serialization.builtins.ListSerializer(this)
 
   @Suppress("UNCHECKED_CAST")
   override fun findPolymorphicSerializerOrNull(

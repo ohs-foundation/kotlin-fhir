@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Money
@@ -844,14 +845,11 @@ internal object CoverageEligibilityRequestItemDiagnosisSerializer :
   }
 }
 
-internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligibilityRequest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CoverageEligibilityRequest") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object CoverageEligibilityRequestSerializer :
+  FhirResourceSerializer<CoverageEligibilityRequest> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("CoverageEligibilityRequest")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -928,19 +926,7 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
     )
   }
 
-  override fun deserialize(decoder: Decoder): CoverageEligibilityRequest =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityRequest) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "CoverageEligibilityRequest")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1175,7 +1161,7 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1338,23 +1324,4 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
         value.item,
       )
   }
-}
-
-internal object CoverageEligibilityRequestPolymorphicSerializer :
-  KSerializer<CoverageEligibilityRequest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CoverageEligibilityRequest") {
-      CoverageEligibilityRequestSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityRequest) {
-    encoder.encodeStructure(descriptor) {
-      CoverageEligibilityRequestSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): CoverageEligibilityRequest =
-    decoder.decodeStructure(descriptor) {
-      CoverageEligibilityRequestSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

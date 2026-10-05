@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.ImmunizationRecommendation
 import dev.ohs.fhir.model.r4.Meta
@@ -544,14 +545,11 @@ internal object ImmunizationRecommendationRecommendationDateCriterionSerializer 
   }
 }
 
-internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationRecommendation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ImmunizationRecommendation") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ImmunizationRecommendationSerializer :
+  FhirResourceSerializer<ImmunizationRecommendation> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ImmunizationRecommendation")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -592,19 +590,7 @@ internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationR
     )
   }
 
-  override fun deserialize(decoder: Decoder): ImmunizationRecommendation =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ImmunizationRecommendation) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ImmunizationRecommendation")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -720,7 +706,7 @@ internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationR
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -796,23 +782,4 @@ internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationR
         value.recommendation,
       )
   }
-}
-
-internal object ImmunizationRecommendationPolymorphicSerializer :
-  KSerializer<ImmunizationRecommendation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ImmunizationRecommendation") {
-      ImmunizationRecommendationSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ImmunizationRecommendation) {
-    encoder.encodeStructure(descriptor) {
-      ImmunizationRecommendationSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ImmunizationRecommendation =
-    decoder.decodeStructure(descriptor) {
-      ImmunizationRecommendationSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

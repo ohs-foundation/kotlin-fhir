@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Goal
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Integer
@@ -286,14 +287,10 @@ internal object GoalTargetSerializer : KSerializer<Goal.Target> {
   }
 }
 
-internal object GoalSerializer : KSerializer<Goal> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Goal") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object GoalSerializer : FhirResourceSerializer<Goal> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Goal")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -360,19 +357,7 @@ internal object GoalSerializer : KSerializer<Goal> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Goal =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Goal) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Goal")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -598,7 +583,7 @@ internal object GoalSerializer : KSerializer<Goal> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -766,20 +751,4 @@ internal object GoalSerializer : KSerializer<Goal> {
         value.outcome,
       )
   }
-}
-
-internal object GoalPolymorphicSerializer : KSerializer<Goal> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Goal") { GoalSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Goal) {
-    encoder.encodeStructure(descriptor) {
-      GoalSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Goal =
-    decoder.decodeStructure(descriptor) {
-      GoalSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

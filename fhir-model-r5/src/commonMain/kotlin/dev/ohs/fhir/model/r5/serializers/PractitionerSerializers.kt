@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.HumanName
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
@@ -314,14 +315,10 @@ internal object PractitionerCommunicationSerializer : KSerializer<Practitioner.C
   }
 }
 
-internal object PractitionerSerializer : KSerializer<Practitioner> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Practitioner") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object PractitionerSerializer : FhirResourceSerializer<Practitioner> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Practitioner")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -379,19 +376,7 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Practitioner =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Practitioner) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Practitioner")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -570,7 +555,7 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -713,20 +698,4 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
         value.communication,
       )
   }
-}
-
-internal object PractitionerPolymorphicSerializer : KSerializer<Practitioner> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Practitioner") { PractitionerSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Practitioner) {
-    encoder.encodeStructure(descriptor) {
-      PractitionerSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Practitioner =
-    decoder.decodeStructure(descriptor) {
-      PractitionerSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

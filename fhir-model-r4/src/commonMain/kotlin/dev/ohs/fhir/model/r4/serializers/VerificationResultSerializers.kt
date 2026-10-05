@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDate
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
 import dev.ohs.fhir.model.r4.Reference
@@ -558,14 +559,10 @@ internal object VerificationResultValidatorSerializer : KSerializer<Verification
   }
 }
 
-internal object VerificationResultSerializer : KSerializer<VerificationResult> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("VerificationResult") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object VerificationResultSerializer : FhirResourceSerializer<VerificationResult> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("VerificationResult")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -635,19 +632,7 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): VerificationResult =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: VerificationResult) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "VerificationResult")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -865,7 +850,7 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1015,22 +1000,4 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
         value.validator,
       )
   }
-}
-
-internal object VerificationResultPolymorphicSerializer : KSerializer<VerificationResult> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("VerificationResult") {
-      VerificationResultSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: VerificationResult) {
-    encoder.encodeStructure(descriptor) {
-      VerificationResultSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): VerificationResult =
-    decoder.decodeStructure(descriptor) {
-      VerificationResultSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

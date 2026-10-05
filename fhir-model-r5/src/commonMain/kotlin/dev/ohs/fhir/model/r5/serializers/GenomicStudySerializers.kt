@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.GenomicStudy
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
@@ -928,14 +929,10 @@ internal object GenomicStudyAnalysisDeviceSerializer : KSerializer<GenomicStudy.
   }
 }
 
-internal object GenomicStudySerializer : KSerializer<GenomicStudy> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("GenomicStudy") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object GenomicStudySerializer : FhirResourceSerializer<GenomicStudy> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("GenomicStudy")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1000,19 +997,7 @@ internal object GenomicStudySerializer : KSerializer<GenomicStudy> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): GenomicStudy =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: GenomicStudy) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "GenomicStudy")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1207,7 +1192,7 @@ internal object GenomicStudySerializer : KSerializer<GenomicStudy> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1345,20 +1330,4 @@ internal object GenomicStudySerializer : KSerializer<GenomicStudy> {
         value.analysis,
       )
   }
-}
-
-internal object GenomicStudyPolymorphicSerializer : KSerializer<GenomicStudy> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("GenomicStudy") { GenomicStudySerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: GenomicStudy) {
-    encoder.encodeStructure(descriptor) {
-      GenomicStudySerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): GenomicStudy =
-    decoder.decodeStructure(descriptor) {
-      GenomicStudySerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

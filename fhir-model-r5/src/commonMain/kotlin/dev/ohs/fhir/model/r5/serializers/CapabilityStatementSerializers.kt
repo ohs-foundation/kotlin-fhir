@@ -34,6 +34,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Meta
@@ -2295,14 +2296,10 @@ internal object CapabilityStatementDocumentSerializer : KSerializer<CapabilitySt
   }
 }
 
-internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CapabilityStatement") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object CapabilityStatementSerializer : FhirResourceSerializer<CapabilityStatement> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("CapabilityStatement")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -2457,19 +2454,7 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
     )
   }
 
-  override fun deserialize(decoder: Decoder): CapabilityStatement =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CapabilityStatement) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "CapabilityStatement")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2914,7 +2899,7 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -3228,22 +3213,4 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
         value.document,
       )
   }
-}
-
-internal object CapabilityStatementPolymorphicSerializer : KSerializer<CapabilityStatement> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CapabilityStatement") {
-      CapabilityStatementSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CapabilityStatement) {
-    encoder.encodeStructure(descriptor) {
-      CapabilityStatementSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): CapabilityStatement =
-    decoder.decodeStructure(descriptor) {
-      CapabilityStatementSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.GraphDefinition
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
@@ -588,14 +589,10 @@ internal object GraphDefinitionLinkCompartmentSerializer :
   }
 }
 
-internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("GraphDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("GraphDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -679,19 +676,7 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): GraphDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: GraphDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "GraphDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -927,7 +912,7 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1114,22 +1099,4 @@ internal object GraphDefinitionSerializer : KSerializer<GraphDefinition> {
         value.link,
       )
   }
-}
-
-internal object GraphDefinitionPolymorphicSerializer : KSerializer<GraphDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("GraphDefinition") {
-      GraphDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: GraphDefinition) {
-    encoder.encodeStructure(descriptor) {
-      GraphDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): GraphDefinition =
-    decoder.decodeStructure(descriptor) {
-      GraphDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

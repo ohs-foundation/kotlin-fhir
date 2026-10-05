@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Id
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Integer
@@ -2586,14 +2587,10 @@ internal object TestScriptTeardownActionSerializer : KSerializer<TestScript.Tear
   }
 }
 
-internal object TestScriptSerializer : KSerializer<TestScript> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("TestScript") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object TestScriptSerializer : FhirResourceSerializer<TestScript> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("TestScript")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -2697,19 +2694,7 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): TestScript =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: TestScript) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "TestScript")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -2984,7 +2969,7 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -3183,20 +3168,4 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
       )
     }
   }
-}
-
-internal object TestScriptPolymorphicSerializer : KSerializer<TestScript> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("TestScript") { TestScriptSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: TestScript) {
-    encoder.encodeStructure(descriptor) {
-      TestScriptSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): TestScript =
-    decoder.decodeStructure(descriptor) {
-      TestScriptSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

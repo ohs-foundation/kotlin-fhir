@@ -39,6 +39,7 @@ import dev.ohs.fhir.model.r4.Expression
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDate
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Meta
@@ -308,14 +309,10 @@ internal object ActivityDefinitionDynamicValueSerializer :
   }
 }
 
-internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ActivityDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ActivityDefinitionSerializer : FhirResourceSerializer<ActivityDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ActivityDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -488,19 +485,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): ActivityDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ActivityDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ActivityDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1004,7 +989,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1421,22 +1406,4 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
         value.dynamicValue,
       )
   }
-}
-
-internal object ActivityDefinitionPolymorphicSerializer : KSerializer<ActivityDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ActivityDefinition") {
-      ActivityDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ActivityDefinition) {
-    encoder.encodeStructure(descriptor) {
-      ActivityDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ActivityDefinition =
-    decoder.decodeStructure(descriptor) {
-      ActivityDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

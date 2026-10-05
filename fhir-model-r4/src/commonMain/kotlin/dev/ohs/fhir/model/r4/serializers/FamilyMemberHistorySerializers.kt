@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FamilyMemberHistory
 import dev.ohs.fhir.model.r4.FhirDate
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Narrative
@@ -260,14 +261,10 @@ internal object FamilyMemberHistoryConditionSerializer :
   }
 }
 
-internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("FamilyMemberHistory") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMemberHistory> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("FamilyMemberHistory")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -364,19 +361,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
     )
   }
 
-  override fun deserialize(decoder: Decoder): FamilyMemberHistory =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "FamilyMemberHistory")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -697,7 +682,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -990,22 +975,4 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         value.condition,
       )
   }
-}
-
-internal object FamilyMemberHistoryPolymorphicSerializer : KSerializer<FamilyMemberHistory> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("FamilyMemberHistory") {
-      FamilyMemberHistorySerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory) {
-    encoder.encodeStructure(descriptor) {
-      FamilyMemberHistorySerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): FamilyMemberHistory =
-    decoder.decodeStructure(descriptor) {
-      FamilyMemberHistorySerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

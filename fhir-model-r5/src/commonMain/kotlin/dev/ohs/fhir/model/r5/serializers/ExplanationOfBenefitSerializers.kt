@@ -39,6 +39,7 @@ import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
 import dev.ohs.fhir.model.r5.FhirDecimal
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Money
@@ -5599,14 +5600,10 @@ internal object ExplanationOfBenefitBenefitBalanceFinancialSerializer :
   }
 }
 
-internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefit> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ExplanationOfBenefit") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<ExplanationOfBenefit> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ExplanationOfBenefit")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -5791,19 +5788,7 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
     )
   }
 
-  override fun deserialize(decoder: Decoder): ExplanationOfBenefit =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ExplanationOfBenefit")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -6320,7 +6305,7 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -6669,22 +6654,4 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
         value.benefitBalance,
       )
   }
-}
-
-internal object ExplanationOfBenefitPolymorphicSerializer : KSerializer<ExplanationOfBenefit> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ExplanationOfBenefit") {
-      ExplanationOfBenefitSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit) {
-    encoder.encodeStructure(descriptor) {
-      ExplanationOfBenefitSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ExplanationOfBenefit =
-    decoder.decodeStructure(descriptor) {
-      ExplanationOfBenefitSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

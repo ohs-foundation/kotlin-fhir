@@ -38,6 +38,7 @@ import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
 import dev.ohs.fhir.model.r5.FhirDecimal
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Money
@@ -2852,14 +2853,10 @@ internal object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Deta
   }
 }
 
-internal object ClaimSerializer : KSerializer<Claim> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Claim") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ClaimSerializer : FhirResourceSerializer<Claim> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Claim")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -2967,19 +2964,7 @@ internal object ClaimSerializer : KSerializer<Claim> {
     b.element("total", Money.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): Claim =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Claim) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Claim")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -3301,7 +3286,7 @@ internal object ClaimSerializer : KSerializer<Claim> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -3528,20 +3513,4 @@ internal object ClaimSerializer : KSerializer<Claim> {
       encoder.encodeSerializableElement(descriptor, 44 + descriptorOffset, MoneySerializer, it)
     }
   }
-}
-
-internal object ClaimPolymorphicSerializer : KSerializer<Claim> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Claim") { ClaimSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Claim) {
-    encoder.encodeStructure(descriptor) {
-      ClaimSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Claim =
-    decoder.decodeStructure(descriptor) {
-      ClaimSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

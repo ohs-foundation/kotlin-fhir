@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
 import dev.ohs.fhir.model.r5.FhirDecimal
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Meta
@@ -789,14 +790,10 @@ internal object BundleEntryResponseSerializer : KSerializer<Bundle.Entry.Respons
   }
 }
 
-internal object BundleSerializer : KSerializer<Bundle> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Bundle") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object BundleSerializer : FhirResourceSerializer<Bundle> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Bundle")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -824,19 +821,7 @@ internal object BundleSerializer : KSerializer<Bundle> {
     b.element("issues", lazyDescriptor { Resource.serializer().descriptor }, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): Bundle =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Bundle) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Bundle")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -934,7 +919,7 @@ internal object BundleSerializer : KSerializer<Bundle> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1001,20 +986,4 @@ internal object BundleSerializer : KSerializer<Bundle> {
       )
     }
   }
-}
-
-internal object BundlePolymorphicSerializer : KSerializer<Bundle> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Bundle") { BundleSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Bundle) {
-    encoder.encodeStructure(descriptor) {
-      BundleSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Bundle =
-    decoder.decodeStructure(descriptor) {
-      BundleSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

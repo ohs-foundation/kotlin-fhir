@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingStudy
@@ -591,14 +592,10 @@ internal object ImagingStudySeriesInstanceSerializer : KSerializer<ImagingStudy.
   }
 }
 
-internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ImagingStudy") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ImagingStudySerializer : FhirResourceSerializer<ImagingStudy> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ImagingStudy")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -670,19 +667,7 @@ internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): ImagingStudy =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ImagingStudy) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ImagingStudy")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -902,7 +887,7 @@ internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1057,20 +1042,4 @@ internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
         value.series,
       )
   }
-}
-
-internal object ImagingStudyPolymorphicSerializer : KSerializer<ImagingStudy> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ImagingStudy") { ImagingStudySerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: ImagingStudy) {
-    encoder.encodeStructure(descriptor) {
-      ImagingStudySerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ImagingStudy =
-    decoder.decodeStructure(descriptor) {
-      ImagingStudySerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

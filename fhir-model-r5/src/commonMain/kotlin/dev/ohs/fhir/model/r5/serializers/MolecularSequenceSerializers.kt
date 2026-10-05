@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.Meta
@@ -586,14 +587,10 @@ internal object MolecularSequenceRelativeEditSerializer :
   }
 }
 
-internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MolecularSequence") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSequence> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("MolecularSequence")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -642,19 +639,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): MolecularSequence =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: MolecularSequence) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "MolecularSequence")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -798,7 +783,7 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -897,22 +882,4 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
         value.relative,
       )
   }
-}
-
-internal object MolecularSequencePolymorphicSerializer : KSerializer<MolecularSequence> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MolecularSequence") {
-      MolecularSequenceSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: MolecularSequence) {
-    encoder.encodeStructure(descriptor) {
-      MolecularSequenceSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): MolecularSequence =
-    decoder.decodeStructure(descriptor) {
-      MolecularSequenceSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

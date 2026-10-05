@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
@@ -876,14 +877,10 @@ internal object AdverseEventSupportingInfoSerializer : KSerializer<AdverseEvent.
   }
 }
 
-internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AdverseEvent") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("AdverseEvent")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -986,19 +983,7 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
     b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): AdverseEvent =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: AdverseEvent) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "AdverseEvent")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1292,7 +1277,7 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1516,20 +1501,4 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
         value.note,
       )
   }
-}
-
-internal object AdverseEventPolymorphicSerializer : KSerializer<AdverseEvent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AdverseEvent") { AdverseEventSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: AdverseEvent) {
-    encoder.encodeStructure(descriptor) {
-      AdverseEventSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): AdverseEvent =
-    decoder.decodeStructure(descriptor) {
-      AdverseEventSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

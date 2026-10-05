@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.ManufacturedItemDefinition
 import dev.ohs.fhir.model.r4b.Meta
@@ -234,14 +235,11 @@ internal object ManufacturedItemDefinitionPropertySerializer :
   }
 }
 
-internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedItemDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ManufacturedItemDefinition") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ManufacturedItemDefinitionSerializer :
+  FhirResourceSerializer<ManufacturedItemDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ManufacturedItemDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -292,19 +290,7 @@ internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedI
     )
   }
 
-  override fun deserialize(decoder: Decoder): ManufacturedItemDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ManufacturedItemDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ManufacturedItemDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -451,7 +437,7 @@ internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedI
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -546,23 +532,4 @@ internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedI
         value.`property`,
       )
   }
-}
-
-internal object ManufacturedItemDefinitionPolymorphicSerializer :
-  KSerializer<ManufacturedItemDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ManufacturedItemDefinition") {
-      ManufacturedItemDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ManufacturedItemDefinition) {
-    encoder.encodeStructure(descriptor) {
-      ManufacturedItemDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ManufacturedItemDefinition =
-    decoder.decodeStructure(descriptor) {
-      ManufacturedItemDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

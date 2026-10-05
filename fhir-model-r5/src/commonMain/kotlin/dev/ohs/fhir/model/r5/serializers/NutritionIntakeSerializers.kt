@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
@@ -454,14 +455,10 @@ internal object NutritionIntakePerformerSerializer : KSerializer<NutritionIntake
   }
 }
 
-internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("NutritionIntake") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionIntake> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("NutritionIntake")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -560,19 +557,7 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
     b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): NutritionIntake =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: NutritionIntake) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "NutritionIntake")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -872,7 +857,7 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1101,22 +1086,4 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
         value.note,
       )
   }
-}
-
-internal object NutritionIntakePolymorphicSerializer : KSerializer<NutritionIntake> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("NutritionIntake") {
-      NutritionIntakeSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: NutritionIntake) {
-    encoder.encodeStructure(descriptor) {
-      NutritionIntakeSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): NutritionIntake =
-    decoder.decodeStructure(descriptor) {
-      NutritionIntakeSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

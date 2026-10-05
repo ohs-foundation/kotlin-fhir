@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
 import dev.ohs.fhir.model.r4b.FhirDecimal
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Integer
 import dev.ohs.fhir.model.r4b.Meta
@@ -496,14 +497,10 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
   }
 }
 
-internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("VisionPrescription") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPrescription> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("VisionPrescription")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -549,19 +546,7 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): VisionPrescription =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: VisionPrescription) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "VisionPrescription")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -711,7 +696,7 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -805,22 +790,4 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
         value.lensSpecification,
       )
   }
-}
-
-internal object VisionPrescriptionPolymorphicSerializer : KSerializer<VisionPrescription> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("VisionPrescription") {
-      VisionPrescriptionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: VisionPrescription) {
-    encoder.encodeStructure(descriptor) {
-      VisionPrescriptionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): VisionPrescription =
-    decoder.decodeStructure(descriptor) {
-      VisionPrescriptionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

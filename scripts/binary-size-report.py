@@ -35,8 +35,6 @@ def classify(filename: str) -> str:
 
     # Serializer-related
     if "Serializer" in base:
-        if "$Hoisted" in base:
-            return "Serializers ($Hoisted)"
         if "PolymorphicSerializer" in base:
             return "Serializers (Polymorphic)"
         if "$Companion" in base:

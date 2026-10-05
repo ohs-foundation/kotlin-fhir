@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.ContactPoint
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.MessageHeader
 import dev.ohs.fhir.model.r5.Meta
@@ -477,14 +478,10 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
   }
 }
 
-internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MessageHeader") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object MessageHeaderSerializer : FhirResourceSerializer<MessageHeader> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("MessageHeader")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -534,19 +531,7 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
     b.element("_definition", Element.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): MessageHeader =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: MessageHeader) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "MessageHeader")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -704,7 +689,7 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -825,20 +810,4 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
       encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ElementSerializer, it)
     }
   }
-}
-
-internal object MessageHeaderPolymorphicSerializer : KSerializer<MessageHeader> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MessageHeader") { MessageHeaderSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: MessageHeader) {
-    encoder.encodeStructure(descriptor) {
-      MessageHeaderSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): MessageHeader =
-    decoder.decodeStructure(descriptor) {
-      MessageHeaderSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

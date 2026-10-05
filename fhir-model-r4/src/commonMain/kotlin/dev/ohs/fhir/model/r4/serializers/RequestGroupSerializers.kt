@@ -34,6 +34,7 @@ import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Expression
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Id
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Meta
@@ -781,14 +782,10 @@ internal object RequestGroupActionRelatedActionSerializer :
   }
 }
 
-internal object RequestGroupSerializer : KSerializer<RequestGroup> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RequestGroup") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("RequestGroup")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -873,19 +870,7 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): RequestGroup =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: RequestGroup) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "RequestGroup")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1145,7 +1130,7 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1317,20 +1302,4 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
         value.action,
       )
   }
-}
-
-internal object RequestGroupPolymorphicSerializer : KSerializer<RequestGroup> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RequestGroup") { RequestGroupSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: RequestGroup) {
-    encoder.encodeStructure(descriptor) {
-      RequestGroupSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): RequestGroup =
-    decoder.decodeStructure(descriptor) {
-      RequestGroupSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

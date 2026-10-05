@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.ExampleScenario
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Meta
@@ -1345,14 +1346,10 @@ internal object ExampleScenarioProcessStepAlternativeSerializer :
   }
 }
 
-internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ExampleScenario") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ExampleScenarioSerializer : FhirResourceSerializer<ExampleScenario> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ExampleScenario")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -1436,19 +1433,7 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
     b.element("_workflow", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): ExampleScenario =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ExampleScenario) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ExampleScenario")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1676,7 +1661,7 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1840,22 +1825,4 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
       )
     }
   }
-}
-
-internal object ExampleScenarioPolymorphicSerializer : KSerializer<ExampleScenario> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ExampleScenario") {
-      ExampleScenarioSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ExampleScenario) {
-    encoder.encodeStructure(descriptor) {
-      ExampleScenarioSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ExampleScenario =
-    decoder.decodeStructure(descriptor) {
-      ExampleScenarioSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

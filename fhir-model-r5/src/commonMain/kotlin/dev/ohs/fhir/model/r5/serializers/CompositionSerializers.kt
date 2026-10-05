@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
@@ -498,14 +499,10 @@ internal object CompositionSectionSerializer : KSerializer<Composition.Section> 
   }
 }
 
-internal object CompositionSerializer : KSerializer<Composition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Composition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object CompositionSerializer : FhirResourceSerializer<Composition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Composition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -583,19 +580,7 @@ internal object CompositionSerializer : KSerializer<Composition> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Composition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Composition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Composition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -831,7 +816,7 @@ internal object CompositionSerializer : KSerializer<Composition> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -994,20 +979,4 @@ internal object CompositionSerializer : KSerializer<Composition> {
         value.section,
       )
   }
-}
-
-internal object CompositionPolymorphicSerializer : KSerializer<Composition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Composition") { CompositionSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Composition) {
-    encoder.encodeStructure(descriptor) {
-      CompositionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Composition =
-    decoder.decodeStructure(descriptor) {
-      CompositionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

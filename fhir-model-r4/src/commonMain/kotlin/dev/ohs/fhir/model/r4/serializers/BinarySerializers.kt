@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4.Base64Binary
 import dev.ohs.fhir.model.r4.Binary
 import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Uri
@@ -34,27 +35,17 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
-internal object BinarySerializer : KSerializer<Binary> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Binary") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object BinarySerializer : FhirResourceSerializer<Binary> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Binary")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -68,19 +59,7 @@ internal object BinarySerializer : KSerializer<Binary> {
     b.element("_data", Element.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): Binary =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Binary) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Binary")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -137,7 +116,7 @@ internal object BinarySerializer : KSerializer<Binary> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -175,20 +154,4 @@ internal object BinarySerializer : KSerializer<Binary> {
       encoder.encodeSerializableElement(descriptor, 10 + descriptorOffset, ElementSerializer, it)
     }
   }
-}
-
-internal object BinaryPolymorphicSerializer : KSerializer<Binary> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Binary") { BinarySerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Binary) {
-    encoder.encodeStructure(descriptor) {
-      BinarySerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Binary =
-    decoder.decodeStructure(descriptor) {
-      BinarySerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

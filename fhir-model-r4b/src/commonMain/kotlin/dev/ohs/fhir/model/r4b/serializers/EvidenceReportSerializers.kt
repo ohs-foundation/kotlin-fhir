@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.EvidenceReport
 import dev.ohs.fhir.model.r4b.Extension
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Meta
@@ -770,14 +771,10 @@ internal object EvidenceReportSectionSerializer : KSerializer<EvidenceReport.Sec
   }
 }
 
-internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EvidenceReport") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object EvidenceReportSerializer : FhirResourceSerializer<EvidenceReport> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("EvidenceReport")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -873,19 +870,7 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): EvidenceReport =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EvidenceReport) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "EvidenceReport")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1132,7 +1117,7 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1317,20 +1302,4 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
         value.section,
       )
   }
-}
-
-internal object EvidenceReportPolymorphicSerializer : KSerializer<EvidenceReport> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EvidenceReport") { EvidenceReportSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: EvidenceReport) {
-    encoder.encodeStructure(descriptor) {
-      EvidenceReportSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): EvidenceReport =
-    decoder.decodeStructure(descriptor) {
-      EvidenceReportSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

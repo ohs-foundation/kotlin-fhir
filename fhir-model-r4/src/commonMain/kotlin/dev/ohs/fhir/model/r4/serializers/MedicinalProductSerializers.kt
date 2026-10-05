@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.MarketingStatus
 import dev.ohs.fhir.model.r4.MedicinalProduct
@@ -847,14 +848,10 @@ internal object MedicinalProductSpecialDesignationSerializer :
   }
 }
 
-internal object MedicinalProductSerializer : KSerializer<MedicinalProduct> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MedicinalProduct") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object MedicinalProductSerializer : FhirResourceSerializer<MedicinalProduct> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("MedicinalProduct")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -968,19 +965,7 @@ internal object MedicinalProductSerializer : KSerializer<MedicinalProduct> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): MedicinalProduct =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: MedicinalProduct) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "MedicinalProduct")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1265,7 +1250,7 @@ internal object MedicinalProductSerializer : KSerializer<MedicinalProduct> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1462,22 +1447,4 @@ internal object MedicinalProductSerializer : KSerializer<MedicinalProduct> {
         value.specialDesignation,
       )
   }
-}
-
-internal object MedicinalProductPolymorphicSerializer : KSerializer<MedicinalProduct> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MedicinalProduct") {
-      MedicinalProductSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: MedicinalProduct) {
-    encoder.encodeStructure(descriptor) {
-      MedicinalProductSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): MedicinalProduct =
-    decoder.decodeStructure(descriptor) {
-      MedicinalProductSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

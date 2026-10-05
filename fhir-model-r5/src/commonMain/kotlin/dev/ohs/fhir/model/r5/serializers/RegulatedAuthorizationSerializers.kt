@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Meta
@@ -233,14 +234,10 @@ internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuth
   }
 }
 
-internal object RegulatedAuthorizationSerializer : KSerializer<RegulatedAuthorization> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RegulatedAuthorization") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<RegulatedAuthorization> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("RegulatedAuthorization")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -306,19 +303,7 @@ internal object RegulatedAuthorizationSerializer : KSerializer<RegulatedAuthoriz
     )
   }
 
-  override fun deserialize(decoder: Decoder): RegulatedAuthorization =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: RegulatedAuthorization) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "RegulatedAuthorization")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -519,7 +504,7 @@ internal object RegulatedAuthorizationSerializer : KSerializer<RegulatedAuthoriz
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -661,22 +646,4 @@ internal object RegulatedAuthorizationSerializer : KSerializer<RegulatedAuthoriz
       )
     }
   }
-}
-
-internal object RegulatedAuthorizationPolymorphicSerializer : KSerializer<RegulatedAuthorization> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RegulatedAuthorization") {
-      RegulatedAuthorizationSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: RegulatedAuthorization) {
-    encoder.encodeStructure(descriptor) {
-      RegulatedAuthorizationSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): RegulatedAuthorization =
-    decoder.decodeStructure(descriptor) {
-      RegulatedAuthorizationSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

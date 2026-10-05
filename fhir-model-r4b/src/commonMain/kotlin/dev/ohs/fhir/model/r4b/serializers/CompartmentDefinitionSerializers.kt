@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Narrative
@@ -216,14 +217,10 @@ internal object CompartmentDefinitionResourceSerializer :
   }
 }
 
-internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CompartmentDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object CompartmentDefinitionSerializer : FhirResourceSerializer<CompartmentDefinition> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("CompartmentDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -287,19 +284,7 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
     )
   }
 
-  override fun deserialize(decoder: Decoder): CompartmentDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CompartmentDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "CompartmentDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -494,7 +479,7 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -624,22 +609,4 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
         value.resource,
       )
   }
-}
-
-internal object CompartmentDefinitionPolymorphicSerializer : KSerializer<CompartmentDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CompartmentDefinition") {
-      CompartmentDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CompartmentDefinition) {
-    encoder.encodeStructure(descriptor) {
-      CompartmentDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): CompartmentDefinition =
-    decoder.decodeStructure(descriptor) {
-      CompartmentDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

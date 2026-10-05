@@ -34,6 +34,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Meta
@@ -330,14 +331,10 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
   }
 }
 
-internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ArtifactAssessment") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAssessment> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ArtifactAssessment")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -394,19 +391,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
     b.element("_disposition", Element.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): ArtifactAssessment =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ArtifactAssessment) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ArtifactAssessment")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -592,7 +577,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -755,22 +740,4 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
       encoder.encodeSerializableElement(descriptor, 33 + descriptorOffset, ElementSerializer, it)
     }
   }
-}
-
-internal object ArtifactAssessmentPolymorphicSerializer : KSerializer<ArtifactAssessment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ArtifactAssessment") {
-      ArtifactAssessmentSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ArtifactAssessment) {
-    encoder.encodeStructure(descriptor) {
-      ArtifactAssessmentSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ArtifactAssessment =
-    decoder.decodeStructure(descriptor) {
-      ArtifactAssessmentSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

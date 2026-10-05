@@ -23,7 +23,6 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.schema.Element
@@ -35,14 +34,12 @@ import dev.ohs.fhir.codegen.serializer.SerializerDecodeEmitter
 import dev.ohs.fhir.codegen.serializer.SerializerDescriptorEmitter
 import dev.ohs.fhir.codegen.serializer.SerializerEncodeEmitter
 import dev.ohs.fhir.codegen.serializer.WireField
-import dev.ohs.fhir.codegen.serializer.buildClassSerialDescriptorMemberName
 import dev.ohs.fhir.codegen.serializer.buildJsonWireFields
 import dev.ohs.fhir.codegen.serializer.buildListSerializerProperty
 import dev.ohs.fhir.codegen.serializer.decodeStructureMemberName
 import dev.ohs.fhir.codegen.serializer.decoderClassName
 import dev.ohs.fhir.codegen.serializer.encodeStructureMemberName
 import dev.ohs.fhir.codegen.serializer.encoderClassName
-import dev.ohs.fhir.codegen.serializer.serialDescriptorClassName
 import kotlinx.serialization.KSerializer
 
 /** Generates a streaming `KSerializer<X>` per FHIR type over the flat wire shape. */
@@ -59,21 +56,21 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     structureDefinition.backboneElements.forEach { (backboneElement, elements) ->
       val simpleNames = backboneElement.path.split('.').map { it.capitalized() }
       val backboneClassName = ClassName(modelClassName.packageName, simpleNames)
-      createModelSerializerTypeSpecs(backboneClassName, elements, isResource = false).forEach {
-        builder.addType(it)
-      }
+      builder.addType(
+        createModelSerializerTypeSpec(backboneClassName, elements, isResource = false)
+      )
     }
     // Choice-type sealed interfaces (e.g. Patient.Deceased) get no per-class serializer:
     // the parent resource serializer fully inlines the per-expansion keys on encode/decode, so a
     // standalone KSerializer<Patient.Deceased> is never invoked.
     // Root model serializer.
-    createModelSerializerTypeSpecs(
+    builder.addType(
+      createModelSerializerTypeSpec(
         modelClassName,
         structureDefinition.rootElements,
         isResource = structureDefinition.kind == StructureDefinition.Kind.RESOURCE,
-        resourceTypeName = structureDefinition.name,
       )
-      .forEach { builder.addType(it) }
+    )
     return builder.build()
   }
 
@@ -86,87 +83,23 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
    * encode; decode reads them into per-expansion locals and synthesizes the sealed value via the
    * companion `from(…)` factory during `emitModelConstruction`.
    *
-   * Resource types additionally get a thin `XPolymorphicSerializer` (`resourceType` omitted from
-   * its descriptor) for use as a subclass entry in `ResourcePolymorphicSerializer`.
+   * Resource types implement `FhirResourceSerializer<X>` so `FhirResourcePolymorphicSerializer` in
+   * `ResourcePolymorphicSerializer` can reuse their descriptor and encode/decode bodies without
+   * generating a separate `XPolymorphicSerializer` object per resource.
    */
-  private fun createModelSerializerTypeSpecs(
+  private fun createModelSerializerTypeSpec(
     className: ClassName,
     elements: List<Element>,
     isResource: Boolean,
-    resourceTypeName: String? = null,
-  ): List<TypeSpec> {
+  ): TypeSpec {
     val wireFields = codegenContext.buildJsonWireFields(className, elements)
-    return buildList {
-      add(
-        createStreamingSerializerTypeSpec(
-          className,
-          className.toSerializerClassName(),
-          elements,
-          wireFields,
-          includeResourceType = isResource,
-          resourceTypeName = resourceTypeName,
-        )
-      )
-      if (isResource) {
-        add(createPolymorphicSerializerTypeSpec(className))
-      }
-    }
-  }
-
-  /**
-   * Thin `XPolymorphicSerializer` whose descriptor omits `resourceType`. Forwards `serialize` /
-   * `deserialize` to `XSerializer`'s shared helpers; on the polymorphic path kotlinx-json's
-   * `discriminatorHolder` consumes the `resourceType` key before
-   * `XSerializer.deserializeInternal`'s slot-0 case ever fires.
-   */
-  private fun createPolymorphicSerializerTypeSpec(className: ClassName): TypeSpec {
-    val xSerClassName = className.toSerializerClassName()
-    val descriptorProp =
-      PropertySpec.builder("descriptor", serialDescriptorClassName)
-        .addModifiers(KModifier.OVERRIDE)
-        .initializer(
-          "%M(%S) { %T.buildDescriptor(this) }",
-          buildClassSerialDescriptorMemberName,
-          className.simpleName,
-          xSerClassName,
-        )
-        .build()
-    // Pass `descriptor` (XPolymorphicSerializer's own — wire fields at slots 0..N-1) and offset 0.
-    // The shared body in `XSerializer.serializeInternal` / `deserializeInternal` reads its slot
-    // indices as
-    // `<wireIdx> + descriptorOffset`, so encode/decode use the same descriptor that
-    // `encodeStructure` /
-    // `decodeStructure` opened — required for tag-based formats (ProtoBuf) that resolve fields by
-    // descriptor slot index, not by name.
-    val serializeFn =
-      FunSpec.builder("serialize")
-        .addModifiers(KModifier.OVERRIDE)
-        .addParameter("encoder", encoderClassName)
-        .addParameter("value", className)
-        .addCode(
-          "encoder.%M(descriptor) {\n  %T.serializeInternal(this, descriptor, 0, value)\n}\n",
-          encodeStructureMemberName,
-          xSerClassName,
-        )
-        .build()
-    val deserializeFn =
-      FunSpec.builder("deserialize")
-        .addModifiers(KModifier.OVERRIDE)
-        .addParameter("decoder", decoderClassName)
-        .returns(className)
-        .addCode(
-          "return decoder.%M(descriptor) {\n  %T.deserializeInternal(this, descriptor, 0)\n}\n",
-          decodeStructureMemberName,
-          xSerClassName,
-        )
-        .build()
-    return TypeSpec.objectBuilder(className.toPolymorphicSerializerClassName())
-      .addModifiers(KModifier.INTERNAL)
-      .addSuperinterface(KSerializer::class.asClassName().parameterizedBy(className))
-      .addProperty(descriptorProp)
-      .addFunction(serializeFn)
-      .addFunction(deserializeFn)
-      .build()
+    return createStreamingSerializerTypeSpec(
+      className,
+      className.toSerializerClassName(),
+      elements,
+      wireFields,
+      includeResourceType = isResource,
+    )
   }
 
   /** The streaming serializer object — does the actual `encodeStructure`/`decodeStructure` work. */
@@ -176,12 +109,17 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     elements: List<Element>,
     wireFields: List<WireField>,
     includeResourceType: Boolean,
-    resourceTypeName: String?,
   ): TypeSpec {
+    val superinterface =
+      if (includeResourceType) {
+        ClassName(className.packageName, "FhirResourceSerializer").parameterizedBy(className)
+      } else {
+        KSerializer::class.asClassName().parameterizedBy(className)
+      }
     val builder =
       TypeSpec.objectBuilder(serializerClassName)
         .addModifiers(KModifier.INTERNAL)
-        .addSuperinterface(KSerializer::class.asClassName().parameterizedBy(className))
+        .addSuperinterface(superinterface)
         .addProperty(
           descriptorEmitter.buildDescriptorProperty(className, wireFields, includeResourceType)
         )
@@ -204,28 +142,27 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         elements,
         wireFields,
         includeResourceType,
-        resourceTypeName,
       )
     functions.forEach { builder.addFunction(it) }
     return builder.build()
   }
 
   /**
-   * Builds the four serializer functions: the public `serialize` / `deserialize` overrides plus the
-   * private `serializeInternal` / `deserializeInternal` bodies they delegate to. For resource types
-   * the internal bodies are `internal` (not `private`) so `XPolymorphicSerializer` can reuse them
-   * with a different descriptor + offset.
+   * Builds the serializer functions: `serializeInternal` / `deserializeInternal` plus (for
+   * non-resource types) the public `serialize` / `deserialize` overrides. For resource types,
+   * `serialize` / `deserialize` are inherited from `FhirResourceSerializer` and the internal bodies
+   * override `FhirResourceSerializer` so `FhirResourcePolymorphicSerializer` can reuse them with a
+   * different descriptor + offset.
    */
   private fun buildSerializerFunctions(
     className: ClassName,
     elements: List<Element>,
     wireFields: List<WireField>,
     includeResourceType: Boolean,
-    resourceTypeName: String?,
   ): List<FunSpec> {
     // For resources we share `serializeInternal`/`deserializeInternal` between `XSerializer`
     // (descriptor:
-    // resourceType@0, wireFields@1..N) and `XPolymorphicSerializer` (descriptor:
+    // resourceType@0, wireFields@1..N) and `FhirResourcePolymorphicSerializer` (descriptor:
     // wireFields@0..N-1).
     // The body takes the descriptor + a wire-field offset (`descriptorOffset`) at runtime; encode
     // emits
@@ -245,56 +182,35 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
       if (parameterized) CodeBlock.of("%L + descriptorOffset", i) else CodeBlock.of("%L", i)
     }
     val functions = mutableListOf<FunSpec>()
-    // `deserialize(decoder)` streams via `decodeStructure { deserializeInternal(this) }`. The same
-    // body
-    // services both `StreamingJsonDecoder` and `JsonTreeDecoder` because every read inside the
-    // `deserializeInternal` loop goes through the `CompositeDecoder` interface
-    // (`decodeElementIndex`,
-    // `decodeXxxElement`, `decodeSerializableElement`) — kotlinx picks the decoder, we walk it.
-    val deserializeBody =
-      if (parameterized) {
-        // Pass `descriptor` (XSerializer's, with resourceType@0) and offset 1 so the body's
-        // wire-field cases land at slots 1..N.
-        CodeBlock.of(
-          "return decoder.%M(descriptor) {\n  deserializeInternal(this, descriptor, 1)\n}\n",
-          decodeStructureMemberName,
-        )
-      } else {
-        CodeBlock.of(
-          "return decoder.%M(descriptor) {\n  deserializeInternal(this)\n}\n",
-          decodeStructureMemberName,
-        )
-      }
-    functions +=
-      FunSpec.builder("deserialize")
-        .addModifiers(KModifier.OVERRIDE)
-        .addParameter("decoder", decoderClassName)
-        .returns(className)
-        .addCode(deserializeBody)
-        .build()
-    val serializeBody =
-      if (parameterized && resourceTypeName != null) {
-        // Outer wrapper writes `resourceType` at slot 0; the body — same one
-        // `XPolymorphicSerializer` reuses with offset 0 — handles every other field.
-        CodeBlock.of(
-          "encoder.%M(descriptor) {\n  encodeStringElement(descriptor, 0, %S)\n" +
-            "  serializeInternal(this, descriptor, 1, value)\n}\n",
-          encodeStructureMemberName,
-          resourceTypeName,
-        )
-      } else {
-        CodeBlock.of(
-          "encoder.%M(descriptor) {\n  serializeInternal(this, value)\n}\n",
-          encodeStructureMemberName,
-        )
-      }
-    functions +=
-      FunSpec.builder("serialize")
-        .addModifiers(KModifier.OVERRIDE)
-        .addParameter("encoder", encoderClassName)
-        .addParameter("value", className)
-        .addCode(serializeBody)
-        .build()
+    // Non-resource serializers emit their own `deserialize` / `serialize` overrides. Resource
+    // serializers inherit them from `FhirResourceSerializer` (compiled as Java 8 default methods
+    // under `JvmDefaultMode.NO_COMPATIBILITY`).
+    if (!parameterized) {
+      functions +=
+        FunSpec.builder("deserialize")
+          .addModifiers(KModifier.OVERRIDE)
+          .addParameter("decoder", decoderClassName)
+          .returns(className)
+          .addCode(
+            CodeBlock.of(
+              "return decoder.%M(descriptor) {\n  deserializeInternal(this)\n}\n",
+              decodeStructureMemberName,
+            )
+          )
+          .build()
+      functions +=
+        FunSpec.builder("serialize")
+          .addModifiers(KModifier.OVERRIDE)
+          .addParameter("encoder", encoderClassName)
+          .addParameter("value", className)
+          .addCode(
+            CodeBlock.of(
+              "encoder.%M(descriptor) {\n  serializeInternal(this, value)\n}\n",
+              encodeStructureMemberName,
+            )
+          )
+          .build()
+    }
     functions +=
       decodeEmitter.buildDeserializeInternal(
         className,
@@ -311,17 +227,6 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
 /** Returns the [ClassName] for the generated serializer object. */
 fun ClassName.toSerializerClassName(): ClassName =
   ClassName("${packageName}.serializers", simpleNames.joinToString("").plus("Serializer"))
-
-/**
- * Returns the [ClassName] for the polymorphic-variant serializer object (resource types only).
- * Descriptor omits `resourceType`; used as a subclass entry in `ResourcePolymorphicSerializer`,
- * where kotlinx-json injects the discriminator itself.
- */
-fun ClassName.toPolymorphicSerializerClassName(): ClassName =
-  ClassName(
-    "${packageName}.serializers",
-    simpleNames.joinToString("").plus("PolymorphicSerializer"),
-  )
 
 private fun ClassName.toSerializerFileSpecBuilder(): FileSpec.Builder =
   FileSpec.builder("${packageName}.serializers", simpleName.plus("Serializers"))

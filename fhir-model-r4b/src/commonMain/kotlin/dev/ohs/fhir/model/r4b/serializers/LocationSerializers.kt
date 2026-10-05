@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDecimal
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Meta
@@ -380,14 +381,10 @@ internal object LocationHoursOfOperationSerializer : KSerializer<Location.HoursO
   }
 }
 
-internal object LocationSerializer : KSerializer<Location> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Location") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object LocationSerializer : FhirResourceSerializer<Location> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Location")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -463,19 +460,7 @@ internal object LocationSerializer : KSerializer<Location> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Location =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Location) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Location")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -694,7 +679,7 @@ internal object LocationSerializer : KSerializer<Location> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -850,20 +835,4 @@ internal object LocationSerializer : KSerializer<Location> {
         value.endpoint,
       )
   }
-}
-
-internal object LocationPolymorphicSerializer : KSerializer<Location> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Location") { LocationSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Location) {
-    encoder.encodeStructure(descriptor) {
-      LocationSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Location =
-    decoder.decodeStructure(descriptor) {
-      LocationSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

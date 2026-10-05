@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
@@ -225,14 +226,10 @@ internal object ResearchSubjectProgressSerializer : KSerializer<ResearchSubject.
   }
 }
 
-internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ResearchSubject") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubject> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("ResearchSubject")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -277,19 +274,7 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
     b.element("consent", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): ResearchSubject =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ResearchSubject) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "ResearchSubject")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -431,7 +416,7 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -532,22 +517,4 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
         value.consent,
       )
   }
-}
-
-internal object ResearchSubjectPolymorphicSerializer : KSerializer<ResearchSubject> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ResearchSubject") {
-      ResearchSubjectSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ResearchSubject) {
-    encoder.encodeStructure(descriptor) {
-      ResearchSubjectSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ResearchSubject =
-    decoder.decodeStructure(descriptor) {
-      ResearchSubjectSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

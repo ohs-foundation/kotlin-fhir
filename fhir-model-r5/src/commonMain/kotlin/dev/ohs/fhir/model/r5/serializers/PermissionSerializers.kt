@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Expression
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
 import dev.ohs.fhir.model.r5.Period
@@ -752,14 +753,10 @@ internal object PermissionRuleActivitySerializer : KSerializer<Permission.Rule.A
   }
 }
 
-internal object PermissionSerializer : KSerializer<Permission> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Permission") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object PermissionSerializer : FhirResourceSerializer<Permission> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Permission")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -802,19 +799,7 @@ internal object PermissionSerializer : KSerializer<Permission> {
     )
   }
 
-  override fun deserialize(decoder: Decoder): Permission =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Permission) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Permission")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -963,7 +948,7 @@ internal object PermissionSerializer : KSerializer<Permission> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1059,20 +1044,4 @@ internal object PermissionSerializer : KSerializer<Permission> {
         value.rule,
       )
   }
-}
-
-internal object PermissionPolymorphicSerializer : KSerializer<Permission> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Permission") { PermissionSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Permission) {
-    encoder.encodeStructure(descriptor) {
-      PermissionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Permission =
-    decoder.decodeStructure(descriptor) {
-      PermissionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

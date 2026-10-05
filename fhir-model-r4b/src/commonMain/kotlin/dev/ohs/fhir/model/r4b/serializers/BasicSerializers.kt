@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4b.Date
 import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Narrative
@@ -42,28 +43,18 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
-internal object BasicSerializer : KSerializer<Basic> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Basic") {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object BasicSerializer : FhirResourceSerializer<Basic> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Basic")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", String.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", String.serializer().descriptor, isOptional = true)
@@ -98,19 +89,7 @@ internal object BasicSerializer : KSerializer<Basic> {
     b.element("author", Reference.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): Basic =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Basic) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Basic")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -218,7 +197,7 @@ internal object BasicSerializer : KSerializer<Basic> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -290,20 +269,4 @@ internal object BasicSerializer : KSerializer<Basic> {
       encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ReferenceSerializer, it)
     }
   }
-}
-
-internal object BasicPolymorphicSerializer : KSerializer<Basic> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Basic") { BasicSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Basic) {
-    encoder.encodeStructure(descriptor) {
-      BasicSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Basic =
-    decoder.decodeStructure(descriptor) {
-      BasicSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

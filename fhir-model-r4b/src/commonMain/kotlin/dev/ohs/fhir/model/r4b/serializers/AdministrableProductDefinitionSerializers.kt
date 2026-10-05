@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Narrative
@@ -718,14 +719,11 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
 }
 
 internal object AdministrableProductDefinitionSerializer :
-  KSerializer<AdministrableProductDefinition> {
+  FhirResourceSerializer<AdministrableProductDefinition> {
   override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AdministrableProductDefinition") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+    buildResourceDescriptor("AdministrableProductDefinition")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -787,19 +785,7 @@ internal object AdministrableProductDefinitionSerializer :
     )
   }
 
-  override fun deserialize(decoder: Decoder): AdministrableProductDefinition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: AdministrableProductDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "AdministrableProductDefinition")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -969,7 +955,7 @@ internal object AdministrableProductDefinitionSerializer :
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -1083,23 +1069,4 @@ internal object AdministrableProductDefinitionSerializer :
         value.routeOfAdministration,
       )
   }
-}
-
-internal object AdministrableProductDefinitionPolymorphicSerializer :
-  KSerializer<AdministrableProductDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AdministrableProductDefinition") {
-      AdministrableProductDefinitionSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: AdministrableProductDefinition) {
-    encoder.encodeStructure(descriptor) {
-      AdministrableProductDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): AdministrableProductDefinition =
-    decoder.decodeStructure(descriptor) {
-      AdministrableProductDefinitionSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

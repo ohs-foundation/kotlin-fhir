@@ -61,7 +61,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     }
     val builder =
       FunSpec.builder("serializeInternal")
-        .addModifiers(if (parameterized) KModifier.INTERNAL else KModifier.PRIVATE)
+        .addModifiers(if (parameterized) KModifier.OVERRIDE else KModifier.PRIVATE)
         .addParameter("encoder", ClassName(KOTLINX_SERIALIZATION_ENCODING, "CompositeEncoder"))
     if (parameterized) {
       builder.addParameter("descriptor", serialDescriptorClassName)

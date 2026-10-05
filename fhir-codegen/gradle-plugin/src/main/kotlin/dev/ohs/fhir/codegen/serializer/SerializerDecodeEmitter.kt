@@ -117,7 +117,7 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
     codeBlock.add(emitModelConstruction(className, elements))
     val builder =
       FunSpec.builder("deserializeInternal")
-        .addModifiers(if (parameterized) KModifier.INTERNAL else KModifier.PRIVATE)
+        .addModifiers(if (parameterized) KModifier.OVERRIDE else KModifier.PRIVATE)
         .addParameter("decoder", compositeDecoderClassName)
     if (parameterized) {
       builder.addParameter("descriptor", serialDescriptorClassName)

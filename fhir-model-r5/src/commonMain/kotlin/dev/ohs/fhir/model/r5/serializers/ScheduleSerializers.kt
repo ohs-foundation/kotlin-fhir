@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.CodeableReference
 import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Meta
@@ -46,28 +47,18 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
-internal object ScheduleSerializer : KSerializer<Schedule> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Schedule") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object ScheduleSerializer : FhirResourceSerializer<Schedule> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Schedule")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
     b.element("id", KotlinString.serializer().descriptor, isOptional = true)
     b.element("meta", Meta.serializer().descriptor, isOptional = true)
     b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
@@ -120,19 +111,7 @@ internal object ScheduleSerializer : KSerializer<Schedule> {
     b.element("_comment", Element.serializer().descriptor, isOptional = true)
   }
 
-  override fun deserialize(decoder: Decoder): Schedule =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Schedule) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Schedule")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
+  override fun deserializeInternal(
     decoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -278,7 +257,7 @@ internal object ScheduleSerializer : KSerializer<Schedule> {
     )
   }
 
-  internal fun serializeInternal(
+  override fun serializeInternal(
     encoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
@@ -381,20 +360,4 @@ internal object ScheduleSerializer : KSerializer<Schedule> {
       encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ElementSerializer, it)
     }
   }
-}
-
-internal object SchedulePolymorphicSerializer : KSerializer<Schedule> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Schedule") { ScheduleSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Schedule) {
-    encoder.encodeStructure(descriptor) {
-      ScheduleSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Schedule =
-    decoder.decodeStructure(descriptor) {
-      ScheduleSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

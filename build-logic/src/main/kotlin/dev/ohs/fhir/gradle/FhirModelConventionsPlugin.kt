@@ -24,6 +24,7 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -68,6 +69,7 @@ class FhirModelConventionsPlugin : Plugin<Project> {
           compilerOptions {
             // Pin the published bytecode level so it doesn't silently track the toolchain (21).
             jvmTarget.set(JvmTarget.JVM_11)
+            jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
           }
         }
         wasmJs {
@@ -104,6 +106,7 @@ class FhirModelConventionsPlugin : Plugin<Project> {
           // jvmTarget conventions to the Java toolchain (21); pin it so the published bytecode
           // level doesn't silently track the toolchain.
           android.compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
+          android.compilerOptions.jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
         }
         macosArm64()
         iosSimulatorArm64()

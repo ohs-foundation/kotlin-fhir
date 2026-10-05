@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
@@ -22,6 +23,7 @@ kotlin {
         compilerOptions {
             // Pin the published bytecode level so it doesn't silently track the toolchain (21).
             jvmTarget.set(JvmTarget.JVM_11)
+            jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
         }
     }
     wasmJs {
@@ -59,6 +61,7 @@ kotlin {
             // This does not impact the generated code per FHIR version since it is re-exported
             // (via api dependencies) rather than recompiled in this module.
             jvmTarget.set(JvmTarget.JVM_11)
+            jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
         }
     }
     macosArm64()

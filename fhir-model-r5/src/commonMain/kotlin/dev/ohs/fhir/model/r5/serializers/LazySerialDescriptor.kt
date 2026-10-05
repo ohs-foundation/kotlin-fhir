@@ -23,7 +23,11 @@ import kotlin.Int
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SealedSerializationApi
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.SerialKind
 
@@ -78,3 +82,12 @@ internal class LazySerialDescriptor(provider: () -> SerialDescriptor) : SerialDe
 @OptIn(ExperimentalSerializationApi::class, SealedSerializationApi::class)
 internal fun lazyDescriptor(provider: () -> SerialDescriptor): SerialDescriptor =
   LazySerialDescriptor(provider)
+
+internal val booleanNullableListSerializer: KSerializer<List<Boolean?>> =
+  ListSerializer(Boolean.serializer().nullable)
+
+internal val intNullableListSerializer: KSerializer<List<Int?>> =
+  ListSerializer(Int.serializer().nullable)
+
+internal val stringNullableListSerializer: KSerializer<List<String?>> =
+  ListSerializer(String.serializer().nullable)

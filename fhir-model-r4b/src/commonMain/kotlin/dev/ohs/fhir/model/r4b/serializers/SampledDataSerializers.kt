@@ -74,6 +74,8 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
       element("_data", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<SampledData>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): SampledData =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -106,40 +108,46 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
-          origin = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.originSer, null)
+          origin =
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         3 ->
           period =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         4 ->
           _period =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 ->
           factor =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         6 ->
           _factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 ->
           lowerLimit =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         8 ->
           _lowerLimit =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 ->
           upperLimit =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         10 ->
           _upperLimit =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 -> dimensions = decoder.decodeIntElement(descriptor, i)
         12 ->
           _dimensions =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 -> `data` = decoder.decodeStringElement(descriptor, i)
         14 ->
-          _data = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+          _data = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding SampledData: " + i)
       }
@@ -165,50 +173,44 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: SampledData) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    encoder.encodeSerializableElement(descriptor, 2, Hoisted.originSer, value.origin)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    encoder.encodeSerializableElement(descriptor, 2, QuantitySerializer, value.origin)
     ((value.period.value))?.let {
       encoder.encodeSerializableElement(descriptor, 3, FhirDecimalSerializer, it)
     }
     (value.period.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.factor?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.lowerLimit?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 7, FhirDecimalSerializer, it)
     }
     (value.lowerLimit?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.periodSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.upperLimit?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 9, FhirDecimalSerializer, it)
     }
     (value.upperLimit?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.periodSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     ((value.dimensions.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
     (value.dimensions.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.periodSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
     }
     ((value.`data`?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.periodSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val originSer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val periodSer: KSerializer<Element> = Element.serializer()
   }
 }

@@ -39,7 +39,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -72,6 +71,8 @@ internal object MetaSerializer : KSerializer<Meta> {
       element("tag", listSerialDescriptor(Coding.serializer().descriptor), isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Meta>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Meta =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -101,30 +102,56 @@ internal object MetaSerializer : KSerializer<Meta> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 -> versionId = decoder.decodeStringElement(descriptor, i)
         3 ->
           _versionId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> lastUpdated = decoder.decodeStringElement(descriptor, i)
         5 ->
           _lastUpdated =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 -> source = decoder.decodeStringElement(descriptor, i)
         7 ->
           _source =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 ->
           profile =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.profileSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         9 ->
           _profile =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.profileSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         10 ->
           security =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.securitySer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
         11 ->
-          tag = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.securitySer, null)
+          tag =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Meta: " + i)
       }
@@ -150,49 +177,38 @@ internal object MetaSerializer : KSerializer<Meta> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Meta) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     ((value.versionId?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.versionId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.versionIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
     }
     ((value.lastUpdated?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.lastUpdated?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.versionIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     ((value.source?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.source?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.versionIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     (value.profile.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.profileSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, stringNullableListSerializer, it)
     }
     (value.profile.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.profileSer2, it)
+      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer.nullableListSerializer, it)
     }
     if (value.security.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.securitySer, value.security)
+      encoder.encodeSerializableElement(
+        descriptor,
+        10,
+        CodingSerializer.listSerializer,
+        value.security,
+      )
     if (value.tag.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.securitySer, value.tag)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val versionIdSer: KSerializer<Element> = Element.serializer()
-
-    public val profileSerInner: KSerializer<String> = String.serializer()
-
-    public val profileSer: KSerializer<List<String?>> =
-      ListSerializer((Hoisted.profileSerInner).nullable)
-
-    public val profileSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.versionIdSer).nullable)
-
-    public val securitySerInner: KSerializer<Coding> = Coding.serializer()
-
-    public val securitySer: KSerializer<List<Coding>> = ListSerializer(Hoisted.securitySerInner)
+      encoder.encodeSerializableElement(descriptor, 11, CodingSerializer.listSerializer, value.tag)
   }
 }

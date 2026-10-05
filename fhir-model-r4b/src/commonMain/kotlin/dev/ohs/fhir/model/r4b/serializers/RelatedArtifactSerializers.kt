@@ -74,6 +74,8 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
       element("_resource", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<RelatedArtifact>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): RelatedArtifact =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -106,28 +108,36 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 -> type = decoder.decodeStringElement(descriptor, i)
-        3 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        3 ->
+          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> label = decoder.decodeStringElement(descriptor, i)
         5 ->
-          _label = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+          _label = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 -> display = decoder.decodeStringElement(descriptor, i)
         7 ->
-          _display = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+          _display =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 -> citation = decoder.decodeStringElement(descriptor, i)
         9 ->
           _citation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         10 -> url = decoder.decodeStringElement(descriptor, i)
-        11 -> _url = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        11 ->
+          _url = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         12 ->
           document =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.documentSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
         13 -> resource = decoder.decodeStringElement(descriptor, i)
         14 ->
           _resource =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding RelatedArtifact: " + i)
       }
@@ -150,44 +160,38 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: RelatedArtifact) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
     }
     ((value.label?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.label?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     ((value.display?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.display?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     ((value.citation?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.citation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
     }
     ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.url?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
     }
     (value.document)?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.documentSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, AttachmentSerializer, it)
     }
     ((value.resource?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.resource?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<Element> = Element.serializer()
-
-    public val documentSer: KSerializer<Attachment> = Attachment.serializer()
   }
 }

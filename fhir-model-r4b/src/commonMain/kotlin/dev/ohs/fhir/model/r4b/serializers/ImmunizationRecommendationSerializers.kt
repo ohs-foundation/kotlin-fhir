@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r4b.Narrative
 import dev.ohs.fhir.model.r4b.PositiveInt
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Resource
+import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Int
@@ -123,6 +124,9 @@ internal object ImmunizationRecommendationRecommendationSerializer :
       )
     }
 
+  internal val listSerializer: KSerializer<List<ImmunizationRecommendation.Recommendation>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): ImmunizationRecommendation.Recommendation =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -165,68 +169,98 @@ internal object ImmunizationRecommendationRecommendationSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           vaccineCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.vaccineCodeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         4 ->
           targetDisease =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.vaccineCodeSerInner,
+              CodeableConceptSerializer,
               null,
             )
         5 ->
           contraindicatedVaccineCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.vaccineCodeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         6 ->
           forecastStatus =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.vaccineCodeSerInner,
+              CodeableConceptSerializer,
               null,
             )
         7 ->
           forecastReason =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.vaccineCodeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         8 ->
           dateCriterion =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dateCriterionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ImmunizationRecommendationRecommendationDateCriterionSerializer.listSerializer,
+              null,
+            )
         9 -> description = decoder.decodeStringElement(descriptor, i)
         10 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 -> series = decoder.decodeStringElement(descriptor, i)
         12 ->
           _series =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 -> doseNumberPositiveInt = decoder.decodeIntElement(descriptor, i)
         14 ->
           _doseNumberPositiveInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 -> doseNumberString = decoder.decodeStringElement(descriptor, i)
         16 ->
           _doseNumberString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         17 -> seriesDosesPositiveInt = decoder.decodeIntElement(descriptor, i)
         18 ->
           _seriesDosesPositiveInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         19 -> seriesDosesString = decoder.decodeStringElement(descriptor, i)
         20 ->
           _seriesDosesString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         21 ->
           supportingImmunization =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.supportingImmunizationSer,
+              ReferenceSerializer.listSerializer,
               null,
             )
         22 ->
@@ -234,7 +268,7 @@ internal object ImmunizationRecommendationRecommendationSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.supportingImmunizationSer,
+              ReferenceSerializer.listSerializer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
@@ -278,61 +312,76 @@ internal object ImmunizationRecommendationRecommendationSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.vaccineCode.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.vaccineCodeSer, value.vaccineCode)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3,
+        CodeableConceptSerializer.listSerializer,
+        value.vaccineCode,
+      )
     (value.targetDisease)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.vaccineCodeSerInner, it)
+      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
     }
     if (value.contraindicatedVaccineCode.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         5,
-        Hoisted.vaccineCodeSer,
+        CodeableConceptSerializer.listSerializer,
         value.contraindicatedVaccineCode,
       )
     encoder.encodeSerializableElement(
       descriptor,
       6,
-      Hoisted.vaccineCodeSerInner,
+      CodeableConceptSerializer,
       value.forecastStatus,
     )
     if (value.forecastReason.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.vaccineCodeSer, value.forecastReason)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7,
+        CodeableConceptSerializer.listSerializer,
+        value.forecastReason,
+      )
     if (value.dateCriterion.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8,
-        Hoisted.dateCriterionSer,
+        ImmunizationRecommendationRecommendationDateCriterionSerializer.listSerializer,
         value.dateCriterion,
       )
     ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     ((value.series?.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.series?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
     }
     when (val choice = value.doseNumber) {
       null -> {}
       is ImmunizationRecommendation.Recommendation.DoseNumber.PositiveInt -> {
         ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 13, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 14, Hoisted.descriptionSer, it)
+          encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
         }
       }
       is ImmunizationRecommendation.Recommendation.DoseNumber.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 16, Hoisted.descriptionSer, it)
+          encoder.encodeSerializableElement(descriptor, 16, ElementSerializer, it)
         }
       }
     }
@@ -341,13 +390,13 @@ internal object ImmunizationRecommendationRecommendationSerializer :
       is ImmunizationRecommendation.Recommendation.SeriesDoses.PositiveInt -> {
         ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 17, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 18, Hoisted.descriptionSer, it)
+          encoder.encodeSerializableElement(descriptor, 18, ElementSerializer, it)
         }
       }
       is ImmunizationRecommendation.Recommendation.SeriesDoses.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 19, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 20, Hoisted.descriptionSer, it)
+          encoder.encodeSerializableElement(descriptor, 20, ElementSerializer, it)
         }
       }
     }
@@ -355,43 +404,16 @@ internal object ImmunizationRecommendationRecommendationSerializer :
       encoder.encodeSerializableElement(
         descriptor,
         21,
-        Hoisted.supportingImmunizationSer,
+        ReferenceSerializer.listSerializer,
         value.supportingImmunization,
       )
     if (value.supportingPatientInformation.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         22,
-        Hoisted.supportingImmunizationSer,
+        ReferenceSerializer.listSerializer,
         value.supportingPatientInformation,
       )
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val vaccineCodeSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val vaccineCodeSer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.vaccineCodeSerInner)
-
-    public val dateCriterionSerInner:
-      KSerializer<ImmunizationRecommendation.Recommendation.DateCriterion> =
-      ImmunizationRecommendation.Recommendation.DateCriterion.serializer()
-
-    public val dateCriterionSer:
-      KSerializer<List<ImmunizationRecommendation.Recommendation.DateCriterion>> =
-      ListSerializer(Hoisted.dateCriterionSerInner)
-
-    public val descriptionSer: KSerializer<Element> = Element.serializer()
-
-    public val supportingImmunizationSerInner: KSerializer<Reference> = Reference.serializer()
-
-    public val supportingImmunizationSer: KSerializer<List<Reference>> =
-      ListSerializer(Hoisted.supportingImmunizationSerInner)
   }
 }
 
@@ -414,6 +436,10 @@ internal object ImmunizationRecommendationRecommendationDateCriterionSerializer 
       element("value", KotlinString.serializer().descriptor, isOptional = true)
       element("_value", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer:
+    KSerializer<List<ImmunizationRecommendation.Recommendation.DateCriterion>> =
+    ListSerializer(this)
 
   override fun deserialize(
     decoder: Decoder
@@ -445,14 +471,31 @@ internal object ImmunizationRecommendationRecommendationDateCriterionSerializer 
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          code =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 -> `value` = decoder.decodeStringElement(descriptor, i)
         5 ->
-          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
+          _value = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding DateCriterion: " + i)
       }
@@ -480,30 +523,24 @@ internal object ImmunizationRecommendationRecommendationDateCriterionSerializer 
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
+    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
     ((value.`value`.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.`value`.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val valueSer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -594,44 +631,64 @@ internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationR
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
         11 ->
           patient =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         12 -> date = decoder.decodeStringElement(descriptor, i)
         13 ->
-          _date =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         14 ->
           authority =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         15 ->
           recommendation =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.recommendationSer,
+              ImmunizationRecommendationRecommendationSerializer.listSerializer,
               null,
             )
         else ->
@@ -671,118 +728,73 @@ internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationR
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     encoder.encodeSerializableElement(
       descriptor,
       11 + descriptorOffset,
-      Hoisted.patientSer,
+      ReferenceSerializer,
       value.patient,
     )
     ((value.date.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
     (value.date.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, ElementSerializer, it)
     }
     (value.authority)?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.patientSer, it)
+      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ReferenceSerializer, it)
     }
     if (value.recommendation.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         15 + descriptorOffset,
-        Hoisted.recommendationSer,
+        ImmunizationRecommendationRecommendationSerializer.listSerializer,
         value.recommendation,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val patientSer: KSerializer<Reference> = Reference.serializer()
-
-    public val recommendationSerInner: KSerializer<ImmunizationRecommendation.Recommendation> =
-      ImmunizationRecommendation.Recommendation.serializer()
-
-    public val recommendationSer: KSerializer<List<ImmunizationRecommendation.Recommendation>> =
-      ListSerializer(Hoisted.recommendationSerInner)
   }
 }
 

@@ -20,8 +20,6 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.CodegenContext
 import dev.ohs.fhir.codegen.choiceTypeExpansionName
@@ -54,13 +52,12 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     elements: List<Element>,
     parameterized: Boolean,
     nameToIdx: Map<String, CodeBlock>,
-    hoister: SerializerHoister,
   ): FunSpec {
     val codeBlock = CodeBlock.builder()
     // `resourceType` is written by the outer `serialize` wrapper, not here — keeps this body
     // reusable from `XPolymorphicSerializer` (polymorphic path injects the discriminator itself).
     elements.forEach { element ->
-      emitJsonEncodeForElement(codeBlock, element, className, nameToIdx, hoister)
+      emitJsonEncodeForElement(codeBlock, element, className, nameToIdx)
     }
     val builder =
       FunSpec.builder("serializeInternal")
@@ -78,14 +75,13 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     element: Element,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
-    hoister: SerializerHoister,
   ) {
     val propertyName = element.getElementName()
     // Choice type: emit per-expansion flat keys inline against the parent's composite encoder.
     // Each expansion's value / element is written to a flat descriptor slot on the parent instead
     // of via a nested sub-object — there is no standalone choice-type serializer.
     if (element.type != null && element.type.size > 1) {
-      emitChoiceTypeExpansionEncoding(codeBlock, element, modelClassName, nameToIdx, hoister)
+      emitChoiceTypeExpansionEncoding(codeBlock, element, modelClassName, nameToIdx)
       return
     }
     val typeCode = element.type?.singleOrNull()?.code ?: ""
@@ -99,24 +95,11 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
           propertyName,
           modelClassName,
           nameToIdx,
-          hoister,
         )
       } else {
         val elemCls = typeForComplexElement(element, modelClassName)
         val idx = nameToIdx.getValue(propertyName)
-        val innerSer =
-          hoistedSerializerForClass(
-            elemCls,
-            modelClassName,
-            hoister,
-            "${elemCls.simpleName.lowercase()}Ser",
-          )
-        val listSer =
-          hoister.refLazy(
-            CodeBlock.of("%M(%L)", listSerializerMemberName, innerSer),
-            "${propertyName}ListSer",
-            ClassName("kotlin.collections", "List").parameterizedBy(elemCls),
-          )
+        val listSer = listSerializerRefForClass(elemCls, modelClassName, nullableElement = false)
         codeBlock.add(
           "if (value.%N.isNotEmpty()) encoder.encodeSerializableElement(descriptor, %L, %L, value.%N)\n",
           propertyName,
@@ -134,7 +117,6 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         propertyName,
         modelClassName,
         nameToIdx,
-        hoister,
       )
     } else if (isFhirPathUri) {
       val kotlinType =
@@ -147,20 +129,12 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         kotlinType,
         CodeBlock.of("value.%N", propertyName),
         modelClassName,
-        hoister,
-        "${propertyName}Ser",
         nullable = element.min == 0,
       )
     } else {
       val singleType = typeForComplexElement(element, modelClassName)
       val idx = nameToIdx.getValue(propertyName)
-      val ser =
-        hoistedSerializerForClass(
-          singleType,
-          modelClassName,
-          hoister,
-          "${singleType.simpleName.lowercase()}Ser",
-        )
+      val ser = serializerRefForClass(singleType, modelClassName)
       if (element.min == 0) {
         codeBlock.add(
           "(value.%N)?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
@@ -199,7 +173,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
   /**
    * Emits `(valueExpr)?.let { encoder.encodeXxxElement(descriptor, idx, it) }` using the
    * specialized primitive call when [type] is a stdlib primitive, falling back to
-   * `encodeSerializableElement` with a hoisted serializer reference otherwise.
+   * `encodeSerializableElement` with a singleton serializer reference otherwise.
    */
   fun emitPrimitiveOrSerializableEncode(
     codeBlock: CodeBlock.Builder,
@@ -208,8 +182,6 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     type: ClassName,
     valueExpr: CodeBlock,
     parentClass: ClassName,
-    hoister: SerializerHoister,
-    nameHint: String,
     nullable: Boolean = true,
   ) {
     val specialized = specializedEncodeElementCall(type)
@@ -227,7 +199,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       }
       return
     }
-    val ser = hoistedSerializerForClass(type, parentClass, hoister, nameHint)
+    val ser = serializerRefForClass(type, parentClass)
     if (nullable) {
       codeBlock.add(
         "(%L)?.let·{ %N.encodeSerializableElement(descriptor, %L, %L, it) }\n",
@@ -248,24 +220,6 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
   }
 
   /**
-   * Serializer reference for [className] at a call site — hoisted via the deferred `Hoisted` object
-   * so every call site compiles to a single `getstatic Hoisted.$nameHint`. See
-   * `SerializerDecodeEmitter.serializerExpressionIn` for why deferred hoisting avoids class-init
-   * cycles.
-   */
-  fun hoistedSerializerForClass(
-    className: ClassName,
-    parentClass: ClassName,
-    hoister: SerializerHoister,
-    nameHint: String,
-  ): CodeBlock {
-    customSerializerFor(className, parentClass)?.let {
-      return CodeBlock.of("%T", it)
-    }
-    return hoister.refLazy(serializerForClassName(className), nameHint, className)
-  }
-
-  /**
    * Emits the full `when (val choice = value.field) { is Arm -> … }` dispatch for a choice-type
    * element, writing each expansion's flat wire keys (e.g., `deceasedBoolean` + `_deceasedBoolean`)
    * directly into the parent's composite encoder using its flat descriptor slots. Replaces the old
@@ -276,7 +230,6 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     element: Element,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
-    hoister: SerializerHoister,
   ) {
     val propertyName = element.getElementName()
     val sealedTypeClass = ClassName(modelClassName.packageName, element.getPathSimpleNames())
@@ -296,7 +249,6 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         expansionBaseName,
         modelClassName,
         nameToIdx,
-        hoister,
       )
       codeBlock.unindent()
       codeBlock.add("}\n")
@@ -315,7 +267,6 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     choiceFieldBaseName: String,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
-    hoister: SerializerHoister,
   ) {
     val typeCode = type.code
     val valueIdx = nameToIdx.getValue(choiceFieldBaseName)
@@ -339,14 +290,11 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         wireClassName,
         valueExpr,
         modelClassName,
-        hoister,
-        "${choiceFieldBaseName}Ser",
       )
       // Element (_field) expansion
       if (elementIdx != null) {
         val elementClassName = ClassName(modelClassName.packageName, "Element")
-        val elementSer =
-          hoistedSerializerForClass(elementClassName, modelClassName, hoister, "elementSer")
+        val elementSer = serializerRefForClass(elementClassName, modelClassName)
         codeBlock.add(
           "(choice.value.toElement())?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
           elementIdx,
@@ -356,13 +304,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     } else {
       // Complex expansion — e.g. Annotation.authorReference
       val complexClassName = ClassName(modelClassName.packageName, typeCode.capitalized())
-      val complexSer =
-        hoistedSerializerForClass(
-          complexClassName,
-          modelClassName,
-          hoister,
-          "${complexClassName.simpleName.lowercase()}Ser",
-        )
+      val complexSer = serializerRefForClass(complexClassName, modelClassName)
       codeBlock.add(
         "encoder.encodeSerializableElement(descriptor, %L, %L, choice.value)\n",
         valueIdx,
@@ -377,7 +319,6 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     propertyName: String,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
-    hoister: SerializerHoister,
   ) {
     val typeCode = element.type!!.single().code
     val fhirPathType = FhirPathType.getFromFhirTypeCode(typeCode)!!
@@ -423,13 +364,10 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       valueType,
       valueExpr,
       modelClassName,
-      hoister,
-      "${propertyName}Ser",
       nullable = !(isRequired && wireIsNonNull),
     )
     val elementClassName = ClassName(modelClassName.packageName, "Element")
-    val elementSer =
-      hoistedSerializerForClass(elementClassName, modelClassName, hoister, "elementSer")
+    val elementSer = serializerRefForClass(elementClassName, modelClassName)
     codeBlock.add("(value.%N", propertyName)
     if (!isRequired) codeBlock.add("?")
     codeBlock.add(
@@ -445,7 +383,6 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     propertyName: String,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
-    hoister: SerializerHoister,
   ) {
     val typeCode = element.type!!.single().code
     val fhirPathType = FhirPathType.getFromFhirTypeCode(typeCode)!!
@@ -454,35 +391,11 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     val valueIdx = nameToIdx.getValue(propertyName)
     val elementIdx = nameToIdx.getValue("_$propertyName")
     val valueInnerType: ClassName = if (isEnum) String::class.asClassName() else wireClassName
-    val valueInnerSer =
-      if (isEnum)
-        hoistedSerializerForClass(String::class.asClassName(), modelClassName, hoister, "stringSer")
-      else
-        customSerializerFor(wireClassName, modelClassName)?.let { CodeBlock.of("%T", it) }
-          ?: hoistedSerializerForClass(
-            wireClassName,
-            modelClassName,
-            hoister,
-            "${wireClassName.simpleName.lowercase()}Ser",
-          )
-    val listOfNullableType: (ClassName) -> TypeName = { inner ->
-      ClassName("kotlin.collections", "List").parameterizedBy(inner.copy(nullable = true))
-    }
     val valueListSer =
-      hoister.refLazy(
-        CodeBlock.of("%M((%L).%M)", listSerializerMemberName, valueInnerSer, nullableMemberName),
-        "${propertyName}ListSer",
-        listOfNullableType(valueInnerType),
-      )
+      listSerializerRefForClass(valueInnerType, modelClassName, nullableElement = true)
     val elementClassName = ClassName(modelClassName.packageName, "Element")
-    val elementSer =
-      hoistedSerializerForClass(elementClassName, modelClassName, hoister, "elementSer")
     val elementListSer =
-      hoister.refLazy(
-        CodeBlock.of("%M((%L).%M)", listSerializerMemberName, elementSer, nullableMemberName),
-        "_${propertyName}ListSer",
-        listOfNullableType(elementClassName),
-      )
+      listSerializerRefForClass(elementClassName, modelClassName, nullableElement = true)
     // values
     codeBlock.add("(")
     if (isEnum) {

@@ -80,6 +80,8 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
       element("_profile", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<ParameterDefinition>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): ParameterDefinition =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -113,25 +115,35 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 -> name = decoder.decodeStringElement(descriptor, i)
-        3 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        3 ->
+          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> use = decoder.decodeStringElement(descriptor, i)
-        5 -> _use = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        5 ->
+          _use = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 -> min = decoder.decodeIntElement(descriptor, i)
-        7 -> _min = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        7 ->
+          _min = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 -> max = decoder.decodeStringElement(descriptor, i)
-        9 -> _max = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        9 ->
+          _max = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         10 -> documentation = decoder.decodeStringElement(descriptor, i)
         11 ->
           _documentation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         12 -> type = decoder.decodeStringElement(descriptor, i)
         13 ->
-          _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         14 -> profile = decoder.decodeStringElement(descriptor, i)
         15 ->
-          _profile = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+          _profile =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding ParameterDefinition: " + i)
       }
@@ -158,43 +170,39 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
   private fun serializeInternal(encoder: CompositeEncoder, `value`: ParameterDefinition) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
     }
     ((value.use.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.use.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     ((value.min?.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
     (value.min?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     ((value.max?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.max?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
     }
     ((value.documentation?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.documentation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
     }
     ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 13, ElementSerializer, it)
     }
     ((value.profile?.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
     (value.profile?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 15, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val nameSer: KSerializer<Element> = Element.serializer()
   }
 }

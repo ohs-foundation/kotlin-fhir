@@ -64,6 +64,8 @@ internal object CodeableConceptSerializer : KSerializer<CodeableConcept> {
       element("_text", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<CodeableConcept>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): CodeableConcept =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -86,11 +88,23 @@ internal object CodeableConceptSerializer : KSerializer<CodeableConcept> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
-          coding = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codingSer, null)
+          coding =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
         3 -> text = decoder.decodeStringElement(descriptor, i)
-        4 -> _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+        4 ->
+          _text = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding CodeableConcept: " + i)
       }
@@ -106,25 +120,22 @@ internal object CodeableConceptSerializer : KSerializer<CodeableConcept> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: CodeableConcept) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.coding.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 2, Hoisted.codingSer, value.coding)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        CodingSerializer.listSerializer,
+        value.coding,
+      )
     ((value.text?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.text?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val codingSerInner: KSerializer<Coding> = Coding.serializer()
-
-    public val codingSer: KSerializer<List<Coding>> = ListSerializer(Hoisted.codingSerInner)
-
-    public val textSer: KSerializer<Element> = Element.serializer()
   }
 }

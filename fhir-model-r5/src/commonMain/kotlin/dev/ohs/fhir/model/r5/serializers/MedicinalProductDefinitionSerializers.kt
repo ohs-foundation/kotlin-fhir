@@ -45,6 +45,7 @@ import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
@@ -88,6 +89,9 @@ internal object MedicinalProductDefinitionContactSerializer :
       element("contact", Reference.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<MedicinalProductDefinition.Contact>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): MedicinalProductDefinition.Contact =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -110,14 +114,31 @@ internal object MedicinalProductDefinitionContactSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 ->
           contact =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Contact: " + i)
       }
@@ -141,27 +162,23 @@ internal object MedicinalProductDefinitionContactSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    encoder.encodeSerializableElement(descriptor, 4, Hoisted.contactSer, value.contact)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val contactSer: KSerializer<Reference> = Reference.serializer()
+    (value.type)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
+    }
+    encoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.contact)
   }
 }
 
@@ -199,6 +216,9 @@ internal object MedicinalProductDefinitionNameSerializer :
       )
     }
 
+  internal val listSerializer: KSerializer<List<MedicinalProductDefinition.Name>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): MedicinalProductDefinition.Name =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -224,18 +244,48 @@ internal object MedicinalProductDefinitionNameSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> productName = decoder.decodeStringElement(descriptor, i)
         4 ->
           _productName =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.productNameSer, null)
-        5 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        6 -> part = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.partSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        5 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        6 ->
+          part =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MedicinalProductDefinitionNamePartSerializer.listSerializer,
+              null,
+            )
         7 ->
-          usage = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.usageSer, null)
+          usage =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MedicinalProductDefinitionNameUsageSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Name: " + i)
       }
@@ -261,46 +311,40 @@ internal object MedicinalProductDefinitionNameSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.productName.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.productName.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.productNameSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
+    (value.type)?.let {
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
+    }
     if (value.part.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.partSer, value.part)
+      encoder.encodeSerializableElement(
+        descriptor,
+        6,
+        MedicinalProductDefinitionNamePartSerializer.listSerializer,
+        value.part,
+      )
     if (value.usage.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.usageSer, value.usage)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val productNameSer: KSerializer<Element> = Element.serializer()
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val partSerInner: KSerializer<MedicinalProductDefinition.Name.Part> =
-      MedicinalProductDefinition.Name.Part.serializer()
-
-    public val partSer: KSerializer<List<MedicinalProductDefinition.Name.Part>> =
-      ListSerializer(Hoisted.partSerInner)
-
-    public val usageSerInner: KSerializer<MedicinalProductDefinition.Name.Usage> =
-      MedicinalProductDefinition.Name.Usage.serializer()
-
-    public val usageSer: KSerializer<List<MedicinalProductDefinition.Name.Usage>> =
-      ListSerializer(Hoisted.usageSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7,
+        MedicinalProductDefinitionNameUsageSerializer.listSerializer,
+        value.usage,
+      )
   }
 }
 
@@ -323,6 +367,9 @@ internal object MedicinalProductDefinitionNamePartSerializer :
       element("_part", Element.serializer().descriptor, isOptional = true)
       element("type", CodeableConcept.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<MedicinalProductDefinition.Name.Part>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): MedicinalProductDefinition.Name.Part =
     decoder.decodeStructure(descriptor) {
@@ -347,13 +394,31 @@ internal object MedicinalProductDefinitionNamePartSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> part = decoder.decodeStringElement(descriptor, i)
-        4 -> _part = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.partSer, null)
-        5 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 ->
+          _part = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        5 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Part: " + i)
       }
@@ -381,30 +446,24 @@ internal object MedicinalProductDefinitionNamePartSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.part.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.part.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.partSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-    encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, value.type)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val partSer: KSerializer<Element> = Element.serializer()
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+    encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, value.type)
   }
 }
 
@@ -427,6 +486,9 @@ internal object MedicinalProductDefinitionNameUsageSerializer :
       element("jurisdiction", CodeableConcept.serializer().descriptor, isOptional = true)
       element("language", CodeableConcept.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<MedicinalProductDefinition.Name.Usage>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): MedicinalProductDefinition.Name.Usage =
     decoder.decodeStructure(descriptor) {
@@ -453,19 +515,44 @@ internal object MedicinalProductDefinitionNameUsageSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           country =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countrySer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 ->
           jurisdiction =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countrySer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         5 ->
           language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countrySer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Usage: " + i)
       }
@@ -494,28 +581,24 @@ internal object MedicinalProductDefinitionNameUsageSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.countrySer, value.country)
+    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.country)
     (value.jurisdiction)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.countrySer, it)
+      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
     }
-    encoder.encodeSerializableElement(descriptor, 5, Hoisted.countrySer, value.language)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val countrySer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+    encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, value.language)
   }
 }
 
@@ -537,6 +620,9 @@ internal object MedicinalProductDefinitionCrossReferenceSerializer :
       element("product", CodeableReference.serializer().descriptor, isOptional = true)
       element("type", CodeableConcept.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<MedicinalProductDefinition.CrossReference>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): MedicinalProductDefinition.CrossReference =
     decoder.decodeStructure(descriptor) {
@@ -562,14 +648,36 @@ internal object MedicinalProductDefinitionCrossReferenceSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           product =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.productSer, null)
-        4 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableReferenceSerializer,
+              null,
+            )
+        4 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding CrossReference: " + i)
       }
@@ -593,27 +701,23 @@ internal object MedicinalProductDefinitionCrossReferenceSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.productSer, value.product)
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val productSer: KSerializer<CodeableReference> = CodeableReference.serializer()
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+    encoder.encodeSerializableElement(descriptor, 3, CodeableReferenceSerializer, value.product)
+    (value.type)?.let {
+      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+    }
   }
 }
 
@@ -646,6 +750,9 @@ internal object MedicinalProductDefinitionOperationSerializer :
       )
     }
 
+  internal val listSerializer: KSerializer<List<MedicinalProductDefinition.Operation>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): MedicinalProductDefinition.Operation =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -670,23 +777,45 @@ internal object MedicinalProductDefinitionOperationSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableReferenceSerializer,
+              null,
+            )
         4 ->
           effectiveDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.effectiveDateSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         5 ->
           organization =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.organizationSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         6 ->
           confidentialityIndicator =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.confidentialityIndicatorSer,
+              CodeableConceptSerializer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
@@ -710,42 +839,35 @@ internal object MedicinalProductDefinitionOperationSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    (value.type)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, CodeableReferenceSerializer, it)
+    }
     (value.effectiveDate)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.effectiveDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, PeriodSerializer, it)
     }
     if (value.organization.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.organizationSer, value.organization)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5,
+        ReferenceSerializer.listSerializer,
+        value.organization,
+      )
     (value.confidentialityIndicator)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.confidentialityIndicatorSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<CodeableReference> = CodeableReference.serializer()
-
-    public val effectiveDateSer: KSerializer<Period> = Period.serializer()
-
-    public val organizationSerInner: KSerializer<Reference> = Reference.serializer()
-
-    public val organizationSer: KSerializer<List<Reference>> =
-      ListSerializer(Hoisted.organizationSerInner)
-
-    public val confidentialityIndicatorSer: KSerializer<CodeableConcept> =
-      CodeableConcept.serializer()
   }
 }
 
@@ -777,6 +899,9 @@ internal object MedicinalProductDefinitionCharacteristicSerializer :
       element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
       element("valueAttachment", Attachment.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<MedicinalProductDefinition.Characteristic>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): MedicinalProductDefinition.Characteristic =
     decoder.decodeStructure(descriptor) {
@@ -812,41 +937,58 @@ internal object MedicinalProductDefinitionCharacteristicSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        4 ->
-          valueCodeableConcept =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        5 -> valueMarkdown = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _valueMarkdown =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueMarkdownSer, null)
-        7 ->
-          valueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
-        8 -> valueInteger = decoder.decodeIntElement(descriptor, i)
-        9 ->
-          _valueInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueMarkdownSer, null)
-        10 -> valueDate = decoder.decodeStringElement(descriptor, i)
-        11 ->
-          _valueDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueMarkdownSer, null)
-        12 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
-        13 ->
-          _valueBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueMarkdownSer, null)
-        14 ->
-          valueAttachment =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.valueAttachmentSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          valueCodeableConcept =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        5 -> valueMarkdown = decoder.decodeStringElement(descriptor, i)
+        6 ->
+          _valueMarkdown =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        7 ->
+          valueQuantity =
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+        8 -> valueInteger = decoder.decodeIntElement(descriptor, i)
+        9 ->
+          _valueInteger =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        10 -> valueDate = decoder.decodeStringElement(descriptor, i)
+        11 ->
+          _valueDate =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        12 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
+        13 ->
+          _valueBoolean =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        14 ->
+          valueAttachment =
+            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Characteristic: " + i)
       }
@@ -879,66 +1021,56 @@ internal object MedicinalProductDefinitionCharacteristicSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
+    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     when (val choice = value.`value`) {
       null -> {}
       is MedicinalProductDefinition.Characteristic.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
       }
       is MedicinalProductDefinition.Characteristic.Value.Markdown -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueMarkdownSer, it)
+          encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
         }
       }
       is MedicinalProductDefinition.Characteristic.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueQuantitySer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 7, QuantitySerializer, choice.value)
       }
       is MedicinalProductDefinition.Characteristic.Value.Integer -> {
         ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 8, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueMarkdownSer, it)
+          encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
         }
       }
       is MedicinalProductDefinition.Characteristic.Value.Date -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 10, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueMarkdownSer, it)
+          encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
         }
       }
       is MedicinalProductDefinition.Characteristic.Value.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 12, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueMarkdownSer, it)
+          encoder.encodeSerializableElement(descriptor, 13, ElementSerializer, it)
         }
       }
       is MedicinalProductDefinition.Characteristic.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueAttachmentSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 14, AttachmentSerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val valueMarkdownSer: KSerializer<Element> = Element.serializer()
-
-    public val valueQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val valueAttachmentSer: KSerializer<Attachment> = Attachment.serializer()
   }
 }
 
@@ -1159,120 +1291,255 @@ internal object MedicinalProductDefinitionSerializer : KSerializer<MedicinalProd
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
-        11 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
+        11 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         12 ->
-          domain = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+          domain =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         13 -> version = decoder.decodeStringElement(descriptor, i)
         14 ->
           _version =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 ->
-          status = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+          status =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         16 -> statusDate = decoder.decodeStringElement(descriptor, i)
         17 ->
           _statusDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         18 -> description = decoder.decodeStringElement(descriptor, i)
         19 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         20 ->
           combinedPharmaceuticalDoseForm =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         21 ->
-          route = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.routeSer, null)
+          route =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         22 -> indication = decoder.decodeStringElement(descriptor, i)
         23 ->
           _indication =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         24 ->
           legalStatusOfSupply =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         25 ->
           additionalMonitoringIndicator =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         26 ->
           specialMeasures =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.routeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         27 ->
           pediatricUseIndicator =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         28 ->
           classification =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.routeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         29 ->
           marketingStatus =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.marketingStatusSer,
+              MarketingStatusSerializer.listSerializer,
               null,
             )
         30 ->
           packagedMedicinalProduct =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.routeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         31 ->
           comprisedOf =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.comprisedOfSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         32 ->
           ingredient =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.routeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         33 ->
           impurity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.impuritySer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableReferenceSerializer.listSerializer,
+              null,
+            )
         34 ->
           attachedDocument =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.comprisedOfSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         35 ->
           masterFile =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.comprisedOfSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         36 ->
           contact =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MedicinalProductDefinitionContactSerializer.listSerializer,
+              null,
+            )
         37 ->
           clinicalTrial =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.comprisedOfSer, null)
-        38 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
-        39 -> name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
+        38 ->
+          code =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
+        39 ->
+          name =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MedicinalProductDefinitionNameSerializer.listSerializer,
+              null,
+            )
         40 ->
           crossReference =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.crossReferenceSer,
+              MedicinalProductDefinitionCrossReferenceSerializer.listSerializer,
               null,
             )
         41 ->
           operation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.operationSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MedicinalProductDefinitionOperationSerializer.listSerializer,
+              null,
+            )
         42 ->
           characteristic =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.characteristicSer,
+              MedicinalProductDefinitionCharacteristicSerializer.listSerializer,
               null,
             )
         else ->
@@ -1328,320 +1595,250 @@ internal object MedicinalProductDefinitionSerializer : KSerializer<MedicinalProd
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        11 + descriptorOffset,
+        CodeableConceptSerializer,
+        it,
+      )
     }
     (value.domain)?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12 + descriptorOffset,
+        CodeableConceptSerializer,
+        it,
+      )
     }
     ((value.version?.value))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.version?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ElementSerializer, it)
     }
     (value.status)?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        15 + descriptorOffset,
+        CodeableConceptSerializer,
+        it,
+      )
     }
     ((value.statusDate?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.statusDate?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ElementSerializer, it)
     }
     ((value.description?.value))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ElementSerializer, it)
     }
     (value.combinedPharmaceuticalDoseForm)?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        20 + descriptorOffset,
+        CodeableConceptSerializer,
+        it,
+      )
     }
     if (value.route.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         21 + descriptorOffset,
-        Hoisted.routeSer,
+        CodeableConceptSerializer.listSerializer,
         value.route,
       )
     ((value.indication?.value))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.indication?.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ElementSerializer, it)
+    }
+    (value.legalStatusOfSupply)?.let {
       encoder.encodeSerializableElement(
         descriptor,
-        23 + descriptorOffset,
-        Hoisted.implicitRulesSer,
+        24 + descriptorOffset,
+        CodeableConceptSerializer,
         it,
       )
     }
-    (value.legalStatusOfSupply)?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, Hoisted.typeSer, it)
-    }
     (value.additionalMonitoringIndicator)?.let {
-      encoder.encodeSerializableElement(descriptor, 25 + descriptorOffset, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        25 + descriptorOffset,
+        CodeableConceptSerializer,
+        it,
+      )
     }
     if (value.specialMeasures.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         26 + descriptorOffset,
-        Hoisted.routeSer,
+        CodeableConceptSerializer.listSerializer,
         value.specialMeasures,
       )
     (value.pediatricUseIndicator)?.let {
-      encoder.encodeSerializableElement(descriptor, 27 + descriptorOffset, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        27 + descriptorOffset,
+        CodeableConceptSerializer,
+        it,
+      )
     }
     if (value.classification.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         28 + descriptorOffset,
-        Hoisted.routeSer,
+        CodeableConceptSerializer.listSerializer,
         value.classification,
       )
     if (value.marketingStatus.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         29 + descriptorOffset,
-        Hoisted.marketingStatusSer,
+        MarketingStatusSerializer.listSerializer,
         value.marketingStatus,
       )
     if (value.packagedMedicinalProduct.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         30 + descriptorOffset,
-        Hoisted.routeSer,
+        CodeableConceptSerializer.listSerializer,
         value.packagedMedicinalProduct,
       )
     if (value.comprisedOf.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         31 + descriptorOffset,
-        Hoisted.comprisedOfSer,
+        ReferenceSerializer.listSerializer,
         value.comprisedOf,
       )
     if (value.ingredient.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         32 + descriptorOffset,
-        Hoisted.routeSer,
+        CodeableConceptSerializer.listSerializer,
         value.ingredient,
       )
     if (value.impurity.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         33 + descriptorOffset,
-        Hoisted.impuritySer,
+        CodeableReferenceSerializer.listSerializer,
         value.impurity,
       )
     if (value.attachedDocument.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         34 + descriptorOffset,
-        Hoisted.comprisedOfSer,
+        ReferenceSerializer.listSerializer,
         value.attachedDocument,
       )
     if (value.masterFile.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         35 + descriptorOffset,
-        Hoisted.comprisedOfSer,
+        ReferenceSerializer.listSerializer,
         value.masterFile,
       )
     if (value.contact.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         36 + descriptorOffset,
-        Hoisted.contactSer,
+        MedicinalProductDefinitionContactSerializer.listSerializer,
         value.contact,
       )
     if (value.clinicalTrial.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         37 + descriptorOffset,
-        Hoisted.comprisedOfSer,
+        ReferenceSerializer.listSerializer,
         value.clinicalTrial,
       )
     if (value.code.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         38 + descriptorOffset,
-        Hoisted.codeSer,
+        CodingSerializer.listSerializer,
         value.code,
       )
     if (value.name.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         39 + descriptorOffset,
-        Hoisted.nameSer,
+        MedicinalProductDefinitionNameSerializer.listSerializer,
         value.name,
       )
     if (value.crossReference.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         40 + descriptorOffset,
-        Hoisted.crossReferenceSer,
+        MedicinalProductDefinitionCrossReferenceSerializer.listSerializer,
         value.crossReference,
       )
     if (value.operation.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         41 + descriptorOffset,
-        Hoisted.operationSer,
+        MedicinalProductDefinitionOperationSerializer.listSerializer,
         value.operation,
       )
     if (value.characteristic.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         42 + descriptorOffset,
-        Hoisted.characteristicSer,
+        MedicinalProductDefinitionCharacteristicSerializer.listSerializer,
         value.characteristic,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val routeSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.typeSer)
-
-    public val marketingStatusSerInner: KSerializer<MarketingStatus> = MarketingStatus.serializer()
-
-    public val marketingStatusSer: KSerializer<List<MarketingStatus>> =
-      ListSerializer(Hoisted.marketingStatusSerInner)
-
-    public val comprisedOfSerInner: KSerializer<Reference> = Reference.serializer()
-
-    public val comprisedOfSer: KSerializer<List<Reference>> =
-      ListSerializer(Hoisted.comprisedOfSerInner)
-
-    public val impuritySerInner: KSerializer<CodeableReference> = CodeableReference.serializer()
-
-    public val impuritySer: KSerializer<List<CodeableReference>> =
-      ListSerializer(Hoisted.impuritySerInner)
-
-    public val contactSerInner: KSerializer<MedicinalProductDefinition.Contact> =
-      MedicinalProductDefinition.Contact.serializer()
-
-    public val contactSer: KSerializer<List<MedicinalProductDefinition.Contact>> =
-      ListSerializer(Hoisted.contactSerInner)
-
-    public val codeSerInner: KSerializer<Coding> = Coding.serializer()
-
-    public val codeSer: KSerializer<List<Coding>> = ListSerializer(Hoisted.codeSerInner)
-
-    public val nameSerInner: KSerializer<MedicinalProductDefinition.Name> =
-      MedicinalProductDefinition.Name.serializer()
-
-    public val nameSer: KSerializer<List<MedicinalProductDefinition.Name>> =
-      ListSerializer(Hoisted.nameSerInner)
-
-    public val crossReferenceSerInner: KSerializer<MedicinalProductDefinition.CrossReference> =
-      MedicinalProductDefinition.CrossReference.serializer()
-
-    public val crossReferenceSer: KSerializer<List<MedicinalProductDefinition.CrossReference>> =
-      ListSerializer(Hoisted.crossReferenceSerInner)
-
-    public val operationSerInner: KSerializer<MedicinalProductDefinition.Operation> =
-      MedicinalProductDefinition.Operation.serializer()
-
-    public val operationSer: KSerializer<List<MedicinalProductDefinition.Operation>> =
-      ListSerializer(Hoisted.operationSerInner)
-
-    public val characteristicSerInner: KSerializer<MedicinalProductDefinition.Characteristic> =
-      MedicinalProductDefinition.Characteristic.serializer()
-
-    public val characteristicSer: KSerializer<List<MedicinalProductDefinition.Characteristic>> =
-      ListSerializer(Hoisted.characteristicSerInner)
   }
 }
 

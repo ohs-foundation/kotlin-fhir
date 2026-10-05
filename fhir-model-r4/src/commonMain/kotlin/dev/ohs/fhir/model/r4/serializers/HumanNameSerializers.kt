@@ -36,7 +36,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -96,6 +95,8 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
       element("period", lazyDescriptor { Period.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<HumanName>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): HumanName =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -128,30 +129,72 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 -> use = decoder.decodeStringElement(descriptor, i)
-        3 -> _use = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        3 ->
+          _use = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> text = decoder.decodeStringElement(descriptor, i)
-        5 -> _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        5 ->
+          _text = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 -> family = decoder.decodeStringElement(descriptor, i)
         7 ->
-          _family = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+          _family =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 ->
-          given = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer, null)
+          given =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         9 ->
-          _given = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer2, null)
+          _given =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         10 ->
-          prefix = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer, null)
+          prefix =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         11 ->
           _prefix =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         12 ->
-          suffix = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer, null)
+          suffix =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         13 ->
           _suffix =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         14 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding HumanName: " + i)
       }
@@ -190,55 +233,52 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: HumanName) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     ((value.use?.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.use?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
     }
     ((value.text?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.text?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     ((value.family?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.family?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     (value.given.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.givenSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, stringNullableListSerializer, it)
     }
     (value.given.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.givenSer2, it)
+      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer.nullableListSerializer, it)
     }
     (value.prefix.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.givenSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, stringNullableListSerializer, it)
     }
     (value.prefix.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.givenSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        11,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     (value.suffix.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.givenSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, stringNullableListSerializer, it)
     }
     (value.suffix.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 13, Hoisted.givenSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        13,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 14, Hoisted.periodSer, it) }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val useSer: KSerializer<Element> = Element.serializer()
-
-    public val givenSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val givenSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.givenSerInner).nullable)
-
-    public val givenSer2: KSerializer<List<Element?>> = ListSerializer((Hoisted.useSer).nullable)
-
-    public val periodSer: KSerializer<Period> = Period.serializer()
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 14, PeriodSerializer, it) }
   }
 }

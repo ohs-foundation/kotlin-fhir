@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Permission
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Int
 import kotlin.OptIn
@@ -47,7 +48,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -86,6 +86,8 @@ internal object PermissionJustificationSerializer : KSerializer<Permission.Justi
       )
     }
 
+  internal val listSerializer: KSerializer<List<Permission.Justification>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Permission.Justification =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -108,15 +110,36 @@ internal object PermissionJustificationSerializer : KSerializer<Permission.Justi
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
-          basis = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.basisSer, null)
+          basis =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         4 ->
           evidence =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.evidenceSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Justification: " + i)
       }
@@ -133,33 +156,33 @@ internal object PermissionJustificationSerializer : KSerializer<Permission.Justi
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Permission.Justification) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.basis.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.basisSer, value.basis)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3,
+        CodeableConceptSerializer.listSerializer,
+        value.basis,
+      )
     if (value.evidence.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.evidenceSer, value.evidence)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val basisSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val basisSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.basisSerInner)
-
-    public val evidenceSerInner: KSerializer<Reference> = Reference.serializer()
-
-    public val evidenceSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.evidenceSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        4,
+        ReferenceSerializer.listSerializer,
+        value.evidence,
+      )
   }
 }
 
@@ -196,6 +219,8 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
       )
     }
 
+  internal val listSerializer: KSerializer<List<Permission.Rule>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Permission.Rule =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -221,19 +246,47 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> type = decoder.decodeStringElement(descriptor, i)
-        4 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 ->
+          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 ->
-          `data` = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dataSer, null)
+          `data` =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PermissionRuleDataSerializer.listSerializer,
+              null,
+            )
         6 ->
           activity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.activitySer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PermissionRuleActivitySerializer.listSerializer,
+              null,
+            )
         7 ->
-          limit = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.limitSer, null)
+          limit =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Rule: " + i)
       }
@@ -252,48 +305,44 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Permission.Rule) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     if (value.`data`.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.dataSer, value.`data`)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5,
+        PermissionRuleDataSerializer.listSerializer,
+        value.`data`,
+      )
     if (value.activity.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.activitySer, value.activity)
+      encoder.encodeSerializableElement(
+        descriptor,
+        6,
+        PermissionRuleActivitySerializer.listSerializer,
+        value.activity,
+      )
     if (value.limit.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.limitSer, value.limit)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<Element> = Element.serializer()
-
-    public val dataSerInner: KSerializer<Permission.Rule.Data> = Permission.Rule.Data.serializer()
-
-    public val dataSer: KSerializer<List<Permission.Rule.Data>> =
-      ListSerializer(Hoisted.dataSerInner)
-
-    public val activitySerInner: KSerializer<Permission.Rule.Activity> =
-      Permission.Rule.Activity.serializer()
-
-    public val activitySer: KSerializer<List<Permission.Rule.Activity>> =
-      ListSerializer(Hoisted.activitySerInner)
-
-    public val limitSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val limitSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.limitSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7,
+        CodeableConceptSerializer.listSerializer,
+        value.limit,
+      )
   }
 }
 
@@ -323,6 +372,8 @@ internal object PermissionRuleDataSerializer : KSerializer<Permission.Rule.Data>
       element("expression", Expression.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Permission.Rule.Data>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Permission.Rule.Data =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -347,21 +398,47 @@ internal object PermissionRuleDataSerializer : KSerializer<Permission.Rule.Data>
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           resource =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.resourceSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PermissionRuleDataResourceSerializer.listSerializer,
+              null,
+            )
         4 ->
           security =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.securitySer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
         5 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+          period =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer.listSerializer,
+              null,
+            )
         6 ->
           expression =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.expressionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Data: " + i)
       }
@@ -380,46 +457,43 @@ internal object PermissionRuleDataSerializer : KSerializer<Permission.Rule.Data>
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Permission.Rule.Data) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.resource.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.resourceSer, value.resource)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3,
+        PermissionRuleDataResourceSerializer.listSerializer,
+        value.resource,
+      )
     if (value.security.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.securitySer, value.security)
+      encoder.encodeSerializableElement(
+        descriptor,
+        4,
+        CodingSerializer.listSerializer,
+        value.security,
+      )
     if (value.period.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.periodSer, value.period)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5,
+        PeriodSerializer.listSerializer,
+        value.period,
+      )
     (value.expression)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.expressionSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ExpressionSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val resourceSerInner: KSerializer<Permission.Rule.Data.Resource> =
-      Permission.Rule.Data.Resource.serializer()
-
-    public val resourceSer: KSerializer<List<Permission.Rule.Data.Resource>> =
-      ListSerializer(Hoisted.resourceSerInner)
-
-    public val securitySerInner: KSerializer<Coding> = Coding.serializer()
-
-    public val securitySer: KSerializer<List<Coding>> = ListSerializer(Hoisted.securitySerInner)
-
-    public val periodSerInner: KSerializer<Period> = Period.serializer()
-
-    public val periodSer: KSerializer<List<Period>> = ListSerializer(Hoisted.periodSerInner)
-
-    public val expressionSer: KSerializer<Expression> = Expression.serializer()
   }
 }
 
@@ -441,6 +515,9 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
       element("_meaning", Element.serializer().descriptor, isOptional = true)
       element("reference", Reference.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<Permission.Rule.Data.Resource>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Permission.Rule.Data.Resource =
     decoder.decodeStructure(descriptor) {
@@ -465,17 +542,27 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> meaning = decoder.decodeStringElement(descriptor, i)
         4 ->
           _meaning =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.meaningSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 ->
           reference =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Resource: " + i)
       }
@@ -500,30 +587,24 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Permission.Rule.Data.Resource) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.meaning.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.meaning.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.meaningSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-    encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, value.reference)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val meaningSer: KSerializer<Element> = Element.serializer()
-
-    public val referenceSer: KSerializer<Reference> = Reference.serializer()
+    encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.reference)
   }
 }
 
@@ -554,6 +635,8 @@ internal object PermissionRuleActivitySerializer : KSerializer<Permission.Rule.A
       )
     }
 
+  internal val listSerializer: KSerializer<List<Permission.Rule.Activity>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Permission.Rule.Activity =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -577,17 +660,44 @@ internal object PermissionRuleActivitySerializer : KSerializer<Permission.Rule.A
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
-          actor = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.actorSer, null)
+          actor =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         4 ->
-          action = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.actionSer, null)
+          action =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         5 ->
           purpose =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.actionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Activity: " + i)
       }
@@ -605,36 +715,40 @@ internal object PermissionRuleActivitySerializer : KSerializer<Permission.Rule.A
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Permission.Rule.Activity) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.actor.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.actorSer, value.actor)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3,
+        ReferenceSerializer.listSerializer,
+        value.actor,
+      )
     if (value.action.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.actionSer, value.action)
+      encoder.encodeSerializableElement(
+        descriptor,
+        4,
+        CodeableConceptSerializer.listSerializer,
+        value.action,
+      )
     if (value.purpose.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.actionSer, value.purpose)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val actorSerInner: KSerializer<Reference> = Reference.serializer()
-
-    public val actorSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.actorSerInner)
-
-    public val actionSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val actionSer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.actionSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5,
+        CodeableConceptSerializer.listSerializer,
+        value.purpose,
+      )
   }
 }
 
@@ -731,46 +845,87 @@ internal object PermissionSerializer : KSerializer<Permission> {
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 -> status = decoder.decodeStringElement(descriptor, i)
         11 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         12 ->
           asserter =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.asserterSer, null)
-        13 -> date = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dateSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+        13 ->
+          date =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         14 ->
-          _date = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dateSer2, null)
+          _date =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         15 ->
           validity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.validitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         16 ->
           justification =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.justificationSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PermissionJustificationSerializer,
+              null,
+            )
         17 -> combining = decoder.decodeStringElement(descriptor, i)
         18 ->
           _combining =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        19 -> rule = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ruleSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        19 ->
+          rule =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PermissionRuleSerializer.listSerializer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding Permission: " + i)
       }
     }
@@ -816,82 +971,77 @@ internal object PermissionSerializer : KSerializer<Permission> {
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, ElementSerializer, it)
+    }
+    (value.asserter)?.let {
+      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ReferenceSerializer, it)
+    }
+    (value.date.map { it.value?.toString() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,
-        11 + descriptorOffset,
-        Hoisted.implicitRulesSer,
+        13 + descriptorOffset,
+        stringNullableListSerializer,
         it,
       )
     }
-    (value.asserter)?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, Hoisted.asserterSer, it)
-    }
-    (value.date.map { it.value?.toString() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.dateSer, it)
-    }
     (value.date.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.dateSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        14 + descriptorOffset,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     (value.validity)?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.validitySer, it)
+      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, PeriodSerializer, it)
     }
     (value.justification)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
-        Hoisted.justificationSer,
+        PermissionJustificationSerializer,
         it,
       )
     }
@@ -899,55 +1049,15 @@ internal object PermissionSerializer : KSerializer<Permission> {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.combining.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
     }
     if (value.rule.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         19 + descriptorOffset,
-        Hoisted.ruleSer,
+        PermissionRuleSerializer.listSerializer,
         value.rule,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val asserterSer: KSerializer<Reference> = Reference.serializer()
-
-    public val dateSerInner: KSerializer<String> = String.serializer()
-
-    public val dateSer: KSerializer<List<String?>> = ListSerializer((Hoisted.dateSerInner).nullable)
-
-    public val dateSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.implicitRulesSer).nullable)
-
-    public val validitySer: KSerializer<Period> = Period.serializer()
-
-    public val justificationSer: KSerializer<Permission.Justification> =
-      Permission.Justification.serializer()
-
-    public val ruleSerInner: KSerializer<Permission.Rule> = Permission.Rule.serializer()
-
-    public val ruleSer: KSerializer<List<Permission.Rule>> = ListSerializer(Hoisted.ruleSerInner)
   }
 }
 

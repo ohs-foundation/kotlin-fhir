@@ -69,6 +69,7 @@ import dev.ohs.fhir.model.r4.Ratio
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedArtifact
 import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.SampledData
 import dev.ohs.fhir.model.r4.Signature
 import dev.ohs.fhir.model.r4.String as R4String
@@ -93,7 +94,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -130,6 +130,8 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
       element("_documentation", Element.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<StructureMap.Structure>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): StructureMap.Structure =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -158,20 +160,33 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> url = decoder.decodeStringElement(descriptor, i)
-        4 -> _url = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.urlSer, null)
+        4 ->
+          _url = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> mode = decoder.decodeStringElement(descriptor, i)
-        6 -> _mode = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.urlSer, null)
+        6 ->
+          _mode = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> alias = decoder.decodeStringElement(descriptor, i)
-        8 -> _alias = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.urlSer, null)
+        8 ->
+          _alias = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> documentation = decoder.decodeStringElement(descriptor, i)
         10 ->
           _documentation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.urlSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Structure: " + i)
       }
@@ -198,39 +213,35 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
   private fun serializeInternal(encoder: CompositeEncoder, `value`: StructureMap.Structure) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.url.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.url.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.urlSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.mode.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.urlSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.alias?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.alias?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.urlSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.documentation?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.documentation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.urlSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val urlSer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -268,6 +279,8 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
       )
     }
 
+  internal val listSerializer: KSerializer<List<StructureMap.Group>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): StructureMap.Group =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -298,26 +311,51 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> name = decoder.decodeStringElement(descriptor, i)
-        4 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        4 ->
+          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> extends = decoder.decodeStringElement(descriptor, i)
         6 ->
-          _extends = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+          _extends =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> typeMode = decoder.decodeStringElement(descriptor, i)
         8 ->
           _typeMode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> documentation = decoder.decodeStringElement(descriptor, i)
         10 ->
           _documentation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 ->
-          input = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.inputSer, null)
-        12 -> rule = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ruleSer, null)
+          input =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupInputSerializer.listSerializer,
+              null,
+            )
+        12 ->
+          rule =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Group: " + i)
       }
@@ -347,55 +385,49 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: StructureMap.Group) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.name.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.name.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.extends?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.extends?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.typeMode.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.typeMode.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.documentation?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.documentation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     if (value.input.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.inputSer, value.input)
+      encoder.encodeSerializableElement(
+        descriptor,
+        11,
+        StructureMapGroupInputSerializer.listSerializer,
+        value.input,
+      )
     if (value.rule.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.ruleSer, value.rule)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val nameSer: KSerializer<Element> = Element.serializer()
-
-    public val inputSerInner: KSerializer<StructureMap.Group.Input> =
-      StructureMap.Group.Input.serializer()
-
-    public val inputSer: KSerializer<List<StructureMap.Group.Input>> =
-      ListSerializer(Hoisted.inputSerInner)
-
-    public val ruleSerInner: KSerializer<StructureMap.Group.Rule> =
-      StructureMap.Group.Rule.serializer()
-
-    public val ruleSer: KSerializer<List<StructureMap.Group.Rule>> =
-      ListSerializer(Hoisted.ruleSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12,
+        StructureMapGroupRuleSerializer.listSerializer,
+        value.rule,
+      )
   }
 }
 
@@ -422,6 +454,8 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
       element("documentation", KotlinString.serializer().descriptor, isOptional = true)
       element("_documentation", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<StructureMap.Group.Input>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): StructureMap.Group.Input =
     decoder.decodeStructure(descriptor) {
@@ -451,20 +485,33 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> name = decoder.decodeStringElement(descriptor, i)
-        4 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        4 ->
+          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> type = decoder.decodeStringElement(descriptor, i)
-        6 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        6 ->
+          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> mode = decoder.decodeStringElement(descriptor, i)
-        8 -> _mode = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        8 ->
+          _mode = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> documentation = decoder.decodeStringElement(descriptor, i)
         10 ->
           _documentation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Input: " + i)
       }
@@ -491,39 +538,35 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
   private fun serializeInternal(encoder: CompositeEncoder, `value`: StructureMap.Group.Input) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.name.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.name.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.type?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.mode.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.mode.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.documentation?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.documentation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val nameSer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -573,6 +616,8 @@ internal object StructureMapGroupRuleSerializer : KSerializer<StructureMap.Group
       element("_documentation", Element.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<StructureMap.Group.Rule>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -601,24 +646,59 @@ internal object StructureMapGroupRuleSerializer : KSerializer<StructureMap.Group
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> name = decoder.decodeStringElement(descriptor, i)
-        4 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        4 ->
+          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 ->
-          source = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sourceSer, null)
+          source =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleSourceSerializer.listSerializer,
+              null,
+            )
         6 ->
-          target = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.targetSer, null)
-        7 -> rule = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ruleSer, null)
+          target =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleTargetSerializer.listSerializer,
+              null,
+            )
+        7 ->
+          rule =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleSerializer.listSerializer,
+              null,
+            )
         8 ->
           dependent =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dependentSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleDependentSerializer.listSerializer,
+              null,
+            )
         9 -> documentation = decoder.decodeStringElement(descriptor, i)
         10 ->
           _documentation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Rule: " + i)
       }
@@ -643,63 +723,55 @@ internal object StructureMapGroupRuleSerializer : KSerializer<StructureMap.Group
   private fun serializeInternal(encoder: CompositeEncoder, `value`: StructureMap.Group.Rule) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.name.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.name.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     if (value.source.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.sourceSer, value.source)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5,
+        StructureMapGroupRuleSourceSerializer.listSerializer,
+        value.source,
+      )
     if (value.target.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.targetSer, value.target)
+      encoder.encodeSerializableElement(
+        descriptor,
+        6,
+        StructureMapGroupRuleTargetSerializer.listSerializer,
+        value.target,
+      )
     if (value.rule.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.ruleSer, value.rule)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7,
+        StructureMapGroupRuleSerializer.listSerializer,
+        value.rule,
+      )
     if (value.dependent.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.dependentSer, value.dependent)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8,
+        StructureMapGroupRuleDependentSerializer.listSerializer,
+        value.dependent,
+      )
     ((value.documentation?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.documentation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val nameSer: KSerializer<Element> = Element.serializer()
-
-    public val sourceSerInner: KSerializer<StructureMap.Group.Rule.Source> =
-      StructureMap.Group.Rule.Source.serializer()
-
-    public val sourceSer: KSerializer<List<StructureMap.Group.Rule.Source>> =
-      ListSerializer(Hoisted.sourceSerInner)
-
-    public val targetSerInner: KSerializer<StructureMap.Group.Rule.Target> =
-      StructureMap.Group.Rule.Target.serializer()
-
-    public val targetSer: KSerializer<List<StructureMap.Group.Rule.Target>> =
-      ListSerializer(Hoisted.targetSerInner)
-
-    public val ruleSerInner: KSerializer<StructureMap.Group.Rule> =
-      StructureMap.Group.Rule.serializer()
-
-    public val ruleSer: KSerializer<List<StructureMap.Group.Rule>> =
-      ListSerializer(Hoisted.ruleSerInner)
-
-    public val dependentSerInner: KSerializer<StructureMap.Group.Rule.Dependent> =
-      StructureMap.Group.Rule.Dependent.serializer()
-
-    public val dependentSer: KSerializer<List<StructureMap.Group.Rule.Dependent>> =
-      ListSerializer(Hoisted.dependentSerInner)
   }
 }
 
@@ -829,6 +901,9 @@ internal object StructureMapGroupRuleSourceSerializer :
       element("_logMessage", Element.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<StructureMap.Group.Rule.Source>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Source =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -938,309 +1013,204 @@ internal object StructureMapGroupRuleSourceSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> context = decoder.decodeStringElement(descriptor, i)
         4 ->
           _context =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> min = decoder.decodeIntElement(descriptor, i)
         6 ->
-          _min = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+          _min = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> max = decoder.decodeStringElement(descriptor, i)
         8 ->
-          _max = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+          _max = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> type = decoder.decodeStringElement(descriptor, i)
         10 ->
-          _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 -> defaultValueBase64Binary = decoder.decodeStringElement(descriptor, i)
         12 ->
           _defaultValueBase64Binary =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 -> defaultValueBoolean = decoder.decodeBooleanElement(descriptor, i)
         14 ->
           _defaultValueBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 -> defaultValueCanonical = decoder.decodeStringElement(descriptor, i)
         16 ->
           _defaultValueCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         17 -> defaultValueCode = decoder.decodeStringElement(descriptor, i)
         18 ->
           _defaultValueCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         19 -> defaultValueDate = decoder.decodeStringElement(descriptor, i)
         20 ->
           _defaultValueDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         21 -> defaultValueDateTime = decoder.decodeStringElement(descriptor, i)
         22 ->
           _defaultValueDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         23 ->
           defaultValueDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         24 ->
           _defaultValueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         25 -> defaultValueId = decoder.decodeStringElement(descriptor, i)
         26 ->
           _defaultValueId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         27 -> defaultValueInstant = decoder.decodeStringElement(descriptor, i)
         28 ->
           _defaultValueInstant =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         29 -> defaultValueInteger = decoder.decodeIntElement(descriptor, i)
         30 ->
           _defaultValueInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         31 -> defaultValueMarkdown = decoder.decodeStringElement(descriptor, i)
         32 ->
           _defaultValueMarkdown =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         33 -> defaultValueOid = decoder.decodeStringElement(descriptor, i)
         34 ->
           _defaultValueOid =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         35 -> defaultValuePositiveInt = decoder.decodeIntElement(descriptor, i)
         36 ->
           _defaultValuePositiveInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         37 -> defaultValueString = decoder.decodeStringElement(descriptor, i)
         38 ->
           _defaultValueString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         39 ->
           defaultValueTime =
             decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
         40 ->
           _defaultValueTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         41 -> defaultValueUnsignedInt = decoder.decodeIntElement(descriptor, i)
         42 ->
           _defaultValueUnsignedInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         43 -> defaultValueUri = decoder.decodeStringElement(descriptor, i)
         44 ->
           _defaultValueUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         45 -> defaultValueUrl = decoder.decodeStringElement(descriptor, i)
         46 ->
           _defaultValueUrl =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         47 -> defaultValueUuid = decoder.decodeStringElement(descriptor, i)
         48 ->
           _defaultValueUuid =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         49 ->
           defaultValueAddress =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueAddressSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
         50 ->
           defaultValueAge =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueAgeSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
         51 ->
           defaultValueAnnotation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueAnnotationSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
         52 ->
           defaultValueAttachment =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueAttachmentSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
         53 ->
           defaultValueCodeableConcept =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.defaultValueCodeableConceptSer,
+              CodeableConceptSerializer,
               null,
             )
         54 ->
           defaultValueCoding =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueCodingSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
         55 ->
           defaultValueContactPoint =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueContactPointSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
         56 ->
           defaultValueCount =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueCountSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, CountSerializer, null)
         57 ->
           defaultValueDistance =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueDistanceSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, DistanceSerializer, null)
         58 ->
           defaultValueDuration =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueDurationSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
         59 ->
           defaultValueHumanName =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueHumanNameSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, HumanNameSerializer, null)
         60 ->
           defaultValueIdentifier =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueIdentifierSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
         61 ->
           defaultValueMoney =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueMoneySer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
         62 ->
           defaultValuePeriod =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValuePeriodSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         63 ->
           defaultValueQuantity =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueQuantitySer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         64 ->
           defaultValueRange =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueRangeSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         65 ->
           defaultValueRatio =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueRatioSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
         66 ->
           defaultValueReference =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueReferenceSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         67 ->
           defaultValueSampledData =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueSampledDataSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, SampledDataSerializer, null)
         68 ->
           defaultValueSignature =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueSignatureSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
         69 ->
           defaultValueTiming =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueTimingSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
         70 ->
           defaultValueContactDetail =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueContactDetailSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ContactDetailSerializer, null)
         71 ->
           defaultValueContributor =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueContributorSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ContributorSerializer, null)
         72 ->
           defaultValueDataRequirement =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.defaultValueDataRequirementSer,
+              DataRequirementSerializer,
               null,
             )
         73 ->
           defaultValueExpression =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueExpressionSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
         74 ->
           defaultValueParameterDefinition =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.defaultValueParameterDefinitionSer,
+              ParameterDefinitionSerializer,
               null,
             )
         75 ->
@@ -1248,7 +1218,7 @@ internal object StructureMapGroupRuleSourceSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.defaultValueRelatedArtifactSer,
+              RelatedArtifactSerializer,
               null,
             )
         76 ->
@@ -1256,57 +1226,41 @@ internal object StructureMapGroupRuleSourceSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.defaultValueTriggerDefinitionSer,
+              TriggerDefinitionSerializer,
               null,
             )
         77 ->
           defaultValueUsageContext =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueUsageContextSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, UsageContextSerializer, null)
         78 ->
           defaultValueDosage =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueDosageSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, DosageSerializer, null)
         79 ->
           defaultValueMeta =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.defaultValueMetaSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         80 -> element = decoder.decodeStringElement(descriptor, i)
         81 ->
           _element =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         82 -> listMode = decoder.decodeStringElement(descriptor, i)
         83 ->
           _listMode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         84 -> variable = decoder.decodeStringElement(descriptor, i)
         85 ->
           _variable =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         86 -> condition = decoder.decodeStringElement(descriptor, i)
         87 ->
           _condition =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         88 -> check = decoder.decodeStringElement(descriptor, i)
         89 ->
-          _check =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+          _check = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         90 -> logMessage = decoder.decodeStringElement(descriptor, i)
         91 ->
           _logMessage =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Source: " + i)
       }
@@ -1401,66 +1355,71 @@ internal object StructureMapGroupRuleSourceSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.context.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.context.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.min?.value))?.let { encoder.encodeIntElement(descriptor, 5, it) }
     (value.min?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.max?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.max?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.type?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     when (val choice = value.defaultValue) {
       null -> {}
       is StructureMap.Group.Rule.Source.DefaultValue.Base64Binary -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 12, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 13, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 14, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Canonical -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 16, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 16, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Code -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 17, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 18, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 18, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Date -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 19, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 20, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 20, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.DateTime -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 21, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 22, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 22, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Decimal -> {
@@ -1468,49 +1427,49 @@ internal object StructureMapGroupRuleSourceSerializer :
           encoder.encodeSerializableElement(descriptor, 23, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 24, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 24, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Id -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 25, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 26, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 26, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Instant -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 27, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 28, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 28, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Integer -> {
         ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 29, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 30, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 30, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Markdown -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 31, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 32, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 32, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Oid -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 33, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 34, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 34, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.PositiveInt -> {
         ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 35, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 36, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 36, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 37, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 38, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 38, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Time -> {
@@ -1518,372 +1477,156 @@ internal object StructureMapGroupRuleSourceSerializer :
           encoder.encodeSerializableElement(descriptor, 39, LocalTimeSerializer, it)
         }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 40, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 40, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.UnsignedInt -> {
         ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 41, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 42, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 42, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Uri -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 43, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 44, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 44, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Url -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 45, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 46, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 46, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Uuid -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 47, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 48, Hoisted.contextSer, it)
+          encoder.encodeSerializableElement(descriptor, 48, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Address -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          49,
-          Hoisted.defaultValueAddressSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 49, AddressSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Age -> {
-        encoder.encodeSerializableElement(descriptor, 50, Hoisted.defaultValueAgeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 50, AgeSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Annotation -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          51,
-          Hoisted.defaultValueAnnotationSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 51, AnnotationSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Attachment -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          52,
-          Hoisted.defaultValueAttachmentSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 52, AttachmentSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.CodeableConcept -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          53,
-          Hoisted.defaultValueCodeableConceptSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 53, CodeableConceptSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Coding -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          54,
-          Hoisted.defaultValueCodingSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 54, CodingSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.ContactPoint -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          55,
-          Hoisted.defaultValueContactPointSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 55, ContactPointSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Count -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          56,
-          Hoisted.defaultValueCountSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 56, CountSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Distance -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          57,
-          Hoisted.defaultValueDistanceSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 57, DistanceSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Duration -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          58,
-          Hoisted.defaultValueDurationSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 58, DurationSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.HumanName -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          59,
-          Hoisted.defaultValueHumanNameSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 59, HumanNameSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Identifier -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          60,
-          Hoisted.defaultValueIdentifierSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 60, IdentifierSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Money -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          61,
-          Hoisted.defaultValueMoneySer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 61, MoneySerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Period -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          62,
-          Hoisted.defaultValuePeriodSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 62, PeriodSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Quantity -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          63,
-          Hoisted.defaultValueQuantitySer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 63, QuantitySerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Range -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          64,
-          Hoisted.defaultValueRangeSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 64, RangeSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Ratio -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          65,
-          Hoisted.defaultValueRatioSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 65, RatioSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Reference -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          66,
-          Hoisted.defaultValueReferenceSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 66, ReferenceSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.SampledData -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          67,
-          Hoisted.defaultValueSampledDataSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 67, SampledDataSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Signature -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          68,
-          Hoisted.defaultValueSignatureSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 68, SignatureSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Timing -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          69,
-          Hoisted.defaultValueTimingSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 69, TimingSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.ContactDetail -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          70,
-          Hoisted.defaultValueContactDetailSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 70, ContactDetailSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Contributor -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          71,
-          Hoisted.defaultValueContributorSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 71, ContributorSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.DataRequirement -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          72,
-          Hoisted.defaultValueDataRequirementSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 72, DataRequirementSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Expression -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          73,
-          Hoisted.defaultValueExpressionSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 73, ExpressionSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.ParameterDefinition -> {
         encoder.encodeSerializableElement(
           descriptor,
           74,
-          Hoisted.defaultValueParameterDefinitionSer,
+          ParameterDefinitionSerializer,
           choice.value,
         )
       }
       is StructureMap.Group.Rule.Source.DefaultValue.RelatedArtifact -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          75,
-          Hoisted.defaultValueRelatedArtifactSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 75, RelatedArtifactSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.TriggerDefinition -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          76,
-          Hoisted.defaultValueTriggerDefinitionSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 76, TriggerDefinitionSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.UsageContext -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          77,
-          Hoisted.defaultValueUsageContextSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 77, UsageContextSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Dosage -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          78,
-          Hoisted.defaultValueDosageSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 78, DosageSerializer, choice.value)
       }
       is StructureMap.Group.Rule.Source.DefaultValue.Meta -> {
-        encoder.encodeSerializableElement(descriptor, 79, Hoisted.defaultValueMetaSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 79, MetaSerializer, choice.value)
       }
     }
     ((value.element?.value))?.let { encoder.encodeStringElement(descriptor, 80, it) }
     (value.element?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 81, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 81, ElementSerializer, it)
     }
     ((value.listMode?.value?.code))?.let { encoder.encodeStringElement(descriptor, 82, it) }
     (value.listMode?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 83, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 83, ElementSerializer, it)
     }
     ((value.variable?.value))?.let { encoder.encodeStringElement(descriptor, 84, it) }
     (value.variable?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 85, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 85, ElementSerializer, it)
     }
     ((value.condition?.value))?.let { encoder.encodeStringElement(descriptor, 86, it) }
     (value.condition?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 87, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 87, ElementSerializer, it)
     }
     ((value.check?.value))?.let { encoder.encodeStringElement(descriptor, 88, it) }
     (value.check?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 89, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 89, ElementSerializer, it)
     }
     ((value.logMessage?.value))?.let { encoder.encodeStringElement(descriptor, 90, it) }
     (value.logMessage?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 91, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 91, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val contextSer: KSerializer<Element> = Element.serializer()
-
-    public val defaultValueAddressSer: KSerializer<Address> = Address.serializer()
-
-    public val defaultValueAgeSer: KSerializer<Age> = Age.serializer()
-
-    public val defaultValueAnnotationSer: KSerializer<Annotation> = Annotation.serializer()
-
-    public val defaultValueAttachmentSer: KSerializer<Attachment> = Attachment.serializer()
-
-    public val defaultValueCodeableConceptSer: KSerializer<CodeableConcept> =
-      CodeableConcept.serializer()
-
-    public val defaultValueCodingSer: KSerializer<Coding> = Coding.serializer()
-
-    public val defaultValueContactPointSer: KSerializer<ContactPoint> = ContactPoint.serializer()
-
-    public val defaultValueCountSer: KSerializer<Count> = Count.serializer()
-
-    public val defaultValueDistanceSer: KSerializer<Distance> = Distance.serializer()
-
-    public val defaultValueDurationSer: KSerializer<Duration> = Duration.serializer()
-
-    public val defaultValueHumanNameSer: KSerializer<HumanName> = HumanName.serializer()
-
-    public val defaultValueIdentifierSer: KSerializer<Identifier> = Identifier.serializer()
-
-    public val defaultValueMoneySer: KSerializer<Money> = Money.serializer()
-
-    public val defaultValuePeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val defaultValueQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val defaultValueRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val defaultValueRatioSer: KSerializer<Ratio> = Ratio.serializer()
-
-    public val defaultValueReferenceSer: KSerializer<Reference> = Reference.serializer()
-
-    public val defaultValueSampledDataSer: KSerializer<SampledData> = SampledData.serializer()
-
-    public val defaultValueSignatureSer: KSerializer<Signature> = Signature.serializer()
-
-    public val defaultValueTimingSer: KSerializer<Timing> = Timing.serializer()
-
-    public val defaultValueContactDetailSer: KSerializer<ContactDetail> = ContactDetail.serializer()
-
-    public val defaultValueContributorSer: KSerializer<Contributor> = Contributor.serializer()
-
-    public val defaultValueDataRequirementSer: KSerializer<DataRequirement> =
-      DataRequirement.serializer()
-
-    public val defaultValueExpressionSer: KSerializer<Expression> = Expression.serializer()
-
-    public val defaultValueParameterDefinitionSer: KSerializer<ParameterDefinition> =
-      ParameterDefinition.serializer()
-
-    public val defaultValueRelatedArtifactSer: KSerializer<RelatedArtifact> =
-      RelatedArtifact.serializer()
-
-    public val defaultValueTriggerDefinitionSer: KSerializer<TriggerDefinition> =
-      TriggerDefinition.serializer()
-
-    public val defaultValueUsageContextSer: KSerializer<UsageContext> = UsageContext.serializer()
-
-    public val defaultValueDosageSer: KSerializer<Dosage> = Dosage.serializer()
-
-    public val defaultValueMetaSer: KSerializer<Meta> = Meta.serializer()
   }
 }
 
@@ -1929,6 +1672,9 @@ internal object StructureMapGroupRuleTargetSerializer :
       )
     }
 
+  internal val listSerializer: KSerializer<List<StructureMap.Group.Rule.Target>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Target =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -1964,43 +1710,68 @@ internal object StructureMapGroupRuleTargetSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> context = decoder.decodeStringElement(descriptor, i)
         4 ->
           _context =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> contextType = decoder.decodeStringElement(descriptor, i)
         6 ->
           _contextType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> element = decoder.decodeStringElement(descriptor, i)
         8 ->
           _element =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> variable = decoder.decodeStringElement(descriptor, i)
         10 ->
           _variable =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 ->
           listMode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.listModeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         12 ->
           _listMode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.listModeSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         13 -> listRuleId = decoder.decodeStringElement(descriptor, i)
         14 ->
           _listRuleId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 -> transform = decoder.decodeStringElement(descriptor, i)
         16 ->
           _transform =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         17 ->
           parameter =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.parameterSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleTargetParameterSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Target: " + i)
       }
@@ -2045,69 +1816,61 @@ internal object StructureMapGroupRuleTargetSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.context?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.context?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.contextType?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.contextType?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.element?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.element?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.variable?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.variable?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     (value.listMode.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.listModeSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, stringNullableListSerializer, it)
     }
     (value.listMode.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.listModeSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     ((value.listRuleId?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.listRuleId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
     }
     ((value.transform?.value?.code))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.transform?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.contextSer, it)
+      encoder.encodeSerializableElement(descriptor, 16, ElementSerializer, it)
     }
     if (value.parameter.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 17, Hoisted.parameterSer, value.parameter)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val contextSer: KSerializer<Element> = Element.serializer()
-
-    public val listModeSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val listModeSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.listModeSerInner).nullable)
-
-    public val listModeSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.contextSer).nullable)
-
-    public val parameterSerInner: KSerializer<StructureMap.Group.Rule.Target.Parameter> =
-      StructureMap.Group.Rule.Target.Parameter.serializer()
-
-    public val parameterSer: KSerializer<List<StructureMap.Group.Rule.Target.Parameter>> =
-      ListSerializer(Hoisted.parameterSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17,
+        StructureMapGroupRuleTargetParameterSerializer.listSerializer,
+        value.parameter,
+      )
   }
 }
 
@@ -2137,6 +1900,9 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
       element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
       element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<StructureMap.Group.Rule.Target.Parameter>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Target.Parameter =
     decoder.decodeStructure(descriptor) {
@@ -2170,32 +1936,42 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> valueId = decoder.decodeStringElement(descriptor, i)
         4 ->
           _valueId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> valueString = decoder.decodeStringElement(descriptor, i)
         6 ->
           _valueString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
         8 ->
           _valueBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> valueInteger = decoder.decodeIntElement(descriptor, i)
         10 ->
           _valueInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 ->
           valueDecimal =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         12 ->
           _valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Parameter: " + i)
       }
@@ -2224,37 +2000,42 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     when (val choice = value.`value`) {
       is StructureMap.Group.Rule.Target.Parameter.Value.Id -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueIdSer, it)
+          encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueIdSer, it)
+          encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueIdSer, it)
+          encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.Integer -> {
         ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueIdSer, it)
+          encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.Decimal -> {
@@ -2262,19 +2043,10 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
           encoder.encodeSerializableElement(descriptor, 11, FhirDecimalSerializer, it)
         }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueIdSer, it)
+          encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
         }
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val valueIdSer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -2303,6 +2075,9 @@ internal object StructureMapGroupRuleDependentSerializer :
       element("_variable", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<StructureMap.Group.Rule.Dependent>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Dependent =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -2327,18 +2102,39 @@ internal object StructureMapGroupRuleDependentSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> name = decoder.decodeStringElement(descriptor, i)
-        4 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        4 ->
+          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 ->
           variable =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.variableSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         6 ->
           _variable =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.variableSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Dependent: " + i)
       }
@@ -2368,41 +2164,29 @@ internal object StructureMapGroupRuleDependentSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.name.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.name.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     (value.variable.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.variableSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, stringNullableListSerializer, it)
     }
     (value.variable.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.variableSer2, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer.nullableListSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val nameSer: KSerializer<Element> = Element.serializer()
-
-    public val variableSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val variableSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.variableSerInner).nullable)
-
-    public val variableSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.nameSer).nullable)
   }
 }
 
@@ -2559,92 +2343,145 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 -> url = decoder.decodeStringElement(descriptor, i)
         11 ->
-          _url =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _url = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         12 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
         13 -> version = decoder.decodeStringElement(descriptor, i)
         14 ->
           _version =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 -> name = decoder.decodeStringElement(descriptor, i)
         16 ->
-          _name =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         17 -> title = decoder.decodeStringElement(descriptor, i)
         18 ->
-          _title =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _title = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         19 -> status = decoder.decodeStringElement(descriptor, i)
         20 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         21 -> experimental = decoder.decodeBooleanElement(descriptor, i)
         22 ->
           _experimental =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         23 -> date = decoder.decodeStringElement(descriptor, i)
         24 ->
-          _date =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         25 -> publisher = decoder.decodeStringElement(descriptor, i)
         26 ->
           _publisher =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         27 ->
           contact =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ContactDetailSerializer.listSerializer,
+              null,
+            )
         28 -> description = decoder.decodeStringElement(descriptor, i)
         29 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         30 ->
           useContext =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useContextSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              UsageContextSerializer.listSerializer,
+              null,
+            )
         31 ->
           jurisdiction =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.jurisdictionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         32 -> purpose = decoder.decodeStringElement(descriptor, i)
         33 ->
           _purpose =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         34 -> copyright = decoder.decodeStringElement(descriptor, i)
         35 ->
           _copyright =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         36 ->
           structure =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.structureSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapStructureSerializer.listSerializer,
+              null,
+            )
         37 ->
           `import` =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.importSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         38 ->
           _import =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.importSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         39 ->
-          group = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.groupSer, null)
+          group =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupSerializer.listSerializer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding StructureMap: " + i)
       }
     }
@@ -2698,275 +2535,164 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.url.value))?.let { encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it) }
     (value.url.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, ElementSerializer, it)
     }
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         12 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     ((value.version?.value))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.version?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ElementSerializer, it)
     }
     ((value.name.value))?.let { encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it) }
     (value.name.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ElementSerializer, it)
     }
     ((value.title?.value))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
     }
     ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ElementSerializer, it)
     }
     ((value.experimental?.value))?.let {
       encoder.encodeBooleanElement(descriptor, 21 + descriptorOffset, it)
     }
     (value.experimental?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ElementSerializer, it)
     }
     ((value.date?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
     }
     (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, ElementSerializer, it)
     }
     ((value.publisher?.value))?.let {
       encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
     }
     (value.publisher?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, ElementSerializer, it)
     }
     if (value.contact.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         27 + descriptorOffset,
-        Hoisted.contactSer,
+        ContactDetailSerializer.listSerializer,
         value.contact,
       )
     ((value.description?.value))?.let {
       encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
     }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ElementSerializer, it)
     }
     if (value.useContext.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         30 + descriptorOffset,
-        Hoisted.useContextSer,
+        UsageContextSerializer.listSerializer,
         value.useContext,
       )
     if (value.jurisdiction.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         31 + descriptorOffset,
-        Hoisted.jurisdictionSer,
+        CodeableConceptSerializer.listSerializer,
         value.jurisdiction,
       )
     ((value.purpose?.value))?.let {
       encoder.encodeStringElement(descriptor, 32 + descriptorOffset, it)
     }
     (value.purpose?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 33 + descriptorOffset, ElementSerializer, it)
     }
     ((value.copyright?.value))?.let {
       encoder.encodeStringElement(descriptor, 34 + descriptorOffset, it)
     }
     (value.copyright?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 35 + descriptorOffset, ElementSerializer, it)
     }
     if (value.structure.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         36 + descriptorOffset,
-        Hoisted.structureSer,
+        StructureMapStructureSerializer.listSerializer,
         value.structure,
       )
     (value.`import`.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 37 + descriptorOffset, Hoisted.importSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        37 + descriptorOffset,
+        stringNullableListSerializer,
+        it,
+      )
     }
     (value.`import`.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 38 + descriptorOffset, Hoisted.importSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        38 + descriptorOffset,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     if (value.group.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         39 + descriptorOffset,
-        Hoisted.groupSer,
+        StructureMapGroupSerializer.listSerializer,
         value.group,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val contactSerInner: KSerializer<ContactDetail> = ContactDetail.serializer()
-
-    public val contactSer: KSerializer<List<ContactDetail>> =
-      ListSerializer(Hoisted.contactSerInner)
-
-    public val useContextSerInner: KSerializer<UsageContext> = UsageContext.serializer()
-
-    public val useContextSer: KSerializer<List<UsageContext>> =
-      ListSerializer(Hoisted.useContextSerInner)
-
-    public val jurisdictionSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val jurisdictionSer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.jurisdictionSerInner)
-
-    public val structureSerInner: KSerializer<StructureMap.Structure> =
-      StructureMap.Structure.serializer()
-
-    public val structureSer: KSerializer<List<StructureMap.Structure>> =
-      ListSerializer(Hoisted.structureSerInner)
-
-    public val importSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val importSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.importSerInner).nullable)
-
-    public val importSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.implicitRulesSer).nullable)
-
-    public val groupSerInner: KSerializer<StructureMap.Group> = StructureMap.Group.serializer()
-
-    public val groupSer: KSerializer<List<StructureMap.Group>> =
-      ListSerializer(Hoisted.groupSerInner)
   }
 }
 

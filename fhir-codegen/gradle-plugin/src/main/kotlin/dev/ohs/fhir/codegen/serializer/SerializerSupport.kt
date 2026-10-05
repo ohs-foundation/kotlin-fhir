@@ -18,9 +18,15 @@ package dev.ohs.fhir.codegen.serializer
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterizedTypeName
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
+import com.squareup.kotlinpoet.asClassName
+import dev.ohs.fhir.codegen.toSerializerClassName
+import kotlinx.serialization.KSerializer
 
 internal const val KOTLINX_SERIALIZATION_DESCRIPTORS = "kotlinx.serialization.descriptors"
 internal const val KOTLINX_SERIALIZATION_ENCODING = "kotlinx.serialization.encoding"
@@ -46,6 +52,33 @@ internal val listDescMemberName =
 
 internal fun lazyDescriptorMemberName(className: ClassName): MemberName =
   MemberName("${className.packageName}.serializers", "lazyDescriptor")
+
+/**
+ * Builds `internal val listSerializer: KSerializer<List<T>> = ListSerializer(this)` (or
+ * `nullableListSerializer: KSerializer<List<T?>> = ListSerializer(this.nullable)` when
+ * [nullableElement] is true) on a serializer singleton object.
+ */
+internal fun buildListSerializerProperty(
+  elementType: ClassName,
+  nullableElement: Boolean = false,
+): PropertySpec {
+  val listElementType = elementType.copy(nullable = nullableElement)
+  val listType = ClassName("kotlin.collections", "List").parameterizedBy(listElementType)
+  val propName = if (nullableElement) "nullableListSerializer" else "listSerializer"
+  val initializer =
+    if (nullableElement) {
+      CodeBlock.of("%M(this.%M)", listSerializerMemberName, nullableMemberName)
+    } else {
+      CodeBlock.of("%M(this)", listSerializerMemberName)
+    }
+  return PropertySpec.builder(
+      propName,
+      KSerializer::class.asClassName().parameterizedBy(listType),
+      KModifier.INTERNAL,
+    )
+    .initializer(initializer)
+    .build()
+}
 
 /**
  * Certain stdlib / external types are serialized via a FHIR-specific custom serializer (e.g.
@@ -81,31 +114,84 @@ internal fun serializerForClassName(className: ClassName): CodeBlock =
     CodeBlock.of("%T.serializer()", className)
   }
 
-internal fun serializerForTypeName(typeName: TypeName): CodeBlock {
+/**
+ * Returns the generated serializer singleton [ClassName] for [className] (custom primitive
+ * serializer, `ResourcePolymorphicSerializer`, or `XSerializer`), or null for stdlib / external
+ * types that do not have a generated serializer object in [parentClass]'s package.
+ */
+private fun serializerObjectForClass(className: ClassName, parentClass: ClassName): ClassName? {
+  customSerializerFor(className, parentClass)?.let {
+    return it
+  }
+  if (className.packageName != parentClass.packageName) return null
+  return if (className.simpleNames == listOf("Resource")) {
+    ClassName(parentClass.packageName, "ResourcePolymorphicSerializer")
+  } else {
+    className.toSerializerClassName()
+  }
+}
+
+/**
+ * Direct singleton reference to the serializer for [className] at an encode/decode call site (e.g.
+ * `ExtensionSerializer`, `LocalTimeSerializer`, `ResourcePolymorphicSerializer`, or
+ * `String.serializer()`).
+ */
+internal fun serializerRefForClass(className: ClassName, parentClass: ClassName): CodeBlock =
+  serializerObjectForClass(className, parentClass)?.let { CodeBlock.of("%T", it) }
+    ?: serializerForClassName(className)
+
+/**
+ * Direct reference to the shared `ListSerializer` singleton for `List<className>` (or
+ * `List<className?>` when [nullableElement] is true) owned by the element's serializer object.
+ */
+internal fun listSerializerRefForClass(
+  className: ClassName,
+  parentClass: ClassName,
+  nullableElement: Boolean,
+): CodeBlock {
+  if (nullableElement) {
+    val serializersPkg = "${parentClass.packageName}.serializers"
+    if (className.packageName == "kotlin") {
+      when (className.simpleName) {
+        "Boolean" ->
+          return CodeBlock.of("%M", MemberName(serializersPkg, "booleanNullableListSerializer"))
+        "Int" -> return CodeBlock.of("%M", MemberName(serializersPkg, "intNullableListSerializer"))
+        "String" ->
+          return CodeBlock.of("%M", MemberName(serializersPkg, "stringNullableListSerializer"))
+      }
+    }
+    serializerObjectForClass(className, parentClass)?.let {
+      return CodeBlock.of("%T.nullableListSerializer", it)
+    }
+    return CodeBlock.of(
+      "%M((%L).%M)",
+      listSerializerMemberName,
+      serializerRefForClass(className, parentClass),
+      nullableMemberName,
+    )
+  }
+  return serializerObjectForClass(className, parentClass)?.let {
+    CodeBlock.of("%T.listSerializer", it)
+  }
+    ?: CodeBlock.of(
+      "%M(%L)",
+      listSerializerMemberName,
+      serializerRefForClass(className, parentClass),
+    )
+}
+
+internal fun serializerRefForTypeName(typeName: TypeName, parentClass: ClassName): CodeBlock {
   return when (val nonNull = typeName.copy(nullable = false)) {
-    is ClassName -> serializerForClassName(nonNull)
+    is ClassName -> serializerRefForClass(nonNull, parentClass)
     is ParameterizedTypeName -> {
       when (nonNull.rawType) {
         ClassName("kotlin.collections", "List"),
         ClassName("kotlin.collections", "MutableList") -> {
           val inner = nonNull.typeArguments.single()
-          val innerSer = serializerForTypeName(inner)
-          if (inner.isNullable) {
-            CodeBlock.of(
-              "%M((%L).%M)",
-              MemberName(KOTLINX_SERIALIZATION_BUILTINS, "ListSerializer"),
-              innerSer,
-              MemberName(KOTLINX_SERIALIZATION_BUILTINS, "nullable"),
-            )
-          } else {
-            CodeBlock.of(
-              "%M(%L)",
-              MemberName(KOTLINX_SERIALIZATION_BUILTINS, "ListSerializer"),
-              innerSer,
-            )
-          }
+          val innerClass = inner.copy(nullable = false) as ClassName
+          listSerializerRefForClass(innerClass, parentClass, nullableElement = inner.isNullable)
         }
-        else -> serializerForClassName(nonNull.rawType)
+        else -> serializerRefForClass(nonNull.rawType, parentClass)
       }
     }
     else -> error("Unexpected TypeName: $typeName")

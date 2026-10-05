@@ -75,6 +75,8 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
       element("_text", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Annotation>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Annotation =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -101,27 +103,25 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          authorReference =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.authorReferenceSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
+        2 ->
+          authorReference =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         3 -> authorString = decoder.decodeStringElement(descriptor, i)
         4 ->
           _authorString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorStringSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> time = decoder.decodeStringElement(descriptor, i)
         6 ->
-          _time =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorStringSer, null)
+          _time = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> text = decoder.decodeStringElement(descriptor, i)
         8 ->
-          _text =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorStringSer, null)
+          _text = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Annotation: " + i)
       }
@@ -140,37 +140,31 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Annotation) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     when (val choice = value.author) {
       null -> {}
       is Annotation.Author.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 2, Hoisted.authorReferenceSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 2, ReferenceSerializer, choice.value)
       }
       is Annotation.Author.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 4, Hoisted.authorStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
         }
       }
     }
     ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.time?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.authorStringSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.text.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.text.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.authorStringSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val authorReferenceSer: KSerializer<Reference> = Reference.serializer()
-
-    public val authorStringSer: KSerializer<Element> = Element.serializer()
   }
 }

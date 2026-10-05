@@ -2,12 +2,12 @@
 """Analyze fhir-model JVM JAR binary sizes and produce a JSON report.
 
 Usage:
-    python3 scripts/binary-size-report.py [--output binary-size.json]
+    python3 scripts/binary-size-report.py [--output binary-size.json] [--commit-sha SHA]
 
 Scans fhir-model-r4, fhir-model-r4b, fhir-model-r5 JVM JARs and emits a JSON
-file with total + per-category .class file counts and sizes (uncompressed and
-compressed).  The optional --compare flag takes a baseline JSON and prints a
-markdown diff table to stdout.
+file with build/toolchain metadata plus total and per-category .class file
+counts and sizes (uncompressed and compressed). The optional --compare flag
+takes a baseline JSON and prints a markdown diff table to stdout.
 """
 
 from __future__ import annotations

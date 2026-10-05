@@ -39,6 +39,7 @@ import dev.ohs.fhir.model.r4.Narrative
 import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.VisionPrescription
@@ -110,6 +111,9 @@ internal object VisionPrescriptionLensSpecificationSerializer :
       element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<VisionPrescription.LensSpecification>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): VisionPrescription.LensSpecification =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -154,59 +158,93 @@ internal object VisionPrescriptionLensSpecificationSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           product =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.productSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 -> eye = decoder.decodeStringElement(descriptor, i)
-        5 -> _eye = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
+        5 ->
+          _eye = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 ->
           sphere =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         7 ->
-          _sphere = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
+          _sphere =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 ->
           cylinder =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         9 ->
-          _cylinder = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
+          _cylinder =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         10 -> axis = decoder.decodeIntElement(descriptor, i)
-        11 -> _axis = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
+        11 ->
+          _axis = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         12 ->
-          prism = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.prismSer, null)
+          prism =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              VisionPrescriptionLensSpecificationPrismSerializer.listSerializer,
+              null,
+            )
         13 ->
           add =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        14 -> _add = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
+        14 ->
+          _add = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 ->
           power =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         16 ->
-          _power = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
+          _power = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         17 ->
           backCurve =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         18 ->
           _backCurve =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         19 ->
           diameter =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         20 ->
-          _diameter = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
+          _diameter =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         21 ->
           duration =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.durationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         22 -> color = decoder.decodeStringElement(descriptor, i)
         23 ->
-          _color = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
+          _color = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         24 -> brand = decoder.decodeStringElement(descriptor, i)
         25 ->
-          _brand = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eyeSer, null)
-        26 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
+          _brand = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        26 ->
+          note =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AnnotationSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding LensSpecification: " + i)
       }
@@ -246,97 +284,89 @@ internal object VisionPrescriptionLensSpecificationSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.productSer, value.product)
+    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.product)
     ((value.eye.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.eye.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     ((value.sphere?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 6, FhirDecimalSerializer, it)
     }
     (value.sphere?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     ((value.cylinder?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 8, FhirDecimalSerializer, it)
     }
     (value.cylinder?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
     }
     ((value.axis?.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
     (value.axis?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
     }
     if (value.prism.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.prismSer, value.prism)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12,
+        VisionPrescriptionLensSpecificationPrismSerializer.listSerializer,
+        value.prism,
+      )
     ((value.add?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 13, FhirDecimalSerializer, it)
     }
     (value.add?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
     }
     ((value.power?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 15, FhirDecimalSerializer, it)
     }
     (value.power?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 16, ElementSerializer, it)
     }
     ((value.backCurve?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 17, FhirDecimalSerializer, it)
     }
     (value.backCurve?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 18, ElementSerializer, it)
     }
     ((value.diameter?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 19, FhirDecimalSerializer, it)
     }
     (value.diameter?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 20, ElementSerializer, it)
     }
     (value.duration)?.let {
-      encoder.encodeSerializableElement(descriptor, 21, Hoisted.durationSer, it)
+      encoder.encodeSerializableElement(descriptor, 21, QuantitySerializer, it)
     }
     ((value.color?.value))?.let { encoder.encodeStringElement(descriptor, 22, it) }
     (value.color?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 23, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 23, ElementSerializer, it)
     }
     ((value.brand?.value))?.let { encoder.encodeStringElement(descriptor, 24, it) }
     (value.brand?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 25, Hoisted.eyeSer, it)
+      encoder.encodeSerializableElement(descriptor, 25, ElementSerializer, it)
     }
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 26, Hoisted.noteSer, value.note)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val productSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val eyeSer: KSerializer<Element> = Element.serializer()
-
-    public val prismSerInner: KSerializer<VisionPrescription.LensSpecification.Prism> =
-      VisionPrescription.LensSpecification.Prism.serializer()
-
-    public val prismSer: KSerializer<List<VisionPrescription.LensSpecification.Prism>> =
-      ListSerializer(Hoisted.prismSerInner)
-
-    public val durationSer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val noteSerInner: KSerializer<Annotation> = Annotation.serializer()
-
-    public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        26,
+        AnnotationSerializer.listSerializer,
+        value.note,
+      )
   }
 }
 
@@ -360,6 +390,9 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
       element("base", KotlinString.serializer().descriptor, isOptional = true)
       element("_base", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<VisionPrescription.LensSpecification.Prism>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): VisionPrescription.LensSpecification.Prism =
     decoder.decodeStructure(descriptor) {
@@ -387,19 +420,29 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           amount =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         4 ->
           _amount =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.amountSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> base = decoder.decodeStringElement(descriptor, i)
         6 ->
-          _base = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.amountSer, null)
+          _base = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Prism: " + i)
       }
@@ -427,33 +470,29 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.amount.value))?.let {
       encoder.encodeSerializableElement(descriptor, 3, FhirDecimalSerializer, it)
     }
     (value.amount.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.base.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.base.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.amountSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val amountSer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -554,55 +593,76 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
         11 -> status = decoder.decodeStringElement(descriptor, i)
         12 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 -> created = decoder.decodeStringElement(descriptor, i)
         14 ->
           _created =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 ->
           patient =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         16 ->
           encounter =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         17 -> dateWritten = decoder.decodeStringElement(descriptor, i)
         18 ->
           _dateWritten =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         19 ->
           prescriber =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         20 ->
           lensSpecification =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.lensSpecificationSer,
+              VisionPrescriptionLensSpecificationSerializer.listSerializer,
               null,
             )
         else -> throw SerializationException("Unexpected index decoding VisionPrescription: " + i)
@@ -659,146 +719,91 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
     }
     ((value.created.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.created.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ElementSerializer, it)
     }
     encoder.encodeSerializableElement(
       descriptor,
       15 + descriptorOffset,
-      Hoisted.patientSer,
+      ReferenceSerializer,
       value.patient,
     )
     (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.patientSer, it)
+      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ReferenceSerializer, it)
     }
     ((value.dateWritten.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.dateWritten.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
     }
     encoder.encodeSerializableElement(
       descriptor,
       19 + descriptorOffset,
-      Hoisted.patientSer,
+      ReferenceSerializer,
       value.prescriber,
     )
     if (value.lensSpecification.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         20 + descriptorOffset,
-        Hoisted.lensSpecificationSer,
+        VisionPrescriptionLensSpecificationSerializer.listSerializer,
         value.lensSpecification,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val patientSer: KSerializer<Reference> = Reference.serializer()
-
-    public val lensSpecificationSerInner: KSerializer<VisionPrescription.LensSpecification> =
-      VisionPrescription.LensSpecification.serializer()
-
-    public val lensSpecificationSer: KSerializer<List<VisionPrescription.LensSpecification>> =
-      ListSerializer(Hoisted.lensSpecificationSerInner)
   }
 }
 

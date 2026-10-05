@@ -69,6 +69,8 @@ internal object ExpressionSerializer : KSerializer<Expression> {
       element("_reference", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Expression>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Expression =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -98,27 +100,31 @@ internal object ExpressionSerializer : KSerializer<Expression> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 -> description = decoder.decodeStringElement(descriptor, i)
         3 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> name = decoder.decodeStringElement(descriptor, i)
         5 ->
-          _name =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 -> language = decoder.decodeStringElement(descriptor, i)
         7 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 -> expression = decoder.decodeStringElement(descriptor, i)
         9 ->
           _expression =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         10 -> reference = decoder.decodeStringElement(descriptor, i)
         11 ->
           _reference =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Expression: " + i)
       }
@@ -139,35 +145,31 @@ internal object ExpressionSerializer : KSerializer<Expression> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Expression) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
     }
     ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     ((value.language.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.language.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     ((value.expression?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.expression?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
     }
     ((value.reference?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.reference?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val descriptionSer: KSerializer<Element> = Element.serializer()
   }
 }

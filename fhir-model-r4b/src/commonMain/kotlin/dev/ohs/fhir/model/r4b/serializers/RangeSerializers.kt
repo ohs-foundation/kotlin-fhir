@@ -57,6 +57,8 @@ internal object RangeSerializer : KSerializer<Range> {
       element("high", lazyDescriptor { Quantity.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Range>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Range =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -78,9 +80,16 @@ internal object RangeSerializer : KSerializer<Range> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> low = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lowSer, null)
-        3 -> high = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lowSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          low = decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+        3 ->
+          high = decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Range: " + i)
       }
@@ -96,17 +105,13 @@ internal object RangeSerializer : KSerializer<Range> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Range) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    (value.low)?.let { encoder.encodeSerializableElement(descriptor, 2, Hoisted.lowSer, it) }
-    (value.high)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.lowSer, it) }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val lowSer: KSerializer<Quantity> = Quantity.serializer()
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    (value.low)?.let { encoder.encodeSerializableElement(descriptor, 2, QuantitySerializer, it) }
+    (value.high)?.let { encoder.encodeSerializableElement(descriptor, 3, QuantitySerializer, it) }
   }
 }

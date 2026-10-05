@@ -37,7 +37,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -87,6 +86,8 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
       element("scoring", CodeableConcept.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<ProdCharacteristic>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): ProdCharacteristic =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -121,41 +122,87 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
-          height = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
+          height =
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         4 ->
-          width = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
+          width = decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         5 ->
-          depth = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
+          depth = decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         6 ->
-          weight = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
+          weight =
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         7 ->
           nominalVolume =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         8 ->
           externalDiameter =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         9 -> shape = decoder.decodeStringElement(descriptor, i)
         10 ->
-          _shape = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.shapeSer, null)
+          _shape = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 ->
-          color = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.colorSer, null)
+          color =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         12 ->
-          _color = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.colorSer2, null)
+          _color =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         13 ->
-          imprint = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.colorSer, null)
+          imprint =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         14 ->
           _imprint =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.colorSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         15 ->
-          image = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.imageSer, null)
+          image =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AttachmentSerializer.listSerializer,
+              null,
+            )
         16 ->
           scoring =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.scoringSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding ProdCharacteristic: " + i)
       }
@@ -193,68 +240,64 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: ProdCharacteristic) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.height)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.heightSer, it) }
-    (value.width)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.heightSer, it) }
-    (value.depth)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.heightSer, it) }
-    (value.weight)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.heightSer, it) }
+    (value.height)?.let { encoder.encodeSerializableElement(descriptor, 3, QuantitySerializer, it) }
+    (value.width)?.let { encoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, it) }
+    (value.depth)?.let { encoder.encodeSerializableElement(descriptor, 5, QuantitySerializer, it) }
+    (value.weight)?.let { encoder.encodeSerializableElement(descriptor, 6, QuantitySerializer, it) }
     (value.nominalVolume)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.heightSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, QuantitySerializer, it)
     }
     (value.externalDiameter)?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.heightSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, QuantitySerializer, it)
     }
     ((value.shape?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.shape?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.shapeSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     (value.color.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.colorSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, stringNullableListSerializer, it)
     }
     (value.color.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.colorSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     (value.imprint.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 13, Hoisted.colorSer, it)
+      encoder.encodeSerializableElement(descriptor, 13, stringNullableListSerializer, it)
     }
     (value.imprint.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.colorSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        14,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     if (value.image.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 15, Hoisted.imageSer, value.image)
+      encoder.encodeSerializableElement(
+        descriptor,
+        15,
+        AttachmentSerializer.listSerializer,
+        value.image,
+      )
     (value.scoring)?.let {
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.scoringSer, it)
+      encoder.encodeSerializableElement(descriptor, 16, CodeableConceptSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val heightSer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val shapeSer: KSerializer<Element> = Element.serializer()
-
-    public val colorSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val colorSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.colorSerInner).nullable)
-
-    public val colorSer2: KSerializer<List<Element?>> = ListSerializer((Hoisted.shapeSer).nullable)
-
-    public val imageSerInner: KSerializer<Attachment> = Attachment.serializer()
-
-    public val imageSer: KSerializer<List<Attachment>> = ListSerializer(Hoisted.imageSerInner)
-
-    public val scoringSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
   }
 }

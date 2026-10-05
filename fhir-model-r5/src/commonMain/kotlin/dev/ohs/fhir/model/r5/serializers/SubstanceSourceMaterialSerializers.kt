@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
 import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.SubstanceSourceMaterial
 import dev.ohs.fhir.model.r5.Uri
@@ -42,7 +43,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -75,6 +75,9 @@ internal object SubstanceSourceMaterialFractionDescriptionSerializer :
       element("materialType", CodeableConcept.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<SubstanceSourceMaterial.FractionDescription>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.FractionDescription =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -100,17 +103,32 @@ internal object SubstanceSourceMaterialFractionDescriptionSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> fraction = decoder.decodeStringElement(descriptor, i)
         4 ->
           _fraction =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.fractionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 ->
           materialType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.materialTypeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding FractionDescription: " + i)
       }
@@ -130,32 +148,26 @@ internal object SubstanceSourceMaterialFractionDescriptionSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.fraction?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.fraction?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.fractionSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     (value.materialType)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.materialTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val fractionSer: KSerializer<Element> = Element.serializer()
-
-    public val materialTypeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
   }
 }
 
@@ -199,6 +211,9 @@ internal object SubstanceSourceMaterialOrganismSerializer :
       )
     }
 
+  internal val listSerializer: KSerializer<List<SubstanceSourceMaterial.Organism>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -228,39 +243,78 @@ internal object SubstanceSourceMaterialOrganismSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 ->
-          family = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.familySer, null)
-        4 ->
-          genus = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.familySer, null)
-        5 ->
-          species =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.familySer, null)
-        6 ->
-          intraspecificType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.familySer, null)
-        7 -> intraspecificDescription = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _intraspecificDescription =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.intraspecificDescriptionSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          family =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          genus =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        5 ->
+          species =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        6 ->
+          intraspecificType =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        7 -> intraspecificDescription = decoder.decodeStringElement(descriptor, i)
+        8 ->
+          _intraspecificDescription =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 ->
-          author = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorSer, null)
+          author =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              SubstanceSourceMaterialOrganismAuthorSerializer.listSerializer,
+              null,
+            )
         10 ->
-          hybrid = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.hybridSer, null)
+          hybrid =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              SubstanceSourceMaterialOrganismHybridSerializer,
+              null,
+            )
         11 ->
           organismGeneral =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.organismGeneralSer,
+              SubstanceSourceMaterialOrganismOrganismGeneralSerializer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
@@ -288,55 +342,60 @@ internal object SubstanceSourceMaterialOrganismSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.family)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.familySer, it) }
-    (value.genus)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.familySer, it) }
-    (value.species)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.familySer, it) }
+    (value.family)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
+    }
+    (value.genus)?.let {
+      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+    }
+    (value.species)?.let {
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
+    }
     (value.intraspecificType)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.familySer, it)
+      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
     }
     ((value.intraspecificDescription?.value))?.let {
       encoder.encodeStringElement(descriptor, 7, it)
     }
     (value.intraspecificDescription?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.intraspecificDescriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     if (value.author.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.authorSer, value.author)
-    (value.hybrid)?.let { encoder.encodeSerializableElement(descriptor, 10, Hoisted.hybridSer, it) }
-    (value.organismGeneral)?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.organismGeneralSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        9,
+        SubstanceSourceMaterialOrganismAuthorSerializer.listSerializer,
+        value.author,
+      )
+    (value.hybrid)?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        10,
+        SubstanceSourceMaterialOrganismHybridSerializer,
+        it,
+      )
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val familySer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val intraspecificDescriptionSer: KSerializer<Element> = Element.serializer()
-
-    public val authorSerInner: KSerializer<SubstanceSourceMaterial.Organism.Author> =
-      SubstanceSourceMaterial.Organism.Author.serializer()
-
-    public val authorSer: KSerializer<List<SubstanceSourceMaterial.Organism.Author>> =
-      ListSerializer(Hoisted.authorSerInner)
-
-    public val hybridSer: KSerializer<SubstanceSourceMaterial.Organism.Hybrid> =
-      SubstanceSourceMaterial.Organism.Hybrid.serializer()
-
-    public val organismGeneralSer: KSerializer<SubstanceSourceMaterial.Organism.OrganismGeneral> =
-      SubstanceSourceMaterial.Organism.OrganismGeneral.serializer()
+    (value.organismGeneral)?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        11,
+        SubstanceSourceMaterialOrganismOrganismGeneralSerializer,
+        it,
+      )
+    }
   }
 }
 
@@ -359,6 +418,9 @@ internal object SubstanceSourceMaterialOrganismAuthorSerializer :
       element("authorDescription", KotlinString.serializer().descriptor, isOptional = true)
       element("_authorDescription", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<SubstanceSourceMaterial.Organism.Author>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism.Author =
     decoder.decodeStructure(descriptor) {
@@ -385,22 +447,32 @@ internal object SubstanceSourceMaterialOrganismAuthorSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 ->
-          authorType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorTypeSer, null)
-        4 -> authorDescription = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _authorDescription =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.authorDescriptionSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          authorType =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 -> authorDescription = decoder.decodeStringElement(descriptor, i)
+        5 ->
+          _authorDescription =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Author: " + i)
       }
@@ -420,32 +492,26 @@ internal object SubstanceSourceMaterialOrganismAuthorSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     (value.authorType)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.authorTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
     }
     ((value.authorDescription?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.authorDescription?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.authorDescriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val authorTypeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val authorDescriptionSer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -474,6 +540,9 @@ internal object SubstanceSourceMaterialOrganismHybridSerializer :
       element("_paternalOrganismName", Element.serializer().descriptor, isOptional = true)
       element("hybridType", CodeableConcept.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<SubstanceSourceMaterial.Organism.Hybrid>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism.Hybrid =
     decoder.decodeStructure(descriptor) {
@@ -506,49 +575,44 @@ internal object SubstanceSourceMaterialOrganismHybridSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> maternalOrganismId = decoder.decodeStringElement(descriptor, i)
         4 ->
           _maternalOrganismId =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.maternalOrganismIdSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> maternalOrganismName = decoder.decodeStringElement(descriptor, i)
         6 ->
           _maternalOrganismName =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.maternalOrganismIdSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> paternalOrganismId = decoder.decodeStringElement(descriptor, i)
         8 ->
           _paternalOrganismId =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.maternalOrganismIdSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> paternalOrganismName = decoder.decodeStringElement(descriptor, i)
         10 ->
           _paternalOrganismName =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        11 ->
+          hybridType =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.maternalOrganismIdSer,
+              CodeableConceptSerializer,
               null,
             )
-        11 ->
-          hybridType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.hybridTypeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Hybrid: " + i)
       }
@@ -571,44 +635,38 @@ internal object SubstanceSourceMaterialOrganismHybridSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.maternalOrganismId?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.maternalOrganismId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.maternalOrganismIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.maternalOrganismName?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.maternalOrganismName?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.maternalOrganismIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.paternalOrganismId?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.paternalOrganismId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.maternalOrganismIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.paternalOrganismName?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.paternalOrganismName?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.maternalOrganismIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     (value.hybridType)?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.hybridTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, CodeableConceptSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val maternalOrganismIdSer: KSerializer<Element> = Element.serializer()
-
-    public val hybridTypeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
   }
 }
 
@@ -632,6 +690,9 @@ internal object SubstanceSourceMaterialOrganismOrganismGeneralSerializer :
       element("class", CodeableConcept.serializer().descriptor, isOptional = true)
       element("order", CodeableConcept.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<SubstanceSourceMaterial.Organism.OrganismGeneral>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism.OrganismGeneral =
     decoder.decodeStructure(descriptor) {
@@ -662,21 +723,52 @@ internal object SubstanceSourceMaterialOrganismOrganismGeneralSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           kingdom =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.kingdomSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 ->
           phylum =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.kingdomSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         5 ->
           `class` =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.kingdomSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         6 ->
-          order = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.kingdomSer, null)
+          order =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding OrganismGeneral: " + i)
       }
@@ -698,31 +790,31 @@ internal object SubstanceSourceMaterialOrganismOrganismGeneralSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     (value.kingdom)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.kingdomSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
     }
-    (value.phylum)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.kingdomSer, it) }
+    (value.phylum)?.let {
+      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+    }
     (value.`class`)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.kingdomSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
     }
-    (value.order)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.kingdomSer, it) }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val kingdomSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+    (value.order)?.let {
+      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
+    }
   }
 }
 
@@ -744,6 +836,9 @@ internal object SubstanceSourceMaterialPartDescriptionSerializer :
       element("part", CodeableConcept.serializer().descriptor, isOptional = true)
       element("partLocation", CodeableConcept.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<SubstanceSourceMaterial.PartDescription>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.PartDescription =
     decoder.decodeStructure(descriptor) {
@@ -769,14 +864,36 @@ internal object SubstanceSourceMaterialPartDescriptionSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> part = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.partSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          part =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 ->
           partLocation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.partSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding PartDescription: " + i)
       }
@@ -796,27 +913,25 @@ internal object SubstanceSourceMaterialPartDescriptionSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.part)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.partSer, it) }
-    (value.partLocation)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.partSer, it)
+    (value.part)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val partSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+    (value.partLocation)?.let {
+      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+    }
   }
 }
 
@@ -957,31 +1072,47 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 ->
           sourceMaterialClass =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.sourceMaterialClassSer,
+              CodeableConceptSerializer,
               null,
             )
         11 ->
@@ -989,7 +1120,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.sourceMaterialClassSer,
+              CodeableConceptSerializer,
               null,
             )
         12 ->
@@ -997,22 +1128,22 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.sourceMaterialClassSer,
+              CodeableConceptSerializer,
               null,
             )
         13 ->
           organismId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.organismIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
         14 -> organismName = decoder.decodeStringElement(descriptor, i)
         15 ->
           _organismName =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         16 ->
           parentSubstanceId =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.parentSubstanceIdSer,
+              IdentifierSerializer.listSerializer,
               null,
             )
         17 ->
@@ -1020,7 +1151,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.parentSubstanceNameSer,
+              stringNullableListSerializer,
               null,
             )
         18 ->
@@ -1028,7 +1159,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.parentSubstanceNameSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
         19 ->
@@ -1036,7 +1167,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.countryOfOriginSer,
+              CodeableConceptSerializer.listSerializer,
               null,
             )
         20 ->
@@ -1044,7 +1175,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.parentSubstanceNameSer,
+              stringNullableListSerializer,
               null,
             )
         21 ->
@@ -1052,7 +1183,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.parentSubstanceNameSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
         22 ->
@@ -1060,7 +1191,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.sourceMaterialClassSer,
+              CodeableConceptSerializer,
               null,
             )
         23 ->
@@ -1068,18 +1199,23 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.fractionDescriptionSer,
+              SubstanceSourceMaterialFractionDescriptionSerializer.listSerializer,
               null,
             )
         24 ->
           organism =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.organismSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              SubstanceSourceMaterialOrganismSerializer,
+              null,
+            )
         25 ->
           partDescription =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.partDescriptionSer,
+              SubstanceSourceMaterialPartDescriptionSerializer.listSerializer,
               null,
             )
         else ->
@@ -1141,59 +1277,49 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     (value.sourceMaterialClass)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.sourceMaterialClassSer,
+        CodeableConceptSerializer,
         it,
       )
     }
@@ -1201,7 +1327,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
       encoder.encodeSerializableElement(
         descriptor,
         11 + descriptorOffset,
-        Hoisted.sourceMaterialClassSer,
+        CodeableConceptSerializer,
         it,
       )
     }
@@ -1209,41 +1335,31 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
       encoder.encodeSerializableElement(
         descriptor,
         12 + descriptorOffset,
-        Hoisted.sourceMaterialClassSer,
+        CodeableConceptSerializer,
         it,
       )
     }
     (value.organismId)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        Hoisted.organismIdSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, IdentifierSerializer, it)
     }
     ((value.organismName?.value))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.organismName?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
     }
     if (value.parentSubstanceId.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
-        Hoisted.parentSubstanceIdSer,
+        IdentifierSerializer.listSerializer,
         value.parentSubstanceId,
       )
     (value.parentSubstanceName.map { it.value }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,
         17 + descriptorOffset,
-        Hoisted.parentSubstanceNameSer,
+        stringNullableListSerializer,
         it,
       )
     }
@@ -1251,7 +1367,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
       encoder.encodeSerializableElement(
         descriptor,
         18 + descriptorOffset,
-        Hoisted.parentSubstanceNameSer2,
+        ElementSerializer.nullableListSerializer,
         it,
       )
     }
@@ -1259,14 +1375,14 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
       encoder.encodeSerializableElement(
         descriptor,
         19 + descriptorOffset,
-        Hoisted.countryOfOriginSer,
+        CodeableConceptSerializer.listSerializer,
         value.countryOfOrigin,
       )
     (value.geographicalLocation.map { it.value }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,
         20 + descriptorOffset,
-        Hoisted.parentSubstanceNameSer,
+        stringNullableListSerializer,
         it,
       )
     }
@@ -1274,7 +1390,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
       encoder.encodeSerializableElement(
         descriptor,
         21 + descriptorOffset,
-        Hoisted.parentSubstanceNameSer2,
+        ElementSerializer.nullableListSerializer,
         it,
       )
     }
@@ -1282,7 +1398,7 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
       encoder.encodeSerializableElement(
         descriptor,
         22 + descriptorOffset,
-        Hoisted.sourceMaterialClassSer,
+        CodeableConceptSerializer,
         it,
       )
     }
@@ -1290,71 +1406,24 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
       encoder.encodeSerializableElement(
         descriptor,
         23 + descriptorOffset,
-        Hoisted.fractionDescriptionSer,
+        SubstanceSourceMaterialFractionDescriptionSerializer.listSerializer,
         value.fractionDescription,
       )
     (value.organism)?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, Hoisted.organismSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        24 + descriptorOffset,
+        SubstanceSourceMaterialOrganismSerializer,
+        it,
+      )
     }
     if (value.partDescription.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         25 + descriptorOffset,
-        Hoisted.partDescriptionSer,
+        SubstanceSourceMaterialPartDescriptionSerializer.listSerializer,
         value.partDescription,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val sourceMaterialClassSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val organismIdSer: KSerializer<Identifier> = Identifier.serializer()
-
-    public val parentSubstanceIdSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.organismIdSer)
-
-    public val parentSubstanceNameSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val parentSubstanceNameSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.parentSubstanceNameSerInner).nullable)
-
-    public val parentSubstanceNameSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.implicitRulesSer).nullable)
-
-    public val countryOfOriginSer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.sourceMaterialClassSer)
-
-    public val fractionDescriptionSerInner:
-      KSerializer<SubstanceSourceMaterial.FractionDescription> =
-      SubstanceSourceMaterial.FractionDescription.serializer()
-
-    public val fractionDescriptionSer:
-      KSerializer<List<SubstanceSourceMaterial.FractionDescription>> =
-      ListSerializer(Hoisted.fractionDescriptionSerInner)
-
-    public val organismSer: KSerializer<SubstanceSourceMaterial.Organism> =
-      SubstanceSourceMaterial.Organism.serializer()
-
-    public val partDescriptionSerInner: KSerializer<SubstanceSourceMaterial.PartDescription> =
-      SubstanceSourceMaterial.PartDescription.serializer()
-
-    public val partDescriptionSer: KSerializer<List<SubstanceSourceMaterial.PartDescription>> =
-      ListSerializer(Hoisted.partDescriptionSerInner)
   }
 }
 

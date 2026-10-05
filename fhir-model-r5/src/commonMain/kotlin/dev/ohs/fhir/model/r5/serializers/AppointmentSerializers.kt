@@ -44,6 +44,7 @@ import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.PositiveInt
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.VirtualServiceDetail
@@ -57,7 +58,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -97,6 +97,8 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
       element("_status", Element.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Appointment.Participant>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Appointment.Participant =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -124,23 +126,41 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         4 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         5 ->
-          actor = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.actorSer, null)
+          actor =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         6 -> required = decoder.decodeBooleanElement(descriptor, i)
         7 ->
           _required =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.requiredSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 -> status = decoder.decodeStringElement(descriptor, i)
         9 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.requiredSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Participant: " + i)
       }
@@ -164,43 +184,36 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Appointment.Participant) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, it) }
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.actorSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        3,
+        CodeableConceptSerializer.listSerializer,
+        value.type,
+      )
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 4, PeriodSerializer, it) }
+    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, it) }
     ((value.required?.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
     (value.required?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.requiredSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.requiredSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val typeSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.typeSerInner)
-
-    public val periodSer: KSerializer<Period> = Period.serializer()
-
-    public val actorSer: KSerializer<Reference> = Reference.serializer()
-
-    public val requiredSer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -272,6 +285,9 @@ internal object AppointmentRecurrenceTemplateSerializer :
       )
     }
 
+  internal val listSerializer: KSerializer<List<Appointment.RecurrenceTemplate>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -307,40 +323,50 @@ internal object AppointmentRecurrenceTemplateSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           timezone =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timezoneSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 ->
           recurrenceType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timezoneSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         5 -> lastOccurrenceDate = decoder.decodeStringElement(descriptor, i)
         6 ->
           _lastOccurrenceDate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.lastOccurrenceDateSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> occurrenceCount = decoder.decodeIntElement(descriptor, i)
         8 ->
           _occurrenceCount =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.lastOccurrenceDateSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 ->
           occurrenceDate =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.occurrenceDateSer,
+              stringNullableListSerializer,
               null,
             )
         10 ->
@@ -348,7 +374,7 @@ internal object AppointmentRecurrenceTemplateSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.occurrenceDateSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
         11 ->
@@ -356,7 +382,7 @@ internal object AppointmentRecurrenceTemplateSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.weeklyTemplateSer,
+              AppointmentRecurrenceTemplateWeeklyTemplateSerializer,
               null,
             )
         12 ->
@@ -364,7 +390,7 @@ internal object AppointmentRecurrenceTemplateSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.monthlyTemplateSer,
+              AppointmentRecurrenceTemplateMonthlyTemplateSerializer,
               null,
             )
         13 ->
@@ -372,7 +398,7 @@ internal object AppointmentRecurrenceTemplateSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.yearlyTemplateSer,
+              AppointmentRecurrenceTemplateYearlyTemplateSerializer,
               null,
             )
         14 ->
@@ -380,7 +406,7 @@ internal object AppointmentRecurrenceTemplateSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.occurrenceDateSer,
+              stringNullableListSerializer,
               null,
             )
         15 ->
@@ -388,7 +414,7 @@ internal object AppointmentRecurrenceTemplateSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.occurrenceDateSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
         16 ->
@@ -396,7 +422,7 @@ internal object AppointmentRecurrenceTemplateSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.excludingRecurrenceIdSer,
+              intNullableListSerializer,
               null,
             )
         17 ->
@@ -404,7 +430,7 @@ internal object AppointmentRecurrenceTemplateSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.occurrenceDateSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
@@ -470,88 +496,95 @@ internal object AppointmentRecurrenceTemplateSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     (value.timezone)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.timezoneSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
     }
-    encoder.encodeSerializableElement(descriptor, 4, Hoisted.timezoneSer, value.recurrenceType)
+    encoder.encodeSerializableElement(
+      descriptor,
+      4,
+      CodeableConceptSerializer,
+      value.recurrenceType,
+    )
     ((value.lastOccurrenceDate?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 5, it)
     }
     (value.lastOccurrenceDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.lastOccurrenceDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.occurrenceCount?.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
     (value.occurrenceCount?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.lastOccurrenceDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     (value.occurrenceDate.map { it.value?.toString() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.occurrenceDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, stringNullableListSerializer, it)
     }
     (value.occurrenceDate.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.occurrenceDateSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        10,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     (value.weeklyTemplate)?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.weeklyTemplateSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        11,
+        AppointmentRecurrenceTemplateWeeklyTemplateSerializer,
+        it,
+      )
     }
     (value.monthlyTemplate)?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.monthlyTemplateSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12,
+        AppointmentRecurrenceTemplateMonthlyTemplateSerializer,
+        it,
+      )
     }
     (value.yearlyTemplate)?.let {
-      encoder.encodeSerializableElement(descriptor, 13, Hoisted.yearlyTemplateSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        13,
+        AppointmentRecurrenceTemplateYearlyTemplateSerializer,
+        it,
+      )
     }
     (value.excludingDate.map { it.value?.toString() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.occurrenceDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, stringNullableListSerializer, it)
     }
     (value.excludingDate.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 15, Hoisted.occurrenceDateSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        15,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     (value.excludingRecurrenceId.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.excludingRecurrenceIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 16, intNullableListSerializer, it)
     }
     (value.excludingRecurrenceId.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 17, Hoisted.occurrenceDateSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val timezoneSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val lastOccurrenceDateSer: KSerializer<Element> = Element.serializer()
-
-    public val occurrenceDateSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val occurrenceDateSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.occurrenceDateSerInner).nullable)
-
-    public val occurrenceDateSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.lastOccurrenceDateSer).nullable)
-
-    public val weeklyTemplateSer: KSerializer<Appointment.RecurrenceTemplate.WeeklyTemplate> =
-      Appointment.RecurrenceTemplate.WeeklyTemplate.serializer()
-
-    public val monthlyTemplateSer: KSerializer<Appointment.RecurrenceTemplate.MonthlyTemplate> =
-      Appointment.RecurrenceTemplate.MonthlyTemplate.serializer()
-
-    public val yearlyTemplateSer: KSerializer<Appointment.RecurrenceTemplate.YearlyTemplate> =
-      Appointment.RecurrenceTemplate.YearlyTemplate.serializer()
-
-    public val excludingRecurrenceIdSerInner: KSerializer<Int> = Int.serializer()
-
-    public val excludingRecurrenceIdSer: KSerializer<List<Int?>> =
-      ListSerializer((Hoisted.excludingRecurrenceIdSerInner).nullable)
   }
 }
 
@@ -587,6 +620,9 @@ internal object AppointmentRecurrenceTemplateWeeklyTemplateSerializer :
       element("weekInterval", Int.serializer().descriptor, isOptional = true)
       element("_weekInterval", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<Appointment.RecurrenceTemplate.WeeklyTemplate>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.WeeklyTemplate =
     decoder.decodeStructure(descriptor) {
@@ -626,42 +662,52 @@ internal object AppointmentRecurrenceTemplateWeeklyTemplateSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> monday = decoder.decodeBooleanElement(descriptor, i)
         4 ->
           _monday =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> tuesday = decoder.decodeBooleanElement(descriptor, i)
         6 ->
           _tuesday =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> wednesday = decoder.decodeBooleanElement(descriptor, i)
         8 ->
           _wednesday =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> thursday = decoder.decodeBooleanElement(descriptor, i)
         10 ->
           _thursday =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 -> friday = decoder.decodeBooleanElement(descriptor, i)
         12 ->
           _friday =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 -> saturday = decoder.decodeBooleanElement(descriptor, i)
         14 ->
           _saturday =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 -> sunday = decoder.decodeBooleanElement(descriptor, i)
         16 ->
           _sunday =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         17 -> weekInterval = decoder.decodeIntElement(descriptor, i)
         18 ->
           _weekInterval =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding WeeklyTemplate: " + i)
       }
@@ -687,55 +733,51 @@ internal object AppointmentRecurrenceTemplateWeeklyTemplateSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.monday?.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
     (value.monday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.tuesday?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
     (value.tuesday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.wednesday?.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
     (value.wednesday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.thursday?.value))?.let { encoder.encodeBooleanElement(descriptor, 9, it) }
     (value.thursday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     ((value.friday?.value))?.let { encoder.encodeBooleanElement(descriptor, 11, it) }
     (value.friday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
     }
     ((value.saturday?.value))?.let { encoder.encodeBooleanElement(descriptor, 13, it) }
     (value.saturday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
     }
     ((value.sunday?.value))?.let { encoder.encodeBooleanElement(descriptor, 15, it) }
     (value.sunday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 16, ElementSerializer, it)
     }
     ((value.weekInterval?.value))?.let { encoder.encodeIntElement(descriptor, 17, it) }
     (value.weekInterval?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 18, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val mondaySer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -761,6 +803,9 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
       element("monthInterval", Int.serializer().descriptor, isOptional = true)
       element("_monthInterval", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<Appointment.RecurrenceTemplate.MonthlyTemplate>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.MonthlyTemplate =
     decoder.decodeStructure(descriptor) {
@@ -793,34 +838,34 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> dayOfMonth = decoder.decodeIntElement(descriptor, i)
         4 ->
           _dayOfMonth =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dayOfMonthSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 ->
           nthWeekOfMonth =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.nthWeekOfMonthSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
         6 ->
           dayOfWeek =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.nthWeekOfMonthSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
         7 -> monthInterval = decoder.decodeIntElement(descriptor, i)
         8 ->
           _monthInterval =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dayOfMonthSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding MonthlyTemplate: " + i)
       }
@@ -846,39 +891,33 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.dayOfMonth?.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
     (value.dayOfMonth?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.dayOfMonthSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     (value.nthWeekOfMonth)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.nthWeekOfMonthSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, CodingSerializer, it)
     }
     (value.dayOfWeek)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.nthWeekOfMonthSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, CodingSerializer, it)
     }
     ((value.monthInterval.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
     (value.monthInterval.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.dayOfMonthSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val dayOfMonthSer: KSerializer<Element> = Element.serializer()
-
-    public val nthWeekOfMonthSer: KSerializer<Coding> = Coding.serializer()
   }
 }
 
@@ -900,6 +939,9 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
       element("yearInterval", Int.serializer().descriptor, isOptional = true)
       element("_yearInterval", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<Appointment.RecurrenceTemplate.YearlyTemplate>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.YearlyTemplate =
     decoder.decodeStructure(descriptor) {
@@ -925,14 +967,24 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> yearInterval = decoder.decodeIntElement(descriptor, i)
         4 ->
           _yearInterval =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.yearIntervalSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding YearlyTemplate: " + i)
       }
@@ -955,27 +1007,23 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.yearInterval.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
     (value.yearInterval.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.yearIntervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val yearIntervalSer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -1180,154 +1228,242 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
         11 -> status = decoder.decodeStringElement(descriptor, i)
         12 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 ->
           cancellationReason =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.cancellationReasonSer,
+              CodeableConceptSerializer,
               null,
             )
         14 ->
-          `class` = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classSer, null)
+          `class` =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         15 ->
           serviceCategory =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         16 ->
           serviceType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.serviceTypeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableReferenceSerializer.listSerializer,
+              null,
+            )
         17 ->
           specialty =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         18 ->
           appointmentType =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.cancellationReasonSer,
+              CodeableConceptSerializer,
               null,
             )
         19 ->
           reason =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.serviceTypeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableReferenceSerializer.listSerializer,
+              null,
+            )
         20 ->
           priority =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.cancellationReasonSer,
+              CodeableConceptSerializer,
               null,
             )
         21 -> description = decoder.decodeStringElement(descriptor, i)
         22 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         23 ->
           replaces =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         24 ->
           virtualService =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.virtualServiceSer,
+              VirtualServiceDetailSerializer.listSerializer,
               null,
             )
         25 ->
           supportingInformation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         26 ->
           previousAppointment =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         27 ->
           originatingAppointment =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         28 -> start = decoder.decodeStringElement(descriptor, i)
         29 ->
-          _start =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _start = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         30 -> end = decoder.decodeStringElement(descriptor, i)
         31 ->
-          _end =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _end = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         32 -> minutesDuration = decoder.decodeIntElement(descriptor, i)
         33 ->
           _minutesDuration =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         34 ->
           requestedPeriod =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.requestedPeriodSer,
+              PeriodSerializer.listSerializer,
               null,
             )
         35 ->
-          slot = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
+          slot =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         36 ->
           account =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         37 -> created = decoder.decodeStringElement(descriptor, i)
         38 ->
           _created =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         39 -> cancellationDate = decoder.decodeStringElement(descriptor, i)
         40 ->
           _cancellationDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        41 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        41 ->
+          note =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AnnotationSerializer.listSerializer,
+              null,
+            )
         42 ->
           patientInstruction =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.serviceTypeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableReferenceSerializer.listSerializer,
+              null,
+            )
         43 ->
           basedOn =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         44 ->
           subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         45 ->
           participant =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.participantSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AppointmentParticipantSerializer.listSerializer,
+              null,
+            )
         46 -> recurrenceId = decoder.decodeIntElement(descriptor, i)
         47 ->
           _recurrenceId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         48 -> occurrenceChanged = decoder.decodeBooleanElement(descriptor, i)
         49 ->
           _occurrenceChanged =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         50 ->
           recurrenceTemplate =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.recurrenceTemplateSer,
+              AppointmentRecurrenceTemplateSerializer.listSerializer,
               null,
             )
         else -> throw SerializationException("Unexpected index decoding Appointment: " + i)
@@ -1388,77 +1524,62 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
     }
     (value.cancellationReason)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         13 + descriptorOffset,
-        Hoisted.cancellationReasonSer,
+        CodeableConceptSerializer,
         it,
       )
     }
@@ -1466,35 +1587,35 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
       encoder.encodeSerializableElement(
         descriptor,
         14 + descriptorOffset,
-        Hoisted.classSer,
+        CodeableConceptSerializer.listSerializer,
         value.`class`,
       )
     if (value.serviceCategory.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         15 + descriptorOffset,
-        Hoisted.classSer,
+        CodeableConceptSerializer.listSerializer,
         value.serviceCategory,
       )
     if (value.serviceType.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
-        Hoisted.serviceTypeSer,
+        CodeableReferenceSerializer.listSerializer,
         value.serviceType,
       )
     if (value.specialty.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         17 + descriptorOffset,
-        Hoisted.classSer,
+        CodeableConceptSerializer.listSerializer,
         value.specialty,
       )
     (value.appointmentType)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         18 + descriptorOffset,
-        Hoisted.cancellationReasonSer,
+        CodeableConceptSerializer,
         it,
       )
     }
@@ -1502,14 +1623,14 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
       encoder.encodeSerializableElement(
         descriptor,
         19 + descriptorOffset,
-        Hoisted.serviceTypeSer,
+        CodeableReferenceSerializer.listSerializer,
         value.reason,
       )
     (value.priority)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         20 + descriptorOffset,
-        Hoisted.cancellationReasonSer,
+        CodeableConceptSerializer,
         it,
       )
     }
@@ -1517,254 +1638,136 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
       encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
     }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ElementSerializer, it)
     }
     if (value.replaces.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         23 + descriptorOffset,
-        Hoisted.replacesSer,
+        ReferenceSerializer.listSerializer,
         value.replaces,
       )
     if (value.virtualService.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         24 + descriptorOffset,
-        Hoisted.virtualServiceSer,
+        VirtualServiceDetailSerializer.listSerializer,
         value.virtualService,
       )
     if (value.supportingInformation.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         25 + descriptorOffset,
-        Hoisted.replacesSer,
+        ReferenceSerializer.listSerializer,
         value.supportingInformation,
       )
     (value.previousAppointment)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        Hoisted.replacesSerInner,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, ReferenceSerializer, it)
     }
     (value.originatingAppointment)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        Hoisted.replacesSerInner,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 27 + descriptorOffset, ReferenceSerializer, it)
     }
     ((value.start?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
     }
     (value.start?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ElementSerializer, it)
     }
     ((value.end?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
     }
     (value.end?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 31 + descriptorOffset, ElementSerializer, it)
     }
     ((value.minutesDuration?.value))?.let {
       encoder.encodeIntElement(descriptor, 32 + descriptorOffset, it)
     }
     (value.minutesDuration?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 33 + descriptorOffset, ElementSerializer, it)
     }
     if (value.requestedPeriod.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         34 + descriptorOffset,
-        Hoisted.requestedPeriodSer,
+        PeriodSerializer.listSerializer,
         value.requestedPeriod,
       )
     if (value.slot.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         35 + descriptorOffset,
-        Hoisted.replacesSer,
+        ReferenceSerializer.listSerializer,
         value.slot,
       )
     if (value.account.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         36 + descriptorOffset,
-        Hoisted.replacesSer,
+        ReferenceSerializer.listSerializer,
         value.account,
       )
     ((value.created?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 37 + descriptorOffset, it)
     }
     (value.created?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        38 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 38 + descriptorOffset, ElementSerializer, it)
     }
     ((value.cancellationDate?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 39 + descriptorOffset, it)
     }
     (value.cancellationDate?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 40 + descriptorOffset, ElementSerializer, it)
     }
     if (value.note.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         41 + descriptorOffset,
-        Hoisted.noteSer,
+        AnnotationSerializer.listSerializer,
         value.note,
       )
     if (value.patientInstruction.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         42 + descriptorOffset,
-        Hoisted.serviceTypeSer,
+        CodeableReferenceSerializer.listSerializer,
         value.patientInstruction,
       )
     if (value.basedOn.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         43 + descriptorOffset,
-        Hoisted.replacesSer,
+        ReferenceSerializer.listSerializer,
         value.basedOn,
       )
     (value.subject)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        44 + descriptorOffset,
-        Hoisted.replacesSerInner,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 44 + descriptorOffset, ReferenceSerializer, it)
     }
     if (value.participant.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         45 + descriptorOffset,
-        Hoisted.participantSer,
+        AppointmentParticipantSerializer.listSerializer,
         value.participant,
       )
     ((value.recurrenceId?.value))?.let {
       encoder.encodeIntElement(descriptor, 46 + descriptorOffset, it)
     }
     (value.recurrenceId?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        47 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 47 + descriptorOffset, ElementSerializer, it)
     }
     ((value.occurrenceChanged?.value))?.let {
       encoder.encodeBooleanElement(descriptor, 48 + descriptorOffset, it)
     }
     (value.occurrenceChanged?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        49 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 49 + descriptorOffset, ElementSerializer, it)
     }
     if (value.recurrenceTemplate.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         50 + descriptorOffset,
-        Hoisted.recurrenceTemplateSer,
+        AppointmentRecurrenceTemplateSerializer.listSerializer,
         value.recurrenceTemplate,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val cancellationReasonSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val classSer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.cancellationReasonSer)
-
-    public val serviceTypeSerInner: KSerializer<CodeableReference> = CodeableReference.serializer()
-
-    public val serviceTypeSer: KSerializer<List<CodeableReference>> =
-      ListSerializer(Hoisted.serviceTypeSerInner)
-
-    public val replacesSerInner: KSerializer<Reference> = Reference.serializer()
-
-    public val replacesSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.replacesSerInner)
-
-    public val virtualServiceSerInner: KSerializer<VirtualServiceDetail> =
-      VirtualServiceDetail.serializer()
-
-    public val virtualServiceSer: KSerializer<List<VirtualServiceDetail>> =
-      ListSerializer(Hoisted.virtualServiceSerInner)
-
-    public val requestedPeriodSerInner: KSerializer<Period> = Period.serializer()
-
-    public val requestedPeriodSer: KSerializer<List<Period>> =
-      ListSerializer(Hoisted.requestedPeriodSerInner)
-
-    public val noteSerInner: KSerializer<Annotation> = Annotation.serializer()
-
-    public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
-
-    public val participantSerInner: KSerializer<Appointment.Participant> =
-      Appointment.Participant.serializer()
-
-    public val participantSer: KSerializer<List<Appointment.Participant>> =
-      ListSerializer(Hoisted.participantSerInner)
-
-    public val recurrenceTemplateSerInner: KSerializer<Appointment.RecurrenceTemplate> =
-      Appointment.RecurrenceTemplate.serializer()
-
-    public val recurrenceTemplateSer: KSerializer<List<Appointment.RecurrenceTemplate>> =
-      ListSerializer(Hoisted.recurrenceTemplateSerInner)
   }
 }
 

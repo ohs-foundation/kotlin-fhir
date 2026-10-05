@@ -69,6 +69,8 @@ internal object ReferenceSerializer : KSerializer<Reference> {
       element("_display", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Reference>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Reference =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -95,22 +97,26 @@ internal object ReferenceSerializer : KSerializer<Reference> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 -> reference = decoder.decodeStringElement(descriptor, i)
         3 ->
           _reference =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> type = decoder.decodeStringElement(descriptor, i)
         5 ->
-          _type =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
         7 -> display = decoder.decodeStringElement(descriptor, i)
         8 ->
           _display =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Reference: " + i)
       }
@@ -128,32 +134,26 @@ internal object ReferenceSerializer : KSerializer<Reference> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Reference) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     ((value.reference?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.reference?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
     }
     ((value.type?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     (value.identifier)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.identifierSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, IdentifierSerializer, it)
     }
     ((value.display?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.display?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.referenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val referenceSer: KSerializer<Element> = Element.serializer()
-
-    public val identifierSer: KSerializer<Identifier> = Identifier.serializer()
   }
 }

@@ -74,6 +74,8 @@ internal object CodingSerializer : KSerializer<Coding> {
       )
     }
 
+  internal val listSerializer: KSerializer<List<Coding>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Coding =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -103,26 +105,31 @@ internal object CodingSerializer : KSerializer<Coding> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 -> system = decoder.decodeStringElement(descriptor, i)
         3 ->
           _system =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.systemSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> version = decoder.decodeStringElement(descriptor, i)
         5 ->
           _version =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.systemSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 -> code = decoder.decodeStringElement(descriptor, i)
         7 ->
-          _code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.systemSer, null)
+          _code = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 -> display = decoder.decodeStringElement(descriptor, i)
         9 ->
           _display =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.systemSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         10 -> userSelected = decoder.decodeBooleanElement(descriptor, i)
         11 ->
           _userSelected =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.systemSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Coding: " + i)
       }
@@ -141,35 +148,31 @@ internal object CodingSerializer : KSerializer<Coding> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Coding) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     ((value.system?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.system?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.systemSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
     }
     ((value.version?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.version?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.systemSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     ((value.code?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.code?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.systemSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     ((value.display?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.display?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.systemSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
     }
     ((value.userSelected?.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
     (value.userSelected?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.systemSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val systemSer: KSerializer<Element> = Element.serializer()
   }
 }

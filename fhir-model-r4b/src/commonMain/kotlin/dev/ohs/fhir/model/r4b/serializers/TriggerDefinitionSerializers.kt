@@ -89,6 +89,8 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
       element("condition", lazyDescriptor { Expression.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<TriggerDefinition>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): TriggerDefinition =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -120,35 +122,43 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeStringElement(descriptor, i)
-        3 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        4 -> name = decoder.decodeStringElement(descriptor, i)
-        5 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        6 ->
-          timingTiming =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timingTimingSer, null)
-        7 ->
-          timingReference =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.timingReferenceSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
+        2 -> type = decoder.decodeStringElement(descriptor, i)
+        3 ->
+          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        4 -> name = decoder.decodeStringElement(descriptor, i)
+        5 ->
+          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          timingTiming =
+            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
+        7 ->
+          timingReference =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         8 -> timingDate = decoder.decodeStringElement(descriptor, i)
         9 ->
           _timingDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         10 -> timingDateTime = decoder.decodeStringElement(descriptor, i)
         11 ->
           _timingDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         12 ->
-          `data` = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dataSer, null)
+          `data` =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              DataRequirementSerializer.listSerializer,
+              null,
+            )
         13 ->
           condition =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.conditionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding TriggerDefinition: " + i)
       }
@@ -175,59 +185,50 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: TriggerDefinition) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
     }
     ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     when (val choice = value.timing) {
       null -> {}
       is TriggerDefinition.Timing.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.timingTimingSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 6, TimingSerializer, choice.value)
       }
       is TriggerDefinition.Timing.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.timingReferenceSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 7, ReferenceSerializer, choice.value)
       }
       is TriggerDefinition.Timing.Date -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 8, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 9, Hoisted.typeSer, it)
+          encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
         }
       }
       is TriggerDefinition.Timing.DateTime -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 10, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 11, Hoisted.typeSer, it)
+          encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
         }
       }
     }
     if (value.`data`.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.dataSer, value.`data`)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12,
+        DataRequirementSerializer.listSerializer,
+        value.`data`,
+      )
     (value.condition)?.let {
-      encoder.encodeSerializableElement(descriptor, 13, Hoisted.conditionSer, it)
+      encoder.encodeSerializableElement(descriptor, 13, ExpressionSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<Element> = Element.serializer()
-
-    public val timingTimingSer: KSerializer<Timing> = Timing.serializer()
-
-    public val timingReferenceSer: KSerializer<Reference> = Reference.serializer()
-
-    public val dataSerInner: KSerializer<DataRequirement> = DataRequirement.serializer()
-
-    public val dataSer: KSerializer<List<DataRequirement>> = ListSerializer(Hoisted.dataSerInner)
-
-    public val conditionSer: KSerializer<Expression> = Expression.serializer()
   }
 }

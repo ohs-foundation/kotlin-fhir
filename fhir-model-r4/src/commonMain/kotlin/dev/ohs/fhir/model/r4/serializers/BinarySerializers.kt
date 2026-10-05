@@ -102,31 +102,25 @@ internal object BinarySerializer : KSerializer<Binary> {
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 -> contentType = decoder.decodeStringElement(descriptor, i)
         7 ->
           _contentType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 ->
           securityContext =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.securityContextSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         9 -> `data` = decoder.decodeStringElement(descriptor, i)
         10 ->
-          _data =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _data = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         else -> throw SerializationException("Unexpected index decoding Binary: " + i)
       }
     }
@@ -151,68 +145,35 @@ internal object BinarySerializer : KSerializer<Binary> {
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     ((value.contentType.value))?.let {
       encoder.encodeStringElement(descriptor, 6 + descriptorOffset, it)
     }
     (value.contentType.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 7 + descriptorOffset, ElementSerializer, it)
     }
     (value.securityContext)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        Hoisted.securityContextSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 8 + descriptorOffset, ReferenceSerializer, it)
     }
     ((value.`data`?.value))?.let {
       encoder.encodeStringElement(descriptor, 9 + descriptorOffset, it)
     }
     (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 10 + descriptorOffset, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val securityContextSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 

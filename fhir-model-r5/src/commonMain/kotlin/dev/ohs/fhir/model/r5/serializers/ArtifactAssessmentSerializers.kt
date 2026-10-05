@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedArtifact
 import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
@@ -54,7 +55,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -109,6 +109,8 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
       )
     }
 
+  internal val listSerializer: KSerializer<List<ArtifactAssessment.Content>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): ArtifactAssessment.Content =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -143,60 +145,86 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> informationType = decoder.decodeStringElement(descriptor, i)
         4 ->
           _informationType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.informationTypeSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> summary = decoder.decodeStringElement(descriptor, i)
         6 ->
           _summary =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        7 ->
+          type =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.informationTypeSer,
+              CodeableConceptSerializer,
               null,
             )
-        7 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         8 ->
           classifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         9 ->
           quantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.quantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         10 ->
-          author = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorSer, null)
-        11 -> path = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+          author =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+        11 ->
+          path =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         12 ->
-          _path = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer2, null)
+          _path =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         13 ->
           relatedArtifact =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.relatedArtifactSer,
+              RelatedArtifactSerializer.listSerializer,
               null,
             )
         14 -> freeToShare = decoder.decodeBooleanElement(descriptor, i)
         15 ->
           _freeToShare =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        16 ->
+          component =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.informationTypeSer,
+              ArtifactAssessmentContentSerializer.listSerializer,
               null,
             )
-        16 ->
-          component =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.componentSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Content: " + i)
       }
@@ -233,84 +261,72 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
   private fun serializeInternal(encoder: CompositeEncoder, `value`: ArtifactAssessment.Content) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.informationType?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.informationType?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.informationTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.summary?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.summary?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.informationTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.typeSer, it) }
+    (value.type)?.let {
+      encoder.encodeSerializableElement(descriptor, 7, CodeableConceptSerializer, it)
+    }
     if (value.classifier.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.classifierSer, value.classifier)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8,
+        CodeableConceptSerializer.listSerializer,
+        value.classifier,
+      )
     (value.quantity)?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.quantitySer, it)
+      encoder.encodeSerializableElement(descriptor, 9, QuantitySerializer, it)
     }
-    (value.author)?.let { encoder.encodeSerializableElement(descriptor, 10, Hoisted.authorSer, it) }
+    (value.author)?.let {
+      encoder.encodeSerializableElement(descriptor, 10, ReferenceSerializer, it)
+    }
     (value.path.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, stringNullableListSerializer, it)
     }
     (value.path.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.pathSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     if (value.relatedArtifact.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         13,
-        Hoisted.relatedArtifactSer,
+        RelatedArtifactSerializer.listSerializer,
         value.relatedArtifact,
       )
     ((value.freeToShare?.value))?.let { encoder.encodeBooleanElement(descriptor, 14, it) }
     (value.freeToShare?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15, Hoisted.informationTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 15, ElementSerializer, it)
     }
     if (value.component.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.componentSer, value.component)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val informationTypeSer: KSerializer<Element> = Element.serializer()
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val classifierSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.typeSer)
-
-    public val quantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val authorSer: KSerializer<Reference> = Reference.serializer()
-
-    public val pathSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val pathSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.pathSerInner).nullable)
-
-    public val pathSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.informationTypeSer).nullable)
-
-    public val relatedArtifactSerInner: KSerializer<RelatedArtifact> = RelatedArtifact.serializer()
-
-    public val relatedArtifactSer: KSerializer<List<RelatedArtifact>> =
-      ListSerializer(Hoisted.relatedArtifactSerInner)
-
-    public val componentSerInner: KSerializer<ArtifactAssessment.Content> =
-      ArtifactAssessment.Content.serializer()
-
-    public val componentSer: KSerializer<List<ArtifactAssessment.Content>> =
-      ListSerializer(Hoisted.componentSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        16,
+        ArtifactAssessmentContentSerializer.listSerializer,
+        value.component,
+      )
   }
 }
 
@@ -435,87 +451,101 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
-        8 ->
-          extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        9 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        10 ->
-          identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
-        11 -> title = decoder.decodeStringElement(descriptor, i)
-        12 ->
-          _title =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        13 ->
-          citeAsReference =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.citeAsReferenceSer,
+              ResourcePolymorphicSerializer.listSerializer,
               null,
             )
+        8 ->
+          extension =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        9 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        10 ->
+          identifier =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
+        11 -> title = decoder.decodeStringElement(descriptor, i)
+        12 ->
+          _title = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        13 ->
+          citeAsReference =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         14 -> citeAsMarkdown = decoder.decodeStringElement(descriptor, i)
         15 ->
           _citeAsMarkdown =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         16 -> date = decoder.decodeStringElement(descriptor, i)
         17 ->
-          _date =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         18 -> copyright = decoder.decodeStringElement(descriptor, i)
         19 ->
           _copyright =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         20 -> approvalDate = decoder.decodeStringElement(descriptor, i)
         21 ->
           _approvalDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         22 -> lastReviewDate = decoder.decodeStringElement(descriptor, i)
         23 ->
           _lastReviewDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         24 ->
           artifactReference =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.citeAsReferenceSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         25 -> artifactCanonical = decoder.decodeStringElement(descriptor, i)
         26 ->
           _artifactCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         27 -> artifactUri = decoder.decodeStringElement(descriptor, i)
         28 ->
           _artifactUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         29 ->
           content =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ArtifactAssessmentContentSerializer.listSerializer,
+              null,
+            )
         30 -> workflowStatus = decoder.decodeStringElement(descriptor, i)
         31 ->
           _workflowStatus =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         32 -> disposition = decoder.decodeStringElement(descriptor, i)
         33 ->
           _disposition =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         else -> throw SerializationException("Unexpected index decoding ArtifactAssessment: " + i)
       }
     }
@@ -570,71 +600,56 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     ((value.title?.value))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
     }
     when (val choice = value.citeAs) {
       null -> {}
@@ -642,7 +657,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
         encoder.encodeSerializableElement(
           descriptor,
           13 + descriptorOffset,
-          Hoisted.citeAsReferenceSer,
+          ReferenceSerializer,
           choice.value,
         )
       }
@@ -654,7 +669,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
           encoder.encodeSerializableElement(
             descriptor,
             15 + descriptorOffset,
-            Hoisted.implicitRulesSer,
+            ElementSerializer,
             it,
           )
         }
@@ -664,52 +679,32 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
       encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
     }
     (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ElementSerializer, it)
     }
     ((value.copyright?.value))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.copyright?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ElementSerializer, it)
     }
     ((value.approvalDate?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.approvalDate?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ElementSerializer, it)
     }
     ((value.lastReviewDate?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
     }
     (value.lastReviewDate?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ElementSerializer, it)
     }
     when (val choice = value.artifact) {
       is ArtifactAssessment.Artifact.Reference -> {
         encoder.encodeSerializableElement(
           descriptor,
           24 + descriptorOffset,
-          Hoisted.citeAsReferenceSer,
+          ReferenceSerializer,
           choice.value,
         )
       }
@@ -721,7 +716,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
           encoder.encodeSerializableElement(
             descriptor,
             26 + descriptorOffset,
-            Hoisted.implicitRulesSer,
+            ElementSerializer,
             it,
           )
         }
@@ -734,7 +729,7 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
           encoder.encodeSerializableElement(
             descriptor,
             28 + descriptorOffset,
-            Hoisted.implicitRulesSer,
+            ElementSerializer,
             it,
           )
         }
@@ -744,61 +739,21 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
       encoder.encodeSerializableElement(
         descriptor,
         29 + descriptorOffset,
-        Hoisted.contentSer,
+        ArtifactAssessmentContentSerializer.listSerializer,
         value.content,
       )
     ((value.workflowStatus?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
     }
     (value.workflowStatus?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 31 + descriptorOffset, ElementSerializer, it)
     }
     ((value.disposition?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 32 + descriptorOffset, it)
     }
     (value.disposition?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 33 + descriptorOffset, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val citeAsReferenceSer: KSerializer<Reference> = Reference.serializer()
-
-    public val contentSerInner: KSerializer<ArtifactAssessment.Content> =
-      ArtifactAssessment.Content.serializer()
-
-    public val contentSer: KSerializer<List<ArtifactAssessment.Content>> =
-      ListSerializer(Hoisted.contentSerInner)
   }
 }
 

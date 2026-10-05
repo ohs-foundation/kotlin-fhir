@@ -39,6 +39,7 @@ import dev.ohs.fhir.model.r4.Narrative
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
@@ -84,6 +85,9 @@ internal object BiologicallyDerivedProductCollectionSerializer :
       element("collectedPeriod", Period.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<BiologicallyDerivedProduct.Collection>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Collection =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -111,33 +115,33 @@ internal object BiologicallyDerivedProductCollectionSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           collector =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.collectorSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         4 ->
           source =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.collectorSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         5 -> collectedDateTime = decoder.decodeStringElement(descriptor, i)
         6 ->
           _collectedDateTime =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.collectedDateTimeSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 ->
           collectedPeriod =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.collectedPeriodSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Collection: " + i)
       }
@@ -162,45 +166,37 @@ internal object BiologicallyDerivedProductCollectionSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     (value.collector)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.collectorSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, it)
     }
     (value.source)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.collectorSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, it)
     }
     when (val choice = value.collected) {
       null -> {}
       is BiologicallyDerivedProduct.Collection.Collected.DateTime -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 6, Hoisted.collectedDateTimeSer, it)
+          encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
         }
       }
       is BiologicallyDerivedProduct.Collection.Collected.Period -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.collectedPeriodSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 7, PeriodSerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val collectorSer: KSerializer<Reference> = Reference.serializer()
-
-    public val collectedDateTimeSer: KSerializer<Element> = Element.serializer()
-
-    public val collectedPeriodSer: KSerializer<Period> = Period.serializer()
   }
 }
 
@@ -227,6 +223,9 @@ internal object BiologicallyDerivedProductProcessingSerializer :
       element("_timeDateTime", Element.serializer().descriptor, isOptional = true)
       element("timePeriod", Period.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<BiologicallyDerivedProduct.Processing>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Processing =
     decoder.decodeStructure(descriptor) {
@@ -257,27 +256,42 @@ internal object BiologicallyDerivedProductProcessingSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> description = decoder.decodeStringElement(descriptor, i)
         4 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 ->
           procedure =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.procedureSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         6 ->
           additive =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.additiveSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         7 -> timeDateTime = decoder.decodeStringElement(descriptor, i)
         8 ->
           _timeDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 ->
           timePeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timePeriodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Processing: " + i)
       }
@@ -303,51 +317,41 @@ internal object BiologicallyDerivedProductProcessingSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     (value.procedure)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.procedureSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
     }
     (value.additive)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.additiveSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
     }
     when (val choice = value.time) {
       null -> {}
       is BiologicallyDerivedProduct.Processing.Time.DateTime -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 8, Hoisted.descriptionSer, it)
+          encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
         }
       }
       is BiologicallyDerivedProduct.Processing.Time.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timePeriodSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 9, PeriodSerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val descriptionSer: KSerializer<Element> = Element.serializer()
-
-    public val procedureSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val additiveSer: KSerializer<Reference> = Reference.serializer()
-
-    public val timePeriodSer: KSerializer<Period> = Period.serializer()
   }
 }
 
@@ -372,6 +376,9 @@ internal object BiologicallyDerivedProductManipulationSerializer :
       element("_timeDateTime", Element.serializer().descriptor, isOptional = true)
       element("timePeriod", Period.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<BiologicallyDerivedProduct.Manipulation>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Manipulation =
     decoder.decodeStructure(descriptor) {
@@ -400,21 +407,31 @@ internal object BiologicallyDerivedProductManipulationSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> description = decoder.decodeStringElement(descriptor, i)
         4 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> timeDateTime = decoder.decodeStringElement(descriptor, i)
         6 ->
           _timeDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 ->
           timePeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timePeriodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Manipulation: " + i)
       }
@@ -438,41 +455,35 @@ internal object BiologicallyDerivedProductManipulationSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     when (val choice = value.time) {
       null -> {}
       is BiologicallyDerivedProduct.Manipulation.Time.DateTime -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
+          encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
         }
       }
       is BiologicallyDerivedProduct.Manipulation.Time.Period -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.timePeriodSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 7, PeriodSerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val descriptionSer: KSerializer<Element> = Element.serializer()
-
-    public val timePeriodSer: KSerializer<Period> = Period.serializer()
   }
 }
 
@@ -499,6 +510,9 @@ internal object BiologicallyDerivedProductStorageSerializer :
       element("_scale", Element.serializer().descriptor, isOptional = true)
       element("duration", Period.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<BiologicallyDerivedProduct.Storage>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Storage =
     decoder.decodeStructure(descriptor) {
@@ -527,27 +541,36 @@ internal object BiologicallyDerivedProductStorageSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> description = decoder.decodeStringElement(descriptor, i)
         4 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 ->
           temperature =
             decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
         6 ->
           _temperature =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> scale = decoder.decodeStringElement(descriptor, i)
         8 ->
-          _scale =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+          _scale = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 ->
           duration =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.durationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Storage: " + i)
       }
@@ -575,42 +598,34 @@ internal object BiologicallyDerivedProductStorageSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.temperature?.value))?.let {
       encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
     }
     (value.temperature?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.scale?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.scale?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
-    (value.duration)?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.durationSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val descriptionSer: KSerializer<Element> = Element.serializer()
-
-    public val durationSer: KSerializer<Period> = Period.serializer()
+    (value.duration)?.let { encoder.encodeSerializableElement(descriptor, 9, PeriodSerializer, it) }
   }
 }
 
@@ -731,61 +746,117 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
         11 -> productCategory = decoder.decodeStringElement(descriptor, i)
         12 ->
           _productCategory =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 ->
           productCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.productCodeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         14 -> status = decoder.decodeStringElement(descriptor, i)
         15 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         16 ->
           request =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.requestSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         17 -> quantity = decoder.decodeIntElement(descriptor, i)
         18 ->
           _quantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         19 ->
           parent =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.requestSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         20 ->
           collection =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.collectionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              BiologicallyDerivedProductCollectionSerializer,
+              null,
+            )
         21 ->
           processing =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.processingSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              BiologicallyDerivedProductProcessingSerializer.listSerializer,
+              null,
+            )
         22 ->
           manipulation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.manipulationSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              BiologicallyDerivedProductManipulationSerializer,
+              null,
+            )
         23 ->
           storage =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.storageSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              BiologicallyDerivedProductStorageSerializer.listSerializer,
+              null,
+            )
         else ->
           throw SerializationException("Unexpected index decoding BiologicallyDerivedProduct: " + i)
       }
@@ -831,77 +902,62 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     ((value.productCategory?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.productCategory?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
     }
     (value.productCode)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         13 + descriptorOffset,
-        Hoisted.productCodeSer,
+        CodeableConceptSerializer,
         it,
       )
     }
@@ -909,43 +965,33 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.status?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
     }
     if (value.request.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
-        Hoisted.requestSer,
+        ReferenceSerializer.listSerializer,
         value.request,
       )
     ((value.quantity?.value))?.let {
       encoder.encodeIntElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.quantity?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
     }
     if (value.parent.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         19 + descriptorOffset,
-        Hoisted.requestSer,
+        ReferenceSerializer.listSerializer,
         value.parent,
       )
     (value.collection)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         20 + descriptorOffset,
-        Hoisted.collectionSer,
+        BiologicallyDerivedProductCollectionSerializer,
         it,
       )
     }
@@ -953,14 +999,14 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
       encoder.encodeSerializableElement(
         descriptor,
         21 + descriptorOffset,
-        Hoisted.processingSer,
+        BiologicallyDerivedProductProcessingSerializer.listSerializer,
         value.processing,
       )
     (value.manipulation)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         22 + descriptorOffset,
-        Hoisted.manipulationSer,
+        BiologicallyDerivedProductManipulationSerializer,
         it,
       )
     }
@@ -968,55 +1014,9 @@ internal object BiologicallyDerivedProductSerializer : KSerializer<BiologicallyD
       encoder.encodeSerializableElement(
         descriptor,
         23 + descriptorOffset,
-        Hoisted.storageSer,
+        BiologicallyDerivedProductStorageSerializer.listSerializer,
         value.storage,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val productCodeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val requestSerInner: KSerializer<Reference> = Reference.serializer()
-
-    public val requestSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.requestSerInner)
-
-    public val collectionSer: KSerializer<BiologicallyDerivedProduct.Collection> =
-      BiologicallyDerivedProduct.Collection.serializer()
-
-    public val processingSerInner: KSerializer<BiologicallyDerivedProduct.Processing> =
-      BiologicallyDerivedProduct.Processing.serializer()
-
-    public val processingSer: KSerializer<List<BiologicallyDerivedProduct.Processing>> =
-      ListSerializer(Hoisted.processingSerInner)
-
-    public val manipulationSer: KSerializer<BiologicallyDerivedProduct.Manipulation> =
-      BiologicallyDerivedProduct.Manipulation.serializer()
-
-    public val storageSerInner: KSerializer<BiologicallyDerivedProduct.Storage> =
-      BiologicallyDerivedProduct.Storage.serializer()
-
-    public val storageSer: KSerializer<List<BiologicallyDerivedProduct.Storage>> =
-      ListSerializer(Hoisted.storageSerInner)
   }
 }
 

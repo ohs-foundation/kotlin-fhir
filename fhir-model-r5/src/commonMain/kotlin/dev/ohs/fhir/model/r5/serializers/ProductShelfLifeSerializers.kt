@@ -72,6 +72,8 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
       )
     }
 
+  internal val listSerializer: KSerializer<List<ProductShelfLife>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): ProductShelfLife =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -97,29 +99,41 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        4 ->
-          periodDuration =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.periodDurationSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          periodDuration =
+            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
         5 -> periodString = decoder.decodeStringElement(descriptor, i)
         6 ->
           _periodString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodStringSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 ->
           specialPrecautionsForStorage =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.specialPrecautionsForStorageSer,
+              CodeableConceptSerializer.listSerializer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
@@ -140,24 +154,31 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: ProductShelfLife) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    (value.type)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
+    }
     when (val choice = value.period) {
       null -> {}
       is ProductShelfLife.Period.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodDurationSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 4, DurationSerializer, choice.value)
       }
       is ProductShelfLife.Period.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
         }
       }
     }
@@ -165,24 +186,8 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
       encoder.encodeSerializableElement(
         descriptor,
         7,
-        Hoisted.specialPrecautionsForStorageSer,
+        CodeableConceptSerializer.listSerializer,
         value.specialPrecautionsForStorage,
       )
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val periodDurationSer: KSerializer<Duration> = Duration.serializer()
-
-    public val periodStringSer: KSerializer<Element> = Element.serializer()
-
-    public val specialPrecautionsForStorageSer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.typeSer)
   }
 }

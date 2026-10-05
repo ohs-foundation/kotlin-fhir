@@ -40,7 +40,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -88,6 +87,8 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
       element("_sessionKey", Element.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<VirtualServiceDetail>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): VirtualServiceDetail =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -120,32 +121,32 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          channelType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.channelTypeSer, null)
-        3 -> addressUrl = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _addressUrl =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressUrlSer, null)
-        5 -> addressString = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _addressString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressUrlSer, null)
-        7 ->
-          addressContactPoint =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.addressContactPointSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
+        2 ->
+          channelType =
+            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+        3 -> addressUrl = decoder.decodeStringElement(descriptor, i)
+        4 ->
+          _addressUrl =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        5 -> addressString = decoder.decodeStringElement(descriptor, i)
+        6 ->
+          _addressString =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        7 ->
+          addressContactPoint =
+            decoder.decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
         8 ->
           addressExtendedContactDetail =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.addressExtendedContactDetailSer,
+              ExtendedContactDetailSerializer,
               null,
             )
         9 ->
@@ -153,7 +154,7 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.additionalInfoSer,
+              stringNullableListSerializer,
               null,
             )
         10 ->
@@ -161,17 +162,17 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.additionalInfoSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
         11 -> maxParticipants = decoder.decodeIntElement(descriptor, i)
         12 ->
           _maxParticipants =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressUrlSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 -> sessionKey = decoder.decodeStringElement(descriptor, i)
         14 ->
           _sessionKey =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressUrlSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding VirtualServiceDetail: " + i)
       }
@@ -203,78 +204,59 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
   private fun serializeInternal(encoder: CompositeEncoder, `value`: VirtualServiceDetail) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     (value.channelType)?.let {
-      encoder.encodeSerializableElement(descriptor, 2, Hoisted.channelTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 2, CodingSerializer, it)
     }
     when (val choice = value.address) {
       null -> {}
       is VirtualServiceDetail.Address.Url -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 4, Hoisted.addressUrlSer, it)
+          encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
         }
       }
       is VirtualServiceDetail.Address.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 6, Hoisted.addressUrlSer, it)
+          encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
         }
       }
       is VirtualServiceDetail.Address.ContactPoint -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          7,
-          Hoisted.addressContactPointSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 7, ContactPointSerializer, choice.value)
       }
       is VirtualServiceDetail.Address.ExtendedContactDetail -> {
         encoder.encodeSerializableElement(
           descriptor,
           8,
-          Hoisted.addressExtendedContactDetailSer,
+          ExtendedContactDetailSerializer,
           choice.value,
         )
       }
     }
     (value.additionalInfo.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.additionalInfoSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, stringNullableListSerializer, it)
     }
     (value.additionalInfo.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.additionalInfoSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        10,
+        ElementSerializer.nullableListSerializer,
+        it,
+      )
     }
     ((value.maxParticipants?.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
     (value.maxParticipants?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.addressUrlSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
     }
     ((value.sessionKey?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.sessionKey?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.addressUrlSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val channelTypeSer: KSerializer<Coding> = Coding.serializer()
-
-    public val addressUrlSer: KSerializer<Element> = Element.serializer()
-
-    public val addressContactPointSer: KSerializer<ContactPoint> = ContactPoint.serializer()
-
-    public val addressExtendedContactDetailSer: KSerializer<ExtendedContactDetail> =
-      ExtendedContactDetail.serializer()
-
-    public val additionalInfoSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val additionalInfoSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.additionalInfoSerInner).nullable)
-
-    public val additionalInfoSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.addressUrlSer).nullable)
   }
 }

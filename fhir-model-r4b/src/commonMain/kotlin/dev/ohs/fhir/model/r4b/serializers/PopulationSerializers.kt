@@ -66,6 +66,8 @@ internal object PopulationSerializer : KSerializer<Population> {
       element("physiologicalCondition", CodeableConcept.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Population>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Population =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -91,19 +93,28 @@ internal object PopulationSerializer : KSerializer<Population> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
-          ageRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageRangeSer, null)
+          ageRange = decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         4 ->
           ageCodeableConcept =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.ageCodeableConceptSer,
+              CodeableConceptSerializer,
               null,
             )
         5 ->
@@ -111,7 +122,7 @@ internal object PopulationSerializer : KSerializer<Population> {
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.ageCodeableConceptSer,
+              CodeableConceptSerializer,
               null,
             )
         6 ->
@@ -119,7 +130,7 @@ internal object PopulationSerializer : KSerializer<Population> {
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.ageCodeableConceptSer,
+              CodeableConceptSerializer,
               null,
             )
         7 ->
@@ -127,7 +138,7 @@ internal object PopulationSerializer : KSerializer<Population> {
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.ageCodeableConceptSer,
+              CodeableConceptSerializer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
@@ -148,47 +159,36 @@ internal object PopulationSerializer : KSerializer<Population> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Population) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     when (val choice = value.age) {
       null -> {}
       is Population.Age.Range -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.ageRangeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 3, RangeSerializer, choice.value)
       }
       is Population.Age.CodeableConcept -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          4,
-          Hoisted.ageCodeableConceptSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
       }
     }
     (value.gender)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.ageCodeableConceptSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
     }
     (value.race)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.ageCodeableConceptSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
     }
     (value.physiologicalCondition)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.ageCodeableConceptSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, CodeableConceptSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val ageRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val ageCodeableConceptSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
   }
 }

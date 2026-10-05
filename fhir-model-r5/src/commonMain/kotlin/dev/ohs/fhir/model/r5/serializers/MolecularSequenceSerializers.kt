@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r5.Narrative
 import dev.ohs.fhir.model.r5.Range
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Int
@@ -91,6 +92,8 @@ internal object MolecularSequenceRelativeSerializer : KSerializer<MolecularSeque
       )
     }
 
+  internal val listSerializer: KSerializer<List<MolecularSequence.Relative>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): MolecularSequence.Relative =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -117,39 +120,51 @@ internal object MolecularSequenceRelativeSerializer : KSerializer<MolecularSeque
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           coordinateSystem =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.coordinateSystemSer,
+              CodeableConceptSerializer,
               null,
             )
         4 -> ordinalPosition = decoder.decodeIntElement(descriptor, i)
         5 ->
           _ordinalPosition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.ordinalPositionSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 ->
           sequenceRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         7 ->
           startingSequence =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.startingSequenceSer,
+              MolecularSequenceRelativeStartingSequenceSerializer,
               null,
             )
-        8 -> edit = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.editSer, null)
+        8 ->
+          edit =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MolecularSequenceRelativeEditSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Relative: " + i)
       }
@@ -173,54 +188,47 @@ internal object MolecularSequenceRelativeSerializer : KSerializer<MolecularSeque
   private fun serializeInternal(encoder: CompositeEncoder, `value`: MolecularSequence.Relative) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     encoder.encodeSerializableElement(
       descriptor,
       3,
-      Hoisted.coordinateSystemSer,
+      CodeableConceptSerializer,
       value.coordinateSystem,
     )
     ((value.ordinalPosition?.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
     (value.ordinalPosition?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.ordinalPositionSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
     (value.sequenceRange)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.sequenceRangeSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, RangeSerializer, it)
     }
     (value.startingSequence)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.startingSequenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7,
+        MolecularSequenceRelativeStartingSequenceSerializer,
+        it,
+      )
     }
     if (value.edit.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.editSer, value.edit)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val coordinateSystemSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val ordinalPositionSer: KSerializer<Element> = Element.serializer()
-
-    public val sequenceRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val startingSequenceSer: KSerializer<MolecularSequence.Relative.StartingSequence> =
-      MolecularSequence.Relative.StartingSequence.serializer()
-
-    public val editSerInner: KSerializer<MolecularSequence.Relative.Edit> =
-      MolecularSequence.Relative.Edit.serializer()
-
-    public val editSer: KSerializer<List<MolecularSequence.Relative.Edit>> =
-      ListSerializer(Hoisted.editSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8,
+        MolecularSequenceRelativeEditSerializer.listSerializer,
+        value.edit,
+      )
   }
 }
 
@@ -254,6 +262,9 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
       element("strand", KotlinString.serializer().descriptor, isOptional = true)
       element("_strand", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<MolecularSequence.Relative.StartingSequence>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): MolecularSequence.Relative.StartingSequence =
     decoder.decodeStructure(descriptor) {
@@ -291,16 +302,26 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           genomeAssembly =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.genomeAssemblySer,
+              CodeableConceptSerializer,
               null,
             )
         4 ->
@@ -308,7 +329,7 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.genomeAssemblySer,
+              CodeableConceptSerializer,
               null,
             )
         5 ->
@@ -316,62 +337,32 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.genomeAssemblySer,
+              CodeableConceptSerializer,
               null,
             )
         6 -> sequenceString = decoder.decodeStringElement(descriptor, i)
         7 ->
           _sequenceString =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.sequenceStringSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 ->
           sequenceReference =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.sequenceReferenceSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         9 -> windowStart = decoder.decodeIntElement(descriptor, i)
         10 ->
           _windowStart =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.sequenceStringSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 -> windowEnd = decoder.decodeIntElement(descriptor, i)
         12 ->
           _windowEnd =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.sequenceStringSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 -> orientation = decoder.decodeStringElement(descriptor, i)
         14 ->
           _orientation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.sequenceStringSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 -> strand = decoder.decodeStringElement(descriptor, i)
         16 ->
           _strand =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.sequenceStringSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding StartingSequence: " + i)
       }
@@ -405,64 +396,56 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     (value.genomeAssembly)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.genomeAssemblySer, it)
+      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
     }
     (value.chromosome)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.genomeAssemblySer, it)
+      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
     }
     when (val choice = value.sequence) {
       null -> {}
       is MolecularSequence.Relative.StartingSequence.Sequence.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.genomeAssemblySer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, choice.value)
       }
       is MolecularSequence.Relative.StartingSequence.Sequence.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 7, Hoisted.sequenceStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
         }
       }
       is MolecularSequence.Relative.StartingSequence.Sequence.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.sequenceReferenceSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 8, ReferenceSerializer, choice.value)
       }
     }
     ((value.windowStart?.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
     (value.windowStart?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.sequenceStringSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     ((value.windowEnd?.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
     (value.windowEnd?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.sequenceStringSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
     }
     ((value.orientation?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.orientation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.sequenceStringSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
     }
     ((value.strand?.value?.code))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.strand?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.sequenceStringSer, it)
+      encoder.encodeSerializableElement(descriptor, 16, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val genomeAssemblySer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val sequenceStringSer: KSerializer<Element> = Element.serializer()
-
-    public val sequenceReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
@@ -490,6 +473,9 @@ internal object MolecularSequenceRelativeEditSerializer :
       element("replacedSequence", KotlinString.serializer().descriptor, isOptional = true)
       element("_replacedSequence", Element.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<MolecularSequence.Relative.Edit>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): MolecularSequence.Relative.Edit =
     decoder.decodeStructure(descriptor) {
@@ -519,23 +505,34 @@ internal object MolecularSequenceRelativeEditSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> start = decoder.decodeIntElement(descriptor, i)
         4 ->
-          _start = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.startSer, null)
+          _start = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> end = decoder.decodeIntElement(descriptor, i)
-        6 -> _end = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.startSer, null)
+        6 ->
+          _end = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 -> replacementSequence = decoder.decodeStringElement(descriptor, i)
         8 ->
           _replacementSequence =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.startSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> replacedSequence = decoder.decodeStringElement(descriptor, i)
         10 ->
           _replacedSequence =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.startSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Edit: " + i)
       }
@@ -557,39 +554,35 @@ internal object MolecularSequenceRelativeEditSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.start?.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
     (value.start?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.startSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.end?.value))?.let { encoder.encodeIntElement(descriptor, 5, it) }
     (value.end?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.startSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     ((value.replacementSequence?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.replacementSequence?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.startSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.replacedSequence?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.replacedSequence?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.startSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val startSer: KSerializer<Element> = Element.serializer()
   }
 }
 
@@ -694,56 +687,92 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
         11 -> type = decoder.decodeStringElement(descriptor, i)
         12 ->
-          _type =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 ->
           subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         14 ->
-          focus = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.focusSer, null)
+          focus =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         15 ->
           specimen =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         16 ->
           device =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         17 ->
           performer =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         18 -> literal = decoder.decodeStringElement(descriptor, i)
         19 ->
           _literal =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         20 ->
           formatted =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.formattedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AttachmentSerializer.listSerializer,
+              null,
+            )
         21 ->
           relative =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.relativeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MolecularSequenceRelativeSerializer.listSerializer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding MolecularSequence: " + i)
       }
     }
@@ -777,153 +806,96 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     ((value.type?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
     }
     (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, ReferenceSerializer, it)
     }
     if (value.focus.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         14 + descriptorOffset,
-        Hoisted.focusSer,
+        ReferenceSerializer.listSerializer,
         value.focus,
       )
     (value.specimen)?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ReferenceSerializer, it)
     }
     (value.device)?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ReferenceSerializer, it)
     }
     (value.performer)?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ReferenceSerializer, it)
     }
     ((value.literal?.value))?.let {
       encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
     }
     (value.literal?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ElementSerializer, it)
     }
     if (value.formatted.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         20 + descriptorOffset,
-        Hoisted.formattedSer,
+        AttachmentSerializer.listSerializer,
         value.formatted,
       )
     if (value.relative.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         21 + descriptorOffset,
-        Hoisted.relativeSer,
+        MolecularSequenceRelativeSerializer.listSerializer,
         value.relative,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val subjectSer: KSerializer<Reference> = Reference.serializer()
-
-    public val focusSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.subjectSer)
-
-    public val formattedSerInner: KSerializer<Attachment> = Attachment.serializer()
-
-    public val formattedSer: KSerializer<List<Attachment>> =
-      ListSerializer(Hoisted.formattedSerInner)
-
-    public val relativeSerInner: KSerializer<MolecularSequence.Relative> =
-      MolecularSequence.Relative.serializer()
-
-    public val relativeSer: KSerializer<List<MolecularSequence.Relative>> =
-      ListSerializer(Hoisted.relativeSerInner)
   }
 }
 

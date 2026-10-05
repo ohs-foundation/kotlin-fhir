@@ -79,6 +79,8 @@ internal object DosageDoseAndRateSerializer : KSerializer<Dosage.DoseAndRate> {
       )
     }
 
+  internal val listSerializer: KSerializer<List<Dosage.DoseAndRate>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Dosage.DoseAndRate =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -104,23 +106,35 @@ internal object DosageDoseAndRateSerializer : KSerializer<Dosage.DoseAndRate> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         3 ->
           doseRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.doseRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         4 ->
           doseQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.doseQuantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         5 ->
           rateRatio =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.rateRatioSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
         6 ->
           rateRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.doseRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         7 ->
           rateQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.doseQuantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding DoseAndRate: " + i)
       }
@@ -137,44 +151,36 @@ internal object DosageDoseAndRateSerializer : KSerializer<Dosage.DoseAndRate> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Dosage.DoseAndRate) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 2, Hoisted.typeSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    (value.type)?.let {
+      encoder.encodeSerializableElement(descriptor, 2, CodeableConceptSerializer, it)
+    }
     when (val choice = value.dose) {
       null -> {}
       is Dosage.DoseAndRate.Dose.Range -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.doseRangeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 3, RangeSerializer, choice.value)
       }
       is Dosage.DoseAndRate.Dose.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.doseQuantitySer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, choice.value)
       }
     }
     when (val choice = value.rate) {
       null -> {}
       is Dosage.DoseAndRate.Rate.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.rateRatioSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 5, RatioSerializer, choice.value)
       }
       is Dosage.DoseAndRate.Rate.Range -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.doseRangeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 6, RangeSerializer, choice.value)
       }
       is Dosage.DoseAndRate.Rate.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.doseQuantitySer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 7, QuantitySerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val doseRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val doseQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val rateRatioSer: KSerializer<Ratio> = Ratio.serializer()
   }
 }
 
@@ -252,6 +258,8 @@ internal object DosageSerializer : KSerializer<Dosage> {
       )
     }
 
+  internal val listSerializer: KSerializer<List<Dosage>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Dosage =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -290,42 +298,51 @@ internal object DosageSerializer : KSerializer<Dosage> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> sequence = decoder.decodeIntElement(descriptor, i)
         4 ->
           _sequence =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         5 -> text = decoder.decodeStringElement(descriptor, i)
         6 ->
-          _text =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
+          _text = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 ->
           additionalInstruction =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.additionalInstructionSer,
+              CodeableConceptSerializer.listSerializer,
               null,
             )
         8 -> patientInstruction = decoder.decodeStringElement(descriptor, i)
         9 ->
           _patientInstruction =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         10 ->
-          timing = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timingSer, null)
+          timing = decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
         11 -> asNeededBoolean = decoder.decodeBooleanElement(descriptor, i)
         12 ->
           _asNeededBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sequenceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 ->
           asNeededCodeableConcept =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.additionalInstructionSerInner,
+              CodeableConceptSerializer,
               null,
             )
         14 ->
@@ -333,7 +350,7 @@ internal object DosageSerializer : KSerializer<Dosage> {
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.additionalInstructionSerInner,
+              CodeableConceptSerializer,
               null,
             )
         15 ->
@@ -341,7 +358,7 @@ internal object DosageSerializer : KSerializer<Dosage> {
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.additionalInstructionSerInner,
+              CodeableConceptSerializer,
               null,
             )
         16 ->
@@ -349,36 +366,26 @@ internal object DosageSerializer : KSerializer<Dosage> {
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.additionalInstructionSerInner,
+              CodeableConceptSerializer,
               null,
             )
         17 ->
           doseAndRate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.doseAndRateSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              DosageDoseAndRateSerializer.listSerializer,
+              null,
+            )
         18 ->
           maxDosePerPeriod =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.maxDosePerPeriodSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
         19 ->
           maxDosePerAdministration =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.maxDosePerAdministrationSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         20 ->
           maxDosePerLifetime =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.maxDosePerAdministrationSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Dosage: " + i)
       }
@@ -410,97 +417,75 @@ internal object DosageSerializer : KSerializer<Dosage> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Dosage) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.sequence?.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
     (value.sequence?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
     ((value.text?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.text?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.sequenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     if (value.additionalInstruction.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7,
-        Hoisted.additionalInstructionSer,
+        CodeableConceptSerializer.listSerializer,
         value.additionalInstruction,
       )
     ((value.patientInstruction?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.patientInstruction?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.sequenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
     }
-    (value.timing)?.let { encoder.encodeSerializableElement(descriptor, 10, Hoisted.timingSer, it) }
+    (value.timing)?.let { encoder.encodeSerializableElement(descriptor, 10, TimingSerializer, it) }
     when (val choice = value.asNeeded) {
       null -> {}
       is Dosage.AsNeeded.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 11, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 12, Hoisted.sequenceSer, it)
+          encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
         }
       }
       is Dosage.AsNeeded.CodeableConcept -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          13,
-          Hoisted.additionalInstructionSerInner,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 13, CodeableConceptSerializer, choice.value)
       }
     }
     (value.site)?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.additionalInstructionSerInner, it)
+      encoder.encodeSerializableElement(descriptor, 14, CodeableConceptSerializer, it)
     }
     (value.route)?.let {
-      encoder.encodeSerializableElement(descriptor, 15, Hoisted.additionalInstructionSerInner, it)
+      encoder.encodeSerializableElement(descriptor, 15, CodeableConceptSerializer, it)
     }
     (value.method)?.let {
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.additionalInstructionSerInner, it)
+      encoder.encodeSerializableElement(descriptor, 16, CodeableConceptSerializer, it)
     }
     if (value.doseAndRate.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 17, Hoisted.doseAndRateSer, value.doseAndRate)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17,
+        DosageDoseAndRateSerializer.listSerializer,
+        value.doseAndRate,
+      )
     (value.maxDosePerPeriod)?.let {
-      encoder.encodeSerializableElement(descriptor, 18, Hoisted.maxDosePerPeriodSer, it)
+      encoder.encodeSerializableElement(descriptor, 18, RatioSerializer, it)
     }
     (value.maxDosePerAdministration)?.let {
-      encoder.encodeSerializableElement(descriptor, 19, Hoisted.maxDosePerAdministrationSer, it)
+      encoder.encodeSerializableElement(descriptor, 19, QuantitySerializer, it)
     }
     (value.maxDosePerLifetime)?.let {
-      encoder.encodeSerializableElement(descriptor, 20, Hoisted.maxDosePerAdministrationSer, it)
+      encoder.encodeSerializableElement(descriptor, 20, QuantitySerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val sequenceSer: KSerializer<Element> = Element.serializer()
-
-    public val additionalInstructionSerInner: KSerializer<CodeableConcept> =
-      CodeableConcept.serializer()
-
-    public val additionalInstructionSer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.additionalInstructionSerInner)
-
-    public val timingSer: KSerializer<Timing> = Timing.serializer()
-
-    public val doseAndRateSerInner: KSerializer<Dosage.DoseAndRate> =
-      Dosage.DoseAndRate.serializer()
-
-    public val doseAndRateSer: KSerializer<List<Dosage.DoseAndRate>> =
-      ListSerializer(Hoisted.doseAndRateSerInner)
-
-    public val maxDosePerPeriodSer: KSerializer<Ratio> = Ratio.serializer()
-
-    public val maxDosePerAdministrationSer: KSerializer<Quantity> = Quantity.serializer()
   }
 }

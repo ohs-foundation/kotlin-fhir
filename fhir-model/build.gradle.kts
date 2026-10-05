@@ -23,6 +23,8 @@ kotlin {
         compilerOptions {
             // Pin the published bytecode level so it doesn't silently track the toolchain (21).
             jvmTarget.set(JvmTarget.JVM_11)
+            // Skip generating legacy $DefaultImpls classes for interface functions to reduce
+            // binary size.
             jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
         }
     }
@@ -61,6 +63,8 @@ kotlin {
             // This does not impact the generated code per FHIR version since it is re-exported
             // (via api dependencies) rather than recompiled in this module.
             jvmTarget.set(JvmTarget.JVM_11)
+            // Skip generating legacy $DefaultImpls classes for interface functions to reduce
+            // binary size.
             jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
         }
     }

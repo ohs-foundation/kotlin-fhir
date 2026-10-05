@@ -20,9 +20,6 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.MemberName
-import com.squareup.kotlinpoet.ParameterizedTypeName
-import com.squareup.kotlinpoet.TypeName
 import dev.ohs.fhir.codegen.CodegenContext
 import dev.ohs.fhir.codegen.ModelConstructionHelpers
 import dev.ohs.fhir.codegen.schema.Element
@@ -51,7 +48,6 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
     wireFields: List<WireField>,
     parameterized: Boolean,
     nameToCaseLabel: Map<String, Int>,
-    hoister: SerializerHoister,
   ): FunSpec {
     val codeBlock = CodeBlock.builder()
     // One local per flat wire field — choice types expand into per-expansion value + element
@@ -85,7 +81,7 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
           "%L -> %N = %L\n",
           label,
           wireField.name,
-          jsonDecodeElementCall(wireField, className, hoister),
+          jsonDecodeElementCall(wireField, className),
         )
       }
       codeBlock.add(
@@ -104,7 +100,7 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
           "%L -> %N = %L\n",
           label,
           wireField.name,
-          jsonDecodeElementCall(wireField, className, hoister),
+          jsonDecodeElementCall(wireField, className),
         )
       }
       codeBlock.add("%T.DECODE_DONE -> break\n", compositeDecoderClassName)
@@ -135,11 +131,7 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
    * `decodeElementIndex` (read from the local `i`). Specialized `decodeXxxElement` for stdlib
    * primitives, `decodeNullableSerializableElement` otherwise.
    */
-  private fun jsonDecodeElementCall(
-    wireField: WireField,
-    parentClass: ClassName,
-    hoister: SerializerHoister,
-  ): CodeBlock {
+  private fun jsonDecodeElementCall(wireField: WireField, parentClass: ClassName): CodeBlock {
     // The descriptor index always comes from `i` — the value just returned by
     // `decodeElementIndex`. Encoding it as a literal here (instead of `i`) would lock the
     // generated body to the descriptor whose slot indices match those literals; threading `i`
@@ -156,65 +148,10 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
         "Char" -> return CodeBlock.of("decoder.decodeCharElement(descriptor, i)")
       }
     }
-    val ser =
-      serializerExpressionIn(wireField.typeName, parentClass, hoister, "${wireField.name}Ser")
+    val ser = serializerRefForTypeName(wireField.typeName, parentClass)
     // Explicit `previousValue = null` — 4-arg form — so Kotlin emits a direct interface call
     // instead of the `decodeNullableSerializableElement$default` static synthetic bridge.
     return CodeBlock.of("decoder.decodeNullableSerializableElement(descriptor, i, %L, null)", ser)
-  }
-
-  /**
-   * Serializer expression for [typeName] suitable for a decode call site.
-   *
-   * Every reference — bare `X.serializer()`, `ListSerializer(...)`, `.nullable` wrappers — goes
-   * through the deferred hoister, landing on the nested `Hoisted` object. The call site compiles to
-   * a single `getstatic Hoisted.$fooSer`; plugin-gen emits an equivalent `getstatic
-   * childSerializers$lazy[i] + invokevirtual getValue()` shape. Nested-object init fires on first
-   * access (not with the outer object's `<clinit>`), so self-referential types don't dereference a
-   * still-initializing sibling's `descriptor` during construction.
-   *
-   * Custom FHIR serializers (`LocalTimeSerializer`, `BigDecimalSerializer`) are singletons —
-   * already a single `getstatic`, no hoist needed.
-   */
-  private fun serializerExpressionIn(
-    typeName: TypeName,
-    parentClass: ClassName,
-    hoister: SerializerHoister,
-    nameHint: String,
-  ): CodeBlock {
-    val nonNull = typeName.copy(nullable = false)
-    if (nonNull is ClassName) {
-      customSerializerFor(nonNull, parentClass)?.let {
-        return CodeBlock.of("%T", it)
-      }
-      return hoister.refLazy(serializerForClassName(nonNull), nameHint, nonNull)
-    }
-    if (nonNull is ParameterizedTypeName) {
-      when (nonNull.rawType) {
-        ClassName("kotlin.collections", "List"),
-        ClassName("kotlin.collections", "MutableList") -> {
-          val inner = nonNull.typeArguments.single()
-          val innerSer = serializerExpressionIn(inner, parentClass, hoister, "${nameHint}Inner")
-          val listExpr =
-            if (inner.isNullable) {
-              CodeBlock.of(
-                "%M((%L).%M)",
-                MemberName(KOTLINX_SERIALIZATION_BUILTINS, "ListSerializer"),
-                innerSer,
-                MemberName(KOTLINX_SERIALIZATION_BUILTINS, "nullable"),
-              )
-            } else {
-              CodeBlock.of(
-                "%M(%L)",
-                MemberName(KOTLINX_SERIALIZATION_BUILTINS, "ListSerializer"),
-                innerSer,
-              )
-            }
-          return hoister.refLazy(listExpr, nameHint, nonNull)
-        }
-      }
-    }
-    return serializerForTypeName(typeName)
   }
 
   /** Builds the `return ModelType(...)` expression after the decode loop has populated locals. */

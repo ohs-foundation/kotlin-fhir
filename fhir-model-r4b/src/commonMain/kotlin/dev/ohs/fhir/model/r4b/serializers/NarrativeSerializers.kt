@@ -61,6 +61,8 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
       element("_div", Element.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Narrative>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Narrative =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -84,14 +86,19 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 -> status = decoder.decodeStringElement(descriptor, i)
         3 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> div = decoder.decodeStringElement(descriptor, i)
         5 ->
-          _div = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusSer, null)
+          _div = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Narrative: " + i)
       }
@@ -113,23 +120,19 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Narrative) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.statusSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
     }
     encoder.encodeStringElement(descriptor, 4, (value.div.value))
     (value.div.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.statusSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val statusSer: KSerializer<Element> = Element.serializer()
   }
 }

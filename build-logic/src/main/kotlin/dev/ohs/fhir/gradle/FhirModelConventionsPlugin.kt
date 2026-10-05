@@ -69,6 +69,8 @@ class FhirModelConventionsPlugin : Plugin<Project> {
           compilerOptions {
             // Pin the published bytecode level so it doesn't silently track the toolchain (21).
             jvmTarget.set(JvmTarget.JVM_11)
+            // Skip generating legacy $DefaultImpls classes for interface functions to reduce
+            // binary size.
             jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
           }
         }
@@ -106,6 +108,8 @@ class FhirModelConventionsPlugin : Plugin<Project> {
           // jvmTarget conventions to the Java toolchain (21); pin it so the published bytecode
           // level doesn't silently track the toolchain.
           android.compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
+          // Skip generating legacy $DefaultImpls classes for interface functions to reduce
+          // binary size.
           android.compilerOptions.jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
         }
         macosArm64()

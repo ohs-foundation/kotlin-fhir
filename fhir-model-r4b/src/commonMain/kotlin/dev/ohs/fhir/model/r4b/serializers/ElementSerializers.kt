@@ -32,6 +32,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -54,6 +55,10 @@ internal object ElementSerializer : KSerializer<Element> {
       )
     }
 
+  internal val listSerializer: KSerializer<List<Element>> = ListSerializer(this)
+
+  internal val nullableListSerializer: KSerializer<List<Element?>> = ListSerializer(this.nullable)
+
   override fun deserialize(decoder: Decoder): Element =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -73,7 +78,12 @@ internal object ElementSerializer : KSerializer<Element> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Element: " + i)
       }
@@ -87,13 +97,11 @@ internal object ElementSerializer : KSerializer<Element> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Element) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
   }
 }

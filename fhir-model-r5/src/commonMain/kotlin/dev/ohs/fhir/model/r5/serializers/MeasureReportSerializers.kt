@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.Range
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
@@ -111,6 +112,8 @@ internal object MeasureReportGroupSerializer : KSerializer<MeasureReport.Group> 
       )
     }
 
+  internal val listSerializer: KSerializer<List<MeasureReport.Group>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -144,63 +147,75 @@ internal object MeasureReportGroupSerializer : KSerializer<MeasureReport.Group> 
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> linkId = decoder.decodeStringElement(descriptor, i)
         4 ->
           _linkId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkIdSer, null)
-        5 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
-        6 ->
-          subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
-        7 ->
-          population =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.populationSer, null)
-        8 ->
-          measureScoreQuantity =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        5 ->
+          code =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.measureScoreQuantitySer,
+              CodeableConceptSerializer,
               null,
             )
+        6 ->
+          subject =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+        7 ->
+          population =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MeasureReportGroupPopulationSerializer.listSerializer,
+              null,
+            )
+        8 ->
+          measureScoreQuantity =
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         9 -> measureScoreDateTime = decoder.decodeStringElement(descriptor, i)
         10 ->
           _measureScoreDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 ->
           measureScoreCodeableConcept =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         12 ->
           measureScorePeriod =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.measureScorePeriodSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         13 ->
           measureScoreRange =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.measureScoreRangeSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         14 ->
           measureScoreDuration =
+            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+        15 ->
+          stratifier =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.measureScoreDurationSer,
+              MeasureReportGroupStratifierSerializer.listSerializer,
               null,
             )
-        15 ->
-          stratifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.stratifierSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Group: " + i)
       }
@@ -232,103 +247,67 @@ internal object MeasureReportGroupSerializer : KSerializer<MeasureReport.Group> 
   private fun serializeInternal(encoder: CompositeEncoder, `value`: MeasureReport.Group) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.linkId?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.linkId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.linkIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it) }
+    (value.code)?.let {
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
+    }
     (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
     }
     if (value.population.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.populationSer, value.population)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7,
+        MeasureReportGroupPopulationSerializer.listSerializer,
+        value.population,
+      )
     when (val choice = value.measureScore) {
       null -> {}
       is MeasureReport.Group.MeasureScore.Quantity -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          8,
-          Hoisted.measureScoreQuantitySer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 8, QuantitySerializer, choice.value)
       }
       is MeasureReport.Group.MeasureScore.DateTime -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 10, Hoisted.linkIdSer, it)
+          encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
         }
       }
       is MeasureReport.Group.MeasureScore.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.codeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 11, CodeableConceptSerializer, choice.value)
       }
       is MeasureReport.Group.MeasureScore.Period -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          12,
-          Hoisted.measureScorePeriodSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 12, PeriodSerializer, choice.value)
       }
       is MeasureReport.Group.MeasureScore.Range -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          13,
-          Hoisted.measureScoreRangeSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 13, RangeSerializer, choice.value)
       }
       is MeasureReport.Group.MeasureScore.Duration -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          14,
-          Hoisted.measureScoreDurationSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 14, DurationSerializer, choice.value)
       }
     }
     if (value.stratifier.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 15, Hoisted.stratifierSer, value.stratifier)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val linkIdSer: KSerializer<Element> = Element.serializer()
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val subjectSer: KSerializer<Reference> = Reference.serializer()
-
-    public val populationSerInner: KSerializer<MeasureReport.Group.Population> =
-      MeasureReport.Group.Population.serializer()
-
-    public val populationSer: KSerializer<List<MeasureReport.Group.Population>> =
-      ListSerializer(Hoisted.populationSerInner)
-
-    public val measureScoreQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val measureScorePeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val measureScoreRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val measureScoreDurationSer: KSerializer<Duration> = Duration.serializer()
-
-    public val stratifierSerInner: KSerializer<MeasureReport.Group.Stratifier> =
-      MeasureReport.Group.Stratifier.serializer()
-
-    public val stratifierSer: KSerializer<List<MeasureReport.Group.Stratifier>> =
-      ListSerializer(Hoisted.stratifierSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        15,
+        MeasureReportGroupStratifierSerializer.listSerializer,
+        value.stratifier,
+      )
   }
 }
 
@@ -361,6 +340,9 @@ internal object MeasureReportGroupPopulationSerializer :
       element("subjects", Reference.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<MeasureReport.Group.Population>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Population =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -389,37 +371,49 @@ internal object MeasureReportGroupPopulationSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> linkId = decoder.decodeStringElement(descriptor, i)
         4 ->
           _linkId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkIdSer, null)
-        5 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        5 ->
+          code =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         6 -> count = decoder.decodeIntElement(descriptor, i)
         7 ->
-          _count = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkIdSer, null)
+          _count = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 ->
           subjectResults =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.subjectResultsSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         9 ->
           subjectReport =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectReportSer, null)
-        10 ->
-          subjects =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.subjectResultsSer,
+              ReferenceSerializer.listSerializer,
               null,
             )
+        10 ->
+          subjects =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Population: " + i)
       }
@@ -443,52 +437,43 @@ internal object MeasureReportGroupPopulationSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.linkId?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.linkId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.linkIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it) }
+    (value.code)?.let {
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
+    }
     ((value.count?.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
     (value.count?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.linkIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     (value.subjectResults)?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.subjectResultsSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ReferenceSerializer, it)
     }
     if (value.subjectReport.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9,
-        Hoisted.subjectReportSer,
+        ReferenceSerializer.listSerializer,
         value.subjectReport,
       )
     (value.subjects)?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.subjectResultsSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ReferenceSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val linkIdSer: KSerializer<Element> = Element.serializer()
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val subjectResultsSer: KSerializer<Reference> = Reference.serializer()
-
-    public val subjectReportSer: KSerializer<List<Reference>> =
-      ListSerializer(Hoisted.subjectResultsSer)
   }
 }
 
@@ -519,6 +504,9 @@ internal object MeasureReportGroupStratifierSerializer :
       )
     }
 
+  internal val listSerializer: KSerializer<List<MeasureReport.Group.Stratifier>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Stratifier =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -543,18 +531,40 @@ internal object MeasureReportGroupStratifierSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> linkId = decoder.decodeStringElement(descriptor, i)
         4 ->
           _linkId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkIdSer, null)
-        5 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        5 ->
+          code =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         6 ->
           stratum =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.stratumSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MeasureReportGroupStratifierStratumSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Stratifier: " + i)
       }
@@ -575,38 +585,33 @@ internal object MeasureReportGroupStratifierSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.linkId?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.linkId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.linkIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it) }
+    (value.code)?.let {
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
+    }
     if (value.stratum.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.stratumSer, value.stratum)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val linkIdSer: KSerializer<Element> = Element.serializer()
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val stratumSerInner: KSerializer<MeasureReport.Group.Stratifier.Stratum> =
-      MeasureReport.Group.Stratifier.Stratum.serializer()
-
-    public val stratumSer: KSerializer<List<MeasureReport.Group.Stratifier.Stratum>> =
-      ListSerializer(Hoisted.stratumSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        6,
+        MeasureReportGroupStratifierStratumSerializer.listSerializer,
+        value.stratum,
+      )
   }
 }
 
@@ -662,6 +667,9 @@ internal object MeasureReportGroupStratifierStratumSerializer :
       element("measureScoreDuration", Duration.serializer().descriptor, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<MeasureReport.Group.Stratifier.Stratum>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Stratifier.Stratum =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -699,76 +707,81 @@ internal object MeasureReportGroupStratifierStratumSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           valueCodeableConcept =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.valueCodeableConceptSer,
+              CodeableConceptSerializer,
               null,
             )
         4 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
         5 ->
           _valueBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueBooleanSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         6 ->
           valueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         7 ->
           valueRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         8 ->
           valueReference =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+        9 ->
+          component =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.valueReferenceSer,
+              MeasureReportGroupStratifierStratumComponentSerializer.listSerializer,
               null,
             )
-        9 ->
-          component =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.componentSer, null)
         10 ->
           population =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.populationSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MeasureReportGroupStratifierStratumPopulationSerializer.listSerializer,
+              null,
+            )
         11 ->
           measureScoreQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
         12 -> measureScoreDateTime = decoder.decodeStringElement(descriptor, i)
         13 ->
           _measureScoreDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueBooleanSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         14 ->
           measureScoreCodeableConcept =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.valueCodeableConceptSer,
+              CodeableConceptSerializer,
               null,
             )
         15 ->
           measureScorePeriod =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.measureScorePeriodSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         16 ->
           measureScoreRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         17 ->
           measureScoreDuration =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.measureScoreDurationSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Stratum: " + i)
       }
@@ -808,116 +821,78 @@ internal object MeasureReportGroupStratifierStratumSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     when (val choice = value.`value`) {
       null -> {}
       is MeasureReport.Group.Stratifier.Stratum.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          3,
-          Hoisted.valueCodeableConceptSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.Value.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueBooleanSer, it)
+          encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
         }
       }
       is MeasureReport.Group.Stratifier.Stratum.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueQuantitySer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 6, QuantitySerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueRangeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 7, RangeSerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueReferenceSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 8, ReferenceSerializer, choice.value)
       }
     }
     if (value.component.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.componentSer, value.component)
+      encoder.encodeSerializableElement(
+        descriptor,
+        9,
+        MeasureReportGroupStratifierStratumComponentSerializer.listSerializer,
+        value.component,
+      )
     if (value.population.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.populationSer, value.population)
+      encoder.encodeSerializableElement(
+        descriptor,
+        10,
+        MeasureReportGroupStratifierStratumPopulationSerializer.listSerializer,
+        value.population,
+      )
     when (val choice = value.measureScore) {
       null -> {}
       is MeasureReport.Group.Stratifier.Stratum.MeasureScore.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueQuantitySer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 11, QuantitySerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.MeasureScore.DateTime -> {
         ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueBooleanSer, it)
+          encoder.encodeSerializableElement(descriptor, 13, ElementSerializer, it)
         }
       }
       is MeasureReport.Group.Stratifier.Stratum.MeasureScore.CodeableConcept -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          14,
-          Hoisted.valueCodeableConceptSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 14, CodeableConceptSerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.MeasureScore.Period -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          15,
-          Hoisted.measureScorePeriodSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 15, PeriodSerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.MeasureScore.Range -> {
-        encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueRangeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 16, RangeSerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.MeasureScore.Duration -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          17,
-          Hoisted.measureScoreDurationSer,
-          choice.value,
-        )
+        encoder.encodeSerializableElement(descriptor, 17, DurationSerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val valueCodeableConceptSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val valueBooleanSer: KSerializer<Element> = Element.serializer()
-
-    public val valueQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val valueRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val valueReferenceSer: KSerializer<Reference> = Reference.serializer()
-
-    public val componentSerInner: KSerializer<MeasureReport.Group.Stratifier.Stratum.Component> =
-      MeasureReport.Group.Stratifier.Stratum.Component.serializer()
-
-    public val componentSer: KSerializer<List<MeasureReport.Group.Stratifier.Stratum.Component>> =
-      ListSerializer(Hoisted.componentSerInner)
-
-    public val populationSerInner: KSerializer<MeasureReport.Group.Stratifier.Stratum.Population> =
-      MeasureReport.Group.Stratifier.Stratum.Population.serializer()
-
-    public val populationSer: KSerializer<List<MeasureReport.Group.Stratifier.Stratum.Population>> =
-      ListSerializer(Hoisted.populationSerInner)
-
-    public val measureScorePeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val measureScoreDurationSer: KSerializer<Duration> = Duration.serializer()
   }
 }
 
@@ -946,6 +921,9 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
       element("valueRange", Range.serializer().descriptor, isOptional = true)
       element("valueReference", Reference.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer: KSerializer<List<MeasureReport.Group.Stratifier.Stratum.Component>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Stratifier.Stratum.Component =
     decoder.decodeStructure(descriptor) {
@@ -981,36 +959,53 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> linkId = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _linkId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkIdSer, null)
-        5 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
-        6 ->
-          valueCodeableConcept =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
-        7 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
-        8 ->
-          _valueBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkIdSer, null)
-        9 ->
-          valueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
-        10 ->
-          valueRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRangeSer, null)
-        11 ->
-          valueReference =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.valueReferenceSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> linkId = decoder.decodeStringElement(descriptor, i)
+        4 ->
+          _linkId =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        5 ->
+          code =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        6 ->
+          valueCodeableConcept =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        7 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
+        8 ->
+          _valueBoolean =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        9 ->
+          valueQuantity =
+            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+        10 ->
+          valueRange =
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        11 ->
+          valueReference =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Component: " + i)
       }
@@ -1045,56 +1040,44 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.linkId?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.linkId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.linkIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-    encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, value.code)
+    encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, value.code)
     when (val choice = value.`value`) {
       is MeasureReport.Group.Stratifier.Stratum.Component.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.Component.Value.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 8, Hoisted.linkIdSer, it)
+          encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
         }
       }
       is MeasureReport.Group.Stratifier.Stratum.Component.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueQuantitySer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 9, QuantitySerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.Component.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueRangeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 10, RangeSerializer, choice.value)
       }
       is MeasureReport.Group.Stratifier.Stratum.Component.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueReferenceSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 11, ReferenceSerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val linkIdSer: KSerializer<Element> = Element.serializer()
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val valueQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val valueRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val valueReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
@@ -1126,6 +1109,10 @@ internal object MeasureReportGroupStratifierStratumPopulationSerializer :
       )
       element("subjects", Reference.serializer().descriptor, isOptional = true)
     }
+
+  internal val listSerializer:
+    KSerializer<List<MeasureReport.Group.Stratifier.Stratum.Population>> =
+    ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Stratifier.Stratum.Population =
     decoder.decodeStructure(descriptor) {
@@ -1160,37 +1147,49 @@ internal object MeasureReportGroupStratifierStratumPopulationSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 -> linkId = decoder.decodeStringElement(descriptor, i)
         4 ->
           _linkId =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkIdSer, null)
-        5 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        5 ->
+          code =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         6 -> count = decoder.decodeIntElement(descriptor, i)
         7 ->
-          _count = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkIdSer, null)
+          _count = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         8 ->
           subjectResults =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.subjectResultsSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         9 ->
           subjectReport =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectReportSer, null)
-        10 ->
-          subjects =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.subjectResultsSer,
+              ReferenceSerializer.listSerializer,
               null,
             )
+        10 ->
+          subjects =
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Population: " + i)
       }
@@ -1214,52 +1213,43 @@ internal object MeasureReportGroupStratifierStratumPopulationSerializer :
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     ((value.linkId?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.linkId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.linkIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it) }
+    (value.code)?.let {
+      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
+    }
     ((value.count?.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
     (value.count?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.linkIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
     }
     (value.subjectResults)?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.subjectResultsSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ReferenceSerializer, it)
     }
     if (value.subjectReport.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9,
-        Hoisted.subjectReportSer,
+        ReferenceSerializer.listSerializer,
         value.subjectReport,
       )
     (value.subjects)?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.subjectResultsSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ReferenceSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val linkIdSer: KSerializer<Element> = Element.serializer()
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val subjectResultsSer: KSerializer<Reference> = Reference.serializer()
-
-    public val subjectReportSer: KSerializer<List<Reference>> =
-      ListSerializer(Hoisted.subjectResultsSer)
   }
 }
 
@@ -1388,79 +1378,114 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
         11 -> status = decoder.decodeStringElement(descriptor, i)
         12 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         13 -> type = decoder.decodeStringElement(descriptor, i)
         14 ->
-          _type =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         15 -> dataUpdateType = decoder.decodeStringElement(descriptor, i)
         16 ->
           _dataUpdateType =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         17 -> measure = decoder.decodeStringElement(descriptor, i)
         18 ->
           _measure =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         19 ->
           subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         20 -> date = decoder.decodeStringElement(descriptor, i)
         21 ->
-          _date =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         22 ->
           reporter =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         23 ->
           reportingVendor =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         24 ->
           location =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         25 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         26 ->
           inputParameters =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         27 ->
           scoring =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.scoringSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         28 ->
           improvementNotation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.scoringSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         29 ->
-          group = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.groupSer, null)
+          group =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MeasureReportGroupSerializer.listSerializer,
+              null,
+            )
         30 ->
           supplementalData =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.supplementalDataSer,
+              ReferenceSerializer.listSerializer,
               null,
             )
         31 ->
@@ -1468,7 +1493,7 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.supplementalDataSer,
+              ReferenceSerializer.listSerializer,
               null,
             )
         else -> throw SerializationException("Unexpected index decoding MeasureReport: " + i)
@@ -1521,200 +1546,139 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     ((value.status.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
     }
     ((value.type.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
     }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ElementSerializer, it)
     }
     ((value.dataUpdateType?.value?.code))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.dataUpdateType?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ElementSerializer, it)
     }
     ((value.measure?.value))?.let {
       encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.measure?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
     }
     (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ReferenceSerializer, it)
     }
     ((value.date?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
     }
     (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ElementSerializer, it)
     }
     (value.reporter)?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ReferenceSerializer, it)
     }
     (value.reportingVendor)?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ReferenceSerializer, it)
     }
     (value.location)?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, ReferenceSerializer, it)
     }
     encoder.encodeSerializableElement(
       descriptor,
       25 + descriptorOffset,
-      Hoisted.periodSer,
+      PeriodSerializer,
       value.period,
     )
     (value.inputParameters)?.let {
-      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, Hoisted.subjectSer, it)
+      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, ReferenceSerializer, it)
     }
     (value.scoring)?.let {
-      encoder.encodeSerializableElement(descriptor, 27 + descriptorOffset, Hoisted.scoringSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        27 + descriptorOffset,
+        CodeableConceptSerializer,
+        it,
+      )
     }
     (value.improvementNotation)?.let {
-      encoder.encodeSerializableElement(descriptor, 28 + descriptorOffset, Hoisted.scoringSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        28 + descriptorOffset,
+        CodeableConceptSerializer,
+        it,
+      )
     }
     if (value.group.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         29 + descriptorOffset,
-        Hoisted.groupSer,
+        MeasureReportGroupSerializer.listSerializer,
         value.group,
       )
     if (value.supplementalData.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         30 + descriptorOffset,
-        Hoisted.supplementalDataSer,
+        ReferenceSerializer.listSerializer,
         value.supplementalData,
       )
     if (value.evaluatedResource.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         31 + descriptorOffset,
-        Hoisted.supplementalDataSer,
+        ReferenceSerializer.listSerializer,
         value.evaluatedResource,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val subjectSer: KSerializer<Reference> = Reference.serializer()
-
-    public val periodSer: KSerializer<Period> = Period.serializer()
-
-    public val scoringSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val groupSerInner: KSerializer<MeasureReport.Group> = MeasureReport.Group.serializer()
-
-    public val groupSer: KSerializer<List<MeasureReport.Group>> =
-      ListSerializer(Hoisted.groupSerInner)
-
-    public val supplementalDataSer: KSerializer<List<Reference>> =
-      ListSerializer(Hoisted.subjectSer)
   }
 }
 

@@ -34,10 +34,10 @@ import dev.ohs.fhir.codegen.schema.rootElements
 import dev.ohs.fhir.codegen.serializer.SerializerDecodeEmitter
 import dev.ohs.fhir.codegen.serializer.SerializerDescriptorEmitter
 import dev.ohs.fhir.codegen.serializer.SerializerEncodeEmitter
-import dev.ohs.fhir.codegen.serializer.SerializerHoister
 import dev.ohs.fhir.codegen.serializer.WireField
 import dev.ohs.fhir.codegen.serializer.buildClassSerialDescriptorMemberName
 import dev.ohs.fhir.codegen.serializer.buildJsonWireFields
+import dev.ohs.fhir.codegen.serializer.buildListSerializerProperty
 import dev.ohs.fhir.codegen.serializer.decodeStructureMemberName
 import dev.ohs.fhir.codegen.serializer.decoderClassName
 import dev.ohs.fhir.codegen.serializer.encodeStructureMemberName
@@ -178,7 +178,6 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     includeResourceType: Boolean,
     resourceTypeName: String?,
   ): TypeSpec {
-    val hoister = SerializerHoister()
     val builder =
       TypeSpec.objectBuilder(serializerClassName)
         .addModifiers(KModifier.INTERNAL)
@@ -186,6 +185,16 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         .addProperty(
           descriptorEmitter.buildDescriptorProperty(className, wireFields, includeResourceType)
         )
+    // Pre-allocate `ListSerializer(this)` on the provider serializer right after `descriptor`.
+    // Because `ListSerializer(this)` only reads `this.descriptor` (already initialized above), it
+    // cannot trigger cross-serializer `<clinit>` cycles and lets all consumers share a single
+    // `XSerializer.listSerializer` instance without per-serializer `$Hoisted` holder classes.
+    if (!includeResourceType) {
+      builder.addProperty(buildListSerializerProperty(className))
+      if (className.simpleNames == listOf("Element")) {
+        builder.addProperty(buildListSerializerProperty(className, nullableElement = true))
+      }
+    }
     if (includeResourceType) {
       builder.addFunction(descriptorEmitter.buildBuildDescriptorFun(className, wireFields))
     }
@@ -196,11 +205,8 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         wireFields,
         includeResourceType,
         resourceTypeName,
-        hoister,
       )
-    hoister.eagerPropertyDefinitions().forEach { builder.addProperty(it) }
     functions.forEach { builder.addFunction(it) }
-    hoister.deferredObjectTypeSpec()?.let { builder.addType(it) }
     return builder.build()
   }
 
@@ -216,7 +222,6 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     wireFields: List<WireField>,
     includeResourceType: Boolean,
     resourceTypeName: String?,
-    hoister: SerializerHoister,
   ): List<FunSpec> {
     // For resources we share `serializeInternal`/`deserializeInternal` between `XSerializer`
     // (descriptor:
@@ -297,10 +302,8 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         wireFields,
         parameterized,
         nameToCaseLabel,
-        hoister,
       )
-    functions +=
-      encodeEmitter.buildSerializeInternal(className, elements, parameterized, nameToIdx, hoister)
+    functions += encodeEmitter.buildSerializeInternal(className, elements, parameterized, nameToIdx)
     return functions
   }
 }

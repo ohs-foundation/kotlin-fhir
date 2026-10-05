@@ -28,6 +28,7 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.WildcardTypeName
+import dev.ohs.fhir.codegen.serializer.buildListSerializerProperty
 
 /**
  * Emits `ResourcePolymorphicSerializer.kt`, an `AbstractPolymorphicSerializer<Resource>` with
@@ -215,6 +216,7 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
         .addProperty(byNameProp)
         .addProperty(byClassProp)
         .addProperty(descriptorProp)
+        .addProperty(buildListSerializerProperty(resourceClassName))
         .addFunction(findEncodeFn)
         .addFunction(findDecodeFn)
         .build()

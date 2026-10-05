@@ -43,6 +43,7 @@ import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.Range
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Boolean as KotlinBoolean
@@ -55,7 +56,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -95,6 +95,9 @@ internal object FamilyMemberHistoryConditionSerializer :
       element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<FamilyMemberHistory.Condition>> =
+    ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): FamilyMemberHistory.Condition =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -125,41 +128,60 @@ internal object FamilyMemberHistoryConditionSerializer :
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          code =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 ->
-          outcome = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+          outcome =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         5 -> contributedToDeath = decoder.decodeBooleanElement(descriptor, i)
         6 ->
           _contributedToDeath =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.contributedToDeathSer,
-              null,
-            )
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         7 ->
-          onsetAge =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.onsetAgeSer, null)
+          onsetAge = decoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
         8 ->
           onsetRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.onsetRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         9 ->
           onsetPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.onsetPeriodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         10 -> onsetString = decoder.decodeStringElement(descriptor, i)
         11 ->
           _onsetString =
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        12 ->
+          note =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.contributedToDeathSer,
+              AnnotationSerializer.listSerializer,
               null,
             )
-        12 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Condition: " + i)
       }
@@ -189,61 +211,52 @@ internal object FamilyMemberHistoryConditionSerializer :
   private fun serializeInternal(encoder: CompositeEncoder, `value`: FamilyMemberHistory.Condition) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
-    (value.outcome)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
+    (value.outcome)?.let {
+      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+    }
     ((value.contributedToDeath?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
     (value.contributedToDeath?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.contributedToDeathSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
     }
     when (val choice = value.onset) {
       null -> {}
       is FamilyMemberHistory.Condition.Onset.Age -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.onsetAgeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 7, AgeSerializer, choice.value)
       }
       is FamilyMemberHistory.Condition.Onset.Range -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.onsetRangeSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 8, RangeSerializer, choice.value)
       }
       is FamilyMemberHistory.Condition.Onset.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.onsetPeriodSer, choice.value)
+        encoder.encodeSerializableElement(descriptor, 9, PeriodSerializer, choice.value)
       }
       is FamilyMemberHistory.Condition.Onset.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
         (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 11, Hoisted.contributedToDeathSer, it)
+          encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
         }
       }
     }
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.noteSer, value.note)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val contributedToDeathSer: KSerializer<Element> = Element.serializer()
-
-    public val onsetAgeSer: KSerializer<Age> = Age.serializer()
-
-    public val onsetRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val onsetPeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val noteSerInner: KSerializer<Annotation> = Annotation.serializer()
-
-    public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12,
+        AnnotationSerializer.listSerializer,
+        value.note,
+      )
   }
 }
 
@@ -422,34 +435,55 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       when (i - descriptorOffset) {
         -1 -> decoder.decodeStringElement(descriptor, i)
         0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        6 ->
+          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
         11 ->
           instantiatesCanonical =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.instantiatesCanonicalSer,
+              stringNullableListSerializer,
               null,
             )
         12 ->
@@ -457,7 +491,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.instantiatesCanonicalSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
         13 ->
@@ -465,7 +499,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.instantiatesCanonicalSer,
+              stringNullableListSerializer,
               null,
             )
         14 ->
@@ -473,38 +507,36 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.instantiatesCanonicalSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
         15 -> status = decoder.decodeStringElement(descriptor, i)
         16 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         17 ->
           dataAbsentReason =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.dataAbsentReasonSer,
+              CodeableConceptSerializer,
               null,
             )
         18 ->
           patient =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         19 -> date = decoder.decodeStringElement(descriptor, i)
         20 ->
-          _date =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         21 -> name = decoder.decodeStringElement(descriptor, i)
         22 ->
-          _name =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         23 ->
           relationship =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.dataAbsentReasonSer,
+              CodeableConceptSerializer,
               null,
             )
         24 ->
@@ -512,66 +544,81 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.dataAbsentReasonSer,
+              CodeableConceptSerializer,
               null,
             )
         25 ->
           bornPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.bornPeriodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
         26 -> bornDate = decoder.decodeStringElement(descriptor, i)
         27 ->
           _bornDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         28 -> bornString = decoder.decodeStringElement(descriptor, i)
         29 ->
           _bornString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        30 ->
-          ageAge = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageAgeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        30 -> ageAge = decoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
         31 ->
-          ageRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageRangeSer, null)
+          ageRange = decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         32 -> ageString = decoder.decodeStringElement(descriptor, i)
         33 ->
           _ageString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         34 -> estimatedAge = decoder.decodeBooleanElement(descriptor, i)
         35 ->
           _estimatedAge =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         36 -> deceasedBoolean = decoder.decodeBooleanElement(descriptor, i)
         37 ->
           _deceasedBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         38 ->
           deceasedAge =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageAgeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
         39 ->
           deceasedRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         40 -> deceasedDate = decoder.decodeStringElement(descriptor, i)
         41 ->
           _deceasedDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         42 -> deceasedString = decoder.decodeStringElement(descriptor, i)
         43 ->
           _deceasedString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         44 ->
           reasonCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.reasonCodeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         45 ->
           reasonReference =
             decoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.reasonReferenceSer,
+              ReferenceSerializer.listSerializer,
               null,
             )
-        46 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
+        46 ->
+          note =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AnnotationSerializer.listSerializer,
+              null,
+            )
         47 ->
           condition =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.conditionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FamilyMemberHistoryConditionSerializer.listSerializer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding FamilyMemberHistory: " + i)
       }
     }
@@ -658,66 +705,56 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
   ) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
     (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
     }
     ((value.implicitRules?.value))?.let {
       encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
     }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
     }
     ((value.language?.value))?.let {
       encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
     }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
     }
     (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
     }
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
     (value.instantiatesCanonical.map { it.value }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(
         descriptor,
         11 + descriptorOffset,
-        Hoisted.instantiatesCanonicalSer,
+        stringNullableListSerializer,
         it,
       )
     }
@@ -725,7 +762,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       encoder.encodeSerializableElement(
         descriptor,
         12 + descriptorOffset,
-        Hoisted.instantiatesCanonicalSer2,
+        ElementSerializer.nullableListSerializer,
         it,
       )
     }
@@ -733,7 +770,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       encoder.encodeSerializableElement(
         descriptor,
         13 + descriptorOffset,
-        Hoisted.instantiatesCanonicalSer,
+        stringNullableListSerializer,
         it,
       )
     }
@@ -741,7 +778,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       encoder.encodeSerializableElement(
         descriptor,
         14 + descriptorOffset,
-        Hoisted.instantiatesCanonicalSer2,
+        ElementSerializer.nullableListSerializer,
         it,
       )
     }
@@ -749,60 +786,45 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ElementSerializer, it)
     }
     (value.dataAbsentReason)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         17 + descriptorOffset,
-        Hoisted.dataAbsentReasonSer,
+        CodeableConceptSerializer,
         it,
       )
     }
     encoder.encodeSerializableElement(
       descriptor,
       18 + descriptorOffset,
-      Hoisted.patientSer,
+      ReferenceSerializer,
       value.patient,
     )
     ((value.date?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
     (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ElementSerializer, it)
     }
     ((value.name?.value))?.let {
       encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
     }
     (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ElementSerializer, it)
     }
     encoder.encodeSerializableElement(
       descriptor,
       23 + descriptorOffset,
-      Hoisted.dataAbsentReasonSer,
+      CodeableConceptSerializer,
       value.relationship,
     )
     (value.sex)?.let {
       encoder.encodeSerializableElement(
         descriptor,
         24 + descriptorOffset,
-        Hoisted.dataAbsentReasonSer,
+        CodeableConceptSerializer,
         it,
       )
     }
@@ -812,7 +834,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         encoder.encodeSerializableElement(
           descriptor,
           25 + descriptorOffset,
-          Hoisted.bornPeriodSer,
+          PeriodSerializer,
           choice.value,
         )
       }
@@ -824,7 +846,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           encoder.encodeSerializableElement(
             descriptor,
             27 + descriptorOffset,
-            Hoisted.implicitRulesSer,
+            ElementSerializer,
             it,
           )
         }
@@ -837,7 +859,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           encoder.encodeSerializableElement(
             descriptor,
             29 + descriptorOffset,
-            Hoisted.implicitRulesSer,
+            ElementSerializer,
             it,
           )
         }
@@ -849,7 +871,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         encoder.encodeSerializableElement(
           descriptor,
           30 + descriptorOffset,
-          Hoisted.ageAgeSer,
+          AgeSerializer,
           choice.value,
         )
       }
@@ -857,7 +879,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         encoder.encodeSerializableElement(
           descriptor,
           31 + descriptorOffset,
-          Hoisted.ageRangeSer,
+          RangeSerializer,
           choice.value,
         )
       }
@@ -869,7 +891,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           encoder.encodeSerializableElement(
             descriptor,
             33 + descriptorOffset,
-            Hoisted.implicitRulesSer,
+            ElementSerializer,
             it,
           )
         }
@@ -879,12 +901,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       encoder.encodeBooleanElement(descriptor, 34 + descriptorOffset, it)
     }
     (value.estimatedAge?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
+      encoder.encodeSerializableElement(descriptor, 35 + descriptorOffset, ElementSerializer, it)
     }
     when (val choice = value.deceased) {
       null -> {}
@@ -896,7 +913,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           encoder.encodeSerializableElement(
             descriptor,
             37 + descriptorOffset,
-            Hoisted.implicitRulesSer,
+            ElementSerializer,
             it,
           )
         }
@@ -905,7 +922,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         encoder.encodeSerializableElement(
           descriptor,
           38 + descriptorOffset,
-          Hoisted.ageAgeSer,
+          AgeSerializer,
           choice.value,
         )
       }
@@ -913,7 +930,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         encoder.encodeSerializableElement(
           descriptor,
           39 + descriptorOffset,
-          Hoisted.ageRangeSer,
+          RangeSerializer,
           choice.value,
         )
       }
@@ -925,7 +942,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           encoder.encodeSerializableElement(
             descriptor,
             41 + descriptorOffset,
-            Hoisted.implicitRulesSer,
+            ElementSerializer,
             it,
           )
         }
@@ -938,7 +955,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           encoder.encodeSerializableElement(
             descriptor,
             43 + descriptorOffset,
-            Hoisted.implicitRulesSer,
+            ElementSerializer,
             it,
           )
         }
@@ -948,85 +965,30 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       encoder.encodeSerializableElement(
         descriptor,
         44 + descriptorOffset,
-        Hoisted.reasonCodeSer,
+        CodeableConceptSerializer.listSerializer,
         value.reasonCode,
       )
     if (value.reasonReference.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         45 + descriptorOffset,
-        Hoisted.reasonReferenceSer,
+        ReferenceSerializer.listSerializer,
         value.reasonReference,
       )
     if (value.note.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         46 + descriptorOffset,
-        Hoisted.noteSer,
+        AnnotationSerializer.listSerializer,
         value.note,
       )
     if (value.condition.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
         47 + descriptorOffset,
-        Hoisted.conditionSer,
+        FamilyMemberHistoryConditionSerializer.listSerializer,
         value.condition,
       )
-  }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val instantiatesCanonicalSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val instantiatesCanonicalSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.instantiatesCanonicalSerInner).nullable)
-
-    public val instantiatesCanonicalSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.implicitRulesSer).nullable)
-
-    public val dataAbsentReasonSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val patientSer: KSerializer<Reference> = Reference.serializer()
-
-    public val bornPeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val ageAgeSer: KSerializer<Age> = Age.serializer()
-
-    public val ageRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val reasonCodeSer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.dataAbsentReasonSer)
-
-    public val reasonReferenceSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.patientSer)
-
-    public val noteSerInner: KSerializer<Annotation> = Annotation.serializer()
-
-    public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
-
-    public val conditionSerInner: KSerializer<FamilyMemberHistory.Condition> =
-      FamilyMemberHistory.Condition.serializer()
-
-    public val conditionSer: KSerializer<List<FamilyMemberHistory.Condition>> =
-      ListSerializer(Hoisted.conditionSerInner)
   }
 }
 

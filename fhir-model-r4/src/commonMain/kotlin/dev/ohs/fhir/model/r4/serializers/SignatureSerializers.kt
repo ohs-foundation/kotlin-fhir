@@ -80,6 +80,8 @@ internal object SignatureSerializer : KSerializer<Signature> {
       element("_data", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
     }
 
+  internal val listSerializer: KSerializer<List<Signature>> = ListSerializer(this)
+
   override fun deserialize(decoder: Decoder): Signature =
     decoder.decodeStructure(descriptor) {
       deserializeInternal(this)
@@ -110,25 +112,39 @@ internal object SignatureSerializer : KSerializer<Signature> {
         0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          type =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
         3 -> `when` = decoder.decodeStringElement(descriptor, i)
-        4 -> _when = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whenSer, null)
-        5 -> who = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whoSer, null)
+        4 ->
+          _when = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+        5 ->
+          who = decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         6 ->
           onBehalfOf =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whoSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
         7 -> targetFormat = decoder.decodeStringElement(descriptor, i)
         8 ->
           _targetFormat =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whenSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         9 -> sigFormat = decoder.decodeStringElement(descriptor, i)
         10 ->
           _sigFormat =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whenSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         11 -> `data` = decoder.decodeStringElement(descriptor, i)
         12 ->
-          _data = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whenSer, null)
+          _data = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Signature: " + i)
       }
@@ -151,41 +167,33 @@ internal object SignatureSerializer : KSerializer<Signature> {
   private fun serializeInternal(encoder: CompositeEncoder, `value`: Signature) {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 2, Hoisted.typeSer, value.type)
+      encoder.encodeSerializableElement(descriptor, 2, CodingSerializer.listSerializer, value.type)
     ((value.`when`.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.`when`.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.whenSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
     }
-    encoder.encodeSerializableElement(descriptor, 5, Hoisted.whoSer, value.who)
-    (value.onBehalfOf)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.whoSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.who)
+    (value.onBehalfOf)?.let {
+      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
+    }
     ((value.targetFormat?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.targetFormat?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.whenSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
     }
     ((value.sigFormat?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.sigFormat?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.whenSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
     }
     ((value.`data`?.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.whenSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSerInner: KSerializer<Coding> = Coding.serializer()
-
-    public val typeSer: KSerializer<List<Coding>> = ListSerializer(Hoisted.typeSerInner)
-
-    public val whenSer: KSerializer<Element> = Element.serializer()
-
-    public val whoSer: KSerializer<Reference> = Reference.serializer()
   }
 }

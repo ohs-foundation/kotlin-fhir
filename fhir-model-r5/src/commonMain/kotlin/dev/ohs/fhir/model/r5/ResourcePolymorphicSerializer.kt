@@ -190,6 +190,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -546,6 +547,8 @@ internal object ResourcePolymorphicSerializer : AbstractPolymorphicSerializer<Re
       element("value", valueDesc)
       annotations = listOf(JsonClassDiscriminator("resourceType"))
     }
+
+  internal val listSerializer: KSerializer<kotlin.collections.List<Resource>> = ListSerializer(this)
 
   @Suppress("UNCHECKED_CAST")
   override fun findPolymorphicSerializerOrNull(

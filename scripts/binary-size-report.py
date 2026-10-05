@@ -13,11 +13,16 @@ markdown diff table to stdout.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 import os
+import re
+import subprocess
 import sys
 import zipfile
 from pathlib import Path
+
+METADATA_KEY = "metadata"
 
 
 # ---------------------------------------------------------------------------
@@ -67,8 +72,76 @@ def classify(filename: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# JAR analysis
+# Metadata & JAR analysis
 # ---------------------------------------------------------------------------
+
+def _run_cmd(cmd: list[str], cwd: str) -> str | None:
+    try:
+        res = subprocess.run(
+            cmd,
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=5,
+        )
+        out = (res.stdout or res.stderr).strip()
+        return out if out else None
+    except Exception:
+        return None
+
+
+def collect_metadata(root: str, commit_sha: str | None = None) -> dict:
+    """Collect git and toolchain metadata for reproducibility."""
+    sha = (
+        commit_sha
+        or os.environ.get("COMMIT_SHA")
+        or os.environ.get("GITHUB_SHA")
+        or _run_cmd(["git", "rev-parse", "HEAD"], cwd=root)
+    )
+    repo = os.environ.get("GITHUB_REPOSITORY", "ohs-foundation/kotlin-fhir")
+    server_url = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+    run_id = os.environ.get("GITHUB_RUN_ID")
+
+    meta: dict = {
+        "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    if sha:
+        meta["commit_sha"] = sha
+    if repo:
+        meta["repository"] = repo
+    if server_url:
+        meta["server_url"] = server_url
+    if run_id:
+        meta["workflow_run_id"] = run_id
+
+    # Parse Kotlin & kotlinx-serialization versions from gradle/libs.versions.toml
+    toml_path = os.path.join(root, "gradle", "libs.versions.toml")
+    if os.path.isfile(toml_path):
+        toml_text = Path(toml_path).read_text(encoding="utf-8")
+        for key, field in [
+            ("kotlin", "kotlin_version"),
+            ("kotlinx-serialization", "kotlinx_serialization_version"),
+        ]:
+            m = re.search(rf'^{re.escape(key)}\s*=\s*"([^"]+)"', toml_text, re.M)
+            if m:
+                meta[field] = m.group(1)
+
+    # Parse Gradle version from gradle-wrapper.properties
+    wrapper_path = os.path.join(root, "gradle", "wrapper", "gradle-wrapper.properties")
+    if os.path.isfile(wrapper_path):
+        wrapper_text = Path(wrapper_path).read_text(encoding="utf-8")
+        m = re.search(r"gradle-([0-9.]+)-bin\.zip", wrapper_text)
+        if m:
+            meta["gradle_version"] = m.group(1)
+
+    # Java version
+    java_ver = _run_cmd(["java", "-version"], cwd=root)
+    if java_ver:
+        meta["java_version"] = java_ver.splitlines()[0]
+
+    return meta
+
 
 def analyze_jar(jar_path: str) -> dict:
     """Return per-category and total size info for a single JAR."""
@@ -104,10 +177,12 @@ def analyze_jar(jar_path: str) -> dict:
     }
 
 
-def build_report(root: str) -> dict:
+def build_report(root: str, commit_sha: str | None = None) -> dict:
     """Build a full report for all fhir-model modules."""
     modules = ["fhir-model-r4", "fhir-model-r4b", "fhir-model-r5"]
-    report: dict = {}
+    report: dict = {
+        METADATA_KEY: collect_metadata(root, commit_sha=commit_sha),
+    }
     for mod in modules:
         jar = os.path.join(root, mod, "build", "libs", f"{mod}-jvm.jar")
         if os.path.isfile(jar):
@@ -146,6 +221,25 @@ def _short_name(mod: str) -> str:
     return mod.replace("fhir-model-", "").upper()
 
 
+def _module_keys(*reports: dict) -> list[str]:
+    """Return sorted module keys across one or more reports, excluding metadata."""
+    keys: set[str] = set()
+    for r in reports:
+        keys.update(k for k in r.keys() if k != METADATA_KEY)
+    return sorted(keys)
+
+
+def _fmt_commit_link(meta: dict | None) -> str | None:
+    """Format a commit SHA as a markdown link if available."""
+    if not isinstance(meta, dict):
+        return None
+    sha = meta.get("commit_sha")
+    if not sha:
+        return None
+    short = sha[:7]
+    server = meta.get("server_url", "https://github.com").rstrip("/")
+    repo = meta.get("repository", "ohs-foundation/kotlin-fhir")
+    return f"[`{short}`]({server}/{repo}/commit/{sha})"
 
 
 def compare_markdown(current: dict, baseline: dict) -> str:
@@ -153,7 +247,14 @@ def compare_markdown(current: dict, baseline: dict) -> str:
     lines: list[str] = []
     lines.append("## 📦 JVM Binary Size Report\n")
 
-    all_mods = sorted(set(list(current.keys()) + list(baseline.keys())))
+    cur_link = _fmt_commit_link(current.get(METADATA_KEY))
+    base_link = _fmt_commit_link(baseline.get(METADATA_KEY))
+    if cur_link and base_link:
+        lines.append(f"Comparing {cur_link} against baseline {base_link} (`main`)\n")
+    elif cur_link:
+        lines.append(f"Comparing {cur_link} against cached `main` baseline\n")
+
+    all_mods = _module_keys(current, baseline)
 
     # --- First pass: compute totals ---
     sum_cur_cls = sum_base_cls = 0
@@ -290,11 +391,18 @@ def standalone_markdown(current: dict) -> str:
     """Generate a standalone markdown report (no baseline comparison)."""
     lines: list[str] = []
     lines.append("## 📦 JVM Binary Size Report\n")
-    lines.append("*No baseline from `main` yet — showing absolute sizes.*\n")
+    cur_link = _fmt_commit_link(current.get(METADATA_KEY))
+    if cur_link:
+        lines.append(f"Commit: {cur_link} (*no baseline from `main` yet — showing absolute sizes*)\n")
+    else:
+        lines.append("*No baseline from `main` yet — showing absolute sizes.*\n")
+
+    all_mods = _module_keys(current)
 
     # First pass: compute totals
     sum_cls = sum_comp = sum_unc = 0
-    for cur in current.values():
+    for mod in all_mods:
+        cur = current[mod]
         sum_cls += cur["total_classes"]
         sum_comp += cur["total_compressed_bytes"]
         sum_unc += cur["total_uncompressed_bytes"]
@@ -303,7 +411,7 @@ def standalone_markdown(current: dict) -> str:
     lines.append("| Module | Classes | Compressed | Uncompressed |")
     lines.append("| :--- | ---: | ---: | ---: |")
 
-    for mod in sorted(current.keys()):
+    for mod in all_mods:
         cur = current[mod]
         name = _short_name(mod)
         cls = cur["total_classes"]
@@ -323,7 +431,7 @@ def standalone_markdown(current: dict) -> str:
 
     # Category breakdown (collapsed)
     lines.append("<details><summary>Per-category breakdown</summary>\n")
-    for mod in sorted(current.keys()):
+    for mod in all_mods:
         cur = current[mod]
         name = _short_name(mod)
         cats = cur.get("categories", {})
@@ -373,9 +481,14 @@ def main():
         default=None,
         help="Path to write the markdown report (default: stdout)",
     )
+    parser.add_argument(
+        "--commit-sha",
+        default=None,
+        help="Commit SHA being analyzed (default: COMMIT_SHA, GITHUB_SHA, or git rev-parse HEAD)",
+    )
     args = parser.parse_args()
 
-    report = build_report(args.root)
+    report = build_report(args.root, commit_sha=args.commit_sha)
 
     # Write JSON
     output_path = Path(args.output)

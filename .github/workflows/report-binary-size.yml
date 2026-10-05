@@ -80,9 +80,12 @@ jobs:
       # --- Generate current report ---
 
       - name: Generate binary size report
+        env:
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           python3 scripts/binary-size-report.py \
             --root . \
+            --commit-sha "$COMMIT_SHA" \
             --output binary-size.json \
             --compare baseline-binary-size.json \
             --markdown-output binary-size-report.md

@@ -242,6 +242,23 @@ def _fmt_commit_link(meta: dict | None) -> str | None:
     return f"[`{short}`]({server}/{repo}/commit/{sha})"
 
 
+def _fmt_classes_cell(cur_cls: int, base_cls: int) -> str:
+    """Format a class count comparison cell as 'before -> after (delta, %)' when changed."""
+    if cur_cls == base_cls:
+        return f"{cur_cls:,}"
+    delta = cur_cls - base_cls
+    if base_cls != 0:
+        return f"{base_cls:,} → {cur_cls:,} ({delta:+,d}, {delta / base_cls * 100:+.1f}%)"
+    return f"{base_cls:,} → {cur_cls:,} ({delta:+,d})"
+
+
+def _fmt_bytes_cell(cur_bytes: int, base_bytes: int) -> str:
+    """Format a byte size comparison cell as 'before -> after (delta, %)' when changed."""
+    if cur_bytes == base_bytes:
+        return fmt_bytes(cur_bytes)
+    return f"{fmt_bytes(base_bytes)} → {fmt_bytes(cur_bytes)} ({fmt_delta(cur_bytes, base_bytes)})"
+
+
 def compare_markdown(current: dict, baseline: dict) -> str:
     """Generate a concise markdown comparison across all modules."""
     lines: list[str] = []
@@ -287,7 +304,7 @@ def compare_markdown(current: dict, baseline: dict) -> str:
             continue
         if base is None:
             lines.append(
-                f"| {name} | {cur['total_classes']} *(new)* "
+                f"| {name} | {cur['total_classes']:,} *(new)* "
                 f"| {fmt_bytes(cur['total_compressed_bytes'])} *(new)* "
                 f"| {fmt_bytes(cur['total_uncompressed_bytes'])} *(new)* |"
             )
@@ -297,15 +314,11 @@ def compare_markdown(current: dict, baseline: dict) -> str:
         c_comp, b_comp = cur["total_compressed_bytes"], base["total_compressed_bytes"]
         c_unc, b_unc = cur["total_uncompressed_bytes"], base["total_uncompressed_bytes"]
 
-        cls_delta = f" ({cc - bc:+d}, {(cc - bc) / bc * 100:+.1f}%)" if cc != bc else ""
-        comp_delta = f" ({fmt_delta(c_comp, b_comp)})" if c_comp != b_comp else ""
-        unc_delta = f" ({fmt_delta(c_unc, b_unc)})" if c_unc != b_unc else ""
-
         lines.append(
             f"| {name} "
-            f"| {cc}{cls_delta} "
-            f"| {fmt_bytes(c_comp)}{comp_delta} "
-            f"| {fmt_bytes(c_unc)}{unc_delta} |"
+            f"| {_fmt_classes_cell(cc, bc)} "
+            f"| {_fmt_bytes_cell(c_comp, b_comp)} "
+            f"| {_fmt_bytes_cell(c_unc, b_unc)} |"
         )
 
     # Combined total row
@@ -317,16 +330,11 @@ def compare_markdown(current: dict, baseline: dict) -> str:
     else:
         indicator = "🔴"
 
-    total_cls_delta = sum_cur_cls - sum_base_cls
-    cls_d = f" ({total_cls_delta:+d}, {total_cls_delta / sum_base_cls * 100:+.1f}%)" if total_cls_delta != 0 and sum_base_cls != 0 else ""
-    comp_d = f" ({fmt_delta(sum_cur_comp, sum_base_comp)})" if delta_comp != 0 else ""
-    unc_d = f" ({fmt_delta(sum_cur_unc, sum_base_unc)})" if sum_cur_unc != sum_base_unc else ""
-
     lines.append(
         f"| **{indicator} Total** "
-        f"| **{sum_cur_cls}{cls_d}** "
-        f"| **{fmt_bytes(sum_cur_comp)}{comp_d}** "
-        f"| **{fmt_bytes(sum_cur_unc)}{unc_d}** |"
+        f"| **{_fmt_classes_cell(sum_cur_cls, sum_base_cls)}** "
+        f"| **{_fmt_bytes_cell(sum_cur_comp, sum_base_comp)}** "
+        f"| **{_fmt_bytes_cell(sum_cur_unc, sum_base_unc)}** |"
     )
     lines.append("")
 
@@ -370,15 +378,11 @@ def compare_markdown(current: dict, baseline: dict) -> str:
                 c_cb, b_cb = cc["compressed_bytes"], bc["compressed_bytes"]
                 c_ub, b_ub = cc["uncompressed_bytes"], bc["uncompressed_bytes"]
 
-                cls_d = f" ({c_cls - b_cls:+d}, {(c_cls - b_cls) / b_cls * 100:+.1f}%)" if c_cls != b_cls and b_cls != 0 else (f" ({c_cls - b_cls:+d})" if c_cls != b_cls else "")
-                comp_d = f" ({fmt_delta(c_cb, b_cb)})" if c_cb != b_cb else ""
-                unc_d = f" ({fmt_delta(c_ub, b_ub)})" if c_ub != b_ub else ""
-
                 lines.append(
                     f"| {cat} "
-                    f"| {c_cls}{cls_d} "
-                    f"| {fmt_bytes(c_cb)}{comp_d} "
-                    f"| {fmt_bytes(c_ub)}{unc_d} |"
+                    f"| {_fmt_classes_cell(c_cls, b_cls)} "
+                    f"| {_fmt_bytes_cell(c_cb, b_cb)} "
+                    f"| {_fmt_bytes_cell(c_ub, b_ub)} |"
                 )
             lines.append("")
 

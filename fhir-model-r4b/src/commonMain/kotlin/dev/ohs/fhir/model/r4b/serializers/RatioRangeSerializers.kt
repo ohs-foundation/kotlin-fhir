@@ -36,9 +36,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -47,94 +45,67 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object RatioRangeSerializer : KSerializer<RatioRange> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("RatioRange") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "lowNumerator",
-        lazyDescriptor { Quantity.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "highNumerator",
-        lazyDescriptor { Quantity.serializer().descriptor },
-        isOptional = true,
-      )
-      element("denominator", lazyDescriptor { Quantity.serializer().descriptor }, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("lowNumerator", QuantitySerializer.descriptor)
+      optionalElement("highNumerator", QuantitySerializer.descriptor)
+      optionalElement("denominator", QuantitySerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<RatioRange>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): RatioRange =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var lowNumerator: Quantity? = null
+      var highNumerator: Quantity? = null
+      var denominator: Quantity? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            lowNumerator =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          3 ->
+            highNumerator =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          4 ->
+            denominator = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding RatioRange: " + i)
+        }
+      }
+      RatioRange(
+        id = id,
+        extension = extension ?: listOf(),
+        lowNumerator = lowNumerator,
+        highNumerator = highNumerator,
+        denominator = denominator,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: RatioRange) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): RatioRange {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var lowNumerator: Quantity? = null
-    var highNumerator: Quantity? = null
-    var denominator: Quantity? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          lowNumerator =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        3 ->
-          highNumerator =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        4 ->
-          denominator =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RatioRange: " + i)
-      }
-    }
-    return RatioRange(
-      id = id,
-      extension = extension ?: listOf(),
-      lowNumerator = lowNumerator,
-      highNumerator = highNumerator,
-      denominator = denominator,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: RatioRange) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    (value.lowNumerator)?.let {
-      encoder.encodeSerializableElement(descriptor, 2, QuantitySerializer, it)
-    }
-    (value.highNumerator)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, QuantitySerializer, it)
-    }
-    (value.denominator)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeSerializableIfNotNull(descriptor, 2, QuantitySerializer, value.lowNumerator)
+      encodeSerializableIfNotNull(descriptor, 3, QuantitySerializer, value.highNumerator)
+      encodeSerializableIfNotNull(descriptor, 4, QuantitySerializer, value.denominator)
     }
   }
 }

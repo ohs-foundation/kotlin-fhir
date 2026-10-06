@@ -66,148 +66,67 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ServiceRequest")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "instantiatesCanonical",
-      listSerialDescriptor(KotlinString.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "_instantiatesCanonical",
-      listSerialDescriptor(Element.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "instantiatesUri",
-      listSerialDescriptor(KotlinString.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "_instantiatesUri",
-      listSerialDescriptor(Element.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element(
-      "replaces",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("requisition", Identifier.serializer().descriptor, isOptional = true)
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("intent", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_intent", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "category",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("priority", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_priority", Element.serializer().descriptor, isOptional = true)
-    b.element("doNotPerform", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_doNotPerform", Element.serializer().descriptor, isOptional = true)
-    b.element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "orderDetail",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("quantityQuantity", Quantity.serializer().descriptor, isOptional = true)
-    b.element("quantityRatio", Ratio.serializer().descriptor, isOptional = true)
-    b.element("quantityRange", Range.serializer().descriptor, isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
-    b.element("occurrenceDateTime", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
-    b.element("occurrencePeriod", Period.serializer().descriptor, isOptional = true)
-    b.element("occurrenceTiming", Timing.serializer().descriptor, isOptional = true)
-    b.element("asNeededBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_asNeededBoolean", Element.serializer().descriptor, isOptional = true)
-    b.element("asNeededCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("authoredOn", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_authoredOn", Element.serializer().descriptor, isOptional = true)
-    b.element("requester", Reference.serializer().descriptor, isOptional = true)
-    b.element("performerType", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "performer",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "locationCode",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "locationReference",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reasonCode",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reasonReference",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "insurance",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "supportingInfo",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "specimen",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "bodySite",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-    b.element("patientInstruction", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_patientInstruction", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "relevantHistory",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("instantiatesCanonical", stringNullableListSerializer.descriptor)
+    b.optionalElement("_instantiatesCanonical", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("instantiatesUri", stringNullableListSerializer.descriptor)
+    b.optionalElement("_instantiatesUri", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("replaces", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("requisition", IdentifierSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("intent", KotlinString.serializer().descriptor)
+    b.optionalElement("_intent", ElementSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("priority", KotlinString.serializer().descriptor)
+    b.optionalElement("_priority", ElementSerializer.descriptor)
+    b.optionalElement("doNotPerform", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_doNotPerform", ElementSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("orderDetail", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("quantityQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("quantityRatio", RatioSerializer.descriptor)
+    b.optionalElement("quantityRange", RangeSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("occurrenceDateTime", KotlinString.serializer().descriptor)
+    b.optionalElement("_occurrenceDateTime", ElementSerializer.descriptor)
+    b.optionalElement("occurrencePeriod", PeriodSerializer.descriptor)
+    b.optionalElement("occurrenceTiming", TimingSerializer.descriptor)
+    b.optionalElement("asNeededBoolean", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_asNeededBoolean", ElementSerializer.descriptor)
+    b.optionalElement("asNeededCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("authoredOn", KotlinString.serializer().descriptor)
+    b.optionalElement("_authoredOn", ElementSerializer.descriptor)
+    b.optionalElement("requester", ReferenceSerializer.descriptor)
+    b.optionalElement("performerType", CodeableConceptSerializer.descriptor)
+    b.optionalElement("performer", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("locationCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("locationReference", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("reasonReference", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("insurance", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("supportingInfo", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("specimen", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("bodySite", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+    b.optionalElement("patientInstruction", KotlinString.serializer().descriptor)
+    b.optionalElement("_patientInstruction", ElementSerializer.descriptor)
+    b.optionalElement("relevantHistory", ReferenceSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -575,7 +494,7 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
         ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(index)?.let { it },
+            instantiatesCanonical?.getOrNull(index),
             _instantiatesCanonical?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -585,7 +504,7 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
           index ->
-          Uri.of(instantiatesUri?.getOrNull(index)?.let { it }, _instantiatesUri?.getOrNull(index))
+          Uri.of(instantiatesUri?.getOrNull(index), _instantiatesUri?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'instantiatesUri' on ServiceRequest has neither a value nor an id/extension"
             )
@@ -594,14 +513,21 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
       replaces = replaces ?: listOf(),
       requisition = requisition,
       status =
-        Enumeration.of(status?.let { ServiceRequest.RequestStatus.fromCode(it) }, _status)
-          ?: throw SerializationException("Missing required property 'status' on ServiceRequest"),
+        Enumeration.of(
+          if (status != null) ServiceRequest.RequestStatus.fromCode(status) else null,
+          _status,
+        ) ?: throw SerializationException("Missing required property 'status' on ServiceRequest"),
       intent =
-        Enumeration.of(intent?.let { ServiceRequest.RequestIntent.fromCode(it) }, _intent)
-          ?: throw SerializationException("Missing required property 'intent' on ServiceRequest"),
+        Enumeration.of(
+          if (intent != null) ServiceRequest.RequestIntent.fromCode(intent) else null,
+          _intent,
+        ) ?: throw SerializationException("Missing required property 'intent' on ServiceRequest"),
       category = category ?: listOf(),
       priority =
-        Enumeration.of(priority?.let { ServiceRequest.RequestPriority.fromCode(it) }, _priority),
+        Enumeration.of(
+          if (priority != null) ServiceRequest.RequestPriority.fromCode(priority) else null,
+          _priority,
+        ),
       doNotPerform = R4bBoolean.of(doNotPerform, _doNotPerform),
       code = code,
       orderDetail = orderDetail ?: listOf(),
@@ -612,7 +538,10 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
       encounter = encounter,
       occurrence =
         ServiceRequest.Occurrence.from(
-          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
+          DateTime.of(
+            if (occurrenceDateTime != null) FhirDateTime.fromString(occurrenceDateTime) else null,
+            _occurrenceDateTime,
+          ),
           occurrencePeriod,
           occurrenceTiming,
         ),
@@ -621,7 +550,11 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
           R4bBoolean.of(asNeededBoolean, _asNeededBoolean),
           asNeededCodeableConcept,
         ),
-      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
+      authoredOn =
+        DateTime.of(
+          if (authoredOn != null) FhirDateTime.fromString(authoredOn) else null,
+          _authoredOn,
+        ),
       requester = requester,
       performerType = performerType,
       performer = performer ?: listOf(),
@@ -645,25 +578,23 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
     descriptorOffset: Int,
     `value`: ServiceRequest,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -692,37 +623,27 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    (value.instantiatesCanonical.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    if (value.instantiatesCanonical.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.instantiatesCanonical.map { it.value },
       )
-    }
-    (value.instantiatesCanonical.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+      encoder.encodePrimitiveElementList(
         descriptor,
         12 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
+        value.instantiatesCanonical,
       )
     }
-    (value.instantiatesUri.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    if (value.instantiatesUri.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.instantiatesUri.map { it.value },
       )
-    }
-    (value.instantiatesUri.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
+      encoder.encodePrimitiveElementList(descriptor, 14 + descriptorOffset, value.instantiatesUri)
     }
     if (value.basedOn.isNotEmpty())
       encoder.encodeSerializableElement(
@@ -738,21 +659,16 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
         ReferenceSerializer.listSerializer,
         value.replaces,
       )
-    (value.requisition)?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, IdentifierSerializer, it)
-    }
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.intent.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
-    }
-    (value.intent.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      IdentifierSerializer,
+      value.requisition,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.status)
+    encoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.intent.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.intent)
     if (value.category.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -760,26 +676,16 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
         CodeableConceptSerializer.listSerializer,
         value.category,
       )
-    ((value.priority?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
-    }
-    (value.priority?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.doNotPerform?.value))?.let {
-      encoder.encodeBooleanElement(descriptor, 25 + descriptorOffset, it)
-    }
-    (value.doNotPerform?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.code)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeStringIfNotNull(descriptor, 23 + descriptorOffset, value.priority?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.priority)
+    encoder.encodeBooleanIfNotNull(descriptor, 25 + descriptorOffset, value.doNotPerform?.value)
+    encoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.doNotPerform)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      27 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.code,
+    )
     if (value.orderDetail.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -820,23 +726,21 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
       ReferenceSerializer,
       value.subject,
     )
-    (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 33 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      33 + descriptorOffset,
+      ReferenceSerializer,
+      value.encounter,
+    )
     when (val choice = value.occurrence) {
       null -> {}
       is ServiceRequest.Occurrence.DateTime -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 34 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            35 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeStringIfNotNull(
+          descriptor,
+          34 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        encoder.encodeElementIfNotNull(descriptor, 35 + descriptorOffset, choice.value)
       }
       is ServiceRequest.Occurrence.Period -> {
         encoder.encodeSerializableElement(
@@ -858,17 +762,8 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
     when (val choice = value.asNeeded) {
       null -> {}
       is ServiceRequest.AsNeeded.Boolean -> {
-        ((choice.value.value))?.let {
-          encoder.encodeBooleanElement(descriptor, 38 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            39 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeBooleanIfNotNull(descriptor, 38 + descriptorOffset, choice.value.value)
+        encoder.encodeElementIfNotNull(descriptor, 39 + descriptorOffset, choice.value)
       }
       is ServiceRequest.AsNeeded.CodeableConcept -> {
         encoder.encodeSerializableElement(
@@ -879,23 +774,24 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
         )
       }
     }
-    ((value.authoredOn?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
-    }
-    (value.authoredOn?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 42 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.requester)?.let {
-      encoder.encodeSerializableElement(descriptor, 43 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.performerType)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        44 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      41 + descriptorOffset,
+      value.authoredOn?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 42 + descriptorOffset, value.authoredOn)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      43 + descriptorOffset,
+      ReferenceSerializer,
+      value.requester,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      44 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.performerType,
+    )
     if (value.performer.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -966,12 +862,12 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
         AnnotationSerializer.listSerializer,
         value.note,
       )
-    ((value.patientInstruction?.value))?.let {
-      encoder.encodeStringElement(descriptor, 55 + descriptorOffset, it)
-    }
-    (value.patientInstruction?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 56 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      55 + descriptorOffset,
+      value.patientInstruction?.value,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 56 + descriptorOffset, value.patientInstruction)
     if (value.relevantHistory.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

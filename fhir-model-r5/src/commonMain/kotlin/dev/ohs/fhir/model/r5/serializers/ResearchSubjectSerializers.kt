@@ -65,163 +65,116 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object ResearchSubjectProgressSerializer : KSerializer<ResearchSubject.Progress> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Progress") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subjectState", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("milestone", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("reason", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("startDate", String.serializer().descriptor, isOptional = true)
-      element("_startDate", Element.serializer().descriptor, isOptional = true)
-      element("endDate", String.serializer().descriptor, isOptional = true)
-      element("_endDate", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("subjectState", CodeableConceptSerializer.descriptor)
+      optionalElement("milestone", CodeableConceptSerializer.descriptor)
+      optionalElement("reason", CodeableConceptSerializer.descriptor)
+      optionalElement("startDate", String.serializer().descriptor)
+      optionalElement("_startDate", ElementSerializer.descriptor)
+      optionalElement("endDate", String.serializer().descriptor)
+      optionalElement("_endDate", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ResearchSubject.Progress>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): ResearchSubject.Progress =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: CodeableConcept? = null
+      var subjectState: CodeableConcept? = null
+      var milestone: CodeableConcept? = null
+      var reason: CodeableConcept? = null
+      var startDate: String? = null
+      var _startDate: Element? = null
+      var endDate: String? = null
+      var _endDate: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            subjectState =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            milestone =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          6 ->
+            reason =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          7 -> startDate = decodeStringElement(descriptor, i)
+          8 ->
+            _startDate = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> endDate = decodeStringElement(descriptor, i)
+          10 -> _endDate = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Progress: " + i)
+        }
+      }
+      ResearchSubject.Progress(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type = type,
+        subjectState = subjectState,
+        milestone = milestone,
+        reason = reason,
+        startDate =
+          DateTime.of(
+            if (startDate != null) FhirDateTime.fromString(startDate) else null,
+            _startDate,
+          ),
+        endDate =
+          DateTime.of(if (endDate != null) FhirDateTime.fromString(endDate) else null, _endDate),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ResearchSubject.Progress) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ResearchSubject.Progress {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: CodeableConcept? = null
-    var subjectState: CodeableConcept? = null
-    var milestone: CodeableConcept? = null
-    var reason: CodeableConcept? = null
-    var startDate: String? = null
-    var _startDate: Element? = null
-    var endDate: String? = null
-    var _endDate: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          subjectState =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          milestone =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        6 ->
-          reason =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        7 -> startDate = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _startDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 -> endDate = decoder.decodeStringElement(descriptor, i)
-        10 ->
-          _endDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Progress: " + i)
-      }
-    }
-    return ResearchSubject.Progress(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type = type,
-      subjectState = subjectState,
-      milestone = milestone,
-      reason = reason,
-      startDate = DateTime.of(startDate?.let { FhirDateTime.fromString(it) }, _startDate),
-      endDate = DateTime.of(endDate?.let { FhirDateTime.fromString(it) }, _endDate),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ResearchSubject.Progress) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    (value.subjectState)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
-    }
-    (value.milestone)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
-    }
-    (value.reason)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
-    }
-    ((value.startDate?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.startDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    ((value.endDate?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-    (value.endDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.type)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.subjectState)
+      encodeSerializableIfNotNull(descriptor, 5, CodeableConceptSerializer, value.milestone)
+      encodeSerializableIfNotNull(descriptor, 6, CodeableConceptSerializer, value.reason)
+      encodeStringIfNotNull(descriptor, 7, value.startDate?.value?.toString())
+      encodeElementIfNotNull(descriptor, 8, value.startDate)
+      encodeStringIfNotNull(descriptor, 9, value.endDate?.value?.toString())
+      encodeElementIfNotNull(descriptor, 10, value.endDate)
     }
   }
 }
@@ -230,48 +183,31 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ResearchSubject")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", String.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "progress",
-      listSerialDescriptor(lazyDescriptor { ResearchSubject.Progress.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element("period", Period.serializer().descriptor, isOptional = true)
-    b.element("study", Reference.serializer().descriptor, isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("assignedComparisonGroup", String.serializer().descriptor, isOptional = true)
-    b.element("_assignedComparisonGroup", Element.serializer().descriptor, isOptional = true)
-    b.element("actualComparisonGroup", String.serializer().descriptor, isOptional = true)
-    b.element("_actualComparisonGroup", Element.serializer().descriptor, isOptional = true)
-    b.element("consent", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", String.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("progress", ResearchSubjectProgressSerializer.listSerializer.descriptor)
+    b.optionalElement("period", PeriodSerializer.descriptor)
+    b.optionalElement("study", ReferenceSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("assignedComparisonGroup", String.serializer().descriptor)
+    b.optionalElement("_assignedComparisonGroup", ElementSerializer.descriptor)
+    b.optionalElement("actualComparisonGroup", String.serializer().descriptor)
+    b.optionalElement("_actualComparisonGroup", ElementSerializer.descriptor)
+    b.optionalElement("consent", ReferenceSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -400,7 +336,7 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on ResearchSubject"),
       progress = progress ?: listOf(),
       period = period,
@@ -422,25 +358,23 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
     descriptorOffset: Int,
     `value`: ResearchSubject,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -469,12 +403,8 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
     if (value.progress.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -482,9 +412,12 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
         ResearchSubjectProgressSerializer.listSerializer,
         value.progress,
       )
-    (value.period)?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, PeriodSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      14 + descriptorOffset,
+      PeriodSerializer,
+      value.period,
+    )
     encoder.encodeSerializableElement(
       descriptor,
       15 + descriptorOffset,
@@ -497,18 +430,18 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
       ReferenceSerializer,
       value.subject,
     )
-    ((value.assignedComparisonGroup?.value))?.let {
-      encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
-    }
-    (value.assignedComparisonGroup?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.actualComparisonGroup?.value))?.let {
-      encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
-    }
-    (value.actualComparisonGroup?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      value.assignedComparisonGroup?.value,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.assignedComparisonGroup)
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      value.actualComparisonGroup?.value,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.actualComparisonGroup)
     if (value.consent.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

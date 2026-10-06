@@ -42,9 +42,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -53,147 +51,112 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object SignatureSerializer : KSerializer<Signature> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Signature") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "type",
-        listSerialDescriptor(lazyDescriptor { Coding.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("when", String.serializer().descriptor, isOptional = true)
-      element("_when", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("who", lazyDescriptor { Reference.serializer().descriptor }, isOptional = true)
-      element("onBehalfOf", lazyDescriptor { Reference.serializer().descriptor }, isOptional = true)
-      element("targetFormat", String.serializer().descriptor, isOptional = true)
-      element(
-        "_targetFormat",
-        lazyDescriptor { Element.serializer().descriptor },
-        isOptional = true,
-      )
-      element("sigFormat", String.serializer().descriptor, isOptional = true)
-      element("_sigFormat", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("data", String.serializer().descriptor, isOptional = true)
-      element("_data", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", CodingSerializer.listSerializer.descriptor)
+      optionalElement("when", String.serializer().descriptor)
+      optionalElement("_when", ElementSerializer.descriptor)
+      optionalElement("who", ReferenceSerializer.descriptor)
+      optionalElement("onBehalfOf", ReferenceSerializer.descriptor)
+      optionalElement("targetFormat", String.serializer().descriptor)
+      optionalElement("_targetFormat", ElementSerializer.descriptor)
+      optionalElement("sigFormat", String.serializer().descriptor)
+      optionalElement("_sigFormat", ElementSerializer.descriptor)
+      optionalElement("data", String.serializer().descriptor)
+      optionalElement("_data", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Signature>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Signature =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var type: List<Coding>? = null
+      var `when`: String? = null
+      var _when: Element? = null
+      var who: Reference? = null
+      var onBehalfOf: Reference? = null
+      var targetFormat: String? = null
+      var _targetFormat: Element? = null
+      var sigFormat: String? = null
+      var _sigFormat: Element? = null
+      var `data`: String? = null
+      var _data: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            type =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodingSerializer.listSerializer,
+                null,
+              )
+          3 -> `when` = decodeStringElement(descriptor, i)
+          4 -> _when = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> who = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          6 ->
+            onBehalfOf = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          7 -> targetFormat = decodeStringElement(descriptor, i)
+          8 ->
+            _targetFormat =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> sigFormat = decodeStringElement(descriptor, i)
+          10 ->
+            _sigFormat = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          11 -> `data` = decodeStringElement(descriptor, i)
+          12 -> _data = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Signature: " + i)
+        }
+      }
+      Signature(
+        id = id,
+        extension = extension ?: listOf(),
+        type = type ?: listOf(),
+        `when` =
+          Instant.of(if (`when` != null) FhirDateTime.fromString(`when`) else null, _when)
+            ?: throw SerializationException("Missing required property 'when' on Signature"),
+        who = who ?: throw SerializationException("Missing required property 'who' on Signature"),
+        onBehalfOf = onBehalfOf,
+        targetFormat = Code.of(targetFormat, _targetFormat),
+        sigFormat = Code.of(sigFormat, _sigFormat),
+        `data` = Base64Binary.of(`data`, _data),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Signature) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Signature {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var type: List<Coding>? = null
-    var `when`: String? = null
-    var _when: Element? = null
-    var who: Reference? = null
-    var onBehalfOf: Reference? = null
-    var targetFormat: String? = null
-    var _targetFormat: Element? = null
-    var sigFormat: String? = null
-    var _sigFormat: Element? = null
-    var `data`: String? = null
-    var _data: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodingSerializer.listSerializer,
-              null,
-            )
-        3 -> `when` = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _when = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          who = decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        6 ->
-          onBehalfOf =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        7 -> targetFormat = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _targetFormat =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 -> sigFormat = decoder.decodeStringElement(descriptor, i)
-        10 ->
-          _sigFormat =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        11 -> `data` = decoder.decodeStringElement(descriptor, i)
-        12 ->
-          _data = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Signature: " + i)
-      }
-    }
-    return Signature(
-      id = id,
-      extension = extension ?: listOf(),
-      type = type ?: listOf(),
-      `when` =
-        Instant.of(`when`?.let { FhirDateTime.fromString(it) }, _when)
-          ?: throw SerializationException("Missing required property 'when' on Signature"),
-      who = who ?: throw SerializationException("Missing required property 'who' on Signature"),
-      onBehalfOf = onBehalfOf,
-      targetFormat = Code.of(targetFormat, _targetFormat),
-      sigFormat = Code.of(sigFormat, _sigFormat),
-      `data` = Base64Binary.of(`data`, _data),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Signature) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 2, CodingSerializer.listSerializer, value.type)
-    ((value.`when`.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.`when`.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.who)
-    (value.onBehalfOf)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
-    }
-    ((value.targetFormat?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.targetFormat?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    ((value.sigFormat?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-    (value.sigFormat?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
-    }
-    ((value.`data`?.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-    (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.type.isNotEmpty())
+        encodeSerializableElement(descriptor, 2, CodingSerializer.listSerializer, value.type)
+      encodeStringIfNotNull(descriptor, 3, value.`when`.value?.toString())
+      encodeElementIfNotNull(descriptor, 4, value.`when`)
+      encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.who)
+      encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.onBehalfOf)
+      encodeStringIfNotNull(descriptor, 7, value.targetFormat?.value)
+      encodeElementIfNotNull(descriptor, 8, value.targetFormat)
+      encodeStringIfNotNull(descriptor, 9, value.sigFormat?.value)
+      encodeElementIfNotNull(descriptor, 10, value.sigFormat)
+      encodeStringIfNotNull(descriptor, 11, value.`data`?.value)
+      encodeElementIfNotNull(descriptor, 12, value.`data`)
     }
   }
 }

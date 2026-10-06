@@ -59,69 +59,40 @@ internal object GuidanceResponseSerializer : FhirResourceSerializer<GuidanceResp
   override val descriptor: SerialDescriptor = buildResourceDescriptor("GuidanceResponse")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("requestIdentifier", Identifier.serializer().descriptor, isOptional = true)
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("moduleUri", String.serializer().descriptor, isOptional = true)
-    b.element("_moduleUri", Element.serializer().descriptor, isOptional = true)
-    b.element("moduleCanonical", String.serializer().descriptor, isOptional = true)
-    b.element("_moduleCanonical", Element.serializer().descriptor, isOptional = true)
-    b.element("moduleCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("status", String.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
-    b.element("occurrenceDateTime", String.serializer().descriptor, isOptional = true)
-    b.element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
-    b.element("performer", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "reasonCode",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reasonReference",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-    b.element(
-      "evaluationMessage",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("outputParameters", Reference.serializer().descriptor, isOptional = true)
-    b.element("result", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "dataRequirement",
-      listSerialDescriptor(DataRequirement.serializer().descriptor),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("requestIdentifier", IdentifierSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("moduleUri", String.serializer().descriptor)
+    b.optionalElement("_moduleUri", ElementSerializer.descriptor)
+    b.optionalElement("moduleCanonical", String.serializer().descriptor)
+    b.optionalElement("_moduleCanonical", ElementSerializer.descriptor)
+    b.optionalElement("moduleCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("status", String.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("occurrenceDateTime", String.serializer().descriptor)
+    b.optionalElement("_occurrenceDateTime", ElementSerializer.descriptor)
+    b.optionalElement("performer", ReferenceSerializer.descriptor)
+    b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("reasonReference", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+    b.optionalElement("evaluationMessage", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("outputParameters", ReferenceSerializer.descriptor)
+    b.optionalElement("result", ReferenceSerializer.descriptor)
+    b.optionalElement("dataRequirement", DataRequirementSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -313,13 +284,16 @@ internal object GuidanceResponseSerializer : FhirResourceSerializer<GuidanceResp
         ) ?: throw SerializationException("Missing required property 'module' on GuidanceResponse"),
       status =
         Enumeration.of(
-          status?.let { GuidanceResponse.GuidanceResponseStatus.fromCode(it) },
+          if (status != null) GuidanceResponse.GuidanceResponseStatus.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on GuidanceResponse"),
       subject = subject,
       encounter = encounter,
       occurrenceDateTime =
-        DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
+        DateTime.of(
+          if (occurrenceDateTime != null) FhirDateTime.fromString(occurrenceDateTime) else null,
+          _occurrenceDateTime,
+        ),
       performer = performer,
       reasonCode = reasonCode ?: listOf(),
       reasonReference = reasonReference ?: listOf(),
@@ -337,25 +311,23 @@ internal object GuidanceResponseSerializer : FhirResourceSerializer<GuidanceResp
     descriptorOffset: Int,
     `value`: GuidanceResponse,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -377,9 +349,12 @@ internal object GuidanceResponseSerializer : FhirResourceSerializer<GuidanceResp
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.requestIdentifier)?.let {
-      encoder.encodeSerializableElement(descriptor, 10 + descriptorOffset, IdentifierSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer,
+      value.requestIdentifier,
+    )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -389,30 +364,12 @@ internal object GuidanceResponseSerializer : FhirResourceSerializer<GuidanceResp
       )
     when (val choice = value.module) {
       is GuidanceResponse.Module.Uri -> {
-        ((choice.value.value))?.let {
-          encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            13 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeStringIfNotNull(descriptor, 12 + descriptorOffset, choice.value.value)
+        encoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, choice.value)
       }
       is GuidanceResponse.Module.Canonical -> {
-        ((choice.value.value))?.let {
-          encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            15 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, choice.value.value)
+        encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, choice.value)
       }
       is GuidanceResponse.Module.CodeableConcept -> {
         encoder.encodeSerializableElement(
@@ -423,27 +380,32 @@ internal object GuidanceResponseSerializer : FhirResourceSerializer<GuidanceResp
         )
       }
     }
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.occurrenceDateTime?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
-    }
-    (value.occurrenceDateTime?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.performer)?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.status)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      ReferenceSerializer,
+      value.subject,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      20 + descriptorOffset,
+      ReferenceSerializer,
+      value.encounter,
+    )
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      21 + descriptorOffset,
+      value.occurrenceDateTime?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.occurrenceDateTime)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      23 + descriptorOffset,
+      ReferenceSerializer,
+      value.performer,
+    )
     if (value.reasonCode.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -472,12 +434,18 @@ internal object GuidanceResponseSerializer : FhirResourceSerializer<GuidanceResp
         ReferenceSerializer.listSerializer,
         value.evaluationMessage,
       )
-    (value.outputParameters)?.let {
-      encoder.encodeSerializableElement(descriptor, 28 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.result)?.let {
-      encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      28 + descriptorOffset,
+      ReferenceSerializer,
+      value.outputParameters,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      29 + descriptorOffset,
+      ReferenceSerializer,
+      value.result,
+    )
     if (value.dataRequirement.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

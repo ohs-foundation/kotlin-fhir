@@ -46,9 +46,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -57,158 +55,122 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object AttachmentSerializer : KSerializer<Attachment> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Attachment") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("contentType", KotlinString.serializer().descriptor, isOptional = true)
-      element("_contentType", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("data", KotlinString.serializer().descriptor, isOptional = true)
-      element("_data", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("url", KotlinString.serializer().descriptor, isOptional = true)
-      element("_url", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("size", Int.serializer().descriptor, isOptional = true)
-      element("_size", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("hash", KotlinString.serializer().descriptor, isOptional = true)
-      element("_hash", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("title", KotlinString.serializer().descriptor, isOptional = true)
-      element("_title", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("creation", KotlinString.serializer().descriptor, isOptional = true)
-      element("_creation", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("contentType", KotlinString.serializer().descriptor)
+      optionalElement("_contentType", ElementSerializer.descriptor)
+      optionalElement("language", KotlinString.serializer().descriptor)
+      optionalElement("_language", ElementSerializer.descriptor)
+      optionalElement("data", KotlinString.serializer().descriptor)
+      optionalElement("_data", ElementSerializer.descriptor)
+      optionalElement("url", KotlinString.serializer().descriptor)
+      optionalElement("_url", ElementSerializer.descriptor)
+      optionalElement("size", Int.serializer().descriptor)
+      optionalElement("_size", ElementSerializer.descriptor)
+      optionalElement("hash", KotlinString.serializer().descriptor)
+      optionalElement("_hash", ElementSerializer.descriptor)
+      optionalElement("title", KotlinString.serializer().descriptor)
+      optionalElement("_title", ElementSerializer.descriptor)
+      optionalElement("creation", KotlinString.serializer().descriptor)
+      optionalElement("_creation", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Attachment>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Attachment =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var contentType: KotlinString? = null
+      var _contentType: Element? = null
+      var language: KotlinString? = null
+      var _language: Element? = null
+      var `data`: KotlinString? = null
+      var _data: Element? = null
+      var url: KotlinString? = null
+      var _url: Element? = null
+      var size: Int? = null
+      var _size: Element? = null
+      var hash: KotlinString? = null
+      var _hash: Element? = null
+      var title: KotlinString? = null
+      var _title: Element? = null
+      var creation: KotlinString? = null
+      var _creation: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> contentType = decodeStringElement(descriptor, i)
+          3 ->
+            _contentType = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> language = decodeStringElement(descriptor, i)
+          5 -> _language = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> `data` = decodeStringElement(descriptor, i)
+          7 -> _data = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 -> url = decodeStringElement(descriptor, i)
+          9 -> _url = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          10 -> size = decodeIntElement(descriptor, i)
+          11 -> _size = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          12 -> hash = decodeStringElement(descriptor, i)
+          13 -> _hash = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          14 -> title = decodeStringElement(descriptor, i)
+          15 -> _title = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          16 -> creation = decodeStringElement(descriptor, i)
+          17 ->
+            _creation = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Attachment: " + i)
+        }
+      }
+      Attachment(
+        id = id,
+        extension = extension ?: listOf(),
+        contentType = Code.of(contentType, _contentType),
+        language = ExtensibleEnumeration.of<CommonLanguages>(language, _language),
+        `data` = Base64Binary.of(`data`, _data),
+        url = Url.of(url, _url),
+        size = UnsignedInt.of(size, _size),
+        hash = Base64Binary.of(hash, _hash),
+        title = R4bString.of(title, _title),
+        creation =
+          DateTime.of(if (creation != null) FhirDateTime.fromString(creation) else null, _creation),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Attachment) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Attachment {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var contentType: KotlinString? = null
-    var _contentType: Element? = null
-    var language: KotlinString? = null
-    var _language: Element? = null
-    var `data`: KotlinString? = null
-    var _data: Element? = null
-    var url: KotlinString? = null
-    var _url: Element? = null
-    var size: Int? = null
-    var _size: Element? = null
-    var hash: KotlinString? = null
-    var _hash: Element? = null
-    var title: KotlinString? = null
-    var _title: Element? = null
-    var creation: KotlinString? = null
-    var _creation: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> contentType = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _contentType =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> `data` = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _data = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 -> url = decoder.decodeStringElement(descriptor, i)
-        9 ->
-          _url = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        10 -> size = decoder.decodeIntElement(descriptor, i)
-        11 ->
-          _size = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        12 -> hash = decoder.decodeStringElement(descriptor, i)
-        13 ->
-          _hash = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        14 -> title = decoder.decodeStringElement(descriptor, i)
-        15 ->
-          _title = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        16 -> creation = decoder.decodeStringElement(descriptor, i)
-        17 ->
-          _creation =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Attachment: " + i)
-      }
-    }
-    return Attachment(
-      id = id,
-      extension = extension ?: listOf(),
-      contentType = Code.of(contentType, _contentType),
-      language = ExtensibleEnumeration.of<CommonLanguages>(language, _language),
-      `data` = Base64Binary.of(`data`, _data),
-      url = Url.of(url, _url),
-      size = UnsignedInt.of(size, _size),
-      hash = Base64Binary.of(hash, _hash),
-      title = R4bString.of(title, _title),
-      creation = DateTime.of(creation?.let { FhirDateTime.fromString(it) }, _creation),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Attachment) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.contentType?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.contentType?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.language?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    ((value.`data`?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-    (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-    }
-    ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-    (value.url?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
-    }
-    ((value.size?.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
-    (value.size?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
-    }
-    ((value.hash?.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-    (value.hash?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13, ElementSerializer, it)
-    }
-    ((value.title?.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-    (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15, ElementSerializer, it)
-    }
-    ((value.creation?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 16, it) }
-    (value.creation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 17, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.contentType?.value)
+      encodeElementIfNotNull(descriptor, 3, value.contentType)
+      encodeStringIfNotNull(descriptor, 4, value.language?.code)
+      encodeElementIfNotNull(descriptor, 5, value.language)
+      encodeStringIfNotNull(descriptor, 6, value.`data`?.value)
+      encodeElementIfNotNull(descriptor, 7, value.`data`)
+      encodeStringIfNotNull(descriptor, 8, value.url?.value)
+      encodeElementIfNotNull(descriptor, 9, value.url)
+      encodeIntIfNotNull(descriptor, 10, value.size?.value)
+      encodeElementIfNotNull(descriptor, 11, value.size)
+      encodeStringIfNotNull(descriptor, 12, value.hash?.value)
+      encodeElementIfNotNull(descriptor, 13, value.hash)
+      encodeStringIfNotNull(descriptor, 14, value.title?.value)
+      encodeElementIfNotNull(descriptor, 15, value.title)
+      encodeStringIfNotNull(descriptor, 16, value.creation?.value?.toString())
+      encodeElementIfNotNull(descriptor, 17, value.creation)
     }
   }
 }

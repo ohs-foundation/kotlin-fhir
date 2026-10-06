@@ -43,9 +43,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -54,158 +52,121 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object AvailabilityAvailableTimeSerializer : KSerializer<Availability.AvailableTime> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("AvailableTime") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "daysOfWeek",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_daysOfWeek",
-        listSerialDescriptor(lazyDescriptor { Element.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("allDay", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_allDay", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("availableStartTime", LocalTimeSerializer.descriptor, isOptional = true)
-      element(
-        "_availableStartTime",
-        lazyDescriptor { Element.serializer().descriptor },
-        isOptional = true,
-      )
-      element("availableEndTime", LocalTimeSerializer.descriptor, isOptional = true)
-      element(
-        "_availableEndTime",
-        lazyDescriptor { Element.serializer().descriptor },
-        isOptional = true,
-      )
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("daysOfWeek", stringNullableListSerializer.descriptor)
+      optionalElement("_daysOfWeek", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("allDay", KotlinBoolean.serializer().descriptor)
+      optionalElement("_allDay", ElementSerializer.descriptor)
+      optionalElement("availableStartTime", LocalTimeSerializer.descriptor)
+      optionalElement("_availableStartTime", ElementSerializer.descriptor)
+      optionalElement("availableEndTime", LocalTimeSerializer.descriptor)
+      optionalElement("_availableEndTime", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Availability.AvailableTime>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Availability.AvailableTime =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var daysOfWeek: List<KotlinString?>? = null
+      var _daysOfWeek: List<Element?>? = null
+      var allDay: KotlinBoolean? = null
+      var _allDay: Element? = null
+      var availableStartTime: LocalTime? = null
+      var _availableStartTime: Element? = null
+      var availableEndTime: LocalTime? = null
+      var _availableEndTime: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            daysOfWeek =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          3 ->
+            _daysOfWeek =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          4 -> allDay = decodeBooleanElement(descriptor, i)
+          5 -> _allDay = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 ->
+            availableStartTime =
+              decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
+          7 ->
+            _availableStartTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 ->
+            availableEndTime =
+              decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
+          9 ->
+            _availableEndTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding AvailableTime: " + i)
+        }
+      }
+      Availability.AvailableTime(
+        id = id,
+        extension = extension ?: listOf(),
+        daysOfWeek =
+          (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
+            Enumeration.of(
+              daysOfWeek?.getOrNull(index)?.let { Availability.DaysOfWeek.fromCode(it) },
+              _daysOfWeek?.getOrNull(index),
+            )
+              ?: throw SerializationException(
+                "An entry of 'daysOfWeek' on Availability.AvailableTime has neither a value nor an id/extension"
+              )
+          }),
+        allDay = R5Boolean.of(allDay, _allDay),
+        availableStartTime = Time.of(availableStartTime, _availableStartTime),
+        availableEndTime = Time.of(availableEndTime, _availableEndTime),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Availability.AvailableTime) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Availability.AvailableTime {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var daysOfWeek: List<KotlinString?>? = null
-    var _daysOfWeek: List<Element?>? = null
-    var allDay: KotlinBoolean? = null
-    var _allDay: Element? = null
-    var availableStartTime: LocalTime? = null
-    var _availableStartTime: Element? = null
-    var availableEndTime: LocalTime? = null
-    var _availableEndTime: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          daysOfWeek =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        3 ->
-          _daysOfWeek =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        4 -> allDay = decoder.decodeBooleanElement(descriptor, i)
-        5 ->
-          _allDay =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 ->
-          availableStartTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-        7 ->
-          _availableStartTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 ->
-          availableEndTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-        9 ->
-          _availableEndTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding AvailableTime: " + i)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.daysOfWeek.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          2,
+          stringNullableListSerializer,
+          value.daysOfWeek.map { it.value?.code },
+        )
+        encodePrimitiveElementList(descriptor, 3, value.daysOfWeek)
       }
-    }
-    return Availability.AvailableTime(
-      id = id,
-      extension = extension ?: listOf(),
-      daysOfWeek =
-        (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
-          Enumeration.of(
-            daysOfWeek?.getOrNull(index)?.let { Availability.DaysOfWeek.fromCode(it) },
-            _daysOfWeek?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'daysOfWeek' on Availability.AvailableTime has neither a value nor an id/extension"
-            )
-        }),
-      allDay = R5Boolean.of(allDay, _allDay),
-      availableStartTime = Time.of(availableStartTime, _availableStartTime),
-      availableEndTime = Time.of(availableEndTime, _availableEndTime),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Availability.AvailableTime) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      encodeBooleanIfNotNull(descriptor, 4, value.allDay?.value)
+      encodeElementIfNotNull(descriptor, 5, value.allDay)
+      encodeSerializableIfNotNull(
         descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
+        6,
+        LocalTimeSerializer,
+        value.availableStartTime?.value,
       )
-    (value.daysOfWeek.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 2, stringNullableListSerializer, it)
-    }
-    (value.daysOfWeek.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer.nullableListSerializer, it)
-    }
-    ((value.allDay?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
-    (value.allDay?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    ((value.availableStartTime?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 6, LocalTimeSerializer, it)
-    }
-    (value.availableStartTime?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-    }
-    ((value.availableEndTime?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 8, LocalTimeSerializer, it)
-    }
-    (value.availableEndTime?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
+      encodeElementIfNotNull(descriptor, 7, value.availableStartTime)
+      encodeSerializableIfNotNull(descriptor, 8, LocalTimeSerializer, value.availableEndTime?.value)
+      encodeElementIfNotNull(descriptor, 9, value.availableEndTime)
     }
   }
 }
@@ -214,15 +175,11 @@ internal object AvailabilityNotAvailableTimeSerializer :
   KSerializer<Availability.NotAvailableTime> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("NotAvailableTime") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("during", lazyDescriptor { Period.serializer().descriptor }, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("description", KotlinString.serializer().descriptor)
+      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("during", PeriodSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Availability.NotAvailableTime>> =
@@ -230,87 +187,67 @@ internal object AvailabilityNotAvailableTimeSerializer :
 
   override fun deserialize(decoder: Decoder): Availability.NotAvailableTime =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var description: KotlinString? = null
+      var _description: Element? = null
+      var during: Period? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> description = decodeStringElement(descriptor, i)
+          3 ->
+            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> during = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding NotAvailableTime: " + i)
+        }
+      }
+      Availability.NotAvailableTime(
+        id = id,
+        extension = extension ?: listOf(),
+        description = R5String.of(description, _description),
+        during = during,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Availability.NotAvailableTime) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.description?.value)
+      encodeElementIfNotNull(descriptor, 3, value.description)
+      encodeSerializableIfNotNull(descriptor, 4, PeriodSerializer, value.during)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Availability.NotAvailableTime {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var description: KotlinString? = null
-    var _description: Element? = null
-    var during: Period? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> description = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 ->
-          during = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding NotAvailableTime: " + i)
-      }
-    }
-    return Availability.NotAvailableTime(
-      id = id,
-      extension = extension ?: listOf(),
-      description = R5String.of(description, _description),
-      during = during,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Availability.NotAvailableTime) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    (value.during)?.let { encoder.encodeSerializableElement(descriptor, 4, PeriodSerializer, it) }
   }
 }
 
 internal object AvailabilitySerializer : KSerializer<Availability> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Availability") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
         "availableTime",
-        listSerialDescriptor(lazyDescriptor { Availability.AvailableTime.serializer().descriptor }),
-        isOptional = true,
+        AvailabilityAvailableTimeSerializer.listSerializer.descriptor,
       )
-      element(
+      optionalElement(
         "notAvailableTime",
-        listSerialDescriptor(
-          lazyDescriptor { Availability.NotAvailableTime.serializer().descriptor }
-        ),
-        isOptional = true,
+        AvailabilityNotAvailableTimeSerializer.listSerializer.descriptor,
       )
     }
 
@@ -318,81 +255,73 @@ internal object AvailabilitySerializer : KSerializer<Availability> {
 
   override fun deserialize(decoder: Decoder): Availability =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var availableTime: List<Availability.AvailableTime>? = null
+      var notAvailableTime: List<Availability.NotAvailableTime>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            availableTime =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                AvailabilityAvailableTimeSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            notAvailableTime =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                AvailabilityNotAvailableTimeSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Availability: " + i)
+        }
+      }
+      Availability(
+        id = id,
+        extension = extension ?: listOf(),
+        availableTime = availableTime ?: listOf(),
+        notAvailableTime = notAvailableTime ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Availability) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.availableTime.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          AvailabilityAvailableTimeSerializer.listSerializer,
+          value.availableTime,
+        )
+      if (value.notAvailableTime.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          3,
+          AvailabilityNotAvailableTimeSerializer.listSerializer,
+          value.notAvailableTime,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Availability {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var availableTime: List<Availability.AvailableTime>? = null
-    var notAvailableTime: List<Availability.NotAvailableTime>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          availableTime =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              AvailabilityAvailableTimeSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          notAvailableTime =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              AvailabilityNotAvailableTimeSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Availability: " + i)
-      }
-    }
-    return Availability(
-      id = id,
-      extension = extension ?: listOf(),
-      availableTime = availableTime ?: listOf(),
-      notAvailableTime = notAvailableTime ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Availability) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.availableTime.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        AvailabilityAvailableTimeSerializer.listSerializer,
-        value.availableTime,
-      )
-    if (value.notAvailableTime.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        3,
-        AvailabilityNotAvailableTimeSerializer.listSerializer,
-        value.notAvailableTime,
-      )
   }
 }

@@ -57,48 +57,31 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
   override val descriptor: SerialDescriptor = buildResourceDescriptor("AppointmentResponse")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("appointment", Reference.serializer().descriptor, isOptional = true)
-    b.element("start", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_start", Element.serializer().descriptor, isOptional = true)
-    b.element("end", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_end", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "participantType",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("actor", Reference.serializer().descriptor, isOptional = true)
-    b.element("participantStatus", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_participantStatus", Element.serializer().descriptor, isOptional = true)
-    b.element("comment", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_comment", Element.serializer().descriptor, isOptional = true)
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("appointment", ReferenceSerializer.descriptor)
+    b.optionalElement("start", KotlinString.serializer().descriptor)
+    b.optionalElement("_start", ElementSerializer.descriptor)
+    b.optionalElement("end", KotlinString.serializer().descriptor)
+    b.optionalElement("_end", ElementSerializer.descriptor)
+    b.optionalElement("participantType", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("actor", ReferenceSerializer.descriptor)
+    b.optionalElement("participantStatus", KotlinString.serializer().descriptor)
+    b.optionalElement("_participantStatus", ElementSerializer.descriptor)
+    b.optionalElement("comment", KotlinString.serializer().descriptor)
+    b.optionalElement("_comment", ElementSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -223,13 +206,15 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
           ?: throw SerializationException(
             "Missing required property 'appointment' on AppointmentResponse"
           ),
-      start = Instant.of(start?.let { FhirDateTime.fromString(it) }, _start),
-      end = Instant.of(end?.let { FhirDateTime.fromString(it) }, _end),
+      start = Instant.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
+      end = Instant.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
       participantType = participantType ?: listOf(),
       actor = actor,
       participantStatus =
         Enumeration.of(
-          participantStatus?.let { AppointmentResponse.ParticipationStatus.fromCode(it) },
+          if (participantStatus != null)
+            AppointmentResponse.ParticipationStatus.fromCode(participantStatus)
+          else null,
           _participantStatus,
         )
           ?: throw SerializationException(
@@ -245,25 +230,23 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
     descriptorOffset: Int,
     `value`: AppointmentResponse,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -298,18 +281,10 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
       ReferenceSerializer,
       value.appointment,
     )
-    ((value.start?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
-    }
-    (value.start?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.end?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-    }
-    (value.end?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 12 + descriptorOffset, value.start?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.start)
+    encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.end?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.end)
     if (value.participantType.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -317,20 +292,19 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
         CodeableConceptSerializer.listSerializer,
         value.participantType,
       )
-    (value.actor)?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.participantStatus.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
-    }
-    (value.participantStatus.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.comment?.value))?.let {
-      encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
-    }
-    (value.comment?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      ReferenceSerializer,
+      value.actor,
+    )
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      value.participantStatus.value?.code,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.participantStatus)
+    encoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.comment?.value)
+    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.comment)
   }
 }

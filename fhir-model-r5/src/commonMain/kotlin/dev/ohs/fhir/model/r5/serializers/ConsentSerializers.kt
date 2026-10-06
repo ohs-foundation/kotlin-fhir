@@ -71,102 +71,80 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object ConsentPolicyBasisSerializer : KSerializer<Consent.PolicyBasis> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("PolicyBasis") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("reference", Reference.serializer().descriptor, isOptional = true)
-      element("url", String.serializer().descriptor, isOptional = true)
-      element("_url", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("reference", ReferenceSerializer.descriptor)
+      optionalElement("url", String.serializer().descriptor)
+      optionalElement("_url", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Consent.PolicyBasis>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Consent.PolicyBasis =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var reference: Reference? = null
+      var url: String? = null
+      var _url: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            reference = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          4 -> url = decodeStringElement(descriptor, i)
+          5 -> _url = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding PolicyBasis: " + i)
+        }
+      }
+      Consent.PolicyBasis(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        reference = reference,
+        url = Url.of(url, _url),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Consent.PolicyBasis) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Consent.PolicyBasis {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var reference: Reference? = null
-    var url: String? = null
-    var _url: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          reference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        4 -> url = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _url = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PolicyBasis: " + i)
-      }
-    }
-    return Consent.PolicyBasis(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      reference = reference,
-      url = Url.of(url, _url),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Consent.PolicyBasis) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, it)
-    }
-    ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.url?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.reference)
+      encodeStringIfNotNull(descriptor, 4, value.url?.value)
+      encodeElementIfNotNull(descriptor, 5, value.url)
     }
   }
 }
@@ -174,175 +152,134 @@ internal object ConsentPolicyBasisSerializer : KSerializer<Consent.PolicyBasis> 
 internal object ConsentVerificationSerializer : KSerializer<Consent.Verification> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Verification") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("verified", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_verified", Element.serializer().descriptor, isOptional = true)
-      element("verificationType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("verifiedBy", Reference.serializer().descriptor, isOptional = true)
-      element("verifiedWith", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "verificationDate",
-        listSerialDescriptor(String.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_verificationDate",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("verified", KotlinBoolean.serializer().descriptor)
+      optionalElement("_verified", ElementSerializer.descriptor)
+      optionalElement("verificationType", CodeableConceptSerializer.descriptor)
+      optionalElement("verifiedBy", ReferenceSerializer.descriptor)
+      optionalElement("verifiedWith", ReferenceSerializer.descriptor)
+      optionalElement("verificationDate", stringNullableListSerializer.descriptor)
+      optionalElement("_verificationDate", ElementSerializer.nullableListSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Consent.Verification>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Consent.Verification =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var verified: KotlinBoolean? = null
+      var _verified: Element? = null
+      var verificationType: CodeableConcept? = null
+      var verifiedBy: Reference? = null
+      var verifiedWith: Reference? = null
+      var verificationDate: List<String?>? = null
+      var _verificationDate: List<Element?>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> verified = decodeBooleanElement(descriptor, i)
+          4 -> _verified = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            verificationType =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          6 ->
+            verifiedBy = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          7 ->
+            verifiedWith =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          8 ->
+            verificationDate =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          9 ->
+            _verificationDate =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Verification: " + i)
+        }
+      }
+      Consent.Verification(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        verified =
+          R5Boolean.of(verified, _verified)
+            ?: throw SerializationException(
+              "Missing required property 'verified' on Consent.Verification"
+            ),
+        verificationType = verificationType,
+        verifiedBy = verifiedBy,
+        verifiedWith = verifiedWith,
+        verificationDate =
+          (kotlin.collections.List(
+            maxOf(verificationDate?.size ?: 0, _verificationDate?.size ?: 0)
+          ) { index ->
+            DateTime.of(
+              verificationDate?.getOrNull(index)?.let { FhirDateTime.fromString(it) },
+              _verificationDate?.getOrNull(index),
+            )
+              ?: throw SerializationException(
+                "An entry of 'verificationDate' on Consent.Verification has neither a value nor an id/extension"
+              )
+          }),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Consent.Verification) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Consent.Verification {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var verified: KotlinBoolean? = null
-    var _verified: Element? = null
-    var verificationType: CodeableConcept? = null
-    var verifiedBy: Reference? = null
-    var verifiedWith: Reference? = null
-    var verificationDate: List<String?>? = null
-    var _verificationDate: List<Element?>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> verified = decoder.decodeBooleanElement(descriptor, i)
-        4 ->
-          _verified =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          verificationType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        6 ->
-          verifiedBy =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        7 ->
-          verifiedWith =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        8 ->
-          verificationDate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        9 ->
-          _verificationDate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Verification: " + i)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeBooleanIfNotNull(descriptor, 3, value.verified.value)
+      encodeElementIfNotNull(descriptor, 4, value.verified)
+      encodeSerializableIfNotNull(descriptor, 5, CodeableConceptSerializer, value.verificationType)
+      encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.verifiedBy)
+      encodeSerializableIfNotNull(descriptor, 7, ReferenceSerializer, value.verifiedWith)
+      if (value.verificationDate.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          8,
+          stringNullableListSerializer,
+          value.verificationDate.map { it.value?.toString() },
+        )
+        encodePrimitiveElementList(descriptor, 9, value.verificationDate)
       }
-    }
-    return Consent.Verification(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      verified =
-        R5Boolean.of(verified, _verified)
-          ?: throw SerializationException(
-            "Missing required property 'verified' on Consent.Verification"
-          ),
-      verificationType = verificationType,
-      verifiedBy = verifiedBy,
-      verifiedWith = verifiedWith,
-      verificationDate =
-        (kotlin.collections.List(
-          maxOf(verificationDate?.size ?: 0, _verificationDate?.size ?: 0)
-        ) { index ->
-          DateTime.of(
-            verificationDate?.getOrNull(index)?.let { it?.let { FhirDateTime.fromString(it) } },
-            _verificationDate?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'verificationDate' on Consent.Verification has neither a value nor an id/extension"
-            )
-        }),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Consent.Verification) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.verified.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
-    (value.verified.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    (value.verificationType)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
-    }
-    (value.verifiedBy)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
-    }
-    (value.verifiedWith)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ReferenceSerializer, it)
-    }
-    (value.verificationDate.map { it.value?.toString() }.takeUnless { it.all { it == null } })
-      ?.let { encoder.encodeSerializableElement(descriptor, 8, stringNullableListSerializer, it) }
-    (value.verificationDate.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer.nullableListSerializer, it)
     }
   }
 }
@@ -350,60 +287,23 @@ internal object ConsentVerificationSerializer : KSerializer<Consent.Verification
 internal object ConsentProvisionSerializer : KSerializer<Consent.Provision> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Provision") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("period", Period.serializer().descriptor, isOptional = true)
-      element(
-        "actor",
-        listSerialDescriptor(lazyDescriptor { Consent.Provision.Actor.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "action",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "securityLabel",
-        listSerialDescriptor(Coding.serializer().descriptor),
-        isOptional = true,
-      )
-      element("purpose", listSerialDescriptor(Coding.serializer().descriptor), isOptional = true)
-      element(
-        "documentType",
-        listSerialDescriptor(Coding.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "resourceType",
-        listSerialDescriptor(Coding.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "code",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("dataPeriod", Period.serializer().descriptor, isOptional = true)
-      element(
-        "data",
-        listSerialDescriptor(lazyDescriptor { Consent.Provision.Data.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("expression", Expression.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("period", PeriodSerializer.descriptor)
+      optionalElement("actor", ConsentProvisionActorSerializer.listSerializer.descriptor)
+      optionalElement("action", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("securityLabel", CodingSerializer.listSerializer.descriptor)
+      optionalElement("purpose", CodingSerializer.listSerializer.descriptor)
+      optionalElement("documentType", CodingSerializer.listSerializer.descriptor)
+      optionalElement("resourceType", CodingSerializer.listSerializer.descriptor)
+      optionalElement("code", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("dataPeriod", PeriodSerializer.descriptor)
+      optionalElement("data", ConsentProvisionDataSerializer.listSerializer.descriptor)
+      optionalElement("expression", ExpressionSerializer.descriptor)
+      optionalElement(
         "provision",
-        listSerialDescriptor(lazyDescriptor { Consent.Provision.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ConsentProvisionSerializer.descriptor }),
       )
     }
 
@@ -411,343 +311,297 @@ internal object ConsentProvisionSerializer : KSerializer<Consent.Provision> {
 
   override fun deserialize(decoder: Decoder): Consent.Provision =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var period: Period? = null
+      var actor: List<Consent.Provision.Actor>? = null
+      var action: List<CodeableConcept>? = null
+      var securityLabel: List<Coding>? = null
+      var purpose: List<Coding>? = null
+      var documentType: List<Coding>? = null
+      var resourceType: List<Coding>? = null
+      var code: List<CodeableConcept>? = null
+      var dataPeriod: Period? = null
+      var `data`: List<Consent.Provision.Data>? = null
+      var expression: Expression? = null
+      var provision: List<Consent.Provision>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> period = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          4 ->
+            actor =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ConsentProvisionActorSerializer.listSerializer,
+                null,
+              )
+          5 ->
+            action =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          6 ->
+            securityLabel =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodingSerializer.listSerializer,
+                null,
+              )
+          7 ->
+            purpose =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodingSerializer.listSerializer,
+                null,
+              )
+          8 ->
+            documentType =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodingSerializer.listSerializer,
+                null,
+              )
+          9 ->
+            resourceType =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodingSerializer.listSerializer,
+                null,
+              )
+          10 ->
+            code =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          11 ->
+            dataPeriod = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          12 ->
+            `data` =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ConsentProvisionDataSerializer.listSerializer,
+                null,
+              )
+          13 ->
+            expression =
+              decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
+          14 ->
+            provision =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ConsentProvisionSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Provision: " + i)
+        }
+      }
+      Consent.Provision(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        period = period,
+        actor = actor ?: listOf(),
+        action = action ?: listOf(),
+        securityLabel = securityLabel ?: listOf(),
+        purpose = purpose ?: listOf(),
+        documentType = documentType ?: listOf(),
+        resourceType = resourceType ?: listOf(),
+        code = code ?: listOf(),
+        dataPeriod = dataPeriod,
+        `data` = `data` ?: listOf(),
+        expression = expression,
+        provision = provision ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Consent.Provision) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, PeriodSerializer, value.period)
+      if (value.actor.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          4,
+          ConsentProvisionActorSerializer.listSerializer,
+          value.actor,
+        )
+      if (value.action.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          5,
+          CodeableConceptSerializer.listSerializer,
+          value.action,
+        )
+      if (value.securityLabel.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          6,
+          CodingSerializer.listSerializer,
+          value.securityLabel,
+        )
+      if (value.purpose.isNotEmpty())
+        encodeSerializableElement(descriptor, 7, CodingSerializer.listSerializer, value.purpose)
+      if (value.documentType.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          8,
+          CodingSerializer.listSerializer,
+          value.documentType,
+        )
+      if (value.resourceType.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          9,
+          CodingSerializer.listSerializer,
+          value.resourceType,
+        )
+      if (value.code.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          10,
+          CodeableConceptSerializer.listSerializer,
+          value.code,
+        )
+      encodeSerializableIfNotNull(descriptor, 11, PeriodSerializer, value.dataPeriod)
+      if (value.`data`.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          12,
+          ConsentProvisionDataSerializer.listSerializer,
+          value.`data`,
+        )
+      encodeSerializableIfNotNull(descriptor, 13, ExpressionSerializer, value.expression)
+      if (value.provision.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          14,
+          ConsentProvisionSerializer.listSerializer,
+          value.provision,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Consent.Provision {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var period: Period? = null
-    var actor: List<Consent.Provision.Actor>? = null
-    var action: List<CodeableConcept>? = null
-    var securityLabel: List<Coding>? = null
-    var purpose: List<Coding>? = null
-    var documentType: List<Coding>? = null
-    var resourceType: List<Coding>? = null
-    var code: List<CodeableConcept>? = null
-    var dataPeriod: Period? = null
-    var `data`: List<Consent.Provision.Data>? = null
-    var expression: Expression? = null
-    var provision: List<Consent.Provision>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        4 ->
-          actor =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ConsentProvisionActorSerializer.listSerializer,
-              null,
-            )
-        5 ->
-          action =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        6 ->
-          securityLabel =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodingSerializer.listSerializer,
-              null,
-            )
-        7 ->
-          purpose =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodingSerializer.listSerializer,
-              null,
-            )
-        8 ->
-          documentType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodingSerializer.listSerializer,
-              null,
-            )
-        9 ->
-          resourceType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodingSerializer.listSerializer,
-              null,
-            )
-        10 ->
-          code =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        11 ->
-          dataPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        12 ->
-          `data` =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ConsentProvisionDataSerializer.listSerializer,
-              null,
-            )
-        13 ->
-          expression =
-            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
-        14 ->
-          provision =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ConsentProvisionSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Provision: " + i)
-      }
-    }
-    return Consent.Provision(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      period = period,
-      actor = actor ?: listOf(),
-      action = action ?: listOf(),
-      securityLabel = securityLabel ?: listOf(),
-      purpose = purpose ?: listOf(),
-      documentType = documentType ?: listOf(),
-      resourceType = resourceType ?: listOf(),
-      code = code ?: listOf(),
-      dataPeriod = dataPeriod,
-      `data` = `data` ?: listOf(),
-      expression = expression,
-      provision = provision ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Consent.Provision) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 3, PeriodSerializer, it) }
-    if (value.actor.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        4,
-        ConsentProvisionActorSerializer.listSerializer,
-        value.actor,
-      )
-    if (value.action.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        5,
-        CodeableConceptSerializer.listSerializer,
-        value.action,
-      )
-    if (value.securityLabel.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        6,
-        CodingSerializer.listSerializer,
-        value.securityLabel,
-      )
-    if (value.purpose.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        7,
-        CodingSerializer.listSerializer,
-        value.purpose,
-      )
-    if (value.documentType.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        8,
-        CodingSerializer.listSerializer,
-        value.documentType,
-      )
-    if (value.resourceType.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        9,
-        CodingSerializer.listSerializer,
-        value.resourceType,
-      )
-    if (value.code.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        10,
-        CodeableConceptSerializer.listSerializer,
-        value.code,
-      )
-    (value.dataPeriod)?.let {
-      encoder.encodeSerializableElement(descriptor, 11, PeriodSerializer, it)
-    }
-    if (value.`data`.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        12,
-        ConsentProvisionDataSerializer.listSerializer,
-        value.`data`,
-      )
-    (value.expression)?.let {
-      encoder.encodeSerializableElement(descriptor, 13, ExpressionSerializer, it)
-    }
-    if (value.provision.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        14,
-        ConsentProvisionSerializer.listSerializer,
-        value.provision,
-      )
   }
 }
 
 internal object ConsentProvisionActorSerializer : KSerializer<Consent.Provision.Actor> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Actor") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("role", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("reference", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("role", CodeableConceptSerializer.descriptor)
+      optionalElement("reference", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Consent.Provision.Actor>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Consent.Provision.Actor =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var role: CodeableConcept? = null
+      var reference: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            role = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            reference = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Actor: " + i)
+        }
+      }
+      Consent.Provision.Actor(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        role = role,
+        reference = reference,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Consent.Provision.Actor) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Consent.Provision.Actor {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var role: CodeableConcept? = null
-    var reference: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          role =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          reference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Actor: " + i)
-      }
-    }
-    return Consent.Provision.Actor(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      role = role,
-      reference = reference,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Consent.Provision.Actor) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.role)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.role)
+      encodeSerializableIfNotNull(descriptor, 4, ReferenceSerializer, value.reference)
     }
   }
 }
@@ -755,110 +609,92 @@ internal object ConsentProvisionActorSerializer : KSerializer<Consent.Provision.
 internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.Data> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Data") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("meaning", String.serializer().descriptor, isOptional = true)
-      element("_meaning", Element.serializer().descriptor, isOptional = true)
-      element("reference", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("meaning", String.serializer().descriptor)
+      optionalElement("_meaning", ElementSerializer.descriptor)
+      optionalElement("reference", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Consent.Provision.Data>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Consent.Provision.Data =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var meaning: String? = null
+      var _meaning: Element? = null
+      var reference: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> meaning = decodeStringElement(descriptor, i)
+          4 -> _meaning = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            reference = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Data: " + i)
+        }
+      }
+      Consent.Provision.Data(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        meaning =
+          Enumeration.of(
+            if (meaning != null) Consent.ConsentDataMeaning.fromCode(meaning) else null,
+            _meaning,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'meaning' on Consent.Provision.Data"
+            ),
+        reference =
+          reference
+            ?: throw SerializationException(
+              "Missing required property 'reference' on Consent.Provision.Data"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Consent.Provision.Data) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.meaning.value?.code)
+      encodeElementIfNotNull(descriptor, 4, value.meaning)
+      encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.reference)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Consent.Provision.Data {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var meaning: String? = null
-    var _meaning: Element? = null
-    var reference: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> meaning = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _meaning =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          reference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Data: " + i)
-      }
-    }
-    return Consent.Provision.Data(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      meaning =
-        Enumeration.of(meaning?.let { Consent.ConsentDataMeaning.fromCode(it) }, _meaning)
-          ?: throw SerializationException(
-            "Missing required property 'meaning' on Consent.Provision.Data"
-          ),
-      reference =
-        reference
-          ?: throw SerializationException(
-            "Missing required property 'reference' on Consent.Provision.Data"
-          ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Consent.Provision.Data) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.meaning.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.meaning.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.reference)
   }
 }
 
@@ -866,89 +702,40 @@ internal object ConsentSerializer : FhirResourceSerializer<Consent> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Consent")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", String.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "category",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("date", String.serializer().descriptor, isOptional = true)
-    b.element("_date", Element.serializer().descriptor, isOptional = true)
-    b.element("period", Period.serializer().descriptor, isOptional = true)
-    b.element("grantor", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("grantee", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("manager", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element(
-      "controller",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "sourceAttachment",
-      listSerialDescriptor(Attachment.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "sourceReference",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "regulatoryBasis",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "policyBasis",
-      lazyDescriptor { Consent.PolicyBasis.serializer().descriptor },
-      isOptional = true,
-    )
-    b.element(
-      "policyText",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "verification",
-      listSerialDescriptor(lazyDescriptor { Consent.Verification.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element("decision", String.serializer().descriptor, isOptional = true)
-    b.element("_decision", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "provision",
-      listSerialDescriptor(lazyDescriptor { Consent.Provision.serializer().descriptor }),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", String.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("date", String.serializer().descriptor)
+    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.optionalElement("period", PeriodSerializer.descriptor)
+    b.optionalElement("grantor", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("grantee", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("manager", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("controller", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("sourceAttachment", AttachmentSerializer.listSerializer.descriptor)
+    b.optionalElement("sourceReference", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("regulatoryBasis", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("policyBasis", ConsentPolicyBasisSerializer.descriptor)
+    b.optionalElement("policyText", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("verification", ConsentVerificationSerializer.listSerializer.descriptor)
+    b.optionalElement("decision", String.serializer().descriptor)
+    b.optionalElement("_decision", ElementSerializer.descriptor)
+    b.optionalElement("provision", ConsentProvisionSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -1162,11 +949,11 @@ internal object ConsentSerializer : FhirResourceSerializer<Consent> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(status?.let { Consent.ConsentState.fromCode(it) }, _status)
+        Enumeration.of(if (status != null) Consent.ConsentState.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on Consent"),
       category = category ?: listOf(),
       subject = subject,
-      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
+      date = Date.of(if (date != null) FhirDate.fromString(date) else null, _date),
       period = period,
       grantor = grantor ?: listOf(),
       grantee = grantee ?: listOf(),
@@ -1179,7 +966,10 @@ internal object ConsentSerializer : FhirResourceSerializer<Consent> {
       policyText = policyText ?: listOf(),
       verification = verification ?: listOf(),
       decision =
-        Enumeration.of(decision?.let { Consent.ConsentProvisionType.fromCode(it) }, _decision),
+        Enumeration.of(
+          if (decision != null) Consent.ConsentProvisionType.fromCode(decision) else null,
+          _decision,
+        ),
       provision = provision ?: listOf(),
     )
   }
@@ -1190,25 +980,23 @@ internal object ConsentSerializer : FhirResourceSerializer<Consent> {
     descriptorOffset: Int,
     `value`: Consent,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1237,12 +1025,8 @@ internal object ConsentSerializer : FhirResourceSerializer<Consent> {
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
     if (value.category.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1250,18 +1034,20 @@ internal object ConsentSerializer : FhirResourceSerializer<Consent> {
         CodeableConceptSerializer.listSerializer,
         value.category,
       )
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.date?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
-    }
-    (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.period)?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, PeriodSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      14 + descriptorOffset,
+      ReferenceSerializer,
+      value.subject,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.date?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.date)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      PeriodSerializer,
+      value.period,
+    )
     if (value.grantor.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1311,14 +1097,12 @@ internal object ConsentSerializer : FhirResourceSerializer<Consent> {
         CodeableConceptSerializer.listSerializer,
         value.regulatoryBasis,
       )
-    (value.policyBasis)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        ConsentPolicyBasisSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      25 + descriptorOffset,
+      ConsentPolicyBasisSerializer,
+      value.policyBasis,
+    )
     if (value.policyText.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1333,12 +1117,8 @@ internal object ConsentSerializer : FhirResourceSerializer<Consent> {
         ConsentVerificationSerializer.listSerializer,
         value.verification,
       )
-    ((value.decision?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
-    }
-    (value.decision?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.decision?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.decision)
     if (value.provision.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

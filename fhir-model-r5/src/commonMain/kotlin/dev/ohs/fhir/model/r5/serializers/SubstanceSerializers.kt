@@ -68,118 +68,92 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object SubstanceIngredientSerializer : KSerializer<Substance.Ingredient> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Ingredient") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("quantity", Ratio.serializer().descriptor, isOptional = true)
-      element(
-        "substanceCodeableConcept",
-        CodeableConcept.serializer().descriptor,
-        isOptional = true,
-      )
-      element("substanceReference", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("quantity", RatioSerializer.descriptor)
+      optionalElement("substanceCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("substanceReference", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Substance.Ingredient>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Substance.Ingredient =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var quantity: Ratio? = null
+      var substanceCodeableConcept: CodeableConcept? = null
+      var substanceReference: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> quantity = decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+          4 ->
+            substanceCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            substanceReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Ingredient: " + i)
+        }
+      }
+      Substance.Ingredient(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        quantity = quantity,
+        substance =
+          Substance.Ingredient.Substance.from(substanceCodeableConcept, substanceReference)
+            ?: throw SerializationException(
+              "Missing required property 'substance' on Substance.Ingredient"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Substance.Ingredient) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Substance.Ingredient {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var quantity: Ratio? = null
-    var substanceCodeableConcept: CodeableConcept? = null
-    var substanceReference: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          quantity = decoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-        4 ->
-          substanceCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          substanceReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Ingredient: " + i)
-      }
-    }
-    return Substance.Ingredient(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      quantity = quantity,
-      substance =
-        Substance.Ingredient.Substance.from(substanceCodeableConcept, substanceReference)
-          ?: throw SerializationException(
-            "Missing required property 'substance' on Substance.Ingredient"
-          ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Substance.Ingredient) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.quantity)?.let { encoder.encodeSerializableElement(descriptor, 3, RatioSerializer, it) }
-    when (val choice = value.substance) {
-      is Substance.Ingredient.Substance.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
-      }
-      is Substance.Ingredient.Substance.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, choice.value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, RatioSerializer, value.quantity)
+      when (val choice = value.substance) {
+        is Substance.Ingredient.Substance.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
+        }
+        is Substance.Ingredient.Substance.Reference -> {
+          encodeSerializableElement(descriptor, 5, ReferenceSerializer, choice.value)
+        }
       }
     }
   }
@@ -189,53 +163,32 @@ internal object SubstanceSerializer : FhirResourceSerializer<Substance> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Substance")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("instance", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_instance", Element.serializer().descriptor, isOptional = true)
-    b.element("status", String.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "category",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("code", CodeableReference.serializer().descriptor, isOptional = true)
-    b.element("description", String.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element("expiry", String.serializer().descriptor, isOptional = true)
-    b.element("_expiry", Element.serializer().descriptor, isOptional = true)
-    b.element("quantity", Quantity.serializer().descriptor, isOptional = true)
-    b.element(
-      "ingredient",
-      listSerialDescriptor(lazyDescriptor { Substance.Ingredient.serializer().descriptor }),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("instance", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_instance", ElementSerializer.descriptor)
+    b.optionalElement("status", String.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableReferenceSerializer.descriptor)
+    b.optionalElement("description", String.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("expiry", String.serializer().descriptor)
+    b.optionalElement("_expiry", ElementSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("ingredient", SubstanceIngredientSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -374,11 +327,15 @@ internal object SubstanceSerializer : FhirResourceSerializer<Substance> {
       instance =
         R5Boolean.of(instance, _instance)
           ?: throw SerializationException("Missing required property 'instance' on Substance"),
-      status = Enumeration.of(status?.let { Substance.FHIRSubstanceStatus.fromCode(it) }, _status),
+      status =
+        Enumeration.of(
+          if (status != null) Substance.FHIRSubstanceStatus.fromCode(status) else null,
+          _status,
+        ),
       category = category ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on Substance"),
       description = Markdown.of(description, _description),
-      expiry = DateTime.of(expiry?.let { FhirDateTime.fromString(it) }, _expiry),
+      expiry = DateTime.of(if (expiry != null) FhirDateTime.fromString(expiry) else null, _expiry),
       quantity = quantity,
       ingredient = ingredient ?: listOf(),
     )
@@ -390,25 +347,23 @@ internal object SubstanceSerializer : FhirResourceSerializer<Substance> {
     descriptorOffset: Int,
     `value`: Substance,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -437,18 +392,10 @@ internal object SubstanceSerializer : FhirResourceSerializer<Substance> {
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.instance.value))?.let {
-      encoder.encodeBooleanElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.instance.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.status?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
-    }
-    (value.status?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeBooleanIfNotNull(descriptor, 11 + descriptorOffset, value.instance.value)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.instance)
+    encoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.status?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.status)
     if (value.category.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -462,21 +409,20 @@ internal object SubstanceSerializer : FhirResourceSerializer<Substance> {
       CodeableReferenceSerializer,
       value.code,
     )
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.expiry?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
-    }
-    (value.expiry?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.quantity)?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, QuantitySerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.description)
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      value.expiry?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.expiry)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      21 + descriptorOffset,
+      QuantitySerializer,
+      value.quantity,
+    )
     if (value.ingredient.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

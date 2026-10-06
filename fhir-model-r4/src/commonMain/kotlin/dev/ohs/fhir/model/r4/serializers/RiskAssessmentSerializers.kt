@@ -68,193 +68,149 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object RiskAssessmentPredictionSerializer : KSerializer<RiskAssessment.Prediction> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Prediction") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("outcome", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("probabilityDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_probabilityDecimal", Element.serializer().descriptor, isOptional = true)
-      element("probabilityRange", Range.serializer().descriptor, isOptional = true)
-      element("qualitativeRisk", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("relativeRisk", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_relativeRisk", Element.serializer().descriptor, isOptional = true)
-      element("whenPeriod", Period.serializer().descriptor, isOptional = true)
-      element("whenRange", Range.serializer().descriptor, isOptional = true)
-      element("rationale", KotlinString.serializer().descriptor, isOptional = true)
-      element("_rationale", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("outcome", CodeableConceptSerializer.descriptor)
+      optionalElement("probabilityDecimal", FhirDecimalSerializer.descriptor)
+      optionalElement("_probabilityDecimal", ElementSerializer.descriptor)
+      optionalElement("probabilityRange", RangeSerializer.descriptor)
+      optionalElement("qualitativeRisk", CodeableConceptSerializer.descriptor)
+      optionalElement("relativeRisk", FhirDecimalSerializer.descriptor)
+      optionalElement("_relativeRisk", ElementSerializer.descriptor)
+      optionalElement("whenPeriod", PeriodSerializer.descriptor)
+      optionalElement("whenRange", RangeSerializer.descriptor)
+      optionalElement("rationale", KotlinString.serializer().descriptor)
+      optionalElement("_rationale", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<RiskAssessment.Prediction>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): RiskAssessment.Prediction =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var outcome: CodeableConcept? = null
+      var probabilityDecimal: FhirDecimal? = null
+      var _probabilityDecimal: Element? = null
+      var probabilityRange: Range? = null
+      var qualitativeRisk: CodeableConcept? = null
+      var relativeRisk: FhirDecimal? = null
+      var _relativeRisk: Element? = null
+      var whenPeriod: Period? = null
+      var whenRange: Range? = null
+      var rationale: KotlinString? = null
+      var _rationale: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            outcome =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            probabilityDecimal =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          5 ->
+            _probabilityDecimal =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 ->
+            probabilityRange =
+              decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          7 ->
+            qualitativeRisk =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          8 ->
+            relativeRisk =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          9 ->
+            _relativeRisk =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          10 ->
+            whenPeriod = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          11 -> whenRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          12 -> rationale = decodeStringElement(descriptor, i)
+          13 ->
+            _rationale = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Prediction: " + i)
+        }
+      }
+      RiskAssessment.Prediction(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        outcome = outcome,
+        probability =
+          RiskAssessment.Prediction.Probability.from(
+            Decimal.of(probabilityDecimal, _probabilityDecimal),
+            probabilityRange,
+          ),
+        qualitativeRisk = qualitativeRisk,
+        relativeRisk = Decimal.of(relativeRisk, _relativeRisk),
+        `when` = RiskAssessment.Prediction.When.from(whenPeriod, whenRange),
+        rationale = R4String.of(rationale, _rationale),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: RiskAssessment.Prediction) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): RiskAssessment.Prediction {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var outcome: CodeableConcept? = null
-    var probabilityDecimal: FhirDecimal? = null
-    var _probabilityDecimal: Element? = null
-    var probabilityRange: Range? = null
-    var qualitativeRisk: CodeableConcept? = null
-    var relativeRisk: FhirDecimal? = null
-    var _relativeRisk: Element? = null
-    var whenPeriod: Period? = null
-    var whenRange: Range? = null
-    var rationale: KotlinString? = null
-    var _rationale: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          outcome =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          probabilityDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        5 ->
-          _probabilityDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 ->
-          probabilityRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        7 ->
-          qualitativeRisk =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        8 ->
-          relativeRisk =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        9 ->
-          _relativeRisk =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        10 ->
-          whenPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        11 ->
-          whenRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        12 -> rationale = decoder.decodeStringElement(descriptor, i)
-        13 ->
-          _rationale =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Prediction: " + i)
-      }
-    }
-    return RiskAssessment.Prediction(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      outcome = outcome,
-      probability =
-        RiskAssessment.Prediction.Probability.from(
-          Decimal.of(probabilityDecimal, _probabilityDecimal),
-          probabilityRange,
-        ),
-      qualitativeRisk = qualitativeRisk,
-      relativeRisk = Decimal.of(relativeRisk, _relativeRisk),
-      `when` = RiskAssessment.Prediction.When.from(whenPeriod, whenRange),
-      rationale = R4String.of(rationale, _rationale),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: RiskAssessment.Prediction) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.outcome)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    when (val choice = value.probability) {
-      null -> {}
-      is RiskAssessment.Prediction.Probability.Decimal -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 4, FhirDecimalSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.outcome)
+      when (val choice = value.probability) {
+        null -> {}
+        is RiskAssessment.Prediction.Probability.Decimal -> {
+          encodeSerializableIfNotNull(descriptor, 4, FhirDecimalSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 5, choice.value)
         }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
+        is RiskAssessment.Prediction.Probability.Range -> {
+          encodeSerializableElement(descriptor, 6, RangeSerializer, choice.value)
         }
       }
-      is RiskAssessment.Prediction.Probability.Range -> {
-        encoder.encodeSerializableElement(descriptor, 6, RangeSerializer, choice.value)
+      encodeSerializableIfNotNull(descriptor, 7, CodeableConceptSerializer, value.qualitativeRisk)
+      encodeSerializableIfNotNull(descriptor, 8, FhirDecimalSerializer, value.relativeRisk?.value)
+      encodeElementIfNotNull(descriptor, 9, value.relativeRisk)
+      when (val choice = value.`when`) {
+        null -> {}
+        is RiskAssessment.Prediction.When.Period -> {
+          encodeSerializableElement(descriptor, 10, PeriodSerializer, choice.value)
+        }
+        is RiskAssessment.Prediction.When.Range -> {
+          encodeSerializableElement(descriptor, 11, RangeSerializer, choice.value)
+        }
       }
-    }
-    (value.qualitativeRisk)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, CodeableConceptSerializer, it)
-    }
-    ((value.relativeRisk?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 8, FhirDecimalSerializer, it)
-    }
-    (value.relativeRisk?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
-    }
-    when (val choice = value.`when`) {
-      null -> {}
-      is RiskAssessment.Prediction.When.Period -> {
-        encoder.encodeSerializableElement(descriptor, 10, PeriodSerializer, choice.value)
-      }
-      is RiskAssessment.Prediction.When.Range -> {
-        encoder.encodeSerializableElement(descriptor, 11, RangeSerializer, choice.value)
-      }
-    }
-    ((value.rationale?.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-    (value.rationale?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 12, value.rationale?.value)
+      encodeElementIfNotNull(descriptor, 13, value.rationale)
     }
   }
 }
@@ -263,65 +219,40 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
   override val descriptor: SerialDescriptor = buildResourceDescriptor("RiskAssessment")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("basedOn", Reference.serializer().descriptor, isOptional = true)
-    b.element("parent", Reference.serializer().descriptor, isOptional = true)
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("method", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
-    b.element("occurrenceDateTime", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
-    b.element("occurrencePeriod", Period.serializer().descriptor, isOptional = true)
-    b.element("condition", Reference.serializer().descriptor, isOptional = true)
-    b.element("performer", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "reasonCode",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reasonReference",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("basis", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element(
-      "prediction",
-      listSerialDescriptor(lazyDescriptor { RiskAssessment.Prediction.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element("mitigation", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_mitigation", Element.serializer().descriptor, isOptional = true)
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.descriptor)
+    b.optionalElement("parent", ReferenceSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("method", CodeableConceptSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("occurrenceDateTime", KotlinString.serializer().descriptor)
+    b.optionalElement("_occurrenceDateTime", ElementSerializer.descriptor)
+    b.optionalElement("occurrencePeriod", PeriodSerializer.descriptor)
+    b.optionalElement("condition", ReferenceSerializer.descriptor)
+    b.optionalElement("performer", ReferenceSerializer.descriptor)
+    b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("reasonReference", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("basis", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("prediction", RiskAssessmentPredictionSerializer.listSerializer.descriptor)
+    b.optionalElement("mitigation", KotlinString.serializer().descriptor)
+    b.optionalElement("_mitigation", ElementSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -514,8 +445,10 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
       basedOn = basedOn,
       parent = parent,
       status =
-        Enumeration.of(status?.let { RiskAssessment.ObservationStatus.fromCode(it) }, _status)
-          ?: throw SerializationException("Missing required property 'status' on RiskAssessment"),
+        Enumeration.of(
+          if (status != null) RiskAssessment.ObservationStatus.fromCode(status) else null,
+          _status,
+        ) ?: throw SerializationException("Missing required property 'status' on RiskAssessment"),
       method = method,
       code = code,
       subject =
@@ -524,7 +457,10 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
       encounter = encounter,
       occurrence =
         RiskAssessment.Occurrence.from(
-          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
+          DateTime.of(
+            if (occurrenceDateTime != null) FhirDateTime.fromString(occurrenceDateTime) else null,
+            _occurrenceDateTime,
+          ),
           occurrencePeriod,
         ),
       condition = condition,
@@ -544,25 +480,23 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
     descriptorOffset: Int,
     `value`: RiskAssessment,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -591,57 +525,53 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    (value.basedOn)?.let {
-      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.parent)?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.method)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.code)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      ReferenceSerializer,
+      value.basedOn,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      12 + descriptorOffset,
+      ReferenceSerializer,
+      value.parent,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.status)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.method,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      16 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.code,
+    )
     encoder.encodeSerializableElement(
       descriptor,
       17 + descriptorOffset,
       ReferenceSerializer,
       value.subject,
     )
-    (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      ReferenceSerializer,
+      value.encounter,
+    )
     when (val choice = value.occurrence) {
       null -> {}
       is RiskAssessment.Occurrence.DateTime -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            20 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeStringIfNotNull(
+          descriptor,
+          19 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, choice.value)
       }
       is RiskAssessment.Occurrence.Period -> {
         encoder.encodeSerializableElement(
@@ -652,12 +582,18 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
         )
       }
     }
-    (value.condition)?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.performer)?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      ReferenceSerializer,
+      value.condition,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      23 + descriptorOffset,
+      ReferenceSerializer,
+      value.performer,
+    )
     if (value.reasonCode.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -686,12 +622,8 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
         RiskAssessmentPredictionSerializer.listSerializer,
         value.prediction,
       )
-    ((value.mitigation?.value))?.let {
-      encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
-    }
-    (value.mitigation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.mitigation?.value)
+    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.mitigation)
     if (value.note.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

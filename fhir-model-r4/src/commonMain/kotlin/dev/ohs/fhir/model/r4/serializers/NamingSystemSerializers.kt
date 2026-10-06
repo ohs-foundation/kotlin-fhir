@@ -68,146 +68,119 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.UniqueId> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("UniqueId") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", Element.serializer().descriptor, isOptional = true)
-      element("value", KotlinString.serializer().descriptor, isOptional = true)
-      element("_value", Element.serializer().descriptor, isOptional = true)
-      element("preferred", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_preferred", Element.serializer().descriptor, isOptional = true)
-      element("comment", KotlinString.serializer().descriptor, isOptional = true)
-      element("_comment", Element.serializer().descriptor, isOptional = true)
-      element("period", Period.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", KotlinString.serializer().descriptor)
+      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("value", KotlinString.serializer().descriptor)
+      optionalElement("_value", ElementSerializer.descriptor)
+      optionalElement("preferred", KotlinBoolean.serializer().descriptor)
+      optionalElement("_preferred", ElementSerializer.descriptor)
+      optionalElement("comment", KotlinString.serializer().descriptor)
+      optionalElement("_comment", ElementSerializer.descriptor)
+      optionalElement("period", PeriodSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<NamingSystem.UniqueId>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): NamingSystem.UniqueId =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: KotlinString? = null
+      var _type: Element? = null
+      var `value`: KotlinString? = null
+      var _value: Element? = null
+      var preferred: KotlinBoolean? = null
+      var _preferred: Element? = null
+      var comment: KotlinString? = null
+      var _comment: Element? = null
+      var period: Period? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> type = decodeStringElement(descriptor, i)
+          4 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> `value` = decodeStringElement(descriptor, i)
+          6 -> _value = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> preferred = decodeBooleanElement(descriptor, i)
+          8 ->
+            _preferred = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> comment = decodeStringElement(descriptor, i)
+          10 -> _comment = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          11 -> period = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding UniqueId: " + i)
+        }
+      }
+      NamingSystem.UniqueId(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type =
+          Enumeration.of(
+            if (type != null) NamingSystem.NamingSystemIdentifierType.fromCode(type) else null,
+            _type,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'type' on NamingSystem.UniqueId"
+            ),
+        `value` =
+          R4String.of(`value`, _value)
+            ?: throw SerializationException(
+              "Missing required property 'value' on NamingSystem.UniqueId"
+            ),
+        preferred = R4Boolean.of(preferred, _preferred),
+        comment = R4String.of(comment, _comment),
+        period = period,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: NamingSystem.UniqueId) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.type.value?.code)
+      encodeElementIfNotNull(descriptor, 4, value.type)
+      encodeStringIfNotNull(descriptor, 5, value.`value`.value)
+      encodeElementIfNotNull(descriptor, 6, value.`value`)
+      encodeBooleanIfNotNull(descriptor, 7, value.preferred?.value)
+      encodeElementIfNotNull(descriptor, 8, value.preferred)
+      encodeStringIfNotNull(descriptor, 9, value.comment?.value)
+      encodeElementIfNotNull(descriptor, 10, value.comment)
+      encodeSerializableIfNotNull(descriptor, 11, PeriodSerializer, value.period)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): NamingSystem.UniqueId {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
-    var _type: Element? = null
-    var `value`: KotlinString? = null
-    var _value: Element? = null
-    var preferred: KotlinBoolean? = null
-    var _preferred: Element? = null
-    var comment: KotlinString? = null
-    var _comment: Element? = null
-    var period: Period? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> type = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> `value` = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _value = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> preferred = decoder.decodeBooleanElement(descriptor, i)
-        8 ->
-          _preferred =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 -> comment = decoder.decodeStringElement(descriptor, i)
-        10 ->
-          _comment =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        11 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding UniqueId: " + i)
-      }
-    }
-    return NamingSystem.UniqueId(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(type?.let { NamingSystem.NamingSystemIdentifierType.fromCode(it) }, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on NamingSystem.UniqueId"
-          ),
-      `value` =
-        R4String.of(`value`, _value)
-          ?: throw SerializationException(
-            "Missing required property 'value' on NamingSystem.UniqueId"
-          ),
-      preferred = R4Boolean.of(preferred, _preferred),
-      comment = R4String.of(comment, _comment),
-      period = period,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: NamingSystem.UniqueId) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.`value`.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-    (value.`value`.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.preferred?.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-    (value.preferred?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    ((value.comment?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-    (value.comment?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
-    }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 11, PeriodSerializer, it) }
   }
 }
 
@@ -215,65 +188,40 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("NamingSystem")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("name", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_name", Element.serializer().descriptor, isOptional = true)
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("kind", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_kind", Element.serializer().descriptor, isOptional = true)
-    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_date", Element.serializer().descriptor, isOptional = true)
-    b.element("publisher", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_publisher", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "contact",
-      listSerialDescriptor(ContactDetail.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("responsible", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_responsible", Element.serializer().descriptor, isOptional = true)
-    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "useContext",
-      listSerialDescriptor(UsageContext.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "jurisdiction",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("usage", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_usage", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "uniqueId",
-      listSerialDescriptor(lazyDescriptor { NamingSystem.UniqueId.serializer().descriptor }),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("name", KotlinString.serializer().descriptor)
+    b.optionalElement("_name", ElementSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("kind", KotlinString.serializer().descriptor)
+    b.optionalElement("_kind", ElementSerializer.descriptor)
+    b.optionalElement("date", KotlinString.serializer().descriptor)
+    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.optionalElement("publisher", KotlinString.serializer().descriptor)
+    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("responsible", KotlinString.serializer().descriptor)
+    b.optionalElement("_responsible", ElementSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("description", KotlinString.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
+    b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("usage", KotlinString.serializer().descriptor)
+    b.optionalElement("_usage", ElementSerializer.descriptor)
+    b.optionalElement("uniqueId", NamingSystemUniqueIdSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -437,13 +385,15 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
         R4String.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on NamingSystem"),
       status =
-        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on NamingSystem"),
       kind =
-        Enumeration.of(kind?.let { NamingSystem.NamingSystemType.fromCode(it) }, _kind)
-          ?: throw SerializationException("Missing required property 'kind' on NamingSystem"),
+        Enumeration.of(
+          if (kind != null) NamingSystem.NamingSystemType.fromCode(kind) else null,
+          _kind,
+        ) ?: throw SerializationException("Missing required property 'kind' on NamingSystem"),
       date =
-        DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date)
+        DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date)
           ?: throw SerializationException("Missing required property 'date' on NamingSystem"),
       publisher = R4String.of(publisher, _publisher),
       contact = contact ?: listOf(),
@@ -463,25 +413,23 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
     descriptorOffset: Int,
     `value`: NamingSystem,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -503,34 +451,16 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    ((value.name.value))?.let { encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it) }
-    (value.name.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.kind.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-    }
-    (value.kind.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.date.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
-    }
-    (value.date.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.publisher?.value))?.let {
-      encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
-    }
-    (value.publisher?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.name.value)
+    encoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.name)
+    encoder.encodeStringIfNotNull(descriptor, 12 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.status)
+    encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.kind.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.kind)
+    encoder.encodeStringIfNotNull(descriptor, 16 + descriptorOffset, value.date.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.date)
+    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.publisher?.value)
+    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.publisher)
     if (value.contact.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -538,26 +468,16 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
         ContactDetailSerializer.listSerializer,
         value.contact,
       )
-    ((value.responsible?.value))?.let {
-      encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
-    }
-    (value.responsible?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 25 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 21 + descriptorOffset, value.responsible?.value)
+    encoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.responsible)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      23 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.type,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 24 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.description)
     if (value.useContext.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -572,12 +492,8 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
         CodeableConceptSerializer.listSerializer,
         value.jurisdiction,
       )
-    ((value.usage?.value))?.let {
-      encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
-    }
-    (value.usage?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.usage?.value)
+    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.usage)
     if (value.uniqueId.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

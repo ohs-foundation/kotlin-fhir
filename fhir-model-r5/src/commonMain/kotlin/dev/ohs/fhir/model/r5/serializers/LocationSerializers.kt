@@ -69,140 +69,105 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object LocationPositionSerializer : KSerializer<Location.Position> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Position") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("longitude", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_longitude", Element.serializer().descriptor, isOptional = true)
-      element("latitude", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_latitude", Element.serializer().descriptor, isOptional = true)
-      element("altitude", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_altitude", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("longitude", FhirDecimalSerializer.descriptor)
+      optionalElement("_longitude", ElementSerializer.descriptor)
+      optionalElement("latitude", FhirDecimalSerializer.descriptor)
+      optionalElement("_latitude", ElementSerializer.descriptor)
+      optionalElement("altitude", FhirDecimalSerializer.descriptor)
+      optionalElement("_altitude", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Location.Position>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Location.Position =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var longitude: FhirDecimal? = null
+      var _longitude: Element? = null
+      var latitude: FhirDecimal? = null
+      var _latitude: Element? = null
+      var altitude: FhirDecimal? = null
+      var _altitude: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            longitude =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          4 ->
+            _longitude = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            latitude = decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          6 -> _latitude = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 ->
+            altitude = decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          8 -> _altitude = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Position: " + i)
+        }
+      }
+      Location.Position(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        longitude =
+          Decimal.of(longitude, _longitude)
+            ?: throw SerializationException(
+              "Missing required property 'longitude' on Location.Position"
+            ),
+        latitude =
+          Decimal.of(latitude, _latitude)
+            ?: throw SerializationException(
+              "Missing required property 'latitude' on Location.Position"
+            ),
+        altitude = Decimal.of(altitude, _altitude),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Location.Position) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Location.Position {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var longitude: FhirDecimal? = null
-    var _longitude: Element? = null
-    var latitude: FhirDecimal? = null
-    var _latitude: Element? = null
-    var altitude: FhirDecimal? = null
-    var _altitude: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          longitude =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        4 ->
-          _longitude =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          latitude =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        6 ->
-          _latitude =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 ->
-          altitude =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        8 ->
-          _altitude =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Position: " + i)
-      }
-    }
-    return Location.Position(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      longitude =
-        Decimal.of(longitude, _longitude)
-          ?: throw SerializationException(
-            "Missing required property 'longitude' on Location.Position"
-          ),
-      latitude =
-        Decimal.of(latitude, _latitude)
-          ?: throw SerializationException(
-            "Missing required property 'latitude' on Location.Position"
-          ),
-      altitude = Decimal.of(altitude, _altitude),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Location.Position) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.longitude.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 3, FhirDecimalSerializer, it)
-    }
-    (value.longitude.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.latitude.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
-    }
-    (value.latitude.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.altitude?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 7, FhirDecimalSerializer, it)
-    }
-    (value.altitude?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, FhirDecimalSerializer, value.longitude.value)
+      encodeElementIfNotNull(descriptor, 4, value.longitude)
+      encodeSerializableIfNotNull(descriptor, 5, FhirDecimalSerializer, value.latitude.value)
+      encodeElementIfNotNull(descriptor, 6, value.latitude)
+      encodeSerializableIfNotNull(descriptor, 7, FhirDecimalSerializer, value.altitude?.value)
+      encodeElementIfNotNull(descriptor, 8, value.altitude)
     }
   }
 }
@@ -211,87 +176,42 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Location")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("operationalStatus", Coding.serializer().descriptor, isOptional = true)
-    b.element("name", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_name", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "alias",
-      listSerialDescriptor(KotlinString.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("_alias", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element("mode", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_mode", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "type",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "contact",
-      listSerialDescriptor(ExtendedContactDetail.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("address", Address.serializer().descriptor, isOptional = true)
-    b.element("form", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "position",
-      lazyDescriptor { Location.Position.serializer().descriptor },
-      isOptional = true,
-    )
-    b.element("managingOrganization", Reference.serializer().descriptor, isOptional = true)
-    b.element("partOf", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "characteristic",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "hoursOfOperation",
-      listSerialDescriptor(Availability.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "virtualService",
-      listSerialDescriptor(VirtualServiceDetail.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "endpoint",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("operationalStatus", CodingSerializer.descriptor)
+    b.optionalElement("name", KotlinString.serializer().descriptor)
+    b.optionalElement("_name", ElementSerializer.descriptor)
+    b.optionalElement("alias", stringNullableListSerializer.descriptor)
+    b.optionalElement("_alias", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("description", KotlinString.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("mode", KotlinString.serializer().descriptor)
+    b.optionalElement("_mode", ElementSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("contact", ExtendedContactDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("address", AddressSerializer.descriptor)
+    b.optionalElement("form", CodeableConceptSerializer.descriptor)
+    b.optionalElement("position", LocationPositionSerializer.descriptor)
+    b.optionalElement("managingOrganization", ReferenceSerializer.descriptor)
+    b.optionalElement("partOf", ReferenceSerializer.descriptor)
+    b.optionalElement("characteristic", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("hoursOfOperation", AvailabilitySerializer.listSerializer.descriptor)
+    b.optionalElement("virtualService", VirtualServiceDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("endpoint", ReferenceSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -500,18 +420,23 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      status = Enumeration.of(status?.let { Location.LocationStatus.fromCode(it) }, _status),
+      status =
+        Enumeration.of(
+          if (status != null) Location.LocationStatus.fromCode(status) else null,
+          _status,
+        ),
       operationalStatus = operationalStatus,
       name = R5String.of(name, _name),
       alias =
         (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
-          R5String.of(alias?.getOrNull(index)?.let { it }, _alias?.getOrNull(index))
+          R5String.of(alias?.getOrNull(index), _alias?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'alias' on Location has neither a value nor an id/extension"
             )
         }),
       description = Markdown.of(description, _description),
-      mode = Enumeration.of(mode?.let { Location.LocationMode.fromCode(it) }, _mode),
+      mode =
+        Enumeration.of(if (mode != null) Location.LocationMode.fromCode(mode) else null, _mode),
       type = type ?: listOf(),
       contact = contact ?: listOf(),
       address = address,
@@ -532,25 +457,23 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
     descriptorOffset: Int,
     `value`: Location,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -579,49 +502,29 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.operationalStatus)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, CodingSerializer, it)
-    }
-    ((value.name?.value))?.let {
-      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-    }
-    (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.alias.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      CodingSerializer,
+      value.operationalStatus,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.name?.value)
+    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.name)
+    if (value.alias.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         16 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.alias.map { it.value },
       )
+      encoder.encodePrimitiveElementList(descriptor, 17 + descriptorOffset, value.alias)
     }
-    (value.alias.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
-    }
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.mode?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
-    }
-    (value.mode?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.description)
+    encoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.mode?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.mode)
     if (value.type.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -636,31 +539,36 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
         ExtendedContactDetailSerializer.listSerializer,
         value.contact,
       )
-    (value.address)?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, AddressSerializer, it)
-    }
-    (value.form)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.position)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        LocationPositionSerializer,
-        it,
-      )
-    }
-    (value.managingOrganization)?.let {
-      encoder.encodeSerializableElement(descriptor, 27 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.partOf)?.let {
-      encoder.encodeSerializableElement(descriptor, 28 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      24 + descriptorOffset,
+      AddressSerializer,
+      value.address,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      25 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.form,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      26 + descriptorOffset,
+      LocationPositionSerializer,
+      value.position,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      27 + descriptorOffset,
+      ReferenceSerializer,
+      value.managingOrganization,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      28 + descriptorOffset,
+      ReferenceSerializer,
+      value.partOf,
+    )
     if (value.characteristic.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

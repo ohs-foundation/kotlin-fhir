@@ -55,43 +55,30 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ResearchSubject")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("period", Period.serializer().descriptor, isOptional = true)
-    b.element("study", Reference.serializer().descriptor, isOptional = true)
-    b.element("individual", Reference.serializer().descriptor, isOptional = true)
-    b.element("assignedArm", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_assignedArm", Element.serializer().descriptor, isOptional = true)
-    b.element("actualArm", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_actualArm", Element.serializer().descriptor, isOptional = true)
-    b.element("consent", Reference.serializer().descriptor, isOptional = true)
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("period", PeriodSerializer.descriptor)
+    b.optionalElement("study", ReferenceSerializer.descriptor)
+    b.optionalElement("individual", ReferenceSerializer.descriptor)
+    b.optionalElement("assignedArm", KotlinString.serializer().descriptor)
+    b.optionalElement("_assignedArm", ElementSerializer.descriptor)
+    b.optionalElement("actualArm", KotlinString.serializer().descriptor)
+    b.optionalElement("_actualArm", ElementSerializer.descriptor)
+    b.optionalElement("consent", ReferenceSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -206,8 +193,10 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(status?.let { ResearchSubject.ResearchSubjectStatus.fromCode(it) }, _status)
-          ?: throw SerializationException("Missing required property 'status' on ResearchSubject"),
+        Enumeration.of(
+          if (status != null) ResearchSubject.ResearchSubjectStatus.fromCode(status) else null,
+          _status,
+        ) ?: throw SerializationException("Missing required property 'status' on ResearchSubject"),
       period = period,
       study =
         study
@@ -229,25 +218,23 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
     descriptorOffset: Int,
     `value`: ResearchSubject,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -276,15 +263,14 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.period)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, PeriodSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      PeriodSerializer,
+      value.period,
+    )
     encoder.encodeSerializableElement(
       descriptor,
       14 + descriptorOffset,
@@ -297,20 +283,15 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
       ReferenceSerializer,
       value.individual,
     )
-    ((value.assignedArm?.value))?.let {
-      encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
-    }
-    (value.assignedArm?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.actualArm?.value))?.let {
-      encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
-    }
-    (value.actualArm?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.consent)?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 16 + descriptorOffset, value.assignedArm?.value)
+    encoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.assignedArm)
+    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.actualArm?.value)
+    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.actualArm)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      20 + descriptorOffset,
+      ReferenceSerializer,
+      value.consent,
+    )
   }
 }

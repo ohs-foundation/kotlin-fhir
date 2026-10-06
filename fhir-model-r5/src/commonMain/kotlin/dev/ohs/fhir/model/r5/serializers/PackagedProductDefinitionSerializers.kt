@@ -74,19 +74,11 @@ internal object PackagedProductDefinitionLegalStatusOfSupplySerializer :
   KSerializer<PackagedProductDefinition.LegalStatusOfSupply> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("LegalStatusOfSupply") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("jurisdiction", CodeableConcept.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("code", CodeableConceptSerializer.descriptor)
+      optionalElement("jurisdiction", CodeableConceptSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PackagedProductDefinition.LegalStatusOfSupply>> =
@@ -94,95 +86,68 @@ internal object PackagedProductDefinitionLegalStatusOfSupplySerializer :
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition.LegalStatusOfSupply =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var code: CodeableConcept? = null
+      var jurisdiction: CodeableConcept? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            code = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            jurisdiction =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else ->
+            throw SerializationException("Unexpected index decoding LegalStatusOfSupply: " + i)
+        }
+      }
+      PackagedProductDefinition.LegalStatusOfSupply(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        code = code,
+        jurisdiction = jurisdiction,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PackagedProductDefinition.LegalStatusOfSupply) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): PackagedProductDefinition.LegalStatusOfSupply {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var code: CodeableConcept? = null
-    var jurisdiction: CodeableConcept? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          code =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          jurisdiction =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding LegalStatusOfSupply: " + i)
-      }
-    }
-    return PackagedProductDefinition.LegalStatusOfSupply(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code = code,
-      jurisdiction = jurisdiction,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: PackagedProductDefinition.LegalStatusOfSupply,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.code)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    (value.jurisdiction)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.code)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.jurisdiction)
     }
   }
 }
@@ -191,69 +156,32 @@ internal object PackagedProductDefinitionPackagingSerializer :
   KSerializer<PackagedProductDefinition.Packaging> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Packaging") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("componentPart", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_componentPart", Element.serializer().descriptor, isOptional = true)
-      element("quantity", Int.serializer().descriptor, isOptional = true)
-      element("_quantity", Element.serializer().descriptor, isOptional = true)
-      element(
-        "material",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "alternateMaterial",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "shelfLifeStorage",
-        listSerialDescriptor(ProductShelfLife.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "manufacturer",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("componentPart", KotlinBoolean.serializer().descriptor)
+      optionalElement("_componentPart", ElementSerializer.descriptor)
+      optionalElement("quantity", Int.serializer().descriptor)
+      optionalElement("_quantity", ElementSerializer.descriptor)
+      optionalElement("material", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("alternateMaterial", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("shelfLifeStorage", ProductShelfLifeSerializer.listSerializer.descriptor)
+      optionalElement("manufacturer", ReferenceSerializer.listSerializer.descriptor)
+      optionalElement(
         "property",
-        listSerialDescriptor(
-          lazyDescriptor { PackagedProductDefinition.Packaging.Property.serializer().descriptor }
-        ),
-        isOptional = true,
+        PackagedProductDefinitionPackagingPropertySerializer.listSerializer.descriptor,
       )
-      element(
+      optionalElement(
         "containedItem",
-        listSerialDescriptor(
-          lazyDescriptor {
-            PackagedProductDefinition.Packaging.ContainedItem.serializer().descriptor
-          }
-        ),
-        isOptional = true,
+        PackagedProductDefinitionPackagingContainedItemSerializer.listSerializer.descriptor,
       )
-      element(
+      optionalElement(
         "packaging",
         listSerialDescriptor(
-          lazyDescriptor { PackagedProductDefinition.Packaging.serializer().descriptor }
+          lazyDescriptor { PackagedProductDefinitionPackagingSerializer.descriptor }
         ),
-        isOptional = true,
       )
     }
 
@@ -262,239 +190,214 @@ internal object PackagedProductDefinitionPackagingSerializer :
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition.Packaging =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var identifier: List<Identifier>? = null
+      var type: CodeableConcept? = null
+      var componentPart: KotlinBoolean? = null
+      var _componentPart: Element? = null
+      var quantity: Int? = null
+      var _quantity: Element? = null
+      var material: List<CodeableConcept>? = null
+      var alternateMaterial: List<CodeableConcept>? = null
+      var shelfLifeStorage: List<ProductShelfLife>? = null
+      var manufacturer: List<Reference>? = null
+      var `property`: List<PackagedProductDefinition.Packaging.Property>? = null
+      var containedItem: List<PackagedProductDefinition.Packaging.ContainedItem>? = null
+      var packaging: List<PackagedProductDefinition.Packaging>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            identifier =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                IdentifierSerializer.listSerializer,
+                null,
+              )
+          4 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 -> componentPart = decodeBooleanElement(descriptor, i)
+          6 ->
+            _componentPart =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> quantity = decodeIntElement(descriptor, i)
+          8 -> _quantity = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 ->
+            material =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          10 ->
+            alternateMaterial =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          11 ->
+            shelfLifeStorage =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ProductShelfLifeSerializer.listSerializer,
+                null,
+              )
+          12 ->
+            manufacturer =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          13 ->
+            `property` =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                PackagedProductDefinitionPackagingPropertySerializer.listSerializer,
+                null,
+              )
+          14 ->
+            containedItem =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                PackagedProductDefinitionPackagingContainedItemSerializer.listSerializer,
+                null,
+              )
+          15 ->
+            packaging =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                PackagedProductDefinitionPackagingSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Packaging: " + i)
+        }
+      }
+      PackagedProductDefinition.Packaging(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        identifier = identifier ?: listOf(),
+        type = type,
+        componentPart = R5Boolean.of(componentPart, _componentPart),
+        quantity = Integer.of(quantity, _quantity),
+        material = material ?: listOf(),
+        alternateMaterial = alternateMaterial ?: listOf(),
+        shelfLifeStorage = shelfLifeStorage ?: listOf(),
+        manufacturer = manufacturer ?: listOf(),
+        `property` = `property` ?: listOf(),
+        containedItem = containedItem ?: listOf(),
+        packaging = packaging ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PackagedProductDefinition.Packaging) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      if (value.identifier.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          3,
+          IdentifierSerializer.listSerializer,
+          value.identifier,
+        )
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.type)
+      encodeBooleanIfNotNull(descriptor, 5, value.componentPart?.value)
+      encodeElementIfNotNull(descriptor, 6, value.componentPart)
+      encodeIntIfNotNull(descriptor, 7, value.quantity?.value)
+      encodeElementIfNotNull(descriptor, 8, value.quantity)
+      if (value.material.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          9,
+          CodeableConceptSerializer.listSerializer,
+          value.material,
+        )
+      if (value.alternateMaterial.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          10,
+          CodeableConceptSerializer.listSerializer,
+          value.alternateMaterial,
+        )
+      if (value.shelfLifeStorage.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          11,
+          ProductShelfLifeSerializer.listSerializer,
+          value.shelfLifeStorage,
+        )
+      if (value.manufacturer.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          12,
+          ReferenceSerializer.listSerializer,
+          value.manufacturer,
+        )
+      if (value.`property`.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          13,
+          PackagedProductDefinitionPackagingPropertySerializer.listSerializer,
+          value.`property`,
+        )
+      if (value.containedItem.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          14,
+          PackagedProductDefinitionPackagingContainedItemSerializer.listSerializer,
+          value.containedItem,
+        )
+      if (value.packaging.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          15,
+          PackagedProductDefinitionPackagingSerializer.listSerializer,
+          value.packaging,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PackagedProductDefinition.Packaging {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var identifier: List<Identifier>? = null
-    var type: CodeableConcept? = null
-    var componentPart: KotlinBoolean? = null
-    var _componentPart: Element? = null
-    var quantity: Int? = null
-    var _quantity: Element? = null
-    var material: List<CodeableConcept>? = null
-    var alternateMaterial: List<CodeableConcept>? = null
-    var shelfLifeStorage: List<ProductShelfLife>? = null
-    var manufacturer: List<Reference>? = null
-    var `property`: List<PackagedProductDefinition.Packaging.Property>? = null
-    var containedItem: List<PackagedProductDefinition.Packaging.ContainedItem>? = null
-    var packaging: List<PackagedProductDefinition.Packaging>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          identifier =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              IdentifierSerializer.listSerializer,
-              null,
-            )
-        4 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 -> componentPart = decoder.decodeBooleanElement(descriptor, i)
-        6 ->
-          _componentPart =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> quantity = decoder.decodeIntElement(descriptor, i)
-        8 ->
-          _quantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 ->
-          material =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        10 ->
-          alternateMaterial =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        11 ->
-          shelfLifeStorage =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ProductShelfLifeSerializer.listSerializer,
-              null,
-            )
-        12 ->
-          manufacturer =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        13 ->
-          `property` =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              PackagedProductDefinitionPackagingPropertySerializer.listSerializer,
-              null,
-            )
-        14 ->
-          containedItem =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              PackagedProductDefinitionPackagingContainedItemSerializer.listSerializer,
-              null,
-            )
-        15 ->
-          packaging =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              PackagedProductDefinitionPackagingSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Packaging: " + i)
-      }
-    }
-    return PackagedProductDefinition.Packaging(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      type = type,
-      componentPart = R5Boolean.of(componentPart, _componentPart),
-      quantity = Integer.of(quantity, _quantity),
-      material = material ?: listOf(),
-      alternateMaterial = alternateMaterial ?: listOf(),
-      shelfLifeStorage = shelfLifeStorage ?: listOf(),
-      manufacturer = manufacturer ?: listOf(),
-      `property` = `property` ?: listOf(),
-      containedItem = containedItem ?: listOf(),
-      packaging = packaging ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: PackagedProductDefinition.Packaging,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        3,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
-    }
-    ((value.componentPart?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
-    (value.componentPart?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.quantity?.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
-    (value.quantity?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    if (value.material.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        9,
-        CodeableConceptSerializer.listSerializer,
-        value.material,
-      )
-    if (value.alternateMaterial.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        10,
-        CodeableConceptSerializer.listSerializer,
-        value.alternateMaterial,
-      )
-    if (value.shelfLifeStorage.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        11,
-        ProductShelfLifeSerializer.listSerializer,
-        value.shelfLifeStorage,
-      )
-    if (value.manufacturer.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        12,
-        ReferenceSerializer.listSerializer,
-        value.manufacturer,
-      )
-    if (value.`property`.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        13,
-        PackagedProductDefinitionPackagingPropertySerializer.listSerializer,
-        value.`property`,
-      )
-    if (value.containedItem.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        14,
-        PackagedProductDefinitionPackagingContainedItemSerializer.listSerializer,
-        value.containedItem,
-      )
-    if (value.packaging.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        15,
-        PackagedProductDefinitionPackagingSerializer.listSerializer,
-        value.packaging,
-      )
   }
 }
 
@@ -502,25 +405,17 @@ internal object PackagedProductDefinitionPackagingPropertySerializer :
   KSerializer<PackagedProductDefinition.Packaging.Property> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Property") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("valueCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("valueQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("valueDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueDate", Element.serializer().descriptor, isOptional = true)
-      element("valueBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
-      element("valueAttachment", Attachment.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("valueQuantity", QuantitySerializer.descriptor)
+      optionalElement("valueDate", KotlinString.serializer().descriptor)
+      optionalElement("_valueDate", ElementSerializer.descriptor)
+      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
+      optionalElement("_valueBoolean", ElementSerializer.descriptor)
+      optionalElement("valueAttachment", AttachmentSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PackagedProductDefinition.Packaging.Property>> =
@@ -528,144 +423,115 @@ internal object PackagedProductDefinitionPackagingPropertySerializer :
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition.Packaging.Property =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: CodeableConcept? = null
+      var valueCodeableConcept: CodeableConcept? = null
+      var valueQuantity: Quantity? = null
+      var valueDate: KotlinString? = null
+      var _valueDate: Element? = null
+      var valueBoolean: KotlinBoolean? = null
+      var _valueBoolean: Element? = null
+      var valueAttachment: Attachment? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            valueCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            valueQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          6 -> valueDate = decodeStringElement(descriptor, i)
+          7 ->
+            _valueDate = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 -> valueBoolean = decodeBooleanElement(descriptor, i)
+          9 ->
+            _valueBoolean =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          10 ->
+            valueAttachment =
+              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Property: " + i)
+        }
+      }
+      PackagedProductDefinition.Packaging.Property(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type =
+          type
+            ?: throw SerializationException(
+              "Missing required property 'type' on PackagedProductDefinition.Packaging.Property"
+            ),
+        `value` =
+          PackagedProductDefinition.Packaging.Property.Value.from(
+            valueCodeableConcept,
+            valueQuantity,
+            Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
+            R5Boolean.of(valueBoolean, _valueBoolean),
+            valueAttachment,
+          ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PackagedProductDefinition.Packaging.Property) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): PackagedProductDefinition.Packaging.Property {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: CodeableConcept? = null
-    var valueCodeableConcept: CodeableConcept? = null
-    var valueQuantity: Quantity? = null
-    var valueDate: KotlinString? = null
-    var _valueDate: Element? = null
-    var valueBoolean: KotlinBoolean? = null
-    var _valueBoolean: Element? = null
-    var valueAttachment: Attachment? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          valueCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          valueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        6 -> valueDate = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _valueDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
-        9 ->
-          _valueBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        10 ->
-          valueAttachment =
-            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Property: " + i)
-      }
-    }
-    return PackagedProductDefinition.Packaging.Property(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on PackagedProductDefinition.Packaging.Property"
-          ),
-      `value` =
-        PackagedProductDefinition.Packaging.Property.Value.from(
-          valueCodeableConcept,
-          valueQuantity,
-          Date.of(valueDate?.let { FhirDate.fromString(it) }, _valueDate),
-          R5Boolean.of(valueBoolean, _valueBoolean),
-          valueAttachment,
-        ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: PackagedProductDefinition.Packaging.Property,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
-    when (val choice = value.`value`) {
-      null -> {}
-      is PackagedProductDefinition.Packaging.Property.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
-      }
-      is PackagedProductDefinition.Packaging.Property.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 5, QuantitySerializer, choice.value)
-      }
-      is PackagedProductDefinition.Packaging.Property.Value.Date -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
+      when (val choice = value.`value`) {
+        null -> {}
+        is PackagedProductDefinition.Packaging.Property.Value.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
         }
-      }
-      is PackagedProductDefinition.Packaging.Property.Value.Boolean -> {
-        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
+        is PackagedProductDefinition.Packaging.Property.Value.Quantity -> {
+          encodeSerializableElement(descriptor, 5, QuantitySerializer, choice.value)
         }
-      }
-      is PackagedProductDefinition.Packaging.Property.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 10, AttachmentSerializer, choice.value)
+        is PackagedProductDefinition.Packaging.Property.Value.Date -> {
+          encodeStringIfNotNull(descriptor, 6, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 7, choice.value)
+        }
+        is PackagedProductDefinition.Packaging.Property.Value.Boolean -> {
+          encodeBooleanIfNotNull(descriptor, 8, choice.value.value)
+          encodeElementIfNotNull(descriptor, 9, choice.value)
+        }
+        is PackagedProductDefinition.Packaging.Property.Value.Attachment -> {
+          encodeSerializableElement(descriptor, 10, AttachmentSerializer, choice.value)
+        }
       }
     }
   }
@@ -675,19 +541,11 @@ internal object PackagedProductDefinitionPackagingContainedItemSerializer :
   KSerializer<PackagedProductDefinition.Packaging.ContainedItem> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ContainedItem") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("item", CodeableReference.serializer().descriptor, isOptional = true)
-      element("amount", Quantity.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("item", CodeableReferenceSerializer.descriptor)
+      optionalElement("amount", QuantitySerializer.descriptor)
     }
 
   internal val listSerializer:
@@ -696,7 +554,49 @@ internal object PackagedProductDefinitionPackagingContainedItemSerializer :
 
   override fun deserialize(decoder: Decoder): PackagedProductDefinition.Packaging.ContainedItem =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var item: CodeableReference? = null
+      var amount: Quantity? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            item =
+              decodeNullableSerializableElement(descriptor, i, CodeableReferenceSerializer, null)
+          4 -> amount = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding ContainedItem: " + i)
+        }
+      }
+      PackagedProductDefinition.Packaging.ContainedItem(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        item =
+          item
+            ?: throw SerializationException(
+              "Missing required property 'item' on PackagedProductDefinition.Packaging.ContainedItem"
+            ),
+        amount = amount,
+      )
     }
 
   override fun serialize(
@@ -704,86 +604,24 @@ internal object PackagedProductDefinitionPackagingContainedItemSerializer :
     `value`: PackagedProductDefinition.Packaging.ContainedItem,
   ) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(descriptor, 3, CodeableReferenceSerializer, value.item)
+      encodeSerializableIfNotNull(descriptor, 4, QuantitySerializer, value.amount)
     }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): PackagedProductDefinition.Packaging.ContainedItem {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var item: CodeableReference? = null
-    var amount: Quantity? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          item =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableReferenceSerializer,
-              null,
-            )
-        4 ->
-          amount =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ContainedItem: " + i)
-      }
-    }
-    return PackagedProductDefinition.Packaging.ContainedItem(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      item =
-        item
-          ?: throw SerializationException(
-            "Missing required property 'item' on PackagedProductDefinition.Packaging.ContainedItem"
-          ),
-      amount = amount,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: PackagedProductDefinition.Packaging.ContainedItem,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(descriptor, 3, CodeableReferenceSerializer, value.item)
-    (value.amount)?.let { encoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, it) }
   }
 }
 
@@ -792,86 +630,43 @@ internal object PackagedProductDefinitionSerializer :
   override val descriptor: SerialDescriptor = buildResourceDescriptor("PackagedProductDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("name", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_name", Element.serializer().descriptor, isOptional = true)
-    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "packageFor",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("statusDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_statusDate", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "containedItemQuantity",
-      listSerialDescriptor(Quantity.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("name", KotlinString.serializer().descriptor)
+    b.optionalElement("_name", ElementSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("packageFor", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("status", CodeableConceptSerializer.descriptor)
+    b.optionalElement("statusDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_statusDate", ElementSerializer.descriptor)
+    b.optionalElement("containedItemQuantity", QuantitySerializer.listSerializer.descriptor)
+    b.optionalElement("description", KotlinString.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement(
       "legalStatusOfSupply",
-      listSerialDescriptor(
-        lazyDescriptor { PackagedProductDefinition.LegalStatusOfSupply.serializer().descriptor }
-      ),
-      isOptional = true,
+      PackagedProductDefinitionLegalStatusOfSupplySerializer.listSerializer.descriptor,
     )
-    b.element(
-      "marketingStatus",
-      listSerialDescriptor(MarketingStatus.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("copackagedIndicator", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_copackagedIndicator", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "manufacturer",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "attachedDocument",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "packaging",
-      lazyDescriptor { PackagedProductDefinition.Packaging.serializer().descriptor },
-      isOptional = true,
-    )
-    b.element(
+    b.optionalElement("marketingStatus", MarketingStatusSerializer.listSerializer.descriptor)
+    b.optionalElement("copackagedIndicator", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_copackagedIndicator", ElementSerializer.descriptor)
+    b.optionalElement("manufacturer", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("attachedDocument", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("packaging", PackagedProductDefinitionPackagingSerializer.descriptor)
+    b.optionalElement(
       "characteristic",
-      listSerialDescriptor(
-        lazyDescriptor { PackagedProductDefinition.Packaging.Property.serializer().descriptor }
-      ),
-      isOptional = true,
+      PackagedProductDefinitionPackagingPropertySerializer.listSerializer.descriptor,
     )
   }
 
@@ -1071,7 +866,11 @@ internal object PackagedProductDefinitionSerializer :
       type = type,
       packageFor = packageFor ?: listOf(),
       status = status,
-      statusDate = DateTime.of(statusDate?.let { FhirDateTime.fromString(it) }, _statusDate),
+      statusDate =
+        DateTime.of(
+          if (statusDate != null) FhirDateTime.fromString(statusDate) else null,
+          _statusDate,
+        ),
       containedItemQuantity = containedItemQuantity ?: listOf(),
       description = Markdown.of(description, _description),
       legalStatusOfSupply = legalStatusOfSupply ?: listOf(),
@@ -1090,25 +889,23 @@ internal object PackagedProductDefinitionSerializer :
     descriptorOffset: Int,
     `value`: PackagedProductDefinition,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1137,20 +934,14 @@ internal object PackagedProductDefinitionSerializer :
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.name?.value))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.name?.value)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.name)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.type,
+    )
     if (value.packageFor.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1158,20 +949,18 @@ internal object PackagedProductDefinitionSerializer :
         ReferenceSerializer.listSerializer,
         value.packageFor,
       )
-    (value.status)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    ((value.statusDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
-    }
-    (value.statusDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.status,
+    )
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      16 + descriptorOffset,
+      value.statusDate?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.statusDate)
     if (value.containedItemQuantity.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1179,12 +968,8 @@ internal object PackagedProductDefinitionSerializer :
         QuantitySerializer.listSerializer,
         value.containedItemQuantity,
       )
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 19 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.description)
     if (value.legalStatusOfSupply.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1199,12 +984,12 @@ internal object PackagedProductDefinitionSerializer :
         MarketingStatusSerializer.listSerializer,
         value.marketingStatus,
       )
-    ((value.copackagedIndicator?.value))?.let {
-      encoder.encodeBooleanElement(descriptor, 23 + descriptorOffset, it)
-    }
-    (value.copackagedIndicator?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeBooleanIfNotNull(
+      descriptor,
+      23 + descriptorOffset,
+      value.copackagedIndicator?.value,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.copackagedIndicator)
     if (value.manufacturer.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1219,14 +1004,12 @@ internal object PackagedProductDefinitionSerializer :
         ReferenceSerializer.listSerializer,
         value.attachedDocument,
       )
-    (value.packaging)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        PackagedProductDefinitionPackagingSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      27 + descriptorOffset,
+      PackagedProductDefinitionPackagingSerializer,
+      value.packaging,
+    )
     if (value.characteristic.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

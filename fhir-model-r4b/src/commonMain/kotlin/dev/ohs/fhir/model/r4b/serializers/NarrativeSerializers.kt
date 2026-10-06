@@ -38,9 +38,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -49,90 +47,73 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object NarrativeSerializer : KSerializer<Narrative> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Narrative") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", String.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("div", String.serializer().descriptor, isOptional = true)
-      element("_div", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("status", String.serializer().descriptor)
+      optionalElement("_status", ElementSerializer.descriptor)
+      optionalElement("div", String.serializer().descriptor)
+      optionalElement("_div", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Narrative>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Narrative =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var status: String? = null
+      var _status: Element? = null
+      var div: String? = null
+      var _div: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> status = decodeStringElement(descriptor, i)
+          3 -> _status = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> div = decodeStringElement(descriptor, i)
+          5 -> _div = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Narrative: " + i)
+        }
+      }
+      Narrative(
+        id = id,
+        extension = extension ?: listOf(),
+        status =
+          Enumeration.of(
+            if (status != null) Narrative.NarrativeStatus.fromCode(status) else null,
+            _status,
+          ) ?: throw SerializationException("Missing required property 'status' on Narrative"),
+        div =
+          Xhtml.of(
+            div ?: throw SerializationException("Missing required property 'div' on Narrative"),
+            _div,
+          ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Narrative) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Narrative {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var status: String? = null
-    var _status: Element? = null
-    var div: String? = null
-    var _div: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> status = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> div = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _div = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Narrative: " + i)
-      }
-    }
-    return Narrative(
-      id = id,
-      extension = extension ?: listOf(),
-      status =
-        Enumeration.of(status?.let { Narrative.NarrativeStatus.fromCode(it) }, _status)
-          ?: throw SerializationException("Missing required property 'status' on Narrative"),
-      div =
-        Xhtml.of(
-          div ?: throw SerializationException("Missing required property 'div' on Narrative"),
-          _div,
-        ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Narrative) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    encoder.encodeStringElement(descriptor, 4, (value.div.value))
-    (value.div.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.status.value?.code)
+      encodeElementIfNotNull(descriptor, 3, value.status)
+      encodeStringElement(descriptor, 4, value.div.value)
+      encodeElementIfNotNull(descriptor, 5, value.div)
     }
   }
 }

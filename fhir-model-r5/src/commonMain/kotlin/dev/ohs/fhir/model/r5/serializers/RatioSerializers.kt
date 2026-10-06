@@ -36,9 +36,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -47,77 +45,59 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object RatioSerializer : KSerializer<Ratio> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Ratio") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("numerator", lazyDescriptor { Quantity.serializer().descriptor }, isOptional = true)
-      element("denominator", lazyDescriptor { Quantity.serializer().descriptor }, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("numerator", QuantitySerializer.descriptor)
+      optionalElement("denominator", QuantitySerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Ratio>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Ratio =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var numerator: Quantity? = null
+      var denominator: Quantity? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            numerator = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          3 ->
+            denominator = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Ratio: " + i)
+        }
+      }
+      Ratio(
+        id = id,
+        extension = extension ?: listOf(),
+        numerator = numerator,
+        denominator = denominator,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Ratio) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Ratio {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var numerator: Quantity? = null
-    var denominator: Quantity? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          numerator =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        3 ->
-          denominator =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Ratio: " + i)
-      }
-    }
-    return Ratio(
-      id = id,
-      extension = extension ?: listOf(),
-      numerator = numerator,
-      denominator = denominator,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Ratio) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    (value.numerator)?.let {
-      encoder.encodeSerializableElement(descriptor, 2, QuantitySerializer, it)
-    }
-    (value.denominator)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, QuantitySerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeSerializableIfNotNull(descriptor, 2, QuantitySerializer, value.numerator)
+      encodeSerializableIfNotNull(descriptor, 3, QuantitySerializer, value.denominator)
     }
   }
 }

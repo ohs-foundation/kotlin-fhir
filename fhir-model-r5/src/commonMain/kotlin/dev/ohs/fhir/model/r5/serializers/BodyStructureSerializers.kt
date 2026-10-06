@@ -66,38 +66,17 @@ internal object BodyStructureIncludedStructureSerializer :
   KSerializer<BodyStructure.IncludedStructure> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("IncludedStructure") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("structure", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("laterality", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("structure", CodeableConceptSerializer.descriptor)
+      optionalElement("laterality", CodeableConceptSerializer.descriptor)
+      optionalElement(
         "bodyLandmarkOrientation",
-        listSerialDescriptor(
-          lazyDescriptor {
-            BodyStructure.IncludedStructure.BodyLandmarkOrientation.serializer().descriptor
-          }
-        ),
-        isOptional = true,
+        BodyStructureIncludedStructureBodyLandmarkOrientationSerializer.listSerializer.descriptor,
       )
-      element(
-        "spatialReference",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "qualifier",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
+      optionalElement("spatialReference", ReferenceSerializer.listSerializer.descriptor)
+      optionalElement("qualifier", CodeableConceptSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<BodyStructure.IncludedStructure>> =
@@ -105,148 +84,125 @@ internal object BodyStructureIncludedStructureSerializer :
 
   override fun deserialize(decoder: Decoder): BodyStructure.IncludedStructure =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var structure: CodeableConcept? = null
+      var laterality: CodeableConcept? = null
+      var bodyLandmarkOrientation: List<BodyStructure.IncludedStructure.BodyLandmarkOrientation>? =
+        null
+      var spatialReference: List<Reference>? = null
+      var qualifier: List<CodeableConcept>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            structure =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            laterality =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            bodyLandmarkOrientation =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                BodyStructureIncludedStructureBodyLandmarkOrientationSerializer.listSerializer,
+                null,
+              )
+          6 ->
+            spatialReference =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          7 ->
+            qualifier =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding IncludedStructure: " + i)
+        }
+      }
+      BodyStructure.IncludedStructure(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        structure =
+          structure
+            ?: throw SerializationException(
+              "Missing required property 'structure' on BodyStructure.IncludedStructure"
+            ),
+        laterality = laterality,
+        bodyLandmarkOrientation = bodyLandmarkOrientation ?: listOf(),
+        spatialReference = spatialReference ?: listOf(),
+        qualifier = qualifier ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: BodyStructure.IncludedStructure) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.structure)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.laterality)
+      if (value.bodyLandmarkOrientation.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          5,
+          BodyStructureIncludedStructureBodyLandmarkOrientationSerializer.listSerializer,
+          value.bodyLandmarkOrientation,
+        )
+      if (value.spatialReference.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          6,
+          ReferenceSerializer.listSerializer,
+          value.spatialReference,
+        )
+      if (value.qualifier.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          7,
+          CodeableConceptSerializer.listSerializer,
+          value.qualifier,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): BodyStructure.IncludedStructure {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var structure: CodeableConcept? = null
-    var laterality: CodeableConcept? = null
-    var bodyLandmarkOrientation: List<BodyStructure.IncludedStructure.BodyLandmarkOrientation>? =
-      null
-    var spatialReference: List<Reference>? = null
-    var qualifier: List<CodeableConcept>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          structure =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          laterality =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          bodyLandmarkOrientation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              BodyStructureIncludedStructureBodyLandmarkOrientationSerializer.listSerializer,
-              null,
-            )
-        6 ->
-          spatialReference =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        7 ->
-          qualifier =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding IncludedStructure: " + i)
-      }
-    }
-    return BodyStructure.IncludedStructure(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      structure =
-        structure
-          ?: throw SerializationException(
-            "Missing required property 'structure' on BodyStructure.IncludedStructure"
-          ),
-      laterality = laterality,
-      bodyLandmarkOrientation = bodyLandmarkOrientation ?: listOf(),
-      spatialReference = spatialReference ?: listOf(),
-      qualifier = qualifier ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: BodyStructure.IncludedStructure,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.structure)
-    (value.laterality)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
-    }
-    if (value.bodyLandmarkOrientation.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        5,
-        BodyStructureIncludedStructureBodyLandmarkOrientationSerializer.listSerializer,
-        value.bodyLandmarkOrientation,
-      )
-    if (value.spatialReference.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        6,
-        ReferenceSerializer.listSerializer,
-        value.spatialReference,
-      )
-    if (value.qualifier.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        7,
-        CodeableConceptSerializer.listSerializer,
-        value.qualifier,
-      )
   }
 }
 
@@ -254,43 +210,18 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer 
   KSerializer<BodyStructure.IncludedStructure.BodyLandmarkOrientation> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("BodyLandmarkOrientation") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "landmarkDescription",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "clockFacePosition",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("landmarkDescription", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("clockFacePosition", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement(
         "distanceFromLandmark",
-        listSerialDescriptor(
-          lazyDescriptor {
-            BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark
-              .serializer()
-              .descriptor
-          }
-        ),
-        isOptional = true,
+        BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer
+          .listSerializer
+          .descriptor,
       )
-      element(
-        "surfaceOrientation",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
+      optionalElement("surfaceOrientation", CodeableConceptSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer:
@@ -301,7 +232,81 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer 
     decoder: Decoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var landmarkDescription: List<CodeableConcept>? = null
+      var clockFacePosition: List<CodeableConcept>? = null
+      var distanceFromLandmark:
+        List<BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark>? =
+        null
+      var surfaceOrientation: List<CodeableConcept>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            landmarkDescription =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          4 ->
+            clockFacePosition =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          5 ->
+            distanceFromLandmark =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer
+                  .listSerializer,
+                null,
+              )
+          6 ->
+            surfaceOrientation =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else ->
+            throw SerializationException("Unexpected index decoding BodyLandmarkOrientation: " + i)
+        }
+      }
+      BodyStructure.IncludedStructure.BodyLandmarkOrientation(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        landmarkDescription = landmarkDescription ?: listOf(),
+        clockFacePosition = clockFacePosition ?: listOf(),
+        distanceFromLandmark = distanceFromLandmark ?: listOf(),
+        surfaceOrientation = surfaceOrientation ?: listOf(),
+      )
     }
 
   override fun serialize(
@@ -309,138 +314,51 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer 
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation,
   ) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      if (value.landmarkDescription.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          3,
+          CodeableConceptSerializer.listSerializer,
+          value.landmarkDescription,
+        )
+      if (value.clockFacePosition.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          4,
+          CodeableConceptSerializer.listSerializer,
+          value.clockFacePosition,
+        )
+      if (value.distanceFromLandmark.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          5,
+          BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer
+            .listSerializer,
+          value.distanceFromLandmark,
+        )
+      if (value.surfaceOrientation.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          6,
+          CodeableConceptSerializer.listSerializer,
+          value.surfaceOrientation,
+        )
     }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): BodyStructure.IncludedStructure.BodyLandmarkOrientation {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var landmarkDescription: List<CodeableConcept>? = null
-    var clockFacePosition: List<CodeableConcept>? = null
-    var distanceFromLandmark:
-      List<BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark>? =
-      null
-    var surfaceOrientation: List<CodeableConcept>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          landmarkDescription =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        4 ->
-          clockFacePosition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        5 ->
-          distanceFromLandmark =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer
-                .listSerializer,
-              null,
-            )
-        6 ->
-          surfaceOrientation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding BodyLandmarkOrientation: " + i)
-      }
-    }
-    return BodyStructure.IncludedStructure.BodyLandmarkOrientation(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      landmarkDescription = landmarkDescription ?: listOf(),
-      clockFacePosition = clockFacePosition ?: listOf(),
-      distanceFromLandmark = distanceFromLandmark ?: listOf(),
-      surfaceOrientation = surfaceOrientation ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.landmarkDescription.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableConceptSerializer.listSerializer,
-        value.landmarkDescription,
-      )
-    if (value.clockFacePosition.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.clockFacePosition,
-      )
-    if (value.distanceFromLandmark.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        5,
-        BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer
-          .listSerializer,
-        value.distanceFromLandmark,
-      )
-    if (value.surfaceOrientation.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        6,
-        CodeableConceptSerializer.listSerializer,
-        value.surfaceOrientation,
-      )
   }
 }
 
@@ -448,23 +366,11 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFro
   KSerializer<BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DistanceFromLandmark") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "device",
-        listSerialDescriptor(CodeableReference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("value", listSerialDescriptor(Quantity.serializer().descriptor), isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("device", CodeableReferenceSerializer.listSerializer.descriptor)
+      optionalElement("value", QuantitySerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer:
@@ -477,7 +383,58 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFro
     decoder: Decoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var device: List<CodeableReference>? = null
+      var `value`: List<Quantity>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            device =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableReferenceSerializer.listSerializer,
+                null,
+              )
+          4 ->
+            `value` =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                QuantitySerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else ->
+            throw SerializationException("Unexpected index decoding DistanceFromLandmark: " + i)
+        }
+      }
+      BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        device = device ?: listOf(),
+        `value` = `value` ?: listOf(),
+      )
     }
 
   override fun serialize(
@@ -485,99 +442,31 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFro
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark,
   ) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      if (value.device.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          3,
+          CodeableReferenceSerializer.listSerializer,
+          value.device,
+        )
+      if (value.`value`.isNotEmpty())
+        encodeSerializableElement(descriptor, 4, QuantitySerializer.listSerializer, value.`value`)
     }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var device: List<CodeableReference>? = null
-    var `value`: List<Quantity>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          device =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableReferenceSerializer.listSerializer,
-              null,
-            )
-        4 ->
-          `value` =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              QuantitySerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding DistanceFromLandmark: " + i)
-      }
-    }
-    return BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      device = device ?: listOf(),
-      `value` = `value` ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.device.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableReferenceSerializer.listSerializer,
-        value.device,
-      )
-    if (value.`value`.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        4,
-        QuantitySerializer.listSerializer,
-        value.`value`,
-      )
   }
 }
 
@@ -585,54 +474,35 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
   override val descriptor: SerialDescriptor = buildResourceDescriptor("BodyStructure")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("active", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_active", Element.serializer().descriptor, isOptional = true)
-    b.element("morphology", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("active", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_active", ElementSerializer.descriptor)
+    b.optionalElement("morphology", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
       "includedStructure",
-      listSerialDescriptor(
-        lazyDescriptor { BodyStructure.IncludedStructure.serializer().descriptor }
-      ),
-      isOptional = true,
+      BodyStructureIncludedStructureSerializer.listSerializer.descriptor,
     )
-    b.element(
+    b.optionalElement(
       "excludedStructure",
-      listSerialDescriptor(
-        lazyDescriptor { BodyStructure.IncludedStructure.serializer().descriptor }
-      ),
-      isOptional = true,
+      BodyStructureIncludedStructureSerializer.listSerializer.descriptor,
     )
-    b.element("description", String.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element("image", listSerialDescriptor(Attachment.serializer().descriptor), isOptional = true)
-    b.element("patient", Reference.serializer().descriptor, isOptional = true)
+    b.optionalElement("description", String.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("image", AttachmentSerializer.listSerializer.descriptor)
+    b.optionalElement("patient", ReferenceSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -783,25 +653,23 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
     descriptorOffset: Int,
     `value`: BodyStructure,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -830,20 +698,14 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.active?.value))?.let {
-      encoder.encodeBooleanElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.active?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.morphology)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeBooleanIfNotNull(descriptor, 11 + descriptorOffset, value.active?.value)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.active)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.morphology,
+    )
     if (value.includedStructure.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -858,12 +720,8 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
         BodyStructureIncludedStructureSerializer.listSerializer,
         value.excludedStructure,
       )
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 16 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.description)
     if (value.image.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

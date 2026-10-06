@@ -98,9 +98,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -109,125 +107,103 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefinition.Slicing> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Slicing") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
         "discriminator",
-        listSerialDescriptor(
-          lazyDescriptor { ElementDefinition.Slicing.Discriminator.serializer().descriptor }
-        ),
-        isOptional = true,
+        ElementDefinitionSlicingDiscriminatorSerializer.listSerializer.descriptor,
       )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("ordered", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_ordered", Element.serializer().descriptor, isOptional = true)
-      element("rules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_rules", Element.serializer().descriptor, isOptional = true)
+      optionalElement("description", KotlinString.serializer().descriptor)
+      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("ordered", KotlinBoolean.serializer().descriptor)
+      optionalElement("_ordered", ElementSerializer.descriptor)
+      optionalElement("rules", KotlinString.serializer().descriptor)
+      optionalElement("_rules", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ElementDefinition.Slicing>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Slicing =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var discriminator: List<ElementDefinition.Slicing.Discriminator>? = null
+      var description: KotlinString? = null
+      var _description: Element? = null
+      var ordered: KotlinBoolean? = null
+      var _ordered: Element? = null
+      var rules: KotlinString? = null
+      var _rules: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            discriminator =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementDefinitionSlicingDiscriminatorSerializer.listSerializer,
+                null,
+              )
+          3 -> description = decodeStringElement(descriptor, i)
+          4 ->
+            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> ordered = decodeBooleanElement(descriptor, i)
+          6 -> _ordered = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> rules = decodeStringElement(descriptor, i)
+          8 -> _rules = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Slicing: " + i)
+        }
+      }
+      ElementDefinition.Slicing(
+        id = id,
+        extension = extension ?: listOf(),
+        discriminator = discriminator ?: listOf(),
+        description = R5String.of(description, _description),
+        ordered = R5Boolean.of(ordered, _ordered),
+        rules =
+          Enumeration.of(
+            if (rules != null) ElementDefinition.SlicingRules.fromCode(rules) else null,
+            _rules,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'rules' on ElementDefinition.Slicing"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Slicing) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Slicing {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var discriminator: List<ElementDefinition.Slicing.Discriminator>? = null
-    var description: KotlinString? = null
-    var _description: Element? = null
-    var ordered: KotlinBoolean? = null
-    var _ordered: Element? = null
-    var rules: KotlinString? = null
-    var _rules: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          discriminator =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementDefinitionSlicingDiscriminatorSerializer.listSerializer,
-              null,
-            )
-        3 -> description = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> ordered = decoder.decodeBooleanElement(descriptor, i)
-        6 ->
-          _ordered =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> rules = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _rules = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Slicing: " + i)
-      }
-    }
-    return ElementDefinition.Slicing(
-      id = id,
-      extension = extension ?: listOf(),
-      discriminator = discriminator ?: listOf(),
-      description = R5String.of(description, _description),
-      ordered = R5Boolean.of(ordered, _ordered),
-      rules =
-        Enumeration.of(rules?.let { ElementDefinition.SlicingRules.fromCode(it) }, _rules)
-          ?: throw SerializationException(
-            "Missing required property 'rules' on ElementDefinition.Slicing"
-          ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ElementDefinition.Slicing) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.discriminator.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ElementDefinitionSlicingDiscriminatorSerializer.listSerializer,
-        value.discriminator,
-      )
-    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.ordered?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
-    (value.ordered?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.rules.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.rules.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.discriminator.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ElementDefinitionSlicingDiscriminatorSerializer.listSerializer,
+          value.discriminator,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.description?.value)
+      encodeElementIfNotNull(descriptor, 4, value.description)
+      encodeBooleanIfNotNull(descriptor, 5, value.ordered?.value)
+      encodeElementIfNotNull(descriptor, 6, value.ordered)
+      encodeStringIfNotNull(descriptor, 7, value.rules.value?.code)
+      encodeElementIfNotNull(descriptor, 8, value.rules)
     }
   }
 }
@@ -236,16 +212,12 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
   KSerializer<ElementDefinition.Slicing.Discriminator> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Discriminator") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", Element.serializer().descriptor, isOptional = true)
-      element("path", KotlinString.serializer().descriptor, isOptional = true)
-      element("_path", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", KotlinString.serializer().descriptor)
+      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("path", KotlinString.serializer().descriptor)
+      optionalElement("_path", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ElementDefinition.Slicing.Discriminator>> =
@@ -253,80 +225,64 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Slicing.Discriminator =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var type: KotlinString? = null
+      var _type: Element? = null
+      var path: KotlinString? = null
+      var _path: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> type = decodeStringElement(descriptor, i)
+          3 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> path = decodeStringElement(descriptor, i)
+          5 -> _path = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Discriminator: " + i)
+        }
+      }
+      ElementDefinition.Slicing.Discriminator(
+        id = id,
+        extension = extension ?: listOf(),
+        type =
+          Enumeration.of(
+            if (type != null) ElementDefinition.DiscriminatorType.fromCode(type) else null,
+            _type,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'type' on ElementDefinition.Slicing.Discriminator"
+            ),
+        path =
+          R5String.of(path, _path)
+            ?: throw SerializationException(
+              "Missing required property 'path' on ElementDefinition.Slicing.Discriminator"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Slicing.Discriminator) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): ElementDefinition.Slicing.Discriminator {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var type: KotlinString? = null
-    var _type: Element? = null
-    var path: KotlinString? = null
-    var _path: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> type = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> path = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _path = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Discriminator: " + i)
-      }
-    }
-    return ElementDefinition.Slicing.Discriminator(
-      id = id,
-      extension = extension ?: listOf(),
-      type =
-        Enumeration.of(type?.let { ElementDefinition.DiscriminatorType.fromCode(it) }, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on ElementDefinition.Slicing.Discriminator"
-          ),
-      path =
-        R5String.of(path, _path)
-          ?: throw SerializationException(
-            "Missing required property 'path' on ElementDefinition.Slicing.Discriminator"
-          ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: ElementDefinition.Slicing.Discriminator,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.path.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.path.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
+      encodeElementIfNotNull(descriptor, 3, value.type)
+      encodeStringIfNotNull(descriptor, 4, value.path.value)
+      encodeElementIfNotNull(descriptor, 5, value.path)
     }
   }
 }
@@ -334,107 +290,86 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
 internal object ElementDefinitionBaseSerializer : KSerializer<ElementDefinition.Base> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Base") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("path", KotlinString.serializer().descriptor, isOptional = true)
-      element("_path", Element.serializer().descriptor, isOptional = true)
-      element("min", Int.serializer().descriptor, isOptional = true)
-      element("_min", Element.serializer().descriptor, isOptional = true)
-      element("max", KotlinString.serializer().descriptor, isOptional = true)
-      element("_max", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("path", KotlinString.serializer().descriptor)
+      optionalElement("_path", ElementSerializer.descriptor)
+      optionalElement("min", Int.serializer().descriptor)
+      optionalElement("_min", ElementSerializer.descriptor)
+      optionalElement("max", KotlinString.serializer().descriptor)
+      optionalElement("_max", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ElementDefinition.Base>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Base =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var path: KotlinString? = null
+      var _path: Element? = null
+      var min: Int? = null
+      var _min: Element? = null
+      var max: KotlinString? = null
+      var _max: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> path = decodeStringElement(descriptor, i)
+          3 -> _path = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> min = decodeIntElement(descriptor, i)
+          5 -> _min = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> max = decodeStringElement(descriptor, i)
+          7 -> _max = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Base: " + i)
+        }
+      }
+      ElementDefinition.Base(
+        id = id,
+        extension = extension ?: listOf(),
+        path =
+          R5String.of(path, _path)
+            ?: throw SerializationException(
+              "Missing required property 'path' on ElementDefinition.Base"
+            ),
+        min =
+          UnsignedInt.of(min, _min)
+            ?: throw SerializationException(
+              "Missing required property 'min' on ElementDefinition.Base"
+            ),
+        max =
+          R5String.of(max, _max)
+            ?: throw SerializationException(
+              "Missing required property 'max' on ElementDefinition.Base"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Base) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Base {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var path: KotlinString? = null
-    var _path: Element? = null
-    var min: Int? = null
-    var _min: Element? = null
-    var max: KotlinString? = null
-    var _max: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> path = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _path = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> min = decoder.decodeIntElement(descriptor, i)
-        5 ->
-          _min = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> max = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _max = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Base: " + i)
-      }
-    }
-    return ElementDefinition.Base(
-      id = id,
-      extension = extension ?: listOf(),
-      path =
-        R5String.of(path, _path)
-          ?: throw SerializationException(
-            "Missing required property 'path' on ElementDefinition.Base"
-          ),
-      min =
-        UnsignedInt.of(min, _min)
-          ?: throw SerializationException(
-            "Missing required property 'min' on ElementDefinition.Base"
-          ),
-      max =
-        R5String.of(max, _max)
-          ?: throw SerializationException(
-            "Missing required property 'max' on ElementDefinition.Base"
-          ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ElementDefinition.Base) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.path.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.path.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.min.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
-    (value.min.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    ((value.max.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-    (value.max.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.path.value)
+      encodeElementIfNotNull(descriptor, 3, value.path)
+      encodeIntIfNotNull(descriptor, 4, value.min.value)
+      encodeElementIfNotNull(descriptor, 5, value.min)
+      encodeStringIfNotNull(descriptor, 6, value.max.value)
+      encodeElementIfNotNull(descriptor, 7, value.max)
     }
   }
 }
@@ -442,218 +377,173 @@ internal object ElementDefinitionBaseSerializer : KSerializer<ElementDefinition.
 internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.Type> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Type") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", KotlinString.serializer().descriptor, isOptional = true)
-      element("_code", Element.serializer().descriptor, isOptional = true)
-      element(
-        "profile",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element("_profile", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element(
-        "targetProfile",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_targetProfile",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "aggregation",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_aggregation",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element("versioning", KotlinString.serializer().descriptor, isOptional = true)
-      element("_versioning", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("code", KotlinString.serializer().descriptor)
+      optionalElement("_code", ElementSerializer.descriptor)
+      optionalElement("profile", stringNullableListSerializer.descriptor)
+      optionalElement("_profile", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("targetProfile", stringNullableListSerializer.descriptor)
+      optionalElement("_targetProfile", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("aggregation", stringNullableListSerializer.descriptor)
+      optionalElement("_aggregation", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("versioning", KotlinString.serializer().descriptor)
+      optionalElement("_versioning", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ElementDefinition.Type>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Type =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var code: KotlinString? = null
+      var _code: Element? = null
+      var profile: List<KotlinString?>? = null
+      var _profile: List<Element?>? = null
+      var targetProfile: List<KotlinString?>? = null
+      var _targetProfile: List<Element?>? = null
+      var aggregation: List<KotlinString?>? = null
+      var _aggregation: List<Element?>? = null
+      var versioning: KotlinString? = null
+      var _versioning: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> code = decodeStringElement(descriptor, i)
+          3 -> _code = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 ->
+            profile =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          5 ->
+            _profile =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          6 ->
+            targetProfile =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          7 ->
+            _targetProfile =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          8 ->
+            aggregation =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          9 ->
+            _aggregation =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          10 -> versioning = decodeStringElement(descriptor, i)
+          11 ->
+            _versioning = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Type: " + i)
+        }
+      }
+      ElementDefinition.Type(
+        id = id,
+        extension = extension ?: listOf(),
+        code =
+          Uri.of(code, _code)
+            ?: throw SerializationException(
+              "Missing required property 'code' on ElementDefinition.Type"
+            ),
+        profile =
+          (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
+            Canonical.of(profile?.getOrNull(index), _profile?.getOrNull(index))
+              ?: throw SerializationException(
+                "An entry of 'profile' on ElementDefinition.Type has neither a value nor an id/extension"
+              )
+          }),
+        targetProfile =
+          (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) {
+            index ->
+            Canonical.of(targetProfile?.getOrNull(index), _targetProfile?.getOrNull(index))
+              ?: throw SerializationException(
+                "An entry of 'targetProfile' on ElementDefinition.Type has neither a value nor an id/extension"
+              )
+          }),
+        aggregation =
+          (kotlin.collections.List(maxOf(aggregation?.size ?: 0, _aggregation?.size ?: 0)) { index
+            ->
+            Enumeration.of(
+              aggregation?.getOrNull(index)?.let { ElementDefinition.AggregationMode.fromCode(it) },
+              _aggregation?.getOrNull(index),
+            )
+              ?: throw SerializationException(
+                "An entry of 'aggregation' on ElementDefinition.Type has neither a value nor an id/extension"
+              )
+          }),
+        versioning =
+          Enumeration.of(
+            if (versioning != null) ElementDefinition.ReferenceVersionRules.fromCode(versioning)
+            else null,
+            _versioning,
+          ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Type) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Type {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var code: KotlinString? = null
-    var _code: Element? = null
-    var profile: List<KotlinString?>? = null
-    var _profile: List<Element?>? = null
-    var targetProfile: List<KotlinString?>? = null
-    var _targetProfile: List<Element?>? = null
-    var aggregation: List<KotlinString?>? = null
-    var _aggregation: List<Element?>? = null
-    var versioning: KotlinString? = null
-    var _versioning: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> code = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _code = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 ->
-          profile =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        5 ->
-          _profile =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        6 ->
-          targetProfile =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        7 ->
-          _targetProfile =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        8 ->
-          aggregation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        9 ->
-          _aggregation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        10 -> versioning = decoder.decodeStringElement(descriptor, i)
-        11 ->
-          _versioning =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Type: " + i)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.code.value)
+      encodeElementIfNotNull(descriptor, 3, value.code)
+      if (value.profile.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          4,
+          stringNullableListSerializer,
+          value.profile.map { it.value },
+        )
+        encodePrimitiveElementList(descriptor, 5, value.profile)
       }
-    }
-    return ElementDefinition.Type(
-      id = id,
-      extension = extension ?: listOf(),
-      code =
-        Uri.of(code, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on ElementDefinition.Type"
-          ),
-      profile =
-        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
-          Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'profile' on ElementDefinition.Type has neither a value nor an id/extension"
-            )
-        }),
-      targetProfile =
-        (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { index
-          ->
-          Canonical.of(
-            targetProfile?.getOrNull(index)?.let { it },
-            _targetProfile?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'targetProfile' on ElementDefinition.Type has neither a value nor an id/extension"
-            )
-        }),
-      aggregation =
-        (kotlin.collections.List(maxOf(aggregation?.size ?: 0, _aggregation?.size ?: 0)) { index ->
-          Enumeration.of(
-            aggregation?.getOrNull(index)?.let { ElementDefinition.AggregationMode.fromCode(it) },
-            _aggregation?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'aggregation' on ElementDefinition.Type has neither a value nor an id/extension"
-            )
-        }),
-      versioning =
-        Enumeration.of(
-          versioning?.let { ElementDefinition.ReferenceVersionRules.fromCode(it) },
-          _versioning,
-        ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ElementDefinition.Type) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.code.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.code.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    (value.profile.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 4, stringNullableListSerializer, it)
-    }
-    (value.profile.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer.nullableListSerializer, it)
-    }
-    (value.targetProfile.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 6, stringNullableListSerializer, it)
-    }
-    (value.targetProfile.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer.nullableListSerializer, it)
-    }
-    (value.aggregation.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 8, stringNullableListSerializer, it)
-    }
-    (value.aggregation.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer.nullableListSerializer, it)
-    }
-    ((value.versioning?.value?.code))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-    (value.versioning?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
+      if (value.targetProfile.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          6,
+          stringNullableListSerializer,
+          value.targetProfile.map { it.value },
+        )
+        encodePrimitiveElementList(descriptor, 7, value.targetProfile)
+      }
+      if (value.aggregation.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          8,
+          stringNullableListSerializer,
+          value.aggregation.map { it.value?.code },
+        )
+        encodePrimitiveElementList(descriptor, 9, value.aggregation)
+      }
+      encodeStringIfNotNull(descriptor, 10, value.versioning?.value?.code)
+      encodeElementIfNotNull(descriptor, 11, value.versioning)
     }
   }
 }
@@ -661,755 +551,620 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
 internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefinition.Example> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Example") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("label", KotlinString.serializer().descriptor, isOptional = true)
-      element("_label", Element.serializer().descriptor, isOptional = true)
-      element("valueBase64Binary", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueBase64Binary", Element.serializer().descriptor, isOptional = true)
-      element("valueBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
-      element("valueCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueCanonical", Element.serializer().descriptor, isOptional = true)
-      element("valueCode", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueCode", Element.serializer().descriptor, isOptional = true)
-      element("valueDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueDate", Element.serializer().descriptor, isOptional = true)
-      element("valueDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("valueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_valueDecimal", Element.serializer().descriptor, isOptional = true)
-      element("valueId", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueId", Element.serializer().descriptor, isOptional = true)
-      element("valueInstant", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueInstant", Element.serializer().descriptor, isOptional = true)
-      element("valueInteger", Int.serializer().descriptor, isOptional = true)
-      element("_valueInteger", Element.serializer().descriptor, isOptional = true)
-      element("valueInteger64", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueInteger64", Element.serializer().descriptor, isOptional = true)
-      element("valueMarkdown", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueMarkdown", Element.serializer().descriptor, isOptional = true)
-      element("valueOid", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueOid", Element.serializer().descriptor, isOptional = true)
-      element("valuePositiveInt", Int.serializer().descriptor, isOptional = true)
-      element("_valuePositiveInt", Element.serializer().descriptor, isOptional = true)
-      element("valueString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueString", Element.serializer().descriptor, isOptional = true)
-      element("valueTime", LocalTimeSerializer.descriptor, isOptional = true)
-      element("_valueTime", Element.serializer().descriptor, isOptional = true)
-      element("valueUnsignedInt", Int.serializer().descriptor, isOptional = true)
-      element("_valueUnsignedInt", Element.serializer().descriptor, isOptional = true)
-      element("valueUri", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueUri", Element.serializer().descriptor, isOptional = true)
-      element("valueUrl", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueUrl", Element.serializer().descriptor, isOptional = true)
-      element("valueUuid", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueUuid", Element.serializer().descriptor, isOptional = true)
-      element("valueAddress", Address.serializer().descriptor, isOptional = true)
-      element("valueAge", Age.serializer().descriptor, isOptional = true)
-      element("valueAnnotation", Annotation.serializer().descriptor, isOptional = true)
-      element("valueAttachment", Attachment.serializer().descriptor, isOptional = true)
-      element("valueCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "valueCodeableReference",
-        CodeableReference.serializer().descriptor,
-        isOptional = true,
-      )
-      element("valueCoding", Coding.serializer().descriptor, isOptional = true)
-      element("valueContactPoint", ContactPoint.serializer().descriptor, isOptional = true)
-      element("valueCount", Count.serializer().descriptor, isOptional = true)
-      element("valueDistance", Distance.serializer().descriptor, isOptional = true)
-      element("valueDuration", Duration.serializer().descriptor, isOptional = true)
-      element("valueHumanName", HumanName.serializer().descriptor, isOptional = true)
-      element("valueIdentifier", Identifier.serializer().descriptor, isOptional = true)
-      element("valueMoney", Money.serializer().descriptor, isOptional = true)
-      element("valuePeriod", Period.serializer().descriptor, isOptional = true)
-      element("valueQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("valueRange", Range.serializer().descriptor, isOptional = true)
-      element("valueRatio", Ratio.serializer().descriptor, isOptional = true)
-      element("valueRatioRange", RatioRange.serializer().descriptor, isOptional = true)
-      element("valueReference", Reference.serializer().descriptor, isOptional = true)
-      element("valueSampledData", SampledData.serializer().descriptor, isOptional = true)
-      element("valueSignature", Signature.serializer().descriptor, isOptional = true)
-      element("valueTiming", Timing.serializer().descriptor, isOptional = true)
-      element("valueContactDetail", ContactDetail.serializer().descriptor, isOptional = true)
-      element("valueDataRequirement", DataRequirement.serializer().descriptor, isOptional = true)
-      element("valueExpression", Expression.serializer().descriptor, isOptional = true)
-      element(
-        "valueParameterDefinition",
-        ParameterDefinition.serializer().descriptor,
-        isOptional = true,
-      )
-      element("valueRelatedArtifact", RelatedArtifact.serializer().descriptor, isOptional = true)
-      element(
-        "valueTriggerDefinition",
-        TriggerDefinition.serializer().descriptor,
-        isOptional = true,
-      )
-      element("valueUsageContext", UsageContext.serializer().descriptor, isOptional = true)
-      element("valueAvailability", Availability.serializer().descriptor, isOptional = true)
-      element(
-        "valueExtendedContactDetail",
-        ExtendedContactDetail.serializer().descriptor,
-        isOptional = true,
-      )
-      element("valueDosage", Dosage.serializer().descriptor, isOptional = true)
-      element("valueMeta", Meta.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("label", KotlinString.serializer().descriptor)
+      optionalElement("_label", ElementSerializer.descriptor)
+      optionalElement("valueBase64Binary", KotlinString.serializer().descriptor)
+      optionalElement("_valueBase64Binary", ElementSerializer.descriptor)
+      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
+      optionalElement("_valueBoolean", ElementSerializer.descriptor)
+      optionalElement("valueCanonical", KotlinString.serializer().descriptor)
+      optionalElement("_valueCanonical", ElementSerializer.descriptor)
+      optionalElement("valueCode", KotlinString.serializer().descriptor)
+      optionalElement("_valueCode", ElementSerializer.descriptor)
+      optionalElement("valueDate", KotlinString.serializer().descriptor)
+      optionalElement("_valueDate", ElementSerializer.descriptor)
+      optionalElement("valueDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_valueDateTime", ElementSerializer.descriptor)
+      optionalElement("valueDecimal", FhirDecimalSerializer.descriptor)
+      optionalElement("_valueDecimal", ElementSerializer.descriptor)
+      optionalElement("valueId", KotlinString.serializer().descriptor)
+      optionalElement("_valueId", ElementSerializer.descriptor)
+      optionalElement("valueInstant", KotlinString.serializer().descriptor)
+      optionalElement("_valueInstant", ElementSerializer.descriptor)
+      optionalElement("valueInteger", Int.serializer().descriptor)
+      optionalElement("_valueInteger", ElementSerializer.descriptor)
+      optionalElement("valueInteger64", KotlinString.serializer().descriptor)
+      optionalElement("_valueInteger64", ElementSerializer.descriptor)
+      optionalElement("valueMarkdown", KotlinString.serializer().descriptor)
+      optionalElement("_valueMarkdown", ElementSerializer.descriptor)
+      optionalElement("valueOid", KotlinString.serializer().descriptor)
+      optionalElement("_valueOid", ElementSerializer.descriptor)
+      optionalElement("valuePositiveInt", Int.serializer().descriptor)
+      optionalElement("_valuePositiveInt", ElementSerializer.descriptor)
+      optionalElement("valueString", KotlinString.serializer().descriptor)
+      optionalElement("_valueString", ElementSerializer.descriptor)
+      optionalElement("valueTime", LocalTimeSerializer.descriptor)
+      optionalElement("_valueTime", ElementSerializer.descriptor)
+      optionalElement("valueUnsignedInt", Int.serializer().descriptor)
+      optionalElement("_valueUnsignedInt", ElementSerializer.descriptor)
+      optionalElement("valueUri", KotlinString.serializer().descriptor)
+      optionalElement("_valueUri", ElementSerializer.descriptor)
+      optionalElement("valueUrl", KotlinString.serializer().descriptor)
+      optionalElement("_valueUrl", ElementSerializer.descriptor)
+      optionalElement("valueUuid", KotlinString.serializer().descriptor)
+      optionalElement("_valueUuid", ElementSerializer.descriptor)
+      optionalElement("valueAddress", AddressSerializer.descriptor)
+      optionalElement("valueAge", AgeSerializer.descriptor)
+      optionalElement("valueAnnotation", AnnotationSerializer.descriptor)
+      optionalElement("valueAttachment", AttachmentSerializer.descriptor)
+      optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("valueCodeableReference", CodeableReferenceSerializer.descriptor)
+      optionalElement("valueCoding", CodingSerializer.descriptor)
+      optionalElement("valueContactPoint", ContactPointSerializer.descriptor)
+      optionalElement("valueCount", CountSerializer.descriptor)
+      optionalElement("valueDistance", DistanceSerializer.descriptor)
+      optionalElement("valueDuration", DurationSerializer.descriptor)
+      optionalElement("valueHumanName", HumanNameSerializer.descriptor)
+      optionalElement("valueIdentifier", IdentifierSerializer.descriptor)
+      optionalElement("valueMoney", MoneySerializer.descriptor)
+      optionalElement("valuePeriod", PeriodSerializer.descriptor)
+      optionalElement("valueQuantity", QuantitySerializer.descriptor)
+      optionalElement("valueRange", RangeSerializer.descriptor)
+      optionalElement("valueRatio", RatioSerializer.descriptor)
+      optionalElement("valueRatioRange", RatioRangeSerializer.descriptor)
+      optionalElement("valueReference", ReferenceSerializer.descriptor)
+      optionalElement("valueSampledData", SampledDataSerializer.descriptor)
+      optionalElement("valueSignature", SignatureSerializer.descriptor)
+      optionalElement("valueTiming", TimingSerializer.descriptor)
+      optionalElement("valueContactDetail", ContactDetailSerializer.descriptor)
+      optionalElement("valueDataRequirement", DataRequirementSerializer.descriptor)
+      optionalElement("valueExpression", ExpressionSerializer.descriptor)
+      optionalElement("valueParameterDefinition", ParameterDefinitionSerializer.descriptor)
+      optionalElement("valueRelatedArtifact", RelatedArtifactSerializer.descriptor)
+      optionalElement("valueTriggerDefinition", TriggerDefinitionSerializer.descriptor)
+      optionalElement("valueUsageContext", UsageContextSerializer.descriptor)
+      optionalElement("valueAvailability", AvailabilitySerializer.descriptor)
+      optionalElement("valueExtendedContactDetail", ExtendedContactDetailSerializer.descriptor)
+      optionalElement("valueDosage", DosageSerializer.descriptor)
+      optionalElement("valueMeta", MetaSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ElementDefinition.Example>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Example =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var label: KotlinString? = null
+      var _label: Element? = null
+      var valueBase64Binary: KotlinString? = null
+      var _valueBase64Binary: Element? = null
+      var valueBoolean: KotlinBoolean? = null
+      var _valueBoolean: Element? = null
+      var valueCanonical: KotlinString? = null
+      var _valueCanonical: Element? = null
+      var valueCode: KotlinString? = null
+      var _valueCode: Element? = null
+      var valueDate: KotlinString? = null
+      var _valueDate: Element? = null
+      var valueDateTime: KotlinString? = null
+      var _valueDateTime: Element? = null
+      var valueDecimal: FhirDecimal? = null
+      var _valueDecimal: Element? = null
+      var valueId: KotlinString? = null
+      var _valueId: Element? = null
+      var valueInstant: KotlinString? = null
+      var _valueInstant: Element? = null
+      var valueInteger: Int? = null
+      var _valueInteger: Element? = null
+      var valueInteger64: KotlinString? = null
+      var _valueInteger64: Element? = null
+      var valueMarkdown: KotlinString? = null
+      var _valueMarkdown: Element? = null
+      var valueOid: KotlinString? = null
+      var _valueOid: Element? = null
+      var valuePositiveInt: Int? = null
+      var _valuePositiveInt: Element? = null
+      var valueString: KotlinString? = null
+      var _valueString: Element? = null
+      var valueTime: LocalTime? = null
+      var _valueTime: Element? = null
+      var valueUnsignedInt: Int? = null
+      var _valueUnsignedInt: Element? = null
+      var valueUri: KotlinString? = null
+      var _valueUri: Element? = null
+      var valueUrl: KotlinString? = null
+      var _valueUrl: Element? = null
+      var valueUuid: KotlinString? = null
+      var _valueUuid: Element? = null
+      var valueAddress: Address? = null
+      var valueAge: Age? = null
+      var valueAnnotation: Annotation? = null
+      var valueAttachment: Attachment? = null
+      var valueCodeableConcept: CodeableConcept? = null
+      var valueCodeableReference: CodeableReference? = null
+      var valueCoding: Coding? = null
+      var valueContactPoint: ContactPoint? = null
+      var valueCount: Count? = null
+      var valueDistance: Distance? = null
+      var valueDuration: Duration? = null
+      var valueHumanName: HumanName? = null
+      var valueIdentifier: Identifier? = null
+      var valueMoney: Money? = null
+      var valuePeriod: Period? = null
+      var valueQuantity: Quantity? = null
+      var valueRange: Range? = null
+      var valueRatio: Ratio? = null
+      var valueRatioRange: RatioRange? = null
+      var valueReference: Reference? = null
+      var valueSampledData: SampledData? = null
+      var valueSignature: Signature? = null
+      var valueTiming: Timing? = null
+      var valueContactDetail: ContactDetail? = null
+      var valueDataRequirement: DataRequirement? = null
+      var valueExpression: Expression? = null
+      var valueParameterDefinition: ParameterDefinition? = null
+      var valueRelatedArtifact: RelatedArtifact? = null
+      var valueTriggerDefinition: TriggerDefinition? = null
+      var valueUsageContext: UsageContext? = null
+      var valueAvailability: Availability? = null
+      var valueExtendedContactDetail: ExtendedContactDetail? = null
+      var valueDosage: Dosage? = null
+      var valueMeta: Meta? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> label = decodeStringElement(descriptor, i)
+          3 -> _label = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> valueBase64Binary = decodeStringElement(descriptor, i)
+          5 ->
+            _valueBase64Binary =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> valueBoolean = decodeBooleanElement(descriptor, i)
+          7 ->
+            _valueBoolean =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 -> valueCanonical = decodeStringElement(descriptor, i)
+          9 ->
+            _valueCanonical =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          10 -> valueCode = decodeStringElement(descriptor, i)
+          11 ->
+            _valueCode = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          12 -> valueDate = decodeStringElement(descriptor, i)
+          13 ->
+            _valueDate = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          14 -> valueDateTime = decodeStringElement(descriptor, i)
+          15 ->
+            _valueDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          16 ->
+            valueDecimal =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          17 ->
+            _valueDecimal =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          18 -> valueId = decodeStringElement(descriptor, i)
+          19 -> _valueId = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          20 -> valueInstant = decodeStringElement(descriptor, i)
+          21 ->
+            _valueInstant =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          22 -> valueInteger = decodeIntElement(descriptor, i)
+          23 ->
+            _valueInteger =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          24 -> valueInteger64 = decodeStringElement(descriptor, i)
+          25 ->
+            _valueInteger64 =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          26 -> valueMarkdown = decodeStringElement(descriptor, i)
+          27 ->
+            _valueMarkdown =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          28 -> valueOid = decodeStringElement(descriptor, i)
+          29 ->
+            _valueOid = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          30 -> valuePositiveInt = decodeIntElement(descriptor, i)
+          31 ->
+            _valuePositiveInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          32 -> valueString = decodeStringElement(descriptor, i)
+          33 ->
+            _valueString = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          34 ->
+            valueTime = decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
+          35 ->
+            _valueTime = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          36 -> valueUnsignedInt = decodeIntElement(descriptor, i)
+          37 ->
+            _valueUnsignedInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          38 -> valueUri = decodeStringElement(descriptor, i)
+          39 ->
+            _valueUri = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          40 -> valueUrl = decodeStringElement(descriptor, i)
+          41 ->
+            _valueUrl = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          42 -> valueUuid = decodeStringElement(descriptor, i)
+          43 ->
+            _valueUuid = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          44 ->
+            valueAddress = decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
+          45 -> valueAge = decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
+          46 ->
+            valueAnnotation =
+              decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
+          47 ->
+            valueAttachment =
+              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
+          48 ->
+            valueCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          49 ->
+            valueCodeableReference =
+              decodeNullableSerializableElement(descriptor, i, CodeableReferenceSerializer, null)
+          50 ->
+            valueCoding = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+          51 ->
+            valueContactPoint =
+              decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
+          52 -> valueCount = decodeNullableSerializableElement(descriptor, i, CountSerializer, null)
+          53 ->
+            valueDistance =
+              decodeNullableSerializableElement(descriptor, i, DistanceSerializer, null)
+          54 ->
+            valueDuration =
+              decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          55 ->
+            valueHumanName =
+              decodeNullableSerializableElement(descriptor, i, HumanNameSerializer, null)
+          56 ->
+            valueIdentifier =
+              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          57 -> valueMoney = decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
+          58 ->
+            valuePeriod = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          59 ->
+            valueQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          60 -> valueRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          61 -> valueRatio = decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+          62 ->
+            valueRatioRange =
+              decodeNullableSerializableElement(descriptor, i, RatioRangeSerializer, null)
+          63 ->
+            valueReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          64 ->
+            valueSampledData =
+              decodeNullableSerializableElement(descriptor, i, SampledDataSerializer, null)
+          65 ->
+            valueSignature =
+              decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
+          66 ->
+            valueTiming = decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
+          67 ->
+            valueContactDetail =
+              decodeNullableSerializableElement(descriptor, i, ContactDetailSerializer, null)
+          68 ->
+            valueDataRequirement =
+              decodeNullableSerializableElement(descriptor, i, DataRequirementSerializer, null)
+          69 ->
+            valueExpression =
+              decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
+          70 ->
+            valueParameterDefinition =
+              decodeNullableSerializableElement(descriptor, i, ParameterDefinitionSerializer, null)
+          71 ->
+            valueRelatedArtifact =
+              decodeNullableSerializableElement(descriptor, i, RelatedArtifactSerializer, null)
+          72 ->
+            valueTriggerDefinition =
+              decodeNullableSerializableElement(descriptor, i, TriggerDefinitionSerializer, null)
+          73 ->
+            valueUsageContext =
+              decodeNullableSerializableElement(descriptor, i, UsageContextSerializer, null)
+          74 ->
+            valueAvailability =
+              decodeNullableSerializableElement(descriptor, i, AvailabilitySerializer, null)
+          75 ->
+            valueExtendedContactDetail =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtendedContactDetailSerializer,
+                null,
+              )
+          76 ->
+            valueDosage = decodeNullableSerializableElement(descriptor, i, DosageSerializer, null)
+          77 -> valueMeta = decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Example: " + i)
+        }
+      }
+      ElementDefinition.Example(
+        id = id,
+        extension = extension ?: listOf(),
+        label =
+          R5String.of(label, _label)
+            ?: throw SerializationException(
+              "Missing required property 'label' on ElementDefinition.Example"
+            ),
+        `value` =
+          ElementDefinition.Example.Value.from(
+            Base64Binary.of(valueBase64Binary, _valueBase64Binary),
+            R5Boolean.of(valueBoolean, _valueBoolean),
+            Canonical.of(valueCanonical, _valueCanonical),
+            Code.of(valueCode, _valueCode),
+            Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
+            DateTime.of(
+              if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
+              _valueDateTime,
+            ),
+            Decimal.of(valueDecimal, _valueDecimal),
+            Id.of(valueId, _valueId),
+            Instant.of(
+              if (valueInstant != null) FhirDateTime.fromString(valueInstant) else null,
+              _valueInstant,
+            ),
+            Integer.of(valueInteger, _valueInteger),
+            Integer64.of(valueInteger64?.toLong(), _valueInteger64),
+            Markdown.of(valueMarkdown, _valueMarkdown),
+            Oid.of(valueOid, _valueOid),
+            PositiveInt.of(valuePositiveInt, _valuePositiveInt),
+            R5String.of(valueString, _valueString),
+            Time.of(valueTime, _valueTime),
+            UnsignedInt.of(valueUnsignedInt, _valueUnsignedInt),
+            Uri.of(valueUri, _valueUri),
+            Url.of(valueUrl, _valueUrl),
+            Uuid.of(valueUuid, _valueUuid),
+            valueAddress,
+            valueAge,
+            valueAnnotation,
+            valueAttachment,
+            valueCodeableConcept,
+            valueCodeableReference,
+            valueCoding,
+            valueContactPoint,
+            valueCount,
+            valueDistance,
+            valueDuration,
+            valueHumanName,
+            valueIdentifier,
+            valueMoney,
+            valuePeriod,
+            valueQuantity,
+            valueRange,
+            valueRatio,
+            valueRatioRange,
+            valueReference,
+            valueSampledData,
+            valueSignature,
+            valueTiming,
+            valueContactDetail,
+            valueDataRequirement,
+            valueExpression,
+            valueParameterDefinition,
+            valueRelatedArtifact,
+            valueTriggerDefinition,
+            valueUsageContext,
+            valueAvailability,
+            valueExtendedContactDetail,
+            valueDosage,
+            valueMeta,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'value' on ElementDefinition.Example"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Example) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Example {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var label: KotlinString? = null
-    var _label: Element? = null
-    var valueBase64Binary: KotlinString? = null
-    var _valueBase64Binary: Element? = null
-    var valueBoolean: KotlinBoolean? = null
-    var _valueBoolean: Element? = null
-    var valueCanonical: KotlinString? = null
-    var _valueCanonical: Element? = null
-    var valueCode: KotlinString? = null
-    var _valueCode: Element? = null
-    var valueDate: KotlinString? = null
-    var _valueDate: Element? = null
-    var valueDateTime: KotlinString? = null
-    var _valueDateTime: Element? = null
-    var valueDecimal: FhirDecimal? = null
-    var _valueDecimal: Element? = null
-    var valueId: KotlinString? = null
-    var _valueId: Element? = null
-    var valueInstant: KotlinString? = null
-    var _valueInstant: Element? = null
-    var valueInteger: Int? = null
-    var _valueInteger: Element? = null
-    var valueInteger64: KotlinString? = null
-    var _valueInteger64: Element? = null
-    var valueMarkdown: KotlinString? = null
-    var _valueMarkdown: Element? = null
-    var valueOid: KotlinString? = null
-    var _valueOid: Element? = null
-    var valuePositiveInt: Int? = null
-    var _valuePositiveInt: Element? = null
-    var valueString: KotlinString? = null
-    var _valueString: Element? = null
-    var valueTime: LocalTime? = null
-    var _valueTime: Element? = null
-    var valueUnsignedInt: Int? = null
-    var _valueUnsignedInt: Element? = null
-    var valueUri: KotlinString? = null
-    var _valueUri: Element? = null
-    var valueUrl: KotlinString? = null
-    var _valueUrl: Element? = null
-    var valueUuid: KotlinString? = null
-    var _valueUuid: Element? = null
-    var valueAddress: Address? = null
-    var valueAge: Age? = null
-    var valueAnnotation: Annotation? = null
-    var valueAttachment: Attachment? = null
-    var valueCodeableConcept: CodeableConcept? = null
-    var valueCodeableReference: CodeableReference? = null
-    var valueCoding: Coding? = null
-    var valueContactPoint: ContactPoint? = null
-    var valueCount: Count? = null
-    var valueDistance: Distance? = null
-    var valueDuration: Duration? = null
-    var valueHumanName: HumanName? = null
-    var valueIdentifier: Identifier? = null
-    var valueMoney: Money? = null
-    var valuePeriod: Period? = null
-    var valueQuantity: Quantity? = null
-    var valueRange: Range? = null
-    var valueRatio: Ratio? = null
-    var valueRatioRange: RatioRange? = null
-    var valueReference: Reference? = null
-    var valueSampledData: SampledData? = null
-    var valueSignature: Signature? = null
-    var valueTiming: Timing? = null
-    var valueContactDetail: ContactDetail? = null
-    var valueDataRequirement: DataRequirement? = null
-    var valueExpression: Expression? = null
-    var valueParameterDefinition: ParameterDefinition? = null
-    var valueRelatedArtifact: RelatedArtifact? = null
-    var valueTriggerDefinition: TriggerDefinition? = null
-    var valueUsageContext: UsageContext? = null
-    var valueAvailability: Availability? = null
-    var valueExtendedContactDetail: ExtendedContactDetail? = null
-    var valueDosage: Dosage? = null
-    var valueMeta: Meta? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> label = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _label = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> valueBase64Binary = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _valueBase64Binary =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
-        7 ->
-          _valueBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 -> valueCanonical = decoder.decodeStringElement(descriptor, i)
-        9 ->
-          _valueCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        10 -> valueCode = decoder.decodeStringElement(descriptor, i)
-        11 ->
-          _valueCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        12 -> valueDate = decoder.decodeStringElement(descriptor, i)
-        13 ->
-          _valueDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        14 -> valueDateTime = decoder.decodeStringElement(descriptor, i)
-        15 ->
-          _valueDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        16 ->
-          valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        17 ->
-          _valueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        18 -> valueId = decoder.decodeStringElement(descriptor, i)
-        19 ->
-          _valueId =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        20 -> valueInstant = decoder.decodeStringElement(descriptor, i)
-        21 ->
-          _valueInstant =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        22 -> valueInteger = decoder.decodeIntElement(descriptor, i)
-        23 ->
-          _valueInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        24 -> valueInteger64 = decoder.decodeStringElement(descriptor, i)
-        25 ->
-          _valueInteger64 =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        26 -> valueMarkdown = decoder.decodeStringElement(descriptor, i)
-        27 ->
-          _valueMarkdown =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        28 -> valueOid = decoder.decodeStringElement(descriptor, i)
-        29 ->
-          _valueOid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        30 -> valuePositiveInt = decoder.decodeIntElement(descriptor, i)
-        31 ->
-          _valuePositiveInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        32 -> valueString = decoder.decodeStringElement(descriptor, i)
-        33 ->
-          _valueString =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        34 ->
-          valueTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-        35 ->
-          _valueTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        36 -> valueUnsignedInt = decoder.decodeIntElement(descriptor, i)
-        37 ->
-          _valueUnsignedInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        38 -> valueUri = decoder.decodeStringElement(descriptor, i)
-        39 ->
-          _valueUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        40 -> valueUrl = decoder.decodeStringElement(descriptor, i)
-        41 ->
-          _valueUrl =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        42 -> valueUuid = decoder.decodeStringElement(descriptor, i)
-        43 ->
-          _valueUuid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        44 ->
-          valueAddress =
-            decoder.decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
-        45 ->
-          valueAge = decoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
-        46 ->
-          valueAnnotation =
-            decoder.decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
-        47 ->
-          valueAttachment =
-            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-        48 ->
-          valueCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        49 ->
-          valueCodeableReference =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableReferenceSerializer,
-              null,
-            )
-        50 ->
-          valueCoding =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        51 ->
-          valueContactPoint =
-            decoder.decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
-        52 ->
-          valueCount =
-            decoder.decodeNullableSerializableElement(descriptor, i, CountSerializer, null)
-        53 ->
-          valueDistance =
-            decoder.decodeNullableSerializableElement(descriptor, i, DistanceSerializer, null)
-        54 ->
-          valueDuration =
-            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        55 ->
-          valueHumanName =
-            decoder.decodeNullableSerializableElement(descriptor, i, HumanNameSerializer, null)
-        56 ->
-          valueIdentifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        57 ->
-          valueMoney =
-            decoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
-        58 ->
-          valuePeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        59 ->
-          valueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        60 ->
-          valueRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        61 ->
-          valueRatio =
-            decoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-        62 ->
-          valueRatioRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RatioRangeSerializer, null)
-        63 ->
-          valueReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        64 ->
-          valueSampledData =
-            decoder.decodeNullableSerializableElement(descriptor, i, SampledDataSerializer, null)
-        65 ->
-          valueSignature =
-            decoder.decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
-        66 ->
-          valueTiming =
-            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
-        67 ->
-          valueContactDetail =
-            decoder.decodeNullableSerializableElement(descriptor, i, ContactDetailSerializer, null)
-        68 ->
-          valueDataRequirement =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              DataRequirementSerializer,
-              null,
-            )
-        69 ->
-          valueExpression =
-            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
-        70 ->
-          valueParameterDefinition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ParameterDefinitionSerializer,
-              null,
-            )
-        71 ->
-          valueRelatedArtifact =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              RelatedArtifactSerializer,
-              null,
-            )
-        72 ->
-          valueTriggerDefinition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              TriggerDefinitionSerializer,
-              null,
-            )
-        73 ->
-          valueUsageContext =
-            decoder.decodeNullableSerializableElement(descriptor, i, UsageContextSerializer, null)
-        74 ->
-          valueAvailability =
-            decoder.decodeNullableSerializableElement(descriptor, i, AvailabilitySerializer, null)
-        75 ->
-          valueExtendedContactDetail =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtendedContactDetailSerializer,
-              null,
-            )
-        76 ->
-          valueDosage =
-            decoder.decodeNullableSerializableElement(descriptor, i, DosageSerializer, null)
-        77 ->
-          valueMeta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Example: " + i)
-      }
-    }
-    return ElementDefinition.Example(
-      id = id,
-      extension = extension ?: listOf(),
-      label =
-        R5String.of(label, _label)
-          ?: throw SerializationException(
-            "Missing required property 'label' on ElementDefinition.Example"
-          ),
-      `value` =
-        ElementDefinition.Example.Value.from(
-          Base64Binary.of(valueBase64Binary, _valueBase64Binary),
-          R5Boolean.of(valueBoolean, _valueBoolean),
-          Canonical.of(valueCanonical, _valueCanonical),
-          Code.of(valueCode, _valueCode),
-          Date.of(valueDate?.let { FhirDate.fromString(it) }, _valueDate),
-          DateTime.of(valueDateTime?.let { FhirDateTime.fromString(it) }, _valueDateTime),
-          Decimal.of(valueDecimal, _valueDecimal),
-          Id.of(valueId, _valueId),
-          Instant.of(valueInstant?.let { FhirDateTime.fromString(it) }, _valueInstant),
-          Integer.of(valueInteger, _valueInteger),
-          Integer64.of(valueInteger64?.toLong(), _valueInteger64),
-          Markdown.of(valueMarkdown, _valueMarkdown),
-          Oid.of(valueOid, _valueOid),
-          PositiveInt.of(valuePositiveInt, _valuePositiveInt),
-          R5String.of(valueString, _valueString),
-          Time.of(valueTime, _valueTime),
-          UnsignedInt.of(valueUnsignedInt, _valueUnsignedInt),
-          Uri.of(valueUri, _valueUri),
-          Url.of(valueUrl, _valueUrl),
-          Uuid.of(valueUuid, _valueUuid),
-          valueAddress,
-          valueAge,
-          valueAnnotation,
-          valueAttachment,
-          valueCodeableConcept,
-          valueCodeableReference,
-          valueCoding,
-          valueContactPoint,
-          valueCount,
-          valueDistance,
-          valueDuration,
-          valueHumanName,
-          valueIdentifier,
-          valueMoney,
-          valuePeriod,
-          valueQuantity,
-          valueRange,
-          valueRatio,
-          valueRatioRange,
-          valueReference,
-          valueSampledData,
-          valueSignature,
-          valueTiming,
-          valueContactDetail,
-          valueDataRequirement,
-          valueExpression,
-          valueParameterDefinition,
-          valueRelatedArtifact,
-          valueTriggerDefinition,
-          valueUsageContext,
-          valueAvailability,
-          valueExtendedContactDetail,
-          valueDosage,
-          valueMeta,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'value' on ElementDefinition.Example"
-          ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ElementDefinition.Example) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.label.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.label.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    when (val choice = value.`value`) {
-      is ElementDefinition.Example.Value.Base64Binary -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Boolean -> {
-        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Canonical -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Code -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Date -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 13, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 15, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Decimal -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 16, FhirDecimalSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 17, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Id -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 19, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Instant -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 20, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 21, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Integer -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 22, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 23, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Integer64 -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 24, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 25, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Markdown -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 26, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 27, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Oid -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 28, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 29, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.PositiveInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 30, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 31, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 32, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 33, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Time -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 34, LocalTimeSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 35, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.UnsignedInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 36, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 37, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Uri -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 38, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 39, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Url -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 40, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 41, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Uuid -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 42, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 43, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Example.Value.Address -> {
-        encoder.encodeSerializableElement(descriptor, 44, AddressSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Age -> {
-        encoder.encodeSerializableElement(descriptor, 45, AgeSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Annotation -> {
-        encoder.encodeSerializableElement(descriptor, 46, AnnotationSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 47, AttachmentSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 48, CodeableConceptSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.CodeableReference -> {
-        encoder.encodeSerializableElement(descriptor, 49, CodeableReferenceSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 50, CodingSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.ContactPoint -> {
-        encoder.encodeSerializableElement(descriptor, 51, ContactPointSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Count -> {
-        encoder.encodeSerializableElement(descriptor, 52, CountSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Distance -> {
-        encoder.encodeSerializableElement(descriptor, 53, DistanceSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 54, DurationSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.HumanName -> {
-        encoder.encodeSerializableElement(descriptor, 55, HumanNameSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 56, IdentifierSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Money -> {
-        encoder.encodeSerializableElement(descriptor, 57, MoneySerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 58, PeriodSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 59, QuantitySerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 60, RangeSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 61, RatioSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.RatioRange -> {
-        encoder.encodeSerializableElement(descriptor, 62, RatioRangeSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 63, ReferenceSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.SampledData -> {
-        encoder.encodeSerializableElement(descriptor, 64, SampledDataSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Signature -> {
-        encoder.encodeSerializableElement(descriptor, 65, SignatureSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 66, TimingSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.ContactDetail -> {
-        encoder.encodeSerializableElement(descriptor, 67, ContactDetailSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.DataRequirement -> {
-        encoder.encodeSerializableElement(descriptor, 68, DataRequirementSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 69, ExpressionSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.ParameterDefinition -> {
-        encoder.encodeSerializableElement(
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
           descriptor,
-          70,
-          ParameterDefinitionSerializer,
-          choice.value,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
         )
-      }
-      is ElementDefinition.Example.Value.RelatedArtifact -> {
-        encoder.encodeSerializableElement(descriptor, 71, RelatedArtifactSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.TriggerDefinition -> {
-        encoder.encodeSerializableElement(descriptor, 72, TriggerDefinitionSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.UsageContext -> {
-        encoder.encodeSerializableElement(descriptor, 73, UsageContextSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Availability -> {
-        encoder.encodeSerializableElement(descriptor, 74, AvailabilitySerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.ExtendedContactDetail -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          75,
-          ExtendedContactDetailSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.Example.Value.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 76, DosageSerializer, choice.value)
-      }
-      is ElementDefinition.Example.Value.Meta -> {
-        encoder.encodeSerializableElement(descriptor, 77, MetaSerializer, choice.value)
+      encodeStringIfNotNull(descriptor, 2, value.label.value)
+      encodeElementIfNotNull(descriptor, 3, value.label)
+      when (val choice = value.`value`) {
+        is ElementDefinition.Example.Value.Base64Binary -> {
+          encodeStringIfNotNull(descriptor, 4, choice.value.value)
+          encodeElementIfNotNull(descriptor, 5, choice.value)
+        }
+        is ElementDefinition.Example.Value.Boolean -> {
+          encodeBooleanIfNotNull(descriptor, 6, choice.value.value)
+          encodeElementIfNotNull(descriptor, 7, choice.value)
+        }
+        is ElementDefinition.Example.Value.Canonical -> {
+          encodeStringIfNotNull(descriptor, 8, choice.value.value)
+          encodeElementIfNotNull(descriptor, 9, choice.value)
+        }
+        is ElementDefinition.Example.Value.Code -> {
+          encodeStringIfNotNull(descriptor, 10, choice.value.value)
+          encodeElementIfNotNull(descriptor, 11, choice.value)
+        }
+        is ElementDefinition.Example.Value.Date -> {
+          encodeStringIfNotNull(descriptor, 12, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 13, choice.value)
+        }
+        is ElementDefinition.Example.Value.DateTime -> {
+          encodeStringIfNotNull(descriptor, 14, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 15, choice.value)
+        }
+        is ElementDefinition.Example.Value.Decimal -> {
+          encodeSerializableIfNotNull(descriptor, 16, FhirDecimalSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 17, choice.value)
+        }
+        is ElementDefinition.Example.Value.Id -> {
+          encodeStringIfNotNull(descriptor, 18, choice.value.value)
+          encodeElementIfNotNull(descriptor, 19, choice.value)
+        }
+        is ElementDefinition.Example.Value.Instant -> {
+          encodeStringIfNotNull(descriptor, 20, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 21, choice.value)
+        }
+        is ElementDefinition.Example.Value.Integer -> {
+          encodeIntIfNotNull(descriptor, 22, choice.value.value)
+          encodeElementIfNotNull(descriptor, 23, choice.value)
+        }
+        is ElementDefinition.Example.Value.Integer64 -> {
+          encodeStringIfNotNull(descriptor, 24, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 25, choice.value)
+        }
+        is ElementDefinition.Example.Value.Markdown -> {
+          encodeStringIfNotNull(descriptor, 26, choice.value.value)
+          encodeElementIfNotNull(descriptor, 27, choice.value)
+        }
+        is ElementDefinition.Example.Value.Oid -> {
+          encodeStringIfNotNull(descriptor, 28, choice.value.value)
+          encodeElementIfNotNull(descriptor, 29, choice.value)
+        }
+        is ElementDefinition.Example.Value.PositiveInt -> {
+          encodeIntIfNotNull(descriptor, 30, choice.value.value)
+          encodeElementIfNotNull(descriptor, 31, choice.value)
+        }
+        is ElementDefinition.Example.Value.String -> {
+          encodeStringIfNotNull(descriptor, 32, choice.value.value)
+          encodeElementIfNotNull(descriptor, 33, choice.value)
+        }
+        is ElementDefinition.Example.Value.Time -> {
+          encodeSerializableIfNotNull(descriptor, 34, LocalTimeSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 35, choice.value)
+        }
+        is ElementDefinition.Example.Value.UnsignedInt -> {
+          encodeIntIfNotNull(descriptor, 36, choice.value.value)
+          encodeElementIfNotNull(descriptor, 37, choice.value)
+        }
+        is ElementDefinition.Example.Value.Uri -> {
+          encodeStringIfNotNull(descriptor, 38, choice.value.value)
+          encodeElementIfNotNull(descriptor, 39, choice.value)
+        }
+        is ElementDefinition.Example.Value.Url -> {
+          encodeStringIfNotNull(descriptor, 40, choice.value.value)
+          encodeElementIfNotNull(descriptor, 41, choice.value)
+        }
+        is ElementDefinition.Example.Value.Uuid -> {
+          encodeStringIfNotNull(descriptor, 42, choice.value.value)
+          encodeElementIfNotNull(descriptor, 43, choice.value)
+        }
+        is ElementDefinition.Example.Value.Address -> {
+          encodeSerializableElement(descriptor, 44, AddressSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Age -> {
+          encodeSerializableElement(descriptor, 45, AgeSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Annotation -> {
+          encodeSerializableElement(descriptor, 46, AnnotationSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Attachment -> {
+          encodeSerializableElement(descriptor, 47, AttachmentSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 48, CodeableConceptSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.CodeableReference -> {
+          encodeSerializableElement(descriptor, 49, CodeableReferenceSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Coding -> {
+          encodeSerializableElement(descriptor, 50, CodingSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.ContactPoint -> {
+          encodeSerializableElement(descriptor, 51, ContactPointSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Count -> {
+          encodeSerializableElement(descriptor, 52, CountSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Distance -> {
+          encodeSerializableElement(descriptor, 53, DistanceSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Duration -> {
+          encodeSerializableElement(descriptor, 54, DurationSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.HumanName -> {
+          encodeSerializableElement(descriptor, 55, HumanNameSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Identifier -> {
+          encodeSerializableElement(descriptor, 56, IdentifierSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Money -> {
+          encodeSerializableElement(descriptor, 57, MoneySerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Period -> {
+          encodeSerializableElement(descriptor, 58, PeriodSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Quantity -> {
+          encodeSerializableElement(descriptor, 59, QuantitySerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Range -> {
+          encodeSerializableElement(descriptor, 60, RangeSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Ratio -> {
+          encodeSerializableElement(descriptor, 61, RatioSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.RatioRange -> {
+          encodeSerializableElement(descriptor, 62, RatioRangeSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Reference -> {
+          encodeSerializableElement(descriptor, 63, ReferenceSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.SampledData -> {
+          encodeSerializableElement(descriptor, 64, SampledDataSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Signature -> {
+          encodeSerializableElement(descriptor, 65, SignatureSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Timing -> {
+          encodeSerializableElement(descriptor, 66, TimingSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.ContactDetail -> {
+          encodeSerializableElement(descriptor, 67, ContactDetailSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.DataRequirement -> {
+          encodeSerializableElement(descriptor, 68, DataRequirementSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Expression -> {
+          encodeSerializableElement(descriptor, 69, ExpressionSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.ParameterDefinition -> {
+          encodeSerializableElement(descriptor, 70, ParameterDefinitionSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.RelatedArtifact -> {
+          encodeSerializableElement(descriptor, 71, RelatedArtifactSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.TriggerDefinition -> {
+          encodeSerializableElement(descriptor, 72, TriggerDefinitionSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.UsageContext -> {
+          encodeSerializableElement(descriptor, 73, UsageContextSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Availability -> {
+          encodeSerializableElement(descriptor, 74, AvailabilitySerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.ExtendedContactDetail -> {
+          encodeSerializableElement(descriptor, 75, ExtendedContactDetailSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Dosage -> {
+          encodeSerializableElement(descriptor, 76, DosageSerializer, choice.value)
+        }
+        is ElementDefinition.Example.Value.Meta -> {
+          encodeSerializableElement(descriptor, 77, MetaSerializer, choice.value)
+        }
       }
     }
   }
@@ -1418,26 +1173,22 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
 internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefinition.Constraint> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Constraint") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("key", KotlinString.serializer().descriptor, isOptional = true)
-      element("_key", Element.serializer().descriptor, isOptional = true)
-      element("requirements", KotlinString.serializer().descriptor, isOptional = true)
-      element("_requirements", Element.serializer().descriptor, isOptional = true)
-      element("severity", KotlinString.serializer().descriptor, isOptional = true)
-      element("_severity", Element.serializer().descriptor, isOptional = true)
-      element("suppress", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_suppress", Element.serializer().descriptor, isOptional = true)
-      element("human", KotlinString.serializer().descriptor, isOptional = true)
-      element("_human", Element.serializer().descriptor, isOptional = true)
-      element("expression", KotlinString.serializer().descriptor, isOptional = true)
-      element("_expression", Element.serializer().descriptor, isOptional = true)
-      element("source", KotlinString.serializer().descriptor, isOptional = true)
-      element("_source", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("key", KotlinString.serializer().descriptor)
+      optionalElement("_key", ElementSerializer.descriptor)
+      optionalElement("requirements", KotlinString.serializer().descriptor)
+      optionalElement("_requirements", ElementSerializer.descriptor)
+      optionalElement("severity", KotlinString.serializer().descriptor)
+      optionalElement("_severity", ElementSerializer.descriptor)
+      optionalElement("suppress", KotlinBoolean.serializer().descriptor)
+      optionalElement("_suppress", ElementSerializer.descriptor)
+      optionalElement("human", KotlinString.serializer().descriptor)
+      optionalElement("_human", ElementSerializer.descriptor)
+      optionalElement("expression", KotlinString.serializer().descriptor)
+      optionalElement("_expression", ElementSerializer.descriptor)
+      optionalElement("source", KotlinString.serializer().descriptor)
+      optionalElement("_source", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ElementDefinition.Constraint>> =
@@ -1445,137 +1196,106 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Constraint =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var key: KotlinString? = null
+      var _key: Element? = null
+      var requirements: KotlinString? = null
+      var _requirements: Element? = null
+      var severity: KotlinString? = null
+      var _severity: Element? = null
+      var suppress: KotlinBoolean? = null
+      var _suppress: Element? = null
+      var human: KotlinString? = null
+      var _human: Element? = null
+      var expression: KotlinString? = null
+      var _expression: Element? = null
+      var source: KotlinString? = null
+      var _source: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> key = decodeStringElement(descriptor, i)
+          3 -> _key = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> requirements = decodeStringElement(descriptor, i)
+          5 ->
+            _requirements =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> severity = decodeStringElement(descriptor, i)
+          7 -> _severity = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 -> suppress = decodeBooleanElement(descriptor, i)
+          9 -> _suppress = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          10 -> human = decodeStringElement(descriptor, i)
+          11 -> _human = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          12 -> expression = decodeStringElement(descriptor, i)
+          13 ->
+            _expression = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          14 -> source = decodeStringElement(descriptor, i)
+          15 -> _source = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Constraint: " + i)
+        }
+      }
+      ElementDefinition.Constraint(
+        id = id,
+        extension = extension ?: listOf(),
+        key =
+          Id.of(key, _key)
+            ?: throw SerializationException(
+              "Missing required property 'key' on ElementDefinition.Constraint"
+            ),
+        requirements = Markdown.of(requirements, _requirements),
+        severity =
+          Enumeration.of(
+            if (severity != null) ElementDefinition.ConstraintSeverity.fromCode(severity) else null,
+            _severity,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'severity' on ElementDefinition.Constraint"
+            ),
+        suppress = R5Boolean.of(suppress, _suppress),
+        human =
+          R5String.of(human, _human)
+            ?: throw SerializationException(
+              "Missing required property 'human' on ElementDefinition.Constraint"
+            ),
+        expression = R5String.of(expression, _expression),
+        source = Canonical.of(source, _source),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Constraint) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Constraint {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var key: KotlinString? = null
-    var _key: Element? = null
-    var requirements: KotlinString? = null
-    var _requirements: Element? = null
-    var severity: KotlinString? = null
-    var _severity: Element? = null
-    var suppress: KotlinBoolean? = null
-    var _suppress: Element? = null
-    var human: KotlinString? = null
-    var _human: Element? = null
-    var expression: KotlinString? = null
-    var _expression: Element? = null
-    var source: KotlinString? = null
-    var _source: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> key = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _key = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> requirements = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _requirements =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> severity = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _severity =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 -> suppress = decoder.decodeBooleanElement(descriptor, i)
-        9 ->
-          _suppress =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        10 -> human = decoder.decodeStringElement(descriptor, i)
-        11 ->
-          _human = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        12 -> expression = decoder.decodeStringElement(descriptor, i)
-        13 ->
-          _expression =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        14 -> source = decoder.decodeStringElement(descriptor, i)
-        15 ->
-          _source =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Constraint: " + i)
-      }
-    }
-    return ElementDefinition.Constraint(
-      id = id,
-      extension = extension ?: listOf(),
-      key =
-        Id.of(key, _key)
-          ?: throw SerializationException(
-            "Missing required property 'key' on ElementDefinition.Constraint"
-          ),
-      requirements = Markdown.of(requirements, _requirements),
-      severity =
-        Enumeration.of(
-          severity?.let { ElementDefinition.ConstraintSeverity.fromCode(it) },
-          _severity,
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
         )
-          ?: throw SerializationException(
-            "Missing required property 'severity' on ElementDefinition.Constraint"
-          ),
-      suppress = R5Boolean.of(suppress, _suppress),
-      human =
-        R5String.of(human, _human)
-          ?: throw SerializationException(
-            "Missing required property 'human' on ElementDefinition.Constraint"
-          ),
-      expression = R5String.of(expression, _expression),
-      source = Canonical.of(source, _source),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ElementDefinition.Constraint) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.key.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.key.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.requirements?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.requirements?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    ((value.severity.value?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-    (value.severity.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-    }
-    ((value.suppress?.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
-    (value.suppress?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
-    }
-    ((value.human.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-    (value.human.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
-    }
-    ((value.expression?.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-    (value.expression?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13, ElementSerializer, it)
-    }
-    ((value.source?.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-    (value.source?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 2, value.key.value)
+      encodeElementIfNotNull(descriptor, 3, value.key)
+      encodeStringIfNotNull(descriptor, 4, value.requirements?.value)
+      encodeElementIfNotNull(descriptor, 5, value.requirements)
+      encodeStringIfNotNull(descriptor, 6, value.severity.value?.code)
+      encodeElementIfNotNull(descriptor, 7, value.severity)
+      encodeBooleanIfNotNull(descriptor, 8, value.suppress?.value)
+      encodeElementIfNotNull(descriptor, 9, value.suppress)
+      encodeStringIfNotNull(descriptor, 10, value.human.value)
+      encodeElementIfNotNull(descriptor, 11, value.human)
+      encodeStringIfNotNull(descriptor, 12, value.expression?.value)
+      encodeElementIfNotNull(descriptor, 13, value.expression)
+      encodeStringIfNotNull(descriptor, 14, value.source?.value)
+      encodeElementIfNotNull(descriptor, 15, value.source)
     }
   }
 }
@@ -1583,24 +1303,17 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
 internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefinition.Binding> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Binding") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("strength", KotlinString.serializer().descriptor, isOptional = true)
-      element("_strength", Element.serializer().descriptor, isOptional = true)
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("valueSet", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueSet", Element.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("strength", KotlinString.serializer().descriptor)
+      optionalElement("_strength", ElementSerializer.descriptor)
+      optionalElement("description", KotlinString.serializer().descriptor)
+      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("valueSet", KotlinString.serializer().descriptor)
+      optionalElement("_valueSet", ElementSerializer.descriptor)
+      optionalElement(
         "additional",
-        listSerialDescriptor(
-          lazyDescriptor { ElementDefinition.Binding.Additional.serializer().descriptor }
-        ),
-        isOptional = true,
+        ElementDefinitionBindingAdditionalSerializer.listSerializer.descriptor,
       )
     }
 
@@ -1608,102 +1321,86 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Binding =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var strength: KotlinString? = null
+      var _strength: Element? = null
+      var description: KotlinString? = null
+      var _description: Element? = null
+      var valueSet: KotlinString? = null
+      var _valueSet: Element? = null
+      var additional: List<ElementDefinition.Binding.Additional>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> strength = decodeStringElement(descriptor, i)
+          3 -> _strength = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> description = decodeStringElement(descriptor, i)
+          5 ->
+            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> valueSet = decodeStringElement(descriptor, i)
+          7 -> _valueSet = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 ->
+            additional =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementDefinitionBindingAdditionalSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Binding: " + i)
+        }
+      }
+      ElementDefinition.Binding(
+        id = id,
+        extension = extension ?: listOf(),
+        strength =
+          Enumeration.of(
+            if (strength != null) BindingStrength.fromCode(strength) else null,
+            _strength,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'strength' on ElementDefinition.Binding"
+            ),
+        description = Markdown.of(description, _description),
+        valueSet = Canonical.of(valueSet, _valueSet),
+        additional = additional ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Binding) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.strength.value?.code)
+      encodeElementIfNotNull(descriptor, 3, value.strength)
+      encodeStringIfNotNull(descriptor, 4, value.description?.value)
+      encodeElementIfNotNull(descriptor, 5, value.description)
+      encodeStringIfNotNull(descriptor, 6, value.valueSet?.value)
+      encodeElementIfNotNull(descriptor, 7, value.valueSet)
+      if (value.additional.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          8,
+          ElementDefinitionBindingAdditionalSerializer.listSerializer,
+          value.additional,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Binding {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var strength: KotlinString? = null
-    var _strength: Element? = null
-    var description: KotlinString? = null
-    var _description: Element? = null
-    var valueSet: KotlinString? = null
-    var _valueSet: Element? = null
-    var additional: List<ElementDefinition.Binding.Additional>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> strength = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _strength =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> description = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> valueSet = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _valueSet =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 ->
-          additional =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementDefinitionBindingAdditionalSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Binding: " + i)
-      }
-    }
-    return ElementDefinition.Binding(
-      id = id,
-      extension = extension ?: listOf(),
-      strength =
-        Enumeration.of(strength?.let { BindingStrength.fromCode(it) }, _strength)
-          ?: throw SerializationException(
-            "Missing required property 'strength' on ElementDefinition.Binding"
-          ),
-      description = Markdown.of(description, _description),
-      valueSet = Canonical.of(valueSet, _valueSet),
-      additional = additional ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ElementDefinition.Binding) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.strength.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.strength.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    ((value.valueSet?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-    (value.valueSet?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-    }
-    if (value.additional.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        8,
-        ElementDefinitionBindingAdditionalSerializer.listSerializer,
-        value.additional,
-      )
   }
 }
 
@@ -1711,27 +1408,19 @@ internal object ElementDefinitionBindingAdditionalSerializer :
   KSerializer<ElementDefinition.Binding.Additional> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Additional") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("purpose", KotlinString.serializer().descriptor, isOptional = true)
-      element("_purpose", Element.serializer().descriptor, isOptional = true)
-      element("valueSet", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueSet", Element.serializer().descriptor, isOptional = true)
-      element("documentation", KotlinString.serializer().descriptor, isOptional = true)
-      element("_documentation", Element.serializer().descriptor, isOptional = true)
-      element("shortDoco", KotlinString.serializer().descriptor, isOptional = true)
-      element("_shortDoco", Element.serializer().descriptor, isOptional = true)
-      element(
-        "usage",
-        listSerialDescriptor(UsageContext.serializer().descriptor),
-        isOptional = true,
-      )
-      element("any", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_any", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("purpose", KotlinString.serializer().descriptor)
+      optionalElement("_purpose", ElementSerializer.descriptor)
+      optionalElement("valueSet", KotlinString.serializer().descriptor)
+      optionalElement("_valueSet", ElementSerializer.descriptor)
+      optionalElement("documentation", KotlinString.serializer().descriptor)
+      optionalElement("_documentation", ElementSerializer.descriptor)
+      optionalElement("shortDoco", KotlinString.serializer().descriptor)
+      optionalElement("_shortDoco", ElementSerializer.descriptor)
+      optionalElement("usage", UsageContextSerializer.listSerializer.descriptor)
+      optionalElement("any", KotlinBoolean.serializer().descriptor)
+      optionalElement("_any", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ElementDefinition.Binding.Additional>> =
@@ -1739,132 +1428,106 @@ internal object ElementDefinitionBindingAdditionalSerializer :
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Binding.Additional =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var purpose: KotlinString? = null
+      var _purpose: Element? = null
+      var valueSet: KotlinString? = null
+      var _valueSet: Element? = null
+      var documentation: KotlinString? = null
+      var _documentation: Element? = null
+      var shortDoco: KotlinString? = null
+      var _shortDoco: Element? = null
+      var usage: List<UsageContext>? = null
+      var any: KotlinBoolean? = null
+      var _any: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> purpose = decodeStringElement(descriptor, i)
+          3 -> _purpose = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> valueSet = decodeStringElement(descriptor, i)
+          5 -> _valueSet = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> documentation = decodeStringElement(descriptor, i)
+          7 ->
+            _documentation =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 -> shortDoco = decodeStringElement(descriptor, i)
+          9 ->
+            _shortDoco = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          10 ->
+            usage =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                UsageContextSerializer.listSerializer,
+                null,
+              )
+          11 -> any = decodeBooleanElement(descriptor, i)
+          12 -> _any = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Additional: " + i)
+        }
+      }
+      ElementDefinition.Binding.Additional(
+        id = id,
+        extension = extension ?: listOf(),
+        purpose =
+          Enumeration.of(
+            if (purpose != null) ElementDefinition.AdditionalBindingPurposeVS.fromCode(purpose)
+            else null,
+            _purpose,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'purpose' on ElementDefinition.Binding.Additional"
+            ),
+        valueSet =
+          Canonical.of(valueSet, _valueSet)
+            ?: throw SerializationException(
+              "Missing required property 'valueSet' on ElementDefinition.Binding.Additional"
+            ),
+        documentation = Markdown.of(documentation, _documentation),
+        shortDoco = R5String.of(shortDoco, _shortDoco),
+        usage = usage ?: listOf(),
+        any = R5Boolean.of(any, _any),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Binding.Additional) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Binding.Additional {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var purpose: KotlinString? = null
-    var _purpose: Element? = null
-    var valueSet: KotlinString? = null
-    var _valueSet: Element? = null
-    var documentation: KotlinString? = null
-    var _documentation: Element? = null
-    var shortDoco: KotlinString? = null
-    var _shortDoco: Element? = null
-    var usage: List<UsageContext>? = null
-    var any: KotlinBoolean? = null
-    var _any: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> purpose = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _purpose =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> valueSet = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _valueSet =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> documentation = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _documentation =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 -> shortDoco = decoder.decodeStringElement(descriptor, i)
-        9 ->
-          _shortDoco =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        10 ->
-          usage =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              UsageContextSerializer.listSerializer,
-              null,
-            )
-        11 -> any = decoder.decodeBooleanElement(descriptor, i)
-        12 ->
-          _any = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Additional: " + i)
-      }
-    }
-    return ElementDefinition.Binding.Additional(
-      id = id,
-      extension = extension ?: listOf(),
-      purpose =
-        Enumeration.of(
-          purpose?.let { ElementDefinition.AdditionalBindingPurposeVS.fromCode(it) },
-          _purpose,
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
         )
-          ?: throw SerializationException(
-            "Missing required property 'purpose' on ElementDefinition.Binding.Additional"
-          ),
-      valueSet =
-        Canonical.of(valueSet, _valueSet)
-          ?: throw SerializationException(
-            "Missing required property 'valueSet' on ElementDefinition.Binding.Additional"
-          ),
-      documentation = Markdown.of(documentation, _documentation),
-      shortDoco = R5String.of(shortDoco, _shortDoco),
-      usage = usage ?: listOf(),
-      any = R5Boolean.of(any, _any),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: ElementDefinition.Binding.Additional,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.purpose.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.purpose.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.valueSet.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.valueSet.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    ((value.documentation?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-    (value.documentation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-    }
-    ((value.shortDoco?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-    (value.shortDoco?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
-    }
-    if (value.usage.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        10,
-        UsageContextSerializer.listSerializer,
-        value.usage,
-      )
-    ((value.any?.value))?.let { encoder.encodeBooleanElement(descriptor, 11, it) }
-    (value.any?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 2, value.purpose.value?.code)
+      encodeElementIfNotNull(descriptor, 3, value.purpose)
+      encodeStringIfNotNull(descriptor, 4, value.valueSet.value)
+      encodeElementIfNotNull(descriptor, 5, value.valueSet)
+      encodeStringIfNotNull(descriptor, 6, value.documentation?.value)
+      encodeElementIfNotNull(descriptor, 7, value.documentation)
+      encodeStringIfNotNull(descriptor, 8, value.shortDoco?.value)
+      encodeElementIfNotNull(descriptor, 9, value.shortDoco)
+      if (value.usage.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          10,
+          UsageContextSerializer.listSerializer,
+          value.usage,
+        )
+      encodeBooleanIfNotNull(descriptor, 11, value.any?.value)
+      encodeElementIfNotNull(descriptor, 12, value.any)
     }
   }
 }
@@ -1872,118 +1535,91 @@ internal object ElementDefinitionBindingAdditionalSerializer :
 internal object ElementDefinitionMappingSerializer : KSerializer<ElementDefinition.Mapping> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Mapping") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("identity", KotlinString.serializer().descriptor, isOptional = true)
-      element("_identity", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("map", KotlinString.serializer().descriptor, isOptional = true)
-      element("_map", Element.serializer().descriptor, isOptional = true)
-      element("comment", KotlinString.serializer().descriptor, isOptional = true)
-      element("_comment", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("identity", KotlinString.serializer().descriptor)
+      optionalElement("_identity", ElementSerializer.descriptor)
+      optionalElement("language", KotlinString.serializer().descriptor)
+      optionalElement("_language", ElementSerializer.descriptor)
+      optionalElement("map", KotlinString.serializer().descriptor)
+      optionalElement("_map", ElementSerializer.descriptor)
+      optionalElement("comment", KotlinString.serializer().descriptor)
+      optionalElement("_comment", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ElementDefinition.Mapping>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): ElementDefinition.Mapping =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var identity: KotlinString? = null
+      var _identity: Element? = null
+      var language: KotlinString? = null
+      var _language: Element? = null
+      var map: KotlinString? = null
+      var _map: Element? = null
+      var comment: KotlinString? = null
+      var _comment: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> identity = decodeStringElement(descriptor, i)
+          3 -> _identity = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> language = decodeStringElement(descriptor, i)
+          5 -> _language = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> map = decodeStringElement(descriptor, i)
+          7 -> _map = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 -> comment = decodeStringElement(descriptor, i)
+          9 -> _comment = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Mapping: " + i)
+        }
+      }
+      ElementDefinition.Mapping(
+        id = id,
+        extension = extension ?: listOf(),
+        identity =
+          Id.of(identity, _identity)
+            ?: throw SerializationException(
+              "Missing required property 'identity' on ElementDefinition.Mapping"
+            ),
+        language = Code.of(language, _language),
+        map =
+          R5String.of(map, _map)
+            ?: throw SerializationException(
+              "Missing required property 'map' on ElementDefinition.Mapping"
+            ),
+        comment = Markdown.of(comment, _comment),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Mapping) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition.Mapping {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var identity: KotlinString? = null
-    var _identity: Element? = null
-    var language: KotlinString? = null
-    var _language: Element? = null
-    var map: KotlinString? = null
-    var _map: Element? = null
-    var comment: KotlinString? = null
-    var _comment: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> identity = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _identity =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> map = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _map = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 -> comment = decoder.decodeStringElement(descriptor, i)
-        9 ->
-          _comment =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Mapping: " + i)
-      }
-    }
-    return ElementDefinition.Mapping(
-      id = id,
-      extension = extension ?: listOf(),
-      identity =
-        Id.of(identity, _identity)
-          ?: throw SerializationException(
-            "Missing required property 'identity' on ElementDefinition.Mapping"
-          ),
-      language = Code.of(language, _language),
-      map =
-        R5String.of(map, _map)
-          ?: throw SerializationException(
-            "Missing required property 'map' on ElementDefinition.Mapping"
-          ),
-      comment = Markdown.of(comment, _comment),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ElementDefinition.Mapping) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.identity.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.identity.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    ((value.map.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-    (value.map.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-    }
-    ((value.comment?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-    (value.comment?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.identity.value)
+      encodeElementIfNotNull(descriptor, 3, value.identity)
+      encodeStringIfNotNull(descriptor, 4, value.language?.value)
+      encodeElementIfNotNull(descriptor, 5, value.language)
+      encodeStringIfNotNull(descriptor, 6, value.map.value)
+      encodeElementIfNotNull(descriptor, 7, value.map)
+      encodeStringIfNotNull(descriptor, 8, value.comment?.value)
+      encodeElementIfNotNull(descriptor, 9, value.comment)
     }
   }
 }
@@ -1991,3067 +1627,2537 @@ internal object ElementDefinitionMappingSerializer : KSerializer<ElementDefiniti
 internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ElementDefinition") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("path", KotlinString.serializer().descriptor, isOptional = true)
-      element("_path", Element.serializer().descriptor, isOptional = true)
-      element(
-        "representation",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_representation",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element("sliceName", KotlinString.serializer().descriptor, isOptional = true)
-      element("_sliceName", Element.serializer().descriptor, isOptional = true)
-      element("sliceIsConstraining", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_sliceIsConstraining", Element.serializer().descriptor, isOptional = true)
-      element("label", KotlinString.serializer().descriptor, isOptional = true)
-      element("_label", Element.serializer().descriptor, isOptional = true)
-      element("code", listSerialDescriptor(Coding.serializer().descriptor), isOptional = true)
-      element(
-        "slicing",
-        lazyDescriptor { ElementDefinition.Slicing.serializer().descriptor },
-        isOptional = true,
-      )
-      element("short", KotlinString.serializer().descriptor, isOptional = true)
-      element("_short", Element.serializer().descriptor, isOptional = true)
-      element("definition", KotlinString.serializer().descriptor, isOptional = true)
-      element("_definition", Element.serializer().descriptor, isOptional = true)
-      element("comment", KotlinString.serializer().descriptor, isOptional = true)
-      element("_comment", Element.serializer().descriptor, isOptional = true)
-      element("requirements", KotlinString.serializer().descriptor, isOptional = true)
-      element("_requirements", Element.serializer().descriptor, isOptional = true)
-      element(
-        "alias",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element("_alias", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element("min", Int.serializer().descriptor, isOptional = true)
-      element("_min", Element.serializer().descriptor, isOptional = true)
-      element("max", KotlinString.serializer().descriptor, isOptional = true)
-      element("_max", Element.serializer().descriptor, isOptional = true)
-      element(
-        "base",
-        lazyDescriptor { ElementDefinition.Base.serializer().descriptor },
-        isOptional = true,
-      )
-      element("contentReference", KotlinString.serializer().descriptor, isOptional = true)
-      element("_contentReference", Element.serializer().descriptor, isOptional = true)
-      element(
-        "type",
-        listSerialDescriptor(lazyDescriptor { ElementDefinition.Type.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("defaultValueBase64Binary", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueBase64Binary", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_defaultValueBoolean", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueCanonical", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueCode", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueCode", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueDate", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_defaultValueDecimal", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueId", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueId", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueInstant", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueInstant", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueInteger", Int.serializer().descriptor, isOptional = true)
-      element("_defaultValueInteger", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueInteger64", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueInteger64", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueMarkdown", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueMarkdown", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueOid", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueOid", Element.serializer().descriptor, isOptional = true)
-      element("defaultValuePositiveInt", Int.serializer().descriptor, isOptional = true)
-      element("_defaultValuePositiveInt", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueString", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueTime", LocalTimeSerializer.descriptor, isOptional = true)
-      element("_defaultValueTime", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueUnsignedInt", Int.serializer().descriptor, isOptional = true)
-      element("_defaultValueUnsignedInt", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueUri", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueUri", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueUrl", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueUrl", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueUuid", KotlinString.serializer().descriptor, isOptional = true)
-      element("_defaultValueUuid", Element.serializer().descriptor, isOptional = true)
-      element("defaultValueAddress", Address.serializer().descriptor, isOptional = true)
-      element("defaultValueAge", Age.serializer().descriptor, isOptional = true)
-      element("defaultValueAnnotation", Annotation.serializer().descriptor, isOptional = true)
-      element("defaultValueAttachment", Attachment.serializer().descriptor, isOptional = true)
-      element(
-        "defaultValueCodeableConcept",
-        CodeableConcept.serializer().descriptor,
-        isOptional = true,
-      )
-      element(
-        "defaultValueCodeableReference",
-        CodeableReference.serializer().descriptor,
-        isOptional = true,
-      )
-      element("defaultValueCoding", Coding.serializer().descriptor, isOptional = true)
-      element("defaultValueContactPoint", ContactPoint.serializer().descriptor, isOptional = true)
-      element("defaultValueCount", Count.serializer().descriptor, isOptional = true)
-      element("defaultValueDistance", Distance.serializer().descriptor, isOptional = true)
-      element("defaultValueDuration", Duration.serializer().descriptor, isOptional = true)
-      element("defaultValueHumanName", HumanName.serializer().descriptor, isOptional = true)
-      element("defaultValueIdentifier", Identifier.serializer().descriptor, isOptional = true)
-      element("defaultValueMoney", Money.serializer().descriptor, isOptional = true)
-      element("defaultValuePeriod", Period.serializer().descriptor, isOptional = true)
-      element("defaultValueQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("defaultValueRange", Range.serializer().descriptor, isOptional = true)
-      element("defaultValueRatio", Ratio.serializer().descriptor, isOptional = true)
-      element("defaultValueRatioRange", RatioRange.serializer().descriptor, isOptional = true)
-      element("defaultValueReference", Reference.serializer().descriptor, isOptional = true)
-      element("defaultValueSampledData", SampledData.serializer().descriptor, isOptional = true)
-      element("defaultValueSignature", Signature.serializer().descriptor, isOptional = true)
-      element("defaultValueTiming", Timing.serializer().descriptor, isOptional = true)
-      element("defaultValueContactDetail", ContactDetail.serializer().descriptor, isOptional = true)
-      element(
-        "defaultValueDataRequirement",
-        DataRequirement.serializer().descriptor,
-        isOptional = true,
-      )
-      element("defaultValueExpression", Expression.serializer().descriptor, isOptional = true)
-      element(
-        "defaultValueParameterDefinition",
-        ParameterDefinition.serializer().descriptor,
-        isOptional = true,
-      )
-      element(
-        "defaultValueRelatedArtifact",
-        RelatedArtifact.serializer().descriptor,
-        isOptional = true,
-      )
-      element(
-        "defaultValueTriggerDefinition",
-        TriggerDefinition.serializer().descriptor,
-        isOptional = true,
-      )
-      element("defaultValueUsageContext", UsageContext.serializer().descriptor, isOptional = true)
-      element("defaultValueAvailability", Availability.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("path", KotlinString.serializer().descriptor)
+      optionalElement("_path", ElementSerializer.descriptor)
+      optionalElement("representation", stringNullableListSerializer.descriptor)
+      optionalElement("_representation", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("sliceName", KotlinString.serializer().descriptor)
+      optionalElement("_sliceName", ElementSerializer.descriptor)
+      optionalElement("sliceIsConstraining", KotlinBoolean.serializer().descriptor)
+      optionalElement("_sliceIsConstraining", ElementSerializer.descriptor)
+      optionalElement("label", KotlinString.serializer().descriptor)
+      optionalElement("_label", ElementSerializer.descriptor)
+      optionalElement("code", CodingSerializer.listSerializer.descriptor)
+      optionalElement("slicing", ElementDefinitionSlicingSerializer.descriptor)
+      optionalElement("short", KotlinString.serializer().descriptor)
+      optionalElement("_short", ElementSerializer.descriptor)
+      optionalElement("definition", KotlinString.serializer().descriptor)
+      optionalElement("_definition", ElementSerializer.descriptor)
+      optionalElement("comment", KotlinString.serializer().descriptor)
+      optionalElement("_comment", ElementSerializer.descriptor)
+      optionalElement("requirements", KotlinString.serializer().descriptor)
+      optionalElement("_requirements", ElementSerializer.descriptor)
+      optionalElement("alias", stringNullableListSerializer.descriptor)
+      optionalElement("_alias", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("min", Int.serializer().descriptor)
+      optionalElement("_min", ElementSerializer.descriptor)
+      optionalElement("max", KotlinString.serializer().descriptor)
+      optionalElement("_max", ElementSerializer.descriptor)
+      optionalElement("base", ElementDefinitionBaseSerializer.descriptor)
+      optionalElement("contentReference", KotlinString.serializer().descriptor)
+      optionalElement("_contentReference", ElementSerializer.descriptor)
+      optionalElement("type", ElementDefinitionTypeSerializer.listSerializer.descriptor)
+      optionalElement("defaultValueBase64Binary", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueBase64Binary", ElementSerializer.descriptor)
+      optionalElement("defaultValueBoolean", KotlinBoolean.serializer().descriptor)
+      optionalElement("_defaultValueBoolean", ElementSerializer.descriptor)
+      optionalElement("defaultValueCanonical", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueCanonical", ElementSerializer.descriptor)
+      optionalElement("defaultValueCode", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueCode", ElementSerializer.descriptor)
+      optionalElement("defaultValueDate", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueDate", ElementSerializer.descriptor)
+      optionalElement("defaultValueDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueDateTime", ElementSerializer.descriptor)
+      optionalElement("defaultValueDecimal", FhirDecimalSerializer.descriptor)
+      optionalElement("_defaultValueDecimal", ElementSerializer.descriptor)
+      optionalElement("defaultValueId", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueId", ElementSerializer.descriptor)
+      optionalElement("defaultValueInstant", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueInstant", ElementSerializer.descriptor)
+      optionalElement("defaultValueInteger", Int.serializer().descriptor)
+      optionalElement("_defaultValueInteger", ElementSerializer.descriptor)
+      optionalElement("defaultValueInteger64", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueInteger64", ElementSerializer.descriptor)
+      optionalElement("defaultValueMarkdown", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueMarkdown", ElementSerializer.descriptor)
+      optionalElement("defaultValueOid", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueOid", ElementSerializer.descriptor)
+      optionalElement("defaultValuePositiveInt", Int.serializer().descriptor)
+      optionalElement("_defaultValuePositiveInt", ElementSerializer.descriptor)
+      optionalElement("defaultValueString", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueString", ElementSerializer.descriptor)
+      optionalElement("defaultValueTime", LocalTimeSerializer.descriptor)
+      optionalElement("_defaultValueTime", ElementSerializer.descriptor)
+      optionalElement("defaultValueUnsignedInt", Int.serializer().descriptor)
+      optionalElement("_defaultValueUnsignedInt", ElementSerializer.descriptor)
+      optionalElement("defaultValueUri", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueUri", ElementSerializer.descriptor)
+      optionalElement("defaultValueUrl", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueUrl", ElementSerializer.descriptor)
+      optionalElement("defaultValueUuid", KotlinString.serializer().descriptor)
+      optionalElement("_defaultValueUuid", ElementSerializer.descriptor)
+      optionalElement("defaultValueAddress", AddressSerializer.descriptor)
+      optionalElement("defaultValueAge", AgeSerializer.descriptor)
+      optionalElement("defaultValueAnnotation", AnnotationSerializer.descriptor)
+      optionalElement("defaultValueAttachment", AttachmentSerializer.descriptor)
+      optionalElement("defaultValueCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("defaultValueCodeableReference", CodeableReferenceSerializer.descriptor)
+      optionalElement("defaultValueCoding", CodingSerializer.descriptor)
+      optionalElement("defaultValueContactPoint", ContactPointSerializer.descriptor)
+      optionalElement("defaultValueCount", CountSerializer.descriptor)
+      optionalElement("defaultValueDistance", DistanceSerializer.descriptor)
+      optionalElement("defaultValueDuration", DurationSerializer.descriptor)
+      optionalElement("defaultValueHumanName", HumanNameSerializer.descriptor)
+      optionalElement("defaultValueIdentifier", IdentifierSerializer.descriptor)
+      optionalElement("defaultValueMoney", MoneySerializer.descriptor)
+      optionalElement("defaultValuePeriod", PeriodSerializer.descriptor)
+      optionalElement("defaultValueQuantity", QuantitySerializer.descriptor)
+      optionalElement("defaultValueRange", RangeSerializer.descriptor)
+      optionalElement("defaultValueRatio", RatioSerializer.descriptor)
+      optionalElement("defaultValueRatioRange", RatioRangeSerializer.descriptor)
+      optionalElement("defaultValueReference", ReferenceSerializer.descriptor)
+      optionalElement("defaultValueSampledData", SampledDataSerializer.descriptor)
+      optionalElement("defaultValueSignature", SignatureSerializer.descriptor)
+      optionalElement("defaultValueTiming", TimingSerializer.descriptor)
+      optionalElement("defaultValueContactDetail", ContactDetailSerializer.descriptor)
+      optionalElement("defaultValueDataRequirement", DataRequirementSerializer.descriptor)
+      optionalElement("defaultValueExpression", ExpressionSerializer.descriptor)
+      optionalElement("defaultValueParameterDefinition", ParameterDefinitionSerializer.descriptor)
+      optionalElement("defaultValueRelatedArtifact", RelatedArtifactSerializer.descriptor)
+      optionalElement("defaultValueTriggerDefinition", TriggerDefinitionSerializer.descriptor)
+      optionalElement("defaultValueUsageContext", UsageContextSerializer.descriptor)
+      optionalElement("defaultValueAvailability", AvailabilitySerializer.descriptor)
+      optionalElement(
         "defaultValueExtendedContactDetail",
-        ExtendedContactDetail.serializer().descriptor,
-        isOptional = true,
+        ExtendedContactDetailSerializer.descriptor,
       )
-      element("defaultValueDosage", Dosage.serializer().descriptor, isOptional = true)
-      element("defaultValueMeta", Meta.serializer().descriptor, isOptional = true)
-      element("meaningWhenMissing", KotlinString.serializer().descriptor, isOptional = true)
-      element("_meaningWhenMissing", Element.serializer().descriptor, isOptional = true)
-      element("orderMeaning", KotlinString.serializer().descriptor, isOptional = true)
-      element("_orderMeaning", Element.serializer().descriptor, isOptional = true)
-      element("fixedBase64Binary", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedBase64Binary", Element.serializer().descriptor, isOptional = true)
-      element("fixedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_fixedBoolean", Element.serializer().descriptor, isOptional = true)
-      element("fixedCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedCanonical", Element.serializer().descriptor, isOptional = true)
-      element("fixedCode", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedCode", Element.serializer().descriptor, isOptional = true)
-      element("fixedDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedDate", Element.serializer().descriptor, isOptional = true)
-      element("fixedDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedDateTime", Element.serializer().descriptor, isOptional = true)
-      element("fixedDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_fixedDecimal", Element.serializer().descriptor, isOptional = true)
-      element("fixedId", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedId", Element.serializer().descriptor, isOptional = true)
-      element("fixedInstant", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedInstant", Element.serializer().descriptor, isOptional = true)
-      element("fixedInteger", Int.serializer().descriptor, isOptional = true)
-      element("_fixedInteger", Element.serializer().descriptor, isOptional = true)
-      element("fixedInteger64", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedInteger64", Element.serializer().descriptor, isOptional = true)
-      element("fixedMarkdown", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedMarkdown", Element.serializer().descriptor, isOptional = true)
-      element("fixedOid", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedOid", Element.serializer().descriptor, isOptional = true)
-      element("fixedPositiveInt", Int.serializer().descriptor, isOptional = true)
-      element("_fixedPositiveInt", Element.serializer().descriptor, isOptional = true)
-      element("fixedString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedString", Element.serializer().descriptor, isOptional = true)
-      element("fixedTime", LocalTimeSerializer.descriptor, isOptional = true)
-      element("_fixedTime", Element.serializer().descriptor, isOptional = true)
-      element("fixedUnsignedInt", Int.serializer().descriptor, isOptional = true)
-      element("_fixedUnsignedInt", Element.serializer().descriptor, isOptional = true)
-      element("fixedUri", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedUri", Element.serializer().descriptor, isOptional = true)
-      element("fixedUrl", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedUrl", Element.serializer().descriptor, isOptional = true)
-      element("fixedUuid", KotlinString.serializer().descriptor, isOptional = true)
-      element("_fixedUuid", Element.serializer().descriptor, isOptional = true)
-      element("fixedAddress", Address.serializer().descriptor, isOptional = true)
-      element("fixedAge", Age.serializer().descriptor, isOptional = true)
-      element("fixedAnnotation", Annotation.serializer().descriptor, isOptional = true)
-      element("fixedAttachment", Attachment.serializer().descriptor, isOptional = true)
-      element("fixedCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "fixedCodeableReference",
-        CodeableReference.serializer().descriptor,
-        isOptional = true,
-      )
-      element("fixedCoding", Coding.serializer().descriptor, isOptional = true)
-      element("fixedContactPoint", ContactPoint.serializer().descriptor, isOptional = true)
-      element("fixedCount", Count.serializer().descriptor, isOptional = true)
-      element("fixedDistance", Distance.serializer().descriptor, isOptional = true)
-      element("fixedDuration", Duration.serializer().descriptor, isOptional = true)
-      element("fixedHumanName", HumanName.serializer().descriptor, isOptional = true)
-      element("fixedIdentifier", Identifier.serializer().descriptor, isOptional = true)
-      element("fixedMoney", Money.serializer().descriptor, isOptional = true)
-      element("fixedPeriod", Period.serializer().descriptor, isOptional = true)
-      element("fixedQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("fixedRange", Range.serializer().descriptor, isOptional = true)
-      element("fixedRatio", Ratio.serializer().descriptor, isOptional = true)
-      element("fixedRatioRange", RatioRange.serializer().descriptor, isOptional = true)
-      element("fixedReference", Reference.serializer().descriptor, isOptional = true)
-      element("fixedSampledData", SampledData.serializer().descriptor, isOptional = true)
-      element("fixedSignature", Signature.serializer().descriptor, isOptional = true)
-      element("fixedTiming", Timing.serializer().descriptor, isOptional = true)
-      element("fixedContactDetail", ContactDetail.serializer().descriptor, isOptional = true)
-      element("fixedDataRequirement", DataRequirement.serializer().descriptor, isOptional = true)
-      element("fixedExpression", Expression.serializer().descriptor, isOptional = true)
-      element(
-        "fixedParameterDefinition",
-        ParameterDefinition.serializer().descriptor,
-        isOptional = true,
-      )
-      element("fixedRelatedArtifact", RelatedArtifact.serializer().descriptor, isOptional = true)
-      element(
-        "fixedTriggerDefinition",
-        TriggerDefinition.serializer().descriptor,
-        isOptional = true,
-      )
-      element("fixedUsageContext", UsageContext.serializer().descriptor, isOptional = true)
-      element("fixedAvailability", Availability.serializer().descriptor, isOptional = true)
-      element(
-        "fixedExtendedContactDetail",
-        ExtendedContactDetail.serializer().descriptor,
-        isOptional = true,
-      )
-      element("fixedDosage", Dosage.serializer().descriptor, isOptional = true)
-      element("fixedMeta", Meta.serializer().descriptor, isOptional = true)
-      element("patternBase64Binary", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternBase64Binary", Element.serializer().descriptor, isOptional = true)
-      element("patternBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_patternBoolean", Element.serializer().descriptor, isOptional = true)
-      element("patternCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternCanonical", Element.serializer().descriptor, isOptional = true)
-      element("patternCode", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternCode", Element.serializer().descriptor, isOptional = true)
-      element("patternDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternDate", Element.serializer().descriptor, isOptional = true)
-      element("patternDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternDateTime", Element.serializer().descriptor, isOptional = true)
-      element("patternDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_patternDecimal", Element.serializer().descriptor, isOptional = true)
-      element("patternId", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternId", Element.serializer().descriptor, isOptional = true)
-      element("patternInstant", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternInstant", Element.serializer().descriptor, isOptional = true)
-      element("patternInteger", Int.serializer().descriptor, isOptional = true)
-      element("_patternInteger", Element.serializer().descriptor, isOptional = true)
-      element("patternInteger64", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternInteger64", Element.serializer().descriptor, isOptional = true)
-      element("patternMarkdown", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternMarkdown", Element.serializer().descriptor, isOptional = true)
-      element("patternOid", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternOid", Element.serializer().descriptor, isOptional = true)
-      element("patternPositiveInt", Int.serializer().descriptor, isOptional = true)
-      element("_patternPositiveInt", Element.serializer().descriptor, isOptional = true)
-      element("patternString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternString", Element.serializer().descriptor, isOptional = true)
-      element("patternTime", LocalTimeSerializer.descriptor, isOptional = true)
-      element("_patternTime", Element.serializer().descriptor, isOptional = true)
-      element("patternUnsignedInt", Int.serializer().descriptor, isOptional = true)
-      element("_patternUnsignedInt", Element.serializer().descriptor, isOptional = true)
-      element("patternUri", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternUri", Element.serializer().descriptor, isOptional = true)
-      element("patternUrl", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternUrl", Element.serializer().descriptor, isOptional = true)
-      element("patternUuid", KotlinString.serializer().descriptor, isOptional = true)
-      element("_patternUuid", Element.serializer().descriptor, isOptional = true)
-      element("patternAddress", Address.serializer().descriptor, isOptional = true)
-      element("patternAge", Age.serializer().descriptor, isOptional = true)
-      element("patternAnnotation", Annotation.serializer().descriptor, isOptional = true)
-      element("patternAttachment", Attachment.serializer().descriptor, isOptional = true)
-      element("patternCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "patternCodeableReference",
-        CodeableReference.serializer().descriptor,
-        isOptional = true,
-      )
-      element("patternCoding", Coding.serializer().descriptor, isOptional = true)
-      element("patternContactPoint", ContactPoint.serializer().descriptor, isOptional = true)
-      element("patternCount", Count.serializer().descriptor, isOptional = true)
-      element("patternDistance", Distance.serializer().descriptor, isOptional = true)
-      element("patternDuration", Duration.serializer().descriptor, isOptional = true)
-      element("patternHumanName", HumanName.serializer().descriptor, isOptional = true)
-      element("patternIdentifier", Identifier.serializer().descriptor, isOptional = true)
-      element("patternMoney", Money.serializer().descriptor, isOptional = true)
-      element("patternPeriod", Period.serializer().descriptor, isOptional = true)
-      element("patternQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("patternRange", Range.serializer().descriptor, isOptional = true)
-      element("patternRatio", Ratio.serializer().descriptor, isOptional = true)
-      element("patternRatioRange", RatioRange.serializer().descriptor, isOptional = true)
-      element("patternReference", Reference.serializer().descriptor, isOptional = true)
-      element("patternSampledData", SampledData.serializer().descriptor, isOptional = true)
-      element("patternSignature", Signature.serializer().descriptor, isOptional = true)
-      element("patternTiming", Timing.serializer().descriptor, isOptional = true)
-      element("patternContactDetail", ContactDetail.serializer().descriptor, isOptional = true)
-      element("patternDataRequirement", DataRequirement.serializer().descriptor, isOptional = true)
-      element("patternExpression", Expression.serializer().descriptor, isOptional = true)
-      element(
-        "patternParameterDefinition",
-        ParameterDefinition.serializer().descriptor,
-        isOptional = true,
-      )
-      element("patternRelatedArtifact", RelatedArtifact.serializer().descriptor, isOptional = true)
-      element(
-        "patternTriggerDefinition",
-        TriggerDefinition.serializer().descriptor,
-        isOptional = true,
-      )
-      element("patternUsageContext", UsageContext.serializer().descriptor, isOptional = true)
-      element("patternAvailability", Availability.serializer().descriptor, isOptional = true)
-      element(
-        "patternExtendedContactDetail",
-        ExtendedContactDetail.serializer().descriptor,
-        isOptional = true,
-      )
-      element("patternDosage", Dosage.serializer().descriptor, isOptional = true)
-      element("patternMeta", Meta.serializer().descriptor, isOptional = true)
-      element(
-        "example",
-        listSerialDescriptor(lazyDescriptor { ElementDefinition.Example.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("minValueDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_minValueDate", Element.serializer().descriptor, isOptional = true)
-      element("minValueDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_minValueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("minValueInstant", KotlinString.serializer().descriptor, isOptional = true)
-      element("_minValueInstant", Element.serializer().descriptor, isOptional = true)
-      element("minValueTime", LocalTimeSerializer.descriptor, isOptional = true)
-      element("_minValueTime", Element.serializer().descriptor, isOptional = true)
-      element("minValueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_minValueDecimal", Element.serializer().descriptor, isOptional = true)
-      element("minValueInteger", Int.serializer().descriptor, isOptional = true)
-      element("_minValueInteger", Element.serializer().descriptor, isOptional = true)
-      element("minValueInteger64", KotlinString.serializer().descriptor, isOptional = true)
-      element("_minValueInteger64", Element.serializer().descriptor, isOptional = true)
-      element("minValuePositiveInt", Int.serializer().descriptor, isOptional = true)
-      element("_minValuePositiveInt", Element.serializer().descriptor, isOptional = true)
-      element("minValueUnsignedInt", Int.serializer().descriptor, isOptional = true)
-      element("_minValueUnsignedInt", Element.serializer().descriptor, isOptional = true)
-      element("minValueQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("maxValueDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_maxValueDate", Element.serializer().descriptor, isOptional = true)
-      element("maxValueDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_maxValueDateTime", Element.serializer().descriptor, isOptional = true)
-      element("maxValueInstant", KotlinString.serializer().descriptor, isOptional = true)
-      element("_maxValueInstant", Element.serializer().descriptor, isOptional = true)
-      element("maxValueTime", LocalTimeSerializer.descriptor, isOptional = true)
-      element("_maxValueTime", Element.serializer().descriptor, isOptional = true)
-      element("maxValueDecimal", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_maxValueDecimal", Element.serializer().descriptor, isOptional = true)
-      element("maxValueInteger", Int.serializer().descriptor, isOptional = true)
-      element("_maxValueInteger", Element.serializer().descriptor, isOptional = true)
-      element("maxValueInteger64", KotlinString.serializer().descriptor, isOptional = true)
-      element("_maxValueInteger64", Element.serializer().descriptor, isOptional = true)
-      element("maxValuePositiveInt", Int.serializer().descriptor, isOptional = true)
-      element("_maxValuePositiveInt", Element.serializer().descriptor, isOptional = true)
-      element("maxValueUnsignedInt", Int.serializer().descriptor, isOptional = true)
-      element("_maxValueUnsignedInt", Element.serializer().descriptor, isOptional = true)
-      element("maxValueQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("maxLength", Int.serializer().descriptor, isOptional = true)
-      element("_maxLength", Element.serializer().descriptor, isOptional = true)
-      element(
-        "condition",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_condition",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "constraint",
-        listSerialDescriptor(
-          lazyDescriptor { ElementDefinition.Constraint.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element("mustHaveValue", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_mustHaveValue", Element.serializer().descriptor, isOptional = true)
-      element(
-        "valueAlternatives",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_valueAlternatives",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element("mustSupport", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_mustSupport", Element.serializer().descriptor, isOptional = true)
-      element("isModifier", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_isModifier", Element.serializer().descriptor, isOptional = true)
-      element("isModifierReason", KotlinString.serializer().descriptor, isOptional = true)
-      element("_isModifierReason", Element.serializer().descriptor, isOptional = true)
-      element("isSummary", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_isSummary", Element.serializer().descriptor, isOptional = true)
-      element(
-        "binding",
-        lazyDescriptor { ElementDefinition.Binding.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "mapping",
-        listSerialDescriptor(lazyDescriptor { ElementDefinition.Mapping.serializer().descriptor }),
-        isOptional = true,
-      )
+      optionalElement("defaultValueDosage", DosageSerializer.descriptor)
+      optionalElement("defaultValueMeta", MetaSerializer.descriptor)
+      optionalElement("meaningWhenMissing", KotlinString.serializer().descriptor)
+      optionalElement("_meaningWhenMissing", ElementSerializer.descriptor)
+      optionalElement("orderMeaning", KotlinString.serializer().descriptor)
+      optionalElement("_orderMeaning", ElementSerializer.descriptor)
+      optionalElement("fixedBase64Binary", KotlinString.serializer().descriptor)
+      optionalElement("_fixedBase64Binary", ElementSerializer.descriptor)
+      optionalElement("fixedBoolean", KotlinBoolean.serializer().descriptor)
+      optionalElement("_fixedBoolean", ElementSerializer.descriptor)
+      optionalElement("fixedCanonical", KotlinString.serializer().descriptor)
+      optionalElement("_fixedCanonical", ElementSerializer.descriptor)
+      optionalElement("fixedCode", KotlinString.serializer().descriptor)
+      optionalElement("_fixedCode", ElementSerializer.descriptor)
+      optionalElement("fixedDate", KotlinString.serializer().descriptor)
+      optionalElement("_fixedDate", ElementSerializer.descriptor)
+      optionalElement("fixedDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_fixedDateTime", ElementSerializer.descriptor)
+      optionalElement("fixedDecimal", FhirDecimalSerializer.descriptor)
+      optionalElement("_fixedDecimal", ElementSerializer.descriptor)
+      optionalElement("fixedId", KotlinString.serializer().descriptor)
+      optionalElement("_fixedId", ElementSerializer.descriptor)
+      optionalElement("fixedInstant", KotlinString.serializer().descriptor)
+      optionalElement("_fixedInstant", ElementSerializer.descriptor)
+      optionalElement("fixedInteger", Int.serializer().descriptor)
+      optionalElement("_fixedInteger", ElementSerializer.descriptor)
+      optionalElement("fixedInteger64", KotlinString.serializer().descriptor)
+      optionalElement("_fixedInteger64", ElementSerializer.descriptor)
+      optionalElement("fixedMarkdown", KotlinString.serializer().descriptor)
+      optionalElement("_fixedMarkdown", ElementSerializer.descriptor)
+      optionalElement("fixedOid", KotlinString.serializer().descriptor)
+      optionalElement("_fixedOid", ElementSerializer.descriptor)
+      optionalElement("fixedPositiveInt", Int.serializer().descriptor)
+      optionalElement("_fixedPositiveInt", ElementSerializer.descriptor)
+      optionalElement("fixedString", KotlinString.serializer().descriptor)
+      optionalElement("_fixedString", ElementSerializer.descriptor)
+      optionalElement("fixedTime", LocalTimeSerializer.descriptor)
+      optionalElement("_fixedTime", ElementSerializer.descriptor)
+      optionalElement("fixedUnsignedInt", Int.serializer().descriptor)
+      optionalElement("_fixedUnsignedInt", ElementSerializer.descriptor)
+      optionalElement("fixedUri", KotlinString.serializer().descriptor)
+      optionalElement("_fixedUri", ElementSerializer.descriptor)
+      optionalElement("fixedUrl", KotlinString.serializer().descriptor)
+      optionalElement("_fixedUrl", ElementSerializer.descriptor)
+      optionalElement("fixedUuid", KotlinString.serializer().descriptor)
+      optionalElement("_fixedUuid", ElementSerializer.descriptor)
+      optionalElement("fixedAddress", AddressSerializer.descriptor)
+      optionalElement("fixedAge", AgeSerializer.descriptor)
+      optionalElement("fixedAnnotation", AnnotationSerializer.descriptor)
+      optionalElement("fixedAttachment", AttachmentSerializer.descriptor)
+      optionalElement("fixedCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("fixedCodeableReference", CodeableReferenceSerializer.descriptor)
+      optionalElement("fixedCoding", CodingSerializer.descriptor)
+      optionalElement("fixedContactPoint", ContactPointSerializer.descriptor)
+      optionalElement("fixedCount", CountSerializer.descriptor)
+      optionalElement("fixedDistance", DistanceSerializer.descriptor)
+      optionalElement("fixedDuration", DurationSerializer.descriptor)
+      optionalElement("fixedHumanName", HumanNameSerializer.descriptor)
+      optionalElement("fixedIdentifier", IdentifierSerializer.descriptor)
+      optionalElement("fixedMoney", MoneySerializer.descriptor)
+      optionalElement("fixedPeriod", PeriodSerializer.descriptor)
+      optionalElement("fixedQuantity", QuantitySerializer.descriptor)
+      optionalElement("fixedRange", RangeSerializer.descriptor)
+      optionalElement("fixedRatio", RatioSerializer.descriptor)
+      optionalElement("fixedRatioRange", RatioRangeSerializer.descriptor)
+      optionalElement("fixedReference", ReferenceSerializer.descriptor)
+      optionalElement("fixedSampledData", SampledDataSerializer.descriptor)
+      optionalElement("fixedSignature", SignatureSerializer.descriptor)
+      optionalElement("fixedTiming", TimingSerializer.descriptor)
+      optionalElement("fixedContactDetail", ContactDetailSerializer.descriptor)
+      optionalElement("fixedDataRequirement", DataRequirementSerializer.descriptor)
+      optionalElement("fixedExpression", ExpressionSerializer.descriptor)
+      optionalElement("fixedParameterDefinition", ParameterDefinitionSerializer.descriptor)
+      optionalElement("fixedRelatedArtifact", RelatedArtifactSerializer.descriptor)
+      optionalElement("fixedTriggerDefinition", TriggerDefinitionSerializer.descriptor)
+      optionalElement("fixedUsageContext", UsageContextSerializer.descriptor)
+      optionalElement("fixedAvailability", AvailabilitySerializer.descriptor)
+      optionalElement("fixedExtendedContactDetail", ExtendedContactDetailSerializer.descriptor)
+      optionalElement("fixedDosage", DosageSerializer.descriptor)
+      optionalElement("fixedMeta", MetaSerializer.descriptor)
+      optionalElement("patternBase64Binary", KotlinString.serializer().descriptor)
+      optionalElement("_patternBase64Binary", ElementSerializer.descriptor)
+      optionalElement("patternBoolean", KotlinBoolean.serializer().descriptor)
+      optionalElement("_patternBoolean", ElementSerializer.descriptor)
+      optionalElement("patternCanonical", KotlinString.serializer().descriptor)
+      optionalElement("_patternCanonical", ElementSerializer.descriptor)
+      optionalElement("patternCode", KotlinString.serializer().descriptor)
+      optionalElement("_patternCode", ElementSerializer.descriptor)
+      optionalElement("patternDate", KotlinString.serializer().descriptor)
+      optionalElement("_patternDate", ElementSerializer.descriptor)
+      optionalElement("patternDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_patternDateTime", ElementSerializer.descriptor)
+      optionalElement("patternDecimal", FhirDecimalSerializer.descriptor)
+      optionalElement("_patternDecimal", ElementSerializer.descriptor)
+      optionalElement("patternId", KotlinString.serializer().descriptor)
+      optionalElement("_patternId", ElementSerializer.descriptor)
+      optionalElement("patternInstant", KotlinString.serializer().descriptor)
+      optionalElement("_patternInstant", ElementSerializer.descriptor)
+      optionalElement("patternInteger", Int.serializer().descriptor)
+      optionalElement("_patternInteger", ElementSerializer.descriptor)
+      optionalElement("patternInteger64", KotlinString.serializer().descriptor)
+      optionalElement("_patternInteger64", ElementSerializer.descriptor)
+      optionalElement("patternMarkdown", KotlinString.serializer().descriptor)
+      optionalElement("_patternMarkdown", ElementSerializer.descriptor)
+      optionalElement("patternOid", KotlinString.serializer().descriptor)
+      optionalElement("_patternOid", ElementSerializer.descriptor)
+      optionalElement("patternPositiveInt", Int.serializer().descriptor)
+      optionalElement("_patternPositiveInt", ElementSerializer.descriptor)
+      optionalElement("patternString", KotlinString.serializer().descriptor)
+      optionalElement("_patternString", ElementSerializer.descriptor)
+      optionalElement("patternTime", LocalTimeSerializer.descriptor)
+      optionalElement("_patternTime", ElementSerializer.descriptor)
+      optionalElement("patternUnsignedInt", Int.serializer().descriptor)
+      optionalElement("_patternUnsignedInt", ElementSerializer.descriptor)
+      optionalElement("patternUri", KotlinString.serializer().descriptor)
+      optionalElement("_patternUri", ElementSerializer.descriptor)
+      optionalElement("patternUrl", KotlinString.serializer().descriptor)
+      optionalElement("_patternUrl", ElementSerializer.descriptor)
+      optionalElement("patternUuid", KotlinString.serializer().descriptor)
+      optionalElement("_patternUuid", ElementSerializer.descriptor)
+      optionalElement("patternAddress", AddressSerializer.descriptor)
+      optionalElement("patternAge", AgeSerializer.descriptor)
+      optionalElement("patternAnnotation", AnnotationSerializer.descriptor)
+      optionalElement("patternAttachment", AttachmentSerializer.descriptor)
+      optionalElement("patternCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("patternCodeableReference", CodeableReferenceSerializer.descriptor)
+      optionalElement("patternCoding", CodingSerializer.descriptor)
+      optionalElement("patternContactPoint", ContactPointSerializer.descriptor)
+      optionalElement("patternCount", CountSerializer.descriptor)
+      optionalElement("patternDistance", DistanceSerializer.descriptor)
+      optionalElement("patternDuration", DurationSerializer.descriptor)
+      optionalElement("patternHumanName", HumanNameSerializer.descriptor)
+      optionalElement("patternIdentifier", IdentifierSerializer.descriptor)
+      optionalElement("patternMoney", MoneySerializer.descriptor)
+      optionalElement("patternPeriod", PeriodSerializer.descriptor)
+      optionalElement("patternQuantity", QuantitySerializer.descriptor)
+      optionalElement("patternRange", RangeSerializer.descriptor)
+      optionalElement("patternRatio", RatioSerializer.descriptor)
+      optionalElement("patternRatioRange", RatioRangeSerializer.descriptor)
+      optionalElement("patternReference", ReferenceSerializer.descriptor)
+      optionalElement("patternSampledData", SampledDataSerializer.descriptor)
+      optionalElement("patternSignature", SignatureSerializer.descriptor)
+      optionalElement("patternTiming", TimingSerializer.descriptor)
+      optionalElement("patternContactDetail", ContactDetailSerializer.descriptor)
+      optionalElement("patternDataRequirement", DataRequirementSerializer.descriptor)
+      optionalElement("patternExpression", ExpressionSerializer.descriptor)
+      optionalElement("patternParameterDefinition", ParameterDefinitionSerializer.descriptor)
+      optionalElement("patternRelatedArtifact", RelatedArtifactSerializer.descriptor)
+      optionalElement("patternTriggerDefinition", TriggerDefinitionSerializer.descriptor)
+      optionalElement("patternUsageContext", UsageContextSerializer.descriptor)
+      optionalElement("patternAvailability", AvailabilitySerializer.descriptor)
+      optionalElement("patternExtendedContactDetail", ExtendedContactDetailSerializer.descriptor)
+      optionalElement("patternDosage", DosageSerializer.descriptor)
+      optionalElement("patternMeta", MetaSerializer.descriptor)
+      optionalElement("example", ElementDefinitionExampleSerializer.listSerializer.descriptor)
+      optionalElement("minValueDate", KotlinString.serializer().descriptor)
+      optionalElement("_minValueDate", ElementSerializer.descriptor)
+      optionalElement("minValueDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_minValueDateTime", ElementSerializer.descriptor)
+      optionalElement("minValueInstant", KotlinString.serializer().descriptor)
+      optionalElement("_minValueInstant", ElementSerializer.descriptor)
+      optionalElement("minValueTime", LocalTimeSerializer.descriptor)
+      optionalElement("_minValueTime", ElementSerializer.descriptor)
+      optionalElement("minValueDecimal", FhirDecimalSerializer.descriptor)
+      optionalElement("_minValueDecimal", ElementSerializer.descriptor)
+      optionalElement("minValueInteger", Int.serializer().descriptor)
+      optionalElement("_minValueInteger", ElementSerializer.descriptor)
+      optionalElement("minValueInteger64", KotlinString.serializer().descriptor)
+      optionalElement("_minValueInteger64", ElementSerializer.descriptor)
+      optionalElement("minValuePositiveInt", Int.serializer().descriptor)
+      optionalElement("_minValuePositiveInt", ElementSerializer.descriptor)
+      optionalElement("minValueUnsignedInt", Int.serializer().descriptor)
+      optionalElement("_minValueUnsignedInt", ElementSerializer.descriptor)
+      optionalElement("minValueQuantity", QuantitySerializer.descriptor)
+      optionalElement("maxValueDate", KotlinString.serializer().descriptor)
+      optionalElement("_maxValueDate", ElementSerializer.descriptor)
+      optionalElement("maxValueDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_maxValueDateTime", ElementSerializer.descriptor)
+      optionalElement("maxValueInstant", KotlinString.serializer().descriptor)
+      optionalElement("_maxValueInstant", ElementSerializer.descriptor)
+      optionalElement("maxValueTime", LocalTimeSerializer.descriptor)
+      optionalElement("_maxValueTime", ElementSerializer.descriptor)
+      optionalElement("maxValueDecimal", FhirDecimalSerializer.descriptor)
+      optionalElement("_maxValueDecimal", ElementSerializer.descriptor)
+      optionalElement("maxValueInteger", Int.serializer().descriptor)
+      optionalElement("_maxValueInteger", ElementSerializer.descriptor)
+      optionalElement("maxValueInteger64", KotlinString.serializer().descriptor)
+      optionalElement("_maxValueInteger64", ElementSerializer.descriptor)
+      optionalElement("maxValuePositiveInt", Int.serializer().descriptor)
+      optionalElement("_maxValuePositiveInt", ElementSerializer.descriptor)
+      optionalElement("maxValueUnsignedInt", Int.serializer().descriptor)
+      optionalElement("_maxValueUnsignedInt", ElementSerializer.descriptor)
+      optionalElement("maxValueQuantity", QuantitySerializer.descriptor)
+      optionalElement("maxLength", Int.serializer().descriptor)
+      optionalElement("_maxLength", ElementSerializer.descriptor)
+      optionalElement("condition", stringNullableListSerializer.descriptor)
+      optionalElement("_condition", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("constraint", ElementDefinitionConstraintSerializer.listSerializer.descriptor)
+      optionalElement("mustHaveValue", KotlinBoolean.serializer().descriptor)
+      optionalElement("_mustHaveValue", ElementSerializer.descriptor)
+      optionalElement("valueAlternatives", stringNullableListSerializer.descriptor)
+      optionalElement("_valueAlternatives", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("mustSupport", KotlinBoolean.serializer().descriptor)
+      optionalElement("_mustSupport", ElementSerializer.descriptor)
+      optionalElement("isModifier", KotlinBoolean.serializer().descriptor)
+      optionalElement("_isModifier", ElementSerializer.descriptor)
+      optionalElement("isModifierReason", KotlinString.serializer().descriptor)
+      optionalElement("_isModifierReason", ElementSerializer.descriptor)
+      optionalElement("isSummary", KotlinBoolean.serializer().descriptor)
+      optionalElement("_isSummary", ElementSerializer.descriptor)
+      optionalElement("binding", ElementDefinitionBindingSerializer.descriptor)
+      optionalElement("mapping", ElementDefinitionMappingSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ElementDefinition>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): ElementDefinition =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var path: KotlinString? = null
+      var _path: Element? = null
+      var representation: List<KotlinString?>? = null
+      var _representation: List<Element?>? = null
+      var sliceName: KotlinString? = null
+      var _sliceName: Element? = null
+      var sliceIsConstraining: KotlinBoolean? = null
+      var _sliceIsConstraining: Element? = null
+      var label: KotlinString? = null
+      var _label: Element? = null
+      var code: List<Coding>? = null
+      var slicing: ElementDefinition.Slicing? = null
+      var short: KotlinString? = null
+      var _short: Element? = null
+      var definition: KotlinString? = null
+      var _definition: Element? = null
+      var comment: KotlinString? = null
+      var _comment: Element? = null
+      var requirements: KotlinString? = null
+      var _requirements: Element? = null
+      var alias: List<KotlinString?>? = null
+      var _alias: List<Element?>? = null
+      var min: Int? = null
+      var _min: Element? = null
+      var max: KotlinString? = null
+      var _max: Element? = null
+      var base: ElementDefinition.Base? = null
+      var contentReference: KotlinString? = null
+      var _contentReference: Element? = null
+      var type: List<ElementDefinition.Type>? = null
+      var defaultValueBase64Binary: KotlinString? = null
+      var _defaultValueBase64Binary: Element? = null
+      var defaultValueBoolean: KotlinBoolean? = null
+      var _defaultValueBoolean: Element? = null
+      var defaultValueCanonical: KotlinString? = null
+      var _defaultValueCanonical: Element? = null
+      var defaultValueCode: KotlinString? = null
+      var _defaultValueCode: Element? = null
+      var defaultValueDate: KotlinString? = null
+      var _defaultValueDate: Element? = null
+      var defaultValueDateTime: KotlinString? = null
+      var _defaultValueDateTime: Element? = null
+      var defaultValueDecimal: FhirDecimal? = null
+      var _defaultValueDecimal: Element? = null
+      var defaultValueId: KotlinString? = null
+      var _defaultValueId: Element? = null
+      var defaultValueInstant: KotlinString? = null
+      var _defaultValueInstant: Element? = null
+      var defaultValueInteger: Int? = null
+      var _defaultValueInteger: Element? = null
+      var defaultValueInteger64: KotlinString? = null
+      var _defaultValueInteger64: Element? = null
+      var defaultValueMarkdown: KotlinString? = null
+      var _defaultValueMarkdown: Element? = null
+      var defaultValueOid: KotlinString? = null
+      var _defaultValueOid: Element? = null
+      var defaultValuePositiveInt: Int? = null
+      var _defaultValuePositiveInt: Element? = null
+      var defaultValueString: KotlinString? = null
+      var _defaultValueString: Element? = null
+      var defaultValueTime: LocalTime? = null
+      var _defaultValueTime: Element? = null
+      var defaultValueUnsignedInt: Int? = null
+      var _defaultValueUnsignedInt: Element? = null
+      var defaultValueUri: KotlinString? = null
+      var _defaultValueUri: Element? = null
+      var defaultValueUrl: KotlinString? = null
+      var _defaultValueUrl: Element? = null
+      var defaultValueUuid: KotlinString? = null
+      var _defaultValueUuid: Element? = null
+      var defaultValueAddress: Address? = null
+      var defaultValueAge: Age? = null
+      var defaultValueAnnotation: Annotation? = null
+      var defaultValueAttachment: Attachment? = null
+      var defaultValueCodeableConcept: CodeableConcept? = null
+      var defaultValueCodeableReference: CodeableReference? = null
+      var defaultValueCoding: Coding? = null
+      var defaultValueContactPoint: ContactPoint? = null
+      var defaultValueCount: Count? = null
+      var defaultValueDistance: Distance? = null
+      var defaultValueDuration: Duration? = null
+      var defaultValueHumanName: HumanName? = null
+      var defaultValueIdentifier: Identifier? = null
+      var defaultValueMoney: Money? = null
+      var defaultValuePeriod: Period? = null
+      var defaultValueQuantity: Quantity? = null
+      var defaultValueRange: Range? = null
+      var defaultValueRatio: Ratio? = null
+      var defaultValueRatioRange: RatioRange? = null
+      var defaultValueReference: Reference? = null
+      var defaultValueSampledData: SampledData? = null
+      var defaultValueSignature: Signature? = null
+      var defaultValueTiming: Timing? = null
+      var defaultValueContactDetail: ContactDetail? = null
+      var defaultValueDataRequirement: DataRequirement? = null
+      var defaultValueExpression: Expression? = null
+      var defaultValueParameterDefinition: ParameterDefinition? = null
+      var defaultValueRelatedArtifact: RelatedArtifact? = null
+      var defaultValueTriggerDefinition: TriggerDefinition? = null
+      var defaultValueUsageContext: UsageContext? = null
+      var defaultValueAvailability: Availability? = null
+      var defaultValueExtendedContactDetail: ExtendedContactDetail? = null
+      var defaultValueDosage: Dosage? = null
+      var defaultValueMeta: Meta? = null
+      var meaningWhenMissing: KotlinString? = null
+      var _meaningWhenMissing: Element? = null
+      var orderMeaning: KotlinString? = null
+      var _orderMeaning: Element? = null
+      var fixedBase64Binary: KotlinString? = null
+      var _fixedBase64Binary: Element? = null
+      var fixedBoolean: KotlinBoolean? = null
+      var _fixedBoolean: Element? = null
+      var fixedCanonical: KotlinString? = null
+      var _fixedCanonical: Element? = null
+      var fixedCode: KotlinString? = null
+      var _fixedCode: Element? = null
+      var fixedDate: KotlinString? = null
+      var _fixedDate: Element? = null
+      var fixedDateTime: KotlinString? = null
+      var _fixedDateTime: Element? = null
+      var fixedDecimal: FhirDecimal? = null
+      var _fixedDecimal: Element? = null
+      var fixedId: KotlinString? = null
+      var _fixedId: Element? = null
+      var fixedInstant: KotlinString? = null
+      var _fixedInstant: Element? = null
+      var fixedInteger: Int? = null
+      var _fixedInteger: Element? = null
+      var fixedInteger64: KotlinString? = null
+      var _fixedInteger64: Element? = null
+      var fixedMarkdown: KotlinString? = null
+      var _fixedMarkdown: Element? = null
+      var fixedOid: KotlinString? = null
+      var _fixedOid: Element? = null
+      var fixedPositiveInt: Int? = null
+      var _fixedPositiveInt: Element? = null
+      var fixedString: KotlinString? = null
+      var _fixedString: Element? = null
+      var fixedTime: LocalTime? = null
+      var _fixedTime: Element? = null
+      var fixedUnsignedInt: Int? = null
+      var _fixedUnsignedInt: Element? = null
+      var fixedUri: KotlinString? = null
+      var _fixedUri: Element? = null
+      var fixedUrl: KotlinString? = null
+      var _fixedUrl: Element? = null
+      var fixedUuid: KotlinString? = null
+      var _fixedUuid: Element? = null
+      var fixedAddress: Address? = null
+      var fixedAge: Age? = null
+      var fixedAnnotation: Annotation? = null
+      var fixedAttachment: Attachment? = null
+      var fixedCodeableConcept: CodeableConcept? = null
+      var fixedCodeableReference: CodeableReference? = null
+      var fixedCoding: Coding? = null
+      var fixedContactPoint: ContactPoint? = null
+      var fixedCount: Count? = null
+      var fixedDistance: Distance? = null
+      var fixedDuration: Duration? = null
+      var fixedHumanName: HumanName? = null
+      var fixedIdentifier: Identifier? = null
+      var fixedMoney: Money? = null
+      var fixedPeriod: Period? = null
+      var fixedQuantity: Quantity? = null
+      var fixedRange: Range? = null
+      var fixedRatio: Ratio? = null
+      var fixedRatioRange: RatioRange? = null
+      var fixedReference: Reference? = null
+      var fixedSampledData: SampledData? = null
+      var fixedSignature: Signature? = null
+      var fixedTiming: Timing? = null
+      var fixedContactDetail: ContactDetail? = null
+      var fixedDataRequirement: DataRequirement? = null
+      var fixedExpression: Expression? = null
+      var fixedParameterDefinition: ParameterDefinition? = null
+      var fixedRelatedArtifact: RelatedArtifact? = null
+      var fixedTriggerDefinition: TriggerDefinition? = null
+      var fixedUsageContext: UsageContext? = null
+      var fixedAvailability: Availability? = null
+      var fixedExtendedContactDetail: ExtendedContactDetail? = null
+      var fixedDosage: Dosage? = null
+      var fixedMeta: Meta? = null
+      var patternBase64Binary: KotlinString? = null
+      var _patternBase64Binary: Element? = null
+      var patternBoolean: KotlinBoolean? = null
+      var _patternBoolean: Element? = null
+      var patternCanonical: KotlinString? = null
+      var _patternCanonical: Element? = null
+      var patternCode: KotlinString? = null
+      var _patternCode: Element? = null
+      var patternDate: KotlinString? = null
+      var _patternDate: Element? = null
+      var patternDateTime: KotlinString? = null
+      var _patternDateTime: Element? = null
+      var patternDecimal: FhirDecimal? = null
+      var _patternDecimal: Element? = null
+      var patternId: KotlinString? = null
+      var _patternId: Element? = null
+      var patternInstant: KotlinString? = null
+      var _patternInstant: Element? = null
+      var patternInteger: Int? = null
+      var _patternInteger: Element? = null
+      var patternInteger64: KotlinString? = null
+      var _patternInteger64: Element? = null
+      var patternMarkdown: KotlinString? = null
+      var _patternMarkdown: Element? = null
+      var patternOid: KotlinString? = null
+      var _patternOid: Element? = null
+      var patternPositiveInt: Int? = null
+      var _patternPositiveInt: Element? = null
+      var patternString: KotlinString? = null
+      var _patternString: Element? = null
+      var patternTime: LocalTime? = null
+      var _patternTime: Element? = null
+      var patternUnsignedInt: Int? = null
+      var _patternUnsignedInt: Element? = null
+      var patternUri: KotlinString? = null
+      var _patternUri: Element? = null
+      var patternUrl: KotlinString? = null
+      var _patternUrl: Element? = null
+      var patternUuid: KotlinString? = null
+      var _patternUuid: Element? = null
+      var patternAddress: Address? = null
+      var patternAge: Age? = null
+      var patternAnnotation: Annotation? = null
+      var patternAttachment: Attachment? = null
+      var patternCodeableConcept: CodeableConcept? = null
+      var patternCodeableReference: CodeableReference? = null
+      var patternCoding: Coding? = null
+      var patternContactPoint: ContactPoint? = null
+      var patternCount: Count? = null
+      var patternDistance: Distance? = null
+      var patternDuration: Duration? = null
+      var patternHumanName: HumanName? = null
+      var patternIdentifier: Identifier? = null
+      var patternMoney: Money? = null
+      var patternPeriod: Period? = null
+      var patternQuantity: Quantity? = null
+      var patternRange: Range? = null
+      var patternRatio: Ratio? = null
+      var patternRatioRange: RatioRange? = null
+      var patternReference: Reference? = null
+      var patternSampledData: SampledData? = null
+      var patternSignature: Signature? = null
+      var patternTiming: Timing? = null
+      var patternContactDetail: ContactDetail? = null
+      var patternDataRequirement: DataRequirement? = null
+      var patternExpression: Expression? = null
+      var patternParameterDefinition: ParameterDefinition? = null
+      var patternRelatedArtifact: RelatedArtifact? = null
+      var patternTriggerDefinition: TriggerDefinition? = null
+      var patternUsageContext: UsageContext? = null
+      var patternAvailability: Availability? = null
+      var patternExtendedContactDetail: ExtendedContactDetail? = null
+      var patternDosage: Dosage? = null
+      var patternMeta: Meta? = null
+      var example: List<ElementDefinition.Example>? = null
+      var minValueDate: KotlinString? = null
+      var _minValueDate: Element? = null
+      var minValueDateTime: KotlinString? = null
+      var _minValueDateTime: Element? = null
+      var minValueInstant: KotlinString? = null
+      var _minValueInstant: Element? = null
+      var minValueTime: LocalTime? = null
+      var _minValueTime: Element? = null
+      var minValueDecimal: FhirDecimal? = null
+      var _minValueDecimal: Element? = null
+      var minValueInteger: Int? = null
+      var _minValueInteger: Element? = null
+      var minValueInteger64: KotlinString? = null
+      var _minValueInteger64: Element? = null
+      var minValuePositiveInt: Int? = null
+      var _minValuePositiveInt: Element? = null
+      var minValueUnsignedInt: Int? = null
+      var _minValueUnsignedInt: Element? = null
+      var minValueQuantity: Quantity? = null
+      var maxValueDate: KotlinString? = null
+      var _maxValueDate: Element? = null
+      var maxValueDateTime: KotlinString? = null
+      var _maxValueDateTime: Element? = null
+      var maxValueInstant: KotlinString? = null
+      var _maxValueInstant: Element? = null
+      var maxValueTime: LocalTime? = null
+      var _maxValueTime: Element? = null
+      var maxValueDecimal: FhirDecimal? = null
+      var _maxValueDecimal: Element? = null
+      var maxValueInteger: Int? = null
+      var _maxValueInteger: Element? = null
+      var maxValueInteger64: KotlinString? = null
+      var _maxValueInteger64: Element? = null
+      var maxValuePositiveInt: Int? = null
+      var _maxValuePositiveInt: Element? = null
+      var maxValueUnsignedInt: Int? = null
+      var _maxValueUnsignedInt: Element? = null
+      var maxValueQuantity: Quantity? = null
+      var maxLength: Int? = null
+      var _maxLength: Element? = null
+      var condition: List<KotlinString?>? = null
+      var _condition: List<Element?>? = null
+      var constraint: List<ElementDefinition.Constraint>? = null
+      var mustHaveValue: KotlinBoolean? = null
+      var _mustHaveValue: Element? = null
+      var valueAlternatives: List<KotlinString?>? = null
+      var _valueAlternatives: List<Element?>? = null
+      var mustSupport: KotlinBoolean? = null
+      var _mustSupport: Element? = null
+      var isModifier: KotlinBoolean? = null
+      var _isModifier: Element? = null
+      var isModifierReason: KotlinString? = null
+      var _isModifierReason: Element? = null
+      var isSummary: KotlinBoolean? = null
+      var _isSummary: Element? = null
+      var binding: ElementDefinition.Binding? = null
+      var mapping: List<ElementDefinition.Mapping>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> path = decodeStringElement(descriptor, i)
+          4 -> _path = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            representation =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          6 ->
+            _representation =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          7 -> sliceName = decodeStringElement(descriptor, i)
+          8 ->
+            _sliceName = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> sliceIsConstraining = decodeBooleanElement(descriptor, i)
+          10 ->
+            _sliceIsConstraining =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          11 -> label = decodeStringElement(descriptor, i)
+          12 -> _label = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          13 ->
+            code =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodingSerializer.listSerializer,
+                null,
+              )
+          14 ->
+            slicing =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementDefinitionSlicingSerializer,
+                null,
+              )
+          15 -> short = decodeStringElement(descriptor, i)
+          16 -> _short = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          17 -> definition = decodeStringElement(descriptor, i)
+          18 ->
+            _definition = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          19 -> comment = decodeStringElement(descriptor, i)
+          20 -> _comment = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          21 -> requirements = decodeStringElement(descriptor, i)
+          22 ->
+            _requirements =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          23 ->
+            alias =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          24 ->
+            _alias =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          25 -> min = decodeIntElement(descriptor, i)
+          26 -> _min = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          27 -> max = decodeStringElement(descriptor, i)
+          28 -> _max = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          29 ->
+            base =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementDefinitionBaseSerializer,
+                null,
+              )
+          30 -> contentReference = decodeStringElement(descriptor, i)
+          31 ->
+            _contentReference =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          32 ->
+            type =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementDefinitionTypeSerializer.listSerializer,
+                null,
+              )
+          33 -> defaultValueBase64Binary = decodeStringElement(descriptor, i)
+          34 ->
+            _defaultValueBase64Binary =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          35 -> defaultValueBoolean = decodeBooleanElement(descriptor, i)
+          36 ->
+            _defaultValueBoolean =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          37 -> defaultValueCanonical = decodeStringElement(descriptor, i)
+          38 ->
+            _defaultValueCanonical =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          39 -> defaultValueCode = decodeStringElement(descriptor, i)
+          40 ->
+            _defaultValueCode =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          41 -> defaultValueDate = decodeStringElement(descriptor, i)
+          42 ->
+            _defaultValueDate =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          43 -> defaultValueDateTime = decodeStringElement(descriptor, i)
+          44 ->
+            _defaultValueDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          45 ->
+            defaultValueDecimal =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          46 ->
+            _defaultValueDecimal =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          47 -> defaultValueId = decodeStringElement(descriptor, i)
+          48 ->
+            _defaultValueId =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          49 -> defaultValueInstant = decodeStringElement(descriptor, i)
+          50 ->
+            _defaultValueInstant =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          51 -> defaultValueInteger = decodeIntElement(descriptor, i)
+          52 ->
+            _defaultValueInteger =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          53 -> defaultValueInteger64 = decodeStringElement(descriptor, i)
+          54 ->
+            _defaultValueInteger64 =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          55 -> defaultValueMarkdown = decodeStringElement(descriptor, i)
+          56 ->
+            _defaultValueMarkdown =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          57 -> defaultValueOid = decodeStringElement(descriptor, i)
+          58 ->
+            _defaultValueOid =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          59 -> defaultValuePositiveInt = decodeIntElement(descriptor, i)
+          60 ->
+            _defaultValuePositiveInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          61 -> defaultValueString = decodeStringElement(descriptor, i)
+          62 ->
+            _defaultValueString =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          63 ->
+            defaultValueTime =
+              decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
+          64 ->
+            _defaultValueTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          65 -> defaultValueUnsignedInt = decodeIntElement(descriptor, i)
+          66 ->
+            _defaultValueUnsignedInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          67 -> defaultValueUri = decodeStringElement(descriptor, i)
+          68 ->
+            _defaultValueUri =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          69 -> defaultValueUrl = decodeStringElement(descriptor, i)
+          70 ->
+            _defaultValueUrl =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          71 -> defaultValueUuid = decodeStringElement(descriptor, i)
+          72 ->
+            _defaultValueUuid =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          73 ->
+            defaultValueAddress =
+              decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
+          74 ->
+            defaultValueAge = decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
+          75 ->
+            defaultValueAnnotation =
+              decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
+          76 ->
+            defaultValueAttachment =
+              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
+          77 ->
+            defaultValueCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          78 ->
+            defaultValueCodeableReference =
+              decodeNullableSerializableElement(descriptor, i, CodeableReferenceSerializer, null)
+          79 ->
+            defaultValueCoding =
+              decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+          80 ->
+            defaultValueContactPoint =
+              decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
+          81 ->
+            defaultValueCount =
+              decodeNullableSerializableElement(descriptor, i, CountSerializer, null)
+          82 ->
+            defaultValueDistance =
+              decodeNullableSerializableElement(descriptor, i, DistanceSerializer, null)
+          83 ->
+            defaultValueDuration =
+              decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          84 ->
+            defaultValueHumanName =
+              decodeNullableSerializableElement(descriptor, i, HumanNameSerializer, null)
+          85 ->
+            defaultValueIdentifier =
+              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          86 ->
+            defaultValueMoney =
+              decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
+          87 ->
+            defaultValuePeriod =
+              decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          88 ->
+            defaultValueQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          89 ->
+            defaultValueRange =
+              decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          90 ->
+            defaultValueRatio =
+              decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+          91 ->
+            defaultValueRatioRange =
+              decodeNullableSerializableElement(descriptor, i, RatioRangeSerializer, null)
+          92 ->
+            defaultValueReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          93 ->
+            defaultValueSampledData =
+              decodeNullableSerializableElement(descriptor, i, SampledDataSerializer, null)
+          94 ->
+            defaultValueSignature =
+              decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
+          95 ->
+            defaultValueTiming =
+              decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
+          96 ->
+            defaultValueContactDetail =
+              decodeNullableSerializableElement(descriptor, i, ContactDetailSerializer, null)
+          97 ->
+            defaultValueDataRequirement =
+              decodeNullableSerializableElement(descriptor, i, DataRequirementSerializer, null)
+          98 ->
+            defaultValueExpression =
+              decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
+          99 ->
+            defaultValueParameterDefinition =
+              decodeNullableSerializableElement(descriptor, i, ParameterDefinitionSerializer, null)
+          100 ->
+            defaultValueRelatedArtifact =
+              decodeNullableSerializableElement(descriptor, i, RelatedArtifactSerializer, null)
+          101 ->
+            defaultValueTriggerDefinition =
+              decodeNullableSerializableElement(descriptor, i, TriggerDefinitionSerializer, null)
+          102 ->
+            defaultValueUsageContext =
+              decodeNullableSerializableElement(descriptor, i, UsageContextSerializer, null)
+          103 ->
+            defaultValueAvailability =
+              decodeNullableSerializableElement(descriptor, i, AvailabilitySerializer, null)
+          104 ->
+            defaultValueExtendedContactDetail =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtendedContactDetailSerializer,
+                null,
+              )
+          105 ->
+            defaultValueDosage =
+              decodeNullableSerializableElement(descriptor, i, DosageSerializer, null)
+          106 ->
+            defaultValueMeta =
+              decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+          107 -> meaningWhenMissing = decodeStringElement(descriptor, i)
+          108 ->
+            _meaningWhenMissing =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          109 -> orderMeaning = decodeStringElement(descriptor, i)
+          110 ->
+            _orderMeaning =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          111 -> fixedBase64Binary = decodeStringElement(descriptor, i)
+          112 ->
+            _fixedBase64Binary =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          113 -> fixedBoolean = decodeBooleanElement(descriptor, i)
+          114 ->
+            _fixedBoolean =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          115 -> fixedCanonical = decodeStringElement(descriptor, i)
+          116 ->
+            _fixedCanonical =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          117 -> fixedCode = decodeStringElement(descriptor, i)
+          118 ->
+            _fixedCode = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          119 -> fixedDate = decodeStringElement(descriptor, i)
+          120 ->
+            _fixedDate = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          121 -> fixedDateTime = decodeStringElement(descriptor, i)
+          122 ->
+            _fixedDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          123 ->
+            fixedDecimal =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          124 ->
+            _fixedDecimal =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          125 -> fixedId = decodeStringElement(descriptor, i)
+          126 ->
+            _fixedId = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          127 -> fixedInstant = decodeStringElement(descriptor, i)
+          128 ->
+            _fixedInstant =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          129 -> fixedInteger = decodeIntElement(descriptor, i)
+          130 ->
+            _fixedInteger =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          131 -> fixedInteger64 = decodeStringElement(descriptor, i)
+          132 ->
+            _fixedInteger64 =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          133 -> fixedMarkdown = decodeStringElement(descriptor, i)
+          134 ->
+            _fixedMarkdown =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          135 -> fixedOid = decodeStringElement(descriptor, i)
+          136 ->
+            _fixedOid = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          137 -> fixedPositiveInt = decodeIntElement(descriptor, i)
+          138 ->
+            _fixedPositiveInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          139 -> fixedString = decodeStringElement(descriptor, i)
+          140 ->
+            _fixedString = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          141 ->
+            fixedTime = decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
+          142 ->
+            _fixedTime = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          143 -> fixedUnsignedInt = decodeIntElement(descriptor, i)
+          144 ->
+            _fixedUnsignedInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          145 -> fixedUri = decodeStringElement(descriptor, i)
+          146 ->
+            _fixedUri = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          147 -> fixedUrl = decodeStringElement(descriptor, i)
+          148 ->
+            _fixedUrl = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          149 -> fixedUuid = decodeStringElement(descriptor, i)
+          150 ->
+            _fixedUuid = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          151 ->
+            fixedAddress = decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
+          152 -> fixedAge = decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
+          153 ->
+            fixedAnnotation =
+              decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
+          154 ->
+            fixedAttachment =
+              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
+          155 ->
+            fixedCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          156 ->
+            fixedCodeableReference =
+              decodeNullableSerializableElement(descriptor, i, CodeableReferenceSerializer, null)
+          157 ->
+            fixedCoding = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+          158 ->
+            fixedContactPoint =
+              decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
+          159 ->
+            fixedCount = decodeNullableSerializableElement(descriptor, i, CountSerializer, null)
+          160 ->
+            fixedDistance =
+              decodeNullableSerializableElement(descriptor, i, DistanceSerializer, null)
+          161 ->
+            fixedDuration =
+              decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          162 ->
+            fixedHumanName =
+              decodeNullableSerializableElement(descriptor, i, HumanNameSerializer, null)
+          163 ->
+            fixedIdentifier =
+              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          164 ->
+            fixedMoney = decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
+          165 ->
+            fixedPeriod = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          166 ->
+            fixedQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          167 ->
+            fixedRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          168 ->
+            fixedRatio = decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+          169 ->
+            fixedRatioRange =
+              decodeNullableSerializableElement(descriptor, i, RatioRangeSerializer, null)
+          170 ->
+            fixedReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          171 ->
+            fixedSampledData =
+              decodeNullableSerializableElement(descriptor, i, SampledDataSerializer, null)
+          172 ->
+            fixedSignature =
+              decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
+          173 ->
+            fixedTiming = decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
+          174 ->
+            fixedContactDetail =
+              decodeNullableSerializableElement(descriptor, i, ContactDetailSerializer, null)
+          175 ->
+            fixedDataRequirement =
+              decodeNullableSerializableElement(descriptor, i, DataRequirementSerializer, null)
+          176 ->
+            fixedExpression =
+              decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
+          177 ->
+            fixedParameterDefinition =
+              decodeNullableSerializableElement(descriptor, i, ParameterDefinitionSerializer, null)
+          178 ->
+            fixedRelatedArtifact =
+              decodeNullableSerializableElement(descriptor, i, RelatedArtifactSerializer, null)
+          179 ->
+            fixedTriggerDefinition =
+              decodeNullableSerializableElement(descriptor, i, TriggerDefinitionSerializer, null)
+          180 ->
+            fixedUsageContext =
+              decodeNullableSerializableElement(descriptor, i, UsageContextSerializer, null)
+          181 ->
+            fixedAvailability =
+              decodeNullableSerializableElement(descriptor, i, AvailabilitySerializer, null)
+          182 ->
+            fixedExtendedContactDetail =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtendedContactDetailSerializer,
+                null,
+              )
+          183 ->
+            fixedDosage = decodeNullableSerializableElement(descriptor, i, DosageSerializer, null)
+          184 -> fixedMeta = decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+          185 -> patternBase64Binary = decodeStringElement(descriptor, i)
+          186 ->
+            _patternBase64Binary =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          187 -> patternBoolean = decodeBooleanElement(descriptor, i)
+          188 ->
+            _patternBoolean =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          189 -> patternCanonical = decodeStringElement(descriptor, i)
+          190 ->
+            _patternCanonical =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          191 -> patternCode = decodeStringElement(descriptor, i)
+          192 ->
+            _patternCode = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          193 -> patternDate = decodeStringElement(descriptor, i)
+          194 ->
+            _patternDate = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          195 -> patternDateTime = decodeStringElement(descriptor, i)
+          196 ->
+            _patternDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          197 ->
+            patternDecimal =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          198 ->
+            _patternDecimal =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          199 -> patternId = decodeStringElement(descriptor, i)
+          200 ->
+            _patternId = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          201 -> patternInstant = decodeStringElement(descriptor, i)
+          202 ->
+            _patternInstant =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          203 -> patternInteger = decodeIntElement(descriptor, i)
+          204 ->
+            _patternInteger =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          205 -> patternInteger64 = decodeStringElement(descriptor, i)
+          206 ->
+            _patternInteger64 =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          207 -> patternMarkdown = decodeStringElement(descriptor, i)
+          208 ->
+            _patternMarkdown =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          209 -> patternOid = decodeStringElement(descriptor, i)
+          210 ->
+            _patternOid = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          211 -> patternPositiveInt = decodeIntElement(descriptor, i)
+          212 ->
+            _patternPositiveInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          213 -> patternString = decodeStringElement(descriptor, i)
+          214 ->
+            _patternString =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          215 ->
+            patternTime =
+              decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
+          216 ->
+            _patternTime = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          217 -> patternUnsignedInt = decodeIntElement(descriptor, i)
+          218 ->
+            _patternUnsignedInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          219 -> patternUri = decodeStringElement(descriptor, i)
+          220 ->
+            _patternUri = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          221 -> patternUrl = decodeStringElement(descriptor, i)
+          222 ->
+            _patternUrl = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          223 -> patternUuid = decodeStringElement(descriptor, i)
+          224 ->
+            _patternUuid = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          225 ->
+            patternAddress =
+              decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
+          226 -> patternAge = decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
+          227 ->
+            patternAnnotation =
+              decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
+          228 ->
+            patternAttachment =
+              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
+          229 ->
+            patternCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          230 ->
+            patternCodeableReference =
+              decodeNullableSerializableElement(descriptor, i, CodeableReferenceSerializer, null)
+          231 ->
+            patternCoding = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+          232 ->
+            patternContactPoint =
+              decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
+          233 ->
+            patternCount = decodeNullableSerializableElement(descriptor, i, CountSerializer, null)
+          234 ->
+            patternDistance =
+              decodeNullableSerializableElement(descriptor, i, DistanceSerializer, null)
+          235 ->
+            patternDuration =
+              decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          236 ->
+            patternHumanName =
+              decodeNullableSerializableElement(descriptor, i, HumanNameSerializer, null)
+          237 ->
+            patternIdentifier =
+              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          238 ->
+            patternMoney = decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
+          239 ->
+            patternPeriod = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          240 ->
+            patternQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          241 ->
+            patternRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          242 ->
+            patternRatio = decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+          243 ->
+            patternRatioRange =
+              decodeNullableSerializableElement(descriptor, i, RatioRangeSerializer, null)
+          244 ->
+            patternReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          245 ->
+            patternSampledData =
+              decodeNullableSerializableElement(descriptor, i, SampledDataSerializer, null)
+          246 ->
+            patternSignature =
+              decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
+          247 ->
+            patternTiming = decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
+          248 ->
+            patternContactDetail =
+              decodeNullableSerializableElement(descriptor, i, ContactDetailSerializer, null)
+          249 ->
+            patternDataRequirement =
+              decodeNullableSerializableElement(descriptor, i, DataRequirementSerializer, null)
+          250 ->
+            patternExpression =
+              decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
+          251 ->
+            patternParameterDefinition =
+              decodeNullableSerializableElement(descriptor, i, ParameterDefinitionSerializer, null)
+          252 ->
+            patternRelatedArtifact =
+              decodeNullableSerializableElement(descriptor, i, RelatedArtifactSerializer, null)
+          253 ->
+            patternTriggerDefinition =
+              decodeNullableSerializableElement(descriptor, i, TriggerDefinitionSerializer, null)
+          254 ->
+            patternUsageContext =
+              decodeNullableSerializableElement(descriptor, i, UsageContextSerializer, null)
+          255 ->
+            patternAvailability =
+              decodeNullableSerializableElement(descriptor, i, AvailabilitySerializer, null)
+          256 ->
+            patternExtendedContactDetail =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtendedContactDetailSerializer,
+                null,
+              )
+          257 ->
+            patternDosage = decodeNullableSerializableElement(descriptor, i, DosageSerializer, null)
+          258 ->
+            patternMeta = decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+          259 ->
+            example =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementDefinitionExampleSerializer.listSerializer,
+                null,
+              )
+          260 -> minValueDate = decodeStringElement(descriptor, i)
+          261 ->
+            _minValueDate =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          262 -> minValueDateTime = decodeStringElement(descriptor, i)
+          263 ->
+            _minValueDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          264 -> minValueInstant = decodeStringElement(descriptor, i)
+          265 ->
+            _minValueInstant =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          266 ->
+            minValueTime =
+              decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
+          267 ->
+            _minValueTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          268 ->
+            minValueDecimal =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          269 ->
+            _minValueDecimal =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          270 -> minValueInteger = decodeIntElement(descriptor, i)
+          271 ->
+            _minValueInteger =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          272 -> minValueInteger64 = decodeStringElement(descriptor, i)
+          273 ->
+            _minValueInteger64 =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          274 -> minValuePositiveInt = decodeIntElement(descriptor, i)
+          275 ->
+            _minValuePositiveInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          276 -> minValueUnsignedInt = decodeIntElement(descriptor, i)
+          277 ->
+            _minValueUnsignedInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          278 ->
+            minValueQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          279 -> maxValueDate = decodeStringElement(descriptor, i)
+          280 ->
+            _maxValueDate =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          281 -> maxValueDateTime = decodeStringElement(descriptor, i)
+          282 ->
+            _maxValueDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          283 -> maxValueInstant = decodeStringElement(descriptor, i)
+          284 ->
+            _maxValueInstant =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          285 ->
+            maxValueTime =
+              decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
+          286 ->
+            _maxValueTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          287 ->
+            maxValueDecimal =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          288 ->
+            _maxValueDecimal =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          289 -> maxValueInteger = decodeIntElement(descriptor, i)
+          290 ->
+            _maxValueInteger =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          291 -> maxValueInteger64 = decodeStringElement(descriptor, i)
+          292 ->
+            _maxValueInteger64 =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          293 -> maxValuePositiveInt = decodeIntElement(descriptor, i)
+          294 ->
+            _maxValuePositiveInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          295 -> maxValueUnsignedInt = decodeIntElement(descriptor, i)
+          296 ->
+            _maxValueUnsignedInt =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          297 ->
+            maxValueQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          298 -> maxLength = decodeIntElement(descriptor, i)
+          299 ->
+            _maxLength = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          300 ->
+            condition =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          301 ->
+            _condition =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          302 ->
+            constraint =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementDefinitionConstraintSerializer.listSerializer,
+                null,
+              )
+          303 -> mustHaveValue = decodeBooleanElement(descriptor, i)
+          304 ->
+            _mustHaveValue =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          305 ->
+            valueAlternatives =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          306 ->
+            _valueAlternatives =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          307 -> mustSupport = decodeBooleanElement(descriptor, i)
+          308 ->
+            _mustSupport = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          309 -> isModifier = decodeBooleanElement(descriptor, i)
+          310 ->
+            _isModifier = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          311 -> isModifierReason = decodeStringElement(descriptor, i)
+          312 ->
+            _isModifierReason =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          313 -> isSummary = decodeBooleanElement(descriptor, i)
+          314 ->
+            _isSummary = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          315 ->
+            binding =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementDefinitionBindingSerializer,
+                null,
+              )
+          316 ->
+            mapping =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementDefinitionMappingSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding ElementDefinition: " + i)
+        }
+      }
+      ElementDefinition(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        path =
+          R5String.of(path, _path)
+            ?: throw SerializationException(
+              "Missing required property 'path' on ElementDefinition"
+            ),
+        representation =
+          (kotlin.collections.List(maxOf(representation?.size ?: 0, _representation?.size ?: 0)) {
+            index ->
+            Enumeration.of(
+              representation?.getOrNull(index)?.let {
+                ElementDefinition.PropertyRepresentation.fromCode(it)
+              },
+              _representation?.getOrNull(index),
+            )
+              ?: throw SerializationException(
+                "An entry of 'representation' on ElementDefinition has neither a value nor an id/extension"
+              )
+          }),
+        sliceName = R5String.of(sliceName, _sliceName),
+        sliceIsConstraining = R5Boolean.of(sliceIsConstraining, _sliceIsConstraining),
+        label = R5String.of(label, _label),
+        code = code ?: listOf(),
+        slicing = slicing,
+        short = R5String.of(short, _short),
+        definition = Markdown.of(definition, _definition),
+        comment = Markdown.of(comment, _comment),
+        requirements = Markdown.of(requirements, _requirements),
+        alias =
+          (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
+            R5String.of(alias?.getOrNull(index), _alias?.getOrNull(index))
+              ?: throw SerializationException(
+                "An entry of 'alias' on ElementDefinition has neither a value nor an id/extension"
+              )
+          }),
+        min = UnsignedInt.of(min, _min),
+        max = R5String.of(max, _max),
+        base = base,
+        contentReference = Uri.of(contentReference, _contentReference),
+        type = type ?: listOf(),
+        defaultValue =
+          ElementDefinition.DefaultValue.from(
+            Base64Binary.of(defaultValueBase64Binary, _defaultValueBase64Binary),
+            R5Boolean.of(defaultValueBoolean, _defaultValueBoolean),
+            Canonical.of(defaultValueCanonical, _defaultValueCanonical),
+            Code.of(defaultValueCode, _defaultValueCode),
+            Date.of(
+              if (defaultValueDate != null) FhirDate.fromString(defaultValueDate) else null,
+              _defaultValueDate,
+            ),
+            DateTime.of(
+              if (defaultValueDateTime != null) FhirDateTime.fromString(defaultValueDateTime)
+              else null,
+              _defaultValueDateTime,
+            ),
+            Decimal.of(defaultValueDecimal, _defaultValueDecimal),
+            Id.of(defaultValueId, _defaultValueId),
+            Instant.of(
+              if (defaultValueInstant != null) FhirDateTime.fromString(defaultValueInstant)
+              else null,
+              _defaultValueInstant,
+            ),
+            Integer.of(defaultValueInteger, _defaultValueInteger),
+            Integer64.of(defaultValueInteger64?.toLong(), _defaultValueInteger64),
+            Markdown.of(defaultValueMarkdown, _defaultValueMarkdown),
+            Oid.of(defaultValueOid, _defaultValueOid),
+            PositiveInt.of(defaultValuePositiveInt, _defaultValuePositiveInt),
+            R5String.of(defaultValueString, _defaultValueString),
+            Time.of(defaultValueTime, _defaultValueTime),
+            UnsignedInt.of(defaultValueUnsignedInt, _defaultValueUnsignedInt),
+            Uri.of(defaultValueUri, _defaultValueUri),
+            Url.of(defaultValueUrl, _defaultValueUrl),
+            Uuid.of(defaultValueUuid, _defaultValueUuid),
+            defaultValueAddress,
+            defaultValueAge,
+            defaultValueAnnotation,
+            defaultValueAttachment,
+            defaultValueCodeableConcept,
+            defaultValueCodeableReference,
+            defaultValueCoding,
+            defaultValueContactPoint,
+            defaultValueCount,
+            defaultValueDistance,
+            defaultValueDuration,
+            defaultValueHumanName,
+            defaultValueIdentifier,
+            defaultValueMoney,
+            defaultValuePeriod,
+            defaultValueQuantity,
+            defaultValueRange,
+            defaultValueRatio,
+            defaultValueRatioRange,
+            defaultValueReference,
+            defaultValueSampledData,
+            defaultValueSignature,
+            defaultValueTiming,
+            defaultValueContactDetail,
+            defaultValueDataRequirement,
+            defaultValueExpression,
+            defaultValueParameterDefinition,
+            defaultValueRelatedArtifact,
+            defaultValueTriggerDefinition,
+            defaultValueUsageContext,
+            defaultValueAvailability,
+            defaultValueExtendedContactDetail,
+            defaultValueDosage,
+            defaultValueMeta,
+          ),
+        meaningWhenMissing = Markdown.of(meaningWhenMissing, _meaningWhenMissing),
+        orderMeaning = R5String.of(orderMeaning, _orderMeaning),
+        fixed =
+          ElementDefinition.Fixed.from(
+            Base64Binary.of(fixedBase64Binary, _fixedBase64Binary),
+            R5Boolean.of(fixedBoolean, _fixedBoolean),
+            Canonical.of(fixedCanonical, _fixedCanonical),
+            Code.of(fixedCode, _fixedCode),
+            Date.of(if (fixedDate != null) FhirDate.fromString(fixedDate) else null, _fixedDate),
+            DateTime.of(
+              if (fixedDateTime != null) FhirDateTime.fromString(fixedDateTime) else null,
+              _fixedDateTime,
+            ),
+            Decimal.of(fixedDecimal, _fixedDecimal),
+            Id.of(fixedId, _fixedId),
+            Instant.of(
+              if (fixedInstant != null) FhirDateTime.fromString(fixedInstant) else null,
+              _fixedInstant,
+            ),
+            Integer.of(fixedInteger, _fixedInteger),
+            Integer64.of(fixedInteger64?.toLong(), _fixedInteger64),
+            Markdown.of(fixedMarkdown, _fixedMarkdown),
+            Oid.of(fixedOid, _fixedOid),
+            PositiveInt.of(fixedPositiveInt, _fixedPositiveInt),
+            R5String.of(fixedString, _fixedString),
+            Time.of(fixedTime, _fixedTime),
+            UnsignedInt.of(fixedUnsignedInt, _fixedUnsignedInt),
+            Uri.of(fixedUri, _fixedUri),
+            Url.of(fixedUrl, _fixedUrl),
+            Uuid.of(fixedUuid, _fixedUuid),
+            fixedAddress,
+            fixedAge,
+            fixedAnnotation,
+            fixedAttachment,
+            fixedCodeableConcept,
+            fixedCodeableReference,
+            fixedCoding,
+            fixedContactPoint,
+            fixedCount,
+            fixedDistance,
+            fixedDuration,
+            fixedHumanName,
+            fixedIdentifier,
+            fixedMoney,
+            fixedPeriod,
+            fixedQuantity,
+            fixedRange,
+            fixedRatio,
+            fixedRatioRange,
+            fixedReference,
+            fixedSampledData,
+            fixedSignature,
+            fixedTiming,
+            fixedContactDetail,
+            fixedDataRequirement,
+            fixedExpression,
+            fixedParameterDefinition,
+            fixedRelatedArtifact,
+            fixedTriggerDefinition,
+            fixedUsageContext,
+            fixedAvailability,
+            fixedExtendedContactDetail,
+            fixedDosage,
+            fixedMeta,
+          ),
+        pattern =
+          ElementDefinition.Pattern.from(
+            Base64Binary.of(patternBase64Binary, _patternBase64Binary),
+            R5Boolean.of(patternBoolean, _patternBoolean),
+            Canonical.of(patternCanonical, _patternCanonical),
+            Code.of(patternCode, _patternCode),
+            Date.of(
+              if (patternDate != null) FhirDate.fromString(patternDate) else null,
+              _patternDate,
+            ),
+            DateTime.of(
+              if (patternDateTime != null) FhirDateTime.fromString(patternDateTime) else null,
+              _patternDateTime,
+            ),
+            Decimal.of(patternDecimal, _patternDecimal),
+            Id.of(patternId, _patternId),
+            Instant.of(
+              if (patternInstant != null) FhirDateTime.fromString(patternInstant) else null,
+              _patternInstant,
+            ),
+            Integer.of(patternInteger, _patternInteger),
+            Integer64.of(patternInteger64?.toLong(), _patternInteger64),
+            Markdown.of(patternMarkdown, _patternMarkdown),
+            Oid.of(patternOid, _patternOid),
+            PositiveInt.of(patternPositiveInt, _patternPositiveInt),
+            R5String.of(patternString, _patternString),
+            Time.of(patternTime, _patternTime),
+            UnsignedInt.of(patternUnsignedInt, _patternUnsignedInt),
+            Uri.of(patternUri, _patternUri),
+            Url.of(patternUrl, _patternUrl),
+            Uuid.of(patternUuid, _patternUuid),
+            patternAddress,
+            patternAge,
+            patternAnnotation,
+            patternAttachment,
+            patternCodeableConcept,
+            patternCodeableReference,
+            patternCoding,
+            patternContactPoint,
+            patternCount,
+            patternDistance,
+            patternDuration,
+            patternHumanName,
+            patternIdentifier,
+            patternMoney,
+            patternPeriod,
+            patternQuantity,
+            patternRange,
+            patternRatio,
+            patternRatioRange,
+            patternReference,
+            patternSampledData,
+            patternSignature,
+            patternTiming,
+            patternContactDetail,
+            patternDataRequirement,
+            patternExpression,
+            patternParameterDefinition,
+            patternRelatedArtifact,
+            patternTriggerDefinition,
+            patternUsageContext,
+            patternAvailability,
+            patternExtendedContactDetail,
+            patternDosage,
+            patternMeta,
+          ),
+        example = example ?: listOf(),
+        minValue =
+          ElementDefinition.MinValue.from(
+            Date.of(
+              if (minValueDate != null) FhirDate.fromString(minValueDate) else null,
+              _minValueDate,
+            ),
+            DateTime.of(
+              if (minValueDateTime != null) FhirDateTime.fromString(minValueDateTime) else null,
+              _minValueDateTime,
+            ),
+            Instant.of(
+              if (minValueInstant != null) FhirDateTime.fromString(minValueInstant) else null,
+              _minValueInstant,
+            ),
+            Time.of(minValueTime, _minValueTime),
+            Decimal.of(minValueDecimal, _minValueDecimal),
+            Integer.of(minValueInteger, _minValueInteger),
+            Integer64.of(minValueInteger64?.toLong(), _minValueInteger64),
+            PositiveInt.of(minValuePositiveInt, _minValuePositiveInt),
+            UnsignedInt.of(minValueUnsignedInt, _minValueUnsignedInt),
+            minValueQuantity,
+          ),
+        maxValue =
+          ElementDefinition.MaxValue.from(
+            Date.of(
+              if (maxValueDate != null) FhirDate.fromString(maxValueDate) else null,
+              _maxValueDate,
+            ),
+            DateTime.of(
+              if (maxValueDateTime != null) FhirDateTime.fromString(maxValueDateTime) else null,
+              _maxValueDateTime,
+            ),
+            Instant.of(
+              if (maxValueInstant != null) FhirDateTime.fromString(maxValueInstant) else null,
+              _maxValueInstant,
+            ),
+            Time.of(maxValueTime, _maxValueTime),
+            Decimal.of(maxValueDecimal, _maxValueDecimal),
+            Integer.of(maxValueInteger, _maxValueInteger),
+            Integer64.of(maxValueInteger64?.toLong(), _maxValueInteger64),
+            PositiveInt.of(maxValuePositiveInt, _maxValuePositiveInt),
+            UnsignedInt.of(maxValueUnsignedInt, _maxValueUnsignedInt),
+            maxValueQuantity,
+          ),
+        maxLength = Integer.of(maxLength, _maxLength),
+        condition =
+          (kotlin.collections.List(maxOf(condition?.size ?: 0, _condition?.size ?: 0)) { index ->
+            Id.of(condition?.getOrNull(index), _condition?.getOrNull(index))
+              ?: throw SerializationException(
+                "An entry of 'condition' on ElementDefinition has neither a value nor an id/extension"
+              )
+          }),
+        constraint = constraint ?: listOf(),
+        mustHaveValue = R5Boolean.of(mustHaveValue, _mustHaveValue),
+        valueAlternatives =
+          (kotlin.collections.List(
+            maxOf(valueAlternatives?.size ?: 0, _valueAlternatives?.size ?: 0)
+          ) { index ->
+            Canonical.of(valueAlternatives?.getOrNull(index), _valueAlternatives?.getOrNull(index))
+              ?: throw SerializationException(
+                "An entry of 'valueAlternatives' on ElementDefinition has neither a value nor an id/extension"
+              )
+          }),
+        mustSupport = R5Boolean.of(mustSupport, _mustSupport),
+        isModifier = R5Boolean.of(isModifier, _isModifier),
+        isModifierReason = R5String.of(isModifierReason, _isModifierReason),
+        isSummary = R5Boolean.of(isSummary, _isSummary),
+        binding = binding,
+        mapping = mapping ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ElementDefinition {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var path: KotlinString? = null
-    var _path: Element? = null
-    var representation: List<KotlinString?>? = null
-    var _representation: List<Element?>? = null
-    var sliceName: KotlinString? = null
-    var _sliceName: Element? = null
-    var sliceIsConstraining: KotlinBoolean? = null
-    var _sliceIsConstraining: Element? = null
-    var label: KotlinString? = null
-    var _label: Element? = null
-    var code: List<Coding>? = null
-    var slicing: ElementDefinition.Slicing? = null
-    var short: KotlinString? = null
-    var _short: Element? = null
-    var definition: KotlinString? = null
-    var _definition: Element? = null
-    var comment: KotlinString? = null
-    var _comment: Element? = null
-    var requirements: KotlinString? = null
-    var _requirements: Element? = null
-    var alias: List<KotlinString?>? = null
-    var _alias: List<Element?>? = null
-    var min: Int? = null
-    var _min: Element? = null
-    var max: KotlinString? = null
-    var _max: Element? = null
-    var base: ElementDefinition.Base? = null
-    var contentReference: KotlinString? = null
-    var _contentReference: Element? = null
-    var type: List<ElementDefinition.Type>? = null
-    var defaultValueBase64Binary: KotlinString? = null
-    var _defaultValueBase64Binary: Element? = null
-    var defaultValueBoolean: KotlinBoolean? = null
-    var _defaultValueBoolean: Element? = null
-    var defaultValueCanonical: KotlinString? = null
-    var _defaultValueCanonical: Element? = null
-    var defaultValueCode: KotlinString? = null
-    var _defaultValueCode: Element? = null
-    var defaultValueDate: KotlinString? = null
-    var _defaultValueDate: Element? = null
-    var defaultValueDateTime: KotlinString? = null
-    var _defaultValueDateTime: Element? = null
-    var defaultValueDecimal: FhirDecimal? = null
-    var _defaultValueDecimal: Element? = null
-    var defaultValueId: KotlinString? = null
-    var _defaultValueId: Element? = null
-    var defaultValueInstant: KotlinString? = null
-    var _defaultValueInstant: Element? = null
-    var defaultValueInteger: Int? = null
-    var _defaultValueInteger: Element? = null
-    var defaultValueInteger64: KotlinString? = null
-    var _defaultValueInteger64: Element? = null
-    var defaultValueMarkdown: KotlinString? = null
-    var _defaultValueMarkdown: Element? = null
-    var defaultValueOid: KotlinString? = null
-    var _defaultValueOid: Element? = null
-    var defaultValuePositiveInt: Int? = null
-    var _defaultValuePositiveInt: Element? = null
-    var defaultValueString: KotlinString? = null
-    var _defaultValueString: Element? = null
-    var defaultValueTime: LocalTime? = null
-    var _defaultValueTime: Element? = null
-    var defaultValueUnsignedInt: Int? = null
-    var _defaultValueUnsignedInt: Element? = null
-    var defaultValueUri: KotlinString? = null
-    var _defaultValueUri: Element? = null
-    var defaultValueUrl: KotlinString? = null
-    var _defaultValueUrl: Element? = null
-    var defaultValueUuid: KotlinString? = null
-    var _defaultValueUuid: Element? = null
-    var defaultValueAddress: Address? = null
-    var defaultValueAge: Age? = null
-    var defaultValueAnnotation: Annotation? = null
-    var defaultValueAttachment: Attachment? = null
-    var defaultValueCodeableConcept: CodeableConcept? = null
-    var defaultValueCodeableReference: CodeableReference? = null
-    var defaultValueCoding: Coding? = null
-    var defaultValueContactPoint: ContactPoint? = null
-    var defaultValueCount: Count? = null
-    var defaultValueDistance: Distance? = null
-    var defaultValueDuration: Duration? = null
-    var defaultValueHumanName: HumanName? = null
-    var defaultValueIdentifier: Identifier? = null
-    var defaultValueMoney: Money? = null
-    var defaultValuePeriod: Period? = null
-    var defaultValueQuantity: Quantity? = null
-    var defaultValueRange: Range? = null
-    var defaultValueRatio: Ratio? = null
-    var defaultValueRatioRange: RatioRange? = null
-    var defaultValueReference: Reference? = null
-    var defaultValueSampledData: SampledData? = null
-    var defaultValueSignature: Signature? = null
-    var defaultValueTiming: Timing? = null
-    var defaultValueContactDetail: ContactDetail? = null
-    var defaultValueDataRequirement: DataRequirement? = null
-    var defaultValueExpression: Expression? = null
-    var defaultValueParameterDefinition: ParameterDefinition? = null
-    var defaultValueRelatedArtifact: RelatedArtifact? = null
-    var defaultValueTriggerDefinition: TriggerDefinition? = null
-    var defaultValueUsageContext: UsageContext? = null
-    var defaultValueAvailability: Availability? = null
-    var defaultValueExtendedContactDetail: ExtendedContactDetail? = null
-    var defaultValueDosage: Dosage? = null
-    var defaultValueMeta: Meta? = null
-    var meaningWhenMissing: KotlinString? = null
-    var _meaningWhenMissing: Element? = null
-    var orderMeaning: KotlinString? = null
-    var _orderMeaning: Element? = null
-    var fixedBase64Binary: KotlinString? = null
-    var _fixedBase64Binary: Element? = null
-    var fixedBoolean: KotlinBoolean? = null
-    var _fixedBoolean: Element? = null
-    var fixedCanonical: KotlinString? = null
-    var _fixedCanonical: Element? = null
-    var fixedCode: KotlinString? = null
-    var _fixedCode: Element? = null
-    var fixedDate: KotlinString? = null
-    var _fixedDate: Element? = null
-    var fixedDateTime: KotlinString? = null
-    var _fixedDateTime: Element? = null
-    var fixedDecimal: FhirDecimal? = null
-    var _fixedDecimal: Element? = null
-    var fixedId: KotlinString? = null
-    var _fixedId: Element? = null
-    var fixedInstant: KotlinString? = null
-    var _fixedInstant: Element? = null
-    var fixedInteger: Int? = null
-    var _fixedInteger: Element? = null
-    var fixedInteger64: KotlinString? = null
-    var _fixedInteger64: Element? = null
-    var fixedMarkdown: KotlinString? = null
-    var _fixedMarkdown: Element? = null
-    var fixedOid: KotlinString? = null
-    var _fixedOid: Element? = null
-    var fixedPositiveInt: Int? = null
-    var _fixedPositiveInt: Element? = null
-    var fixedString: KotlinString? = null
-    var _fixedString: Element? = null
-    var fixedTime: LocalTime? = null
-    var _fixedTime: Element? = null
-    var fixedUnsignedInt: Int? = null
-    var _fixedUnsignedInt: Element? = null
-    var fixedUri: KotlinString? = null
-    var _fixedUri: Element? = null
-    var fixedUrl: KotlinString? = null
-    var _fixedUrl: Element? = null
-    var fixedUuid: KotlinString? = null
-    var _fixedUuid: Element? = null
-    var fixedAddress: Address? = null
-    var fixedAge: Age? = null
-    var fixedAnnotation: Annotation? = null
-    var fixedAttachment: Attachment? = null
-    var fixedCodeableConcept: CodeableConcept? = null
-    var fixedCodeableReference: CodeableReference? = null
-    var fixedCoding: Coding? = null
-    var fixedContactPoint: ContactPoint? = null
-    var fixedCount: Count? = null
-    var fixedDistance: Distance? = null
-    var fixedDuration: Duration? = null
-    var fixedHumanName: HumanName? = null
-    var fixedIdentifier: Identifier? = null
-    var fixedMoney: Money? = null
-    var fixedPeriod: Period? = null
-    var fixedQuantity: Quantity? = null
-    var fixedRange: Range? = null
-    var fixedRatio: Ratio? = null
-    var fixedRatioRange: RatioRange? = null
-    var fixedReference: Reference? = null
-    var fixedSampledData: SampledData? = null
-    var fixedSignature: Signature? = null
-    var fixedTiming: Timing? = null
-    var fixedContactDetail: ContactDetail? = null
-    var fixedDataRequirement: DataRequirement? = null
-    var fixedExpression: Expression? = null
-    var fixedParameterDefinition: ParameterDefinition? = null
-    var fixedRelatedArtifact: RelatedArtifact? = null
-    var fixedTriggerDefinition: TriggerDefinition? = null
-    var fixedUsageContext: UsageContext? = null
-    var fixedAvailability: Availability? = null
-    var fixedExtendedContactDetail: ExtendedContactDetail? = null
-    var fixedDosage: Dosage? = null
-    var fixedMeta: Meta? = null
-    var patternBase64Binary: KotlinString? = null
-    var _patternBase64Binary: Element? = null
-    var patternBoolean: KotlinBoolean? = null
-    var _patternBoolean: Element? = null
-    var patternCanonical: KotlinString? = null
-    var _patternCanonical: Element? = null
-    var patternCode: KotlinString? = null
-    var _patternCode: Element? = null
-    var patternDate: KotlinString? = null
-    var _patternDate: Element? = null
-    var patternDateTime: KotlinString? = null
-    var _patternDateTime: Element? = null
-    var patternDecimal: FhirDecimal? = null
-    var _patternDecimal: Element? = null
-    var patternId: KotlinString? = null
-    var _patternId: Element? = null
-    var patternInstant: KotlinString? = null
-    var _patternInstant: Element? = null
-    var patternInteger: Int? = null
-    var _patternInteger: Element? = null
-    var patternInteger64: KotlinString? = null
-    var _patternInteger64: Element? = null
-    var patternMarkdown: KotlinString? = null
-    var _patternMarkdown: Element? = null
-    var patternOid: KotlinString? = null
-    var _patternOid: Element? = null
-    var patternPositiveInt: Int? = null
-    var _patternPositiveInt: Element? = null
-    var patternString: KotlinString? = null
-    var _patternString: Element? = null
-    var patternTime: LocalTime? = null
-    var _patternTime: Element? = null
-    var patternUnsignedInt: Int? = null
-    var _patternUnsignedInt: Element? = null
-    var patternUri: KotlinString? = null
-    var _patternUri: Element? = null
-    var patternUrl: KotlinString? = null
-    var _patternUrl: Element? = null
-    var patternUuid: KotlinString? = null
-    var _patternUuid: Element? = null
-    var patternAddress: Address? = null
-    var patternAge: Age? = null
-    var patternAnnotation: Annotation? = null
-    var patternAttachment: Attachment? = null
-    var patternCodeableConcept: CodeableConcept? = null
-    var patternCodeableReference: CodeableReference? = null
-    var patternCoding: Coding? = null
-    var patternContactPoint: ContactPoint? = null
-    var patternCount: Count? = null
-    var patternDistance: Distance? = null
-    var patternDuration: Duration? = null
-    var patternHumanName: HumanName? = null
-    var patternIdentifier: Identifier? = null
-    var patternMoney: Money? = null
-    var patternPeriod: Period? = null
-    var patternQuantity: Quantity? = null
-    var patternRange: Range? = null
-    var patternRatio: Ratio? = null
-    var patternRatioRange: RatioRange? = null
-    var patternReference: Reference? = null
-    var patternSampledData: SampledData? = null
-    var patternSignature: Signature? = null
-    var patternTiming: Timing? = null
-    var patternContactDetail: ContactDetail? = null
-    var patternDataRequirement: DataRequirement? = null
-    var patternExpression: Expression? = null
-    var patternParameterDefinition: ParameterDefinition? = null
-    var patternRelatedArtifact: RelatedArtifact? = null
-    var patternTriggerDefinition: TriggerDefinition? = null
-    var patternUsageContext: UsageContext? = null
-    var patternAvailability: Availability? = null
-    var patternExtendedContactDetail: ExtendedContactDetail? = null
-    var patternDosage: Dosage? = null
-    var patternMeta: Meta? = null
-    var example: List<ElementDefinition.Example>? = null
-    var minValueDate: KotlinString? = null
-    var _minValueDate: Element? = null
-    var minValueDateTime: KotlinString? = null
-    var _minValueDateTime: Element? = null
-    var minValueInstant: KotlinString? = null
-    var _minValueInstant: Element? = null
-    var minValueTime: LocalTime? = null
-    var _minValueTime: Element? = null
-    var minValueDecimal: FhirDecimal? = null
-    var _minValueDecimal: Element? = null
-    var minValueInteger: Int? = null
-    var _minValueInteger: Element? = null
-    var minValueInteger64: KotlinString? = null
-    var _minValueInteger64: Element? = null
-    var minValuePositiveInt: Int? = null
-    var _minValuePositiveInt: Element? = null
-    var minValueUnsignedInt: Int? = null
-    var _minValueUnsignedInt: Element? = null
-    var minValueQuantity: Quantity? = null
-    var maxValueDate: KotlinString? = null
-    var _maxValueDate: Element? = null
-    var maxValueDateTime: KotlinString? = null
-    var _maxValueDateTime: Element? = null
-    var maxValueInstant: KotlinString? = null
-    var _maxValueInstant: Element? = null
-    var maxValueTime: LocalTime? = null
-    var _maxValueTime: Element? = null
-    var maxValueDecimal: FhirDecimal? = null
-    var _maxValueDecimal: Element? = null
-    var maxValueInteger: Int? = null
-    var _maxValueInteger: Element? = null
-    var maxValueInteger64: KotlinString? = null
-    var _maxValueInteger64: Element? = null
-    var maxValuePositiveInt: Int? = null
-    var _maxValuePositiveInt: Element? = null
-    var maxValueUnsignedInt: Int? = null
-    var _maxValueUnsignedInt: Element? = null
-    var maxValueQuantity: Quantity? = null
-    var maxLength: Int? = null
-    var _maxLength: Element? = null
-    var condition: List<KotlinString?>? = null
-    var _condition: List<Element?>? = null
-    var constraint: List<ElementDefinition.Constraint>? = null
-    var mustHaveValue: KotlinBoolean? = null
-    var _mustHaveValue: Element? = null
-    var valueAlternatives: List<KotlinString?>? = null
-    var _valueAlternatives: List<Element?>? = null
-    var mustSupport: KotlinBoolean? = null
-    var _mustSupport: Element? = null
-    var isModifier: KotlinBoolean? = null
-    var _isModifier: Element? = null
-    var isModifierReason: KotlinString? = null
-    var _isModifierReason: Element? = null
-    var isSummary: KotlinBoolean? = null
-    var _isSummary: Element? = null
-    var binding: ElementDefinition.Binding? = null
-    var mapping: List<ElementDefinition.Mapping>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> path = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _path = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          representation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        6 ->
-          _representation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        7 -> sliceName = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _sliceName =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 -> sliceIsConstraining = decoder.decodeBooleanElement(descriptor, i)
-        10 ->
-          _sliceIsConstraining =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        11 -> label = decoder.decodeStringElement(descriptor, i)
-        12 ->
-          _label = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        13 ->
-          code =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodingSerializer.listSerializer,
-              null,
-            )
-        14 ->
-          slicing =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementDefinitionSlicingSerializer,
-              null,
-            )
-        15 -> short = decoder.decodeStringElement(descriptor, i)
-        16 ->
-          _short = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        17 -> definition = decoder.decodeStringElement(descriptor, i)
-        18 ->
-          _definition =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        19 -> comment = decoder.decodeStringElement(descriptor, i)
-        20 ->
-          _comment =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        21 -> requirements = decoder.decodeStringElement(descriptor, i)
-        22 ->
-          _requirements =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        23 ->
-          alias =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        24 ->
-          _alias =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        25 -> min = decoder.decodeIntElement(descriptor, i)
-        26 ->
-          _min = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        27 -> max = decoder.decodeStringElement(descriptor, i)
-        28 ->
-          _max = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        29 ->
-          base =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementDefinitionBaseSerializer,
-              null,
-            )
-        30 -> contentReference = decoder.decodeStringElement(descriptor, i)
-        31 ->
-          _contentReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        32 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementDefinitionTypeSerializer.listSerializer,
-              null,
-            )
-        33 -> defaultValueBase64Binary = decoder.decodeStringElement(descriptor, i)
-        34 ->
-          _defaultValueBase64Binary =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        35 -> defaultValueBoolean = decoder.decodeBooleanElement(descriptor, i)
-        36 ->
-          _defaultValueBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        37 -> defaultValueCanonical = decoder.decodeStringElement(descriptor, i)
-        38 ->
-          _defaultValueCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        39 -> defaultValueCode = decoder.decodeStringElement(descriptor, i)
-        40 ->
-          _defaultValueCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        41 -> defaultValueDate = decoder.decodeStringElement(descriptor, i)
-        42 ->
-          _defaultValueDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        43 -> defaultValueDateTime = decoder.decodeStringElement(descriptor, i)
-        44 ->
-          _defaultValueDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        45 ->
-          defaultValueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        46 ->
-          _defaultValueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        47 -> defaultValueId = decoder.decodeStringElement(descriptor, i)
-        48 ->
-          _defaultValueId =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        49 -> defaultValueInstant = decoder.decodeStringElement(descriptor, i)
-        50 ->
-          _defaultValueInstant =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        51 -> defaultValueInteger = decoder.decodeIntElement(descriptor, i)
-        52 ->
-          _defaultValueInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        53 -> defaultValueInteger64 = decoder.decodeStringElement(descriptor, i)
-        54 ->
-          _defaultValueInteger64 =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        55 -> defaultValueMarkdown = decoder.decodeStringElement(descriptor, i)
-        56 ->
-          _defaultValueMarkdown =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        57 -> defaultValueOid = decoder.decodeStringElement(descriptor, i)
-        58 ->
-          _defaultValueOid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        59 -> defaultValuePositiveInt = decoder.decodeIntElement(descriptor, i)
-        60 ->
-          _defaultValuePositiveInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        61 -> defaultValueString = decoder.decodeStringElement(descriptor, i)
-        62 ->
-          _defaultValueString =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        63 ->
-          defaultValueTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-        64 ->
-          _defaultValueTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        65 -> defaultValueUnsignedInt = decoder.decodeIntElement(descriptor, i)
-        66 ->
-          _defaultValueUnsignedInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        67 -> defaultValueUri = decoder.decodeStringElement(descriptor, i)
-        68 ->
-          _defaultValueUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        69 -> defaultValueUrl = decoder.decodeStringElement(descriptor, i)
-        70 ->
-          _defaultValueUrl =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        71 -> defaultValueUuid = decoder.decodeStringElement(descriptor, i)
-        72 ->
-          _defaultValueUuid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        73 ->
-          defaultValueAddress =
-            decoder.decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
-        74 ->
-          defaultValueAge =
-            decoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
-        75 ->
-          defaultValueAnnotation =
-            decoder.decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
-        76 ->
-          defaultValueAttachment =
-            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-        77 ->
-          defaultValueCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        78 ->
-          defaultValueCodeableReference =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableReferenceSerializer,
-              null,
-            )
-        79 ->
-          defaultValueCoding =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        80 ->
-          defaultValueContactPoint =
-            decoder.decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
-        81 ->
-          defaultValueCount =
-            decoder.decodeNullableSerializableElement(descriptor, i, CountSerializer, null)
-        82 ->
-          defaultValueDistance =
-            decoder.decodeNullableSerializableElement(descriptor, i, DistanceSerializer, null)
-        83 ->
-          defaultValueDuration =
-            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        84 ->
-          defaultValueHumanName =
-            decoder.decodeNullableSerializableElement(descriptor, i, HumanNameSerializer, null)
-        85 ->
-          defaultValueIdentifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        86 ->
-          defaultValueMoney =
-            decoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
-        87 ->
-          defaultValuePeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        88 ->
-          defaultValueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        89 ->
-          defaultValueRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        90 ->
-          defaultValueRatio =
-            decoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-        91 ->
-          defaultValueRatioRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RatioRangeSerializer, null)
-        92 ->
-          defaultValueReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        93 ->
-          defaultValueSampledData =
-            decoder.decodeNullableSerializableElement(descriptor, i, SampledDataSerializer, null)
-        94 ->
-          defaultValueSignature =
-            decoder.decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
-        95 ->
-          defaultValueTiming =
-            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
-        96 ->
-          defaultValueContactDetail =
-            decoder.decodeNullableSerializableElement(descriptor, i, ContactDetailSerializer, null)
-        97 ->
-          defaultValueDataRequirement =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              DataRequirementSerializer,
-              null,
-            )
-        98 ->
-          defaultValueExpression =
-            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
-        99 ->
-          defaultValueParameterDefinition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ParameterDefinitionSerializer,
-              null,
-            )
-        100 ->
-          defaultValueRelatedArtifact =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              RelatedArtifactSerializer,
-              null,
-            )
-        101 ->
-          defaultValueTriggerDefinition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              TriggerDefinitionSerializer,
-              null,
-            )
-        102 ->
-          defaultValueUsageContext =
-            decoder.decodeNullableSerializableElement(descriptor, i, UsageContextSerializer, null)
-        103 ->
-          defaultValueAvailability =
-            decoder.decodeNullableSerializableElement(descriptor, i, AvailabilitySerializer, null)
-        104 ->
-          defaultValueExtendedContactDetail =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtendedContactDetailSerializer,
-              null,
-            )
-        105 ->
-          defaultValueDosage =
-            decoder.decodeNullableSerializableElement(descriptor, i, DosageSerializer, null)
-        106 ->
-          defaultValueMeta =
-            decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        107 -> meaningWhenMissing = decoder.decodeStringElement(descriptor, i)
-        108 ->
-          _meaningWhenMissing =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        109 -> orderMeaning = decoder.decodeStringElement(descriptor, i)
-        110 ->
-          _orderMeaning =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        111 -> fixedBase64Binary = decoder.decodeStringElement(descriptor, i)
-        112 ->
-          _fixedBase64Binary =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        113 -> fixedBoolean = decoder.decodeBooleanElement(descriptor, i)
-        114 ->
-          _fixedBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        115 -> fixedCanonical = decoder.decodeStringElement(descriptor, i)
-        116 ->
-          _fixedCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        117 -> fixedCode = decoder.decodeStringElement(descriptor, i)
-        118 ->
-          _fixedCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        119 -> fixedDate = decoder.decodeStringElement(descriptor, i)
-        120 ->
-          _fixedDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        121 -> fixedDateTime = decoder.decodeStringElement(descriptor, i)
-        122 ->
-          _fixedDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        123 ->
-          fixedDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        124 ->
-          _fixedDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        125 -> fixedId = decoder.decodeStringElement(descriptor, i)
-        126 ->
-          _fixedId =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        127 -> fixedInstant = decoder.decodeStringElement(descriptor, i)
-        128 ->
-          _fixedInstant =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        129 -> fixedInteger = decoder.decodeIntElement(descriptor, i)
-        130 ->
-          _fixedInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        131 -> fixedInteger64 = decoder.decodeStringElement(descriptor, i)
-        132 ->
-          _fixedInteger64 =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        133 -> fixedMarkdown = decoder.decodeStringElement(descriptor, i)
-        134 ->
-          _fixedMarkdown =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        135 -> fixedOid = decoder.decodeStringElement(descriptor, i)
-        136 ->
-          _fixedOid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        137 -> fixedPositiveInt = decoder.decodeIntElement(descriptor, i)
-        138 ->
-          _fixedPositiveInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        139 -> fixedString = decoder.decodeStringElement(descriptor, i)
-        140 ->
-          _fixedString =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        141 ->
-          fixedTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-        142 ->
-          _fixedTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        143 -> fixedUnsignedInt = decoder.decodeIntElement(descriptor, i)
-        144 ->
-          _fixedUnsignedInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        145 -> fixedUri = decoder.decodeStringElement(descriptor, i)
-        146 ->
-          _fixedUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        147 -> fixedUrl = decoder.decodeStringElement(descriptor, i)
-        148 ->
-          _fixedUrl =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        149 -> fixedUuid = decoder.decodeStringElement(descriptor, i)
-        150 ->
-          _fixedUuid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        151 ->
-          fixedAddress =
-            decoder.decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
-        152 ->
-          fixedAge = decoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
-        153 ->
-          fixedAnnotation =
-            decoder.decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
-        154 ->
-          fixedAttachment =
-            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-        155 ->
-          fixedCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        156 ->
-          fixedCodeableReference =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableReferenceSerializer,
-              null,
-            )
-        157 ->
-          fixedCoding =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        158 ->
-          fixedContactPoint =
-            decoder.decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
-        159 ->
-          fixedCount =
-            decoder.decodeNullableSerializableElement(descriptor, i, CountSerializer, null)
-        160 ->
-          fixedDistance =
-            decoder.decodeNullableSerializableElement(descriptor, i, DistanceSerializer, null)
-        161 ->
-          fixedDuration =
-            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        162 ->
-          fixedHumanName =
-            decoder.decodeNullableSerializableElement(descriptor, i, HumanNameSerializer, null)
-        163 ->
-          fixedIdentifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        164 ->
-          fixedMoney =
-            decoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
-        165 ->
-          fixedPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        166 ->
-          fixedQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        167 ->
-          fixedRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        168 ->
-          fixedRatio =
-            decoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-        169 ->
-          fixedRatioRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RatioRangeSerializer, null)
-        170 ->
-          fixedReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        171 ->
-          fixedSampledData =
-            decoder.decodeNullableSerializableElement(descriptor, i, SampledDataSerializer, null)
-        172 ->
-          fixedSignature =
-            decoder.decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
-        173 ->
-          fixedTiming =
-            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
-        174 ->
-          fixedContactDetail =
-            decoder.decodeNullableSerializableElement(descriptor, i, ContactDetailSerializer, null)
-        175 ->
-          fixedDataRequirement =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              DataRequirementSerializer,
-              null,
-            )
-        176 ->
-          fixedExpression =
-            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
-        177 ->
-          fixedParameterDefinition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ParameterDefinitionSerializer,
-              null,
-            )
-        178 ->
-          fixedRelatedArtifact =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              RelatedArtifactSerializer,
-              null,
-            )
-        179 ->
-          fixedTriggerDefinition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              TriggerDefinitionSerializer,
-              null,
-            )
-        180 ->
-          fixedUsageContext =
-            decoder.decodeNullableSerializableElement(descriptor, i, UsageContextSerializer, null)
-        181 ->
-          fixedAvailability =
-            decoder.decodeNullableSerializableElement(descriptor, i, AvailabilitySerializer, null)
-        182 ->
-          fixedExtendedContactDetail =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtendedContactDetailSerializer,
-              null,
-            )
-        183 ->
-          fixedDosage =
-            decoder.decodeNullableSerializableElement(descriptor, i, DosageSerializer, null)
-        184 ->
-          fixedMeta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        185 -> patternBase64Binary = decoder.decodeStringElement(descriptor, i)
-        186 ->
-          _patternBase64Binary =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        187 -> patternBoolean = decoder.decodeBooleanElement(descriptor, i)
-        188 ->
-          _patternBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        189 -> patternCanonical = decoder.decodeStringElement(descriptor, i)
-        190 ->
-          _patternCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        191 -> patternCode = decoder.decodeStringElement(descriptor, i)
-        192 ->
-          _patternCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        193 -> patternDate = decoder.decodeStringElement(descriptor, i)
-        194 ->
-          _patternDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        195 -> patternDateTime = decoder.decodeStringElement(descriptor, i)
-        196 ->
-          _patternDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        197 ->
-          patternDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        198 ->
-          _patternDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        199 -> patternId = decoder.decodeStringElement(descriptor, i)
-        200 ->
-          _patternId =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        201 -> patternInstant = decoder.decodeStringElement(descriptor, i)
-        202 ->
-          _patternInstant =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        203 -> patternInteger = decoder.decodeIntElement(descriptor, i)
-        204 ->
-          _patternInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        205 -> patternInteger64 = decoder.decodeStringElement(descriptor, i)
-        206 ->
-          _patternInteger64 =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        207 -> patternMarkdown = decoder.decodeStringElement(descriptor, i)
-        208 ->
-          _patternMarkdown =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        209 -> patternOid = decoder.decodeStringElement(descriptor, i)
-        210 ->
-          _patternOid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        211 -> patternPositiveInt = decoder.decodeIntElement(descriptor, i)
-        212 ->
-          _patternPositiveInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        213 -> patternString = decoder.decodeStringElement(descriptor, i)
-        214 ->
-          _patternString =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        215 ->
-          patternTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-        216 ->
-          _patternTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        217 -> patternUnsignedInt = decoder.decodeIntElement(descriptor, i)
-        218 ->
-          _patternUnsignedInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        219 -> patternUri = decoder.decodeStringElement(descriptor, i)
-        220 ->
-          _patternUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        221 -> patternUrl = decoder.decodeStringElement(descriptor, i)
-        222 ->
-          _patternUrl =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        223 -> patternUuid = decoder.decodeStringElement(descriptor, i)
-        224 ->
-          _patternUuid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        225 ->
-          patternAddress =
-            decoder.decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
-        226 ->
-          patternAge = decoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
-        227 ->
-          patternAnnotation =
-            decoder.decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
-        228 ->
-          patternAttachment =
-            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-        229 ->
-          patternCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        230 ->
-          patternCodeableReference =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableReferenceSerializer,
-              null,
-            )
-        231 ->
-          patternCoding =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        232 ->
-          patternContactPoint =
-            decoder.decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
-        233 ->
-          patternCount =
-            decoder.decodeNullableSerializableElement(descriptor, i, CountSerializer, null)
-        234 ->
-          patternDistance =
-            decoder.decodeNullableSerializableElement(descriptor, i, DistanceSerializer, null)
-        235 ->
-          patternDuration =
-            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        236 ->
-          patternHumanName =
-            decoder.decodeNullableSerializableElement(descriptor, i, HumanNameSerializer, null)
-        237 ->
-          patternIdentifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        238 ->
-          patternMoney =
-            decoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
-        239 ->
-          patternPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        240 ->
-          patternQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        241 ->
-          patternRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        242 ->
-          patternRatio =
-            decoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-        243 ->
-          patternRatioRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RatioRangeSerializer, null)
-        244 ->
-          patternReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        245 ->
-          patternSampledData =
-            decoder.decodeNullableSerializableElement(descriptor, i, SampledDataSerializer, null)
-        246 ->
-          patternSignature =
-            decoder.decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
-        247 ->
-          patternTiming =
-            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
-        248 ->
-          patternContactDetail =
-            decoder.decodeNullableSerializableElement(descriptor, i, ContactDetailSerializer, null)
-        249 ->
-          patternDataRequirement =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              DataRequirementSerializer,
-              null,
-            )
-        250 ->
-          patternExpression =
-            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
-        251 ->
-          patternParameterDefinition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ParameterDefinitionSerializer,
-              null,
-            )
-        252 ->
-          patternRelatedArtifact =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              RelatedArtifactSerializer,
-              null,
-            )
-        253 ->
-          patternTriggerDefinition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              TriggerDefinitionSerializer,
-              null,
-            )
-        254 ->
-          patternUsageContext =
-            decoder.decodeNullableSerializableElement(descriptor, i, UsageContextSerializer, null)
-        255 ->
-          patternAvailability =
-            decoder.decodeNullableSerializableElement(descriptor, i, AvailabilitySerializer, null)
-        256 ->
-          patternExtendedContactDetail =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtendedContactDetailSerializer,
-              null,
-            )
-        257 ->
-          patternDosage =
-            decoder.decodeNullableSerializableElement(descriptor, i, DosageSerializer, null)
-        258 ->
-          patternMeta =
-            decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        259 ->
-          example =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementDefinitionExampleSerializer.listSerializer,
-              null,
-            )
-        260 -> minValueDate = decoder.decodeStringElement(descriptor, i)
-        261 ->
-          _minValueDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        262 -> minValueDateTime = decoder.decodeStringElement(descriptor, i)
-        263 ->
-          _minValueDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        264 -> minValueInstant = decoder.decodeStringElement(descriptor, i)
-        265 ->
-          _minValueInstant =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        266 ->
-          minValueTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-        267 ->
-          _minValueTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        268 ->
-          minValueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        269 ->
-          _minValueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        270 -> minValueInteger = decoder.decodeIntElement(descriptor, i)
-        271 ->
-          _minValueInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        272 -> minValueInteger64 = decoder.decodeStringElement(descriptor, i)
-        273 ->
-          _minValueInteger64 =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        274 -> minValuePositiveInt = decoder.decodeIntElement(descriptor, i)
-        275 ->
-          _minValuePositiveInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        276 -> minValueUnsignedInt = decoder.decodeIntElement(descriptor, i)
-        277 ->
-          _minValueUnsignedInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        278 ->
-          minValueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        279 -> maxValueDate = decoder.decodeStringElement(descriptor, i)
-        280 ->
-          _maxValueDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        281 -> maxValueDateTime = decoder.decodeStringElement(descriptor, i)
-        282 ->
-          _maxValueDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        283 -> maxValueInstant = decoder.decodeStringElement(descriptor, i)
-        284 ->
-          _maxValueInstant =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        285 ->
-          maxValueTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-        286 ->
-          _maxValueTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        287 ->
-          maxValueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        288 ->
-          _maxValueDecimal =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        289 -> maxValueInteger = decoder.decodeIntElement(descriptor, i)
-        290 ->
-          _maxValueInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        291 -> maxValueInteger64 = decoder.decodeStringElement(descriptor, i)
-        292 ->
-          _maxValueInteger64 =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        293 -> maxValuePositiveInt = decoder.decodeIntElement(descriptor, i)
-        294 ->
-          _maxValuePositiveInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        295 -> maxValueUnsignedInt = decoder.decodeIntElement(descriptor, i)
-        296 ->
-          _maxValueUnsignedInt =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        297 ->
-          maxValueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        298 -> maxLength = decoder.decodeIntElement(descriptor, i)
-        299 ->
-          _maxLength =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        300 ->
-          condition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        301 ->
-          _condition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        302 ->
-          constraint =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementDefinitionConstraintSerializer.listSerializer,
-              null,
-            )
-        303 -> mustHaveValue = decoder.decodeBooleanElement(descriptor, i)
-        304 ->
-          _mustHaveValue =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        305 ->
-          valueAlternatives =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        306 ->
-          _valueAlternatives =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        307 -> mustSupport = decoder.decodeBooleanElement(descriptor, i)
-        308 ->
-          _mustSupport =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        309 -> isModifier = decoder.decodeBooleanElement(descriptor, i)
-        310 ->
-          _isModifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        311 -> isModifierReason = decoder.decodeStringElement(descriptor, i)
-        312 ->
-          _isModifierReason =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        313 -> isSummary = decoder.decodeBooleanElement(descriptor, i)
-        314 ->
-          _isSummary =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        315 ->
-          binding =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementDefinitionBindingSerializer,
-              null,
-            )
-        316 ->
-          mapping =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementDefinitionMappingSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ElementDefinition: " + i)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.path.value)
+      encodeElementIfNotNull(descriptor, 4, value.path)
+      if (value.representation.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          5,
+          stringNullableListSerializer,
+          value.representation.map { it.value?.code },
+        )
+        encodePrimitiveElementList(descriptor, 6, value.representation)
       }
-    }
-    return ElementDefinition(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      path =
-        R5String.of(path, _path)
-          ?: throw SerializationException("Missing required property 'path' on ElementDefinition"),
-      representation =
-        (kotlin.collections.List(maxOf(representation?.size ?: 0, _representation?.size ?: 0)) {
-          index ->
-          Enumeration.of(
-            representation?.getOrNull(index)?.let {
-              ElementDefinition.PropertyRepresentation.fromCode(it)
-            },
-            _representation?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'representation' on ElementDefinition has neither a value nor an id/extension"
-            )
-        }),
-      sliceName = R5String.of(sliceName, _sliceName),
-      sliceIsConstraining = R5Boolean.of(sliceIsConstraining, _sliceIsConstraining),
-      label = R5String.of(label, _label),
-      code = code ?: listOf(),
-      slicing = slicing,
-      short = R5String.of(short, _short),
-      definition = Markdown.of(definition, _definition),
-      comment = Markdown.of(comment, _comment),
-      requirements = Markdown.of(requirements, _requirements),
-      alias =
-        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
-          R5String.of(alias?.getOrNull(index)?.let { it }, _alias?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'alias' on ElementDefinition has neither a value nor an id/extension"
-            )
-        }),
-      min = UnsignedInt.of(min, _min),
-      max = R5String.of(max, _max),
-      base = base,
-      contentReference = Uri.of(contentReference, _contentReference),
-      type = type ?: listOf(),
-      defaultValue =
-        ElementDefinition.DefaultValue.from(
-          Base64Binary.of(defaultValueBase64Binary, _defaultValueBase64Binary),
-          R5Boolean.of(defaultValueBoolean, _defaultValueBoolean),
-          Canonical.of(defaultValueCanonical, _defaultValueCanonical),
-          Code.of(defaultValueCode, _defaultValueCode),
-          Date.of(defaultValueDate?.let { FhirDate.fromString(it) }, _defaultValueDate),
-          DateTime.of(
-            defaultValueDateTime?.let { FhirDateTime.fromString(it) },
-            _defaultValueDateTime,
-          ),
-          Decimal.of(defaultValueDecimal, _defaultValueDecimal),
-          Id.of(defaultValueId, _defaultValueId),
-          Instant.of(
-            defaultValueInstant?.let { FhirDateTime.fromString(it) },
-            _defaultValueInstant,
-          ),
-          Integer.of(defaultValueInteger, _defaultValueInteger),
-          Integer64.of(defaultValueInteger64?.toLong(), _defaultValueInteger64),
-          Markdown.of(defaultValueMarkdown, _defaultValueMarkdown),
-          Oid.of(defaultValueOid, _defaultValueOid),
-          PositiveInt.of(defaultValuePositiveInt, _defaultValuePositiveInt),
-          R5String.of(defaultValueString, _defaultValueString),
-          Time.of(defaultValueTime, _defaultValueTime),
-          UnsignedInt.of(defaultValueUnsignedInt, _defaultValueUnsignedInt),
-          Uri.of(defaultValueUri, _defaultValueUri),
-          Url.of(defaultValueUrl, _defaultValueUrl),
-          Uuid.of(defaultValueUuid, _defaultValueUuid),
-          defaultValueAddress,
-          defaultValueAge,
-          defaultValueAnnotation,
-          defaultValueAttachment,
-          defaultValueCodeableConcept,
-          defaultValueCodeableReference,
-          defaultValueCoding,
-          defaultValueContactPoint,
-          defaultValueCount,
-          defaultValueDistance,
-          defaultValueDuration,
-          defaultValueHumanName,
-          defaultValueIdentifier,
-          defaultValueMoney,
-          defaultValuePeriod,
-          defaultValueQuantity,
-          defaultValueRange,
-          defaultValueRatio,
-          defaultValueRatioRange,
-          defaultValueReference,
-          defaultValueSampledData,
-          defaultValueSignature,
-          defaultValueTiming,
-          defaultValueContactDetail,
-          defaultValueDataRequirement,
-          defaultValueExpression,
-          defaultValueParameterDefinition,
-          defaultValueRelatedArtifact,
-          defaultValueTriggerDefinition,
-          defaultValueUsageContext,
-          defaultValueAvailability,
-          defaultValueExtendedContactDetail,
-          defaultValueDosage,
-          defaultValueMeta,
-        ),
-      meaningWhenMissing = Markdown.of(meaningWhenMissing, _meaningWhenMissing),
-      orderMeaning = R5String.of(orderMeaning, _orderMeaning),
-      fixed =
-        ElementDefinition.Fixed.from(
-          Base64Binary.of(fixedBase64Binary, _fixedBase64Binary),
-          R5Boolean.of(fixedBoolean, _fixedBoolean),
-          Canonical.of(fixedCanonical, _fixedCanonical),
-          Code.of(fixedCode, _fixedCode),
-          Date.of(fixedDate?.let { FhirDate.fromString(it) }, _fixedDate),
-          DateTime.of(fixedDateTime?.let { FhirDateTime.fromString(it) }, _fixedDateTime),
-          Decimal.of(fixedDecimal, _fixedDecimal),
-          Id.of(fixedId, _fixedId),
-          Instant.of(fixedInstant?.let { FhirDateTime.fromString(it) }, _fixedInstant),
-          Integer.of(fixedInteger, _fixedInteger),
-          Integer64.of(fixedInteger64?.toLong(), _fixedInteger64),
-          Markdown.of(fixedMarkdown, _fixedMarkdown),
-          Oid.of(fixedOid, _fixedOid),
-          PositiveInt.of(fixedPositiveInt, _fixedPositiveInt),
-          R5String.of(fixedString, _fixedString),
-          Time.of(fixedTime, _fixedTime),
-          UnsignedInt.of(fixedUnsignedInt, _fixedUnsignedInt),
-          Uri.of(fixedUri, _fixedUri),
-          Url.of(fixedUrl, _fixedUrl),
-          Uuid.of(fixedUuid, _fixedUuid),
-          fixedAddress,
-          fixedAge,
-          fixedAnnotation,
-          fixedAttachment,
-          fixedCodeableConcept,
-          fixedCodeableReference,
-          fixedCoding,
-          fixedContactPoint,
-          fixedCount,
-          fixedDistance,
-          fixedDuration,
-          fixedHumanName,
-          fixedIdentifier,
-          fixedMoney,
-          fixedPeriod,
-          fixedQuantity,
-          fixedRange,
-          fixedRatio,
-          fixedRatioRange,
-          fixedReference,
-          fixedSampledData,
-          fixedSignature,
-          fixedTiming,
-          fixedContactDetail,
-          fixedDataRequirement,
-          fixedExpression,
-          fixedParameterDefinition,
-          fixedRelatedArtifact,
-          fixedTriggerDefinition,
-          fixedUsageContext,
-          fixedAvailability,
-          fixedExtendedContactDetail,
-          fixedDosage,
-          fixedMeta,
-        ),
-      pattern =
-        ElementDefinition.Pattern.from(
-          Base64Binary.of(patternBase64Binary, _patternBase64Binary),
-          R5Boolean.of(patternBoolean, _patternBoolean),
-          Canonical.of(patternCanonical, _patternCanonical),
-          Code.of(patternCode, _patternCode),
-          Date.of(patternDate?.let { FhirDate.fromString(it) }, _patternDate),
-          DateTime.of(patternDateTime?.let { FhirDateTime.fromString(it) }, _patternDateTime),
-          Decimal.of(patternDecimal, _patternDecimal),
-          Id.of(patternId, _patternId),
-          Instant.of(patternInstant?.let { FhirDateTime.fromString(it) }, _patternInstant),
-          Integer.of(patternInteger, _patternInteger),
-          Integer64.of(patternInteger64?.toLong(), _patternInteger64),
-          Markdown.of(patternMarkdown, _patternMarkdown),
-          Oid.of(patternOid, _patternOid),
-          PositiveInt.of(patternPositiveInt, _patternPositiveInt),
-          R5String.of(patternString, _patternString),
-          Time.of(patternTime, _patternTime),
-          UnsignedInt.of(patternUnsignedInt, _patternUnsignedInt),
-          Uri.of(patternUri, _patternUri),
-          Url.of(patternUrl, _patternUrl),
-          Uuid.of(patternUuid, _patternUuid),
-          patternAddress,
-          patternAge,
-          patternAnnotation,
-          patternAttachment,
-          patternCodeableConcept,
-          patternCodeableReference,
-          patternCoding,
-          patternContactPoint,
-          patternCount,
-          patternDistance,
-          patternDuration,
-          patternHumanName,
-          patternIdentifier,
-          patternMoney,
-          patternPeriod,
-          patternQuantity,
-          patternRange,
-          patternRatio,
-          patternRatioRange,
-          patternReference,
-          patternSampledData,
-          patternSignature,
-          patternTiming,
-          patternContactDetail,
-          patternDataRequirement,
-          patternExpression,
-          patternParameterDefinition,
-          patternRelatedArtifact,
-          patternTriggerDefinition,
-          patternUsageContext,
-          patternAvailability,
-          patternExtendedContactDetail,
-          patternDosage,
-          patternMeta,
-        ),
-      example = example ?: listOf(),
-      minValue =
-        ElementDefinition.MinValue.from(
-          Date.of(minValueDate?.let { FhirDate.fromString(it) }, _minValueDate),
-          DateTime.of(minValueDateTime?.let { FhirDateTime.fromString(it) }, _minValueDateTime),
-          Instant.of(minValueInstant?.let { FhirDateTime.fromString(it) }, _minValueInstant),
-          Time.of(minValueTime, _minValueTime),
-          Decimal.of(minValueDecimal, _minValueDecimal),
-          Integer.of(minValueInteger, _minValueInteger),
-          Integer64.of(minValueInteger64?.toLong(), _minValueInteger64),
-          PositiveInt.of(minValuePositiveInt, _minValuePositiveInt),
-          UnsignedInt.of(minValueUnsignedInt, _minValueUnsignedInt),
-          minValueQuantity,
-        ),
-      maxValue =
-        ElementDefinition.MaxValue.from(
-          Date.of(maxValueDate?.let { FhirDate.fromString(it) }, _maxValueDate),
-          DateTime.of(maxValueDateTime?.let { FhirDateTime.fromString(it) }, _maxValueDateTime),
-          Instant.of(maxValueInstant?.let { FhirDateTime.fromString(it) }, _maxValueInstant),
-          Time.of(maxValueTime, _maxValueTime),
-          Decimal.of(maxValueDecimal, _maxValueDecimal),
-          Integer.of(maxValueInteger, _maxValueInteger),
-          Integer64.of(maxValueInteger64?.toLong(), _maxValueInteger64),
-          PositiveInt.of(maxValuePositiveInt, _maxValuePositiveInt),
-          UnsignedInt.of(maxValueUnsignedInt, _maxValueUnsignedInt),
-          maxValueQuantity,
-        ),
-      maxLength = Integer.of(maxLength, _maxLength),
-      condition =
-        (kotlin.collections.List(maxOf(condition?.size ?: 0, _condition?.size ?: 0)) { index ->
-          Id.of(condition?.getOrNull(index)?.let { it }, _condition?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'condition' on ElementDefinition has neither a value nor an id/extension"
-            )
-        }),
-      constraint = constraint ?: listOf(),
-      mustHaveValue = R5Boolean.of(mustHaveValue, _mustHaveValue),
-      valueAlternatives =
-        (kotlin.collections.List(
-          maxOf(valueAlternatives?.size ?: 0, _valueAlternatives?.size ?: 0)
-        ) { index ->
-          Canonical.of(
-            valueAlternatives?.getOrNull(index)?.let { it },
-            _valueAlternatives?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'valueAlternatives' on ElementDefinition has neither a value nor an id/extension"
-            )
-        }),
-      mustSupport = R5Boolean.of(mustSupport, _mustSupport),
-      isModifier = R5Boolean.of(isModifier, _isModifier),
-      isModifierReason = R5String.of(isModifierReason, _isModifierReason),
-      isSummary = R5Boolean.of(isSummary, _isSummary),
-      binding = binding,
-      mapping = mapping ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ElementDefinition) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      encodeStringIfNotNull(descriptor, 7, value.sliceName?.value)
+      encodeElementIfNotNull(descriptor, 8, value.sliceName)
+      encodeBooleanIfNotNull(descriptor, 9, value.sliceIsConstraining?.value)
+      encodeElementIfNotNull(descriptor, 10, value.sliceIsConstraining)
+      encodeStringIfNotNull(descriptor, 11, value.label?.value)
+      encodeElementIfNotNull(descriptor, 12, value.label)
+      if (value.code.isNotEmpty())
+        encodeSerializableElement(descriptor, 13, CodingSerializer.listSerializer, value.code)
+      encodeSerializableIfNotNull(descriptor, 14, ElementDefinitionSlicingSerializer, value.slicing)
+      encodeStringIfNotNull(descriptor, 15, value.short?.value)
+      encodeElementIfNotNull(descriptor, 16, value.short)
+      encodeStringIfNotNull(descriptor, 17, value.definition?.value)
+      encodeElementIfNotNull(descriptor, 18, value.definition)
+      encodeStringIfNotNull(descriptor, 19, value.comment?.value)
+      encodeElementIfNotNull(descriptor, 20, value.comment)
+      encodeStringIfNotNull(descriptor, 21, value.requirements?.value)
+      encodeElementIfNotNull(descriptor, 22, value.requirements)
+      if (value.alias.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          23,
+          stringNullableListSerializer,
+          value.alias.map { it.value },
+        )
+        encodePrimitiveElementList(descriptor, 24, value.alias)
+      }
+      encodeIntIfNotNull(descriptor, 25, value.min?.value)
+      encodeElementIfNotNull(descriptor, 26, value.min)
+      encodeStringIfNotNull(descriptor, 27, value.max?.value)
+      encodeElementIfNotNull(descriptor, 28, value.max)
+      encodeSerializableIfNotNull(descriptor, 29, ElementDefinitionBaseSerializer, value.base)
+      encodeStringIfNotNull(descriptor, 30, value.contentReference?.value)
+      encodeElementIfNotNull(descriptor, 31, value.contentReference)
+      if (value.type.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          32,
+          ElementDefinitionTypeSerializer.listSerializer,
+          value.type,
+        )
+      when (val choice = value.defaultValue) {
+        null -> {}
+        is ElementDefinition.DefaultValue.Base64Binary -> {
+          encodeStringIfNotNull(descriptor, 33, choice.value.value)
+          encodeElementIfNotNull(descriptor, 34, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Boolean -> {
+          encodeBooleanIfNotNull(descriptor, 35, choice.value.value)
+          encodeElementIfNotNull(descriptor, 36, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Canonical -> {
+          encodeStringIfNotNull(descriptor, 37, choice.value.value)
+          encodeElementIfNotNull(descriptor, 38, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Code -> {
+          encodeStringIfNotNull(descriptor, 39, choice.value.value)
+          encodeElementIfNotNull(descriptor, 40, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Date -> {
+          encodeStringIfNotNull(descriptor, 41, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 42, choice.value)
+        }
+        is ElementDefinition.DefaultValue.DateTime -> {
+          encodeStringIfNotNull(descriptor, 43, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 44, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Decimal -> {
+          encodeSerializableIfNotNull(descriptor, 45, FhirDecimalSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 46, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Id -> {
+          encodeStringIfNotNull(descriptor, 47, choice.value.value)
+          encodeElementIfNotNull(descriptor, 48, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Instant -> {
+          encodeStringIfNotNull(descriptor, 49, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 50, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Integer -> {
+          encodeIntIfNotNull(descriptor, 51, choice.value.value)
+          encodeElementIfNotNull(descriptor, 52, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Integer64 -> {
+          encodeStringIfNotNull(descriptor, 53, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 54, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Markdown -> {
+          encodeStringIfNotNull(descriptor, 55, choice.value.value)
+          encodeElementIfNotNull(descriptor, 56, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Oid -> {
+          encodeStringIfNotNull(descriptor, 57, choice.value.value)
+          encodeElementIfNotNull(descriptor, 58, choice.value)
+        }
+        is ElementDefinition.DefaultValue.PositiveInt -> {
+          encodeIntIfNotNull(descriptor, 59, choice.value.value)
+          encodeElementIfNotNull(descriptor, 60, choice.value)
+        }
+        is ElementDefinition.DefaultValue.String -> {
+          encodeStringIfNotNull(descriptor, 61, choice.value.value)
+          encodeElementIfNotNull(descriptor, 62, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Time -> {
+          encodeSerializableIfNotNull(descriptor, 63, LocalTimeSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 64, choice.value)
+        }
+        is ElementDefinition.DefaultValue.UnsignedInt -> {
+          encodeIntIfNotNull(descriptor, 65, choice.value.value)
+          encodeElementIfNotNull(descriptor, 66, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Uri -> {
+          encodeStringIfNotNull(descriptor, 67, choice.value.value)
+          encodeElementIfNotNull(descriptor, 68, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Url -> {
+          encodeStringIfNotNull(descriptor, 69, choice.value.value)
+          encodeElementIfNotNull(descriptor, 70, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Uuid -> {
+          encodeStringIfNotNull(descriptor, 71, choice.value.value)
+          encodeElementIfNotNull(descriptor, 72, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Address -> {
+          encodeSerializableElement(descriptor, 73, AddressSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Age -> {
+          encodeSerializableElement(descriptor, 74, AgeSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Annotation -> {
+          encodeSerializableElement(descriptor, 75, AnnotationSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Attachment -> {
+          encodeSerializableElement(descriptor, 76, AttachmentSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 77, CodeableConceptSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.CodeableReference -> {
+          encodeSerializableElement(descriptor, 78, CodeableReferenceSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Coding -> {
+          encodeSerializableElement(descriptor, 79, CodingSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.ContactPoint -> {
+          encodeSerializableElement(descriptor, 80, ContactPointSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Count -> {
+          encodeSerializableElement(descriptor, 81, CountSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Distance -> {
+          encodeSerializableElement(descriptor, 82, DistanceSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Duration -> {
+          encodeSerializableElement(descriptor, 83, DurationSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.HumanName -> {
+          encodeSerializableElement(descriptor, 84, HumanNameSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Identifier -> {
+          encodeSerializableElement(descriptor, 85, IdentifierSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Money -> {
+          encodeSerializableElement(descriptor, 86, MoneySerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Period -> {
+          encodeSerializableElement(descriptor, 87, PeriodSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Quantity -> {
+          encodeSerializableElement(descriptor, 88, QuantitySerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Range -> {
+          encodeSerializableElement(descriptor, 89, RangeSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Ratio -> {
+          encodeSerializableElement(descriptor, 90, RatioSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.RatioRange -> {
+          encodeSerializableElement(descriptor, 91, RatioRangeSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Reference -> {
+          encodeSerializableElement(descriptor, 92, ReferenceSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.SampledData -> {
+          encodeSerializableElement(descriptor, 93, SampledDataSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Signature -> {
+          encodeSerializableElement(descriptor, 94, SignatureSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Timing -> {
+          encodeSerializableElement(descriptor, 95, TimingSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.ContactDetail -> {
+          encodeSerializableElement(descriptor, 96, ContactDetailSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.DataRequirement -> {
+          encodeSerializableElement(descriptor, 97, DataRequirementSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Expression -> {
+          encodeSerializableElement(descriptor, 98, ExpressionSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.ParameterDefinition -> {
+          encodeSerializableElement(descriptor, 99, ParameterDefinitionSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.RelatedArtifact -> {
+          encodeSerializableElement(descriptor, 100, RelatedArtifactSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.TriggerDefinition -> {
+          encodeSerializableElement(descriptor, 101, TriggerDefinitionSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.UsageContext -> {
+          encodeSerializableElement(descriptor, 102, UsageContextSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Availability -> {
+          encodeSerializableElement(descriptor, 103, AvailabilitySerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.ExtendedContactDetail -> {
+          encodeSerializableElement(descriptor, 104, ExtendedContactDetailSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Dosage -> {
+          encodeSerializableElement(descriptor, 105, DosageSerializer, choice.value)
+        }
+        is ElementDefinition.DefaultValue.Meta -> {
+          encodeSerializableElement(descriptor, 106, MetaSerializer, choice.value)
+        }
+      }
+      encodeStringIfNotNull(descriptor, 107, value.meaningWhenMissing?.value)
+      encodeElementIfNotNull(descriptor, 108, value.meaningWhenMissing)
+      encodeStringIfNotNull(descriptor, 109, value.orderMeaning?.value)
+      encodeElementIfNotNull(descriptor, 110, value.orderMeaning)
+      when (val choice = value.fixed) {
+        null -> {}
+        is ElementDefinition.Fixed.Base64Binary -> {
+          encodeStringIfNotNull(descriptor, 111, choice.value.value)
+          encodeElementIfNotNull(descriptor, 112, choice.value)
+        }
+        is ElementDefinition.Fixed.Boolean -> {
+          encodeBooleanIfNotNull(descriptor, 113, choice.value.value)
+          encodeElementIfNotNull(descriptor, 114, choice.value)
+        }
+        is ElementDefinition.Fixed.Canonical -> {
+          encodeStringIfNotNull(descriptor, 115, choice.value.value)
+          encodeElementIfNotNull(descriptor, 116, choice.value)
+        }
+        is ElementDefinition.Fixed.Code -> {
+          encodeStringIfNotNull(descriptor, 117, choice.value.value)
+          encodeElementIfNotNull(descriptor, 118, choice.value)
+        }
+        is ElementDefinition.Fixed.Date -> {
+          encodeStringIfNotNull(descriptor, 119, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 120, choice.value)
+        }
+        is ElementDefinition.Fixed.DateTime -> {
+          encodeStringIfNotNull(descriptor, 121, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 122, choice.value)
+        }
+        is ElementDefinition.Fixed.Decimal -> {
+          encodeSerializableIfNotNull(descriptor, 123, FhirDecimalSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 124, choice.value)
+        }
+        is ElementDefinition.Fixed.Id -> {
+          encodeStringIfNotNull(descriptor, 125, choice.value.value)
+          encodeElementIfNotNull(descriptor, 126, choice.value)
+        }
+        is ElementDefinition.Fixed.Instant -> {
+          encodeStringIfNotNull(descriptor, 127, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 128, choice.value)
+        }
+        is ElementDefinition.Fixed.Integer -> {
+          encodeIntIfNotNull(descriptor, 129, choice.value.value)
+          encodeElementIfNotNull(descriptor, 130, choice.value)
+        }
+        is ElementDefinition.Fixed.Integer64 -> {
+          encodeStringIfNotNull(descriptor, 131, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 132, choice.value)
+        }
+        is ElementDefinition.Fixed.Markdown -> {
+          encodeStringIfNotNull(descriptor, 133, choice.value.value)
+          encodeElementIfNotNull(descriptor, 134, choice.value)
+        }
+        is ElementDefinition.Fixed.Oid -> {
+          encodeStringIfNotNull(descriptor, 135, choice.value.value)
+          encodeElementIfNotNull(descriptor, 136, choice.value)
+        }
+        is ElementDefinition.Fixed.PositiveInt -> {
+          encodeIntIfNotNull(descriptor, 137, choice.value.value)
+          encodeElementIfNotNull(descriptor, 138, choice.value)
+        }
+        is ElementDefinition.Fixed.String -> {
+          encodeStringIfNotNull(descriptor, 139, choice.value.value)
+          encodeElementIfNotNull(descriptor, 140, choice.value)
+        }
+        is ElementDefinition.Fixed.Time -> {
+          encodeSerializableIfNotNull(descriptor, 141, LocalTimeSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 142, choice.value)
+        }
+        is ElementDefinition.Fixed.UnsignedInt -> {
+          encodeIntIfNotNull(descriptor, 143, choice.value.value)
+          encodeElementIfNotNull(descriptor, 144, choice.value)
+        }
+        is ElementDefinition.Fixed.Uri -> {
+          encodeStringIfNotNull(descriptor, 145, choice.value.value)
+          encodeElementIfNotNull(descriptor, 146, choice.value)
+        }
+        is ElementDefinition.Fixed.Url -> {
+          encodeStringIfNotNull(descriptor, 147, choice.value.value)
+          encodeElementIfNotNull(descriptor, 148, choice.value)
+        }
+        is ElementDefinition.Fixed.Uuid -> {
+          encodeStringIfNotNull(descriptor, 149, choice.value.value)
+          encodeElementIfNotNull(descriptor, 150, choice.value)
+        }
+        is ElementDefinition.Fixed.Address -> {
+          encodeSerializableElement(descriptor, 151, AddressSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Age -> {
+          encodeSerializableElement(descriptor, 152, AgeSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Annotation -> {
+          encodeSerializableElement(descriptor, 153, AnnotationSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Attachment -> {
+          encodeSerializableElement(descriptor, 154, AttachmentSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 155, CodeableConceptSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.CodeableReference -> {
+          encodeSerializableElement(descriptor, 156, CodeableReferenceSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Coding -> {
+          encodeSerializableElement(descriptor, 157, CodingSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.ContactPoint -> {
+          encodeSerializableElement(descriptor, 158, ContactPointSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Count -> {
+          encodeSerializableElement(descriptor, 159, CountSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Distance -> {
+          encodeSerializableElement(descriptor, 160, DistanceSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Duration -> {
+          encodeSerializableElement(descriptor, 161, DurationSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.HumanName -> {
+          encodeSerializableElement(descriptor, 162, HumanNameSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Identifier -> {
+          encodeSerializableElement(descriptor, 163, IdentifierSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Money -> {
+          encodeSerializableElement(descriptor, 164, MoneySerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Period -> {
+          encodeSerializableElement(descriptor, 165, PeriodSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Quantity -> {
+          encodeSerializableElement(descriptor, 166, QuantitySerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Range -> {
+          encodeSerializableElement(descriptor, 167, RangeSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Ratio -> {
+          encodeSerializableElement(descriptor, 168, RatioSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.RatioRange -> {
+          encodeSerializableElement(descriptor, 169, RatioRangeSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Reference -> {
+          encodeSerializableElement(descriptor, 170, ReferenceSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.SampledData -> {
+          encodeSerializableElement(descriptor, 171, SampledDataSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Signature -> {
+          encodeSerializableElement(descriptor, 172, SignatureSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Timing -> {
+          encodeSerializableElement(descriptor, 173, TimingSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.ContactDetail -> {
+          encodeSerializableElement(descriptor, 174, ContactDetailSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.DataRequirement -> {
+          encodeSerializableElement(descriptor, 175, DataRequirementSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Expression -> {
+          encodeSerializableElement(descriptor, 176, ExpressionSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.ParameterDefinition -> {
+          encodeSerializableElement(descriptor, 177, ParameterDefinitionSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.RelatedArtifact -> {
+          encodeSerializableElement(descriptor, 178, RelatedArtifactSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.TriggerDefinition -> {
+          encodeSerializableElement(descriptor, 179, TriggerDefinitionSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.UsageContext -> {
+          encodeSerializableElement(descriptor, 180, UsageContextSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Availability -> {
+          encodeSerializableElement(descriptor, 181, AvailabilitySerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.ExtendedContactDetail -> {
+          encodeSerializableElement(descriptor, 182, ExtendedContactDetailSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Dosage -> {
+          encodeSerializableElement(descriptor, 183, DosageSerializer, choice.value)
+        }
+        is ElementDefinition.Fixed.Meta -> {
+          encodeSerializableElement(descriptor, 184, MetaSerializer, choice.value)
+        }
+      }
+      when (val choice = value.pattern) {
+        null -> {}
+        is ElementDefinition.Pattern.Base64Binary -> {
+          encodeStringIfNotNull(descriptor, 185, choice.value.value)
+          encodeElementIfNotNull(descriptor, 186, choice.value)
+        }
+        is ElementDefinition.Pattern.Boolean -> {
+          encodeBooleanIfNotNull(descriptor, 187, choice.value.value)
+          encodeElementIfNotNull(descriptor, 188, choice.value)
+        }
+        is ElementDefinition.Pattern.Canonical -> {
+          encodeStringIfNotNull(descriptor, 189, choice.value.value)
+          encodeElementIfNotNull(descriptor, 190, choice.value)
+        }
+        is ElementDefinition.Pattern.Code -> {
+          encodeStringIfNotNull(descriptor, 191, choice.value.value)
+          encodeElementIfNotNull(descriptor, 192, choice.value)
+        }
+        is ElementDefinition.Pattern.Date -> {
+          encodeStringIfNotNull(descriptor, 193, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 194, choice.value)
+        }
+        is ElementDefinition.Pattern.DateTime -> {
+          encodeStringIfNotNull(descriptor, 195, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 196, choice.value)
+        }
+        is ElementDefinition.Pattern.Decimal -> {
+          encodeSerializableIfNotNull(descriptor, 197, FhirDecimalSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 198, choice.value)
+        }
+        is ElementDefinition.Pattern.Id -> {
+          encodeStringIfNotNull(descriptor, 199, choice.value.value)
+          encodeElementIfNotNull(descriptor, 200, choice.value)
+        }
+        is ElementDefinition.Pattern.Instant -> {
+          encodeStringIfNotNull(descriptor, 201, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 202, choice.value)
+        }
+        is ElementDefinition.Pattern.Integer -> {
+          encodeIntIfNotNull(descriptor, 203, choice.value.value)
+          encodeElementIfNotNull(descriptor, 204, choice.value)
+        }
+        is ElementDefinition.Pattern.Integer64 -> {
+          encodeStringIfNotNull(descriptor, 205, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 206, choice.value)
+        }
+        is ElementDefinition.Pattern.Markdown -> {
+          encodeStringIfNotNull(descriptor, 207, choice.value.value)
+          encodeElementIfNotNull(descriptor, 208, choice.value)
+        }
+        is ElementDefinition.Pattern.Oid -> {
+          encodeStringIfNotNull(descriptor, 209, choice.value.value)
+          encodeElementIfNotNull(descriptor, 210, choice.value)
+        }
+        is ElementDefinition.Pattern.PositiveInt -> {
+          encodeIntIfNotNull(descriptor, 211, choice.value.value)
+          encodeElementIfNotNull(descriptor, 212, choice.value)
+        }
+        is ElementDefinition.Pattern.String -> {
+          encodeStringIfNotNull(descriptor, 213, choice.value.value)
+          encodeElementIfNotNull(descriptor, 214, choice.value)
+        }
+        is ElementDefinition.Pattern.Time -> {
+          encodeSerializableIfNotNull(descriptor, 215, LocalTimeSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 216, choice.value)
+        }
+        is ElementDefinition.Pattern.UnsignedInt -> {
+          encodeIntIfNotNull(descriptor, 217, choice.value.value)
+          encodeElementIfNotNull(descriptor, 218, choice.value)
+        }
+        is ElementDefinition.Pattern.Uri -> {
+          encodeStringIfNotNull(descriptor, 219, choice.value.value)
+          encodeElementIfNotNull(descriptor, 220, choice.value)
+        }
+        is ElementDefinition.Pattern.Url -> {
+          encodeStringIfNotNull(descriptor, 221, choice.value.value)
+          encodeElementIfNotNull(descriptor, 222, choice.value)
+        }
+        is ElementDefinition.Pattern.Uuid -> {
+          encodeStringIfNotNull(descriptor, 223, choice.value.value)
+          encodeElementIfNotNull(descriptor, 224, choice.value)
+        }
+        is ElementDefinition.Pattern.Address -> {
+          encodeSerializableElement(descriptor, 225, AddressSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Age -> {
+          encodeSerializableElement(descriptor, 226, AgeSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Annotation -> {
+          encodeSerializableElement(descriptor, 227, AnnotationSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Attachment -> {
+          encodeSerializableElement(descriptor, 228, AttachmentSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 229, CodeableConceptSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.CodeableReference -> {
+          encodeSerializableElement(descriptor, 230, CodeableReferenceSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Coding -> {
+          encodeSerializableElement(descriptor, 231, CodingSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.ContactPoint -> {
+          encodeSerializableElement(descriptor, 232, ContactPointSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Count -> {
+          encodeSerializableElement(descriptor, 233, CountSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Distance -> {
+          encodeSerializableElement(descriptor, 234, DistanceSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Duration -> {
+          encodeSerializableElement(descriptor, 235, DurationSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.HumanName -> {
+          encodeSerializableElement(descriptor, 236, HumanNameSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Identifier -> {
+          encodeSerializableElement(descriptor, 237, IdentifierSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Money -> {
+          encodeSerializableElement(descriptor, 238, MoneySerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Period -> {
+          encodeSerializableElement(descriptor, 239, PeriodSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Quantity -> {
+          encodeSerializableElement(descriptor, 240, QuantitySerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Range -> {
+          encodeSerializableElement(descriptor, 241, RangeSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Ratio -> {
+          encodeSerializableElement(descriptor, 242, RatioSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.RatioRange -> {
+          encodeSerializableElement(descriptor, 243, RatioRangeSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Reference -> {
+          encodeSerializableElement(descriptor, 244, ReferenceSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.SampledData -> {
+          encodeSerializableElement(descriptor, 245, SampledDataSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Signature -> {
+          encodeSerializableElement(descriptor, 246, SignatureSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Timing -> {
+          encodeSerializableElement(descriptor, 247, TimingSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.ContactDetail -> {
+          encodeSerializableElement(descriptor, 248, ContactDetailSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.DataRequirement -> {
+          encodeSerializableElement(descriptor, 249, DataRequirementSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Expression -> {
+          encodeSerializableElement(descriptor, 250, ExpressionSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.ParameterDefinition -> {
+          encodeSerializableElement(descriptor, 251, ParameterDefinitionSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.RelatedArtifact -> {
+          encodeSerializableElement(descriptor, 252, RelatedArtifactSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.TriggerDefinition -> {
+          encodeSerializableElement(descriptor, 253, TriggerDefinitionSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.UsageContext -> {
+          encodeSerializableElement(descriptor, 254, UsageContextSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Availability -> {
+          encodeSerializableElement(descriptor, 255, AvailabilitySerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.ExtendedContactDetail -> {
+          encodeSerializableElement(descriptor, 256, ExtendedContactDetailSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Dosage -> {
+          encodeSerializableElement(descriptor, 257, DosageSerializer, choice.value)
+        }
+        is ElementDefinition.Pattern.Meta -> {
+          encodeSerializableElement(descriptor, 258, MetaSerializer, choice.value)
+        }
+      }
+      if (value.example.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          259,
+          ElementDefinitionExampleSerializer.listSerializer,
+          value.example,
+        )
+      when (val choice = value.minValue) {
+        null -> {}
+        is ElementDefinition.MinValue.Date -> {
+          encodeStringIfNotNull(descriptor, 260, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 261, choice.value)
+        }
+        is ElementDefinition.MinValue.DateTime -> {
+          encodeStringIfNotNull(descriptor, 262, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 263, choice.value)
+        }
+        is ElementDefinition.MinValue.Instant -> {
+          encodeStringIfNotNull(descriptor, 264, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 265, choice.value)
+        }
+        is ElementDefinition.MinValue.Time -> {
+          encodeSerializableIfNotNull(descriptor, 266, LocalTimeSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 267, choice.value)
+        }
+        is ElementDefinition.MinValue.Decimal -> {
+          encodeSerializableIfNotNull(descriptor, 268, FhirDecimalSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 269, choice.value)
+        }
+        is ElementDefinition.MinValue.Integer -> {
+          encodeIntIfNotNull(descriptor, 270, choice.value.value)
+          encodeElementIfNotNull(descriptor, 271, choice.value)
+        }
+        is ElementDefinition.MinValue.Integer64 -> {
+          encodeStringIfNotNull(descriptor, 272, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 273, choice.value)
+        }
+        is ElementDefinition.MinValue.PositiveInt -> {
+          encodeIntIfNotNull(descriptor, 274, choice.value.value)
+          encodeElementIfNotNull(descriptor, 275, choice.value)
+        }
+        is ElementDefinition.MinValue.UnsignedInt -> {
+          encodeIntIfNotNull(descriptor, 276, choice.value.value)
+          encodeElementIfNotNull(descriptor, 277, choice.value)
+        }
+        is ElementDefinition.MinValue.Quantity -> {
+          encodeSerializableElement(descriptor, 278, QuantitySerializer, choice.value)
+        }
+      }
+      when (val choice = value.maxValue) {
+        null -> {}
+        is ElementDefinition.MaxValue.Date -> {
+          encodeStringIfNotNull(descriptor, 279, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 280, choice.value)
+        }
+        is ElementDefinition.MaxValue.DateTime -> {
+          encodeStringIfNotNull(descriptor, 281, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 282, choice.value)
+        }
+        is ElementDefinition.MaxValue.Instant -> {
+          encodeStringIfNotNull(descriptor, 283, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 284, choice.value)
+        }
+        is ElementDefinition.MaxValue.Time -> {
+          encodeSerializableIfNotNull(descriptor, 285, LocalTimeSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 286, choice.value)
+        }
+        is ElementDefinition.MaxValue.Decimal -> {
+          encodeSerializableIfNotNull(descriptor, 287, FhirDecimalSerializer, choice.value.value)
+          encodeElementIfNotNull(descriptor, 288, choice.value)
+        }
+        is ElementDefinition.MaxValue.Integer -> {
+          encodeIntIfNotNull(descriptor, 289, choice.value.value)
+          encodeElementIfNotNull(descriptor, 290, choice.value)
+        }
+        is ElementDefinition.MaxValue.Integer64 -> {
+          encodeStringIfNotNull(descriptor, 291, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 292, choice.value)
+        }
+        is ElementDefinition.MaxValue.PositiveInt -> {
+          encodeIntIfNotNull(descriptor, 293, choice.value.value)
+          encodeElementIfNotNull(descriptor, 294, choice.value)
+        }
+        is ElementDefinition.MaxValue.UnsignedInt -> {
+          encodeIntIfNotNull(descriptor, 295, choice.value.value)
+          encodeElementIfNotNull(descriptor, 296, choice.value)
+        }
+        is ElementDefinition.MaxValue.Quantity -> {
+          encodeSerializableElement(descriptor, 297, QuantitySerializer, choice.value)
+        }
+      }
+      encodeIntIfNotNull(descriptor, 298, value.maxLength?.value)
+      encodeElementIfNotNull(descriptor, 299, value.maxLength)
+      if (value.condition.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          300,
+          stringNullableListSerializer,
+          value.condition.map { it.value },
+        )
+        encodePrimitiveElementList(descriptor, 301, value.condition)
+      }
+      if (value.constraint.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          302,
+          ElementDefinitionConstraintSerializer.listSerializer,
+          value.constraint,
+        )
+      encodeBooleanIfNotNull(descriptor, 303, value.mustHaveValue?.value)
+      encodeElementIfNotNull(descriptor, 304, value.mustHaveValue)
+      if (value.valueAlternatives.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          305,
+          stringNullableListSerializer,
+          value.valueAlternatives.map { it.value },
+        )
+        encodePrimitiveElementList(descriptor, 306, value.valueAlternatives)
+      }
+      encodeBooleanIfNotNull(descriptor, 307, value.mustSupport?.value)
+      encodeElementIfNotNull(descriptor, 308, value.mustSupport)
+      encodeBooleanIfNotNull(descriptor, 309, value.isModifier?.value)
+      encodeElementIfNotNull(descriptor, 310, value.isModifier)
+      encodeStringIfNotNull(descriptor, 311, value.isModifierReason?.value)
+      encodeElementIfNotNull(descriptor, 312, value.isModifierReason)
+      encodeBooleanIfNotNull(descriptor, 313, value.isSummary?.value)
+      encodeElementIfNotNull(descriptor, 314, value.isSummary)
+      encodeSerializableIfNotNull(
         descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
+        315,
+        ElementDefinitionBindingSerializer,
+        value.binding,
       )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.path.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.path.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    (value.representation.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 5, stringNullableListSerializer, it)
-    }
-    (value.representation.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer.nullableListSerializer, it)
-    }
-    ((value.sliceName?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.sliceName?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    ((value.sliceIsConstraining?.value))?.let { encoder.encodeBooleanElement(descriptor, 9, it) }
-    (value.sliceIsConstraining?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
-    }
-    ((value.label?.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-    (value.label?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
-    }
-    if (value.code.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 13, CodingSerializer.listSerializer, value.code)
-    (value.slicing)?.let {
-      encoder.encodeSerializableElement(descriptor, 14, ElementDefinitionSlicingSerializer, it)
-    }
-    ((value.short?.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
-    (value.short?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16, ElementSerializer, it)
-    }
-    ((value.definition?.value))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-    (value.definition?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18, ElementSerializer, it)
-    }
-    ((value.comment?.value))?.let { encoder.encodeStringElement(descriptor, 19, it) }
-    (value.comment?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20, ElementSerializer, it)
-    }
-    ((value.requirements?.value))?.let { encoder.encodeStringElement(descriptor, 21, it) }
-    (value.requirements?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 22, ElementSerializer, it)
-    }
-    (value.alias.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 23, stringNullableListSerializer, it)
-    }
-    (value.alias.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        24,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
-    }
-    ((value.min?.value))?.let { encoder.encodeIntElement(descriptor, 25, it) }
-    (value.min?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 26, ElementSerializer, it)
-    }
-    ((value.max?.value))?.let { encoder.encodeStringElement(descriptor, 27, it) }
-    (value.max?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 28, ElementSerializer, it)
-    }
-    (value.base)?.let {
-      encoder.encodeSerializableElement(descriptor, 29, ElementDefinitionBaseSerializer, it)
-    }
-    ((value.contentReference?.value))?.let { encoder.encodeStringElement(descriptor, 30, it) }
-    (value.contentReference?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 31, ElementSerializer, it)
-    }
-    if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        32,
-        ElementDefinitionTypeSerializer.listSerializer,
-        value.type,
-      )
-    when (val choice = value.defaultValue) {
-      null -> {}
-      is ElementDefinition.DefaultValue.Base64Binary -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 33, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 34, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Boolean -> {
-        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 35, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 36, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Canonical -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 37, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 38, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Code -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 39, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 40, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Date -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 41, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 42, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 43, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 44, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Decimal -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 45, FhirDecimalSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 46, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Id -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 47, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 48, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Instant -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 49, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 50, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Integer -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 51, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 52, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Integer64 -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 53, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 54, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Markdown -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 55, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 56, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Oid -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 57, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 58, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.PositiveInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 59, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 60, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 61, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 62, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Time -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 63, LocalTimeSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 64, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.UnsignedInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 65, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 66, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Uri -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 67, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 68, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Url -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 69, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 70, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Uuid -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 71, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 72, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.DefaultValue.Address -> {
-        encoder.encodeSerializableElement(descriptor, 73, AddressSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Age -> {
-        encoder.encodeSerializableElement(descriptor, 74, AgeSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Annotation -> {
-        encoder.encodeSerializableElement(descriptor, 75, AnnotationSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 76, AttachmentSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 77, CodeableConceptSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.CodeableReference -> {
-        encoder.encodeSerializableElement(descriptor, 78, CodeableReferenceSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 79, CodingSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.ContactPoint -> {
-        encoder.encodeSerializableElement(descriptor, 80, ContactPointSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Count -> {
-        encoder.encodeSerializableElement(descriptor, 81, CountSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Distance -> {
-        encoder.encodeSerializableElement(descriptor, 82, DistanceSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 83, DurationSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.HumanName -> {
-        encoder.encodeSerializableElement(descriptor, 84, HumanNameSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 85, IdentifierSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Money -> {
-        encoder.encodeSerializableElement(descriptor, 86, MoneySerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Period -> {
-        encoder.encodeSerializableElement(descriptor, 87, PeriodSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 88, QuantitySerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Range -> {
-        encoder.encodeSerializableElement(descriptor, 89, RangeSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 90, RatioSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.RatioRange -> {
-        encoder.encodeSerializableElement(descriptor, 91, RatioRangeSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 92, ReferenceSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.SampledData -> {
-        encoder.encodeSerializableElement(descriptor, 93, SampledDataSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Signature -> {
-        encoder.encodeSerializableElement(descriptor, 94, SignatureSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 95, TimingSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.ContactDetail -> {
-        encoder.encodeSerializableElement(descriptor, 96, ContactDetailSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.DataRequirement -> {
-        encoder.encodeSerializableElement(descriptor, 97, DataRequirementSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 98, ExpressionSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.ParameterDefinition -> {
-        encoder.encodeSerializableElement(
+      if (value.mapping.isNotEmpty())
+        encodeSerializableElement(
           descriptor,
-          99,
-          ParameterDefinitionSerializer,
-          choice.value,
+          316,
+          ElementDefinitionMappingSerializer.listSerializer,
+          value.mapping,
         )
-      }
-      is ElementDefinition.DefaultValue.RelatedArtifact -> {
-        encoder.encodeSerializableElement(descriptor, 100, RelatedArtifactSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.TriggerDefinition -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          101,
-          TriggerDefinitionSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.DefaultValue.UsageContext -> {
-        encoder.encodeSerializableElement(descriptor, 102, UsageContextSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Availability -> {
-        encoder.encodeSerializableElement(descriptor, 103, AvailabilitySerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.ExtendedContactDetail -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          104,
-          ExtendedContactDetailSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.DefaultValue.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 105, DosageSerializer, choice.value)
-      }
-      is ElementDefinition.DefaultValue.Meta -> {
-        encoder.encodeSerializableElement(descriptor, 106, MetaSerializer, choice.value)
-      }
     }
-    ((value.meaningWhenMissing?.value))?.let { encoder.encodeStringElement(descriptor, 107, it) }
-    (value.meaningWhenMissing?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 108, ElementSerializer, it)
-    }
-    ((value.orderMeaning?.value))?.let { encoder.encodeStringElement(descriptor, 109, it) }
-    (value.orderMeaning?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 110, ElementSerializer, it)
-    }
-    when (val choice = value.fixed) {
-      null -> {}
-      is ElementDefinition.Fixed.Base64Binary -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 111, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 112, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Boolean -> {
-        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 113, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 114, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Canonical -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 115, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 116, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Code -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 117, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 118, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Date -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 119, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 120, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 121, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 122, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Decimal -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 123, FhirDecimalSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 124, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Id -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 125, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 126, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Instant -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 127, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 128, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Integer -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 129, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 130, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Integer64 -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 131, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 132, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Markdown -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 133, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 134, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Oid -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 135, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 136, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.PositiveInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 137, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 138, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 139, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 140, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Time -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 141, LocalTimeSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 142, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.UnsignedInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 143, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 144, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Uri -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 145, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 146, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Url -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 147, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 148, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Uuid -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 149, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 150, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Fixed.Address -> {
-        encoder.encodeSerializableElement(descriptor, 151, AddressSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Age -> {
-        encoder.encodeSerializableElement(descriptor, 152, AgeSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Annotation -> {
-        encoder.encodeSerializableElement(descriptor, 153, AnnotationSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 154, AttachmentSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 155, CodeableConceptSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.CodeableReference -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          156,
-          CodeableReferenceSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.Fixed.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 157, CodingSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.ContactPoint -> {
-        encoder.encodeSerializableElement(descriptor, 158, ContactPointSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Count -> {
-        encoder.encodeSerializableElement(descriptor, 159, CountSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Distance -> {
-        encoder.encodeSerializableElement(descriptor, 160, DistanceSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 161, DurationSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.HumanName -> {
-        encoder.encodeSerializableElement(descriptor, 162, HumanNameSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 163, IdentifierSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Money -> {
-        encoder.encodeSerializableElement(descriptor, 164, MoneySerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Period -> {
-        encoder.encodeSerializableElement(descriptor, 165, PeriodSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 166, QuantitySerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Range -> {
-        encoder.encodeSerializableElement(descriptor, 167, RangeSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 168, RatioSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.RatioRange -> {
-        encoder.encodeSerializableElement(descriptor, 169, RatioRangeSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 170, ReferenceSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.SampledData -> {
-        encoder.encodeSerializableElement(descriptor, 171, SampledDataSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Signature -> {
-        encoder.encodeSerializableElement(descriptor, 172, SignatureSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 173, TimingSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.ContactDetail -> {
-        encoder.encodeSerializableElement(descriptor, 174, ContactDetailSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.DataRequirement -> {
-        encoder.encodeSerializableElement(descriptor, 175, DataRequirementSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 176, ExpressionSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.ParameterDefinition -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          177,
-          ParameterDefinitionSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.Fixed.RelatedArtifact -> {
-        encoder.encodeSerializableElement(descriptor, 178, RelatedArtifactSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.TriggerDefinition -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          179,
-          TriggerDefinitionSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.Fixed.UsageContext -> {
-        encoder.encodeSerializableElement(descriptor, 180, UsageContextSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Availability -> {
-        encoder.encodeSerializableElement(descriptor, 181, AvailabilitySerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.ExtendedContactDetail -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          182,
-          ExtendedContactDetailSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.Fixed.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 183, DosageSerializer, choice.value)
-      }
-      is ElementDefinition.Fixed.Meta -> {
-        encoder.encodeSerializableElement(descriptor, 184, MetaSerializer, choice.value)
-      }
-    }
-    when (val choice = value.pattern) {
-      null -> {}
-      is ElementDefinition.Pattern.Base64Binary -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 185, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 186, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Boolean -> {
-        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 187, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 188, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Canonical -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 189, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 190, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Code -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 191, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 192, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Date -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 193, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 194, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 195, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 196, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Decimal -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 197, FhirDecimalSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 198, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Id -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 199, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 200, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Instant -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 201, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 202, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Integer -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 203, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 204, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Integer64 -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 205, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 206, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Markdown -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 207, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 208, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Oid -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 209, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 210, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.PositiveInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 211, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 212, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 213, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 214, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Time -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 215, LocalTimeSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 216, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.UnsignedInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 217, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 218, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Uri -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 219, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 220, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Url -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 221, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 222, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Uuid -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 223, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 224, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.Pattern.Address -> {
-        encoder.encodeSerializableElement(descriptor, 225, AddressSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Age -> {
-        encoder.encodeSerializableElement(descriptor, 226, AgeSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Annotation -> {
-        encoder.encodeSerializableElement(descriptor, 227, AnnotationSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 228, AttachmentSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 229, CodeableConceptSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.CodeableReference -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          230,
-          CodeableReferenceSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.Pattern.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 231, CodingSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.ContactPoint -> {
-        encoder.encodeSerializableElement(descriptor, 232, ContactPointSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Count -> {
-        encoder.encodeSerializableElement(descriptor, 233, CountSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Distance -> {
-        encoder.encodeSerializableElement(descriptor, 234, DistanceSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 235, DurationSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.HumanName -> {
-        encoder.encodeSerializableElement(descriptor, 236, HumanNameSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 237, IdentifierSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Money -> {
-        encoder.encodeSerializableElement(descriptor, 238, MoneySerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Period -> {
-        encoder.encodeSerializableElement(descriptor, 239, PeriodSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 240, QuantitySerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Range -> {
-        encoder.encodeSerializableElement(descriptor, 241, RangeSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 242, RatioSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.RatioRange -> {
-        encoder.encodeSerializableElement(descriptor, 243, RatioRangeSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 244, ReferenceSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.SampledData -> {
-        encoder.encodeSerializableElement(descriptor, 245, SampledDataSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Signature -> {
-        encoder.encodeSerializableElement(descriptor, 246, SignatureSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 247, TimingSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.ContactDetail -> {
-        encoder.encodeSerializableElement(descriptor, 248, ContactDetailSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.DataRequirement -> {
-        encoder.encodeSerializableElement(descriptor, 249, DataRequirementSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 250, ExpressionSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.ParameterDefinition -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          251,
-          ParameterDefinitionSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.Pattern.RelatedArtifact -> {
-        encoder.encodeSerializableElement(descriptor, 252, RelatedArtifactSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.TriggerDefinition -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          253,
-          TriggerDefinitionSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.Pattern.UsageContext -> {
-        encoder.encodeSerializableElement(descriptor, 254, UsageContextSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Availability -> {
-        encoder.encodeSerializableElement(descriptor, 255, AvailabilitySerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.ExtendedContactDetail -> {
-        encoder.encodeSerializableElement(
-          descriptor,
-          256,
-          ExtendedContactDetailSerializer,
-          choice.value,
-        )
-      }
-      is ElementDefinition.Pattern.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 257, DosageSerializer, choice.value)
-      }
-      is ElementDefinition.Pattern.Meta -> {
-        encoder.encodeSerializableElement(descriptor, 258, MetaSerializer, choice.value)
-      }
-    }
-    if (value.example.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        259,
-        ElementDefinitionExampleSerializer.listSerializer,
-        value.example,
-      )
-    when (val choice = value.minValue) {
-      null -> {}
-      is ElementDefinition.MinValue.Date -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 260, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 261, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MinValue.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 262, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 263, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MinValue.Instant -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 264, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 265, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MinValue.Time -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 266, LocalTimeSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 267, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MinValue.Decimal -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 268, FhirDecimalSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 269, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MinValue.Integer -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 270, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 271, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MinValue.Integer64 -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 272, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 273, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MinValue.PositiveInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 274, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 275, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MinValue.UnsignedInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 276, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 277, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MinValue.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 278, QuantitySerializer, choice.value)
-      }
-    }
-    when (val choice = value.maxValue) {
-      null -> {}
-      is ElementDefinition.MaxValue.Date -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 279, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 280, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MaxValue.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 281, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 282, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MaxValue.Instant -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 283, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 284, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MaxValue.Time -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 285, LocalTimeSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 286, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MaxValue.Decimal -> {
-        ((choice.value.value))?.let {
-          encoder.encodeSerializableElement(descriptor, 287, FhirDecimalSerializer, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 288, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MaxValue.Integer -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 289, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 290, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MaxValue.Integer64 -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 291, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 292, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MaxValue.PositiveInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 293, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 294, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MaxValue.UnsignedInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 295, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 296, ElementSerializer, it)
-        }
-      }
-      is ElementDefinition.MaxValue.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 297, QuantitySerializer, choice.value)
-      }
-    }
-    ((value.maxLength?.value))?.let { encoder.encodeIntElement(descriptor, 298, it) }
-    (value.maxLength?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 299, ElementSerializer, it)
-    }
-    (value.condition.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 300, stringNullableListSerializer, it)
-    }
-    (value.condition.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        301,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
-    }
-    if (value.constraint.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        302,
-        ElementDefinitionConstraintSerializer.listSerializer,
-        value.constraint,
-      )
-    ((value.mustHaveValue?.value))?.let { encoder.encodeBooleanElement(descriptor, 303, it) }
-    (value.mustHaveValue?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 304, ElementSerializer, it)
-    }
-    (value.valueAlternatives.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 305, stringNullableListSerializer, it)
-    }
-    (value.valueAlternatives.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        306,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
-    }
-    ((value.mustSupport?.value))?.let { encoder.encodeBooleanElement(descriptor, 307, it) }
-    (value.mustSupport?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 308, ElementSerializer, it)
-    }
-    ((value.isModifier?.value))?.let { encoder.encodeBooleanElement(descriptor, 309, it) }
-    (value.isModifier?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 310, ElementSerializer, it)
-    }
-    ((value.isModifierReason?.value))?.let { encoder.encodeStringElement(descriptor, 311, it) }
-    (value.isModifierReason?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 312, ElementSerializer, it)
-    }
-    ((value.isSummary?.value))?.let { encoder.encodeBooleanElement(descriptor, 313, it) }
-    (value.isSummary?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 314, ElementSerializer, it)
-    }
-    (value.binding)?.let {
-      encoder.encodeSerializableElement(descriptor, 315, ElementDefinitionBindingSerializer, it)
-    }
-    if (value.mapping.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        316,
-        ElementDefinitionMappingSerializer.listSerializer,
-        value.mapping,
-      )
   }
 }

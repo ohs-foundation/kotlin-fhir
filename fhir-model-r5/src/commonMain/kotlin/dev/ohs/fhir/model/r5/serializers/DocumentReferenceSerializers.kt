@@ -71,250 +71,188 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object DocumentReferenceAttesterSerializer : KSerializer<DocumentReference.Attester> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Attester") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("mode", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("time", KotlinString.serializer().descriptor, isOptional = true)
-      element("_time", Element.serializer().descriptor, isOptional = true)
-      element("party", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("mode", CodeableConceptSerializer.descriptor)
+      optionalElement("time", KotlinString.serializer().descriptor)
+      optionalElement("_time", ElementSerializer.descriptor)
+      optionalElement("party", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<DocumentReference.Attester>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): DocumentReference.Attester =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var mode: CodeableConcept? = null
+      var time: KotlinString? = null
+      var _time: Element? = null
+      var party: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            mode = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 -> time = decodeStringElement(descriptor, i)
+          5 -> _time = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> party = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Attester: " + i)
+        }
+      }
+      DocumentReference.Attester(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        mode =
+          mode
+            ?: throw SerializationException(
+              "Missing required property 'mode' on DocumentReference.Attester"
+            ),
+        time = DateTime.of(if (time != null) FhirDateTime.fromString(time) else null, _time),
+        party = party,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: DocumentReference.Attester) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.mode)
+      encodeStringIfNotNull(descriptor, 4, value.time?.value?.toString())
+      encodeElementIfNotNull(descriptor, 5, value.time)
+      encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.party)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): DocumentReference.Attester {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var mode: CodeableConcept? = null
-    var time: KotlinString? = null
-    var _time: Element? = null
-    var party: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          mode =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 -> time = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _time = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 ->
-          party =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Attester: " + i)
-      }
-    }
-    return DocumentReference.Attester(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      mode =
-        mode
-          ?: throw SerializationException(
-            "Missing required property 'mode' on DocumentReference.Attester"
-          ),
-      time = DateTime.of(time?.let { FhirDateTime.fromString(it) }, _time),
-      party = party,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: DocumentReference.Attester) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.mode)
-    ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.time?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    (value.party)?.let { encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it) }
   }
 }
 
 internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentReference.RelatesTo> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("RelatesTo") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("target", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("code", CodeableConceptSerializer.descriptor)
+      optionalElement("target", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<DocumentReference.RelatesTo>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): DocumentReference.RelatesTo =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var code: CodeableConcept? = null
+      var target: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            code = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 -> target = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding RelatesTo: " + i)
+        }
+      }
+      DocumentReference.RelatesTo(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        code =
+          code
+            ?: throw SerializationException(
+              "Missing required property 'code' on DocumentReference.RelatesTo"
+            ),
+        target =
+          target
+            ?: throw SerializationException(
+              "Missing required property 'target' on DocumentReference.RelatesTo"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: DocumentReference.RelatesTo) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
+      encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.target)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): DocumentReference.RelatesTo {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var code: CodeableConcept? = null
-    var target: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          code =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          target =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RelatesTo: " + i)
-      }
-    }
-    return DocumentReference.RelatesTo(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        code
-          ?: throw SerializationException(
-            "Missing required property 'code' on DocumentReference.RelatesTo"
-          ),
-      target =
-        target
-          ?: throw SerializationException(
-            "Missing required property 'target' on DocumentReference.RelatesTo"
-          ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: DocumentReference.RelatesTo) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
-    encoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.target)
   }
 }
 
 internal object DocumentReferenceContentSerializer : KSerializer<DocumentReference.Content> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Content") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("attachment", Attachment.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("attachment", AttachmentSerializer.descriptor)
+      optionalElement(
         "profile",
-        listSerialDescriptor(
-          lazyDescriptor { DocumentReference.Content.Profile.serializer().descriptor }
-        ),
-        isOptional = true,
+        DocumentReferenceContentProfileSerializer.listSerializer.descriptor,
       )
     }
 
@@ -322,92 +260,84 @@ internal object DocumentReferenceContentSerializer : KSerializer<DocumentReferen
 
   override fun deserialize(decoder: Decoder): DocumentReference.Content =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var attachment: Attachment? = null
+      var profile: List<DocumentReference.Content.Profile>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            attachment =
+              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
+          4 ->
+            profile =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                DocumentReferenceContentProfileSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Content: " + i)
+        }
+      }
+      DocumentReference.Content(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        attachment =
+          attachment
+            ?: throw SerializationException(
+              "Missing required property 'attachment' on DocumentReference.Content"
+            ),
+        profile = profile ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: DocumentReference.Content) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(descriptor, 3, AttachmentSerializer, value.attachment)
+      if (value.profile.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          4,
+          DocumentReferenceContentProfileSerializer.listSerializer,
+          value.profile,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): DocumentReference.Content {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var attachment: Attachment? = null
-    var profile: List<DocumentReference.Content.Profile>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          attachment =
-            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-        4 ->
-          profile =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              DocumentReferenceContentProfileSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Content: " + i)
-      }
-    }
-    return DocumentReference.Content(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      attachment =
-        attachment
-          ?: throw SerializationException(
-            "Missing required property 'attachment' on DocumentReference.Content"
-          ),
-      profile = profile ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: DocumentReference.Content) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(descriptor, 3, AttachmentSerializer, value.attachment)
-    if (value.profile.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        4,
-        DocumentReferenceContentProfileSerializer.listSerializer,
-        value.profile,
-      )
   }
 }
 
@@ -415,22 +345,14 @@ internal object DocumentReferenceContentProfileSerializer :
   KSerializer<DocumentReference.Content.Profile> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Profile") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("valueCoding", Coding.serializer().descriptor, isOptional = true)
-      element("valueUri", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueUri", Element.serializer().descriptor, isOptional = true)
-      element("valueCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_valueCanonical", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("valueCoding", CodingSerializer.descriptor)
+      optionalElement("valueUri", KotlinString.serializer().descriptor)
+      optionalElement("_valueUri", ElementSerializer.descriptor)
+      optionalElement("valueCanonical", KotlinString.serializer().descriptor)
+      optionalElement("_valueCanonical", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<DocumentReference.Content.Profile>> =
@@ -438,107 +360,89 @@ internal object DocumentReferenceContentProfileSerializer :
 
   override fun deserialize(decoder: Decoder): DocumentReference.Content.Profile =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var valueCoding: Coding? = null
+      var valueUri: KotlinString? = null
+      var _valueUri: Element? = null
+      var valueCanonical: KotlinString? = null
+      var _valueCanonical: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            valueCoding = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+          4 -> valueUri = decodeStringElement(descriptor, i)
+          5 -> _valueUri = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> valueCanonical = decodeStringElement(descriptor, i)
+          7 ->
+            _valueCanonical =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Profile: " + i)
+        }
+      }
+      DocumentReference.Content.Profile(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        `value` =
+          DocumentReference.Content.Profile.Value.from(
+            valueCoding,
+            Uri.of(valueUri, _valueUri),
+            Canonical.of(valueCanonical, _valueCanonical),
+          )
+            ?: throw SerializationException(
+              "Missing required property 'value' on DocumentReference.Content.Profile"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: DocumentReference.Content.Profile) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): DocumentReference.Content.Profile {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var valueCoding: Coding? = null
-    var valueUri: KotlinString? = null
-    var _valueUri: Element? = null
-    var valueCanonical: KotlinString? = null
-    var _valueCanonical: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          valueCoding =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        4 -> valueUri = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _valueUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> valueCanonical = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _valueCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Profile: " + i)
-      }
-    }
-    return DocumentReference.Content.Profile(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      `value` =
-        DocumentReference.Content.Profile.Value.from(
-          valueCoding,
-          Uri.of(valueUri, _valueUri),
-          Canonical.of(valueCanonical, _valueCanonical),
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
         )
-          ?: throw SerializationException(
-            "Missing required property 'value' on DocumentReference.Content.Profile"
-          ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: DocumentReference.Content.Profile,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    when (val choice = value.`value`) {
-      is DocumentReference.Content.Profile.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 3, CodingSerializer, choice.value)
-      }
-      is DocumentReference.Content.Profile.Value.Uri -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      when (val choice = value.`value`) {
+        is DocumentReference.Content.Profile.Value.Coding -> {
+          encodeSerializableElement(descriptor, 3, CodingSerializer, choice.value)
         }
-      }
-      is DocumentReference.Content.Profile.Value.Canonical -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
+        is DocumentReference.Content.Profile.Value.Uri -> {
+          encodeStringIfNotNull(descriptor, 4, choice.value.value)
+          encodeElementIfNotNull(descriptor, 5, choice.value)
+        }
+        is DocumentReference.Content.Profile.Value.Canonical -> {
+          encodeStringIfNotNull(descriptor, 6, choice.value.value)
+          encodeElementIfNotNull(descriptor, 7, choice.value)
         }
       }
     }
@@ -549,92 +453,47 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
   override val descriptor: SerialDescriptor = buildResourceDescriptor("DocumentReference")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("version", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_version", Element.serializer().descriptor, isOptional = true)
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("docStatus", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_docStatus", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "modality",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "category",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("context", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element(
-      "event",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "bodySite",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("facilityType", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("practiceSetting", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("period", Period.serializer().descriptor, isOptional = true)
-    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_date", Element.serializer().descriptor, isOptional = true)
-    b.element("author", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element(
-      "attester",
-      listSerialDescriptor(lazyDescriptor { DocumentReference.Attester.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element("custodian", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "relatesTo",
-      listSerialDescriptor(lazyDescriptor { DocumentReference.RelatesTo.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "securityLabel",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "content",
-      listSerialDescriptor(lazyDescriptor { DocumentReference.Content.serializer().descriptor }),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("version", KotlinString.serializer().descriptor)
+    b.optionalElement("_version", ElementSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("docStatus", KotlinString.serializer().descriptor)
+    b.optionalElement("_docStatus", ElementSerializer.descriptor)
+    b.optionalElement("modality", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("context", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("event", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("bodySite", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("facilityType", CodeableConceptSerializer.descriptor)
+    b.optionalElement("practiceSetting", CodeableConceptSerializer.descriptor)
+    b.optionalElement("period", PeriodSerializer.descriptor)
+    b.optionalElement("date", KotlinString.serializer().descriptor)
+    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.optionalElement("author", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("attester", DocumentReferenceAttesterSerializer.listSerializer.descriptor)
+    b.optionalElement("custodian", ReferenceSerializer.descriptor)
+    b.optionalElement("relatesTo", DocumentReferenceRelatesToSerializer.listSerializer.descriptor)
+    b.optionalElement("description", KotlinString.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("securityLabel", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("content", DocumentReferenceContentSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -884,13 +743,16 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
       version = R5String.of(version, _version),
       basedOn = basedOn ?: listOf(),
       status =
-        Enumeration.of(status?.let { DocumentReferenceStatus.fromCode(it) }, _status)
+        Enumeration.of(
+          if (status != null) DocumentReferenceStatus.fromCode(status) else null,
+          _status,
+        )
           ?: throw SerializationException(
             "Missing required property 'status' on DocumentReference"
           ),
       docStatus =
         Enumeration.of(
-          docStatus?.let { DocumentReference.CompositionStatus.fromCode(it) },
+          if (docStatus != null) DocumentReference.CompositionStatus.fromCode(docStatus) else null,
           _docStatus,
         ),
       modality = modality ?: listOf(),
@@ -903,7 +765,7 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
       facilityType = facilityType,
       practiceSetting = practiceSetting,
       period = period,
-      date = Instant.of(date?.let { FhirDateTime.fromString(it) }, _date),
+      date = Instant.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
       author = author ?: listOf(),
       attester = attester ?: listOf(),
       custodian = custodian,
@@ -920,25 +782,23 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
     descriptorOffset: Int,
     `value`: DocumentReference,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -967,12 +827,8 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.version?.value))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.version?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.version?.value)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.version)
     if (value.basedOn.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -980,18 +836,10 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
         ReferenceSerializer.listSerializer,
         value.basedOn,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.docStatus?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
-    }
-    (value.docStatus?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.status)
+    encoder.encodeStringIfNotNull(descriptor, 16 + descriptorOffset, value.docStatus?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.docStatus)
     if (value.modality.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -999,14 +847,12 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
         CodeableConceptSerializer.listSerializer,
         value.modality,
       )
-    (value.type)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.type,
+    )
     if (value.category.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1014,9 +860,12 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
         CodeableConceptSerializer.listSerializer,
         value.category,
       )
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      21 + descriptorOffset,
+      ReferenceSerializer,
+      value.subject,
+    )
     if (value.context.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1038,31 +887,26 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
         CodeableReferenceSerializer.listSerializer,
         value.bodySite,
       )
-    (value.facilityType)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.practiceSetting)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.period)?.let {
-      encoder.encodeSerializableElement(descriptor, 27 + descriptorOffset, PeriodSerializer, it)
-    }
-    ((value.date?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
-    }
-    (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      25 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.facilityType,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      26 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.practiceSetting,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      27 + descriptorOffset,
+      PeriodSerializer,
+      value.period,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.date?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.date)
     if (value.author.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1077,9 +921,12 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
         DocumentReferenceAttesterSerializer.listSerializer,
         value.attester,
       )
-    (value.custodian)?.let {
-      encoder.encodeSerializableElement(descriptor, 32 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      32 + descriptorOffset,
+      ReferenceSerializer,
+      value.custodian,
+    )
     if (value.relatesTo.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1087,12 +934,8 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
         DocumentReferenceRelatesToSerializer.listSerializer,
         value.relatesTo,
       )
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 34 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 35 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 34 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 35 + descriptorOffset, value.description)
     if (value.securityLabel.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

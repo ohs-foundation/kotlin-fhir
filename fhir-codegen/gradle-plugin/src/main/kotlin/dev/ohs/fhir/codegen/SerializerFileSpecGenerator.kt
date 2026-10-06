@@ -36,10 +36,6 @@ import dev.ohs.fhir.codegen.serializer.SerializerEncodeEmitter
 import dev.ohs.fhir.codegen.serializer.WireField
 import dev.ohs.fhir.codegen.serializer.buildJsonWireFields
 import dev.ohs.fhir.codegen.serializer.buildListSerializerProperty
-import dev.ohs.fhir.codegen.serializer.decodeStructureMemberName
-import dev.ohs.fhir.codegen.serializer.decoderClassName
-import dev.ohs.fhir.codegen.serializer.encodeStructureMemberName
-import dev.ohs.fhir.codegen.serializer.encoderClassName
 import kotlinx.serialization.KSerializer
 
 /** Generates a streaming `KSerializer<X>` per FHIR type over the flat wire shape. */
@@ -148,11 +144,11 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
   }
 
   /**
-   * Builds the serializer functions: `serializeInternal` / `deserializeInternal` plus (for
-   * non-resource types) the public `serialize` / `deserialize` overrides. For resource types,
-   * `serialize` / `deserialize` are inherited from `FhirResourceSerializer` and the internal bodies
-   * override `FhirResourceSerializer` so `FhirResourcePolymorphicSerializer` can reuse them with a
-   * different descriptor + offset.
+   * Builds the serializer functions: for non-resource types, emits `deserialize` and `serialize`
+   * directly; for resource types, `serialize` / `deserialize` are inherited from
+   * `FhirResourceSerializer` and `deserializeInternal` / `serializeInternal` override
+   * `FhirResourceSerializer` so `FhirResourcePolymorphicSerializer` can reuse them with a different
+   * descriptor + offset.
    */
   private fun buildSerializerFunctions(
     className: ClassName,
@@ -167,9 +163,8 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     // The body takes the descriptor + a wire-field offset (`descriptorOffset`) at runtime; encode
     // emits
     // `<wireIdx> + descriptorOffset` for the descriptor index, decode rebases the dispatch via
-    // `when (i - descriptorOffset)` so case labels stay constant. Non-resource types keep the
-    // simple
-    // unparameterized form.
+    // `when (i - descriptorOffset)` so case labels stay constant. Non-resource types emit
+    // `deserialize` and `serialize` directly without separate `*Internal` helper methods.
     val parameterized = includeResourceType
     // Case labels in the decode `when` — always wire-field index (0-based). For non-resources
     // this also equals the absolute descriptor slot since there's no `resourceType` prefix.
@@ -181,46 +176,16 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     val nameToIdx: Map<String, CodeBlock> = nameToCaseLabel.mapValues { (_, i) ->
       if (parameterized) CodeBlock.of("%L + descriptorOffset", i) else CodeBlock.of("%L", i)
     }
-    val functions = mutableListOf<FunSpec>()
-    // Non-resource serializers emit their own `deserialize` / `serialize` overrides. Resource
-    // serializers inherit them from `FhirResourceSerializer` (compiled as Java 8 default methods
-    // under `JvmDefaultMode.NO_COMPATIBILITY`).
-    if (!parameterized) {
-      functions +=
-        FunSpec.builder("deserialize")
-          .addModifiers(KModifier.OVERRIDE)
-          .addParameter("decoder", decoderClassName)
-          .returns(className)
-          .addCode(
-            CodeBlock.of(
-              "return decoder.%M(descriptor) {\n  deserializeInternal(this)\n}\n",
-              decodeStructureMemberName,
-            )
-          )
-          .build()
-      functions +=
-        FunSpec.builder("serialize")
-          .addModifiers(KModifier.OVERRIDE)
-          .addParameter("encoder", encoderClassName)
-          .addParameter("value", className)
-          .addCode(
-            CodeBlock.of(
-              "encoder.%M(descriptor) {\n  serializeInternal(this, value)\n}\n",
-              encodeStructureMemberName,
-            )
-          )
-          .build()
-    }
-    functions +=
+    return listOf(
       decodeEmitter.buildDeserializeInternal(
         className,
         elements,
         wireFields,
         parameterized,
         nameToCaseLabel,
-      )
-    functions += encodeEmitter.buildSerializeInternal(className, elements, parameterized, nameToIdx)
-    return functions
+      ),
+      encodeEmitter.buildSerializeInternal(className, elements, parameterized, nameToIdx),
+    )
   }
 }
 

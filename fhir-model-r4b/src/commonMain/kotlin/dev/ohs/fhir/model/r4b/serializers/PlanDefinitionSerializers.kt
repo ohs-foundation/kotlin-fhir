@@ -83,465 +83,335 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object PlanDefinitionGoalSerializer : KSerializer<PlanDefinition.Goal> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Goal") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("category", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("description", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("start", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "addresses",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "documentation",
-        listSerialDescriptor(RelatedArtifact.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "target",
-        listSerialDescriptor(lazyDescriptor { PlanDefinition.Goal.Target.serializer().descriptor }),
-        isOptional = true,
-      )
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("category", CodeableConceptSerializer.descriptor)
+      optionalElement("description", CodeableConceptSerializer.descriptor)
+      optionalElement("priority", CodeableConceptSerializer.descriptor)
+      optionalElement("start", CodeableConceptSerializer.descriptor)
+      optionalElement("addresses", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("documentation", RelatedArtifactSerializer.listSerializer.descriptor)
+      optionalElement("target", PlanDefinitionGoalTargetSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PlanDefinition.Goal>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Goal =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var category: CodeableConcept? = null
+      var description: CodeableConcept? = null
+      var priority: CodeableConcept? = null
+      var start: CodeableConcept? = null
+      var addresses: List<CodeableConcept>? = null
+      var documentation: List<RelatedArtifact>? = null
+      var target: List<PlanDefinition.Goal.Target>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            category =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            description =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            priority =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          6 ->
+            start =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          7 ->
+            addresses =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          8 ->
+            documentation =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                RelatedArtifactSerializer.listSerializer,
+                null,
+              )
+          9 ->
+            target =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                PlanDefinitionGoalTargetSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Goal: " + i)
+        }
+      }
+      PlanDefinition.Goal(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        category = category,
+        description =
+          description
+            ?: throw SerializationException(
+              "Missing required property 'description' on PlanDefinition.Goal"
+            ),
+        priority = priority,
+        start = start,
+        addresses = addresses ?: listOf(),
+        documentation = documentation ?: listOf(),
+        target = target ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Goal) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.category)
+      encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, value.description)
+      encodeSerializableIfNotNull(descriptor, 5, CodeableConceptSerializer, value.priority)
+      encodeSerializableIfNotNull(descriptor, 6, CodeableConceptSerializer, value.start)
+      if (value.addresses.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          7,
+          CodeableConceptSerializer.listSerializer,
+          value.addresses,
+        )
+      if (value.documentation.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          8,
+          RelatedArtifactSerializer.listSerializer,
+          value.documentation,
+        )
+      if (value.target.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          9,
+          PlanDefinitionGoalTargetSerializer.listSerializer,
+          value.target,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Goal {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var category: CodeableConcept? = null
-    var description: CodeableConcept? = null
-    var priority: CodeableConcept? = null
-    var start: CodeableConcept? = null
-    var addresses: List<CodeableConcept>? = null
-    var documentation: List<RelatedArtifact>? = null
-    var target: List<PlanDefinition.Goal.Target>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          category =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          description =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          priority =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        6 ->
-          start =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        7 ->
-          addresses =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        8 ->
-          documentation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              RelatedArtifactSerializer.listSerializer,
-              null,
-            )
-        9 ->
-          target =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              PlanDefinitionGoalTargetSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Goal: " + i)
-      }
-    }
-    return PlanDefinition.Goal(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      category = category,
-      description =
-        description
-          ?: throw SerializationException(
-            "Missing required property 'description' on PlanDefinition.Goal"
-          ),
-      priority = priority,
-      start = start,
-      addresses = addresses ?: listOf(),
-      documentation = documentation ?: listOf(),
-      target = target ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: PlanDefinition.Goal) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.category)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, value.description)
-    (value.priority)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
-    }
-    (value.start)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
-    }
-    if (value.addresses.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        7,
-        CodeableConceptSerializer.listSerializer,
-        value.addresses,
-      )
-    if (value.documentation.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        8,
-        RelatedArtifactSerializer.listSerializer,
-        value.documentation,
-      )
-    if (value.target.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        9,
-        PlanDefinitionGoalTargetSerializer.listSerializer,
-        value.target,
-      )
   }
 }
 
 internal object PlanDefinitionGoalTargetSerializer : KSerializer<PlanDefinition.Goal.Target> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Target") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("measure", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("detailQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("detailRange", Range.serializer().descriptor, isOptional = true)
-      element("detailCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("due", Duration.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("measure", CodeableConceptSerializer.descriptor)
+      optionalElement("detailQuantity", QuantitySerializer.descriptor)
+      optionalElement("detailRange", RangeSerializer.descriptor)
+      optionalElement("detailCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("due", DurationSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PlanDefinition.Goal.Target>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Goal.Target =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var measure: CodeableConcept? = null
+      var detailQuantity: Quantity? = null
+      var detailRange: Range? = null
+      var detailCodeableConcept: CodeableConcept? = null
+      var due: Duration? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            measure =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            detailQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          5 -> detailRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          6 ->
+            detailCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          7 -> due = decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Target: " + i)
+        }
+      }
+      PlanDefinition.Goal.Target(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        measure = measure,
+        detail =
+          PlanDefinition.Goal.Target.Detail.from(
+            detailQuantity,
+            detailRange,
+            detailCodeableConcept,
+          ),
+        due = due,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Goal.Target) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Goal.Target {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var measure: CodeableConcept? = null
-    var detailQuantity: Quantity? = null
-    var detailRange: Range? = null
-    var detailCodeableConcept: CodeableConcept? = null
-    var due: Duration? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          measure =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          detailQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        5 ->
-          detailRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        6 ->
-          detailCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        7 ->
-          due = decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Target: " + i)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.measure)
+      when (val choice = value.detail) {
+        null -> {}
+        is PlanDefinition.Goal.Target.Detail.Quantity -> {
+          encodeSerializableElement(descriptor, 4, QuantitySerializer, choice.value)
+        }
+        is PlanDefinition.Goal.Target.Detail.Range -> {
+          encodeSerializableElement(descriptor, 5, RangeSerializer, choice.value)
+        }
+        is PlanDefinition.Goal.Target.Detail.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, choice.value)
+        }
       }
+      encodeSerializableIfNotNull(descriptor, 7, DurationSerializer, value.due)
     }
-    return PlanDefinition.Goal.Target(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      measure = measure,
-      detail =
-        PlanDefinition.Goal.Target.Detail.from(detailQuantity, detailRange, detailCodeableConcept),
-      due = due,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: PlanDefinition.Goal.Target) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.measure)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    when (val choice = value.detail) {
-      null -> {}
-      is PlanDefinition.Goal.Target.Detail.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, choice.value)
-      }
-      is PlanDefinition.Goal.Target.Detail.Range -> {
-        encoder.encodeSerializableElement(descriptor, 5, RangeSerializer, choice.value)
-      }
-      is PlanDefinition.Goal.Target.Detail.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, choice.value)
-      }
-    }
-    (value.due)?.let { encoder.encodeSerializableElement(descriptor, 7, DurationSerializer, it) }
   }
 }
 
 internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Action> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Action") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("prefix", KotlinString.serializer().descriptor, isOptional = true)
-      element("_prefix", Element.serializer().descriptor, isOptional = true)
-      element("title", KotlinString.serializer().descriptor, isOptional = true)
-      element("_title", Element.serializer().descriptor, isOptional = true)
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("textEquivalent", KotlinString.serializer().descriptor, isOptional = true)
-      element("_textEquivalent", Element.serializer().descriptor, isOptional = true)
-      element("priority", KotlinString.serializer().descriptor, isOptional = true)
-      element("_priority", Element.serializer().descriptor, isOptional = true)
-      element(
-        "code",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "reason",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "documentation",
-        listSerialDescriptor(RelatedArtifact.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "goalId",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element("_goalId", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element("subjectCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subjectReference", Reference.serializer().descriptor, isOptional = true)
-      element("subjectCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_subjectCanonical", Element.serializer().descriptor, isOptional = true)
-      element(
-        "trigger",
-        listSerialDescriptor(TriggerDefinition.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("prefix", KotlinString.serializer().descriptor)
+      optionalElement("_prefix", ElementSerializer.descriptor)
+      optionalElement("title", KotlinString.serializer().descriptor)
+      optionalElement("_title", ElementSerializer.descriptor)
+      optionalElement("description", KotlinString.serializer().descriptor)
+      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("textEquivalent", KotlinString.serializer().descriptor)
+      optionalElement("_textEquivalent", ElementSerializer.descriptor)
+      optionalElement("priority", KotlinString.serializer().descriptor)
+      optionalElement("_priority", ElementSerializer.descriptor)
+      optionalElement("code", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("reason", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("documentation", RelatedArtifactSerializer.listSerializer.descriptor)
+      optionalElement("goalId", stringNullableListSerializer.descriptor)
+      optionalElement("_goalId", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("subjectCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("subjectReference", ReferenceSerializer.descriptor)
+      optionalElement("subjectCanonical", KotlinString.serializer().descriptor)
+      optionalElement("_subjectCanonical", ElementSerializer.descriptor)
+      optionalElement("trigger", TriggerDefinitionSerializer.listSerializer.descriptor)
+      optionalElement(
         "condition",
-        listSerialDescriptor(
-          lazyDescriptor { PlanDefinition.Action.Condition.serializer().descriptor }
-        ),
-        isOptional = true,
+        PlanDefinitionActionConditionSerializer.listSerializer.descriptor,
       )
-      element(
-        "input",
-        listSerialDescriptor(DataRequirement.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "output",
-        listSerialDescriptor(DataRequirement.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
+      optionalElement("input", DataRequirementSerializer.listSerializer.descriptor)
+      optionalElement("output", DataRequirementSerializer.listSerializer.descriptor)
+      optionalElement(
         "relatedAction",
-        listSerialDescriptor(
-          lazyDescriptor { PlanDefinition.Action.RelatedAction.serializer().descriptor }
-        ),
-        isOptional = true,
+        PlanDefinitionActionRelatedActionSerializer.listSerializer.descriptor,
       )
-      element("timingDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_timingDateTime", Element.serializer().descriptor, isOptional = true)
-      element("timingAge", Age.serializer().descriptor, isOptional = true)
-      element("timingPeriod", Period.serializer().descriptor, isOptional = true)
-      element("timingDuration", Duration.serializer().descriptor, isOptional = true)
-      element("timingRange", Range.serializer().descriptor, isOptional = true)
-      element("timingTiming", Timing.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("timingDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_timingDateTime", ElementSerializer.descriptor)
+      optionalElement("timingAge", AgeSerializer.descriptor)
+      optionalElement("timingPeriod", PeriodSerializer.descriptor)
+      optionalElement("timingDuration", DurationSerializer.descriptor)
+      optionalElement("timingRange", RangeSerializer.descriptor)
+      optionalElement("timingTiming", TimingSerializer.descriptor)
+      optionalElement(
         "participant",
-        listSerialDescriptor(
-          lazyDescriptor { PlanDefinition.Action.Participant.serializer().descriptor }
-        ),
-        isOptional = true,
+        PlanDefinitionActionParticipantSerializer.listSerializer.descriptor,
       )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("groupingBehavior", KotlinString.serializer().descriptor, isOptional = true)
-      element("_groupingBehavior", Element.serializer().descriptor, isOptional = true)
-      element("selectionBehavior", KotlinString.serializer().descriptor, isOptional = true)
-      element("_selectionBehavior", Element.serializer().descriptor, isOptional = true)
-      element("requiredBehavior", KotlinString.serializer().descriptor, isOptional = true)
-      element("_requiredBehavior", Element.serializer().descriptor, isOptional = true)
-      element("precheckBehavior", KotlinString.serializer().descriptor, isOptional = true)
-      element("_precheckBehavior", Element.serializer().descriptor, isOptional = true)
-      element("cardinalityBehavior", KotlinString.serializer().descriptor, isOptional = true)
-      element("_cardinalityBehavior", Element.serializer().descriptor, isOptional = true)
-      element("definitionCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_definitionCanonical", Element.serializer().descriptor, isOptional = true)
-      element("definitionUri", KotlinString.serializer().descriptor, isOptional = true)
-      element("_definitionUri", Element.serializer().descriptor, isOptional = true)
-      element("transform", KotlinString.serializer().descriptor, isOptional = true)
-      element("_transform", Element.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("groupingBehavior", KotlinString.serializer().descriptor)
+      optionalElement("_groupingBehavior", ElementSerializer.descriptor)
+      optionalElement("selectionBehavior", KotlinString.serializer().descriptor)
+      optionalElement("_selectionBehavior", ElementSerializer.descriptor)
+      optionalElement("requiredBehavior", KotlinString.serializer().descriptor)
+      optionalElement("_requiredBehavior", ElementSerializer.descriptor)
+      optionalElement("precheckBehavior", KotlinString.serializer().descriptor)
+      optionalElement("_precheckBehavior", ElementSerializer.descriptor)
+      optionalElement("cardinalityBehavior", KotlinString.serializer().descriptor)
+      optionalElement("_cardinalityBehavior", ElementSerializer.descriptor)
+      optionalElement("definitionCanonical", KotlinString.serializer().descriptor)
+      optionalElement("_definitionCanonical", ElementSerializer.descriptor)
+      optionalElement("definitionUri", KotlinString.serializer().descriptor)
+      optionalElement("_definitionUri", ElementSerializer.descriptor)
+      optionalElement("transform", KotlinString.serializer().descriptor)
+      optionalElement("_transform", ElementSerializer.descriptor)
+      optionalElement(
         "dynamicValue",
-        listSerialDescriptor(
-          lazyDescriptor { PlanDefinition.Action.DynamicValue.serializer().descriptor }
-        ),
-        isOptional = true,
+        PlanDefinitionActionDynamicValueSerializer.listSerializer.descriptor,
       )
-      element(
+      optionalElement(
         "action",
-        listSerialDescriptor(lazyDescriptor { PlanDefinition.Action.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { PlanDefinitionActionSerializer.descriptor }),
       )
     }
 
@@ -549,576 +419,520 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var prefix: KotlinString? = null
+      var _prefix: Element? = null
+      var title: KotlinString? = null
+      var _title: Element? = null
+      var description: KotlinString? = null
+      var _description: Element? = null
+      var textEquivalent: KotlinString? = null
+      var _textEquivalent: Element? = null
+      var priority: KotlinString? = null
+      var _priority: Element? = null
+      var code: List<CodeableConcept>? = null
+      var reason: List<CodeableConcept>? = null
+      var documentation: List<RelatedArtifact>? = null
+      var goalId: List<KotlinString?>? = null
+      var _goalId: List<Element?>? = null
+      var subjectCodeableConcept: CodeableConcept? = null
+      var subjectReference: Reference? = null
+      var subjectCanonical: KotlinString? = null
+      var _subjectCanonical: Element? = null
+      var trigger: List<TriggerDefinition>? = null
+      var condition: List<PlanDefinition.Action.Condition>? = null
+      var input: List<DataRequirement>? = null
+      var output: List<DataRequirement>? = null
+      var relatedAction: List<PlanDefinition.Action.RelatedAction>? = null
+      var timingDateTime: KotlinString? = null
+      var _timingDateTime: Element? = null
+      var timingAge: Age? = null
+      var timingPeriod: Period? = null
+      var timingDuration: Duration? = null
+      var timingRange: Range? = null
+      var timingTiming: Timing? = null
+      var participant: List<PlanDefinition.Action.Participant>? = null
+      var type: CodeableConcept? = null
+      var groupingBehavior: KotlinString? = null
+      var _groupingBehavior: Element? = null
+      var selectionBehavior: KotlinString? = null
+      var _selectionBehavior: Element? = null
+      var requiredBehavior: KotlinString? = null
+      var _requiredBehavior: Element? = null
+      var precheckBehavior: KotlinString? = null
+      var _precheckBehavior: Element? = null
+      var cardinalityBehavior: KotlinString? = null
+      var _cardinalityBehavior: Element? = null
+      var definitionCanonical: KotlinString? = null
+      var _definitionCanonical: Element? = null
+      var definitionUri: KotlinString? = null
+      var _definitionUri: Element? = null
+      var transform: KotlinString? = null
+      var _transform: Element? = null
+      var dynamicValue: List<PlanDefinition.Action.DynamicValue>? = null
+      var action: List<PlanDefinition.Action>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> prefix = decodeStringElement(descriptor, i)
+          4 -> _prefix = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> title = decodeStringElement(descriptor, i)
+          6 -> _title = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> description = decodeStringElement(descriptor, i)
+          8 ->
+            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> textEquivalent = decodeStringElement(descriptor, i)
+          10 ->
+            _textEquivalent =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          11 -> priority = decodeStringElement(descriptor, i)
+          12 ->
+            _priority = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          13 ->
+            code =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          14 ->
+            reason =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          15 ->
+            documentation =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                RelatedArtifactSerializer.listSerializer,
+                null,
+              )
+          16 ->
+            goalId =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          17 ->
+            _goalId =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          18 ->
+            subjectCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          19 ->
+            subjectReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          20 -> subjectCanonical = decodeStringElement(descriptor, i)
+          21 ->
+            _subjectCanonical =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          22 ->
+            trigger =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                TriggerDefinitionSerializer.listSerializer,
+                null,
+              )
+          23 ->
+            condition =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                PlanDefinitionActionConditionSerializer.listSerializer,
+                null,
+              )
+          24 ->
+            input =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                DataRequirementSerializer.listSerializer,
+                null,
+              )
+          25 ->
+            output =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                DataRequirementSerializer.listSerializer,
+                null,
+              )
+          26 ->
+            relatedAction =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                PlanDefinitionActionRelatedActionSerializer.listSerializer,
+                null,
+              )
+          27 -> timingDateTime = decodeStringElement(descriptor, i)
+          28 ->
+            _timingDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          29 -> timingAge = decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
+          30 ->
+            timingPeriod = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          31 ->
+            timingDuration =
+              decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          32 ->
+            timingRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          33 ->
+            timingTiming = decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
+          34 ->
+            participant =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                PlanDefinitionActionParticipantSerializer.listSerializer,
+                null,
+              )
+          35 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          36 -> groupingBehavior = decodeStringElement(descriptor, i)
+          37 ->
+            _groupingBehavior =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          38 -> selectionBehavior = decodeStringElement(descriptor, i)
+          39 ->
+            _selectionBehavior =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          40 -> requiredBehavior = decodeStringElement(descriptor, i)
+          41 ->
+            _requiredBehavior =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          42 -> precheckBehavior = decodeStringElement(descriptor, i)
+          43 ->
+            _precheckBehavior =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          44 -> cardinalityBehavior = decodeStringElement(descriptor, i)
+          45 ->
+            _cardinalityBehavior =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          46 -> definitionCanonical = decodeStringElement(descriptor, i)
+          47 ->
+            _definitionCanonical =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          48 -> definitionUri = decodeStringElement(descriptor, i)
+          49 ->
+            _definitionUri =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          50 -> transform = decodeStringElement(descriptor, i)
+          51 ->
+            _transform = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          52 ->
+            dynamicValue =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                PlanDefinitionActionDynamicValueSerializer.listSerializer,
+                null,
+              )
+          53 ->
+            action =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                PlanDefinitionActionSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Action: " + i)
+        }
+      }
+      PlanDefinition.Action(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        prefix = R4bString.of(prefix, _prefix),
+        title = R4bString.of(title, _title),
+        description = R4bString.of(description, _description),
+        textEquivalent = R4bString.of(textEquivalent, _textEquivalent),
+        priority =
+          Enumeration.of(
+            if (priority != null) PlanDefinition.RequestPriority.fromCode(priority) else null,
+            _priority,
+          ),
+        code = code ?: listOf(),
+        reason = reason ?: listOf(),
+        documentation = documentation ?: listOf(),
+        goalId =
+          (kotlin.collections.List(maxOf(goalId?.size ?: 0, _goalId?.size ?: 0)) { index ->
+            Id.of(goalId?.getOrNull(index), _goalId?.getOrNull(index))
+              ?: throw SerializationException(
+                "An entry of 'goalId' on PlanDefinition.Action has neither a value nor an id/extension"
+              )
+          }),
+        subject =
+          PlanDefinition.Action.Subject.from(
+            subjectCodeableConcept,
+            subjectReference,
+            Canonical.of(subjectCanonical, _subjectCanonical),
+          ),
+        trigger = trigger ?: listOf(),
+        condition = condition ?: listOf(),
+        input = input ?: listOf(),
+        output = output ?: listOf(),
+        relatedAction = relatedAction ?: listOf(),
+        timing =
+          PlanDefinition.Action.Timing.from(
+            DateTime.of(
+              if (timingDateTime != null) FhirDateTime.fromString(timingDateTime) else null,
+              _timingDateTime,
+            ),
+            timingAge,
+            timingPeriod,
+            timingDuration,
+            timingRange,
+            timingTiming,
+          ),
+        participant = participant ?: listOf(),
+        type = type,
+        groupingBehavior =
+          Enumeration.of(
+            if (groupingBehavior != null)
+              PlanDefinition.ActionGroupingBehavior.fromCode(groupingBehavior)
+            else null,
+            _groupingBehavior,
+          ),
+        selectionBehavior =
+          Enumeration.of(
+            if (selectionBehavior != null)
+              PlanDefinition.ActionSelectionBehavior.fromCode(selectionBehavior)
+            else null,
+            _selectionBehavior,
+          ),
+        requiredBehavior =
+          Enumeration.of(
+            if (requiredBehavior != null)
+              PlanDefinition.ActionRequiredBehavior.fromCode(requiredBehavior)
+            else null,
+            _requiredBehavior,
+          ),
+        precheckBehavior =
+          Enumeration.of(
+            if (precheckBehavior != null)
+              PlanDefinition.ActionPrecheckBehavior.fromCode(precheckBehavior)
+            else null,
+            _precheckBehavior,
+          ),
+        cardinalityBehavior =
+          Enumeration.of(
+            if (cardinalityBehavior != null)
+              PlanDefinition.ActionCardinalityBehavior.fromCode(cardinalityBehavior)
+            else null,
+            _cardinalityBehavior,
+          ),
+        definition =
+          PlanDefinition.Action.Definition.from(
+            Canonical.of(definitionCanonical, _definitionCanonical),
+            Uri.of(definitionUri, _definitionUri),
+          ),
+        transform = Canonical.of(transform, _transform),
+        dynamicValue = dynamicValue ?: listOf(),
+        action = action ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var prefix: KotlinString? = null
-    var _prefix: Element? = null
-    var title: KotlinString? = null
-    var _title: Element? = null
-    var description: KotlinString? = null
-    var _description: Element? = null
-    var textEquivalent: KotlinString? = null
-    var _textEquivalent: Element? = null
-    var priority: KotlinString? = null
-    var _priority: Element? = null
-    var code: List<CodeableConcept>? = null
-    var reason: List<CodeableConcept>? = null
-    var documentation: List<RelatedArtifact>? = null
-    var goalId: List<KotlinString?>? = null
-    var _goalId: List<Element?>? = null
-    var subjectCodeableConcept: CodeableConcept? = null
-    var subjectReference: Reference? = null
-    var subjectCanonical: KotlinString? = null
-    var _subjectCanonical: Element? = null
-    var trigger: List<TriggerDefinition>? = null
-    var condition: List<PlanDefinition.Action.Condition>? = null
-    var input: List<DataRequirement>? = null
-    var output: List<DataRequirement>? = null
-    var relatedAction: List<PlanDefinition.Action.RelatedAction>? = null
-    var timingDateTime: KotlinString? = null
-    var _timingDateTime: Element? = null
-    var timingAge: Age? = null
-    var timingPeriod: Period? = null
-    var timingDuration: Duration? = null
-    var timingRange: Range? = null
-    var timingTiming: Timing? = null
-    var participant: List<PlanDefinition.Action.Participant>? = null
-    var type: CodeableConcept? = null
-    var groupingBehavior: KotlinString? = null
-    var _groupingBehavior: Element? = null
-    var selectionBehavior: KotlinString? = null
-    var _selectionBehavior: Element? = null
-    var requiredBehavior: KotlinString? = null
-    var _requiredBehavior: Element? = null
-    var precheckBehavior: KotlinString? = null
-    var _precheckBehavior: Element? = null
-    var cardinalityBehavior: KotlinString? = null
-    var _cardinalityBehavior: Element? = null
-    var definitionCanonical: KotlinString? = null
-    var _definitionCanonical: Element? = null
-    var definitionUri: KotlinString? = null
-    var _definitionUri: Element? = null
-    var transform: KotlinString? = null
-    var _transform: Element? = null
-    var dynamicValue: List<PlanDefinition.Action.DynamicValue>? = null
-    var action: List<PlanDefinition.Action>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> prefix = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _prefix =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> title = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _title = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> description = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 -> textEquivalent = decoder.decodeStringElement(descriptor, i)
-        10 ->
-          _textEquivalent =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        11 -> priority = decoder.decodeStringElement(descriptor, i)
-        12 ->
-          _priority =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        13 ->
-          code =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        14 ->
-          reason =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        15 ->
-          documentation =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              RelatedArtifactSerializer.listSerializer,
-              null,
-            )
-        16 ->
-          goalId =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        17 ->
-          _goalId =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        18 ->
-          subjectCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        19 ->
-          subjectReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        20 -> subjectCanonical = decoder.decodeStringElement(descriptor, i)
-        21 ->
-          _subjectCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        22 ->
-          trigger =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              TriggerDefinitionSerializer.listSerializer,
-              null,
-            )
-        23 ->
-          condition =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              PlanDefinitionActionConditionSerializer.listSerializer,
-              null,
-            )
-        24 ->
-          input =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              DataRequirementSerializer.listSerializer,
-              null,
-            )
-        25 ->
-          output =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              DataRequirementSerializer.listSerializer,
-              null,
-            )
-        26 ->
-          relatedAction =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              PlanDefinitionActionRelatedActionSerializer.listSerializer,
-              null,
-            )
-        27 -> timingDateTime = decoder.decodeStringElement(descriptor, i)
-        28 ->
-          _timingDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        29 ->
-          timingAge = decoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
-        30 ->
-          timingPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        31 ->
-          timingDuration =
-            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        32 ->
-          timingRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        33 ->
-          timingTiming =
-            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
-        34 ->
-          participant =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              PlanDefinitionActionParticipantSerializer.listSerializer,
-              null,
-            )
-        35 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        36 -> groupingBehavior = decoder.decodeStringElement(descriptor, i)
-        37 ->
-          _groupingBehavior =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        38 -> selectionBehavior = decoder.decodeStringElement(descriptor, i)
-        39 ->
-          _selectionBehavior =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        40 -> requiredBehavior = decoder.decodeStringElement(descriptor, i)
-        41 ->
-          _requiredBehavior =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        42 -> precheckBehavior = decoder.decodeStringElement(descriptor, i)
-        43 ->
-          _precheckBehavior =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        44 -> cardinalityBehavior = decoder.decodeStringElement(descriptor, i)
-        45 ->
-          _cardinalityBehavior =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        46 -> definitionCanonical = decoder.decodeStringElement(descriptor, i)
-        47 ->
-          _definitionCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        48 -> definitionUri = decoder.decodeStringElement(descriptor, i)
-        49 ->
-          _definitionUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        50 -> transform = decoder.decodeStringElement(descriptor, i)
-        51 ->
-          _transform =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        52 ->
-          dynamicValue =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              PlanDefinitionActionDynamicValueSerializer.listSerializer,
-              null,
-            )
-        53 ->
-          action =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              PlanDefinitionActionSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Action: " + i)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.prefix?.value)
+      encodeElementIfNotNull(descriptor, 4, value.prefix)
+      encodeStringIfNotNull(descriptor, 5, value.title?.value)
+      encodeElementIfNotNull(descriptor, 6, value.title)
+      encodeStringIfNotNull(descriptor, 7, value.description?.value)
+      encodeElementIfNotNull(descriptor, 8, value.description)
+      encodeStringIfNotNull(descriptor, 9, value.textEquivalent?.value)
+      encodeElementIfNotNull(descriptor, 10, value.textEquivalent)
+      encodeStringIfNotNull(descriptor, 11, value.priority?.value?.code)
+      encodeElementIfNotNull(descriptor, 12, value.priority)
+      if (value.code.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          13,
+          CodeableConceptSerializer.listSerializer,
+          value.code,
+        )
+      if (value.reason.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          14,
+          CodeableConceptSerializer.listSerializer,
+          value.reason,
+        )
+      if (value.documentation.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          15,
+          RelatedArtifactSerializer.listSerializer,
+          value.documentation,
+        )
+      if (value.goalId.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          16,
+          stringNullableListSerializer,
+          value.goalId.map { it.value },
+        )
+        encodePrimitiveElementList(descriptor, 17, value.goalId)
       }
-    }
-    return PlanDefinition.Action(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      prefix = R4bString.of(prefix, _prefix),
-      title = R4bString.of(title, _title),
-      description = R4bString.of(description, _description),
-      textEquivalent = R4bString.of(textEquivalent, _textEquivalent),
-      priority =
-        Enumeration.of(priority?.let { PlanDefinition.RequestPriority.fromCode(it) }, _priority),
-      code = code ?: listOf(),
-      reason = reason ?: listOf(),
-      documentation = documentation ?: listOf(),
-      goalId =
-        (kotlin.collections.List(maxOf(goalId?.size ?: 0, _goalId?.size ?: 0)) { index ->
-          Id.of(goalId?.getOrNull(index)?.let { it }, _goalId?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'goalId' on PlanDefinition.Action has neither a value nor an id/extension"
-            )
-        }),
-      subject =
-        PlanDefinition.Action.Subject.from(
-          subjectCodeableConcept,
-          subjectReference,
-          Canonical.of(subjectCanonical, _subjectCanonical),
-        ),
-      trigger = trigger ?: listOf(),
-      condition = condition ?: listOf(),
-      input = input ?: listOf(),
-      output = output ?: listOf(),
-      relatedAction = relatedAction ?: listOf(),
-      timing =
-        PlanDefinition.Action.Timing.from(
-          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
-          timingAge,
-          timingPeriod,
-          timingDuration,
-          timingRange,
-          timingTiming,
-        ),
-      participant = participant ?: listOf(),
-      type = type,
-      groupingBehavior =
-        Enumeration.of(
-          groupingBehavior?.let { PlanDefinition.ActionGroupingBehavior.fromCode(it) },
-          _groupingBehavior,
-        ),
-      selectionBehavior =
-        Enumeration.of(
-          selectionBehavior?.let { PlanDefinition.ActionSelectionBehavior.fromCode(it) },
-          _selectionBehavior,
-        ),
-      requiredBehavior =
-        Enumeration.of(
-          requiredBehavior?.let { PlanDefinition.ActionRequiredBehavior.fromCode(it) },
-          _requiredBehavior,
-        ),
-      precheckBehavior =
-        Enumeration.of(
-          precheckBehavior?.let { PlanDefinition.ActionPrecheckBehavior.fromCode(it) },
-          _precheckBehavior,
-        ),
-      cardinalityBehavior =
-        Enumeration.of(
-          cardinalityBehavior?.let { PlanDefinition.ActionCardinalityBehavior.fromCode(it) },
-          _cardinalityBehavior,
-        ),
-      definition =
-        PlanDefinition.Action.Definition.from(
-          Canonical.of(definitionCanonical, _definitionCanonical),
-          Uri.of(definitionUri, _definitionUri),
-        ),
-      transform = Canonical.of(transform, _transform),
-      dynamicValue = dynamicValue ?: listOf(),
-      action = action ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: PlanDefinition.Action) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.prefix?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.prefix?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.title?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-    (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    ((value.textEquivalent?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-    (value.textEquivalent?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
-    }
-    ((value.priority?.value?.code))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-    (value.priority?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
-    }
-    if (value.code.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        13,
-        CodeableConceptSerializer.listSerializer,
-        value.code,
-      )
-    if (value.reason.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        14,
-        CodeableConceptSerializer.listSerializer,
-        value.reason,
-      )
-    if (value.documentation.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        15,
-        RelatedArtifactSerializer.listSerializer,
-        value.documentation,
-      )
-    (value.goalId.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 16, stringNullableListSerializer, it)
-    }
-    (value.goalId.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
-    }
-    when (val choice = value.subject) {
-      null -> {}
-      is PlanDefinition.Action.Subject.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 18, CodeableConceptSerializer, choice.value)
-      }
-      is PlanDefinition.Action.Subject.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 19, ReferenceSerializer, choice.value)
-      }
-      is PlanDefinition.Action.Subject.Canonical -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 20, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 21, ElementSerializer, it)
+      when (val choice = value.subject) {
+        null -> {}
+        is PlanDefinition.Action.Subject.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 18, CodeableConceptSerializer, choice.value)
+        }
+        is PlanDefinition.Action.Subject.Reference -> {
+          encodeSerializableElement(descriptor, 19, ReferenceSerializer, choice.value)
+        }
+        is PlanDefinition.Action.Subject.Canonical -> {
+          encodeStringIfNotNull(descriptor, 20, choice.value.value)
+          encodeElementIfNotNull(descriptor, 21, choice.value)
         }
       }
-    }
-    if (value.trigger.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        22,
-        TriggerDefinitionSerializer.listSerializer,
-        value.trigger,
-      )
-    if (value.condition.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        23,
-        PlanDefinitionActionConditionSerializer.listSerializer,
-        value.condition,
-      )
-    if (value.input.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        24,
-        DataRequirementSerializer.listSerializer,
-        value.input,
-      )
-    if (value.output.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        25,
-        DataRequirementSerializer.listSerializer,
-        value.output,
-      )
-    if (value.relatedAction.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        26,
-        PlanDefinitionActionRelatedActionSerializer.listSerializer,
-        value.relatedAction,
-      )
-    when (val choice = value.timing) {
-      null -> {}
-      is PlanDefinition.Action.Timing.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 27, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 28, ElementSerializer, it)
+      if (value.trigger.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          22,
+          TriggerDefinitionSerializer.listSerializer,
+          value.trigger,
+        )
+      if (value.condition.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          23,
+          PlanDefinitionActionConditionSerializer.listSerializer,
+          value.condition,
+        )
+      if (value.input.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          24,
+          DataRequirementSerializer.listSerializer,
+          value.input,
+        )
+      if (value.output.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          25,
+          DataRequirementSerializer.listSerializer,
+          value.output,
+        )
+      if (value.relatedAction.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          26,
+          PlanDefinitionActionRelatedActionSerializer.listSerializer,
+          value.relatedAction,
+        )
+      when (val choice = value.timing) {
+        null -> {}
+        is PlanDefinition.Action.Timing.DateTime -> {
+          encodeStringIfNotNull(descriptor, 27, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 28, choice.value)
+        }
+        is PlanDefinition.Action.Timing.Age -> {
+          encodeSerializableElement(descriptor, 29, AgeSerializer, choice.value)
+        }
+        is PlanDefinition.Action.Timing.Period -> {
+          encodeSerializableElement(descriptor, 30, PeriodSerializer, choice.value)
+        }
+        is PlanDefinition.Action.Timing.Duration -> {
+          encodeSerializableElement(descriptor, 31, DurationSerializer, choice.value)
+        }
+        is PlanDefinition.Action.Timing.Range -> {
+          encodeSerializableElement(descriptor, 32, RangeSerializer, choice.value)
+        }
+        is PlanDefinition.Action.Timing.Timing -> {
+          encodeSerializableElement(descriptor, 33, TimingSerializer, choice.value)
         }
       }
-      is PlanDefinition.Action.Timing.Age -> {
-        encoder.encodeSerializableElement(descriptor, 29, AgeSerializer, choice.value)
-      }
-      is PlanDefinition.Action.Timing.Period -> {
-        encoder.encodeSerializableElement(descriptor, 30, PeriodSerializer, choice.value)
-      }
-      is PlanDefinition.Action.Timing.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 31, DurationSerializer, choice.value)
-      }
-      is PlanDefinition.Action.Timing.Range -> {
-        encoder.encodeSerializableElement(descriptor, 32, RangeSerializer, choice.value)
-      }
-      is PlanDefinition.Action.Timing.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 33, TimingSerializer, choice.value)
-      }
-    }
-    if (value.participant.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        34,
-        PlanDefinitionActionParticipantSerializer.listSerializer,
-        value.participant,
-      )
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 35, CodeableConceptSerializer, it)
-    }
-    ((value.groupingBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 36, it) }
-    (value.groupingBehavior?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 37, ElementSerializer, it)
-    }
-    ((value.selectionBehavior?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 38, it)
-    }
-    (value.selectionBehavior?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 39, ElementSerializer, it)
-    }
-    ((value.requiredBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 40, it) }
-    (value.requiredBehavior?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 41, ElementSerializer, it)
-    }
-    ((value.precheckBehavior?.value?.code))?.let { encoder.encodeStringElement(descriptor, 42, it) }
-    (value.precheckBehavior?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 43, ElementSerializer, it)
-    }
-    ((value.cardinalityBehavior?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 44, it)
-    }
-    (value.cardinalityBehavior?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 45, ElementSerializer, it)
-    }
-    when (val choice = value.definition) {
-      null -> {}
-      is PlanDefinition.Action.Definition.Canonical -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 46, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 47, ElementSerializer, it)
+      if (value.participant.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          34,
+          PlanDefinitionActionParticipantSerializer.listSerializer,
+          value.participant,
+        )
+      encodeSerializableIfNotNull(descriptor, 35, CodeableConceptSerializer, value.type)
+      encodeStringIfNotNull(descriptor, 36, value.groupingBehavior?.value?.code)
+      encodeElementIfNotNull(descriptor, 37, value.groupingBehavior)
+      encodeStringIfNotNull(descriptor, 38, value.selectionBehavior?.value?.code)
+      encodeElementIfNotNull(descriptor, 39, value.selectionBehavior)
+      encodeStringIfNotNull(descriptor, 40, value.requiredBehavior?.value?.code)
+      encodeElementIfNotNull(descriptor, 41, value.requiredBehavior)
+      encodeStringIfNotNull(descriptor, 42, value.precheckBehavior?.value?.code)
+      encodeElementIfNotNull(descriptor, 43, value.precheckBehavior)
+      encodeStringIfNotNull(descriptor, 44, value.cardinalityBehavior?.value?.code)
+      encodeElementIfNotNull(descriptor, 45, value.cardinalityBehavior)
+      when (val choice = value.definition) {
+        null -> {}
+        is PlanDefinition.Action.Definition.Canonical -> {
+          encodeStringIfNotNull(descriptor, 46, choice.value.value)
+          encodeElementIfNotNull(descriptor, 47, choice.value)
+        }
+        is PlanDefinition.Action.Definition.Uri -> {
+          encodeStringIfNotNull(descriptor, 48, choice.value.value)
+          encodeElementIfNotNull(descriptor, 49, choice.value)
         }
       }
-      is PlanDefinition.Action.Definition.Uri -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 48, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 49, ElementSerializer, it)
-        }
-      }
+      encodeStringIfNotNull(descriptor, 50, value.transform?.value)
+      encodeElementIfNotNull(descriptor, 51, value.transform)
+      if (value.dynamicValue.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          52,
+          PlanDefinitionActionDynamicValueSerializer.listSerializer,
+          value.dynamicValue,
+        )
+      if (value.action.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          53,
+          PlanDefinitionActionSerializer.listSerializer,
+          value.action,
+        )
     }
-    ((value.transform?.value))?.let { encoder.encodeStringElement(descriptor, 50, it) }
-    (value.transform?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 51, ElementSerializer, it)
-    }
-    if (value.dynamicValue.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        52,
-        PlanDefinitionActionDynamicValueSerializer.listSerializer,
-        value.dynamicValue,
-      )
-    if (value.action.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        53,
-        PlanDefinitionActionSerializer.listSerializer,
-        value.action,
-      )
   }
 }
 
@@ -1126,20 +940,12 @@ internal object PlanDefinitionActionConditionSerializer :
   KSerializer<PlanDefinition.Action.Condition> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Condition") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("kind", KotlinString.serializer().descriptor, isOptional = true)
-      element("_kind", Element.serializer().descriptor, isOptional = true)
-      element("expression", Expression.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("kind", KotlinString.serializer().descriptor)
+      optionalElement("_kind", ElementSerializer.descriptor)
+      optionalElement("expression", ExpressionSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PlanDefinition.Action.Condition>> =
@@ -1147,89 +953,76 @@ internal object PlanDefinitionActionConditionSerializer :
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action.Condition =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var kind: KotlinString? = null
+      var _kind: Element? = null
+      var expression: Expression? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> kind = decodeStringElement(descriptor, i)
+          4 -> _kind = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            expression =
+              decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Condition: " + i)
+        }
+      }
+      PlanDefinition.Action.Condition(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        kind =
+          Enumeration.of(
+            if (kind != null) PlanDefinition.ActionConditionKind.fromCode(kind) else null,
+            _kind,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'kind' on PlanDefinition.Action.Condition"
+            ),
+        expression = expression,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action.Condition) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action.Condition {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var kind: KotlinString? = null
-    var _kind: Element? = null
-    var expression: Expression? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> kind = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _kind = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          expression =
-            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Condition: " + i)
-      }
-    }
-    return PlanDefinition.Action.Condition(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      kind =
-        Enumeration.of(kind?.let { PlanDefinition.ActionConditionKind.fromCode(it) }, _kind)
-          ?: throw SerializationException(
-            "Missing required property 'kind' on PlanDefinition.Action.Condition"
-          ),
-      expression = expression,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: PlanDefinition.Action.Condition,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.kind.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.kind.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    (value.expression)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ExpressionSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.kind.value?.code)
+      encodeElementIfNotNull(descriptor, 4, value.kind)
+      encodeSerializableIfNotNull(descriptor, 5, ExpressionSerializer, value.expression)
     }
   }
 }
@@ -1238,23 +1031,15 @@ internal object PlanDefinitionActionRelatedActionSerializer :
   KSerializer<PlanDefinition.Action.RelatedAction> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("RelatedAction") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("actionId", KotlinString.serializer().descriptor, isOptional = true)
-      element("_actionId", Element.serializer().descriptor, isOptional = true)
-      element("relationship", KotlinString.serializer().descriptor, isOptional = true)
-      element("_relationship", Element.serializer().descriptor, isOptional = true)
-      element("offsetDuration", Duration.serializer().descriptor, isOptional = true)
-      element("offsetRange", Range.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("actionId", KotlinString.serializer().descriptor)
+      optionalElement("_actionId", ElementSerializer.descriptor)
+      optionalElement("relationship", KotlinString.serializer().descriptor)
+      optionalElement("_relationship", ElementSerializer.descriptor)
+      optionalElement("offsetDuration", DurationSerializer.descriptor)
+      optionalElement("offsetRange", RangeSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PlanDefinition.Action.RelatedAction>> =
@@ -1262,117 +1047,99 @@ internal object PlanDefinitionActionRelatedActionSerializer :
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action.RelatedAction =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var actionId: KotlinString? = null
+      var _actionId: Element? = null
+      var relationship: KotlinString? = null
+      var _relationship: Element? = null
+      var offsetDuration: Duration? = null
+      var offsetRange: Range? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> actionId = decodeStringElement(descriptor, i)
+          4 -> _actionId = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> relationship = decodeStringElement(descriptor, i)
+          6 ->
+            _relationship =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 ->
+            offsetDuration =
+              decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          8 -> offsetRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding RelatedAction: " + i)
+        }
+      }
+      PlanDefinition.Action.RelatedAction(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        actionId =
+          Id.of(actionId, _actionId)
+            ?: throw SerializationException(
+              "Missing required property 'actionId' on PlanDefinition.Action.RelatedAction"
+            ),
+        relationship =
+          Enumeration.of(
+            if (relationship != null) PlanDefinition.ActionRelationshipType.fromCode(relationship)
+            else null,
+            _relationship,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'relationship' on PlanDefinition.Action.RelatedAction"
+            ),
+        offset = PlanDefinition.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action.RelatedAction) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action.RelatedAction {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var actionId: KotlinString? = null
-    var _actionId: Element? = null
-    var relationship: KotlinString? = null
-    var _relationship: Element? = null
-    var offsetDuration: Duration? = null
-    var offsetRange: Range? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> actionId = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _actionId =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> relationship = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _relationship =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 ->
-          offsetDuration =
-            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        8 ->
-          offsetRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RelatedAction: " + i)
-      }
-    }
-    return PlanDefinition.Action.RelatedAction(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      actionId =
-        Id.of(actionId, _actionId)
-          ?: throw SerializationException(
-            "Missing required property 'actionId' on PlanDefinition.Action.RelatedAction"
-          ),
-      relationship =
-        Enumeration.of(
-          relationship?.let { PlanDefinition.ActionRelationshipType.fromCode(it) },
-          _relationship,
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
         )
-          ?: throw SerializationException(
-            "Missing required property 'relationship' on PlanDefinition.Action.RelatedAction"
-          ),
-      offset = PlanDefinition.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: PlanDefinition.Action.RelatedAction,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.actionId.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.actionId.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.relationship.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-    (value.relationship.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    when (val choice = value.offset) {
-      null -> {}
-      is PlanDefinition.Action.RelatedAction.Offset.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 7, DurationSerializer, choice.value)
-      }
-      is PlanDefinition.Action.RelatedAction.Offset.Range -> {
-        encoder.encodeSerializableElement(descriptor, 8, RangeSerializer, choice.value)
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.actionId.value)
+      encodeElementIfNotNull(descriptor, 4, value.actionId)
+      encodeStringIfNotNull(descriptor, 5, value.relationship.value?.code)
+      encodeElementIfNotNull(descriptor, 6, value.relationship)
+      when (val choice = value.offset) {
+        null -> {}
+        is PlanDefinition.Action.RelatedAction.Offset.Duration -> {
+          encodeSerializableElement(descriptor, 7, DurationSerializer, choice.value)
+        }
+        is PlanDefinition.Action.RelatedAction.Offset.Range -> {
+          encodeSerializableElement(descriptor, 8, RangeSerializer, choice.value)
+        }
       }
     }
   }
@@ -1382,20 +1149,12 @@ internal object PlanDefinitionActionParticipantSerializer :
   KSerializer<PlanDefinition.Action.Participant> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Participant") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", Element.serializer().descriptor, isOptional = true)
-      element("role", CodeableConcept.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", KotlinString.serializer().descriptor)
+      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("role", CodeableConceptSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PlanDefinition.Action.Participant>> =
@@ -1403,94 +1162,75 @@ internal object PlanDefinitionActionParticipantSerializer :
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action.Participant =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: KotlinString? = null
+      var _type: Element? = null
+      var role: CodeableConcept? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> type = decodeStringElement(descriptor, i)
+          4 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            role = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Participant: " + i)
+        }
+      }
+      PlanDefinition.Action.Participant(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type =
+          Enumeration.of(
+            if (type != null) PlanDefinition.ActionParticipantType.fromCode(type) else null,
+            _type,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'type' on PlanDefinition.Action.Participant"
+            ),
+        role = role,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action.Participant) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action.Participant {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
-    var _type: Element? = null
-    var role: CodeableConcept? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> type = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          role =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Participant: " + i)
-      }
-    }
-    return PlanDefinition.Action.Participant(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(type?.let { PlanDefinition.ActionParticipantType.fromCode(it) }, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on PlanDefinition.Action.Participant"
-          ),
-      role = role,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: PlanDefinition.Action.Participant,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    (value.role)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.type.value?.code)
+      encodeElementIfNotNull(descriptor, 4, value.type)
+      encodeSerializableIfNotNull(descriptor, 5, CodeableConceptSerializer, value.role)
     }
   }
 }
@@ -1499,20 +1239,12 @@ internal object PlanDefinitionActionDynamicValueSerializer :
   KSerializer<PlanDefinition.Action.DynamicValue> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DynamicValue") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("path", KotlinString.serializer().descriptor, isOptional = true)
-      element("_path", Element.serializer().descriptor, isOptional = true)
-      element("expression", Expression.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("path", KotlinString.serializer().descriptor)
+      optionalElement("_path", ElementSerializer.descriptor)
+      optionalElement("expression", ExpressionSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PlanDefinition.Action.DynamicValue>> =
@@ -1520,85 +1252,69 @@ internal object PlanDefinitionActionDynamicValueSerializer :
 
   override fun deserialize(decoder: Decoder): PlanDefinition.Action.DynamicValue =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var path: KotlinString? = null
+      var _path: Element? = null
+      var expression: Expression? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> path = decodeStringElement(descriptor, i)
+          4 -> _path = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            expression =
+              decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding DynamicValue: " + i)
+        }
+      }
+      PlanDefinition.Action.DynamicValue(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        path = R4bString.of(path, _path),
+        expression = expression,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PlanDefinition.Action.DynamicValue) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PlanDefinition.Action.DynamicValue {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var path: KotlinString? = null
-    var _path: Element? = null
-    var expression: Expression? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> path = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _path = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          expression =
-            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding DynamicValue: " + i)
-      }
-    }
-    return PlanDefinition.Action.DynamicValue(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      path = R4bString.of(path, _path),
-      expression = expression,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: PlanDefinition.Action.DynamicValue,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.path?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.path?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    (value.expression)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ExpressionSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.path?.value)
+      encodeElementIfNotNull(descriptor, 4, value.path)
+      encodeSerializableIfNotNull(descriptor, 5, ExpressionSerializer, value.expression)
     }
   }
 }
@@ -1607,130 +1323,69 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
   override val descriptor: SerialDescriptor = buildResourceDescriptor("PlanDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("url", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_url", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("version", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_version", Element.serializer().descriptor, isOptional = true)
-    b.element("name", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_name", Element.serializer().descriptor, isOptional = true)
-    b.element("title", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_title", Element.serializer().descriptor, isOptional = true)
-    b.element("subtitle", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_subtitle", Element.serializer().descriptor, isOptional = true)
-    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("experimental", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_experimental", Element.serializer().descriptor, isOptional = true)
-    b.element("subjectCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("subjectReference", Reference.serializer().descriptor, isOptional = true)
-    b.element("subjectCanonical", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_subjectCanonical", Element.serializer().descriptor, isOptional = true)
-    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_date", Element.serializer().descriptor, isOptional = true)
-    b.element("publisher", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_publisher", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "contact",
-      listSerialDescriptor(ContactDetail.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "useContext",
-      listSerialDescriptor(UsageContext.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "jurisdiction",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("purpose", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_purpose", Element.serializer().descriptor, isOptional = true)
-    b.element("usage", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_usage", Element.serializer().descriptor, isOptional = true)
-    b.element("copyright", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_copyright", Element.serializer().descriptor, isOptional = true)
-    b.element("approvalDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_approvalDate", Element.serializer().descriptor, isOptional = true)
-    b.element("lastReviewDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_lastReviewDate", Element.serializer().descriptor, isOptional = true)
-    b.element("effectivePeriod", Period.serializer().descriptor, isOptional = true)
-    b.element(
-      "topic",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "author",
-      listSerialDescriptor(ContactDetail.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "editor",
-      listSerialDescriptor(ContactDetail.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reviewer",
-      listSerialDescriptor(ContactDetail.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "endorser",
-      listSerialDescriptor(ContactDetail.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "relatedArtifact",
-      listSerialDescriptor(RelatedArtifact.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "library",
-      listSerialDescriptor(KotlinString.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("_library", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-    b.element(
-      "goal",
-      listSerialDescriptor(lazyDescriptor { PlanDefinition.Goal.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element(
-      "action",
-      listSerialDescriptor(lazyDescriptor { PlanDefinition.Action.serializer().descriptor }),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("url", KotlinString.serializer().descriptor)
+    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("version", KotlinString.serializer().descriptor)
+    b.optionalElement("_version", ElementSerializer.descriptor)
+    b.optionalElement("name", KotlinString.serializer().descriptor)
+    b.optionalElement("_name", ElementSerializer.descriptor)
+    b.optionalElement("title", KotlinString.serializer().descriptor)
+    b.optionalElement("_title", ElementSerializer.descriptor)
+    b.optionalElement("subtitle", KotlinString.serializer().descriptor)
+    b.optionalElement("_subtitle", ElementSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_experimental", ElementSerializer.descriptor)
+    b.optionalElement("subjectCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("subjectReference", ReferenceSerializer.descriptor)
+    b.optionalElement("subjectCanonical", KotlinString.serializer().descriptor)
+    b.optionalElement("_subjectCanonical", ElementSerializer.descriptor)
+    b.optionalElement("date", KotlinString.serializer().descriptor)
+    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.optionalElement("publisher", KotlinString.serializer().descriptor)
+    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("description", KotlinString.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
+    b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("purpose", KotlinString.serializer().descriptor)
+    b.optionalElement("_purpose", ElementSerializer.descriptor)
+    b.optionalElement("usage", KotlinString.serializer().descriptor)
+    b.optionalElement("_usage", ElementSerializer.descriptor)
+    b.optionalElement("copyright", KotlinString.serializer().descriptor)
+    b.optionalElement("_copyright", ElementSerializer.descriptor)
+    b.optionalElement("approvalDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_approvalDate", ElementSerializer.descriptor)
+    b.optionalElement("lastReviewDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_lastReviewDate", ElementSerializer.descriptor)
+    b.optionalElement("effectivePeriod", PeriodSerializer.descriptor)
+    b.optionalElement("topic", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("author", ContactDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("editor", ContactDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("reviewer", ContactDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("endorser", ContactDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("relatedArtifact", RelatedArtifactSerializer.listSerializer.descriptor)
+    b.optionalElement("library", stringNullableListSerializer.descriptor)
+    b.optionalElement("_library", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("goal", PlanDefinitionGoalSerializer.listSerializer.descriptor)
+    b.optionalElement("action", PlanDefinitionActionSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -2052,7 +1707,7 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
       subtitle = R4bString.of(subtitle, _subtitle),
       type = type,
       status =
-        Enumeration.of(status?.let { PublicationStatus.fromCode(it) }, _status)
+        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on PlanDefinition"),
       experimental = R4bBoolean.of(experimental, _experimental),
       subject =
@@ -2061,7 +1716,7 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
           subjectReference,
           Canonical.of(subjectCanonical, _subjectCanonical),
         ),
-      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
+      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
       publisher = R4bString.of(publisher, _publisher),
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
@@ -2070,8 +1725,16 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
       purpose = Markdown.of(purpose, _purpose),
       usage = R4bString.of(usage, _usage),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate = Date.of(approvalDate?.let { FhirDate.fromString(it) }, _approvalDate),
-      lastReviewDate = Date.of(lastReviewDate?.let { FhirDate.fromString(it) }, _lastReviewDate),
+      approvalDate =
+        Date.of(
+          if (approvalDate != null) FhirDate.fromString(approvalDate) else null,
+          _approvalDate,
+        ),
+      lastReviewDate =
+        Date.of(
+          if (lastReviewDate != null) FhirDate.fromString(lastReviewDate) else null,
+          _lastReviewDate,
+        ),
       effectivePeriod = effectivePeriod,
       topic = topic ?: listOf(),
       author = author ?: listOf(),
@@ -2081,7 +1744,7 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
       relatedArtifact = relatedArtifact ?: listOf(),
       library =
         (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
-          Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))
+          Canonical.of(library?.getOrNull(index), _library?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'library' on PlanDefinition has neither a value nor an id/extension"
             )
@@ -2097,25 +1760,23 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
     descriptorOffset: Int,
     `value`: PlanDefinition,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -2137,10 +1798,8 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it) }
-    (value.url?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
+    encoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -2148,50 +1807,24 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.version?.value))?.let {
-      encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
-    }
-    (value.version?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.name?.value))?.let {
-      encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
-    }
-    (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.title?.value))?.let {
-      encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
-    }
-    (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.subtitle?.value))?.let {
-      encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
-    }
-    (value.subtitle?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.experimental?.value))?.let {
-      encoder.encodeBooleanElement(descriptor, 24 + descriptorOffset, it)
-    }
-    (value.experimental?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 25 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
+    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
+    encoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.name?.value)
+    encoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.name)
+    encoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.title?.value)
+    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.title)
+    encoder.encodeStringIfNotNull(descriptor, 19 + descriptorOffset, value.subtitle?.value)
+    encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.subtitle)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      21 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.type,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 22 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.status)
+    encoder.encodeBooleanIfNotNull(descriptor, 24 + descriptorOffset, value.experimental?.value)
+    encoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.experimental)
     when (val choice = value.subject) {
       null -> {}
       is PlanDefinition.Subject.CodeableConcept -> {
@@ -2211,31 +1844,14 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
         )
       }
       is PlanDefinition.Subject.Canonical -> {
-        ((choice.value.value))?.let {
-          encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            29 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, choice.value.value)
+        encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, choice.value)
       }
     }
-    ((value.date?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
-    }
-    (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 31 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.publisher?.value))?.let {
-      encoder.encodeStringElement(descriptor, 32 + descriptorOffset, it)
-    }
-    (value.publisher?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 33 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 30 + descriptorOffset, value.date?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.date)
+    encoder.encodeStringIfNotNull(descriptor, 32 + descriptorOffset, value.publisher?.value)
+    encoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.publisher)
     if (value.contact.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -2243,12 +1859,8 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
         ContactDetailSerializer.listSerializer,
         value.contact,
       )
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 36 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 35 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 36 + descriptorOffset, value.description)
     if (value.useContext.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -2263,39 +1875,30 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
         CodeableConceptSerializer.listSerializer,
         value.jurisdiction,
       )
-    ((value.purpose?.value))?.let {
-      encoder.encodeStringElement(descriptor, 39 + descriptorOffset, it)
-    }
-    (value.purpose?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 40 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.usage?.value))?.let {
-      encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
-    }
-    (value.usage?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 42 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.copyright?.value))?.let {
-      encoder.encodeStringElement(descriptor, 43 + descriptorOffset, it)
-    }
-    (value.copyright?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 44 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.approvalDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 45 + descriptorOffset, it)
-    }
-    (value.approvalDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 46 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.lastReviewDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 47 + descriptorOffset, it)
-    }
-    (value.lastReviewDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 48 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.effectivePeriod)?.let {
-      encoder.encodeSerializableElement(descriptor, 49 + descriptorOffset, PeriodSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 39 + descriptorOffset, value.purpose?.value)
+    encoder.encodeElementIfNotNull(descriptor, 40 + descriptorOffset, value.purpose)
+    encoder.encodeStringIfNotNull(descriptor, 41 + descriptorOffset, value.usage?.value)
+    encoder.encodeElementIfNotNull(descriptor, 42 + descriptorOffset, value.usage)
+    encoder.encodeStringIfNotNull(descriptor, 43 + descriptorOffset, value.copyright?.value)
+    encoder.encodeElementIfNotNull(descriptor, 44 + descriptorOffset, value.copyright)
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      45 + descriptorOffset,
+      value.approvalDate?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 46 + descriptorOffset, value.approvalDate)
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      47 + descriptorOffset,
+      value.lastReviewDate?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 48 + descriptorOffset, value.lastReviewDate)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      49 + descriptorOffset,
+      PeriodSerializer,
+      value.effectivePeriod,
+    )
     if (value.topic.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -2338,21 +1941,14 @@ internal object PlanDefinitionSerializer : FhirResourceSerializer<PlanDefinition
         RelatedArtifactSerializer.listSerializer,
         value.relatedArtifact,
       )
-    (value.library.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    if (value.library.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         56 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.library.map { it.value },
       )
-    }
-    (value.library.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        57 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
+      encoder.encodePrimitiveElementList(descriptor, 57 + descriptorOffset, value.library)
     }
     if (value.goal.isNotEmpty())
       encoder.encodeSerializableElement(

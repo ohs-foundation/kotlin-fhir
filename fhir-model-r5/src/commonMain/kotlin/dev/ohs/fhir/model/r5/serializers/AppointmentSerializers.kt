@@ -74,146 +74,118 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object AppointmentParticipantSerializer : KSerializer<Appointment.Participant> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Participant") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "type",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("period", Period.serializer().descriptor, isOptional = true)
-      element("actor", Reference.serializer().descriptor, isOptional = true)
-      element("required", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_required", Element.serializer().descriptor, isOptional = true)
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("period", PeriodSerializer.descriptor)
+      optionalElement("actor", ReferenceSerializer.descriptor)
+      optionalElement("required", KotlinBoolean.serializer().descriptor)
+      optionalElement("_required", ElementSerializer.descriptor)
+      optionalElement("status", KotlinString.serializer().descriptor)
+      optionalElement("_status", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Appointment.Participant>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Appointment.Participant =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: List<CodeableConcept>? = null
+      var period: Period? = null
+      var actor: Reference? = null
+      var required: KotlinBoolean? = null
+      var _required: Element? = null
+      var status: KotlinString? = null
+      var _status: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            type =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          4 -> period = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          5 -> actor = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          6 -> required = decodeBooleanElement(descriptor, i)
+          7 -> _required = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 -> status = decodeStringElement(descriptor, i)
+          9 -> _status = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Participant: " + i)
+        }
+      }
+      Appointment.Participant(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type = type ?: listOf(),
+        period = period,
+        actor = actor,
+        required = R5Boolean.of(required, _required),
+        status =
+          Enumeration.of(
+            if (status != null) Appointment.ParticipationStatus.fromCode(status) else null,
+            _status,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'status' on Appointment.Participant"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.Participant) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Appointment.Participant {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: List<CodeableConcept>? = null
-    var period: Period? = null
-    var actor: Reference? = null
-    var required: KotlinBoolean? = null
-    var _required: Element? = null
-    var status: KotlinString? = null
-    var _status: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        4 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        5 ->
-          actor =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        6 -> required = decoder.decodeBooleanElement(descriptor, i)
-        7 ->
-          _required =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 -> status = decoder.decodeStringElement(descriptor, i)
-        9 ->
-          _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Participant: " + i)
-      }
-    }
-    return Appointment.Participant(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type = type ?: listOf(),
-      period = period,
-      actor = actor,
-      required = R5Boolean.of(required, _required),
-      status =
-        Enumeration.of(status?.let { Appointment.ParticipationStatus.fromCode(it) }, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on Appointment.Participant"
-          ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Appointment.Participant) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 4, PeriodSerializer, it) }
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, it) }
-    ((value.required?.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
-    (value.required?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-    }
-    ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      if (value.type.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          3,
+          CodeableConceptSerializer.listSerializer,
+          value.type,
+        )
+      encodeSerializableIfNotNull(descriptor, 4, PeriodSerializer, value.period)
+      encodeSerializableIfNotNull(descriptor, 5, ReferenceSerializer, value.actor)
+      encodeBooleanIfNotNull(descriptor, 6, value.required?.value)
+      encodeElementIfNotNull(descriptor, 7, value.required)
+      encodeStringIfNotNull(descriptor, 8, value.status.value?.code)
+      encodeElementIfNotNull(descriptor, 9, value.status)
     }
   }
 }
@@ -222,68 +194,33 @@ internal object AppointmentRecurrenceTemplateSerializer :
   KSerializer<Appointment.RecurrenceTemplate> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("RecurrenceTemplate") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("timezone", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("recurrenceType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("lastOccurrenceDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_lastOccurrenceDate", Element.serializer().descriptor, isOptional = true)
-      element("occurrenceCount", Int.serializer().descriptor, isOptional = true)
-      element("_occurrenceCount", Element.serializer().descriptor, isOptional = true)
-      element(
-        "occurrenceDate",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_occurrenceDate",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("timezone", CodeableConceptSerializer.descriptor)
+      optionalElement("recurrenceType", CodeableConceptSerializer.descriptor)
+      optionalElement("lastOccurrenceDate", KotlinString.serializer().descriptor)
+      optionalElement("_lastOccurrenceDate", ElementSerializer.descriptor)
+      optionalElement("occurrenceCount", Int.serializer().descriptor)
+      optionalElement("_occurrenceCount", ElementSerializer.descriptor)
+      optionalElement("occurrenceDate", stringNullableListSerializer.descriptor)
+      optionalElement("_occurrenceDate", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
         "weeklyTemplate",
-        lazyDescriptor { Appointment.RecurrenceTemplate.WeeklyTemplate.serializer().descriptor },
-        isOptional = true,
+        AppointmentRecurrenceTemplateWeeklyTemplateSerializer.descriptor,
       )
-      element(
+      optionalElement(
         "monthlyTemplate",
-        lazyDescriptor { Appointment.RecurrenceTemplate.MonthlyTemplate.serializer().descriptor },
-        isOptional = true,
+        AppointmentRecurrenceTemplateMonthlyTemplateSerializer.descriptor,
       )
-      element(
+      optionalElement(
         "yearlyTemplate",
-        lazyDescriptor { Appointment.RecurrenceTemplate.YearlyTemplate.serializer().descriptor },
-        isOptional = true,
+        AppointmentRecurrenceTemplateYearlyTemplateSerializer.descriptor,
       )
-      element(
-        "excludingDate",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_excludingDate",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "excludingRecurrenceId",
-        listSerialDescriptor(Int.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_excludingRecurrenceId",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
+      optionalElement("excludingDate", stringNullableListSerializer.descriptor)
+      optionalElement("_excludingDate", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("excludingRecurrenceId", intNullableListSerializer.descriptor)
+      optionalElement("_excludingRecurrenceId", ElementSerializer.nullableListSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Appointment.RecurrenceTemplate>> =
@@ -291,300 +228,242 @@ internal object AppointmentRecurrenceTemplateSerializer :
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var timezone: CodeableConcept? = null
+      var recurrenceType: CodeableConcept? = null
+      var lastOccurrenceDate: KotlinString? = null
+      var _lastOccurrenceDate: Element? = null
+      var occurrenceCount: Int? = null
+      var _occurrenceCount: Element? = null
+      var occurrenceDate: List<KotlinString?>? = null
+      var _occurrenceDate: List<Element?>? = null
+      var weeklyTemplate: Appointment.RecurrenceTemplate.WeeklyTemplate? = null
+      var monthlyTemplate: Appointment.RecurrenceTemplate.MonthlyTemplate? = null
+      var yearlyTemplate: Appointment.RecurrenceTemplate.YearlyTemplate? = null
+      var excludingDate: List<KotlinString?>? = null
+      var _excludingDate: List<Element?>? = null
+      var excludingRecurrenceId: List<Int?>? = null
+      var _excludingRecurrenceId: List<Element?>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            timezone =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            recurrenceType =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 -> lastOccurrenceDate = decodeStringElement(descriptor, i)
+          6 ->
+            _lastOccurrenceDate =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> occurrenceCount = decodeIntElement(descriptor, i)
+          8 ->
+            _occurrenceCount =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 ->
+            occurrenceDate =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          10 ->
+            _occurrenceDate =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          11 ->
+            weeklyTemplate =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                AppointmentRecurrenceTemplateWeeklyTemplateSerializer,
+                null,
+              )
+          12 ->
+            monthlyTemplate =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                AppointmentRecurrenceTemplateMonthlyTemplateSerializer,
+                null,
+              )
+          13 ->
+            yearlyTemplate =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                AppointmentRecurrenceTemplateYearlyTemplateSerializer,
+                null,
+              )
+          14 ->
+            excludingDate =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          15 ->
+            _excludingDate =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          16 ->
+            excludingRecurrenceId =
+              decodeNullableSerializableElement(descriptor, i, intNullableListSerializer, null)
+          17 ->
+            _excludingRecurrenceId =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding RecurrenceTemplate: " + i)
+        }
+      }
+      Appointment.RecurrenceTemplate(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        timezone = timezone,
+        recurrenceType =
+          recurrenceType
+            ?: throw SerializationException(
+              "Missing required property 'recurrenceType' on Appointment.RecurrenceTemplate"
+            ),
+        lastOccurrenceDate =
+          Date.of(
+            if (lastOccurrenceDate != null) FhirDate.fromString(lastOccurrenceDate) else null,
+            _lastOccurrenceDate,
+          ),
+        occurrenceCount = PositiveInt.of(occurrenceCount, _occurrenceCount),
+        occurrenceDate =
+          (kotlin.collections.List(maxOf(occurrenceDate?.size ?: 0, _occurrenceDate?.size ?: 0)) {
+            index ->
+            Date.of(
+              occurrenceDate?.getOrNull(index)?.let { FhirDate.fromString(it) },
+              _occurrenceDate?.getOrNull(index),
+            )
+              ?: throw SerializationException(
+                "An entry of 'occurrenceDate' on Appointment.RecurrenceTemplate has neither a value nor an id/extension"
+              )
+          }),
+        weeklyTemplate = weeklyTemplate,
+        monthlyTemplate = monthlyTemplate,
+        yearlyTemplate = yearlyTemplate,
+        excludingDate =
+          (kotlin.collections.List(maxOf(excludingDate?.size ?: 0, _excludingDate?.size ?: 0)) {
+            index ->
+            Date.of(
+              excludingDate?.getOrNull(index)?.let { FhirDate.fromString(it) },
+              _excludingDate?.getOrNull(index),
+            )
+              ?: throw SerializationException(
+                "An entry of 'excludingDate' on Appointment.RecurrenceTemplate has neither a value nor an id/extension"
+              )
+          }),
+        excludingRecurrenceId =
+          (kotlin.collections.List(
+            maxOf(excludingRecurrenceId?.size ?: 0, _excludingRecurrenceId?.size ?: 0)
+          ) { index ->
+            PositiveInt.of(
+              excludingRecurrenceId?.getOrNull(index),
+              _excludingRecurrenceId?.getOrNull(index),
+            )
+              ?: throw SerializationException(
+                "An entry of 'excludingRecurrenceId' on Appointment.RecurrenceTemplate has neither a value nor an id/extension"
+              )
+          }),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.RecurrenceTemplate) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Appointment.RecurrenceTemplate {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var timezone: CodeableConcept? = null
-    var recurrenceType: CodeableConcept? = null
-    var lastOccurrenceDate: KotlinString? = null
-    var _lastOccurrenceDate: Element? = null
-    var occurrenceCount: Int? = null
-    var _occurrenceCount: Element? = null
-    var occurrenceDate: List<KotlinString?>? = null
-    var _occurrenceDate: List<Element?>? = null
-    var weeklyTemplate: Appointment.RecurrenceTemplate.WeeklyTemplate? = null
-    var monthlyTemplate: Appointment.RecurrenceTemplate.MonthlyTemplate? = null
-    var yearlyTemplate: Appointment.RecurrenceTemplate.YearlyTemplate? = null
-    var excludingDate: List<KotlinString?>? = null
-    var _excludingDate: List<Element?>? = null
-    var excludingRecurrenceId: List<Int?>? = null
-    var _excludingRecurrenceId: List<Element?>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          timezone =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          recurrenceType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 -> lastOccurrenceDate = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _lastOccurrenceDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> occurrenceCount = decoder.decodeIntElement(descriptor, i)
-        8 ->
-          _occurrenceCount =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 ->
-          occurrenceDate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        10 ->
-          _occurrenceDate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        11 ->
-          weeklyTemplate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              AppointmentRecurrenceTemplateWeeklyTemplateSerializer,
-              null,
-            )
-        12 ->
-          monthlyTemplate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              AppointmentRecurrenceTemplateMonthlyTemplateSerializer,
-              null,
-            )
-        13 ->
-          yearlyTemplate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              AppointmentRecurrenceTemplateYearlyTemplateSerializer,
-              null,
-            )
-        14 ->
-          excludingDate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        15 ->
-          _excludingDate =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        16 ->
-          excludingRecurrenceId =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              intNullableListSerializer,
-              null,
-            )
-        17 ->
-          _excludingRecurrenceId =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RecurrenceTemplate: " + i)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.timezone)
+      encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, value.recurrenceType)
+      encodeStringIfNotNull(descriptor, 5, value.lastOccurrenceDate?.value?.toString())
+      encodeElementIfNotNull(descriptor, 6, value.lastOccurrenceDate)
+      encodeIntIfNotNull(descriptor, 7, value.occurrenceCount?.value)
+      encodeElementIfNotNull(descriptor, 8, value.occurrenceCount)
+      if (value.occurrenceDate.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          9,
+          stringNullableListSerializer,
+          value.occurrenceDate.map { it.value?.toString() },
+        )
+        encodePrimitiveElementList(descriptor, 10, value.occurrenceDate)
       }
-    }
-    return Appointment.RecurrenceTemplate(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      timezone = timezone,
-      recurrenceType =
-        recurrenceType
-          ?: throw SerializationException(
-            "Missing required property 'recurrenceType' on Appointment.RecurrenceTemplate"
-          ),
-      lastOccurrenceDate =
-        Date.of(lastOccurrenceDate?.let { FhirDate.fromString(it) }, _lastOccurrenceDate),
-      occurrenceCount = PositiveInt.of(occurrenceCount, _occurrenceCount),
-      occurrenceDate =
-        (kotlin.collections.List(maxOf(occurrenceDate?.size ?: 0, _occurrenceDate?.size ?: 0)) {
-          index ->
-          Date.of(
-            occurrenceDate?.getOrNull(index)?.let { it?.let { FhirDate.fromString(it) } },
-            _occurrenceDate?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'occurrenceDate' on Appointment.RecurrenceTemplate has neither a value nor an id/extension"
-            )
-        }),
-      weeklyTemplate = weeklyTemplate,
-      monthlyTemplate = monthlyTemplate,
-      yearlyTemplate = yearlyTemplate,
-      excludingDate =
-        (kotlin.collections.List(maxOf(excludingDate?.size ?: 0, _excludingDate?.size ?: 0)) { index
-          ->
-          Date.of(
-            excludingDate?.getOrNull(index)?.let { it?.let { FhirDate.fromString(it) } },
-            _excludingDate?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'excludingDate' on Appointment.RecurrenceTemplate has neither a value nor an id/extension"
-            )
-        }),
-      excludingRecurrenceId =
-        (kotlin.collections.List(
-          maxOf(excludingRecurrenceId?.size ?: 0, _excludingRecurrenceId?.size ?: 0)
-        ) { index ->
-          PositiveInt.of(
-            excludingRecurrenceId?.getOrNull(index)?.let { it },
-            _excludingRecurrenceId?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'excludingRecurrenceId' on Appointment.RecurrenceTemplate has neither a value nor an id/extension"
-            )
-        }),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: Appointment.RecurrenceTemplate,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.timezone)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    encoder.encodeSerializableElement(
-      descriptor,
-      4,
-      CodeableConceptSerializer,
-      value.recurrenceType,
-    )
-    ((value.lastOccurrenceDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 5, it)
-    }
-    (value.lastOccurrenceDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.occurrenceCount?.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
-    (value.occurrenceCount?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    (value.occurrenceDate.map { it.value?.toString() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 9, stringNullableListSerializer, it)
-    }
-    (value.occurrenceDate.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        10,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
-    }
-    (value.weeklyTemplate)?.let {
-      encoder.encodeSerializableElement(
+      encodeSerializableIfNotNull(
         descriptor,
         11,
         AppointmentRecurrenceTemplateWeeklyTemplateSerializer,
-        it,
+        value.weeklyTemplate,
       )
-    }
-    (value.monthlyTemplate)?.let {
-      encoder.encodeSerializableElement(
+      encodeSerializableIfNotNull(
         descriptor,
         12,
         AppointmentRecurrenceTemplateMonthlyTemplateSerializer,
-        it,
+        value.monthlyTemplate,
       )
-    }
-    (value.yearlyTemplate)?.let {
-      encoder.encodeSerializableElement(
+      encodeSerializableIfNotNull(
         descriptor,
         13,
         AppointmentRecurrenceTemplateYearlyTemplateSerializer,
-        it,
+        value.yearlyTemplate,
       )
-    }
-    (value.excludingDate.map { it.value?.toString() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 14, stringNullableListSerializer, it)
-    }
-    (value.excludingDate.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
-    }
-    (value.excludingRecurrenceId.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 16, intNullableListSerializer, it)
-    }
-    (value.excludingRecurrenceId.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
+      if (value.excludingDate.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          14,
+          stringNullableListSerializer,
+          value.excludingDate.map { it.value?.toString() },
+        )
+        encodePrimitiveElementList(descriptor, 15, value.excludingDate)
+      }
+      if (value.excludingRecurrenceId.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          16,
+          intNullableListSerializer,
+          value.excludingRecurrenceId.map { it.value },
+        )
+        encodePrimitiveElementList(descriptor, 17, value.excludingRecurrenceId)
+      }
     }
   }
 }
@@ -593,33 +472,25 @@ internal object AppointmentRecurrenceTemplateWeeklyTemplateSerializer :
   KSerializer<Appointment.RecurrenceTemplate.WeeklyTemplate> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("WeeklyTemplate") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("monday", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_monday", Element.serializer().descriptor, isOptional = true)
-      element("tuesday", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_tuesday", Element.serializer().descriptor, isOptional = true)
-      element("wednesday", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_wednesday", Element.serializer().descriptor, isOptional = true)
-      element("thursday", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_thursday", Element.serializer().descriptor, isOptional = true)
-      element("friday", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_friday", Element.serializer().descriptor, isOptional = true)
-      element("saturday", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_saturday", Element.serializer().descriptor, isOptional = true)
-      element("sunday", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_sunday", Element.serializer().descriptor, isOptional = true)
-      element("weekInterval", Int.serializer().descriptor, isOptional = true)
-      element("_weekInterval", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("monday", KotlinBoolean.serializer().descriptor)
+      optionalElement("_monday", ElementSerializer.descriptor)
+      optionalElement("tuesday", KotlinBoolean.serializer().descriptor)
+      optionalElement("_tuesday", ElementSerializer.descriptor)
+      optionalElement("wednesday", KotlinBoolean.serializer().descriptor)
+      optionalElement("_wednesday", ElementSerializer.descriptor)
+      optionalElement("thursday", KotlinBoolean.serializer().descriptor)
+      optionalElement("_thursday", ElementSerializer.descriptor)
+      optionalElement("friday", KotlinBoolean.serializer().descriptor)
+      optionalElement("_friday", ElementSerializer.descriptor)
+      optionalElement("saturday", KotlinBoolean.serializer().descriptor)
+      optionalElement("_saturday", ElementSerializer.descriptor)
+      optionalElement("sunday", KotlinBoolean.serializer().descriptor)
+      optionalElement("_sunday", ElementSerializer.descriptor)
+      optionalElement("weekInterval", Int.serializer().descriptor)
+      optionalElement("_weekInterval", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Appointment.RecurrenceTemplate.WeeklyTemplate>> =
@@ -627,157 +498,117 @@ internal object AppointmentRecurrenceTemplateWeeklyTemplateSerializer :
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.WeeklyTemplate =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var monday: KotlinBoolean? = null
+      var _monday: Element? = null
+      var tuesday: KotlinBoolean? = null
+      var _tuesday: Element? = null
+      var wednesday: KotlinBoolean? = null
+      var _wednesday: Element? = null
+      var thursday: KotlinBoolean? = null
+      var _thursday: Element? = null
+      var friday: KotlinBoolean? = null
+      var _friday: Element? = null
+      var saturday: KotlinBoolean? = null
+      var _saturday: Element? = null
+      var sunday: KotlinBoolean? = null
+      var _sunday: Element? = null
+      var weekInterval: Int? = null
+      var _weekInterval: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> monday = decodeBooleanElement(descriptor, i)
+          4 -> _monday = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> tuesday = decodeBooleanElement(descriptor, i)
+          6 -> _tuesday = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> wednesday = decodeBooleanElement(descriptor, i)
+          8 ->
+            _wednesday = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> thursday = decodeBooleanElement(descriptor, i)
+          10 ->
+            _thursday = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          11 -> friday = decodeBooleanElement(descriptor, i)
+          12 -> _friday = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          13 -> saturday = decodeBooleanElement(descriptor, i)
+          14 ->
+            _saturday = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          15 -> sunday = decodeBooleanElement(descriptor, i)
+          16 -> _sunday = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          17 -> weekInterval = decodeIntElement(descriptor, i)
+          18 ->
+            _weekInterval =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding WeeklyTemplate: " + i)
+        }
+      }
+      Appointment.RecurrenceTemplate.WeeklyTemplate(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        monday = R5Boolean.of(monday, _monday),
+        tuesday = R5Boolean.of(tuesday, _tuesday),
+        wednesday = R5Boolean.of(wednesday, _wednesday),
+        thursday = R5Boolean.of(thursday, _thursday),
+        friday = R5Boolean.of(friday, _friday),
+        saturday = R5Boolean.of(saturday, _saturday),
+        sunday = R5Boolean.of(sunday, _sunday),
+        weekInterval = PositiveInt.of(weekInterval, _weekInterval),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.RecurrenceTemplate.WeeklyTemplate) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): Appointment.RecurrenceTemplate.WeeklyTemplate {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var monday: KotlinBoolean? = null
-    var _monday: Element? = null
-    var tuesday: KotlinBoolean? = null
-    var _tuesday: Element? = null
-    var wednesday: KotlinBoolean? = null
-    var _wednesday: Element? = null
-    var thursday: KotlinBoolean? = null
-    var _thursday: Element? = null
-    var friday: KotlinBoolean? = null
-    var _friday: Element? = null
-    var saturday: KotlinBoolean? = null
-    var _saturday: Element? = null
-    var sunday: KotlinBoolean? = null
-    var _sunday: Element? = null
-    var weekInterval: Int? = null
-    var _weekInterval: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> monday = decoder.decodeBooleanElement(descriptor, i)
-        4 ->
-          _monday =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> tuesday = decoder.decodeBooleanElement(descriptor, i)
-        6 ->
-          _tuesday =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> wednesday = decoder.decodeBooleanElement(descriptor, i)
-        8 ->
-          _wednesday =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 -> thursday = decoder.decodeBooleanElement(descriptor, i)
-        10 ->
-          _thursday =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        11 -> friday = decoder.decodeBooleanElement(descriptor, i)
-        12 ->
-          _friday =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        13 -> saturday = decoder.decodeBooleanElement(descriptor, i)
-        14 ->
-          _saturday =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        15 -> sunday = decoder.decodeBooleanElement(descriptor, i)
-        16 ->
-          _sunday =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        17 -> weekInterval = decoder.decodeIntElement(descriptor, i)
-        18 ->
-          _weekInterval =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding WeeklyTemplate: " + i)
-      }
-    }
-    return Appointment.RecurrenceTemplate.WeeklyTemplate(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      monday = R5Boolean.of(monday, _monday),
-      tuesday = R5Boolean.of(tuesday, _tuesday),
-      wednesday = R5Boolean.of(wednesday, _wednesday),
-      thursday = R5Boolean.of(thursday, _thursday),
-      friday = R5Boolean.of(friday, _friday),
-      saturday = R5Boolean.of(saturday, _saturday),
-      sunday = R5Boolean.of(sunday, _sunday),
-      weekInterval = PositiveInt.of(weekInterval, _weekInterval),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: Appointment.RecurrenceTemplate.WeeklyTemplate,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.monday?.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
-    (value.monday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.tuesday?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
-    (value.tuesday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.wednesday?.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-    (value.wednesday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    ((value.thursday?.value))?.let { encoder.encodeBooleanElement(descriptor, 9, it) }
-    (value.thursday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
-    }
-    ((value.friday?.value))?.let { encoder.encodeBooleanElement(descriptor, 11, it) }
-    (value.friday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
-    }
-    ((value.saturday?.value))?.let { encoder.encodeBooleanElement(descriptor, 13, it) }
-    (value.saturday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
-    }
-    ((value.sunday?.value))?.let { encoder.encodeBooleanElement(descriptor, 15, it) }
-    (value.sunday?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16, ElementSerializer, it)
-    }
-    ((value.weekInterval?.value))?.let { encoder.encodeIntElement(descriptor, 17, it) }
-    (value.weekInterval?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeBooleanIfNotNull(descriptor, 3, value.monday?.value)
+      encodeElementIfNotNull(descriptor, 4, value.monday)
+      encodeBooleanIfNotNull(descriptor, 5, value.tuesday?.value)
+      encodeElementIfNotNull(descriptor, 6, value.tuesday)
+      encodeBooleanIfNotNull(descriptor, 7, value.wednesday?.value)
+      encodeElementIfNotNull(descriptor, 8, value.wednesday)
+      encodeBooleanIfNotNull(descriptor, 9, value.thursday?.value)
+      encodeElementIfNotNull(descriptor, 10, value.thursday)
+      encodeBooleanIfNotNull(descriptor, 11, value.friday?.value)
+      encodeElementIfNotNull(descriptor, 12, value.friday)
+      encodeBooleanIfNotNull(descriptor, 13, value.saturday?.value)
+      encodeElementIfNotNull(descriptor, 14, value.saturday)
+      encodeBooleanIfNotNull(descriptor, 15, value.sunday?.value)
+      encodeElementIfNotNull(descriptor, 16, value.sunday)
+      encodeIntIfNotNull(descriptor, 17, value.weekInterval?.value)
+      encodeElementIfNotNull(descriptor, 18, value.weekInterval)
     }
   }
 }
@@ -786,23 +617,15 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
   KSerializer<Appointment.RecurrenceTemplate.MonthlyTemplate> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("MonthlyTemplate") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("dayOfMonth", Int.serializer().descriptor, isOptional = true)
-      element("_dayOfMonth", Element.serializer().descriptor, isOptional = true)
-      element("nthWeekOfMonth", Coding.serializer().descriptor, isOptional = true)
-      element("dayOfWeek", Coding.serializer().descriptor, isOptional = true)
-      element("monthInterval", Int.serializer().descriptor, isOptional = true)
-      element("_monthInterval", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("dayOfMonth", Int.serializer().descriptor)
+      optionalElement("_dayOfMonth", ElementSerializer.descriptor)
+      optionalElement("nthWeekOfMonth", CodingSerializer.descriptor)
+      optionalElement("dayOfWeek", CodingSerializer.descriptor)
+      optionalElement("monthInterval", Int.serializer().descriptor)
+      optionalElement("_monthInterval", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Appointment.RecurrenceTemplate.MonthlyTemplate>> =
@@ -810,7 +633,62 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.MonthlyTemplate =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var dayOfMonth: Int? = null
+      var _dayOfMonth: Element? = null
+      var nthWeekOfMonth: Coding? = null
+      var dayOfWeek: Coding? = null
+      var monthInterval: Int? = null
+      var _monthInterval: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> dayOfMonth = decodeIntElement(descriptor, i)
+          4 ->
+            _dayOfMonth = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            nthWeekOfMonth =
+              decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+          6 -> dayOfWeek = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+          7 -> monthInterval = decodeIntElement(descriptor, i)
+          8 ->
+            _monthInterval =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding MonthlyTemplate: " + i)
+        }
+      }
+      Appointment.RecurrenceTemplate.MonthlyTemplate(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        dayOfMonth = PositiveInt.of(dayOfMonth, _dayOfMonth),
+        nthWeekOfMonth = nthWeekOfMonth,
+        dayOfWeek = dayOfWeek,
+        monthInterval =
+          PositiveInt.of(monthInterval, _monthInterval)
+            ?: throw SerializationException(
+              "Missing required property 'monthInterval' on Appointment.RecurrenceTemplate.MonthlyTemplate"
+            ),
+      )
     }
 
   override fun serialize(
@@ -818,106 +696,27 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
     `value`: Appointment.RecurrenceTemplate.MonthlyTemplate,
   ) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): Appointment.RecurrenceTemplate.MonthlyTemplate {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var dayOfMonth: Int? = null
-    var _dayOfMonth: Element? = null
-    var nthWeekOfMonth: Coding? = null
-    var dayOfWeek: Coding? = null
-    var monthInterval: Int? = null
-    var _monthInterval: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> dayOfMonth = decoder.decodeIntElement(descriptor, i)
-        4 ->
-          _dayOfMonth =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          nthWeekOfMonth =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        6 ->
-          dayOfWeek =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        7 -> monthInterval = decoder.decodeIntElement(descriptor, i)
-        8 ->
-          _monthInterval =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding MonthlyTemplate: " + i)
-      }
-    }
-    return Appointment.RecurrenceTemplate.MonthlyTemplate(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      dayOfMonth = PositiveInt.of(dayOfMonth, _dayOfMonth),
-      nthWeekOfMonth = nthWeekOfMonth,
-      dayOfWeek = dayOfWeek,
-      monthInterval =
-        PositiveInt.of(monthInterval, _monthInterval)
-          ?: throw SerializationException(
-            "Missing required property 'monthInterval' on Appointment.RecurrenceTemplate.MonthlyTemplate"
-          ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: Appointment.RecurrenceTemplate.MonthlyTemplate,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.dayOfMonth?.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
-    (value.dayOfMonth?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    (value.nthWeekOfMonth)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, CodingSerializer, it)
-    }
-    (value.dayOfWeek)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, CodingSerializer, it)
-    }
-    ((value.monthInterval.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
-    (value.monthInterval.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeIntIfNotNull(descriptor, 3, value.dayOfMonth?.value)
+      encodeElementIfNotNull(descriptor, 4, value.dayOfMonth)
+      encodeSerializableIfNotNull(descriptor, 5, CodingSerializer, value.nthWeekOfMonth)
+      encodeSerializableIfNotNull(descriptor, 6, CodingSerializer, value.dayOfWeek)
+      encodeIntIfNotNull(descriptor, 7, value.monthInterval.value)
+      encodeElementIfNotNull(descriptor, 8, value.monthInterval)
     }
   }
 }
@@ -926,19 +725,11 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
   KSerializer<Appointment.RecurrenceTemplate.YearlyTemplate> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("YearlyTemplate") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("yearInterval", Int.serializer().descriptor, isOptional = true)
-      element("_yearInterval", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("yearInterval", Int.serializer().descriptor)
+      optionalElement("_yearInterval", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Appointment.RecurrenceTemplate.YearlyTemplate>> =
@@ -946,84 +737,69 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.YearlyTemplate =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var yearInterval: Int? = null
+      var _yearInterval: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> yearInterval = decodeIntElement(descriptor, i)
+          4 ->
+            _yearInterval =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding YearlyTemplate: " + i)
+        }
+      }
+      Appointment.RecurrenceTemplate.YearlyTemplate(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        yearInterval =
+          PositiveInt.of(yearInterval, _yearInterval)
+            ?: throw SerializationException(
+              "Missing required property 'yearInterval' on Appointment.RecurrenceTemplate.YearlyTemplate"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.RecurrenceTemplate.YearlyTemplate) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): Appointment.RecurrenceTemplate.YearlyTemplate {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var yearInterval: Int? = null
-    var _yearInterval: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> yearInterval = decoder.decodeIntElement(descriptor, i)
-        4 ->
-          _yearInterval =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding YearlyTemplate: " + i)
-      }
-    }
-    return Appointment.RecurrenceTemplate.YearlyTemplate(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      yearInterval =
-        PositiveInt.of(yearInterval, _yearInterval)
-          ?: throw SerializationException(
-            "Missing required property 'yearInterval' on Appointment.RecurrenceTemplate.YearlyTemplate"
-          ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: Appointment.RecurrenceTemplate.YearlyTemplate,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.yearInterval.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
-    (value.yearInterval.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeIntIfNotNull(descriptor, 3, value.yearInterval.value)
+      encodeElementIfNotNull(descriptor, 4, value.yearInterval)
     }
   }
 }
@@ -1032,122 +808,62 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Appointment")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("cancellationReason", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "class",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "serviceCategory",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "serviceType",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "specialty",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("appointmentType", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "reason",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "replaces",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "virtualService",
-      listSerialDescriptor(VirtualServiceDetail.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "supportingInformation",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("previousAppointment", Reference.serializer().descriptor, isOptional = true)
-    b.element("originatingAppointment", Reference.serializer().descriptor, isOptional = true)
-    b.element("start", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_start", Element.serializer().descriptor, isOptional = true)
-    b.element("end", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_end", Element.serializer().descriptor, isOptional = true)
-    b.element("minutesDuration", Int.serializer().descriptor, isOptional = true)
-    b.element("_minutesDuration", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "requestedPeriod",
-      listSerialDescriptor(Period.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("slot", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("account", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("created", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_created", Element.serializer().descriptor, isOptional = true)
-    b.element("cancellationDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_cancellationDate", Element.serializer().descriptor, isOptional = true)
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-    b.element(
-      "patientInstruction",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "participant",
-      listSerialDescriptor(lazyDescriptor { Appointment.Participant.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element("recurrenceId", Int.serializer().descriptor, isOptional = true)
-    b.element("_recurrenceId", Element.serializer().descriptor, isOptional = true)
-    b.element("occurrenceChanged", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_occurrenceChanged", Element.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("cancellationReason", CodeableConceptSerializer.descriptor)
+    b.optionalElement("class", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("serviceCategory", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("serviceType", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("specialty", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("appointmentType", CodeableConceptSerializer.descriptor)
+    b.optionalElement("reason", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("priority", CodeableConceptSerializer.descriptor)
+    b.optionalElement("description", KotlinString.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("replaces", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("virtualService", VirtualServiceDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("supportingInformation", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("previousAppointment", ReferenceSerializer.descriptor)
+    b.optionalElement("originatingAppointment", ReferenceSerializer.descriptor)
+    b.optionalElement("start", KotlinString.serializer().descriptor)
+    b.optionalElement("_start", ElementSerializer.descriptor)
+    b.optionalElement("end", KotlinString.serializer().descriptor)
+    b.optionalElement("_end", ElementSerializer.descriptor)
+    b.optionalElement("minutesDuration", Int.serializer().descriptor)
+    b.optionalElement("_minutesDuration", ElementSerializer.descriptor)
+    b.optionalElement("requestedPeriod", PeriodSerializer.listSerializer.descriptor)
+    b.optionalElement("slot", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("account", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("created", KotlinString.serializer().descriptor)
+    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.optionalElement("cancellationDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_cancellationDate", ElementSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+    b.optionalElement("patientInstruction", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("participant", AppointmentParticipantSerializer.listSerializer.descriptor)
+    b.optionalElement("recurrenceId", Int.serializer().descriptor)
+    b.optionalElement("_recurrenceId", ElementSerializer.descriptor)
+    b.optionalElement("occurrenceChanged", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_occurrenceChanged", ElementSerializer.descriptor)
+    b.optionalElement(
       "recurrenceTemplate",
-      listSerialDescriptor(
-        lazyDescriptor { Appointment.RecurrenceTemplate.serializer().descriptor }
-      ),
-      isOptional = true,
+      AppointmentRecurrenceTemplateSerializer.listSerializer.descriptor,
     )
   }
 
@@ -1465,8 +1181,10 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(status?.let { Appointment.AppointmentStatus.fromCode(it) }, _status)
-          ?: throw SerializationException("Missing required property 'status' on Appointment"),
+        Enumeration.of(
+          if (status != null) Appointment.AppointmentStatus.fromCode(status) else null,
+          _status,
+        ) ?: throw SerializationException("Missing required property 'status' on Appointment"),
       cancellationReason = cancellationReason,
       `class` = `class` ?: listOf(),
       serviceCategory = serviceCategory ?: listOf(),
@@ -1481,15 +1199,19 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       supportingInformation = supportingInformation ?: listOf(),
       previousAppointment = previousAppointment,
       originatingAppointment = originatingAppointment,
-      start = Instant.of(start?.let { FhirDateTime.fromString(it) }, _start),
-      end = Instant.of(end?.let { FhirDateTime.fromString(it) }, _end),
+      start = Instant.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
+      end = Instant.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
       minutesDuration = PositiveInt.of(minutesDuration, _minutesDuration),
       requestedPeriod = requestedPeriod ?: listOf(),
       slot = slot ?: listOf(),
       account = account ?: listOf(),
-      created = DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created),
+      created =
+        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created),
       cancellationDate =
-        DateTime.of(cancellationDate?.let { FhirDateTime.fromString(it) }, _cancellationDate),
+        DateTime.of(
+          if (cancellationDate != null) FhirDateTime.fromString(cancellationDate) else null,
+          _cancellationDate,
+        ),
       note = note ?: listOf(),
       patientInstruction = patientInstruction ?: listOf(),
       basedOn = basedOn ?: listOf(),
@@ -1507,25 +1229,23 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
     descriptorOffset: Int,
     `value`: Appointment,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1554,20 +1274,14 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.cancellationReason)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.cancellationReason,
+    )
     if (value.`class`.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1596,14 +1310,12 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         CodeableConceptSerializer.listSerializer,
         value.specialty,
       )
-    (value.appointmentType)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.appointmentType,
+    )
     if (value.reason.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1611,20 +1323,14 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         CodeableReferenceSerializer.listSerializer,
         value.reason,
       )
-    (value.priority)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      20 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.priority,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 21 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.description)
     if (value.replaces.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1646,30 +1352,24 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         ReferenceSerializer.listSerializer,
         value.supportingInformation,
       )
-    (value.previousAppointment)?.let {
-      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.originatingAppointment)?.let {
-      encoder.encodeSerializableElement(descriptor, 27 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.start?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
-    }
-    (value.start?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.end?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
-    }
-    (value.end?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 31 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.minutesDuration?.value))?.let {
-      encoder.encodeIntElement(descriptor, 32 + descriptorOffset, it)
-    }
-    (value.minutesDuration?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 33 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      26 + descriptorOffset,
+      ReferenceSerializer,
+      value.previousAppointment,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      27 + descriptorOffset,
+      ReferenceSerializer,
+      value.originatingAppointment,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.start?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.start)
+    encoder.encodeStringIfNotNull(descriptor, 30 + descriptorOffset, value.end?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.end)
+    encoder.encodeIntIfNotNull(descriptor, 32 + descriptorOffset, value.minutesDuration?.value)
+    encoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.minutesDuration)
     if (value.requestedPeriod.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1691,18 +1391,18 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         ReferenceSerializer.listSerializer,
         value.account,
       )
-    ((value.created?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 37 + descriptorOffset, it)
-    }
-    (value.created?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 38 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.cancellationDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 39 + descriptorOffset, it)
-    }
-    (value.cancellationDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 40 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      37 + descriptorOffset,
+      value.created?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 38 + descriptorOffset, value.created)
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      39 + descriptorOffset,
+      value.cancellationDate?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 40 + descriptorOffset, value.cancellationDate)
     if (value.note.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1724,9 +1424,12 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         ReferenceSerializer.listSerializer,
         value.basedOn,
       )
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 44 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      44 + descriptorOffset,
+      ReferenceSerializer,
+      value.subject,
+    )
     if (value.participant.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1734,18 +1437,14 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         AppointmentParticipantSerializer.listSerializer,
         value.participant,
       )
-    ((value.recurrenceId?.value))?.let {
-      encoder.encodeIntElement(descriptor, 46 + descriptorOffset, it)
-    }
-    (value.recurrenceId?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 47 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.occurrenceChanged?.value))?.let {
-      encoder.encodeBooleanElement(descriptor, 48 + descriptorOffset, it)
-    }
-    (value.occurrenceChanged?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 49 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeIntIfNotNull(descriptor, 46 + descriptorOffset, value.recurrenceId?.value)
+    encoder.encodeElementIfNotNull(descriptor, 47 + descriptorOffset, value.recurrenceId)
+    encoder.encodeBooleanIfNotNull(
+      descriptor,
+      48 + descriptorOffset,
+      value.occurrenceChanged?.value,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 49 + descriptorOffset, value.occurrenceChanged)
     if (value.recurrenceTemplate.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

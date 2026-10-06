@@ -46,17 +46,17 @@ internal object BinarySerializer : FhirResourceSerializer<Binary> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Binary")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("contentType", String.serializer().descriptor, isOptional = true)
-    b.element("_contentType", Element.serializer().descriptor, isOptional = true)
-    b.element("securityContext", Reference.serializer().descriptor, isOptional = true)
-    b.element("data", String.serializer().descriptor, isOptional = true)
-    b.element("_data", Element.serializer().descriptor, isOptional = true)
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("contentType", String.serializer().descriptor)
+    b.optionalElement("_contentType", ElementSerializer.descriptor)
+    b.optionalElement("securityContext", ReferenceSerializer.descriptor)
+    b.optionalElement("data", String.serializer().descriptor)
+    b.optionalElement("_data", ElementSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -122,36 +122,26 @@ internal object BinarySerializer : FhirResourceSerializer<Binary> {
     descriptorOffset: Int,
     `value`: Binary,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.contentType.value))?.let {
-      encoder.encodeStringElement(descriptor, 6 + descriptorOffset, it)
-    }
-    (value.contentType.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.securityContext)?.let {
-      encoder.encodeSerializableElement(descriptor, 8 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.`data`?.value))?.let {
-      encoder.encodeStringElement(descriptor, 9 + descriptorOffset, it)
-    }
-    (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeStringIfNotNull(descriptor, 6 + descriptorOffset, value.contentType.value)
+    encoder.encodeElementIfNotNull(descriptor, 7 + descriptorOffset, value.contentType)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      8 + descriptorOffset,
+      ReferenceSerializer,
+      value.securityContext,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 9 + descriptorOffset, value.`data`?.value)
+    encoder.encodeElementIfNotNull(descriptor, 10 + descriptorOffset, value.`data`)
   }
 }

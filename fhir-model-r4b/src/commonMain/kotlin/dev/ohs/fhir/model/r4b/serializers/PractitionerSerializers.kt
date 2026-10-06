@@ -70,134 +70,103 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object PractitionerQualificationSerializer : KSerializer<Practitioner.Qualification> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Qualification") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("period", Period.serializer().descriptor, isOptional = true)
-      element("issuer", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+      optionalElement("code", CodeableConceptSerializer.descriptor)
+      optionalElement("period", PeriodSerializer.descriptor)
+      optionalElement("issuer", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Practitioner.Qualification>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Practitioner.Qualification =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var identifier: List<Identifier>? = null
+      var code: CodeableConcept? = null
+      var period: Period? = null
+      var issuer: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            identifier =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                IdentifierSerializer.listSerializer,
+                null,
+              )
+          4 ->
+            code = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 -> period = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          6 -> issuer = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Qualification: " + i)
+        }
+      }
+      Practitioner.Qualification(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        identifier = identifier ?: listOf(),
+        code =
+          code
+            ?: throw SerializationException(
+              "Missing required property 'code' on Practitioner.Qualification"
+            ),
+        period = period,
+        issuer = issuer,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Practitioner.Qualification) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Practitioner.Qualification {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var identifier: List<Identifier>? = null
-    var code: CodeableConcept? = null
-    var period: Period? = null
-    var issuer: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          identifier =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              IdentifierSerializer.listSerializer,
-              null,
-            )
-        4 ->
-          code =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        6 ->
-          issuer =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Qualification: " + i)
-      }
-    }
-    return Practitioner.Qualification(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      code =
-        code
-          ?: throw SerializationException(
-            "Missing required property 'code' on Practitioner.Qualification"
-          ),
-      period = period,
-      issuer = issuer,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Practitioner.Qualification) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        3,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, value.code)
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 5, PeriodSerializer, it) }
-    (value.issuer)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      if (value.identifier.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          3,
+          IdentifierSerializer.listSerializer,
+          value.identifier,
+        )
+      encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, value.code)
+      encodeSerializableIfNotNull(descriptor, 5, PeriodSerializer, value.period)
+      encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.issuer)
     }
   }
 }
@@ -206,57 +175,35 @@ internal object PractitionerSerializer : FhirResourceSerializer<Practitioner> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Practitioner")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("active", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_active", Element.serializer().descriptor, isOptional = true)
-    b.element("name", listSerialDescriptor(HumanName.serializer().descriptor), isOptional = true)
-    b.element(
-      "telecom",
-      listSerialDescriptor(ContactPoint.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("address", listSerialDescriptor(Address.serializer().descriptor), isOptional = true)
-    b.element("gender", String.serializer().descriptor, isOptional = true)
-    b.element("_gender", Element.serializer().descriptor, isOptional = true)
-    b.element("birthDate", String.serializer().descriptor, isOptional = true)
-    b.element("_birthDate", Element.serializer().descriptor, isOptional = true)
-    b.element("photo", listSerialDescriptor(Attachment.serializer().descriptor), isOptional = true)
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("active", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_active", ElementSerializer.descriptor)
+    b.optionalElement("name", HumanNameSerializer.listSerializer.descriptor)
+    b.optionalElement("telecom", ContactPointSerializer.listSerializer.descriptor)
+    b.optionalElement("address", AddressSerializer.listSerializer.descriptor)
+    b.optionalElement("gender", String.serializer().descriptor)
+    b.optionalElement("_gender", ElementSerializer.descriptor)
+    b.optionalElement("birthDate", String.serializer().descriptor)
+    b.optionalElement("_birthDate", ElementSerializer.descriptor)
+    b.optionalElement("photo", AttachmentSerializer.listSerializer.descriptor)
+    b.optionalElement(
       "qualification",
-      listSerialDescriptor(lazyDescriptor { Practitioner.Qualification.serializer().descriptor }),
-      isOptional = true,
+      PractitionerQualificationSerializer.listSerializer.descriptor,
     )
-    b.element(
-      "communication",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
+    b.optionalElement("communication", CodeableConceptSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -413,8 +360,13 @@ internal object PractitionerSerializer : FhirResourceSerializer<Practitioner> {
       name = name ?: listOf(),
       telecom = telecom ?: listOf(),
       address = address ?: listOf(),
-      gender = Enumeration.of(gender?.let { AdministrativeGender.fromCode(it) }, _gender),
-      birthDate = Date.of(birthDate?.let { FhirDate.fromString(it) }, _birthDate),
+      gender =
+        Enumeration.of(
+          if (gender != null) AdministrativeGender.fromCode(gender) else null,
+          _gender,
+        ),
+      birthDate =
+        Date.of(if (birthDate != null) FhirDate.fromString(birthDate) else null, _birthDate),
       photo = photo ?: listOf(),
       qualification = qualification ?: listOf(),
       communication = communication ?: listOf(),
@@ -427,25 +379,23 @@ internal object PractitionerSerializer : FhirResourceSerializer<Practitioner> {
     descriptorOffset: Int,
     `value`: Practitioner,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -474,12 +424,8 @@ internal object PractitionerSerializer : FhirResourceSerializer<Practitioner> {
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.active?.value))?.let {
-      encoder.encodeBooleanElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.active?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeBooleanIfNotNull(descriptor, 11 + descriptorOffset, value.active?.value)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.active)
     if (value.name.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -501,18 +447,14 @@ internal object PractitionerSerializer : FhirResourceSerializer<Practitioner> {
         AddressSerializer.listSerializer,
         value.address,
       )
-    ((value.gender?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
-    }
-    (value.gender?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.birthDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
-    }
-    (value.birthDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 16 + descriptorOffset, value.gender?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.gender)
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      value.birthDate?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.birthDate)
     if (value.photo.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

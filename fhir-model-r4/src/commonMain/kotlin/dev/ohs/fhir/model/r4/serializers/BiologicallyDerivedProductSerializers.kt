@@ -68,22 +68,14 @@ internal object BiologicallyDerivedProductCollectionSerializer :
   KSerializer<BiologicallyDerivedProduct.Collection> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Collection") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("collector", Reference.serializer().descriptor, isOptional = true)
-      element("source", Reference.serializer().descriptor, isOptional = true)
-      element("collectedDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_collectedDateTime", Element.serializer().descriptor, isOptional = true)
-      element("collectedPeriod", Period.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("collector", ReferenceSerializer.descriptor)
+      optionalElement("source", ReferenceSerializer.descriptor)
+      optionalElement("collectedDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_collectedDateTime", ElementSerializer.descriptor)
+      optionalElement("collectedPeriod", PeriodSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<BiologicallyDerivedProduct.Collection>> =
@@ -91,111 +83,92 @@ internal object BiologicallyDerivedProductCollectionSerializer :
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Collection =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var collector: Reference? = null
+      var source: Reference? = null
+      var collectedDateTime: KotlinString? = null
+      var _collectedDateTime: Element? = null
+      var collectedPeriod: Period? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            collector = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          4 -> source = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          5 -> collectedDateTime = decodeStringElement(descriptor, i)
+          6 ->
+            _collectedDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 ->
+            collectedPeriod =
+              decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Collection: " + i)
+        }
+      }
+      BiologicallyDerivedProduct.Collection(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        collector = collector,
+        source = source,
+        collected =
+          BiologicallyDerivedProduct.Collection.Collected.from(
+            DateTime.of(
+              if (collectedDateTime != null) FhirDateTime.fromString(collectedDateTime) else null,
+              _collectedDateTime,
+            ),
+            collectedPeriod,
+          ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Collection) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): BiologicallyDerivedProduct.Collection {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var collector: Reference? = null
-    var source: Reference? = null
-    var collectedDateTime: KotlinString? = null
-    var _collectedDateTime: Element? = null
-    var collectedPeriod: Period? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          collector =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        4 ->
-          source =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        5 -> collectedDateTime = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _collectedDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 ->
-          collectedPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Collection: " + i)
-      }
-    }
-    return BiologicallyDerivedProduct.Collection(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      collector = collector,
-      source = source,
-      collected =
-        BiologicallyDerivedProduct.Collection.Collected.from(
-          DateTime.of(collectedDateTime?.let { FhirDateTime.fromString(it) }, _collectedDateTime),
-          collectedPeriod,
-        ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: BiologicallyDerivedProduct.Collection,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.collector)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, it)
-    }
-    (value.source)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, it)
-    }
-    when (val choice = value.collected) {
-      null -> {}
-      is BiologicallyDerivedProduct.Collection.Collected.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.collector)
+      encodeSerializableIfNotNull(descriptor, 4, ReferenceSerializer, value.source)
+      when (val choice = value.collected) {
+        null -> {}
+        is BiologicallyDerivedProduct.Collection.Collected.DateTime -> {
+          encodeStringIfNotNull(descriptor, 5, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 6, choice.value)
         }
-      }
-      is BiologicallyDerivedProduct.Collection.Collected.Period -> {
-        encoder.encodeSerializableElement(descriptor, 7, PeriodSerializer, choice.value)
+        is BiologicallyDerivedProduct.Collection.Collected.Period -> {
+          encodeSerializableElement(descriptor, 7, PeriodSerializer, choice.value)
+        }
       }
     }
   }
@@ -205,24 +178,16 @@ internal object BiologicallyDerivedProductProcessingSerializer :
   KSerializer<BiologicallyDerivedProduct.Processing> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Processing") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("procedure", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("additive", Reference.serializer().descriptor, isOptional = true)
-      element("timeDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_timeDateTime", Element.serializer().descriptor, isOptional = true)
-      element("timePeriod", Period.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("description", KotlinString.serializer().descriptor)
+      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("procedure", CodeableConceptSerializer.descriptor)
+      optionalElement("additive", ReferenceSerializer.descriptor)
+      optionalElement("timeDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_timeDateTime", ElementSerializer.descriptor)
+      optionalElement("timePeriod", PeriodSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<BiologicallyDerivedProduct.Processing>> =
@@ -230,127 +195,100 @@ internal object BiologicallyDerivedProductProcessingSerializer :
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Processing =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var description: KotlinString? = null
+      var _description: Element? = null
+      var procedure: CodeableConcept? = null
+      var additive: Reference? = null
+      var timeDateTime: KotlinString? = null
+      var _timeDateTime: Element? = null
+      var timePeriod: Period? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> description = decodeStringElement(descriptor, i)
+          4 ->
+            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            procedure =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          6 ->
+            additive = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          7 -> timeDateTime = decodeStringElement(descriptor, i)
+          8 ->
+            _timeDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> timePeriod = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Processing: " + i)
+        }
+      }
+      BiologicallyDerivedProduct.Processing(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        description = R4String.of(description, _description),
+        procedure = procedure,
+        additive = additive,
+        time =
+          BiologicallyDerivedProduct.Processing.Time.from(
+            DateTime.of(
+              if (timeDateTime != null) FhirDateTime.fromString(timeDateTime) else null,
+              _timeDateTime,
+            ),
+            timePeriod,
+          ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Processing) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): BiologicallyDerivedProduct.Processing {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var description: KotlinString? = null
-    var _description: Element? = null
-    var procedure: CodeableConcept? = null
-    var additive: Reference? = null
-    var timeDateTime: KotlinString? = null
-    var _timeDateTime: Element? = null
-    var timePeriod: Period? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> description = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          procedure =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        6 ->
-          additive =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        7 -> timeDateTime = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _timeDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 ->
-          timePeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Processing: " + i)
-      }
-    }
-    return BiologicallyDerivedProduct.Processing(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      description = R4String.of(description, _description),
-      procedure = procedure,
-      additive = additive,
-      time =
-        BiologicallyDerivedProduct.Processing.Time.from(
-          DateTime.of(timeDateTime?.let { FhirDateTime.fromString(it) }, _timeDateTime),
-          timePeriod,
-        ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: BiologicallyDerivedProduct.Processing,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    (value.procedure)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
-    }
-    (value.additive)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
-    }
-    when (val choice = value.time) {
-      null -> {}
-      is BiologicallyDerivedProduct.Processing.Time.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.description?.value)
+      encodeElementIfNotNull(descriptor, 4, value.description)
+      encodeSerializableIfNotNull(descriptor, 5, CodeableConceptSerializer, value.procedure)
+      encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.additive)
+      when (val choice = value.time) {
+        null -> {}
+        is BiologicallyDerivedProduct.Processing.Time.DateTime -> {
+          encodeStringIfNotNull(descriptor, 7, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 8, choice.value)
         }
-      }
-      is BiologicallyDerivedProduct.Processing.Time.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, PeriodSerializer, choice.value)
+        is BiologicallyDerivedProduct.Processing.Time.Period -> {
+          encodeSerializableElement(descriptor, 9, PeriodSerializer, choice.value)
+        }
       }
     }
   }
@@ -360,22 +298,14 @@ internal object BiologicallyDerivedProductManipulationSerializer :
   KSerializer<BiologicallyDerivedProduct.Manipulation> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Manipulation") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("timeDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_timeDateTime", Element.serializer().descriptor, isOptional = true)
-      element("timePeriod", Period.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("description", KotlinString.serializer().descriptor)
+      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("timeDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_timeDateTime", ElementSerializer.descriptor)
+      optionalElement("timePeriod", PeriodSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<BiologicallyDerivedProduct.Manipulation>> =
@@ -383,106 +313,89 @@ internal object BiologicallyDerivedProductManipulationSerializer :
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Manipulation =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var description: KotlinString? = null
+      var _description: Element? = null
+      var timeDateTime: KotlinString? = null
+      var _timeDateTime: Element? = null
+      var timePeriod: Period? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> description = decodeStringElement(descriptor, i)
+          4 ->
+            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> timeDateTime = decodeStringElement(descriptor, i)
+          6 ->
+            _timeDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> timePeriod = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Manipulation: " + i)
+        }
+      }
+      BiologicallyDerivedProduct.Manipulation(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        description = R4String.of(description, _description),
+        time =
+          BiologicallyDerivedProduct.Manipulation.Time.from(
+            DateTime.of(
+              if (timeDateTime != null) FhirDateTime.fromString(timeDateTime) else null,
+              _timeDateTime,
+            ),
+            timePeriod,
+          ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Manipulation) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): BiologicallyDerivedProduct.Manipulation {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var description: KotlinString? = null
-    var _description: Element? = null
-    var timeDateTime: KotlinString? = null
-    var _timeDateTime: Element? = null
-    var timePeriod: Period? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> description = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> timeDateTime = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _timeDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 ->
-          timePeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Manipulation: " + i)
-      }
-    }
-    return BiologicallyDerivedProduct.Manipulation(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      description = R4String.of(description, _description),
-      time =
-        BiologicallyDerivedProduct.Manipulation.Time.from(
-          DateTime.of(timeDateTime?.let { FhirDateTime.fromString(it) }, _timeDateTime),
-          timePeriod,
-        ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: BiologicallyDerivedProduct.Manipulation,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    when (val choice = value.time) {
-      null -> {}
-      is BiologicallyDerivedProduct.Manipulation.Time.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.description?.value)
+      encodeElementIfNotNull(descriptor, 4, value.description)
+      when (val choice = value.time) {
+        null -> {}
+        is BiologicallyDerivedProduct.Manipulation.Time.DateTime -> {
+          encodeStringIfNotNull(descriptor, 5, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 6, choice.value)
         }
-      }
-      is BiologicallyDerivedProduct.Manipulation.Time.Period -> {
-        encoder.encodeSerializableElement(descriptor, 7, PeriodSerializer, choice.value)
+        is BiologicallyDerivedProduct.Manipulation.Time.Period -> {
+          encodeSerializableElement(descriptor, 7, PeriodSerializer, choice.value)
+        }
       }
     }
   }
@@ -492,24 +405,16 @@ internal object BiologicallyDerivedProductStorageSerializer :
   KSerializer<BiologicallyDerivedProduct.Storage> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Storage") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("temperature", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_temperature", Element.serializer().descriptor, isOptional = true)
-      element("scale", KotlinString.serializer().descriptor, isOptional = true)
-      element("_scale", Element.serializer().descriptor, isOptional = true)
-      element("duration", Period.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("description", KotlinString.serializer().descriptor)
+      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("temperature", FhirDecimalSerializer.descriptor)
+      optionalElement("_temperature", ElementSerializer.descriptor)
+      optionalElement("scale", KotlinString.serializer().descriptor)
+      optionalElement("_scale", ElementSerializer.descriptor)
+      optionalElement("duration", PeriodSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<BiologicallyDerivedProduct.Storage>> =
@@ -517,116 +422,92 @@ internal object BiologicallyDerivedProductStorageSerializer :
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProduct.Storage =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var description: KotlinString? = null
+      var _description: Element? = null
+      var temperature: FhirDecimal? = null
+      var _temperature: Element? = null
+      var scale: KotlinString? = null
+      var _scale: Element? = null
+      var duration: Period? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> description = decodeStringElement(descriptor, i)
+          4 ->
+            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            temperature =
+              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+          6 ->
+            _temperature = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> scale = decodeStringElement(descriptor, i)
+          8 -> _scale = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> duration = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Storage: " + i)
+        }
+      }
+      BiologicallyDerivedProduct.Storage(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        description = R4String.of(description, _description),
+        temperature = Decimal.of(temperature, _temperature),
+        scale =
+          Enumeration.of(
+            if (scale != null)
+              BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.fromCode(scale)
+            else null,
+            _scale,
+          ),
+        duration = duration,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProduct.Storage) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.description?.value)
+      encodeElementIfNotNull(descriptor, 4, value.description)
+      encodeSerializableIfNotNull(descriptor, 5, FhirDecimalSerializer, value.temperature?.value)
+      encodeElementIfNotNull(descriptor, 6, value.temperature)
+      encodeStringIfNotNull(descriptor, 7, value.scale?.value?.code)
+      encodeElementIfNotNull(descriptor, 8, value.scale)
+      encodeSerializableIfNotNull(descriptor, 9, PeriodSerializer, value.duration)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): BiologicallyDerivedProduct.Storage {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var description: KotlinString? = null
-    var _description: Element? = null
-    var temperature: FhirDecimal? = null
-    var _temperature: Element? = null
-    var scale: KotlinString? = null
-    var _scale: Element? = null
-    var duration: Period? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> description = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          temperature =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-        6 ->
-          _temperature =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> scale = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _scale = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 ->
-          duration =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Storage: " + i)
-      }
-    }
-    return BiologicallyDerivedProduct.Storage(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      description = R4String.of(description, _description),
-      temperature = Decimal.of(temperature, _temperature),
-      scale =
-        Enumeration.of(
-          scale?.let {
-            BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.fromCode(it)
-          },
-          _scale,
-        ),
-      duration = duration,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: BiologicallyDerivedProduct.Storage,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.temperature?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
-    }
-    (value.temperature?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.scale?.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.scale?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    (value.duration)?.let { encoder.encodeSerializableElement(descriptor, 9, PeriodSerializer, it) }
   }
 }
 
@@ -635,65 +516,38 @@ internal object BiologicallyDerivedProductSerializer :
   override val descriptor: SerialDescriptor = buildResourceDescriptor("BiologicallyDerivedProduct")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("productCategory", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_productCategory", Element.serializer().descriptor, isOptional = true)
-    b.element("productCode", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("request", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("quantity", Int.serializer().descriptor, isOptional = true)
-    b.element("_quantity", Element.serializer().descriptor, isOptional = true)
-    b.element("parent", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element(
-      "collection",
-      lazyDescriptor { BiologicallyDerivedProduct.Collection.serializer().descriptor },
-      isOptional = true,
-    )
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("productCategory", KotlinString.serializer().descriptor)
+    b.optionalElement("_productCategory", ElementSerializer.descriptor)
+    b.optionalElement("productCode", CodeableConceptSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("request", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("quantity", Int.serializer().descriptor)
+    b.optionalElement("_quantity", ElementSerializer.descriptor)
+    b.optionalElement("parent", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("collection", BiologicallyDerivedProductCollectionSerializer.descriptor)
+    b.optionalElement(
       "processing",
-      listSerialDescriptor(
-        lazyDescriptor { BiologicallyDerivedProduct.Processing.serializer().descriptor }
-      ),
-      isOptional = true,
+      BiologicallyDerivedProductProcessingSerializer.listSerializer.descriptor,
     )
-    b.element(
-      "manipulation",
-      lazyDescriptor { BiologicallyDerivedProduct.Manipulation.serializer().descriptor },
-      isOptional = true,
-    )
-    b.element(
+    b.optionalElement("manipulation", BiologicallyDerivedProductManipulationSerializer.descriptor)
+    b.optionalElement(
       "storage",
-      listSerialDescriptor(
-        lazyDescriptor { BiologicallyDerivedProduct.Storage.serializer().descriptor }
-      ),
-      isOptional = true,
+      BiologicallyDerivedProductStorageSerializer.listSerializer.descriptor,
     )
   }
 
@@ -859,15 +713,17 @@ internal object BiologicallyDerivedProductSerializer :
       identifier = identifier ?: listOf(),
       productCategory =
         Enumeration.of(
-          productCategory?.let {
-            BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.fromCode(it)
-          },
+          if (productCategory != null)
+            BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.fromCode(productCategory)
+          else null,
           _productCategory,
         ),
       productCode = productCode,
       status =
         Enumeration.of(
-          status?.let { BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.fromCode(it) },
+          if (status != null)
+            BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.fromCode(status)
+          else null,
           _status,
         ),
       request = request ?: listOf(),
@@ -886,25 +742,23 @@ internal object BiologicallyDerivedProductSerializer :
     descriptorOffset: Int,
     `value`: BiologicallyDerivedProduct,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -933,26 +787,20 @@ internal object BiologicallyDerivedProductSerializer :
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.productCategory?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.productCategory?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.productCode)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    ((value.status?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-    }
-    (value.status?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      value.productCategory?.value?.code,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.productCategory)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.productCode,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.status?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.status)
     if (value.request.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -960,12 +808,8 @@ internal object BiologicallyDerivedProductSerializer :
         ReferenceSerializer.listSerializer,
         value.request,
       )
-    ((value.quantity?.value))?.let {
-      encoder.encodeIntElement(descriptor, 17 + descriptorOffset, it)
-    }
-    (value.quantity?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeIntIfNotNull(descriptor, 17 + descriptorOffset, value.quantity?.value)
+    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.quantity)
     if (value.parent.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -973,14 +817,12 @@ internal object BiologicallyDerivedProductSerializer :
         ReferenceSerializer.listSerializer,
         value.parent,
       )
-    (value.collection)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        BiologicallyDerivedProductCollectionSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      20 + descriptorOffset,
+      BiologicallyDerivedProductCollectionSerializer,
+      value.collection,
+    )
     if (value.processing.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -988,14 +830,12 @@ internal object BiologicallyDerivedProductSerializer :
         BiologicallyDerivedProductProcessingSerializer.listSerializer,
         value.processing,
       )
-    (value.manipulation)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        BiologicallyDerivedProductManipulationSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      BiologicallyDerivedProductManipulationSerializer,
+      value.manipulation,
+    )
     if (value.storage.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

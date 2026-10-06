@@ -126,13 +126,17 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
             elementPropertyName,
           )
           add(
-            "  %T.of(%N?.getOrNull(index)?.let·{ ",
+            "  %T.of(",
             ClassName(modelClassName.packageName, element.type.single().code.capitalized()),
-            propertyName,
           )
-          fhirPathType.addCodeToDecodeWireVarToModel(this, modelClassName.packageName, "it")
+          val indexedElement = CodeBlock.of("%N?.getOrNull(index)", propertyName).toString()
+          fhirPathType.addCodeToDecodeWireVarToModel(
+            this,
+            modelClassName.packageName,
+            indexedElement,
+          )
           add(
-            " }, %N?.getOrNull(index)) ?: throw %T(%S)\n",
+            ", %N?.getOrNull(index)) ?: throw %T(%S)\n",
             elementPropertyName,
             serializationExceptionClassName,
             emptyEntryMessage,
@@ -192,18 +196,20 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
       } else {
         if (element.min == 0) {
           add(
-            "%T.of(%N?.let·{ %T.fromCode(it) }, %N)",
+            "%T.of(if (%N != null) %T.fromCode(%N) else null, %N)",
             wrapperClass,
             propertyName,
             enumClass,
+            propertyName,
             elementPropertyName,
           )
         } else {
           add(
-            "%T.of(%N?.let·{ %T.fromCode(it) }, %N) ?: throw %T(%S)",
+            "%T.of(if (%N != null) %T.fromCode(%N) else null, %N) ?: throw %T(%S)",
             wrapperClass,
             propertyName,
             enumClass,
+            propertyName,
             elementPropertyName,
             serializationExceptionClassName,
             "Missing required property '$propertyName' on $modelDisplayName",

@@ -69,28 +69,20 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object PaymentReconciliationDetailSerializer : KSerializer<PaymentReconciliation.Detail> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Detail") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("identifier", Identifier.serializer().descriptor, isOptional = true)
-      element("predecessor", Identifier.serializer().descriptor, isOptional = true)
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("request", Reference.serializer().descriptor, isOptional = true)
-      element("submitter", Reference.serializer().descriptor, isOptional = true)
-      element("response", Reference.serializer().descriptor, isOptional = true)
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("responsible", Reference.serializer().descriptor, isOptional = true)
-      element("payee", Reference.serializer().descriptor, isOptional = true)
-      element("amount", Money.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("identifier", IdentifierSerializer.descriptor)
+      optionalElement("predecessor", IdentifierSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("request", ReferenceSerializer.descriptor)
+      optionalElement("submitter", ReferenceSerializer.descriptor)
+      optionalElement("response", ReferenceSerializer.descriptor)
+      optionalElement("date", KotlinString.serializer().descriptor)
+      optionalElement("_date", ElementSerializer.descriptor)
+      optionalElement("responsible", ReferenceSerializer.descriptor)
+      optionalElement("payee", ReferenceSerializer.descriptor)
+      optionalElement("amount", MoneySerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PaymentReconciliation.Detail>> =
@@ -98,151 +90,113 @@ internal object PaymentReconciliationDetailSerializer : KSerializer<PaymentRecon
 
   override fun deserialize(decoder: Decoder): PaymentReconciliation.Detail =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var identifier: Identifier? = null
+      var predecessor: Identifier? = null
+      var type: CodeableConcept? = null
+      var request: Reference? = null
+      var submitter: Reference? = null
+      var response: Reference? = null
+      var date: KotlinString? = null
+      var _date: Element? = null
+      var responsible: Reference? = null
+      var payee: Reference? = null
+      var amount: Money? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            identifier =
+              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          4 ->
+            predecessor =
+              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          5 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          6 -> request = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          7 ->
+            submitter = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          8 ->
+            response = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          9 -> date = decodeStringElement(descriptor, i)
+          10 -> _date = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          11 ->
+            responsible =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          12 -> payee = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          13 -> amount = decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Detail: " + i)
+        }
+      }
+      PaymentReconciliation.Detail(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        identifier = identifier,
+        predecessor = predecessor,
+        type =
+          type
+            ?: throw SerializationException(
+              "Missing required property 'type' on PaymentReconciliation.Detail"
+            ),
+        request = request,
+        submitter = submitter,
+        response = response,
+        date = Date.of(if (date != null) FhirDate.fromString(date) else null, _date),
+        responsible = responsible,
+        payee = payee,
+        amount = amount,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PaymentReconciliation.Detail) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, IdentifierSerializer, value.identifier)
+      encodeSerializableIfNotNull(descriptor, 4, IdentifierSerializer, value.predecessor)
+      encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, value.type)
+      encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.request)
+      encodeSerializableIfNotNull(descriptor, 7, ReferenceSerializer, value.submitter)
+      encodeSerializableIfNotNull(descriptor, 8, ReferenceSerializer, value.response)
+      encodeStringIfNotNull(descriptor, 9, value.date?.value?.toString())
+      encodeElementIfNotNull(descriptor, 10, value.date)
+      encodeSerializableIfNotNull(descriptor, 11, ReferenceSerializer, value.responsible)
+      encodeSerializableIfNotNull(descriptor, 12, ReferenceSerializer, value.payee)
+      encodeSerializableIfNotNull(descriptor, 13, MoneySerializer, value.amount)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PaymentReconciliation.Detail {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var identifier: Identifier? = null
-    var predecessor: Identifier? = null
-    var type: CodeableConcept? = null
-    var request: Reference? = null
-    var submitter: Reference? = null
-    var response: Reference? = null
-    var date: KotlinString? = null
-    var _date: Element? = null
-    var responsible: Reference? = null
-    var payee: Reference? = null
-    var amount: Money? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        4 ->
-          predecessor =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        5 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        6 ->
-          request =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        7 ->
-          submitter =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        8 ->
-          response =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        9 -> date = decoder.decodeStringElement(descriptor, i)
-        10 ->
-          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        11 ->
-          responsible =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        12 ->
-          payee =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        13 ->
-          amount = decoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Detail: " + i)
-      }
-    }
-    return PaymentReconciliation.Detail(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier,
-      predecessor = predecessor,
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on PaymentReconciliation.Detail"
-          ),
-      request = request,
-      submitter = submitter,
-      response = response,
-      date = Date.of(date?.let { FhirDate.fromString(it) }, _date),
-      responsible = responsible,
-      payee = payee,
-      amount = amount,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: PaymentReconciliation.Detail) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.identifier)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, IdentifierSerializer, it)
-    }
-    (value.predecessor)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, IdentifierSerializer, it)
-    }
-    encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, value.type)
-    (value.request)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
-    }
-    (value.submitter)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ReferenceSerializer, it)
-    }
-    (value.response)?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ReferenceSerializer, it)
-    }
-    ((value.date?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-    (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
-    }
-    (value.responsible)?.let {
-      encoder.encodeSerializableElement(descriptor, 11, ReferenceSerializer, it)
-    }
-    (value.payee)?.let {
-      encoder.encodeSerializableElement(descriptor, 12, ReferenceSerializer, it)
-    }
-    (value.amount)?.let { encoder.encodeSerializableElement(descriptor, 13, MoneySerializer, it) }
   }
 }
 
@@ -250,21 +204,13 @@ internal object PaymentReconciliationProcessNoteSerializer :
   KSerializer<PaymentReconciliation.ProcessNote> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ProcessNote") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", Element.serializer().descriptor, isOptional = true)
-      element("text", KotlinString.serializer().descriptor, isOptional = true)
-      element("_text", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", KotlinString.serializer().descriptor)
+      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("text", KotlinString.serializer().descriptor)
+      optionalElement("_text", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<PaymentReconciliation.ProcessNote>> =
@@ -272,87 +218,70 @@ internal object PaymentReconciliationProcessNoteSerializer :
 
   override fun deserialize(decoder: Decoder): PaymentReconciliation.ProcessNote =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: KotlinString? = null
+      var _type: Element? = null
+      var text: KotlinString? = null
+      var _text: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> type = decodeStringElement(descriptor, i)
+          4 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> text = decodeStringElement(descriptor, i)
+          6 -> _text = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding ProcessNote: " + i)
+        }
+      }
+      PaymentReconciliation.ProcessNote(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type = Enumeration.of(if (type != null) NoteType.fromCode(type) else null, _type),
+        text = R4String.of(text, _text),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: PaymentReconciliation.ProcessNote) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): PaymentReconciliation.ProcessNote {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
-    var _type: Element? = null
-    var text: KotlinString? = null
-    var _text: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> type = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> text = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _text = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ProcessNote: " + i)
-      }
-    }
-    return PaymentReconciliation.ProcessNote(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(type?.let { NoteType.fromCode(it) }, _type),
-      text = R4String.of(text, _text),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: PaymentReconciliation.ProcessNote,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.text?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-    (value.text?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.type?.value?.code)
+      encodeElementIfNotNull(descriptor, 4, value.type)
+      encodeStringIfNotNull(descriptor, 5, value.text?.value)
+      encodeElementIfNotNull(descriptor, 6, value.text)
     }
   }
 }
@@ -361,61 +290,41 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
   override val descriptor: SerialDescriptor = buildResourceDescriptor("PaymentReconciliation")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("period", Period.serializer().descriptor, isOptional = true)
-    b.element("created", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_created", Element.serializer().descriptor, isOptional = true)
-    b.element("paymentIssuer", Reference.serializer().descriptor, isOptional = true)
-    b.element("request", Reference.serializer().descriptor, isOptional = true)
-    b.element("requestor", Reference.serializer().descriptor, isOptional = true)
-    b.element("outcome", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_outcome", Element.serializer().descriptor, isOptional = true)
-    b.element("disposition", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_disposition", Element.serializer().descriptor, isOptional = true)
-    b.element("paymentDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_paymentDate", Element.serializer().descriptor, isOptional = true)
-    b.element("paymentAmount", Money.serializer().descriptor, isOptional = true)
-    b.element("paymentIdentifier", Identifier.serializer().descriptor, isOptional = true)
-    b.element(
-      "detail",
-      listSerialDescriptor(lazyDescriptor { PaymentReconciliation.Detail.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element("formCode", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("period", PeriodSerializer.descriptor)
+    b.optionalElement("created", KotlinString.serializer().descriptor)
+    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.optionalElement("paymentIssuer", ReferenceSerializer.descriptor)
+    b.optionalElement("request", ReferenceSerializer.descriptor)
+    b.optionalElement("requestor", ReferenceSerializer.descriptor)
+    b.optionalElement("outcome", KotlinString.serializer().descriptor)
+    b.optionalElement("_outcome", ElementSerializer.descriptor)
+    b.optionalElement("disposition", KotlinString.serializer().descriptor)
+    b.optionalElement("_disposition", ElementSerializer.descriptor)
+    b.optionalElement("paymentDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_paymentDate", ElementSerializer.descriptor)
+    b.optionalElement("paymentAmount", MoneySerializer.descriptor)
+    b.optionalElement("paymentIdentifier", IdentifierSerializer.descriptor)
+    b.optionalElement("detail", PaymentReconciliationDetailSerializer.listSerializer.descriptor)
+    b.optionalElement("formCode", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
       "processNote",
-      listSerialDescriptor(
-        lazyDescriptor { PaymentReconciliation.ProcessNote.serializer().descriptor }
-      ),
-      isOptional = true,
+      PaymentReconciliationProcessNoteSerializer.listSerializer.descriptor,
     )
   }
 
@@ -580,7 +489,8 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          status?.let { PaymentReconciliation.FinancialResourceStatusCodes.fromCode(it) },
+          if (status != null) PaymentReconciliation.FinancialResourceStatusCodes.fromCode(status)
+          else null,
           _status,
         )
           ?: throw SerializationException(
@@ -588,17 +498,21 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
           ),
       period = period,
       created =
-        DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
+        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created)
           ?: throw SerializationException(
             "Missing required property 'created' on PaymentReconciliation"
           ),
       paymentIssuer = paymentIssuer,
       request = request,
       requestor = requestor,
-      outcome = Enumeration.of(outcome?.let { ClaimProcessingCodes.fromCode(it) }, _outcome),
+      outcome =
+        Enumeration.of(
+          if (outcome != null) ClaimProcessingCodes.fromCode(outcome) else null,
+          _outcome,
+        ),
       disposition = R4String.of(disposition, _disposition),
       paymentDate =
-        Date.of(paymentDate?.let { FhirDate.fromString(it) }, _paymentDate)
+        Date.of(if (paymentDate != null) FhirDate.fromString(paymentDate) else null, _paymentDate)
           ?: throw SerializationException(
             "Missing required property 'paymentDate' on PaymentReconciliation"
           ),
@@ -620,25 +534,23 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
     descriptorOffset: Int,
     `value`: PaymentReconciliation,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -667,57 +579,60 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.period)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, PeriodSerializer, it)
-    }
-    ((value.created.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-    }
-    (value.created.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.paymentIssuer)?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.request)?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.requestor)?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.outcome?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
-    }
-    (value.outcome?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.disposition?.value))?.let {
-      encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
-    }
-    (value.disposition?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.paymentDate.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
-    }
-    (value.paymentDate.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      PeriodSerializer,
+      value.period,
+    )
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      14 + descriptorOffset,
+      value.created.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.created)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      16 + descriptorOffset,
+      ReferenceSerializer,
+      value.paymentIssuer,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      ReferenceSerializer,
+      value.request,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      ReferenceSerializer,
+      value.requestor,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 19 + descriptorOffset, value.outcome?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.outcome)
+    encoder.encodeStringIfNotNull(descriptor, 21 + descriptorOffset, value.disposition?.value)
+    encoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.disposition)
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      23 + descriptorOffset,
+      value.paymentDate.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.paymentDate)
     encoder.encodeSerializableElement(
       descriptor,
       25 + descriptorOffset,
       MoneySerializer,
       value.paymentAmount,
     )
-    (value.paymentIdentifier)?.let {
-      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, IdentifierSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      26 + descriptorOffset,
+      IdentifierSerializer,
+      value.paymentIdentifier,
+    )
     if (value.detail.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -725,14 +640,12 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
         PaymentReconciliationDetailSerializer.listSerializer,
         value.detail,
       )
-    (value.formCode)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        28 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      28 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.formCode,
+    )
     if (value.processNote.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

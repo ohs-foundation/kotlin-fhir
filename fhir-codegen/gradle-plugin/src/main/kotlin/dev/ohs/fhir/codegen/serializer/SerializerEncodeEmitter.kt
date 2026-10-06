@@ -54,20 +54,33 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     nameToIdx: Map<String, CodeBlock>,
   ): FunSpec {
     val codeBlock = CodeBlock.builder()
-    // `resourceType` is written by the outer `serialize` wrapper, not here — keeps this body
-    // reusable from `XPolymorphicSerializer` (polymorphic path injects the discriminator itself).
-    elements.forEach { element ->
-      emitJsonEncodeForElement(codeBlock, element, className, nameToIdx)
-    }
-    val builder =
-      FunSpec.builder("serializeInternal")
-        .addModifiers(if (parameterized) KModifier.OVERRIDE else KModifier.PRIVATE)
-        .addParameter("encoder", ClassName(KOTLINX_SERIALIZATION_ENCODING, "CompositeEncoder"))
     if (parameterized) {
-      builder.addParameter("descriptor", serialDescriptorClassName)
-      builder.addParameter("descriptorOffset", Int::class)
+      // `resourceType` is written by the outer `serialize` wrapper, not here — keeps this body
+      // reusable from `XPolymorphicSerializer` (polymorphic path injects the discriminator itself).
+      elements.forEach { element ->
+        emitJsonEncodeForElement(codeBlock, element, className, nameToIdx, recv = "encoder.")
+      }
+      return FunSpec.builder("serializeInternal")
+        .addModifiers(KModifier.OVERRIDE)
+        .addParameter("encoder", ClassName(KOTLINX_SERIALIZATION_ENCODING, "CompositeEncoder"))
+        .addParameter("descriptor", serialDescriptorClassName)
+        .addParameter("descriptorOffset", Int::class)
+        .addParameter("value", className)
+        .addCode(codeBlock.build())
+        .build()
+    } else {
+      codeBlock.add("encoder.%M(descriptor) {\n", encodeStructureMemberName).indent()
+      elements.forEach { element ->
+        emitJsonEncodeForElement(codeBlock, element, className, nameToIdx, recv = "")
+      }
+      codeBlock.unindent().add("}\n")
+      return FunSpec.builder("serialize")
+        .addModifiers(KModifier.OVERRIDE)
+        .addParameter("encoder", encoderClassName)
+        .addParameter("value", className)
+        .addCode(codeBlock.build())
+        .build()
     }
-    return builder.addParameter("value", className).addCode(codeBlock.build()).build()
   }
 
   private fun emitJsonEncodeForElement(
@@ -75,13 +88,14 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     element: Element,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
+    recv: String,
   ) {
     val propertyName = element.getElementName()
     // Choice type: emit per-expansion flat keys inline against the parent's composite encoder.
     // Each expansion's value / element is written to a flat descriptor slot on the parent instead
     // of via a nested sub-object — there is no standalone choice-type serializer.
     if (element.type != null && element.type.size > 1) {
-      emitChoiceTypeExpansionEncoding(codeBlock, element, modelClassName, nameToIdx)
+      emitChoiceTypeExpansionEncoding(codeBlock, element, modelClassName, nameToIdx, recv)
       return
     }
     val typeCode = element.type?.singleOrNull()?.code ?: ""
@@ -95,13 +109,14 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
           propertyName,
           modelClassName,
           nameToIdx,
+          recv,
         )
       } else {
         val elemCls = typeForComplexElement(element, modelClassName)
         val idx = nameToIdx.getValue(propertyName)
         val listSer = listSerializerRefForClass(elemCls, modelClassName, nullableElement = false)
         codeBlock.add(
-          "if (value.%N.isNotEmpty()) encoder.encodeSerializableElement(descriptor, %L, %L, value.%N)\n",
+          "if (value.%N.isNotEmpty()) ${recv}encodeSerializableElement(descriptor, %L, %L, value.%N)\n",
           propertyName,
           idx,
           listSer,
@@ -117,6 +132,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         propertyName,
         modelClassName,
         nameToIdx,
+        recv,
       )
     } else if (isFhirPathUri) {
       val kotlinType =
@@ -124,7 +140,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       val idx = nameToIdx.getValue(propertyName)
       emitPrimitiveOrSerializableEncode(
         codeBlock,
-        encoderExpr = "encoder",
+        recv,
         idx,
         kotlinType,
         CodeBlock.of("value.%N", propertyName),
@@ -137,14 +153,14 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       val ser = serializerRefForClass(singleType, modelClassName)
       if (element.min == 0) {
         codeBlock.add(
-          "(value.%N)?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
-          propertyName,
+          "${recv}encodeSerializableIfNotNull(descriptor, %L, %L, value.%N)\n",
           idx,
           ser,
+          propertyName,
         )
       } else {
         codeBlock.add(
-          "encoder.encodeSerializableElement(descriptor, %L, %L, value.%N)\n",
+          "${recv}encodeSerializableElement(descriptor, %L, %L, value.%N)\n",
           idx,
           ser,
           propertyName,
@@ -154,11 +170,19 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
   }
 
   /**
-   * Name of the specialized `encodeXxxElement` on [CompositeEncoder] for a stdlib primitive, or
-   * null if no specialized call exists (fall back to `encodeSerializableElement`).
+   * Name of the specialized `encodeXxxElement` (or `encodeXxxIfNotNull` when [nullable] is true) on
+   * [CompositeEncoder] for a stdlib primitive, or null if no specialized call exists (fall back to
+   * `encodeSerializableElement` / `encodeSerializableIfNotNull`).
    */
-  private fun specializedEncodeElementCall(className: ClassName): String? =
+  private fun specializedEncodeElementCall(className: ClassName, nullable: Boolean): String? =
     if (className.packageName != "kotlin") null
+    else if (nullable)
+      when (className.simpleName) {
+        "String" -> "encodeStringIfNotNull"
+        "Boolean" -> "encodeBooleanIfNotNull"
+        "Int" -> "encodeIntIfNotNull"
+        else -> null
+      }
     else
       when (className.simpleName) {
         "String" -> "encodeStringElement"
@@ -171,52 +195,33 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       }
 
   /**
-   * Emits `(valueExpr)?.let { encoder.encodeXxxElement(descriptor, idx, it) }` using the
-   * specialized primitive call when [type] is a stdlib primitive, falling back to
-   * `encodeSerializableElement` with a singleton serializer reference otherwise.
+   * Emits a non-null or null-checked encode call on [recv], using the specialized primitive call
+   * when [type] is a stdlib primitive and falling back to `encodeSerializableElement` /
+   * `encodeSerializableIfNotNull` with a singleton serializer reference otherwise.
    */
   fun emitPrimitiveOrSerializableEncode(
     codeBlock: CodeBlock.Builder,
-    encoderExpr: String,
+    recv: String,
     idx: CodeBlock,
     type: ClassName,
     valueExpr: CodeBlock,
     parentClass: ClassName,
     nullable: Boolean = true,
   ) {
-    val specialized = specializedEncodeElementCall(type)
+    val specialized = specializedEncodeElementCall(type, nullable)
     if (specialized != null) {
-      if (nullable) {
-        codeBlock.add(
-          "(%L)?.let·{ %N.%N(descriptor, %L, it) }\n",
-          valueExpr,
-          encoderExpr,
-          specialized,
-          idx,
-        )
-      } else {
-        codeBlock.add("%N.%N(descriptor, %L, %L)\n", encoderExpr, specialized, idx, valueExpr)
-      }
+      codeBlock.add("${recv}%N(descriptor, %L, %L)\n", specialized, idx, valueExpr)
       return
     }
     val ser = serializerRefForClass(type, parentClass)
-    if (nullable) {
-      codeBlock.add(
-        "(%L)?.let·{ %N.encodeSerializableElement(descriptor, %L, %L, it) }\n",
-        valueExpr,
-        encoderExpr,
-        idx,
-        ser,
-      )
-    } else {
-      codeBlock.add(
-        "%N.encodeSerializableElement(descriptor, %L, %L, %L)\n",
-        encoderExpr,
-        idx,
-        ser,
-        valueExpr,
-      )
-    }
+    val encodeFn = if (nullable) "encodeSerializableIfNotNull" else "encodeSerializableElement"
+    codeBlock.add(
+      "${recv}%N(descriptor, %L, %L, %L)\n",
+      encodeFn,
+      idx,
+      ser,
+      valueExpr,
+    )
   }
 
   /**
@@ -230,6 +235,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     element: Element,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
+    recv: String,
   ) {
     val propertyName = element.getElementName()
     val sealedTypeClass = ClassName(modelClassName.packageName, element.getPathSimpleNames())
@@ -249,6 +255,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         expansionBaseName,
         modelClassName,
         nameToIdx,
+        recv,
       )
       codeBlock.unindent()
       codeBlock.add("}\n")
@@ -267,6 +274,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     choiceFieldBaseName: String,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
+    recv: String,
   ) {
     val typeCode = type.code
     val valueIdx = nameToIdx.getValue(choiceFieldBaseName)
@@ -278,14 +286,13 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       val valueExpr =
         CodeBlock.builder()
           .apply {
-            add("(choice.value")
+            add("choice.value")
             fhirPathType.addCodeToEncodeModelToWire(this)
-            add(")")
           }
           .build()
       emitPrimitiveOrSerializableEncode(
         codeBlock,
-        "encoder",
+        recv,
         valueIdx,
         wireClassName,
         valueExpr,
@@ -293,12 +300,9 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       )
       // Element (_field) expansion
       if (elementIdx != null) {
-        val elementClassName = ClassName(modelClassName.packageName, "Element")
-        val elementSer = serializerRefForClass(elementClassName, modelClassName)
         codeBlock.add(
-          "(choice.value.toElement())?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
+          "${recv}encodeElementIfNotNull(descriptor, %L, choice.value)\n",
           elementIdx,
-          elementSer,
         )
       }
     } else {
@@ -306,7 +310,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
       val complexClassName = ClassName(modelClassName.packageName, typeCode.capitalized())
       val complexSer = serializerRefForClass(complexClassName, modelClassName)
       codeBlock.add(
-        "encoder.encodeSerializableElement(descriptor, %L, %L, choice.value)\n",
+        "${recv}encodeSerializableElement(descriptor, %L, %L, choice.value)\n",
         valueIdx,
         complexSer,
       )
@@ -319,6 +323,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     propertyName: String,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
+    recv: String,
   ) {
     val typeCode = element.type!!.single().code
     val fhirPathType = FhirPathType.getFromFhirTypeCode(typeCode)!!
@@ -331,7 +336,6 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     val valueExpr =
       CodeBlock.builder()
         .apply {
-          add("(")
           if (isEnum) {
             if (element.isExtensibleBinding) {
               add(
@@ -349,31 +353,28 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
             if (!isRequired) add("?")
             fhirPathType.addCodeToEncodeModelToWire(this)
           }
-          add(")")
         }
         .build()
-    // The wire-encoded value is non-null only when both the wrapper itself is required AND its
-    // `.value` field is non-null on the model side (which is true only for primitives whose own
-    // StructureDefinition has `<Type>.value` with `min > 0`, atm only `xhtml`). Enums always
-    // go through a `?.code` chain and stay nullable.
-    val wireIsNonNull = codegenContext.primitiveValueIsNonNull[typeCode] == true && !isEnum
+    // The wire-encoded value is non-null only when the wrapper itself is required AND either its
+    // `.value` field is non-null on the model side (true for primitives whose StructureDefinition
+    // has `<Type>.value` with `min > 0`, atm only `xhtml`) or it is an `ExtensibleEnumeration`
+    // (whose `.code` property is non-null).
+    val wireIsNonNull =
+      (codegenContext.primitiveValueIsNonNull[typeCode] == true && !isEnum) ||
+        (isEnum && element.isExtensibleBinding)
     emitPrimitiveOrSerializableEncode(
       codeBlock,
-      "encoder",
+      recv,
       valueIdx,
       valueType,
       valueExpr,
       modelClassName,
       nullable = !(isRequired && wireIsNonNull),
     )
-    val elementClassName = ClassName(modelClassName.packageName, "Element")
-    val elementSer = serializerRefForClass(elementClassName, modelClassName)
-    codeBlock.add("(value.%N", propertyName)
-    if (!isRequired) codeBlock.add("?")
     codeBlock.add(
-      ".toElement())?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
+      "${recv}encodeElementIfNotNull(descriptor, %L, value.%N)\n",
       elementIdx,
-      elementSer,
+      propertyName,
     )
   }
 
@@ -383,6 +384,7 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     propertyName: String,
     modelClassName: ClassName,
     nameToIdx: Map<String, CodeBlock>,
+    recv: String,
   ) {
     val typeCode = element.type!!.single().code
     val fhirPathType = FhirPathType.getFromFhirTypeCode(typeCode)!!
@@ -393,40 +395,34 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     val valueInnerType: ClassName = if (isEnum) String::class.asClassName() else wireClassName
     val valueListSer =
       listSerializerRefForClass(valueInnerType, modelClassName, nullableElement = true)
-    val elementClassName = ClassName(modelClassName.packageName, "Element")
-    val elementListSer =
-      listSerializerRefForClass(elementClassName, modelClassName, nullableElement = true)
+    codeBlock.add("if (value.%N.isNotEmpty()) {\n", propertyName)
+    codeBlock.indent()
     // values
-    codeBlock.add("(")
-    if (isEnum) {
-      if (element.isExtensibleBinding) {
-        codeBlock.add(
-          "value.%N.map·{·it.code·}.takeUnless·{·it.all·{·it == null·}·}",
-          propertyName,
-        )
-      } else {
-        codeBlock.add(
-          "value.%N.map·{·it.value?.code·}.takeUnless·{·it.all·{·it == null·}·}",
-          propertyName,
-        )
-      }
-    } else {
-      codeBlock.add("value.%N.map·{·it", propertyName)
-      fhirPathType.addCodeToEncodeModelToWire(codeBlock)
-      codeBlock.add("·}.takeUnless·{·it.all·{·it == null·}·}")
-    }
     codeBlock.add(
-      ")?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
+      "${recv}encodeNullableListIfNotNull(descriptor, %L, %L, value.%N.map·{·",
       valueIdx,
       valueListSer,
+      propertyName,
     )
+    if (isEnum) {
+      if (element.isExtensibleBinding) {
+        codeBlock.add("it.code")
+      } else {
+        codeBlock.add("it.value?.code")
+      }
+    } else {
+      codeBlock.add("it")
+      fhirPathType.addCodeToEncodeModelToWire(codeBlock)
+    }
+    codeBlock.add("·})\n")
     // element (_field) lists
     codeBlock.add(
-      "(value.%N.map·{·it.toElement()·}.takeUnless·{·it.all·{·it == null·}·})?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
-      propertyName,
+      "${recv}encodePrimitiveElementList(descriptor, %L, value.%N)\n",
       elementIdx,
-      elementListSer,
+      propertyName,
     )
+    codeBlock.unindent()
+    codeBlock.add("}\n")
   }
 
   /** Resolves the model [ClassName] for a non-primitive complex element. */

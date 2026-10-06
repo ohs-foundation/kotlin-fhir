@@ -65,133 +65,102 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object ProvenanceAgentSerializer : KSerializer<Provenance.Agent> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Agent") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "role",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("who", Reference.serializer().descriptor, isOptional = true)
-      element("onBehalfOf", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("role", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("who", ReferenceSerializer.descriptor)
+      optionalElement("onBehalfOf", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Provenance.Agent>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Provenance.Agent =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: CodeableConcept? = null
+      var role: List<CodeableConcept>? = null
+      var who: Reference? = null
+      var onBehalfOf: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            role =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          5 -> who = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          6 ->
+            onBehalfOf = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Agent: " + i)
+        }
+      }
+      Provenance.Agent(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type = type,
+        role = role ?: listOf(),
+        who =
+          who
+            ?: throw SerializationException("Missing required property 'who' on Provenance.Agent"),
+        onBehalfOf = onBehalfOf,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Provenance.Agent) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Provenance.Agent {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: CodeableConcept? = null
-    var role: List<CodeableConcept>? = null
-    var who: Reference? = null
-    var onBehalfOf: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          role =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        5 ->
-          who = decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        6 ->
-          onBehalfOf =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Agent: " + i)
-      }
-    }
-    return Provenance.Agent(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type = type,
-      role = role ?: listOf(),
-      who =
-        who ?: throw SerializationException("Missing required property 'who' on Provenance.Agent"),
-      onBehalfOf = onBehalfOf,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Provenance.Agent) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    if (value.role.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.role,
-      )
-    encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.who)
-    (value.onBehalfOf)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.type)
+      if (value.role.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          4,
+          CodeableConceptSerializer.listSerializer,
+          value.role,
+        )
+      encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.who)
+      encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.onBehalfOf)
     }
   }
 }
@@ -199,24 +168,15 @@ internal object ProvenanceAgentSerializer : KSerializer<Provenance.Agent> {
 internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Entity") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("role", String.serializer().descriptor, isOptional = true)
-      element("_role", Element.serializer().descriptor, isOptional = true)
-      element("what", Reference.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("role", String.serializer().descriptor)
+      optionalElement("_role", ElementSerializer.descriptor)
+      optionalElement("what", ReferenceSerializer.descriptor)
+      optionalElement(
         "agent",
-        listSerialDescriptor(lazyDescriptor { Provenance.Agent.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ProvenanceAgentSerializer.descriptor }),
       )
     }
 
@@ -224,101 +184,96 @@ internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
 
   override fun deserialize(decoder: Decoder): Provenance.Entity =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var role: String? = null
+      var _role: Element? = null
+      var what: Reference? = null
+      var agent: List<Provenance.Agent>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> role = decodeStringElement(descriptor, i)
+          4 -> _role = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> what = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          6 ->
+            agent =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ProvenanceAgentSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Entity: " + i)
+        }
+      }
+      Provenance.Entity(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        role =
+          Enumeration.of(
+            if (role != null) Provenance.ProvenanceEntityRole.fromCode(role) else null,
+            _role,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'role' on Provenance.Entity"
+            ),
+        what =
+          what
+            ?: throw SerializationException(
+              "Missing required property 'what' on Provenance.Entity"
+            ),
+        agent = agent ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Provenance.Entity) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.role.value?.code)
+      encodeElementIfNotNull(descriptor, 4, value.role)
+      encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.what)
+      if (value.agent.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          6,
+          ProvenanceAgentSerializer.listSerializer,
+          value.agent,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Provenance.Entity {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var role: String? = null
-    var _role: Element? = null
-    var what: Reference? = null
-    var agent: List<Provenance.Agent>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> role = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _role = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          what = decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        6 ->
-          agent =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ProvenanceAgentSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Entity: " + i)
-      }
-    }
-    return Provenance.Entity(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      role =
-        Enumeration.of(role?.let { Provenance.ProvenanceEntityRole.fromCode(it) }, _role)
-          ?: throw SerializationException("Missing required property 'role' on Provenance.Entity"),
-      what =
-        what
-          ?: throw SerializationException("Missing required property 'what' on Provenance.Entity"),
-      agent = agent ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Provenance.Entity) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.role.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.role.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.what)
-    if (value.agent.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        6,
-        ProvenanceAgentSerializer.listSerializer,
-        value.agent,
-      )
   }
 }
 
@@ -326,61 +281,36 @@ internal object ProvenanceSerializer : FhirResourceSerializer<Provenance> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Provenance")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("target", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("occurredPeriod", Period.serializer().descriptor, isOptional = true)
-    b.element("occurredDateTime", String.serializer().descriptor, isOptional = true)
-    b.element("_occurredDateTime", Element.serializer().descriptor, isOptional = true)
-    b.element("recorded", String.serializer().descriptor, isOptional = true)
-    b.element("_recorded", Element.serializer().descriptor, isOptional = true)
-    b.element("policy", listSerialDescriptor(String.serializer().descriptor), isOptional = true)
-    b.element("_policy", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-    b.element("location", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "authorization",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("activity", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("patient", Reference.serializer().descriptor, isOptional = true)
-    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "agent",
-      listSerialDescriptor(lazyDescriptor { Provenance.Agent.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element(
-      "entity",
-      listSerialDescriptor(lazyDescriptor { Provenance.Entity.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element(
-      "signature",
-      listSerialDescriptor(Signature.serializer().descriptor),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("target", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("occurredPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("occurredDateTime", String.serializer().descriptor)
+    b.optionalElement("_occurredDateTime", ElementSerializer.descriptor)
+    b.optionalElement("recorded", String.serializer().descriptor)
+    b.optionalElement("_recorded", ElementSerializer.descriptor)
+    b.optionalElement("policy", stringNullableListSerializer.descriptor)
+    b.optionalElement("_policy", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("location", ReferenceSerializer.descriptor)
+    b.optionalElement("authorization", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("activity", CodeableConceptSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("patient", ReferenceSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("agent", ProvenanceAgentSerializer.listSerializer.descriptor)
+    b.optionalElement("entity", ProvenanceEntitySerializer.listSerializer.descriptor)
+    b.optionalElement("signature", SignatureSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -564,12 +494,16 @@ internal object ProvenanceSerializer : FhirResourceSerializer<Provenance> {
       occurred =
         Provenance.Occurred.from(
           occurredPeriod,
-          DateTime.of(occurredDateTime?.let { FhirDateTime.fromString(it) }, _occurredDateTime),
+          DateTime.of(
+            if (occurredDateTime != null) FhirDateTime.fromString(occurredDateTime) else null,
+            _occurredDateTime,
+          ),
         ),
-      recorded = Instant.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded),
+      recorded =
+        Instant.of(if (recorded != null) FhirDateTime.fromString(recorded) else null, _recorded),
       policy =
         (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { index ->
-          Uri.of(policy?.getOrNull(index)?.let { it }, _policy?.getOrNull(index))
+          Uri.of(policy?.getOrNull(index), _policy?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'policy' on Provenance has neither a value nor an id/extension"
             )
@@ -592,25 +526,23 @@ internal object ProvenanceSerializer : FhirResourceSerializer<Provenance> {
     descriptorOffset: Int,
     `value`: Provenance,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -650,44 +582,35 @@ internal object ProvenanceSerializer : FhirResourceSerializer<Provenance> {
         )
       }
       is Provenance.Occurred.DateTime -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            13 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeStringIfNotNull(
+          descriptor,
+          12 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        encoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, choice.value)
       }
     }
-    ((value.recorded?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-    }
-    (value.recorded?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.policy.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      14 + descriptorOffset,
+      value.recorded?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.recorded)
+    if (value.policy.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         16 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.policy.map { it.value },
       )
+      encoder.encodePrimitiveElementList(descriptor, 17 + descriptorOffset, value.policy)
     }
-    (value.policy.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
-    }
-    (value.location)?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      ReferenceSerializer,
+      value.location,
+    )
     if (value.authorization.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -695,14 +618,12 @@ internal object ProvenanceSerializer : FhirResourceSerializer<Provenance> {
         CodeableReferenceSerializer.listSerializer,
         value.authorization,
       )
-    (value.activity)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      20 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.activity,
+    )
     if (value.basedOn.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -710,12 +631,18 @@ internal object ProvenanceSerializer : FhirResourceSerializer<Provenance> {
         ReferenceSerializer.listSerializer,
         value.basedOn,
       )
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      ReferenceSerializer,
+      value.patient,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      23 + descriptorOffset,
+      ReferenceSerializer,
+      value.encounter,
+    )
     if (value.agent.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

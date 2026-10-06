@@ -63,122 +63,100 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Calibration> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Calibration") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", String.serializer().descriptor, isOptional = true)
-      element("_type", Element.serializer().descriptor, isOptional = true)
-      element("state", String.serializer().descriptor, isOptional = true)
-      element("_state", Element.serializer().descriptor, isOptional = true)
-      element("time", String.serializer().descriptor, isOptional = true)
-      element("_time", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", String.serializer().descriptor)
+      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("state", String.serializer().descriptor)
+      optionalElement("_state", ElementSerializer.descriptor)
+      optionalElement("time", String.serializer().descriptor)
+      optionalElement("_time", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<DeviceMetric.Calibration>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): DeviceMetric.Calibration =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: String? = null
+      var _type: Element? = null
+      var state: String? = null
+      var _state: Element? = null
+      var time: String? = null
+      var _time: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> type = decodeStringElement(descriptor, i)
+          4 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> state = decodeStringElement(descriptor, i)
+          6 -> _state = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> time = decodeStringElement(descriptor, i)
+          8 -> _time = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Calibration: " + i)
+        }
+      }
+      DeviceMetric.Calibration(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type =
+          Enumeration.of(
+            if (type != null) DeviceMetric.DeviceMetricCalibrationType.fromCode(type) else null,
+            _type,
+          ),
+        state =
+          Enumeration.of(
+            if (state != null) DeviceMetric.DeviceMetricCalibrationState.fromCode(state) else null,
+            _state,
+          ),
+        time = Instant.of(if (time != null) FhirDateTime.fromString(time) else null, _time),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: DeviceMetric.Calibration) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): DeviceMetric.Calibration {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: String? = null
-    var _type: Element? = null
-    var state: String? = null
-    var _state: Element? = null
-    var time: String? = null
-    var _time: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> type = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> state = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _state = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> time = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _time = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Calibration: " + i)
-      }
-    }
-    return DeviceMetric.Calibration(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(type?.let { DeviceMetric.DeviceMetricCalibrationType.fromCode(it) }, _type),
-      state =
-        Enumeration.of(
-          state?.let { DeviceMetric.DeviceMetricCalibrationState.fromCode(it) },
-          _state,
-        ),
-      time = Instant.of(time?.let { FhirDateTime.fromString(it) }, _time),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceMetric.Calibration) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-    (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.state?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-    (value.state?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.time?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeStringIfNotNull(descriptor, 3, value.type?.value?.code)
+      encodeElementIfNotNull(descriptor, 4, value.type)
+      encodeStringIfNotNull(descriptor, 5, value.state?.value?.code)
+      encodeElementIfNotNull(descriptor, 6, value.state)
+      encodeStringIfNotNull(descriptor, 7, value.time?.value?.toString())
+      encodeElementIfNotNull(descriptor, 8, value.time)
     }
   }
 }
@@ -187,49 +165,32 @@ internal object DeviceMetricSerializer : FhirResourceSerializer<DeviceMetric> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("DeviceMetric")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("unit", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("source", Reference.serializer().descriptor, isOptional = true)
-    b.element("parent", Reference.serializer().descriptor, isOptional = true)
-    b.element("operationalStatus", String.serializer().descriptor, isOptional = true)
-    b.element("_operationalStatus", Element.serializer().descriptor, isOptional = true)
-    b.element("color", String.serializer().descriptor, isOptional = true)
-    b.element("_color", Element.serializer().descriptor, isOptional = true)
-    b.element("category", String.serializer().descriptor, isOptional = true)
-    b.element("_category", Element.serializer().descriptor, isOptional = true)
-    b.element("measurementPeriod", Timing.serializer().descriptor, isOptional = true)
-    b.element(
-      "calibration",
-      listSerialDescriptor(lazyDescriptor { DeviceMetric.Calibration.serializer().descriptor }),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("unit", CodeableConceptSerializer.descriptor)
+    b.optionalElement("source", ReferenceSerializer.descriptor)
+    b.optionalElement("parent", ReferenceSerializer.descriptor)
+    b.optionalElement("operationalStatus", String.serializer().descriptor)
+    b.optionalElement("_operationalStatus", ElementSerializer.descriptor)
+    b.optionalElement("color", String.serializer().descriptor)
+    b.optionalElement("_color", ElementSerializer.descriptor)
+    b.optionalElement("category", String.serializer().descriptor)
+    b.optionalElement("_category", ElementSerializer.descriptor)
+    b.optionalElement("measurementPeriod", TimingSerializer.descriptor)
+    b.optionalElement("calibration", DeviceMetricCalibrationSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -373,13 +334,21 @@ internal object DeviceMetricSerializer : FhirResourceSerializer<DeviceMetric> {
       parent = parent,
       operationalStatus =
         Enumeration.of(
-          operationalStatus?.let { DeviceMetric.DeviceMetricOperationalStatus.fromCode(it) },
+          if (operationalStatus != null)
+            DeviceMetric.DeviceMetricOperationalStatus.fromCode(operationalStatus)
+          else null,
           _operationalStatus,
         ),
-      color = Enumeration.of(color?.let { DeviceMetric.DeviceMetricColor.fromCode(it) }, _color),
+      color =
+        Enumeration.of(
+          if (color != null) DeviceMetric.DeviceMetricColor.fromCode(color) else null,
+          _color,
+        ),
       category =
-        Enumeration.of(category?.let { DeviceMetric.DeviceMetricCategory.fromCode(it) }, _category)
-          ?: throw SerializationException("Missing required property 'category' on DeviceMetric"),
+        Enumeration.of(
+          if (category != null) DeviceMetric.DeviceMetricCategory.fromCode(category) else null,
+          _category,
+        ) ?: throw SerializationException("Missing required property 'category' on DeviceMetric"),
       measurementPeriod = measurementPeriod,
       calibration = calibration ?: listOf(),
     )
@@ -391,25 +360,23 @@ internal object DeviceMetricSerializer : FhirResourceSerializer<DeviceMetric> {
     descriptorOffset: Int,
     `value`: DeviceMetric,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -444,41 +411,40 @@ internal object DeviceMetricSerializer : FhirResourceSerializer<DeviceMetric> {
       CodeableConceptSerializer,
       value.type,
     )
-    (value.unit)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.source)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.parent)?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.operationalStatus?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
-    }
-    (value.operationalStatus?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.color?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
-    }
-    (value.color?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.category.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
-    }
-    (value.category.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.measurementPeriod)?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, TimingSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      12 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.unit,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      ReferenceSerializer,
+      value.source,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      14 + descriptorOffset,
+      ReferenceSerializer,
+      value.parent,
+    )
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      15 + descriptorOffset,
+      value.operationalStatus?.value?.code,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.operationalStatus)
+    encoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.color?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.color)
+    encoder.encodeStringIfNotNull(descriptor, 19 + descriptorOffset, value.category.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.category)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      21 + descriptorOffset,
+      TimingSerializer,
+      value.measurementPeriod,
+    )
     if (value.calibration.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

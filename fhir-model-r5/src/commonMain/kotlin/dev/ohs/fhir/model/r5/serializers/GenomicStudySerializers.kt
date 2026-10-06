@@ -67,543 +67,425 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object GenomicStudyAnalysisSerializer : KSerializer<GenomicStudy.Analysis> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Analysis") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "methodType",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "changeType",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("genomeBuild", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("instantiatesCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_instantiatesCanonical", Element.serializer().descriptor, isOptional = true)
-      element("instantiatesUri", KotlinString.serializer().descriptor, isOptional = true)
-      element("_instantiatesUri", Element.serializer().descriptor, isOptional = true)
-      element("title", KotlinString.serializer().descriptor, isOptional = true)
-      element("_title", Element.serializer().descriptor, isOptional = true)
-      element("focus", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element(
-        "specimen",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-      element("protocolPerformed", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "regionsStudied",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "regionsCalled",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "input",
-        listSerialDescriptor(
-          lazyDescriptor { GenomicStudy.Analysis.Input.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "output",
-        listSerialDescriptor(
-          lazyDescriptor { GenomicStudy.Analysis.Output.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+      optionalElement("methodType", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("changeType", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("genomeBuild", CodeableConceptSerializer.descriptor)
+      optionalElement("instantiatesCanonical", KotlinString.serializer().descriptor)
+      optionalElement("_instantiatesCanonical", ElementSerializer.descriptor)
+      optionalElement("instantiatesUri", KotlinString.serializer().descriptor)
+      optionalElement("_instantiatesUri", ElementSerializer.descriptor)
+      optionalElement("title", KotlinString.serializer().descriptor)
+      optionalElement("_title", ElementSerializer.descriptor)
+      optionalElement("focus", ReferenceSerializer.listSerializer.descriptor)
+      optionalElement("specimen", ReferenceSerializer.listSerializer.descriptor)
+      optionalElement("date", KotlinString.serializer().descriptor)
+      optionalElement("_date", ElementSerializer.descriptor)
+      optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+      optionalElement("protocolPerformed", ReferenceSerializer.descriptor)
+      optionalElement("regionsStudied", ReferenceSerializer.listSerializer.descriptor)
+      optionalElement("regionsCalled", ReferenceSerializer.listSerializer.descriptor)
+      optionalElement("input", GenomicStudyAnalysisInputSerializer.listSerializer.descriptor)
+      optionalElement("output", GenomicStudyAnalysisOutputSerializer.listSerializer.descriptor)
+      optionalElement(
         "performer",
-        listSerialDescriptor(
-          lazyDescriptor { GenomicStudy.Analysis.Performer.serializer().descriptor }
-        ),
-        isOptional = true,
+        GenomicStudyAnalysisPerformerSerializer.listSerializer.descriptor,
       )
-      element(
-        "device",
-        listSerialDescriptor(
-          lazyDescriptor { GenomicStudy.Analysis.Device.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
+      optionalElement("device", GenomicStudyAnalysisDeviceSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<GenomicStudy.Analysis>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var identifier: List<Identifier>? = null
+      var methodType: List<CodeableConcept>? = null
+      var changeType: List<CodeableConcept>? = null
+      var genomeBuild: CodeableConcept? = null
+      var instantiatesCanonical: KotlinString? = null
+      var _instantiatesCanonical: Element? = null
+      var instantiatesUri: KotlinString? = null
+      var _instantiatesUri: Element? = null
+      var title: KotlinString? = null
+      var _title: Element? = null
+      var focus: List<Reference>? = null
+      var specimen: List<Reference>? = null
+      var date: KotlinString? = null
+      var _date: Element? = null
+      var note: List<Annotation>? = null
+      var protocolPerformed: Reference? = null
+      var regionsStudied: List<Reference>? = null
+      var regionsCalled: List<Reference>? = null
+      var input: List<GenomicStudy.Analysis.Input>? = null
+      var output: List<GenomicStudy.Analysis.Output>? = null
+      var performer: List<GenomicStudy.Analysis.Performer>? = null
+      var device: List<GenomicStudy.Analysis.Device>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            identifier =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                IdentifierSerializer.listSerializer,
+                null,
+              )
+          4 ->
+            methodType =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          5 ->
+            changeType =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          6 ->
+            genomeBuild =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          7 -> instantiatesCanonical = decodeStringElement(descriptor, i)
+          8 ->
+            _instantiatesCanonical =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> instantiatesUri = decodeStringElement(descriptor, i)
+          10 ->
+            _instantiatesUri =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          11 -> title = decodeStringElement(descriptor, i)
+          12 -> _title = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          13 ->
+            focus =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          14 ->
+            specimen =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          15 -> date = decodeStringElement(descriptor, i)
+          16 -> _date = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          17 ->
+            note =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                AnnotationSerializer.listSerializer,
+                null,
+              )
+          18 ->
+            protocolPerformed =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          19 ->
+            regionsStudied =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          20 ->
+            regionsCalled =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          21 ->
+            input =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                GenomicStudyAnalysisInputSerializer.listSerializer,
+                null,
+              )
+          22 ->
+            output =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                GenomicStudyAnalysisOutputSerializer.listSerializer,
+                null,
+              )
+          23 ->
+            performer =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                GenomicStudyAnalysisPerformerSerializer.listSerializer,
+                null,
+              )
+          24 ->
+            device =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                GenomicStudyAnalysisDeviceSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Analysis: " + i)
+        }
+      }
+      GenomicStudy.Analysis(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        identifier = identifier ?: listOf(),
+        methodType = methodType ?: listOf(),
+        changeType = changeType ?: listOf(),
+        genomeBuild = genomeBuild,
+        instantiatesCanonical = Canonical.of(instantiatesCanonical, _instantiatesCanonical),
+        instantiatesUri = Uri.of(instantiatesUri, _instantiatesUri),
+        title = R5String.of(title, _title),
+        focus = focus ?: listOf(),
+        specimen = specimen ?: listOf(),
+        date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+        note = note ?: listOf(),
+        protocolPerformed = protocolPerformed,
+        regionsStudied = regionsStudied ?: listOf(),
+        regionsCalled = regionsCalled ?: listOf(),
+        input = input ?: listOf(),
+        output = output ?: listOf(),
+        performer = performer ?: listOf(),
+        device = device ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      if (value.identifier.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          3,
+          IdentifierSerializer.listSerializer,
+          value.identifier,
+        )
+      if (value.methodType.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          4,
+          CodeableConceptSerializer.listSerializer,
+          value.methodType,
+        )
+      if (value.changeType.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          5,
+          CodeableConceptSerializer.listSerializer,
+          value.changeType,
+        )
+      encodeSerializableIfNotNull(descriptor, 6, CodeableConceptSerializer, value.genomeBuild)
+      encodeStringIfNotNull(descriptor, 7, value.instantiatesCanonical?.value)
+      encodeElementIfNotNull(descriptor, 8, value.instantiatesCanonical)
+      encodeStringIfNotNull(descriptor, 9, value.instantiatesUri?.value)
+      encodeElementIfNotNull(descriptor, 10, value.instantiatesUri)
+      encodeStringIfNotNull(descriptor, 11, value.title?.value)
+      encodeElementIfNotNull(descriptor, 12, value.title)
+      if (value.focus.isNotEmpty())
+        encodeSerializableElement(descriptor, 13, ReferenceSerializer.listSerializer, value.focus)
+      if (value.specimen.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          14,
+          ReferenceSerializer.listSerializer,
+          value.specimen,
+        )
+      encodeStringIfNotNull(descriptor, 15, value.date?.value?.toString())
+      encodeElementIfNotNull(descriptor, 16, value.date)
+      if (value.note.isNotEmpty())
+        encodeSerializableElement(descriptor, 17, AnnotationSerializer.listSerializer, value.note)
+      encodeSerializableIfNotNull(descriptor, 18, ReferenceSerializer, value.protocolPerformed)
+      if (value.regionsStudied.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          19,
+          ReferenceSerializer.listSerializer,
+          value.regionsStudied,
+        )
+      if (value.regionsCalled.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          20,
+          ReferenceSerializer.listSerializer,
+          value.regionsCalled,
+        )
+      if (value.input.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          21,
+          GenomicStudyAnalysisInputSerializer.listSerializer,
+          value.input,
+        )
+      if (value.output.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          22,
+          GenomicStudyAnalysisOutputSerializer.listSerializer,
+          value.output,
+        )
+      if (value.performer.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          23,
+          GenomicStudyAnalysisPerformerSerializer.listSerializer,
+          value.performer,
+        )
+      if (value.device.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          24,
+          GenomicStudyAnalysisDeviceSerializer.listSerializer,
+          value.device,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var identifier: List<Identifier>? = null
-    var methodType: List<CodeableConcept>? = null
-    var changeType: List<CodeableConcept>? = null
-    var genomeBuild: CodeableConcept? = null
-    var instantiatesCanonical: KotlinString? = null
-    var _instantiatesCanonical: Element? = null
-    var instantiatesUri: KotlinString? = null
-    var _instantiatesUri: Element? = null
-    var title: KotlinString? = null
-    var _title: Element? = null
-    var focus: List<Reference>? = null
-    var specimen: List<Reference>? = null
-    var date: KotlinString? = null
-    var _date: Element? = null
-    var note: List<Annotation>? = null
-    var protocolPerformed: Reference? = null
-    var regionsStudied: List<Reference>? = null
-    var regionsCalled: List<Reference>? = null
-    var input: List<GenomicStudy.Analysis.Input>? = null
-    var output: List<GenomicStudy.Analysis.Output>? = null
-    var performer: List<GenomicStudy.Analysis.Performer>? = null
-    var device: List<GenomicStudy.Analysis.Device>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          identifier =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              IdentifierSerializer.listSerializer,
-              null,
-            )
-        4 ->
-          methodType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        5 ->
-          changeType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        6 ->
-          genomeBuild =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        7 -> instantiatesCanonical = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _instantiatesCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 -> instantiatesUri = decoder.decodeStringElement(descriptor, i)
-        10 ->
-          _instantiatesUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        11 -> title = decoder.decodeStringElement(descriptor, i)
-        12 ->
-          _title = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        13 ->
-          focus =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        14 ->
-          specimen =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        15 -> date = decoder.decodeStringElement(descriptor, i)
-        16 ->
-          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        17 ->
-          note =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              AnnotationSerializer.listSerializer,
-              null,
-            )
-        18 ->
-          protocolPerformed =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        19 ->
-          regionsStudied =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        20 ->
-          regionsCalled =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        21 ->
-          input =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              GenomicStudyAnalysisInputSerializer.listSerializer,
-              null,
-            )
-        22 ->
-          output =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              GenomicStudyAnalysisOutputSerializer.listSerializer,
-              null,
-            )
-        23 ->
-          performer =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              GenomicStudyAnalysisPerformerSerializer.listSerializer,
-              null,
-            )
-        24 ->
-          device =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              GenomicStudyAnalysisDeviceSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Analysis: " + i)
-      }
-    }
-    return GenomicStudy.Analysis(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      methodType = methodType ?: listOf(),
-      changeType = changeType ?: listOf(),
-      genomeBuild = genomeBuild,
-      instantiatesCanonical = Canonical.of(instantiatesCanonical, _instantiatesCanonical),
-      instantiatesUri = Uri.of(instantiatesUri, _instantiatesUri),
-      title = R5String.of(title, _title),
-      focus = focus ?: listOf(),
-      specimen = specimen ?: listOf(),
-      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
-      note = note ?: listOf(),
-      protocolPerformed = protocolPerformed,
-      regionsStudied = regionsStudied ?: listOf(),
-      regionsCalled = regionsCalled ?: listOf(),
-      input = input ?: listOf(),
-      output = output ?: listOf(),
-      performer = performer ?: listOf(),
-      device = device ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: GenomicStudy.Analysis) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        3,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.methodType.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.methodType,
-      )
-    if (value.changeType.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        5,
-        CodeableConceptSerializer.listSerializer,
-        value.changeType,
-      )
-    (value.genomeBuild)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
-    }
-    ((value.instantiatesCanonical?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.instantiatesCanonical?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    ((value.instantiatesUri?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-    (value.instantiatesUri?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, ElementSerializer, it)
-    }
-    ((value.title?.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-    (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
-    }
-    if (value.focus.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        13,
-        ReferenceSerializer.listSerializer,
-        value.focus,
-      )
-    if (value.specimen.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        14,
-        ReferenceSerializer.listSerializer,
-        value.specimen,
-      )
-    ((value.date?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 15, it) }
-    (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16, ElementSerializer, it)
-    }
-    if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        17,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    (value.protocolPerformed)?.let {
-      encoder.encodeSerializableElement(descriptor, 18, ReferenceSerializer, it)
-    }
-    if (value.regionsStudied.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        19,
-        ReferenceSerializer.listSerializer,
-        value.regionsStudied,
-      )
-    if (value.regionsCalled.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        20,
-        ReferenceSerializer.listSerializer,
-        value.regionsCalled,
-      )
-    if (value.input.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        21,
-        GenomicStudyAnalysisInputSerializer.listSerializer,
-        value.input,
-      )
-    if (value.output.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        22,
-        GenomicStudyAnalysisOutputSerializer.listSerializer,
-        value.output,
-      )
-    if (value.performer.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        23,
-        GenomicStudyAnalysisPerformerSerializer.listSerializer,
-        value.performer,
-      )
-    if (value.device.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        24,
-        GenomicStudyAnalysisDeviceSerializer.listSerializer,
-        value.device,
-      )
   }
 }
 
 internal object GenomicStudyAnalysisInputSerializer : KSerializer<GenomicStudy.Analysis.Input> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Input") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("file", Reference.serializer().descriptor, isOptional = true)
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("generatedByIdentifier", Identifier.serializer().descriptor, isOptional = true)
-      element("generatedByReference", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("file", ReferenceSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("generatedByIdentifier", IdentifierSerializer.descriptor)
+      optionalElement("generatedByReference", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<GenomicStudy.Analysis.Input>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis.Input =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var `file`: Reference? = null
+      var type: CodeableConcept? = null
+      var generatedByIdentifier: Identifier? = null
+      var generatedByReference: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> `file` = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          4 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            generatedByIdentifier =
+              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          6 ->
+            generatedByReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Input: " + i)
+        }
+      }
+      GenomicStudy.Analysis.Input(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        `file` = `file`,
+        type = type,
+        generatedBy =
+          GenomicStudy.Analysis.Input.GeneratedBy.from(generatedByIdentifier, generatedByReference),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis.Input) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis.Input {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var `file`: Reference? = null
-    var type: CodeableConcept? = null
-    var generatedByIdentifier: Identifier? = null
-    var generatedByReference: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          `file` =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        4 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          generatedByIdentifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        6 ->
-          generatedByReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Input: " + i)
-      }
-    }
-    return GenomicStudy.Analysis.Input(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      `file` = `file`,
-      type = type,
-      generatedBy =
-        GenomicStudy.Analysis.Input.GeneratedBy.from(generatedByIdentifier, generatedByReference),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: GenomicStudy.Analysis.Input) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.`file`)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, it)
-    }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
-    }
-    when (val choice = value.generatedBy) {
-      null -> {}
-      is GenomicStudy.Analysis.Input.GeneratedBy.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 5, IdentifierSerializer, choice.value)
-      }
-      is GenomicStudy.Analysis.Input.GeneratedBy.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, choice.value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.`file`)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.type)
+      when (val choice = value.generatedBy) {
+        null -> {}
+        is GenomicStudy.Analysis.Input.GeneratedBy.Identifier -> {
+          encodeSerializableElement(descriptor, 5, IdentifierSerializer, choice.value)
+        }
+        is GenomicStudy.Analysis.Input.GeneratedBy.Reference -> {
+          encodeSerializableElement(descriptor, 6, ReferenceSerializer, choice.value)
+        }
       }
     }
   }
@@ -612,19 +494,11 @@ internal object GenomicStudyAnalysisInputSerializer : KSerializer<GenomicStudy.A
 internal object GenomicStudyAnalysisOutputSerializer : KSerializer<GenomicStudy.Analysis.Output> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Output") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("file", Reference.serializer().descriptor, isOptional = true)
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("file", ReferenceSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<GenomicStudy.Analysis.Output>> =
@@ -632,85 +506,65 @@ internal object GenomicStudyAnalysisOutputSerializer : KSerializer<GenomicStudy.
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis.Output =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var `file`: Reference? = null
+      var type: CodeableConcept? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> `file` = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          4 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Output: " + i)
+        }
+      }
+      GenomicStudy.Analysis.Output(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        `file` = `file`,
+        type = type,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis.Output) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis.Output {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var `file`: Reference? = null
-    var type: CodeableConcept? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          `file` =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        4 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Output: " + i)
-      }
-    }
-    return GenomicStudy.Analysis.Output(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      `file` = `file`,
-      type = type,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: GenomicStudy.Analysis.Output) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.`file`)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, it)
-    }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.`file`)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.type)
     }
   }
 }
@@ -719,19 +573,11 @@ internal object GenomicStudyAnalysisPerformerSerializer :
   KSerializer<GenomicStudy.Analysis.Performer> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Performer") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("actor", Reference.serializer().descriptor, isOptional = true)
-      element("role", CodeableConcept.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("actor", ReferenceSerializer.descriptor)
+      optionalElement("role", CodeableConceptSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<GenomicStudy.Analysis.Performer>> =
@@ -739,86 +585,65 @@ internal object GenomicStudyAnalysisPerformerSerializer :
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis.Performer =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var actor: Reference? = null
+      var role: CodeableConcept? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> actor = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          4 ->
+            role = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Performer: " + i)
+        }
+      }
+      GenomicStudy.Analysis.Performer(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        actor = actor,
+        role = role,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis.Performer) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis.Performer {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var actor: Reference? = null
-    var role: CodeableConcept? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          actor =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        4 ->
-          role =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Performer: " + i)
-      }
-    }
-    return GenomicStudy.Analysis.Performer(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      actor = actor,
-      role = role,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: GenomicStudy.Analysis.Performer,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, it) }
-    (value.role)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.actor)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.role)
     }
   }
 }
@@ -826,19 +651,11 @@ internal object GenomicStudyAnalysisPerformerSerializer :
 internal object GenomicStudyAnalysisDeviceSerializer : KSerializer<GenomicStudy.Analysis.Device> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Device") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("device", Reference.serializer().descriptor, isOptional = true)
-      element("function", CodeableConcept.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("device", ReferenceSerializer.descriptor)
+      optionalElement("function", CodeableConceptSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<GenomicStudy.Analysis.Device>> =
@@ -846,85 +663,66 @@ internal object GenomicStudyAnalysisDeviceSerializer : KSerializer<GenomicStudy.
 
   override fun deserialize(decoder: Decoder): GenomicStudy.Analysis.Device =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var device: Reference? = null
+      var function: CodeableConcept? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> device = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          4 ->
+            function =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Device: " + i)
+        }
+      }
+      GenomicStudy.Analysis.Device(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        device = device,
+        function = function,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: GenomicStudy.Analysis.Device) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): GenomicStudy.Analysis.Device {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var device: Reference? = null
-    var function: CodeableConcept? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          device =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        4 ->
-          function =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Device: " + i)
-      }
-    }
-    return GenomicStudy.Analysis.Device(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      device = device,
-      function = function,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: GenomicStudy.Analysis.Device) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.device)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, it)
-    }
-    (value.function)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.device)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.function)
     }
   }
 }
@@ -933,68 +731,39 @@ internal object GenomicStudySerializer : FhirResourceSerializer<GenomicStudy> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("GenomicStudy")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "type",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
-    b.element("startDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_startDate", Element.serializer().descriptor, isOptional = true)
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("referrer", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "interpreter",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reason",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("instantiatesCanonical", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_instantiatesCanonical", Element.serializer().descriptor, isOptional = true)
-    b.element("instantiatesUri", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_instantiatesUri", Element.serializer().descriptor, isOptional = true)
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "analysis",
-      listSerialDescriptor(lazyDescriptor { GenomicStudy.Analysis.serializer().descriptor }),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("startDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_startDate", ElementSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("referrer", ReferenceSerializer.descriptor)
+    b.optionalElement("interpreter", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("reason", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("instantiatesCanonical", KotlinString.serializer().descriptor)
+    b.optionalElement("_instantiatesCanonical", ElementSerializer.descriptor)
+    b.optionalElement("instantiatesUri", KotlinString.serializer().descriptor)
+    b.optionalElement("_instantiatesUri", ElementSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+    b.optionalElement("description", KotlinString.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("analysis", GenomicStudyAnalysisSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -1172,14 +941,20 @@ internal object GenomicStudySerializer : FhirResourceSerializer<GenomicStudy> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(status?.let { GenomicStudy.GenomicStudyStatus.fromCode(it) }, _status)
-          ?: throw SerializationException("Missing required property 'status' on GenomicStudy"),
+        Enumeration.of(
+          if (status != null) GenomicStudy.GenomicStudyStatus.fromCode(status) else null,
+          _status,
+        ) ?: throw SerializationException("Missing required property 'status' on GenomicStudy"),
       type = type ?: listOf(),
       subject =
         subject
           ?: throw SerializationException("Missing required property 'subject' on GenomicStudy"),
       encounter = encounter,
-      startDate = DateTime.of(startDate?.let { FhirDateTime.fromString(it) }, _startDate),
+      startDate =
+        DateTime.of(
+          if (startDate != null) FhirDateTime.fromString(startDate) else null,
+          _startDate,
+        ),
       basedOn = basedOn ?: listOf(),
       referrer = referrer,
       interpreter = interpreter ?: listOf(),
@@ -1198,25 +973,23 @@ internal object GenomicStudySerializer : FhirResourceSerializer<GenomicStudy> {
     descriptorOffset: Int,
     `value`: GenomicStudy,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1245,12 +1018,8 @@ internal object GenomicStudySerializer : FhirResourceSerializer<GenomicStudy> {
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
     if (value.type.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1264,15 +1033,18 @@ internal object GenomicStudySerializer : FhirResourceSerializer<GenomicStudy> {
       ReferenceSerializer,
       value.subject,
     )
-    (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.startDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
-    }
-    (value.startDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      15 + descriptorOffset,
+      ReferenceSerializer,
+      value.encounter,
+    )
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      16 + descriptorOffset,
+      value.startDate?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.startDate)
     if (value.basedOn.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1280,9 +1052,12 @@ internal object GenomicStudySerializer : FhirResourceSerializer<GenomicStudy> {
         ReferenceSerializer.listSerializer,
         value.basedOn,
       )
-    (value.referrer)?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      ReferenceSerializer,
+      value.referrer,
+    )
     if (value.interpreter.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1297,18 +1072,14 @@ internal object GenomicStudySerializer : FhirResourceSerializer<GenomicStudy> {
         CodeableReferenceSerializer.listSerializer,
         value.reason,
       )
-    ((value.instantiatesCanonical?.value))?.let {
-      encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
-    }
-    (value.instantiatesCanonical?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.instantiatesUri?.value))?.let {
-      encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
-    }
-    (value.instantiatesUri?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 25 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      value.instantiatesCanonical?.value,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.instantiatesCanonical)
+    encoder.encodeStringIfNotNull(descriptor, 24 + descriptorOffset, value.instantiatesUri?.value)
+    encoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.instantiatesUri)
     if (value.note.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1316,12 +1087,8 @@ internal object GenomicStudySerializer : FhirResourceSerializer<GenomicStudy> {
         AnnotationSerializer.listSerializer,
         value.note,
       )
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 28 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 27 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 28 + descriptorOffset, value.description)
     if (value.analysis.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

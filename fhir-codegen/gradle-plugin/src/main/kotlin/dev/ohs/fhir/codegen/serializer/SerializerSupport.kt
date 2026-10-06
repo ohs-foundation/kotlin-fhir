@@ -53,6 +53,9 @@ internal val listDescMemberName =
 internal fun lazyDescriptorMemberName(className: ClassName): MemberName =
   MemberName("${className.packageName}.serializers", "lazyDescriptor")
 
+internal fun optionalElementMemberName(className: ClassName): MemberName =
+  MemberName("${className.packageName}.serializers", "optionalElement")
+
 /**
  * Builds `internal val listSerializer: KSerializer<List<T>> = ListSerializer(this)` (or
  * `nullableListSerializer: KSerializer<List<T?>> = ListSerializer(this.nullable)` when

@@ -61,173 +61,145 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object SubstanceProteinSubunitSerializer : KSerializer<SubstanceProtein.Subunit> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Subunit") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("subunit", Int.serializer().descriptor, isOptional = true)
-      element("_subunit", Element.serializer().descriptor, isOptional = true)
-      element("sequence", KotlinString.serializer().descriptor, isOptional = true)
-      element("_sequence", Element.serializer().descriptor, isOptional = true)
-      element("length", Int.serializer().descriptor, isOptional = true)
-      element("_length", Element.serializer().descriptor, isOptional = true)
-      element("sequenceAttachment", Attachment.serializer().descriptor, isOptional = true)
-      element("nTerminalModificationId", Identifier.serializer().descriptor, isOptional = true)
-      element("nTerminalModification", KotlinString.serializer().descriptor, isOptional = true)
-      element("_nTerminalModification", Element.serializer().descriptor, isOptional = true)
-      element("cTerminalModificationId", Identifier.serializer().descriptor, isOptional = true)
-      element("cTerminalModification", KotlinString.serializer().descriptor, isOptional = true)
-      element("_cTerminalModification", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("subunit", Int.serializer().descriptor)
+      optionalElement("_subunit", ElementSerializer.descriptor)
+      optionalElement("sequence", KotlinString.serializer().descriptor)
+      optionalElement("_sequence", ElementSerializer.descriptor)
+      optionalElement("length", Int.serializer().descriptor)
+      optionalElement("_length", ElementSerializer.descriptor)
+      optionalElement("sequenceAttachment", AttachmentSerializer.descriptor)
+      optionalElement("nTerminalModificationId", IdentifierSerializer.descriptor)
+      optionalElement("nTerminalModification", KotlinString.serializer().descriptor)
+      optionalElement("_nTerminalModification", ElementSerializer.descriptor)
+      optionalElement("cTerminalModificationId", IdentifierSerializer.descriptor)
+      optionalElement("cTerminalModification", KotlinString.serializer().descriptor)
+      optionalElement("_cTerminalModification", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<SubstanceProtein.Subunit>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): SubstanceProtein.Subunit =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var subunit: Int? = null
+      var _subunit: Element? = null
+      var sequence: KotlinString? = null
+      var _sequence: Element? = null
+      var length: Int? = null
+      var _length: Element? = null
+      var sequenceAttachment: Attachment? = null
+      var nTerminalModificationId: Identifier? = null
+      var nTerminalModification: KotlinString? = null
+      var _nTerminalModification: Element? = null
+      var cTerminalModificationId: Identifier? = null
+      var cTerminalModification: KotlinString? = null
+      var _cTerminalModification: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> subunit = decodeIntElement(descriptor, i)
+          4 -> _subunit = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> sequence = decodeStringElement(descriptor, i)
+          6 -> _sequence = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> length = decodeIntElement(descriptor, i)
+          8 -> _length = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 ->
+            sequenceAttachment =
+              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
+          10 ->
+            nTerminalModificationId =
+              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          11 -> nTerminalModification = decodeStringElement(descriptor, i)
+          12 ->
+            _nTerminalModification =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          13 ->
+            cTerminalModificationId =
+              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          14 -> cTerminalModification = decodeStringElement(descriptor, i)
+          15 ->
+            _cTerminalModification =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Subunit: " + i)
+        }
+      }
+      SubstanceProtein.Subunit(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        subunit = Integer.of(subunit, _subunit),
+        sequence = R5String.of(sequence, _sequence),
+        length = Integer.of(length, _length),
+        sequenceAttachment = sequenceAttachment,
+        nTerminalModificationId = nTerminalModificationId,
+        nTerminalModification = R5String.of(nTerminalModification, _nTerminalModification),
+        cTerminalModificationId = cTerminalModificationId,
+        cTerminalModification = R5String.of(cTerminalModification, _cTerminalModification),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceProtein.Subunit) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): SubstanceProtein.Subunit {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var subunit: Int? = null
-    var _subunit: Element? = null
-    var sequence: KotlinString? = null
-    var _sequence: Element? = null
-    var length: Int? = null
-    var _length: Element? = null
-    var sequenceAttachment: Attachment? = null
-    var nTerminalModificationId: Identifier? = null
-    var nTerminalModification: KotlinString? = null
-    var _nTerminalModification: Element? = null
-    var cTerminalModificationId: Identifier? = null
-    var cTerminalModification: KotlinString? = null
-    var _cTerminalModification: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> subunit = decoder.decodeIntElement(descriptor, i)
-        4 ->
-          _subunit =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> sequence = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _sequence =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> length = decoder.decodeIntElement(descriptor, i)
-        8 ->
-          _length =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 ->
-          sequenceAttachment =
-            decoder.decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-        10 ->
-          nTerminalModificationId =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        11 -> nTerminalModification = decoder.decodeStringElement(descriptor, i)
-        12 ->
-          _nTerminalModification =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        13 ->
-          cTerminalModificationId =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        14 -> cTerminalModification = decoder.decodeStringElement(descriptor, i)
-        15 ->
-          _cTerminalModification =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Subunit: " + i)
-      }
-    }
-    return SubstanceProtein.Subunit(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      subunit = Integer.of(subunit, _subunit),
-      sequence = R5String.of(sequence, _sequence),
-      length = Integer.of(length, _length),
-      sequenceAttachment = sequenceAttachment,
-      nTerminalModificationId = nTerminalModificationId,
-      nTerminalModification = R5String.of(nTerminalModification, _nTerminalModification),
-      cTerminalModificationId = cTerminalModificationId,
-      cTerminalModification = R5String.of(cTerminalModification, _cTerminalModification),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: SubstanceProtein.Subunit) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeIntIfNotNull(descriptor, 3, value.subunit?.value)
+      encodeElementIfNotNull(descriptor, 4, value.subunit)
+      encodeStringIfNotNull(descriptor, 5, value.sequence?.value)
+      encodeElementIfNotNull(descriptor, 6, value.sequence)
+      encodeIntIfNotNull(descriptor, 7, value.length?.value)
+      encodeElementIfNotNull(descriptor, 8, value.length)
+      encodeSerializableIfNotNull(descriptor, 9, AttachmentSerializer, value.sequenceAttachment)
+      encodeSerializableIfNotNull(
         descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
+        10,
+        IdentifierSerializer,
+        value.nTerminalModificationId,
       )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      encodeStringIfNotNull(descriptor, 11, value.nTerminalModification?.value)
+      encodeElementIfNotNull(descriptor, 12, value.nTerminalModification)
+      encodeSerializableIfNotNull(
         descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
+        13,
+        IdentifierSerializer,
+        value.cTerminalModificationId,
       )
-    ((value.subunit?.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
-    (value.subunit?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-    }
-    ((value.sequence?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-    (value.sequence?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.length?.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
-    (value.length?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    (value.sequenceAttachment)?.let {
-      encoder.encodeSerializableElement(descriptor, 9, AttachmentSerializer, it)
-    }
-    (value.nTerminalModificationId)?.let {
-      encoder.encodeSerializableElement(descriptor, 10, IdentifierSerializer, it)
-    }
-    ((value.nTerminalModification?.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-    (value.nTerminalModification?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
-    }
-    (value.cTerminalModificationId)?.let {
-      encoder.encodeSerializableElement(descriptor, 13, IdentifierSerializer, it)
-    }
-    ((value.cTerminalModification?.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-    (value.cTerminalModification?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 14, value.cTerminalModification?.value)
+      encodeElementIfNotNull(descriptor, 15, value.cTerminalModification)
     }
   }
 }
@@ -236,46 +208,25 @@ internal object SubstanceProteinSerializer : FhirResourceSerializer<SubstancePro
   override val descriptor: SerialDescriptor = buildResourceDescriptor("SubstanceProtein")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("sequenceType", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("numberOfSubunits", Int.serializer().descriptor, isOptional = true)
-    b.element("_numberOfSubunits", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "disulfideLinkage",
-      listSerialDescriptor(KotlinString.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "_disulfideLinkage",
-      listSerialDescriptor(Element.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "subunit",
-      listSerialDescriptor(lazyDescriptor { SubstanceProtein.Subunit.serializer().descriptor }),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("sequenceType", CodeableConceptSerializer.descriptor)
+    b.optionalElement("numberOfSubunits", Int.serializer().descriptor)
+    b.optionalElement("_numberOfSubunits", ElementSerializer.descriptor)
+    b.optionalElement("disulfideLinkage", stringNullableListSerializer.descriptor)
+    b.optionalElement("_disulfideLinkage", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("subunit", SubstanceProteinSubunitSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -394,10 +345,7 @@ internal object SubstanceProteinSerializer : FhirResourceSerializer<SubstancePro
         (kotlin.collections.List(
           maxOf(disulfideLinkage?.size ?: 0, _disulfideLinkage?.size ?: 0)
         ) { index ->
-          R5String.of(
-            disulfideLinkage?.getOrNull(index)?.let { it },
-            _disulfideLinkage?.getOrNull(index),
-          )
+          R5String.of(disulfideLinkage?.getOrNull(index), _disulfideLinkage?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'disulfideLinkage' on SubstanceProtein has neither a value nor an id/extension"
             )
@@ -412,25 +360,23 @@ internal object SubstanceProteinSerializer : FhirResourceSerializer<SubstancePro
     descriptorOffset: Int,
     `value`: SubstanceProtein,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -452,35 +398,22 @@ internal object SubstanceProteinSerializer : FhirResourceSerializer<SubstancePro
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.sequenceType)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    ((value.numberOfSubunits?.value))?.let {
-      encoder.encodeIntElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.numberOfSubunits?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.disulfideLinkage.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      10 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.sequenceType,
+    )
+    encoder.encodeIntIfNotNull(descriptor, 11 + descriptorOffset, value.numberOfSubunits?.value)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.numberOfSubunits)
+    if (value.disulfideLinkage.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.disulfideLinkage.map { it.value },
       )
-    }
-    (value.disulfideLinkage.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
+      encoder.encodePrimitiveElementList(descriptor, 14 + descriptorOffset, value.disulfideLinkage)
     }
     if (value.subunit.isNotEmpty())
       encoder.encodeSerializableElement(

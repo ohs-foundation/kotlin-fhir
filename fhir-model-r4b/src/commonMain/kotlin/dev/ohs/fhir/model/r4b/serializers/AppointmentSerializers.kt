@@ -67,148 +67,123 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object AppointmentParticipantSerializer : KSerializer<Appointment.Participant> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Participant") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "type",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("actor", Reference.serializer().descriptor, isOptional = true)
-      element("required", KotlinString.serializer().descriptor, isOptional = true)
-      element("_required", Element.serializer().descriptor, isOptional = true)
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("period", Period.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("actor", ReferenceSerializer.descriptor)
+      optionalElement("required", KotlinString.serializer().descriptor)
+      optionalElement("_required", ElementSerializer.descriptor)
+      optionalElement("status", KotlinString.serializer().descriptor)
+      optionalElement("_status", ElementSerializer.descriptor)
+      optionalElement("period", PeriodSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Appointment.Participant>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Appointment.Participant =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: List<CodeableConcept>? = null
+      var actor: Reference? = null
+      var required: KotlinString? = null
+      var _required: Element? = null
+      var status: KotlinString? = null
+      var _status: Element? = null
+      var period: Period? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            type =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          4 -> actor = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          5 -> required = decodeStringElement(descriptor, i)
+          6 -> _required = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 -> status = decodeStringElement(descriptor, i)
+          8 -> _status = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 -> period = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Participant: " + i)
+        }
+      }
+      Appointment.Participant(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type = type ?: listOf(),
+        actor = actor,
+        required =
+          Enumeration.of(
+            if (required != null) Appointment.ParticipantRequired.fromCode(required) else null,
+            _required,
+          ),
+        status =
+          Enumeration.of(
+            if (status != null) Appointment.ParticipationStatus.fromCode(status) else null,
+            _status,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'status' on Appointment.Participant"
+            ),
+        period = period,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.Participant) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      if (value.type.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          3,
+          CodeableConceptSerializer.listSerializer,
+          value.type,
+        )
+      encodeSerializableIfNotNull(descriptor, 4, ReferenceSerializer, value.actor)
+      encodeStringIfNotNull(descriptor, 5, value.required?.value?.code)
+      encodeElementIfNotNull(descriptor, 6, value.required)
+      encodeStringIfNotNull(descriptor, 7, value.status.value?.code)
+      encodeElementIfNotNull(descriptor, 8, value.status)
+      encodeSerializableIfNotNull(descriptor, 9, PeriodSerializer, value.period)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Appointment.Participant {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: List<CodeableConcept>? = null
-    var actor: Reference? = null
-    var required: KotlinString? = null
-    var _required: Element? = null
-    var status: KotlinString? = null
-    var _status: Element? = null
-    var period: Period? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        4 ->
-          actor =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        5 -> required = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _required =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 -> status = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Participant: " + i)
-      }
-    }
-    return Appointment.Participant(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type = type ?: listOf(),
-      actor = actor,
-      required =
-        Enumeration.of(required?.let { Appointment.ParticipantRequired.fromCode(it) }, _required),
-      status =
-        Enumeration.of(status?.let { Appointment.ParticipationStatus.fromCode(it) }, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on Appointment.Participant"
-          ),
-      period = period,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Appointment.Participant) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, it) }
-    ((value.required?.value?.code))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-    (value.required?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-    }
-    ((value.status.value?.code))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 9, PeriodSerializer, it) }
   }
 }
 
@@ -216,95 +191,50 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Appointment")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("cancelationReason", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "serviceCategory",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "serviceType",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "specialty",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("appointmentType", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "reasonCode",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reasonReference",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("priority", Int.serializer().descriptor, isOptional = true)
-    b.element("_priority", Element.serializer().descriptor, isOptional = true)
-    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "supportingInformation",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("start", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_start", Element.serializer().descriptor, isOptional = true)
-    b.element("end", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_end", Element.serializer().descriptor, isOptional = true)
-    b.element("minutesDuration", Int.serializer().descriptor, isOptional = true)
-    b.element("_minutesDuration", Element.serializer().descriptor, isOptional = true)
-    b.element("slot", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("created", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_created", Element.serializer().descriptor, isOptional = true)
-    b.element("comment", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_comment", Element.serializer().descriptor, isOptional = true)
-    b.element("patientInstruction", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_patientInstruction", Element.serializer().descriptor, isOptional = true)
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element(
-      "participant",
-      listSerialDescriptor(lazyDescriptor { Appointment.Participant.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element(
-      "requestedPeriod",
-      listSerialDescriptor(Period.serializer().descriptor),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("cancelationReason", CodeableConceptSerializer.descriptor)
+    b.optionalElement("serviceCategory", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("serviceType", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("specialty", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("appointmentType", CodeableConceptSerializer.descriptor)
+    b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("reasonReference", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("priority", Int.serializer().descriptor)
+    b.optionalElement("_priority", ElementSerializer.descriptor)
+    b.optionalElement("description", KotlinString.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("supportingInformation", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("start", KotlinString.serializer().descriptor)
+    b.optionalElement("_start", ElementSerializer.descriptor)
+    b.optionalElement("end", KotlinString.serializer().descriptor)
+    b.optionalElement("_end", ElementSerializer.descriptor)
+    b.optionalElement("minutesDuration", Int.serializer().descriptor)
+    b.optionalElement("_minutesDuration", ElementSerializer.descriptor)
+    b.optionalElement("slot", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("created", KotlinString.serializer().descriptor)
+    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.optionalElement("comment", KotlinString.serializer().descriptor)
+    b.optionalElement("_comment", ElementSerializer.descriptor)
+    b.optionalElement("patientInstruction", KotlinString.serializer().descriptor)
+    b.optionalElement("_patientInstruction", ElementSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("participant", AppointmentParticipantSerializer.listSerializer.descriptor)
+    b.optionalElement("requestedPeriod", PeriodSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -546,8 +476,10 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(status?.let { Appointment.AppointmentStatus.fromCode(it) }, _status)
-          ?: throw SerializationException("Missing required property 'status' on Appointment"),
+        Enumeration.of(
+          if (status != null) Appointment.AppointmentStatus.fromCode(status) else null,
+          _status,
+        ) ?: throw SerializationException("Missing required property 'status' on Appointment"),
       cancelationReason = cancelationReason,
       serviceCategory = serviceCategory ?: listOf(),
       serviceType = serviceType ?: listOf(),
@@ -558,11 +490,12 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       priority = UnsignedInt.of(priority, _priority),
       description = R4bString.of(description, _description),
       supportingInformation = supportingInformation ?: listOf(),
-      start = Instant.of(start?.let { FhirDateTime.fromString(it) }, _start),
-      end = Instant.of(end?.let { FhirDateTime.fromString(it) }, _end),
+      start = Instant.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
+      end = Instant.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
       minutesDuration = PositiveInt.of(minutesDuration, _minutesDuration),
       slot = slot ?: listOf(),
-      created = DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created),
+      created =
+        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created),
       comment = R4bString.of(comment, _comment),
       patientInstruction = R4bString.of(patientInstruction, _patientInstruction),
       basedOn = basedOn ?: listOf(),
@@ -577,25 +510,23 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
     descriptorOffset: Int,
     `value`: Appointment,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -624,20 +555,14 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.cancelationReason)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.cancelationReason,
+    )
     if (value.serviceCategory.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -659,14 +584,12 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         CodeableConceptSerializer.listSerializer,
         value.specialty,
       )
-    (value.appointmentType)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.appointmentType,
+    )
     if (value.reasonCode.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -681,18 +604,10 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         ReferenceSerializer.listSerializer,
         value.reasonReference,
       )
-    ((value.priority?.value))?.let {
-      encoder.encodeIntElement(descriptor, 20 + descriptorOffset, it)
-    }
-    (value.priority?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeIntIfNotNull(descriptor, 20 + descriptorOffset, value.priority?.value)
+    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.priority)
+    encoder.encodeStringIfNotNull(descriptor, 22 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.description)
     if (value.supportingInformation.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -700,24 +615,12 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         ReferenceSerializer.listSerializer,
         value.supportingInformation,
       )
-    ((value.start?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
-    }
-    (value.start?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.end?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
-    }
-    (value.end?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 28 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.minutesDuration?.value))?.let {
-      encoder.encodeIntElement(descriptor, 29 + descriptorOffset, it)
-    }
-    (value.minutesDuration?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 30 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 25 + descriptorOffset, value.start?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.start)
+    encoder.encodeStringIfNotNull(descriptor, 27 + descriptorOffset, value.end?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 28 + descriptorOffset, value.end)
+    encoder.encodeIntIfNotNull(descriptor, 29 + descriptorOffset, value.minutesDuration?.value)
+    encoder.encodeElementIfNotNull(descriptor, 30 + descriptorOffset, value.minutesDuration)
     if (value.slot.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -725,24 +628,20 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
         ReferenceSerializer.listSerializer,
         value.slot,
       )
-    ((value.created?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 32 + descriptorOffset, it)
-    }
-    (value.created?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 33 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.comment?.value))?.let {
-      encoder.encodeStringElement(descriptor, 34 + descriptorOffset, it)
-    }
-    (value.comment?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 35 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.patientInstruction?.value))?.let {
-      encoder.encodeStringElement(descriptor, 36 + descriptorOffset, it)
-    }
-    (value.patientInstruction?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 37 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      32 + descriptorOffset,
+      value.created?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.created)
+    encoder.encodeStringIfNotNull(descriptor, 34 + descriptorOffset, value.comment?.value)
+    encoder.encodeElementIfNotNull(descriptor, 35 + descriptorOffset, value.comment)
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      36 + descriptorOffset,
+      value.patientInstruction?.value,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 37 + descriptorOffset, value.patientInstruction)
     if (value.basedOn.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

@@ -70,25 +70,17 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object NutritionIntakeConsumedItemSerializer : KSerializer<NutritionIntake.ConsumedItem> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ConsumedItem") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("nutritionProduct", CodeableReference.serializer().descriptor, isOptional = true)
-      element("schedule", Timing.serializer().descriptor, isOptional = true)
-      element("amount", Quantity.serializer().descriptor, isOptional = true)
-      element("rate", Quantity.serializer().descriptor, isOptional = true)
-      element("notConsumed", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_notConsumed", Element.serializer().descriptor, isOptional = true)
-      element("notConsumedReason", CodeableConcept.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("nutritionProduct", CodeableReferenceSerializer.descriptor)
+      optionalElement("schedule", TimingSerializer.descriptor)
+      optionalElement("amount", QuantitySerializer.descriptor)
+      optionalElement("rate", QuantitySerializer.descriptor)
+      optionalElement("notConsumed", KotlinBoolean.serializer().descriptor)
+      optionalElement("_notConsumed", ElementSerializer.descriptor)
+      optionalElement("notConsumedReason", CodeableConceptSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<NutritionIntake.ConsumedItem>> =
@@ -96,140 +88,106 @@ internal object NutritionIntakeConsumedItemSerializer : KSerializer<NutritionInt
 
   override fun deserialize(decoder: Decoder): NutritionIntake.ConsumedItem =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: CodeableConcept? = null
+      var nutritionProduct: CodeableReference? = null
+      var schedule: Timing? = null
+      var amount: Quantity? = null
+      var rate: Quantity? = null
+      var notConsumed: KotlinBoolean? = null
+      var _notConsumed: Element? = null
+      var notConsumedReason: CodeableConcept? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            nutritionProduct =
+              decodeNullableSerializableElement(descriptor, i, CodeableReferenceSerializer, null)
+          5 -> schedule = decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
+          6 -> amount = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          7 -> rate = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          8 -> notConsumed = decodeBooleanElement(descriptor, i)
+          9 ->
+            _notConsumed = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          10 ->
+            notConsumedReason =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding ConsumedItem: " + i)
+        }
+      }
+      NutritionIntake.ConsumedItem(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type =
+          type
+            ?: throw SerializationException(
+              "Missing required property 'type' on NutritionIntake.ConsumedItem"
+            ),
+        nutritionProduct =
+          nutritionProduct
+            ?: throw SerializationException(
+              "Missing required property 'nutritionProduct' on NutritionIntake.ConsumedItem"
+            ),
+        schedule = schedule,
+        amount = amount,
+        rate = rate,
+        notConsumed = R5Boolean.of(notConsumed, _notConsumed),
+        notConsumedReason = notConsumedReason,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: NutritionIntake.ConsumedItem) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): NutritionIntake.ConsumedItem {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: CodeableConcept? = null
-    var nutritionProduct: CodeableReference? = null
-    var schedule: Timing? = null
-    var amount: Quantity? = null
-    var rate: Quantity? = null
-    var notConsumed: KotlinBoolean? = null
-    var _notConsumed: Element? = null
-    var notConsumedReason: CodeableConcept? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          nutritionProduct =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableReferenceSerializer,
-              null,
-            )
-        5 ->
-          schedule =
-            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
-        6 ->
-          amount =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        7 ->
-          rate = decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        8 -> notConsumed = decoder.decodeBooleanElement(descriptor, i)
-        9 ->
-          _notConsumed =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        10 ->
-          notConsumedReason =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ConsumedItem: " + i)
-      }
-    }
-    return NutritionIntake.ConsumedItem(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on NutritionIntake.ConsumedItem"
-          ),
-      nutritionProduct =
-        nutritionProduct
-          ?: throw SerializationException(
-            "Missing required property 'nutritionProduct' on NutritionIntake.ConsumedItem"
-          ),
-      schedule = schedule,
-      amount = amount,
-      rate = rate,
-      notConsumed = R5Boolean.of(notConsumed, _notConsumed),
-      notConsumedReason = notConsumedReason,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: NutritionIntake.ConsumedItem) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
+      encodeSerializableElement(descriptor, 4, CodeableReferenceSerializer, value.nutritionProduct)
+      encodeSerializableIfNotNull(descriptor, 5, TimingSerializer, value.schedule)
+      encodeSerializableIfNotNull(descriptor, 6, QuantitySerializer, value.amount)
+      encodeSerializableIfNotNull(descriptor, 7, QuantitySerializer, value.rate)
+      encodeBooleanIfNotNull(descriptor, 8, value.notConsumed?.value)
+      encodeElementIfNotNull(descriptor, 9, value.notConsumed)
+      encodeSerializableIfNotNull(
         descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
+        10,
+        CodeableConceptSerializer,
+        value.notConsumedReason,
       )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
-    encoder.encodeSerializableElement(
-      descriptor,
-      4,
-      CodeableReferenceSerializer,
-      value.nutritionProduct,
-    )
-    (value.schedule)?.let { encoder.encodeSerializableElement(descriptor, 5, TimingSerializer, it) }
-    (value.amount)?.let { encoder.encodeSerializableElement(descriptor, 6, QuantitySerializer, it) }
-    (value.rate)?.let { encoder.encodeSerializableElement(descriptor, 7, QuantitySerializer, it) }
-    ((value.notConsumed?.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
-    (value.notConsumed?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
-    }
-    (value.notConsumedReason)?.let {
-      encoder.encodeSerializableElement(descriptor, 10, CodeableConceptSerializer, it)
     }
   }
 }
@@ -238,19 +196,11 @@ internal object NutritionIntakeIngredientLabelSerializer :
   KSerializer<NutritionIntake.IngredientLabel> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("IngredientLabel") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("nutrient", CodeableReference.serializer().descriptor, isOptional = true)
-      element("amount", Quantity.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("nutrient", CodeableReferenceSerializer.descriptor)
+      optionalElement("amount", QuantitySerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<NutritionIntake.IngredientLabel>> =
@@ -258,200 +208,157 @@ internal object NutritionIntakeIngredientLabelSerializer :
 
   override fun deserialize(decoder: Decoder): NutritionIntake.IngredientLabel =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var nutrient: CodeableReference? = null
+      var amount: Quantity? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            nutrient =
+              decodeNullableSerializableElement(descriptor, i, CodeableReferenceSerializer, null)
+          4 -> amount = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding IngredientLabel: " + i)
+        }
+      }
+      NutritionIntake.IngredientLabel(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        nutrient =
+          nutrient
+            ?: throw SerializationException(
+              "Missing required property 'nutrient' on NutritionIntake.IngredientLabel"
+            ),
+        amount =
+          amount
+            ?: throw SerializationException(
+              "Missing required property 'amount' on NutritionIntake.IngredientLabel"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: NutritionIntake.IngredientLabel) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(descriptor, 3, CodeableReferenceSerializer, value.nutrient)
+      encodeSerializableElement(descriptor, 4, QuantitySerializer, value.amount)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): NutritionIntake.IngredientLabel {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var nutrient: CodeableReference? = null
-    var amount: Quantity? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          nutrient =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableReferenceSerializer,
-              null,
-            )
-        4 ->
-          amount =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding IngredientLabel: " + i)
-      }
-    }
-    return NutritionIntake.IngredientLabel(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      nutrient =
-        nutrient
-          ?: throw SerializationException(
-            "Missing required property 'nutrient' on NutritionIntake.IngredientLabel"
-          ),
-      amount =
-        amount
-          ?: throw SerializationException(
-            "Missing required property 'amount' on NutritionIntake.IngredientLabel"
-          ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: NutritionIntake.IngredientLabel,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(descriptor, 3, CodeableReferenceSerializer, value.nutrient)
-    encoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, value.amount)
   }
 }
 
 internal object NutritionIntakePerformerSerializer : KSerializer<NutritionIntake.Performer> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Performer") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("function", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("actor", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("function", CodeableConceptSerializer.descriptor)
+      optionalElement("actor", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<NutritionIntake.Performer>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): NutritionIntake.Performer =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var function: CodeableConcept? = null
+      var actor: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            function =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 -> actor = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Performer: " + i)
+        }
+      }
+      NutritionIntake.Performer(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        function = function,
+        actor =
+          actor
+            ?: throw SerializationException(
+              "Missing required property 'actor' on NutritionIntake.Performer"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: NutritionIntake.Performer) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.function)
+      encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.actor)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): NutritionIntake.Performer {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var function: CodeableConcept? = null
-    var actor: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          function =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          actor =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Performer: " + i)
-      }
-    }
-    return NutritionIntake.Performer(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      function = function,
-      actor =
-        actor
-          ?: throw SerializationException(
-            "Missing required property 'actor' on NutritionIntake.Performer"
-          ),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: NutritionIntake.Performer) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.function)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    encoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.actor)
   }
 }
 
@@ -459,102 +366,53 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
   override val descriptor: SerialDescriptor = buildResourceDescriptor("NutritionIntake")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "instantiatesCanonical",
-      listSerialDescriptor(String.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "_instantiatesCanonical",
-      listSerialDescriptor(Element.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "instantiatesUri",
-      listSerialDescriptor(String.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "_instantiatesUri",
-      listSerialDescriptor(Element.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("partOf", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("status", String.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "statusReason",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
-    b.element("occurrenceDateTime", String.serializer().descriptor, isOptional = true)
-    b.element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
-    b.element("occurrencePeriod", Period.serializer().descriptor, isOptional = true)
-    b.element("recorded", String.serializer().descriptor, isOptional = true)
-    b.element("_recorded", Element.serializer().descriptor, isOptional = true)
-    b.element("reportedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_reportedBoolean", Element.serializer().descriptor, isOptional = true)
-    b.element("reportedReference", Reference.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("instantiatesCanonical", stringNullableListSerializer.descriptor)
+    b.optionalElement("_instantiatesCanonical", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("instantiatesUri", stringNullableListSerializer.descriptor)
+    b.optionalElement("_instantiatesUri", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("partOf", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("status", String.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("statusReason", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("occurrenceDateTime", String.serializer().descriptor)
+    b.optionalElement("_occurrenceDateTime", ElementSerializer.descriptor)
+    b.optionalElement("occurrencePeriod", PeriodSerializer.descriptor)
+    b.optionalElement("recorded", String.serializer().descriptor)
+    b.optionalElement("_recorded", ElementSerializer.descriptor)
+    b.optionalElement("reportedBoolean", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_reportedBoolean", ElementSerializer.descriptor)
+    b.optionalElement("reportedReference", ReferenceSerializer.descriptor)
+    b.optionalElement(
       "consumedItem",
-      listSerialDescriptor(lazyDescriptor { NutritionIntake.ConsumedItem.serializer().descriptor }),
-      isOptional = true,
+      NutritionIntakeConsumedItemSerializer.listSerializer.descriptor,
     )
-    b.element(
+    b.optionalElement(
       "ingredientLabel",
-      listSerialDescriptor(
-        lazyDescriptor { NutritionIntake.IngredientLabel.serializer().descriptor }
-      ),
-      isOptional = true,
+      NutritionIntakeIngredientLabelSerializer.listSerializer.descriptor,
     )
-    b.element(
-      "performer",
-      listSerialDescriptor(lazyDescriptor { NutritionIntake.Performer.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element("location", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "derivedFrom",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reason",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.optionalElement("performer", NutritionIntakePerformerSerializer.listSerializer.descriptor)
+    b.optionalElement("location", ReferenceSerializer.descriptor)
+    b.optionalElement("derivedFrom", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("reason", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -810,7 +668,7 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
         ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(index)?.let { it },
+            instantiatesCanonical?.getOrNull(index),
             _instantiatesCanonical?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -820,7 +678,7 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
           index ->
-          Uri.of(instantiatesUri?.getOrNull(index)?.let { it }, _instantiatesUri?.getOrNull(index))
+          Uri.of(instantiatesUri?.getOrNull(index), _instantiatesUri?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'instantiatesUri' on NutritionIntake has neither a value nor an id/extension"
             )
@@ -828,8 +686,10 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(status?.let { NutritionIntake.EventStatus.fromCode(it) }, _status)
-          ?: throw SerializationException("Missing required property 'status' on NutritionIntake"),
+        Enumeration.of(
+          if (status != null) NutritionIntake.EventStatus.fromCode(status) else null,
+          _status,
+        ) ?: throw SerializationException("Missing required property 'status' on NutritionIntake"),
       statusReason = statusReason ?: listOf(),
       code = code,
       subject =
@@ -838,10 +698,14 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
       encounter = encounter,
       occurrence =
         NutritionIntake.Occurrence.from(
-          DateTime.of(occurrenceDateTime?.let { FhirDateTime.fromString(it) }, _occurrenceDateTime),
+          DateTime.of(
+            if (occurrenceDateTime != null) FhirDateTime.fromString(occurrenceDateTime) else null,
+            _occurrenceDateTime,
+          ),
           occurrencePeriod,
         ),
-      recorded = DateTime.of(recorded?.let { FhirDateTime.fromString(it) }, _recorded),
+      recorded =
+        DateTime.of(if (recorded != null) FhirDateTime.fromString(recorded) else null, _recorded),
       reported =
         NutritionIntake.Reported.from(
           R5Boolean.of(reportedBoolean, _reportedBoolean),
@@ -863,25 +727,23 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
     descriptorOffset: Int,
     `value`: NutritionIntake,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -910,37 +772,27 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    (value.instantiatesCanonical.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    if (value.instantiatesCanonical.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.instantiatesCanonical.map { it.value },
       )
-    }
-    (value.instantiatesCanonical.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+      encoder.encodePrimitiveElementList(
         descriptor,
         12 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
+        value.instantiatesCanonical,
       )
     }
-    (value.instantiatesUri.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    if (value.instantiatesUri.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.instantiatesUri.map { it.value },
       )
-    }
-    (value.instantiatesUri.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
+      encoder.encodePrimitiveElementList(descriptor, 14 + descriptorOffset, value.instantiatesUri)
     }
     if (value.basedOn.isNotEmpty())
       encoder.encodeSerializableElement(
@@ -956,12 +808,8 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
         ReferenceSerializer.listSerializer,
         value.partOf,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.status)
     if (value.statusReason.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -969,37 +817,33 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
         CodeableConceptSerializer.listSerializer,
         value.statusReason,
       )
-    (value.code)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      20 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.code,
+    )
     encoder.encodeSerializableElement(
       descriptor,
       21 + descriptorOffset,
       ReferenceSerializer,
       value.subject,
     )
-    (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      ReferenceSerializer,
+      value.encounter,
+    )
     when (val choice = value.occurrence) {
       null -> {}
       is NutritionIntake.Occurrence.DateTime -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            24 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeStringIfNotNull(
+          descriptor,
+          23 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        encoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, choice.value)
       }
       is NutritionIntake.Occurrence.Period -> {
         encoder.encodeSerializableElement(
@@ -1010,26 +854,17 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
         )
       }
     }
-    ((value.recorded?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 26 + descriptorOffset, it)
-    }
-    (value.recorded?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 27 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      26 + descriptorOffset,
+      value.recorded?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 27 + descriptorOffset, value.recorded)
     when (val choice = value.reported) {
       null -> {}
       is NutritionIntake.Reported.Boolean -> {
-        ((choice.value.value))?.let {
-          encoder.encodeBooleanElement(descriptor, 28 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            29 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeBooleanIfNotNull(descriptor, 28 + descriptorOffset, choice.value.value)
+        encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, choice.value)
       }
       is NutritionIntake.Reported.Reference -> {
         encoder.encodeSerializableElement(
@@ -1061,9 +896,12 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
         NutritionIntakePerformerSerializer.listSerializer,
         value.performer,
       )
-    (value.location)?.let {
-      encoder.encodeSerializableElement(descriptor, 34 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      34 + descriptorOffset,
+      ReferenceSerializer,
+      value.location,
+    )
     if (value.derivedFrom.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

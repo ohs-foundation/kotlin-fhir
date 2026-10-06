@@ -48,9 +48,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -59,209 +57,164 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("TriggerDefinition") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("name", KotlinString.serializer().descriptor, isOptional = true)
-      element("_name", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("code", lazyDescriptor { CodeableConcept.serializer().descriptor }, isOptional = true)
-      element("subscriptionTopic", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "_subscriptionTopic",
-        lazyDescriptor { Element.serializer().descriptor },
-        isOptional = true,
-      )
-      element("timingTiming", lazyDescriptor { Timing.serializer().descriptor }, isOptional = true)
-      element(
-        "timingReference",
-        lazyDescriptor { Reference.serializer().descriptor },
-        isOptional = true,
-      )
-      element("timingDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_timingDate", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("timingDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "_timingDateTime",
-        lazyDescriptor { Element.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "data",
-        listSerialDescriptor(lazyDescriptor { DataRequirement.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("condition", lazyDescriptor { Expression.serializer().descriptor }, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", KotlinString.serializer().descriptor)
+      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("name", KotlinString.serializer().descriptor)
+      optionalElement("_name", ElementSerializer.descriptor)
+      optionalElement("code", CodeableConceptSerializer.descriptor)
+      optionalElement("subscriptionTopic", KotlinString.serializer().descriptor)
+      optionalElement("_subscriptionTopic", ElementSerializer.descriptor)
+      optionalElement("timingTiming", TimingSerializer.descriptor)
+      optionalElement("timingReference", ReferenceSerializer.descriptor)
+      optionalElement("timingDate", KotlinString.serializer().descriptor)
+      optionalElement("_timingDate", ElementSerializer.descriptor)
+      optionalElement("timingDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_timingDateTime", ElementSerializer.descriptor)
+      optionalElement("data", DataRequirementSerializer.listSerializer.descriptor)
+      optionalElement("condition", ExpressionSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<TriggerDefinition>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): TriggerDefinition =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var type: KotlinString? = null
+      var _type: Element? = null
+      var name: KotlinString? = null
+      var _name: Element? = null
+      var code: CodeableConcept? = null
+      var subscriptionTopic: KotlinString? = null
+      var _subscriptionTopic: Element? = null
+      var timingTiming: Timing? = null
+      var timingReference: Reference? = null
+      var timingDate: KotlinString? = null
+      var _timingDate: Element? = null
+      var timingDateTime: KotlinString? = null
+      var _timingDateTime: Element? = null
+      var `data`: List<DataRequirement>? = null
+      var condition: Expression? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> type = decodeStringElement(descriptor, i)
+          3 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> name = decodeStringElement(descriptor, i)
+          5 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 ->
+            code = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          7 -> subscriptionTopic = decodeStringElement(descriptor, i)
+          8 ->
+            _subscriptionTopic =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          9 ->
+            timingTiming = decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
+          10 ->
+            timingReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          11 -> timingDate = decodeStringElement(descriptor, i)
+          12 ->
+            _timingDate = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          13 -> timingDateTime = decodeStringElement(descriptor, i)
+          14 ->
+            _timingDateTime =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          15 ->
+            `data` =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                DataRequirementSerializer.listSerializer,
+                null,
+              )
+          16 ->
+            condition = decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding TriggerDefinition: " + i)
+        }
+      }
+      TriggerDefinition(
+        id = id,
+        extension = extension ?: listOf(),
+        type =
+          Enumeration.of(
+            if (type != null) TriggerDefinition.TriggerType.fromCode(type) else null,
+            _type,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'type' on TriggerDefinition"
+            ),
+        name = R5String.of(name, _name),
+        code = code,
+        subscriptionTopic = Canonical.of(subscriptionTopic, _subscriptionTopic),
+        timing =
+          TriggerDefinition.Timing.from(
+            timingTiming,
+            timingReference,
+            Date.of(if (timingDate != null) FhirDate.fromString(timingDate) else null, _timingDate),
+            DateTime.of(
+              if (timingDateTime != null) FhirDateTime.fromString(timingDateTime) else null,
+              _timingDateTime,
+            ),
+          ),
+        `data` = `data` ?: listOf(),
+        condition = condition,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: TriggerDefinition) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): TriggerDefinition {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var type: KotlinString? = null
-    var _type: Element? = null
-    var name: KotlinString? = null
-    var _name: Element? = null
-    var code: CodeableConcept? = null
-    var subscriptionTopic: KotlinString? = null
-    var _subscriptionTopic: Element? = null
-    var timingTiming: Timing? = null
-    var timingReference: Reference? = null
-    var timingDate: KotlinString? = null
-    var _timingDate: Element? = null
-    var timingDateTime: KotlinString? = null
-    var _timingDateTime: Element? = null
-    var `data`: List<DataRequirement>? = null
-    var condition: Expression? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> type = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> name = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 ->
-          code =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        7 -> subscriptionTopic = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _subscriptionTopic =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        9 ->
-          timingTiming =
-            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
-        10 ->
-          timingReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        11 -> timingDate = decoder.decodeStringElement(descriptor, i)
-        12 ->
-          _timingDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        13 -> timingDateTime = decoder.decodeStringElement(descriptor, i)
-        14 ->
-          _timingDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        15 ->
-          `data` =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              DataRequirementSerializer.listSerializer,
-              null,
-            )
-        16 ->
-          condition =
-            decoder.decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding TriggerDefinition: " + i)
-      }
-    }
-    return TriggerDefinition(
-      id = id,
-      extension = extension ?: listOf(),
-      type =
-        Enumeration.of(type?.let { TriggerDefinition.TriggerType.fromCode(it) }, _type)
-          ?: throw SerializationException("Missing required property 'type' on TriggerDefinition"),
-      name = R5String.of(name, _name),
-      code = code,
-      subscriptionTopic = Canonical.of(subscriptionTopic, _subscriptionTopic),
-      timing =
-        TriggerDefinition.Timing.from(
-          timingTiming,
-          timingReference,
-          Date.of(timingDate?.let { FhirDate.fromString(it) }, _timingDate),
-          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
-        ),
-      `data` = `data` ?: listOf(),
-      condition = condition,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: TriggerDefinition) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    (value.code)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
-    }
-    ((value.subscriptionTopic?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.subscriptionTopic?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, ElementSerializer, it)
-    }
-    when (val choice = value.timing) {
-      null -> {}
-      is TriggerDefinition.Timing.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 9, TimingSerializer, choice.value)
-      }
-      is TriggerDefinition.Timing.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 10, ReferenceSerializer, choice.value)
-      }
-      is TriggerDefinition.Timing.Date -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
+      encodeElementIfNotNull(descriptor, 3, value.type)
+      encodeStringIfNotNull(descriptor, 4, value.name?.value)
+      encodeElementIfNotNull(descriptor, 5, value.name)
+      encodeSerializableIfNotNull(descriptor, 6, CodeableConceptSerializer, value.code)
+      encodeStringIfNotNull(descriptor, 7, value.subscriptionTopic?.value)
+      encodeElementIfNotNull(descriptor, 8, value.subscriptionTopic)
+      when (val choice = value.timing) {
+        null -> {}
+        is TriggerDefinition.Timing.Timing -> {
+          encodeSerializableElement(descriptor, 9, TimingSerializer, choice.value)
+        }
+        is TriggerDefinition.Timing.Reference -> {
+          encodeSerializableElement(descriptor, 10, ReferenceSerializer, choice.value)
+        }
+        is TriggerDefinition.Timing.Date -> {
+          encodeStringIfNotNull(descriptor, 11, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 12, choice.value)
+        }
+        is TriggerDefinition.Timing.DateTime -> {
+          encodeStringIfNotNull(descriptor, 13, choice.value.value?.toString())
+          encodeElementIfNotNull(descriptor, 14, choice.value)
         }
       }
-      is TriggerDefinition.Timing.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
-        }
-      }
-    }
-    if (value.`data`.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        15,
-        DataRequirementSerializer.listSerializer,
-        value.`data`,
-      )
-    (value.condition)?.let {
-      encoder.encodeSerializableElement(descriptor, 16, ExpressionSerializer, it)
+      if (value.`data`.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          15,
+          DataRequirementSerializer.listSerializer,
+          value.`data`,
+        )
+      encodeSerializableIfNotNull(descriptor, 16, ExpressionSerializer, value.condition)
     }
   }
 }

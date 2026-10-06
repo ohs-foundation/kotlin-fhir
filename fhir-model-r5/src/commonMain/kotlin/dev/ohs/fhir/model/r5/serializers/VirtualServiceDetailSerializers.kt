@@ -43,9 +43,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -54,209 +52,161 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetail> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("VirtualServiceDetail") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("channelType", Coding.serializer().descriptor, isOptional = true)
-      element("addressUrl", KotlinString.serializer().descriptor, isOptional = true)
-      element("_addressUrl", Element.serializer().descriptor, isOptional = true)
-      element("addressString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_addressString", Element.serializer().descriptor, isOptional = true)
-      element("addressContactPoint", ContactPoint.serializer().descriptor, isOptional = true)
-      element(
-        "addressExtendedContactDetail",
-        ExtendedContactDetail.serializer().descriptor,
-        isOptional = true,
-      )
-      element(
-        "additionalInfo",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_additionalInfo",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element("maxParticipants", Int.serializer().descriptor, isOptional = true)
-      element("_maxParticipants", Element.serializer().descriptor, isOptional = true)
-      element("sessionKey", KotlinString.serializer().descriptor, isOptional = true)
-      element("_sessionKey", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("channelType", CodingSerializer.descriptor)
+      optionalElement("addressUrl", KotlinString.serializer().descriptor)
+      optionalElement("_addressUrl", ElementSerializer.descriptor)
+      optionalElement("addressString", KotlinString.serializer().descriptor)
+      optionalElement("_addressString", ElementSerializer.descriptor)
+      optionalElement("addressContactPoint", ContactPointSerializer.descriptor)
+      optionalElement("addressExtendedContactDetail", ExtendedContactDetailSerializer.descriptor)
+      optionalElement("additionalInfo", stringNullableListSerializer.descriptor)
+      optionalElement("_additionalInfo", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement("maxParticipants", Int.serializer().descriptor)
+      optionalElement("_maxParticipants", ElementSerializer.descriptor)
+      optionalElement("sessionKey", KotlinString.serializer().descriptor)
+      optionalElement("_sessionKey", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<VirtualServiceDetail>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): VirtualServiceDetail =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var channelType: Coding? = null
+      var addressUrl: KotlinString? = null
+      var _addressUrl: Element? = null
+      var addressString: KotlinString? = null
+      var _addressString: Element? = null
+      var addressContactPoint: ContactPoint? = null
+      var addressExtendedContactDetail: ExtendedContactDetail? = null
+      var additionalInfo: List<KotlinString?>? = null
+      var _additionalInfo: List<Element?>? = null
+      var maxParticipants: Int? = null
+      var _maxParticipants: Element? = null
+      var sessionKey: KotlinString? = null
+      var _sessionKey: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            channelType = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+          3 -> addressUrl = decodeStringElement(descriptor, i)
+          4 ->
+            _addressUrl = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 -> addressString = decodeStringElement(descriptor, i)
+          6 ->
+            _addressString =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          7 ->
+            addressContactPoint =
+              decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
+          8 ->
+            addressExtendedContactDetail =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtendedContactDetailSerializer,
+                null,
+              )
+          9 ->
+            additionalInfo =
+              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
+          10 ->
+            _additionalInfo =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ElementSerializer.nullableListSerializer,
+                null,
+              )
+          11 -> maxParticipants = decodeIntElement(descriptor, i)
+          12 ->
+            _maxParticipants =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          13 -> sessionKey = decodeStringElement(descriptor, i)
+          14 ->
+            _sessionKey = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else ->
+            throw SerializationException("Unexpected index decoding VirtualServiceDetail: " + i)
+        }
+      }
+      VirtualServiceDetail(
+        id = id,
+        extension = extension ?: listOf(),
+        channelType = channelType,
+        address =
+          VirtualServiceDetail.Address.from(
+            Url.of(addressUrl, _addressUrl),
+            R5String.of(addressString, _addressString),
+            addressContactPoint,
+            addressExtendedContactDetail,
+          ),
+        additionalInfo =
+          (kotlin.collections.List(maxOf(additionalInfo?.size ?: 0, _additionalInfo?.size ?: 0)) {
+            index ->
+            Url.of(additionalInfo?.getOrNull(index), _additionalInfo?.getOrNull(index))
+              ?: throw SerializationException(
+                "An entry of 'additionalInfo' on VirtualServiceDetail has neither a value nor an id/extension"
+              )
+          }),
+        maxParticipants = PositiveInt.of(maxParticipants, _maxParticipants),
+        sessionKey = R5String.of(sessionKey, _sessionKey),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: VirtualServiceDetail) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): VirtualServiceDetail {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var channelType: Coding? = null
-    var addressUrl: KotlinString? = null
-    var _addressUrl: Element? = null
-    var addressString: KotlinString? = null
-    var _addressString: Element? = null
-    var addressContactPoint: ContactPoint? = null
-    var addressExtendedContactDetail: ExtendedContactDetail? = null
-    var additionalInfo: List<KotlinString?>? = null
-    var _additionalInfo: List<Element?>? = null
-    var maxParticipants: Int? = null
-    var _maxParticipants: Element? = null
-    var sessionKey: KotlinString? = null
-    var _sessionKey: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          channelType =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        3 -> addressUrl = decoder.decodeStringElement(descriptor, i)
-        4 ->
-          _addressUrl =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 -> addressString = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _addressString =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        7 ->
-          addressContactPoint =
-            decoder.decodeNullableSerializableElement(descriptor, i, ContactPointSerializer, null)
-        8 ->
-          addressExtendedContactDetail =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtendedContactDetailSerializer,
-              null,
-            )
-        9 ->
-          additionalInfo =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              stringNullableListSerializer,
-              null,
-            )
-        10 ->
-          _additionalInfo =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ElementSerializer.nullableListSerializer,
-              null,
-            )
-        11 -> maxParticipants = decoder.decodeIntElement(descriptor, i)
-        12 ->
-          _maxParticipants =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        13 -> sessionKey = decoder.decodeStringElement(descriptor, i)
-        14 ->
-          _sessionKey =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding VirtualServiceDetail: " + i)
-      }
-    }
-    return VirtualServiceDetail(
-      id = id,
-      extension = extension ?: listOf(),
-      channelType = channelType,
-      address =
-        VirtualServiceDetail.Address.from(
-          Url.of(addressUrl, _addressUrl),
-          R5String.of(addressString, _addressString),
-          addressContactPoint,
-          addressExtendedContactDetail,
-        ),
-      additionalInfo =
-        (kotlin.collections.List(maxOf(additionalInfo?.size ?: 0, _additionalInfo?.size ?: 0)) {
-          index ->
-          Url.of(additionalInfo?.getOrNull(index)?.let { it }, _additionalInfo?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'additionalInfo' on VirtualServiceDetail has neither a value nor an id/extension"
-            )
-        }),
-      maxParticipants = PositiveInt.of(maxParticipants, _maxParticipants),
-      sessionKey = R5String.of(sessionKey, _sessionKey),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: VirtualServiceDetail) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    (value.channelType)?.let {
-      encoder.encodeSerializableElement(descriptor, 2, CodingSerializer, it)
-    }
-    when (val choice = value.address) {
-      null -> {}
-      is VirtualServiceDetail.Address.Url -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
-        }
-      }
-      is VirtualServiceDetail.Address.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 6, ElementSerializer, it)
-        }
-      }
-      is VirtualServiceDetail.Address.ContactPoint -> {
-        encoder.encodeSerializableElement(descriptor, 7, ContactPointSerializer, choice.value)
-      }
-      is VirtualServiceDetail.Address.ExtendedContactDetail -> {
-        encoder.encodeSerializableElement(
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
           descriptor,
-          8,
-          ExtendedContactDetailSerializer,
-          choice.value,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
         )
+      encodeSerializableIfNotNull(descriptor, 2, CodingSerializer, value.channelType)
+      when (val choice = value.address) {
+        null -> {}
+        is VirtualServiceDetail.Address.Url -> {
+          encodeStringIfNotNull(descriptor, 3, choice.value.value)
+          encodeElementIfNotNull(descriptor, 4, choice.value)
+        }
+        is VirtualServiceDetail.Address.String -> {
+          encodeStringIfNotNull(descriptor, 5, choice.value.value)
+          encodeElementIfNotNull(descriptor, 6, choice.value)
+        }
+        is VirtualServiceDetail.Address.ContactPoint -> {
+          encodeSerializableElement(descriptor, 7, ContactPointSerializer, choice.value)
+        }
+        is VirtualServiceDetail.Address.ExtendedContactDetail -> {
+          encodeSerializableElement(descriptor, 8, ExtendedContactDetailSerializer, choice.value)
+        }
       }
-    }
-    (value.additionalInfo.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 9, stringNullableListSerializer, it)
-    }
-    (value.additionalInfo.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        10,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
-    }
-    ((value.maxParticipants?.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
-    (value.maxParticipants?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, ElementSerializer, it)
-    }
-    ((value.sessionKey?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-    (value.sessionKey?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, ElementSerializer, it)
+      if (value.additionalInfo.isNotEmpty()) {
+        encodeNullableListIfNotNull(
+          descriptor,
+          9,
+          stringNullableListSerializer,
+          value.additionalInfo.map { it.value },
+        )
+        encodePrimitiveElementList(descriptor, 10, value.additionalInfo)
+      }
+      encodeIntIfNotNull(descriptor, 11, value.maxParticipants?.value)
+      encodeElementIfNotNull(descriptor, 12, value.maxParticipants)
+      encodeStringIfNotNull(descriptor, 13, value.sessionKey?.value)
+      encodeElementIfNotNull(descriptor, 14, value.sessionKey)
     }
   }
 }

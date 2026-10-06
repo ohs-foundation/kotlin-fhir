@@ -60,24 +60,12 @@ internal object MedicinalProductContraindicationOtherTherapySerializer :
   KSerializer<MedicinalProductContraindication.OtherTherapy> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("OtherTherapy") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("therapyRelationshipType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "medicationCodeableConcept",
-        CodeableConcept.serializer().descriptor,
-        isOptional = true,
-      )
-      element("medicationReference", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("therapyRelationshipType", CodeableConceptSerializer.descriptor)
+      optionalElement("medicationCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("medicationReference", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<MedicinalProductContraindication.OtherTherapy>> =
@@ -85,117 +73,94 @@ internal object MedicinalProductContraindicationOtherTherapySerializer :
 
   override fun deserialize(decoder: Decoder): MedicinalProductContraindication.OtherTherapy =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var therapyRelationshipType: CodeableConcept? = null
+      var medicationCodeableConcept: CodeableConcept? = null
+      var medicationReference: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            therapyRelationshipType =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            medicationCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            medicationReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding OtherTherapy: " + i)
+        }
+      }
+      MedicinalProductContraindication.OtherTherapy(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        therapyRelationshipType =
+          therapyRelationshipType
+            ?: throw SerializationException(
+              "Missing required property 'therapyRelationshipType' on MedicinalProductContraindication.OtherTherapy"
+            ),
+        medication =
+          MedicinalProductContraindication.OtherTherapy.Medication.from(
+            medicationCodeableConcept,
+            medicationReference,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'medication' on MedicinalProductContraindication.OtherTherapy"
+            ),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductContraindication.OtherTherapy) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): MedicinalProductContraindication.OtherTherapy {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var therapyRelationshipType: CodeableConcept? = null
-    var medicationCodeableConcept: CodeableConcept? = null
-    var medicationReference: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          therapyRelationshipType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          medicationCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          medicationReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding OtherTherapy: " + i)
-      }
-    }
-    return MedicinalProductContraindication.OtherTherapy(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      therapyRelationshipType =
-        therapyRelationshipType
-          ?: throw SerializationException(
-            "Missing required property 'therapyRelationshipType' on MedicinalProductContraindication.OtherTherapy"
-          ),
-      medication =
-        MedicinalProductContraindication.OtherTherapy.Medication.from(
-          medicationCodeableConcept,
-          medicationReference,
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
         )
-          ?: throw SerializationException(
-            "Missing required property 'medication' on MedicinalProductContraindication.OtherTherapy"
-          ),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: MedicinalProductContraindication.OtherTherapy,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(
         descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
+        3,
+        CodeableConceptSerializer,
+        value.therapyRelationshipType,
       )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(
-      descriptor,
-      3,
-      CodeableConceptSerializer,
-      value.therapyRelationshipType,
-    )
-    when (val choice = value.medication) {
-      is MedicinalProductContraindication.OtherTherapy.Medication.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
-      }
-      is MedicinalProductContraindication.OtherTherapy.Medication.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, choice.value)
+      when (val choice = value.medication) {
+        is MedicinalProductContraindication.OtherTherapy.Medication.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
+        }
+        is MedicinalProductContraindication.OtherTherapy.Medication.Reference -> {
+          encodeSerializableElement(descriptor, 5, ReferenceSerializer, choice.value)
+        }
       }
     }
   }
@@ -207,53 +172,29 @@ internal object MedicinalProductContraindicationSerializer :
     buildResourceDescriptor("MedicinalProductContraindication")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("subject", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("disease", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("diseaseStatus", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "comorbidity",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "therapeuticIndication",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("disease", CodeableConceptSerializer.descriptor)
+    b.optionalElement("diseaseStatus", CodeableConceptSerializer.descriptor)
+    b.optionalElement("comorbidity", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("therapeuticIndication", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement(
       "otherTherapy",
-      listSerialDescriptor(
-        lazyDescriptor { MedicinalProductContraindication.OtherTherapy.serializer().descriptor }
-      ),
-      isOptional = true,
+      MedicinalProductContraindicationOtherTherapySerializer.listSerializer.descriptor,
     )
-    b.element(
-      "population",
-      listSerialDescriptor(Population.serializer().descriptor),
-      isOptional = true,
-    )
+    b.optionalElement("population", PopulationSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -406,25 +347,23 @@ internal object MedicinalProductContraindicationSerializer :
     descriptorOffset: Int,
     `value`: MedicinalProductContraindication,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -453,22 +392,18 @@ internal object MedicinalProductContraindicationSerializer :
         ReferenceSerializer.listSerializer,
         value.subject,
       )
-    (value.disease)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.diseaseStatus)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.disease,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      12 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.diseaseStatus,
+    )
     if (value.comorbidity.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

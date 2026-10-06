@@ -38,9 +38,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -49,93 +47,74 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object ContactDetailSerializer : KSerializer<ContactDetail> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ContactDetail") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("name", KotlinString.serializer().descriptor, isOptional = true)
-      element("_name", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element(
-        "telecom",
-        listSerialDescriptor(lazyDescriptor { ContactPoint.serializer().descriptor }),
-        isOptional = true,
-      )
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("name", KotlinString.serializer().descriptor)
+      optionalElement("_name", ElementSerializer.descriptor)
+      optionalElement("telecom", ContactPointSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ContactDetail>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): ContactDetail =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var name: KotlinString? = null
+      var _name: Element? = null
+      var telecom: List<ContactPoint>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> name = decodeStringElement(descriptor, i)
+          3 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 ->
+            telecom =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ContactPointSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding ContactDetail: " + i)
+        }
+      }
+      ContactDetail(
+        id = id,
+        extension = extension ?: listOf(),
+        name = R5String.of(name, _name),
+        telecom = telecom ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ContactDetail) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.name?.value)
+      encodeElementIfNotNull(descriptor, 3, value.name)
+      if (value.telecom.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          4,
+          ContactPointSerializer.listSerializer,
+          value.telecom,
+        )
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ContactDetail {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var name: KotlinString? = null
-    var _name: Element? = null
-    var telecom: List<ContactPoint>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> name = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 ->
-          telecom =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ContactPointSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ContactDetail: " + i)
-      }
-    }
-    return ContactDetail(
-      id = id,
-      extension = extension ?: listOf(),
-      name = R5String.of(name, _name),
-      telecom = telecom ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ContactDetail) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    if (value.telecom.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        4,
-        ContactPointSerializer.listSerializer,
-        value.telecom,
-      )
   }
 }

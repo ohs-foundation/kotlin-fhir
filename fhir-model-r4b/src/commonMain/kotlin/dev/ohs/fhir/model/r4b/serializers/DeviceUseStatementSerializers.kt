@@ -59,62 +59,37 @@ internal object DeviceUseStatementSerializer : FhirResourceSerializer<DeviceUseS
   override val descriptor: SerialDescriptor = buildResourceDescriptor("DeviceUseStatement")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("status", String.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "derivedFrom",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("timingTiming", Timing.serializer().descriptor, isOptional = true)
-    b.element("timingPeriod", Period.serializer().descriptor, isOptional = true)
-    b.element("timingDateTime", String.serializer().descriptor, isOptional = true)
-    b.element("_timingDateTime", Element.serializer().descriptor, isOptional = true)
-    b.element("recordedOn", String.serializer().descriptor, isOptional = true)
-    b.element("_recordedOn", Element.serializer().descriptor, isOptional = true)
-    b.element("source", Reference.serializer().descriptor, isOptional = true)
-    b.element("device", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "reasonCode",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reasonReference",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("bodySite", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("status", String.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("derivedFrom", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("timingTiming", TimingSerializer.descriptor)
+    b.optionalElement("timingPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("timingDateTime", String.serializer().descriptor)
+    b.optionalElement("_timingDateTime", ElementSerializer.descriptor)
+    b.optionalElement("recordedOn", String.serializer().descriptor)
+    b.optionalElement("_recordedOn", ElementSerializer.descriptor)
+    b.optionalElement("source", ReferenceSerializer.descriptor)
+    b.optionalElement("device", ReferenceSerializer.descriptor)
+    b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("reasonReference", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("bodySite", CodeableConceptSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -290,7 +265,8 @@ internal object DeviceUseStatementSerializer : FhirResourceSerializer<DeviceUseS
       basedOn = basedOn ?: listOf(),
       status =
         Enumeration.of(
-          status?.let { DeviceUseStatement.DeviceUseStatementStatus.fromCode(it) },
+          if (status != null) DeviceUseStatement.DeviceUseStatementStatus.fromCode(status)
+          else null,
           _status,
         )
           ?: throw SerializationException(
@@ -306,9 +282,16 @@ internal object DeviceUseStatementSerializer : FhirResourceSerializer<DeviceUseS
         DeviceUseStatement.Timing.from(
           timingTiming,
           timingPeriod,
-          DateTime.of(timingDateTime?.let { FhirDateTime.fromString(it) }, _timingDateTime),
+          DateTime.of(
+            if (timingDateTime != null) FhirDateTime.fromString(timingDateTime) else null,
+            _timingDateTime,
+          ),
         ),
-      recordedOn = DateTime.of(recordedOn?.let { FhirDateTime.fromString(it) }, _recordedOn),
+      recordedOn =
+        DateTime.of(
+          if (recordedOn != null) FhirDateTime.fromString(recordedOn) else null,
+          _recordedOn,
+        ),
       source = source,
       device =
         device
@@ -328,25 +311,23 @@ internal object DeviceUseStatementSerializer : FhirResourceSerializer<DeviceUseS
     descriptorOffset: Int,
     `value`: DeviceUseStatement,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -382,12 +363,8 @@ internal object DeviceUseStatementSerializer : FhirResourceSerializer<DeviceUseS
         ReferenceSerializer.listSerializer,
         value.basedOn,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 12 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.status)
     encoder.encodeSerializableElement(
       descriptor,
       14 + descriptorOffset,
@@ -420,28 +397,26 @@ internal object DeviceUseStatementSerializer : FhirResourceSerializer<DeviceUseS
         )
       }
       is DeviceUseStatement.Timing.DateTime -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            19 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeStringIfNotNull(
+          descriptor,
+          18 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, choice.value)
       }
     }
-    ((value.recordedOn?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
-    }
-    (value.recordedOn?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.source)?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      20 + descriptorOffset,
+      value.recordedOn?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.recordedOn)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      ReferenceSerializer,
+      value.source,
+    )
     encoder.encodeSerializableElement(
       descriptor,
       23 + descriptorOffset,
@@ -462,14 +437,12 @@ internal object DeviceUseStatementSerializer : FhirResourceSerializer<DeviceUseS
         ReferenceSerializer.listSerializer,
         value.reasonReference,
       )
-    (value.bodySite)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      26 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.bodySite,
+    )
     if (value.note.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

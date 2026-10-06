@@ -38,9 +38,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -49,83 +47,65 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object PeriodSerializer : KSerializer<Period> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Period") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("start", String.serializer().descriptor, isOptional = true)
-      element("_start", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("end", String.serializer().descriptor, isOptional = true)
-      element("_end", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("start", String.serializer().descriptor)
+      optionalElement("_start", ElementSerializer.descriptor)
+      optionalElement("end", String.serializer().descriptor)
+      optionalElement("_end", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Period>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Period =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var start: String? = null
+      var _start: Element? = null
+      var end: String? = null
+      var _end: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> start = decodeStringElement(descriptor, i)
+          3 -> _start = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> end = decodeStringElement(descriptor, i)
+          5 -> _end = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Period: " + i)
+        }
+      }
+      Period(
+        id = id,
+        extension = extension ?: listOf(),
+        start = DateTime.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
+        end = DateTime.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Period) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Period {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var start: String? = null
-    var _start: Element? = null
-    var end: String? = null
-    var _end: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> start = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _start = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> end = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _end = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Period: " + i)
-      }
-    }
-    return Period(
-      id = id,
-      extension = extension ?: listOf(),
-      start = DateTime.of(start?.let { FhirDateTime.fromString(it) }, _start),
-      end = DateTime.of(end?.let { FhirDateTime.fromString(it) }, _end),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Period) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.start?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.start?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.end?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.end?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.start?.value?.toString())
+      encodeElementIfNotNull(descriptor, 3, value.start)
+      encodeStringIfNotNull(descriptor, 4, value.end?.value?.toString())
+      encodeElementIfNotNull(descriptor, 5, value.end)
     }
   }
 }

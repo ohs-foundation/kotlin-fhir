@@ -40,9 +40,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -51,118 +49,87 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object UsageContextSerializer : KSerializer<UsageContext> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("UsageContext") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("code", lazyDescriptor { Coding.serializer().descriptor }, isOptional = true)
-      element(
-        "valueCodeableConcept",
-        lazyDescriptor { CodeableConcept.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "valueQuantity",
-        lazyDescriptor { Quantity.serializer().descriptor },
-        isOptional = true,
-      )
-      element("valueRange", lazyDescriptor { Range.serializer().descriptor }, isOptional = true)
-      element(
-        "valueReference",
-        lazyDescriptor { Reference.serializer().descriptor },
-        isOptional = true,
-      )
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("code", CodingSerializer.descriptor)
+      optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("valueQuantity", QuantitySerializer.descriptor)
+      optionalElement("valueRange", RangeSerializer.descriptor)
+      optionalElement("valueReference", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<UsageContext>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): UsageContext =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var code: Coding? = null
+      var valueCodeableConcept: CodeableConcept? = null
+      var valueQuantity: Quantity? = null
+      var valueRange: Range? = null
+      var valueReference: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> code = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
+          3 ->
+            valueCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            valueQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          5 -> valueRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          6 ->
+            valueReference =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding UsageContext: " + i)
+        }
+      }
+      UsageContext(
+        id = id,
+        extension = extension ?: listOf(),
+        code =
+          code ?: throw SerializationException("Missing required property 'code' on UsageContext"),
+        `value` =
+          UsageContext.Value.from(valueCodeableConcept, valueQuantity, valueRange, valueReference)
+            ?: throw SerializationException("Missing required property 'value' on UsageContext"),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: UsageContext) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): UsageContext {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var code: Coding? = null
-    var valueCodeableConcept: CodeableConcept? = null
-    var valueQuantity: Quantity? = null
-    var valueRange: Range? = null
-    var valueReference: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> code = decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        3 ->
-          valueCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          valueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        5 ->
-          valueRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        6 ->
-          valueReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding UsageContext: " + i)
-      }
-    }
-    return UsageContext(
-      id = id,
-      extension = extension ?: listOf(),
-      code =
-        code ?: throw SerializationException("Missing required property 'code' on UsageContext"),
-      `value` =
-        UsageContext.Value.from(valueCodeableConcept, valueQuantity, valueRange, valueReference)
-          ?: throw SerializationException("Missing required property 'value' on UsageContext"),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: UsageContext) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    encoder.encodeSerializableElement(descriptor, 2, CodingSerializer, value.code)
-    when (val choice = value.`value`) {
-      is UsageContext.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, choice.value)
-      }
-      is UsageContext.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, choice.value)
-      }
-      is UsageContext.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 5, RangeSerializer, choice.value)
-      }
-      is UsageContext.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, choice.value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeSerializableElement(descriptor, 2, CodingSerializer, value.code)
+      when (val choice = value.`value`) {
+        is UsageContext.Value.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, choice.value)
+        }
+        is UsageContext.Value.Quantity -> {
+          encodeSerializableElement(descriptor, 4, QuantitySerializer, choice.value)
+        }
+        is UsageContext.Value.Range -> {
+          encodeSerializableElement(descriptor, 5, RangeSerializer, choice.value)
+        }
+        is UsageContext.Value.Reference -> {
+          encodeSerializableElement(descriptor, 6, ReferenceSerializer, choice.value)
+        }
       }
     }
   }

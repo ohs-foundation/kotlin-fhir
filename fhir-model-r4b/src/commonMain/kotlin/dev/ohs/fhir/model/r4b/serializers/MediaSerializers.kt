@@ -64,67 +64,50 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Media")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("partOf", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("modality", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("view", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
-    b.element("createdDateTime", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_createdDateTime", Element.serializer().descriptor, isOptional = true)
-    b.element("createdPeriod", Period.serializer().descriptor, isOptional = true)
-    b.element("issued", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_issued", Element.serializer().descriptor, isOptional = true)
-    b.element("operator", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "reasonCode",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("bodySite", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("deviceName", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_deviceName", Element.serializer().descriptor, isOptional = true)
-    b.element("device", Reference.serializer().descriptor, isOptional = true)
-    b.element("height", Int.serializer().descriptor, isOptional = true)
-    b.element("_height", Element.serializer().descriptor, isOptional = true)
-    b.element("width", Int.serializer().descriptor, isOptional = true)
-    b.element("_width", Element.serializer().descriptor, isOptional = true)
-    b.element("frames", Int.serializer().descriptor, isOptional = true)
-    b.element("_frames", Element.serializer().descriptor, isOptional = true)
-    b.element("duration", FhirDecimalSerializer.descriptor, isOptional = true)
-    b.element("_duration", Element.serializer().descriptor, isOptional = true)
-    b.element("content", Attachment.serializer().descriptor, isOptional = true)
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("partOf", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modality", CodeableConceptSerializer.descriptor)
+    b.optionalElement("view", CodeableConceptSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("createdDateTime", KotlinString.serializer().descriptor)
+    b.optionalElement("_createdDateTime", ElementSerializer.descriptor)
+    b.optionalElement("createdPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("issued", KotlinString.serializer().descriptor)
+    b.optionalElement("_issued", ElementSerializer.descriptor)
+    b.optionalElement("operator", ReferenceSerializer.descriptor)
+    b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("bodySite", CodeableConceptSerializer.descriptor)
+    b.optionalElement("deviceName", KotlinString.serializer().descriptor)
+    b.optionalElement("_deviceName", ElementSerializer.descriptor)
+    b.optionalElement("device", ReferenceSerializer.descriptor)
+    b.optionalElement("height", Int.serializer().descriptor)
+    b.optionalElement("_height", ElementSerializer.descriptor)
+    b.optionalElement("width", Int.serializer().descriptor)
+    b.optionalElement("_width", ElementSerializer.descriptor)
+    b.optionalElement("frames", Int.serializer().descriptor)
+    b.optionalElement("_frames", ElementSerializer.descriptor)
+    b.optionalElement("duration", FhirDecimalSerializer.descriptor)
+    b.optionalElement("_duration", ElementSerializer.descriptor)
+    b.optionalElement("content", AttachmentSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -353,7 +336,7 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(status?.let { Media.EventStatus.fromCode(it) }, _status)
+        Enumeration.of(if (status != null) Media.EventStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on Media"),
       type = type,
       modality = modality,
@@ -362,10 +345,13 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
       encounter = encounter,
       created =
         Media.Created.from(
-          DateTime.of(createdDateTime?.let { FhirDateTime.fromString(it) }, _createdDateTime),
+          DateTime.of(
+            if (createdDateTime != null) FhirDateTime.fromString(createdDateTime) else null,
+            _createdDateTime,
+          ),
           createdPeriod,
         ),
-      issued = Instant.of(issued?.let { FhirDateTime.fromString(it) }, _issued),
+      issued = Instant.of(if (issued != null) FhirDateTime.fromString(issued) else null, _issued),
       `operator` = `operator`,
       reasonCode = reasonCode ?: listOf(),
       bodySite = bodySite,
@@ -387,25 +373,23 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
     descriptorOffset: Int,
     `value`: Media,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -448,56 +432,47 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
         ReferenceSerializer.listSerializer,
         value.partOf,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.modality)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.view)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.status)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.type,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      16 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.modality,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.view,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      ReferenceSerializer,
+      value.subject,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      ReferenceSerializer,
+      value.encounter,
+    )
     when (val choice = value.created) {
       null -> {}
       is Media.Created.DateTime -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            21 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeStringIfNotNull(
+          descriptor,
+          20 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, choice.value)
       }
       is Media.Created.Period -> {
         encoder.encodeSerializableElement(
@@ -508,15 +483,18 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
         )
       }
     }
-    ((value.issued?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
-    }
-    (value.issued?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.`operator`)?.let {
-      encoder.encodeSerializableElement(descriptor, 25 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      23 + descriptorOffset,
+      value.issued?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.issued)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      25 + descriptorOffset,
+      ReferenceSerializer,
+      value.`operator`,
+    )
     if (value.reasonCode.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -524,46 +502,33 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
         CodeableConceptSerializer.listSerializer,
         value.reasonCode,
       )
-    (value.bodySite)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    ((value.deviceName?.value))?.let {
-      encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
-    }
-    (value.deviceName?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 29 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.device)?.let {
-      encoder.encodeSerializableElement(descriptor, 30 + descriptorOffset, ReferenceSerializer, it)
-    }
-    ((value.height?.value))?.let { encoder.encodeIntElement(descriptor, 31 + descriptorOffset, it) }
-    (value.height?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 32 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.width?.value))?.let { encoder.encodeIntElement(descriptor, 33 + descriptorOffset, it) }
-    (value.width?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 34 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.frames?.value))?.let { encoder.encodeIntElement(descriptor, 35 + descriptorOffset, it) }
-    (value.frames?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 36 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.duration?.value))?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        37 + descriptorOffset,
-        FhirDecimalSerializer,
-        it,
-      )
-    }
-    (value.duration?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 38 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      27 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.bodySite,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.deviceName?.value)
+    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.deviceName)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      30 + descriptorOffset,
+      ReferenceSerializer,
+      value.device,
+    )
+    encoder.encodeIntIfNotNull(descriptor, 31 + descriptorOffset, value.height?.value)
+    encoder.encodeElementIfNotNull(descriptor, 32 + descriptorOffset, value.height)
+    encoder.encodeIntIfNotNull(descriptor, 33 + descriptorOffset, value.width?.value)
+    encoder.encodeElementIfNotNull(descriptor, 34 + descriptorOffset, value.width)
+    encoder.encodeIntIfNotNull(descriptor, 35 + descriptorOffset, value.frames?.value)
+    encoder.encodeElementIfNotNull(descriptor, 36 + descriptorOffset, value.frames)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      37 + descriptorOffset,
+      FhirDecimalSerializer,
+      value.duration?.value,
+    )
+    encoder.encodeElementIfNotNull(descriptor, 38 + descriptorOffset, value.duration)
     encoder.encodeSerializableElement(
       descriptor,
       39 + descriptorOffset,

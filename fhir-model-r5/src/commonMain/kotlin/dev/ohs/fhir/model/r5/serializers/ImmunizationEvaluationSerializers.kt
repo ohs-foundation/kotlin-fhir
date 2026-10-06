@@ -58,55 +58,38 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ImmunizationEvaluation")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("patient", Reference.serializer().descriptor, isOptional = true)
-    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_date", Element.serializer().descriptor, isOptional = true)
-    b.element("authority", Reference.serializer().descriptor, isOptional = true)
-    b.element("targetDisease", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("immunizationEvent", Reference.serializer().descriptor, isOptional = true)
-    b.element("doseStatus", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "doseStatusReason",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_description", Element.serializer().descriptor, isOptional = true)
-    b.element("series", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_series", Element.serializer().descriptor, isOptional = true)
-    b.element("doseNumber", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_doseNumber", Element.serializer().descriptor, isOptional = true)
-    b.element("seriesDoses", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_seriesDoses", Element.serializer().descriptor, isOptional = true)
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("patient", ReferenceSerializer.descriptor)
+    b.optionalElement("date", KotlinString.serializer().descriptor)
+    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.optionalElement("authority", ReferenceSerializer.descriptor)
+    b.optionalElement("targetDisease", CodeableConceptSerializer.descriptor)
+    b.optionalElement("immunizationEvent", ReferenceSerializer.descriptor)
+    b.optionalElement("doseStatus", CodeableConceptSerializer.descriptor)
+    b.optionalElement("doseStatusReason", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("description", KotlinString.serializer().descriptor)
+    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.optionalElement("series", KotlinString.serializer().descriptor)
+    b.optionalElement("_series", ElementSerializer.descriptor)
+    b.optionalElement("doseNumber", KotlinString.serializer().descriptor)
+    b.optionalElement("_doseNumber", ElementSerializer.descriptor)
+    b.optionalElement("seriesDoses", KotlinString.serializer().descriptor)
+    b.optionalElement("_seriesDoses", ElementSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -264,7 +247,9 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          status?.let { ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.fromCode(it) },
+          if (status != null)
+            ImmunizationEvaluation.ImmunizationEvaluationStatusCodes.fromCode(status)
+          else null,
           _status,
         )
           ?: throw SerializationException(
@@ -275,7 +260,7 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
           ?: throw SerializationException(
             "Missing required property 'patient' on ImmunizationEvaluation"
           ),
-      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
+      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
       authority = authority,
       targetDisease =
         targetDisease
@@ -306,25 +291,23 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
     descriptorOffset: Int,
     `value`: ImmunizationEvaluation,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -353,27 +336,22 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
     encoder.encodeSerializableElement(
       descriptor,
       13 + descriptorOffset,
       ReferenceSerializer,
       value.patient,
     )
-    ((value.date?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-    }
-    (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.authority)?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.date?.value?.toString())
+    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.date)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      16 + descriptorOffset,
+      ReferenceSerializer,
+      value.authority,
+    )
     encoder.encodeSerializableElement(
       descriptor,
       17 + descriptorOffset,
@@ -399,29 +377,13 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
         CodeableConceptSerializer.listSerializer,
         value.doseStatusReason,
       )
-    ((value.description?.value))?.let {
-      encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
-    }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.series?.value))?.let {
-      encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
-    }
-    (value.series?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.doseNumber?.value))?.let {
-      encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
-    }
-    (value.doseNumber?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.seriesDoses?.value))?.let {
-      encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
-    }
-    (value.seriesDoses?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 28 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 21 + descriptorOffset, value.description?.value)
+    encoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.description)
+    encoder.encodeStringIfNotNull(descriptor, 23 + descriptorOffset, value.series?.value)
+    encoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.series)
+    encoder.encodeStringIfNotNull(descriptor, 25 + descriptorOffset, value.doseNumber?.value)
+    encoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.doseNumber)
+    encoder.encodeStringIfNotNull(descriptor, 27 + descriptorOffset, value.seriesDoses?.value)
+    encoder.encodeElementIfNotNull(descriptor, 28 + descriptorOffset, value.seriesDoses)
   }
 }

@@ -65,106 +65,81 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object EncounterHistoryLocationSerializer : KSerializer<EncounterHistory.Location> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Location") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("location", Reference.serializer().descriptor, isOptional = true)
-      element("form", CodeableConcept.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("location", ReferenceSerializer.descriptor)
+      optionalElement("form", CodeableConceptSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<EncounterHistory.Location>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): EncounterHistory.Location =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var location: Reference? = null
+      var form: CodeableConcept? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            location = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          4 ->
+            form = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Location: " + i)
+        }
+      }
+      EncounterHistory.Location(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        location =
+          location
+            ?: throw SerializationException(
+              "Missing required property 'location' on EncounterHistory.Location"
+            ),
+        form = form,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: EncounterHistory.Location) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): EncounterHistory.Location {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var location: Reference? = null
-    var form: CodeableConcept? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          location =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        4 ->
-          form =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Location: " + i)
-      }
-    }
-    return EncounterHistory.Location(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      location =
-        location
-          ?: throw SerializationException(
-            "Missing required property 'location' on EncounterHistory.Location"
-          ),
-      form = form,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: EncounterHistory.Location) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    encoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.location)
-    (value.form)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.location)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.form)
     }
   }
 }
@@ -173,60 +148,35 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
   override val descriptor: SerialDescriptor = buildResourceDescriptor("EncounterHistory")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", String.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("class", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "type",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "serviceType",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("subjectStatus", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("actualPeriod", Period.serializer().descriptor, isOptional = true)
-    b.element("plannedStartDate", String.serializer().descriptor, isOptional = true)
-    b.element("_plannedStartDate", Element.serializer().descriptor, isOptional = true)
-    b.element("plannedEndDate", String.serializer().descriptor, isOptional = true)
-    b.element("_plannedEndDate", Element.serializer().descriptor, isOptional = true)
-    b.element("length", Duration.serializer().descriptor, isOptional = true)
-    b.element(
-      "location",
-      listSerialDescriptor(lazyDescriptor { EncounterHistory.Location.serializer().descriptor }),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", String.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("class", CodeableConceptSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("serviceType", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("subjectStatus", CodeableConceptSerializer.descriptor)
+    b.optionalElement("actualPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("plannedStartDate", String.serializer().descriptor)
+    b.optionalElement("_plannedStartDate", ElementSerializer.descriptor)
+    b.optionalElement("plannedEndDate", String.serializer().descriptor)
+    b.optionalElement("_plannedEndDate", ElementSerializer.descriptor)
+    b.optionalElement("length", DurationSerializer.descriptor)
+    b.optionalElement("location", EncounterHistoryLocationSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -388,8 +338,10 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
       encounter = encounter,
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(status?.let { EncounterHistory.EncounterStatus.fromCode(it) }, _status)
-          ?: throw SerializationException("Missing required property 'status' on EncounterHistory"),
+        Enumeration.of(
+          if (status != null) EncounterHistory.EncounterStatus.fromCode(status) else null,
+          _status,
+        ) ?: throw SerializationException("Missing required property 'status' on EncounterHistory"),
       `class` =
         `class`
           ?: throw SerializationException("Missing required property 'class' on EncounterHistory"),
@@ -399,9 +351,15 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
       subjectStatus = subjectStatus,
       actualPeriod = actualPeriod,
       plannedStartDate =
-        DateTime.of(plannedStartDate?.let { FhirDateTime.fromString(it) }, _plannedStartDate),
+        DateTime.of(
+          if (plannedStartDate != null) FhirDateTime.fromString(plannedStartDate) else null,
+          _plannedStartDate,
+        ),
       plannedEndDate =
-        DateTime.of(plannedEndDate?.let { FhirDateTime.fromString(it) }, _plannedEndDate),
+        DateTime.of(
+          if (plannedEndDate != null) FhirDateTime.fromString(plannedEndDate) else null,
+          _plannedEndDate,
+        ),
       length = length,
       location = location ?: listOf(),
     )
@@ -413,25 +371,23 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
     descriptorOffset: Int,
     `value`: EncounterHistory,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -453,9 +409,12 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 10 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      10 + descriptorOffset,
+      ReferenceSerializer,
+      value.encounter,
+    )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -463,12 +422,8 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 12 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.status)
     encoder.encodeSerializableElement(
       descriptor,
       14 + descriptorOffset,
@@ -489,35 +444,42 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
         CodeableReferenceSerializer.listSerializer,
         value.serviceType,
       )
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.subjectStatus)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.actualPeriod)?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, PeriodSerializer, it)
-    }
-    ((value.plannedStartDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
-    }
-    (value.plannedStartDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.plannedEndDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
-    }
-    (value.plannedEndDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.length)?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, DurationSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      ReferenceSerializer,
+      value.subject,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.subjectStatus,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      PeriodSerializer,
+      value.actualPeriod,
+    )
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      20 + descriptorOffset,
+      value.plannedStartDate?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.plannedStartDate)
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      value.plannedEndDate?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.plannedEndDate)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      24 + descriptorOffset,
+      DurationSerializer,
+      value.length,
+    )
     if (value.location.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

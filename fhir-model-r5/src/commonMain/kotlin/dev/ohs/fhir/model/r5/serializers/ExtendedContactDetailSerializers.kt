@@ -41,9 +41,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -52,148 +50,103 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object ExtendedContactDetailSerializer : KSerializer<ExtendedContactDetail> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ExtendedContactDetail") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "purpose",
-        lazyDescriptor { CodeableConcept.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "name",
-        listSerialDescriptor(lazyDescriptor { HumanName.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "telecom",
-        listSerialDescriptor(lazyDescriptor { ContactPoint.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("address", lazyDescriptor { Address.serializer().descriptor }, isOptional = true)
-      element(
-        "organization",
-        lazyDescriptor { Reference.serializer().descriptor },
-        isOptional = true,
-      )
-      element("period", lazyDescriptor { Period.serializer().descriptor }, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("purpose", CodeableConceptSerializer.descriptor)
+      optionalElement("name", HumanNameSerializer.listSerializer.descriptor)
+      optionalElement("telecom", ContactPointSerializer.listSerializer.descriptor)
+      optionalElement("address", AddressSerializer.descriptor)
+      optionalElement("organization", ReferenceSerializer.descriptor)
+      optionalElement("period", PeriodSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<ExtendedContactDetail>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): ExtendedContactDetail =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var purpose: CodeableConcept? = null
+      var name: List<HumanName>? = null
+      var telecom: List<ContactPoint>? = null
+      var address: Address? = null
+      var organization: Reference? = null
+      var period: Period? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            purpose =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          3 ->
+            name =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                HumanNameSerializer.listSerializer,
+                null,
+              )
+          4 ->
+            telecom =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ContactPointSerializer.listSerializer,
+                null,
+              )
+          5 -> address = decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
+          6 ->
+            organization =
+              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          7 -> period = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else ->
+            throw SerializationException("Unexpected index decoding ExtendedContactDetail: " + i)
+        }
+      }
+      ExtendedContactDetail(
+        id = id,
+        extension = extension ?: listOf(),
+        purpose = purpose,
+        name = name ?: listOf(),
+        telecom = telecom ?: listOf(),
+        address = address,
+        organization = organization,
+        period = period,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: ExtendedContactDetail) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeSerializableIfNotNull(descriptor, 2, CodeableConceptSerializer, value.purpose)
+      if (value.name.isNotEmpty())
+        encodeSerializableElement(descriptor, 3, HumanNameSerializer.listSerializer, value.name)
+      if (value.telecom.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          4,
+          ContactPointSerializer.listSerializer,
+          value.telecom,
+        )
+      encodeSerializableIfNotNull(descriptor, 5, AddressSerializer, value.address)
+      encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.organization)
+      encodeSerializableIfNotNull(descriptor, 7, PeriodSerializer, value.period)
     }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ExtendedContactDetail {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var purpose: CodeableConcept? = null
-    var name: List<HumanName>? = null
-    var telecom: List<ContactPoint>? = null
-    var address: Address? = null
-    var organization: Reference? = null
-    var period: Period? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          purpose =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        3 ->
-          name =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              HumanNameSerializer.listSerializer,
-              null,
-            )
-        4 ->
-          telecom =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ContactPointSerializer.listSerializer,
-              null,
-            )
-        5 ->
-          address =
-            decoder.decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
-        6 ->
-          organization =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        7 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding ExtendedContactDetail: " + i)
-      }
-    }
-    return ExtendedContactDetail(
-      id = id,
-      extension = extension ?: listOf(),
-      purpose = purpose,
-      name = name ?: listOf(),
-      telecom = telecom ?: listOf(),
-      address = address,
-      organization = organization,
-      period = period,
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ExtendedContactDetail) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    (value.purpose)?.let {
-      encoder.encodeSerializableElement(descriptor, 2, CodeableConceptSerializer, it)
-    }
-    if (value.name.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        3,
-        HumanNameSerializer.listSerializer,
-        value.name,
-      )
-    if (value.telecom.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        4,
-        ContactPointSerializer.listSerializer,
-        value.telecom,
-      )
-    (value.address)?.let { encoder.encodeSerializableElement(descriptor, 5, AddressSerializer, it) }
-    (value.organization)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, it)
-    }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 7, PeriodSerializer, it) }
   }
 }

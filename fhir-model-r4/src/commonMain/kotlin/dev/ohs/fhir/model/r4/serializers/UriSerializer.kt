@@ -25,7 +25,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -40,13 +39,10 @@ import kotlinx.serialization.encoding.encodeStructure
   InternalSerializationApi::class,
 )
 internal object UriSerializer : KSerializer<Uri> {
-  private val extensionListSerializer: KSerializer<List<Extension>> =
-    ListSerializer(Extension.serializer())
-
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Uri") {
       element("id", String.serializer().descriptor)
-      element("extension", extensionListSerializer.descriptor)
+      element("extension", ExtensionSerializer.listSerializer.descriptor)
       element("value", String.serializer().descriptor)
     }
 
@@ -54,7 +50,12 @@ internal object UriSerializer : KSerializer<Uri> {
     encoder.encodeStructure(descriptor) {
       encodeNullableSerializableElement(descriptor, 0, String.serializer(), value.id)
       if (value.extension.isNotEmpty())
-        encodeSerializableElement(descriptor, 1, extensionListSerializer, value.extension)
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
       encodeNullableSerializableElement(descriptor, 2, String.serializer(), value.`value`)
     }
   }
@@ -67,7 +68,8 @@ internal object UriSerializer : KSerializer<Uri> {
       while (true) {
         when (val index = decodeElementIndex(descriptor)) {
           0 -> id = decodeNullableSerializableElement(descriptor, 0, String.serializer())
-          1 -> extension = decodeSerializableElement(descriptor, 1, extensionListSerializer)
+          1 ->
+            extension = decodeSerializableElement(descriptor, 1, ExtensionSerializer.listSerializer)
           2 -> `value` = decodeNullableSerializableElement(descriptor, 2, String.serializer())
           CompositeDecoder.DECODE_DONE -> break
           else ->

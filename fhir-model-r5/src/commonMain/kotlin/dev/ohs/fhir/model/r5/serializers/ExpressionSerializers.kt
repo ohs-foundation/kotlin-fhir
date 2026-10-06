@@ -40,9 +40,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -51,123 +49,95 @@ import kotlinx.serialization.encoding.encodeStructure
 internal object ExpressionSerializer : KSerializer<Expression> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Expression") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("name", KotlinString.serializer().descriptor, isOptional = true)
-      element("_name", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("expression", KotlinString.serializer().descriptor, isOptional = true)
-      element("_expression", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("reference", KotlinString.serializer().descriptor, isOptional = true)
-      element("_reference", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("description", KotlinString.serializer().descriptor)
+      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("name", KotlinString.serializer().descriptor)
+      optionalElement("_name", ElementSerializer.descriptor)
+      optionalElement("language", KotlinString.serializer().descriptor)
+      optionalElement("_language", ElementSerializer.descriptor)
+      optionalElement("expression", KotlinString.serializer().descriptor)
+      optionalElement("_expression", ElementSerializer.descriptor)
+      optionalElement("reference", KotlinString.serializer().descriptor)
+      optionalElement("_reference", ElementSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<Expression>> = ListSerializer(this)
 
   override fun deserialize(decoder: Decoder): Expression =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var description: KotlinString? = null
+      var _description: Element? = null
+      var name: KotlinString? = null
+      var _name: Element? = null
+      var language: KotlinString? = null
+      var _language: Element? = null
+      var expression: KotlinString? = null
+      var _expression: Element? = null
+      var reference: KotlinString? = null
+      var _reference: Element? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 -> description = decodeStringElement(descriptor, i)
+          3 ->
+            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          4 -> name = decodeStringElement(descriptor, i)
+          5 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          6 -> language = decodeStringElement(descriptor, i)
+          7 -> _language = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 -> expression = decodeStringElement(descriptor, i)
+          9 ->
+            _expression = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          10 -> reference = decodeStringElement(descriptor, i)
+          11 ->
+            _reference = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Expression: " + i)
+        }
+      }
+      Expression(
+        id = id,
+        extension = extension ?: listOf(),
+        description = R5String.of(description, _description),
+        name = Code.of(name, _name),
+        language = ExtensibleEnumeration.of<Expression.ExpressionLanguage>(language, _language),
+        expression = R5String.of(expression, _expression),
+        reference = Uri.of(reference, _reference),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: Expression) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Expression {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var description: KotlinString? = null
-    var _description: Element? = null
-    var name: KotlinString? = null
-    var _name: Element? = null
-    var language: KotlinString? = null
-    var _language: Element? = null
-    var expression: KotlinString? = null
-    var _expression: Element? = null
-    var reference: KotlinString? = null
-    var _reference: Element? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 -> description = decoder.decodeStringElement(descriptor, i)
-        3 ->
-          _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> name = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> language = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 -> expression = decoder.decodeStringElement(descriptor, i)
-        9 ->
-          _expression =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        10 -> reference = decoder.decodeStringElement(descriptor, i)
-        11 ->
-          _reference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Expression: " + i)
-      }
-    }
-    return Expression(
-      id = id,
-      extension = extension ?: listOf(),
-      description = R5String.of(description, _description),
-      name = Code.of(name, _name),
-      language = ExtensibleEnumeration.of<Expression.ExpressionLanguage>(language, _language),
-      expression = R5String.of(expression, _expression),
-      reference = Uri.of(reference, _reference),
-    )
-  }
-
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Expression) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, ElementSerializer, it)
-    }
-    ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, ElementSerializer, it)
-    }
-    ((value.language?.code))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-    }
-    ((value.expression?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-    (value.expression?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, ElementSerializer, it)
-    }
-    ((value.reference?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-    (value.reference?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      encodeStringIfNotNull(descriptor, 2, value.description?.value)
+      encodeElementIfNotNull(descriptor, 3, value.description)
+      encodeStringIfNotNull(descriptor, 4, value.name?.value)
+      encodeElementIfNotNull(descriptor, 5, value.name)
+      encodeStringIfNotNull(descriptor, 6, value.language?.code)
+      encodeElementIfNotNull(descriptor, 7, value.language)
+      encodeStringIfNotNull(descriptor, 8, value.expression?.value)
+      encodeElementIfNotNull(descriptor, 9, value.expression)
+      encodeStringIfNotNull(descriptor, 10, value.reference?.value)
+      encodeElementIfNotNull(descriptor, 11, value.reference)
     }
   }
 }

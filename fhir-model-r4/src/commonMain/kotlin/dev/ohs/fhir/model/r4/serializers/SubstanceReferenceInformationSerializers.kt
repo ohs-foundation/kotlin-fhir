@@ -63,20 +63,12 @@ internal object SubstanceReferenceInformationGeneSerializer :
   KSerializer<SubstanceReferenceInformation.Gene> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Gene") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("geneSequenceOrigin", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("gene", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("source", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("geneSequenceOrigin", CodeableConceptSerializer.descriptor)
+      optionalElement("gene", CodeableConceptSerializer.descriptor)
+      optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<SubstanceReferenceInformation.Gene>> =
@@ -84,111 +76,85 @@ internal object SubstanceReferenceInformationGeneSerializer :
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation.Gene =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var geneSequenceOrigin: CodeableConcept? = null
+      var gene: CodeableConcept? = null
+      var source: List<Reference>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            geneSequenceOrigin =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            gene = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            source =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Gene: " + i)
+        }
+      }
+      SubstanceReferenceInformation.Gene(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        geneSequenceOrigin = geneSequenceOrigin,
+        gene = gene,
+        source = source ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation.Gene) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): SubstanceReferenceInformation.Gene {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var geneSequenceOrigin: CodeableConcept? = null
-    var gene: CodeableConcept? = null
-    var source: List<Reference>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          geneSequenceOrigin =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          gene =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          source =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Gene: " + i)
-      }
-    }
-    return SubstanceReferenceInformation.Gene(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      geneSequenceOrigin = geneSequenceOrigin,
-      gene = gene,
-      source = source ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: SubstanceReferenceInformation.Gene,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(
         descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
+        3,
+        CodeableConceptSerializer,
+        value.geneSequenceOrigin,
       )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.geneSequenceOrigin)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.gene)
+      if (value.source.isNotEmpty())
+        encodeSerializableElement(descriptor, 5, ReferenceSerializer.listSerializer, value.source)
     }
-    (value.gene)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
-    }
-    if (value.source.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        5,
-        ReferenceSerializer.listSerializer,
-        value.source,
-      )
   }
 }
 
@@ -196,20 +162,12 @@ internal object SubstanceReferenceInformationGeneElementSerializer :
   KSerializer<SubstanceReferenceInformation.GeneElement> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("GeneElement") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("element", Identifier.serializer().descriptor, isOptional = true)
-      element("source", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("element", IdentifierSerializer.descriptor)
+      optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<SubstanceReferenceInformation.GeneElement>> =
@@ -217,108 +175,79 @@ internal object SubstanceReferenceInformationGeneElementSerializer :
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation.GeneElement =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var type: CodeableConcept? = null
+      var element: Identifier? = null
+      var source: List<Reference>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            element = decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          5 ->
+            source =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding GeneElement: " + i)
+        }
+      }
+      SubstanceReferenceInformation.GeneElement(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        type = type,
+        element = element,
+        source = source ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation.GeneElement) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.type)
+      encodeSerializableIfNotNull(descriptor, 4, IdentifierSerializer, value.element)
+      if (value.source.isNotEmpty())
+        encodeSerializableElement(descriptor, 5, ReferenceSerializer.listSerializer, value.source)
     }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): SubstanceReferenceInformation.GeneElement {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var type: CodeableConcept? = null
-    var element: Identifier? = null
-    var source: List<Reference>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          element =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        5 ->
-          source =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding GeneElement: " + i)
-      }
-    }
-    return SubstanceReferenceInformation.GeneElement(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type = type,
-      element = element,
-      source = source ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: SubstanceReferenceInformation.GeneElement,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    (value.element)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, IdentifierSerializer, it)
-    }
-    if (value.source.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        5,
-        ReferenceSerializer.listSerializer,
-        value.source,
-      )
   }
 }
 
@@ -326,25 +255,13 @@ internal object SubstanceReferenceInformationClassificationSerializer :
   KSerializer<SubstanceReferenceInformation.Classification> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Classification") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("domain", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("classification", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "subtype",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("source", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("domain", CodeableConceptSerializer.descriptor)
+      optionalElement("classification", CodeableConceptSerializer.descriptor)
+      optionalElement("subtype", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<SubstanceReferenceInformation.Classification>> =
@@ -352,130 +269,98 @@ internal object SubstanceReferenceInformationClassificationSerializer :
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation.Classification =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var domain: CodeableConcept? = null
+      var classification: CodeableConcept? = null
+      var subtype: List<CodeableConcept>? = null
+      var source: List<Reference>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            domain =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          4 ->
+            classification =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            subtype =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                CodeableConceptSerializer.listSerializer,
+                null,
+              )
+          6 ->
+            source =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Classification: " + i)
+        }
+      }
+      SubstanceReferenceInformation.Classification(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        domain = domain,
+        classification = classification,
+        subtype = subtype ?: listOf(),
+        source = source ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation.Classification) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.domain)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.classification)
+      if (value.subtype.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          5,
+          CodeableConceptSerializer.listSerializer,
+          value.subtype,
+        )
+      if (value.source.isNotEmpty())
+        encodeSerializableElement(descriptor, 6, ReferenceSerializer.listSerializer, value.source)
     }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): SubstanceReferenceInformation.Classification {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var domain: CodeableConcept? = null
-    var classification: CodeableConcept? = null
-    var subtype: List<CodeableConcept>? = null
-    var source: List<Reference>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          domain =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        4 ->
-          classification =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          subtype =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer.listSerializer,
-              null,
-            )
-        6 ->
-          source =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Classification: " + i)
-      }
-    }
-    return SubstanceReferenceInformation.Classification(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      domain = domain,
-      classification = classification,
-      subtype = subtype ?: listOf(),
-      source = source ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: SubstanceReferenceInformation.Classification,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.domain)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, it)
-    }
-    (value.classification)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
-    }
-    if (value.subtype.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        5,
-        CodeableConceptSerializer.listSerializer,
-        value.subtype,
-      )
-    if (value.source.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        6,
-        ReferenceSerializer.listSerializer,
-        value.source,
-      )
   }
 }
 
@@ -483,28 +368,20 @@ internal object SubstanceReferenceInformationTargetSerializer :
   KSerializer<SubstanceReferenceInformation.Target> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Target") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("target", Identifier.serializer().descriptor, isOptional = true)
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("interaction", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("organism", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("organismType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("amountQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("amountRange", Range.serializer().descriptor, isOptional = true)
-      element("amountString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_amountString", Element.serializer().descriptor, isOptional = true)
-      element("amountType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("source", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("target", IdentifierSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("interaction", CodeableConceptSerializer.descriptor)
+      optionalElement("organism", CodeableConceptSerializer.descriptor)
+      optionalElement("organismType", CodeableConceptSerializer.descriptor)
+      optionalElement("amountQuantity", QuantitySerializer.descriptor)
+      optionalElement("amountRange", RangeSerializer.descriptor)
+      optionalElement("amountString", KotlinString.serializer().descriptor)
+      optionalElement("_amountString", ElementSerializer.descriptor)
+      optionalElement("amountType", CodeableConceptSerializer.descriptor)
+      optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<SubstanceReferenceInformation.Target>> =
@@ -512,193 +389,133 @@ internal object SubstanceReferenceInformationTargetSerializer :
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation.Target =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: KotlinString? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var target: Identifier? = null
+      var type: CodeableConcept? = null
+      var interaction: CodeableConcept? = null
+      var organism: CodeableConcept? = null
+      var organismType: CodeableConcept? = null
+      var amountQuantity: Quantity? = null
+      var amountRange: Range? = null
+      var amountString: KotlinString? = null
+      var _amountString: Element? = null
+      var amountType: CodeableConcept? = null
+      var source: List<Reference>? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> target = decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+          4 ->
+            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          5 ->
+            interaction =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          6 ->
+            organism =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          7 ->
+            organismType =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          8 ->
+            amountQuantity =
+              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          9 -> amountRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+          10 -> amountString = decodeStringElement(descriptor, i)
+          11 ->
+            _amountString =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          12 ->
+            amountType =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          13 ->
+            source =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ReferenceSerializer.listSerializer,
+                null,
+              )
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Target: " + i)
+        }
+      }
+      SubstanceReferenceInformation.Target(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        target = target,
+        type = type,
+        interaction = interaction,
+        organism = organism,
+        organismType = organismType,
+        amount =
+          SubstanceReferenceInformation.Target.Amount.from(
+            amountQuantity,
+            amountRange,
+            R4String.of(amountString, _amountString),
+          ),
+        amountType = amountType,
+        source = source ?: listOf(),
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation.Target) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): SubstanceReferenceInformation.Target {
-    var id: KotlinString? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var target: Identifier? = null
-    var type: CodeableConcept? = null
-    var interaction: CodeableConcept? = null
-    var organism: CodeableConcept? = null
-    var organismType: CodeableConcept? = null
-    var amountQuantity: Quantity? = null
-    var amountRange: Range? = null
-    var amountString: KotlinString? = null
-    var _amountString: Element? = null
-    var amountType: CodeableConcept? = null
-    var source: List<Reference>? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          target =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        4 ->
-          type =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        5 ->
-          interaction =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        6 ->
-          organism =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        7 ->
-          organismType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        8 ->
-          amountQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        9 ->
-          amountRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        10 -> amountString = decoder.decodeStringElement(descriptor, i)
-        11 ->
-          _amountString =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        12 ->
-          amountType =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        13 ->
-          source =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ReferenceSerializer.listSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Target: " + i)
-      }
-    }
-    return SubstanceReferenceInformation.Target(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      target = target,
-      type = type,
-      interaction = interaction,
-      organism = organism,
-      organismType = organismType,
-      amount =
-        SubstanceReferenceInformation.Target.Amount.from(
-          amountQuantity,
-          amountRange,
-          R4String.of(amountString, _amountString),
-        ),
-      amountType = amountType,
-      source = source ?: listOf(),
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: SubstanceReferenceInformation.Target,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.target)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, IdentifierSerializer, it)
-    }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, it)
-    }
-    (value.interaction)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, it)
-    }
-    (value.organism)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
-    }
-    (value.organismType)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, CodeableConceptSerializer, it)
-    }
-    when (val choice = value.amount) {
-      null -> {}
-      is SubstanceReferenceInformation.Target.Amount.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 8, QuantitySerializer, choice.value)
-      }
-      is SubstanceReferenceInformation.Target.Amount.Range -> {
-        encoder.encodeSerializableElement(descriptor, 9, RangeSerializer, choice.value)
-      }
-      is SubstanceReferenceInformation.Target.Amount.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 11, ElementSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, IdentifierSerializer, value.target)
+      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.type)
+      encodeSerializableIfNotNull(descriptor, 5, CodeableConceptSerializer, value.interaction)
+      encodeSerializableIfNotNull(descriptor, 6, CodeableConceptSerializer, value.organism)
+      encodeSerializableIfNotNull(descriptor, 7, CodeableConceptSerializer, value.organismType)
+      when (val choice = value.amount) {
+        null -> {}
+        is SubstanceReferenceInformation.Target.Amount.Quantity -> {
+          encodeSerializableElement(descriptor, 8, QuantitySerializer, choice.value)
+        }
+        is SubstanceReferenceInformation.Target.Amount.Range -> {
+          encodeSerializableElement(descriptor, 9, RangeSerializer, choice.value)
+        }
+        is SubstanceReferenceInformation.Target.Amount.String -> {
+          encodeStringIfNotNull(descriptor, 10, choice.value.value)
+          encodeElementIfNotNull(descriptor, 11, choice.value)
         }
       }
+      encodeSerializableIfNotNull(descriptor, 12, CodeableConceptSerializer, value.amountType)
+      if (value.source.isNotEmpty())
+        encodeSerializableElement(descriptor, 13, ReferenceSerializer.listSerializer, value.source)
     }
-    (value.amountType)?.let {
-      encoder.encodeSerializableElement(descriptor, 12, CodeableConceptSerializer, it)
-    }
-    if (value.source.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        13,
-        ReferenceSerializer.listSerializer,
-        value.source,
-      )
   }
 }
 
@@ -708,57 +525,33 @@ internal object SubstanceReferenceInformationSerializer :
     buildResourceDescriptor("SubstanceReferenceInformation")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("comment", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_comment", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "gene",
-      listSerialDescriptor(
-        lazyDescriptor { SubstanceReferenceInformation.Gene.serializer().descriptor }
-      ),
-      isOptional = true,
-    )
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("comment", KotlinString.serializer().descriptor)
+    b.optionalElement("_comment", ElementSerializer.descriptor)
+    b.optionalElement("gene", SubstanceReferenceInformationGeneSerializer.listSerializer.descriptor)
+    b.optionalElement(
       "geneElement",
-      listSerialDescriptor(
-        lazyDescriptor { SubstanceReferenceInformation.GeneElement.serializer().descriptor }
-      ),
-      isOptional = true,
+      SubstanceReferenceInformationGeneElementSerializer.listSerializer.descriptor,
     )
-    b.element(
+    b.optionalElement(
       "classification",
-      listSerialDescriptor(
-        lazyDescriptor { SubstanceReferenceInformation.Classification.serializer().descriptor }
-      ),
-      isOptional = true,
+      SubstanceReferenceInformationClassificationSerializer.listSerializer.descriptor,
     )
-    b.element(
+    b.optionalElement(
       "target",
-      listSerialDescriptor(
-        lazyDescriptor { SubstanceReferenceInformation.Target.serializer().descriptor }
-      ),
-      isOptional = true,
+      SubstanceReferenceInformationTargetSerializer.listSerializer.descriptor,
     )
   }
 
@@ -889,25 +682,23 @@ internal object SubstanceReferenceInformationSerializer :
     descriptorOffset: Int,
     `value`: SubstanceReferenceInformation,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -929,12 +720,8 @@ internal object SubstanceReferenceInformationSerializer :
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    ((value.comment?.value))?.let {
-      encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it)
-    }
-    (value.comment?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.comment?.value)
+    encoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.comment)
     if (value.gene.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

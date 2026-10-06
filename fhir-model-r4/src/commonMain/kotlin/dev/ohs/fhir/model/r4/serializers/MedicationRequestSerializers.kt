@@ -72,29 +72,20 @@ internal object MedicationRequestDispenseRequestSerializer :
   KSerializer<MedicationRequest.DispenseRequest> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DispenseRequest") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
         "initialFill",
-        lazyDescriptor { MedicationRequest.DispenseRequest.InitialFill.serializer().descriptor },
-        isOptional = true,
+        MedicationRequestDispenseRequestInitialFillSerializer.descriptor,
       )
-      element("dispenseInterval", Duration.serializer().descriptor, isOptional = true)
-      element("validityPeriod", Period.serializer().descriptor, isOptional = true)
-      element("numberOfRepeatsAllowed", Int.serializer().descriptor, isOptional = true)
-      element("_numberOfRepeatsAllowed", Element.serializer().descriptor, isOptional = true)
-      element("quantity", Quantity.serializer().descriptor, isOptional = true)
-      element("expectedSupplyDuration", Duration.serializer().descriptor, isOptional = true)
-      element("performer", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("dispenseInterval", DurationSerializer.descriptor)
+      optionalElement("validityPeriod", PeriodSerializer.descriptor)
+      optionalElement("numberOfRepeatsAllowed", Int.serializer().descriptor)
+      optionalElement("_numberOfRepeatsAllowed", ElementSerializer.descriptor)
+      optionalElement("quantity", QuantitySerializer.descriptor)
+      optionalElement("expectedSupplyDuration", DurationSerializer.descriptor)
+      optionalElement("performer", ReferenceSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<MedicationRequest.DispenseRequest>> =
@@ -102,136 +93,108 @@ internal object MedicationRequestDispenseRequestSerializer :
 
   override fun deserialize(decoder: Decoder): MedicationRequest.DispenseRequest =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var initialFill: MedicationRequest.DispenseRequest.InitialFill? = null
+      var dispenseInterval: Duration? = null
+      var validityPeriod: Period? = null
+      var numberOfRepeatsAllowed: Int? = null
+      var _numberOfRepeatsAllowed: Element? = null
+      var quantity: Quantity? = null
+      var expectedSupplyDuration: Duration? = null
+      var performer: Reference? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 ->
+            initialFill =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                MedicationRequestDispenseRequestInitialFillSerializer,
+                null,
+              )
+          4 ->
+            dispenseInterval =
+              decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          5 ->
+            validityPeriod =
+              decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+          6 -> numberOfRepeatsAllowed = decodeIntElement(descriptor, i)
+          7 ->
+            _numberOfRepeatsAllowed =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          8 -> quantity = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          9 ->
+            expectedSupplyDuration =
+              decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          10 ->
+            performer = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding DispenseRequest: " + i)
+        }
+      }
+      MedicationRequest.DispenseRequest(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        initialFill = initialFill,
+        dispenseInterval = dispenseInterval,
+        validityPeriod = validityPeriod,
+        numberOfRepeatsAllowed = UnsignedInt.of(numberOfRepeatsAllowed, _numberOfRepeatsAllowed),
+        quantity = quantity,
+        expectedSupplyDuration = expectedSupplyDuration,
+        performer = performer,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: MedicationRequest.DispenseRequest) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): MedicationRequest.DispenseRequest {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var initialFill: MedicationRequest.DispenseRequest.InitialFill? = null
-    var dispenseInterval: Duration? = null
-    var validityPeriod: Period? = null
-    var numberOfRepeatsAllowed: Int? = null
-    var _numberOfRepeatsAllowed: Element? = null
-    var quantity: Quantity? = null
-    var expectedSupplyDuration: Duration? = null
-    var performer: Reference? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          initialFill =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              MedicationRequestDispenseRequestInitialFillSerializer,
-              null,
-            )
-        4 ->
-          dispenseInterval =
-            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        5 ->
-          validityPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-        6 -> numberOfRepeatsAllowed = decoder.decodeIntElement(descriptor, i)
-        7 ->
-          _numberOfRepeatsAllowed =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        8 ->
-          quantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        9 ->
-          expectedSupplyDuration =
-            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        10 ->
-          performer =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding DispenseRequest: " + i)
-      }
-    }
-    return MedicationRequest.DispenseRequest(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      initialFill = initialFill,
-      dispenseInterval = dispenseInterval,
-      validityPeriod = validityPeriod,
-      numberOfRepeatsAllowed = UnsignedInt.of(numberOfRepeatsAllowed, _numberOfRepeatsAllowed),
-      quantity = quantity,
-      expectedSupplyDuration = expectedSupplyDuration,
-      performer = performer,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: MedicationRequest.DispenseRequest,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.initialFill)?.let {
-      encoder.encodeSerializableElement(
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(
         descriptor,
         3,
         MedicationRequestDispenseRequestInitialFillSerializer,
-        it,
+        value.initialFill,
       )
-    }
-    (value.dispenseInterval)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, DurationSerializer, it)
-    }
-    (value.validityPeriod)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, PeriodSerializer, it)
-    }
-    ((value.numberOfRepeatsAllowed?.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
-    (value.numberOfRepeatsAllowed?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, ElementSerializer, it)
-    }
-    (value.quantity)?.let {
-      encoder.encodeSerializableElement(descriptor, 8, QuantitySerializer, it)
-    }
-    (value.expectedSupplyDuration)?.let {
-      encoder.encodeSerializableElement(descriptor, 9, DurationSerializer, it)
-    }
-    (value.performer)?.let {
-      encoder.encodeSerializableElement(descriptor, 10, ReferenceSerializer, it)
+      encodeSerializableIfNotNull(descriptor, 4, DurationSerializer, value.dispenseInterval)
+      encodeSerializableIfNotNull(descriptor, 5, PeriodSerializer, value.validityPeriod)
+      encodeIntIfNotNull(descriptor, 6, value.numberOfRepeatsAllowed?.value)
+      encodeElementIfNotNull(descriptor, 7, value.numberOfRepeatsAllowed)
+      encodeSerializableIfNotNull(descriptor, 8, QuantitySerializer, value.quantity)
+      encodeSerializableIfNotNull(descriptor, 9, DurationSerializer, value.expectedSupplyDuration)
+      encodeSerializableIfNotNull(descriptor, 10, ReferenceSerializer, value.performer)
     }
   }
 }
@@ -240,19 +203,11 @@ internal object MedicationRequestDispenseRequestInitialFillSerializer :
   KSerializer<MedicationRequest.DispenseRequest.InitialFill> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("InitialFill") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("quantity", Quantity.serializer().descriptor, isOptional = true)
-      element("duration", Duration.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("quantity", QuantitySerializer.descriptor)
+      optionalElement("duration", DurationSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<MedicationRequest.DispenseRequest.InitialFill>> =
@@ -260,85 +215,64 @@ internal object MedicationRequestDispenseRequestInitialFillSerializer :
 
   override fun deserialize(decoder: Decoder): MedicationRequest.DispenseRequest.InitialFill =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var quantity: Quantity? = null
+      var duration: Duration? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> quantity = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+          4 -> duration = decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding InitialFill: " + i)
+        }
+      }
+      MedicationRequest.DispenseRequest.InitialFill(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        quantity = quantity,
+        duration = duration,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: MedicationRequest.DispenseRequest.InitialFill) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): MedicationRequest.DispenseRequest.InitialFill {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var quantity: Quantity? = null
-    var duration: Duration? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 ->
-          quantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-        4 ->
-          duration =
-            decoder.decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding InitialFill: " + i)
-      }
-    }
-    return MedicationRequest.DispenseRequest.InitialFill(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      quantity = quantity,
-      duration = duration,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: MedicationRequest.DispenseRequest.InitialFill,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    (value.quantity)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, QuantitySerializer, it)
-    }
-    (value.duration)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, DurationSerializer, it)
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
+        )
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      encodeSerializableIfNotNull(descriptor, 3, QuantitySerializer, value.quantity)
+      encodeSerializableIfNotNull(descriptor, 4, DurationSerializer, value.duration)
     }
   }
 }
@@ -347,21 +281,13 @@ internal object MedicationRequestSubstitutionSerializer :
   KSerializer<MedicationRequest.Substitution> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Substitution") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("allowedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_allowedBoolean", Element.serializer().descriptor, isOptional = true)
-      element("allowedCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("reason", CodeableConcept.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("allowedBoolean", KotlinBoolean.serializer().descriptor)
+      optionalElement("_allowedBoolean", ElementSerializer.descriptor)
+      optionalElement("allowedCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("reason", CodeableConceptSerializer.descriptor)
     }
 
   internal val listSerializer: KSerializer<List<MedicationRequest.Substitution>> =
@@ -369,114 +295,89 @@ internal object MedicationRequestSubstitutionSerializer :
 
   override fun deserialize(decoder: Decoder): MedicationRequest.Substitution =
     decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
+      var id: String? = null
+      var extension: List<Extension>? = null
+      var modifierExtension: List<Extension>? = null
+      var allowedBoolean: KotlinBoolean? = null
+      var _allowedBoolean: Element? = null
+      var allowedCodeableConcept: CodeableConcept? = null
+      var reason: CodeableConcept? = null
+      while (true) {
+        when (val i = decodeElementIndex(descriptor)) {
+          0 -> id = decodeStringElement(descriptor, i)
+          1 ->
+            extension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          2 ->
+            modifierExtension =
+              decodeNullableSerializableElement(
+                descriptor,
+                i,
+                ExtensionSerializer.listSerializer,
+                null,
+              )
+          3 -> allowedBoolean = decodeBooleanElement(descriptor, i)
+          4 ->
+            _allowedBoolean =
+              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          5 ->
+            allowedCodeableConcept =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          6 ->
+            reason =
+              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
+          CompositeDecoder.DECODE_DONE -> break
+          else -> throw SerializationException("Unexpected index decoding Substitution: " + i)
+        }
+      }
+      MedicationRequest.Substitution(
+        id = id,
+        extension = extension ?: listOf(),
+        modifierExtension = modifierExtension ?: listOf(),
+        allowed =
+          MedicationRequest.Substitution.Allowed.from(
+            R4Boolean.of(allowedBoolean, _allowedBoolean),
+            allowedCodeableConcept,
+          )
+            ?: throw SerializationException(
+              "Missing required property 'allowed' on MedicationRequest.Substitution"
+            ),
+        reason = reason,
+      )
     }
 
   override fun serialize(encoder: Encoder, `value`: MedicationRequest.Substitution) {
     encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): MedicationRequest.Substitution {
-    var id: String? = null
-    var extension: List<Extension>? = null
-    var modifierExtension: List<Extension>? = null
-    var allowedBoolean: KotlinBoolean? = null
-    var _allowedBoolean: Element? = null
-    var allowedCodeableConcept: CodeableConcept? = null
-    var reason: CodeableConcept? = null
-    while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 ->
-          extension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              ExtensionSerializer.listSerializer,
-              null,
-            )
-        3 -> allowedBoolean = decoder.decodeBooleanElement(descriptor, i)
-        4 ->
-          _allowedBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        5 ->
-          allowedCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        6 ->
-          reason =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              CodeableConceptSerializer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Substitution: " + i)
-      }
-    }
-    return MedicationRequest.Substitution(
-      id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      allowed =
-        MedicationRequest.Substitution.Allowed.from(
-          R4Boolean.of(allowedBoolean, _allowedBoolean),
-          allowedCodeableConcept,
+      encodeStringIfNotNull(descriptor, 0, value.id)
+      if (value.extension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          1,
+          ExtensionSerializer.listSerializer,
+          value.extension,
         )
-          ?: throw SerializationException(
-            "Missing required property 'allowed' on MedicationRequest.Substitution"
-          ),
-      reason = reason,
-    )
-  }
-
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: MedicationRequest.Substitution,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
-    if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    when (val choice = value.allowed) {
-      is MedicationRequest.Substitution.Allowed.Boolean -> {
-        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 4, ElementSerializer, it)
+      if (value.modifierExtension.isNotEmpty())
+        encodeSerializableElement(
+          descriptor,
+          2,
+          ExtensionSerializer.listSerializer,
+          value.modifierExtension,
+        )
+      when (val choice = value.allowed) {
+        is MedicationRequest.Substitution.Allowed.Boolean -> {
+          encodeBooleanIfNotNull(descriptor, 3, choice.value.value)
+          encodeElementIfNotNull(descriptor, 4, choice.value)
+        }
+        is MedicationRequest.Substitution.Allowed.CodeableConcept -> {
+          encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, choice.value)
         }
       }
-      is MedicationRequest.Substitution.Allowed.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, choice.value)
-      }
-    }
-    (value.reason)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, it)
+      encodeSerializableIfNotNull(descriptor, 6, CodeableConceptSerializer, value.reason)
     }
   }
 }
@@ -485,134 +386,61 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
   override val descriptor: SerialDescriptor = buildResourceDescriptor("MedicationRequest")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", String.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", String.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("id", String.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", String.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", String.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", String.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("statusReason", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("intent", String.serializer().descriptor, isOptional = true)
-    b.element("_intent", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "category",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("priority", String.serializer().descriptor, isOptional = true)
-    b.element("_priority", Element.serializer().descriptor, isOptional = true)
-    b.element("doNotPerform", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_doNotPerform", Element.serializer().descriptor, isOptional = true)
-    b.element("reportedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_reportedBoolean", Element.serializer().descriptor, isOptional = true)
-    b.element("reportedReference", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "medicationCodeableConcept",
-      CodeableConcept.serializer().descriptor,
-      isOptional = true,
-    )
-    b.element("medicationReference", Reference.serializer().descriptor, isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "supportingInformation",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("authoredOn", String.serializer().descriptor, isOptional = true)
-    b.element("_authoredOn", Element.serializer().descriptor, isOptional = true)
-    b.element("requester", Reference.serializer().descriptor, isOptional = true)
-    b.element("performer", Reference.serializer().descriptor, isOptional = true)
-    b.element("performerType", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("recorder", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "reasonCode",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "reasonReference",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "instantiatesCanonical",
-      listSerialDescriptor(String.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "_instantiatesCanonical",
-      listSerialDescriptor(Element.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "instantiatesUri",
-      listSerialDescriptor(String.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "_instantiatesUri",
-      listSerialDescriptor(Element.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-    b.element("groupIdentifier", Identifier.serializer().descriptor, isOptional = true)
-    b.element("courseOfTherapyType", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "insurance",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-    b.element(
-      "dosageInstruction",
-      listSerialDescriptor(Dosage.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "dispenseRequest",
-      lazyDescriptor { MedicationRequest.DispenseRequest.serializer().descriptor },
-      isOptional = true,
-    )
-    b.element(
-      "substitution",
-      lazyDescriptor { MedicationRequest.Substitution.serializer().descriptor },
-      isOptional = true,
-    )
-    b.element("priorPrescription", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "detectedIssue",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "eventHistory",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", String.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("statusReason", CodeableConceptSerializer.descriptor)
+    b.optionalElement("intent", String.serializer().descriptor)
+    b.optionalElement("_intent", ElementSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("priority", String.serializer().descriptor)
+    b.optionalElement("_priority", ElementSerializer.descriptor)
+    b.optionalElement("doNotPerform", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_doNotPerform", ElementSerializer.descriptor)
+    b.optionalElement("reportedBoolean", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_reportedBoolean", ElementSerializer.descriptor)
+    b.optionalElement("reportedReference", ReferenceSerializer.descriptor)
+    b.optionalElement("medicationCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("medicationReference", ReferenceSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("supportingInformation", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("authoredOn", String.serializer().descriptor)
+    b.optionalElement("_authoredOn", ElementSerializer.descriptor)
+    b.optionalElement("requester", ReferenceSerializer.descriptor)
+    b.optionalElement("performer", ReferenceSerializer.descriptor)
+    b.optionalElement("performerType", CodeableConceptSerializer.descriptor)
+    b.optionalElement("recorder", ReferenceSerializer.descriptor)
+    b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("reasonReference", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("instantiatesCanonical", stringNullableListSerializer.descriptor)
+    b.optionalElement("_instantiatesCanonical", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("instantiatesUri", stringNullableListSerializer.descriptor)
+    b.optionalElement("_instantiatesUri", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("groupIdentifier", IdentifierSerializer.descriptor)
+    b.optionalElement("courseOfTherapyType", CodeableConceptSerializer.descriptor)
+    b.optionalElement("insurance", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+    b.optionalElement("dosageInstruction", DosageSerializer.listSerializer.descriptor)
+    b.optionalElement("dispenseRequest", MedicationRequestDispenseRequestSerializer.descriptor)
+    b.optionalElement("substitution", MedicationRequestSubstitutionSerializer.descriptor)
+    b.optionalElement("priorPrescription", ReferenceSerializer.descriptor)
+    b.optionalElement("detectedIssue", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("eventHistory", ReferenceSerializer.listSerializer.descriptor)
   }
 
   override fun deserializeInternal(
@@ -947,7 +775,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          status?.let { MedicationRequest.MedicationrequestStatus.fromCode(it) },
+          if (status != null) MedicationRequest.MedicationrequestStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(
@@ -956,7 +784,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
       statusReason = statusReason,
       intent =
         Enumeration.of(
-          intent?.let { MedicationRequest.MedicationRequestIntent.fromCode(it) },
+          if (intent != null) MedicationRequest.MedicationRequestIntent.fromCode(intent) else null,
           _intent,
         )
           ?: throw SerializationException(
@@ -964,7 +792,10 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
           ),
       category = category ?: listOf(),
       priority =
-        Enumeration.of(priority?.let { MedicationRequest.RequestPriority.fromCode(it) }, _priority),
+        Enumeration.of(
+          if (priority != null) MedicationRequest.RequestPriority.fromCode(priority) else null,
+          _priority,
+        ),
       doNotPerform = R4Boolean.of(doNotPerform, _doNotPerform),
       reported =
         MedicationRequest.Reported.from(
@@ -983,7 +814,11 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
           ),
       encounter = encounter,
       supportingInformation = supportingInformation ?: listOf(),
-      authoredOn = DateTime.of(authoredOn?.let { FhirDateTime.fromString(it) }, _authoredOn),
+      authoredOn =
+        DateTime.of(
+          if (authoredOn != null) FhirDateTime.fromString(authoredOn) else null,
+          _authoredOn,
+        ),
       requester = requester,
       performer = performer,
       performerType = performerType,
@@ -995,7 +830,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
         ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(index)?.let { it },
+            instantiatesCanonical?.getOrNull(index),
             _instantiatesCanonical?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -1005,7 +840,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
           index ->
-          Uri.of(instantiatesUri?.getOrNull(index)?.let { it }, _instantiatesUri?.getOrNull(index))
+          Uri.of(instantiatesUri?.getOrNull(index), _instantiatesUri?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'instantiatesUri' on MedicationRequest has neither a value nor an id/extension"
             )
@@ -1030,25 +865,23 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
     descriptorOffset: Int,
     `value`: MedicationRequest,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, MetaSerializer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, NarrativeSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
+    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1077,26 +910,16 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.statusReason)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    ((value.intent.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
-    }
-    (value.intent.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.statusReason,
+    )
+    encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.intent.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.intent)
     if (value.category.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1104,32 +927,15 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
         CodeableConceptSerializer.listSerializer,
         value.category,
       )
-    ((value.priority?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
-    }
-    (value.priority?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, ElementSerializer, it)
-    }
-    ((value.doNotPerform?.value))?.let {
-      encoder.encodeBooleanElement(descriptor, 19 + descriptorOffset, it)
-    }
-    (value.doNotPerform?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20 + descriptorOffset, ElementSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.priority?.value?.code)
+    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.priority)
+    encoder.encodeBooleanIfNotNull(descriptor, 19 + descriptorOffset, value.doNotPerform?.value)
+    encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.doNotPerform)
     when (val choice = value.reported) {
       null -> {}
       is MedicationRequest.Reported.Boolean -> {
-        ((choice.value.value))?.let {
-          encoder.encodeBooleanElement(descriptor, 21 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            22 + descriptorOffset,
-            ElementSerializer,
-            it,
-          )
-        }
+        encoder.encodeBooleanIfNotNull(descriptor, 21 + descriptorOffset, choice.value.value)
+        encoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, choice.value)
       }
       is MedicationRequest.Reported.Reference -> {
         encoder.encodeSerializableElement(
@@ -1164,9 +970,12 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
       ReferenceSerializer,
       value.subject,
     )
-    (value.encounter)?.let {
-      encoder.encodeSerializableElement(descriptor, 27 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      27 + descriptorOffset,
+      ReferenceSerializer,
+      value.encounter,
+    )
     if (value.supportingInformation.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1174,29 +983,36 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
         ReferenceSerializer.listSerializer,
         value.supportingInformation,
       )
-    ((value.authoredOn?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 29 + descriptorOffset, it)
-    }
-    (value.authoredOn?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 30 + descriptorOffset, ElementSerializer, it)
-    }
-    (value.requester)?.let {
-      encoder.encodeSerializableElement(descriptor, 31 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.performer)?.let {
-      encoder.encodeSerializableElement(descriptor, 32 + descriptorOffset, ReferenceSerializer, it)
-    }
-    (value.performerType)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
-    (value.recorder)?.let {
-      encoder.encodeSerializableElement(descriptor, 34 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeStringIfNotNull(
+      descriptor,
+      29 + descriptorOffset,
+      value.authoredOn?.value?.toString(),
+    )
+    encoder.encodeElementIfNotNull(descriptor, 30 + descriptorOffset, value.authoredOn)
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      31 + descriptorOffset,
+      ReferenceSerializer,
+      value.requester,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      32 + descriptorOffset,
+      ReferenceSerializer,
+      value.performer,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      33 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.performerType,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      34 + descriptorOffset,
+      ReferenceSerializer,
+      value.recorder,
+    )
     if (value.reasonCode.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1211,37 +1027,27 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
         ReferenceSerializer.listSerializer,
         value.reasonReference,
       )
-    (value.instantiatesCanonical.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    if (value.instantiatesCanonical.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         37 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.instantiatesCanonical.map { it.value },
       )
-    }
-    (value.instantiatesCanonical.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+      encoder.encodePrimitiveElementList(
         descriptor,
         38 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
+        value.instantiatesCanonical,
       )
     }
-    (value.instantiatesUri.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    if (value.instantiatesUri.isNotEmpty()) {
+      encoder.encodeNullableListIfNotNull(
         descriptor,
         39 + descriptorOffset,
         stringNullableListSerializer,
-        it,
+        value.instantiatesUri.map { it.value },
       )
-    }
-    (value.instantiatesUri.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        ElementSerializer.nullableListSerializer,
-        it,
-      )
+      encoder.encodePrimitiveElementList(descriptor, 40 + descriptorOffset, value.instantiatesUri)
     }
     if (value.basedOn.isNotEmpty())
       encoder.encodeSerializableElement(
@@ -1250,17 +1056,18 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
         ReferenceSerializer.listSerializer,
         value.basedOn,
       )
-    (value.groupIdentifier)?.let {
-      encoder.encodeSerializableElement(descriptor, 42 + descriptorOffset, IdentifierSerializer, it)
-    }
-    (value.courseOfTherapyType)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        43 + descriptorOffset,
-        CodeableConceptSerializer,
-        it,
-      )
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      42 + descriptorOffset,
+      IdentifierSerializer,
+      value.groupIdentifier,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      43 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.courseOfTherapyType,
+    )
     if (value.insurance.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1282,25 +1089,24 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
         DosageSerializer.listSerializer,
         value.dosageInstruction,
       )
-    (value.dispenseRequest)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        47 + descriptorOffset,
-        MedicationRequestDispenseRequestSerializer,
-        it,
-      )
-    }
-    (value.substitution)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        48 + descriptorOffset,
-        MedicationRequestSubstitutionSerializer,
-        it,
-      )
-    }
-    (value.priorPrescription)?.let {
-      encoder.encodeSerializableElement(descriptor, 49 + descriptorOffset, ReferenceSerializer, it)
-    }
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      47 + descriptorOffset,
+      MedicationRequestDispenseRequestSerializer,
+      value.dispenseRequest,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      48 + descriptorOffset,
+      MedicationRequestSubstitutionSerializer,
+      value.substitution,
+    )
+    encoder.encodeSerializableIfNotNull(
+      descriptor,
+      49 + descriptorOffset,
+      ReferenceSerializer,
+      value.priorPrescription,
+    )
     if (value.detectedIssue.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

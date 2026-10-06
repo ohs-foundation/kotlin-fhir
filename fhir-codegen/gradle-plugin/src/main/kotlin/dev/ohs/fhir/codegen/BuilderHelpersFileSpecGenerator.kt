@@ -43,11 +43,8 @@ internal fun <T, R> List<T>.mapToMutableList(transform: (T) -> R): MutableList<R
   return destination
 }
 
-internal fun <T, R> List<T>.mapToList(transform: (T) -> R): List<R> {
-  val destination = ArrayList<R>(size)
-  for (item in this) destination.add(transform(item))
-  return destination
-}
+internal fun <T, R> List<T>.mapToList(transform: (T) -> R): List<R> =
+  if (isEmpty()) emptyList() else mapToMutableList(transform)
 """
         .trimStart()
     )

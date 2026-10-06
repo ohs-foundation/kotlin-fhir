@@ -43,6 +43,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -53,15 +54,21 @@ internal object AvailabilityAvailableTimeSerializer : KSerializer<Availability.A
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("AvailableTime") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("daysOfWeek", stringNullableListSerializer.descriptor)
-      optionalElement("_daysOfWeek", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
+        "_daysOfWeek",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
       optionalElement("allDay", KotlinBoolean.serializer().descriptor)
-      optionalElement("_allDay", ElementSerializer.descriptor)
+      optionalElement("_allDay", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("availableStartTime", LocalTimeSerializer.descriptor)
-      optionalElement("_availableStartTime", ElementSerializer.descriptor)
+      optionalElement("_availableStartTime", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("availableEndTime", LocalTimeSerializer.descriptor)
-      optionalElement("_availableEndTime", ElementSerializer.descriptor)
+      optionalElement("_availableEndTime", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Availability.AvailableTime>> = ListSerializer(this)
@@ -176,10 +183,13 @@ internal object AvailabilityNotAvailableTimeSerializer :
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("NotAvailableTime") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("during", PeriodSerializer.descriptor)
+      optionalElement("_description", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("during", lazyDescriptor { PeriodSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Availability.NotAvailableTime>> =
@@ -240,7 +250,10 @@ internal object AvailabilitySerializer : KSerializer<Availability> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Availability") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement(
         "availableTime",
         AvailabilityAvailableTimeSerializer.listSerializer.descriptor,

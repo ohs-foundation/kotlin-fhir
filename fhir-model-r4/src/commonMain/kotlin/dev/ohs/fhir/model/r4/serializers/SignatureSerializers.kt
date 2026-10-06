@@ -42,6 +42,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -52,18 +53,21 @@ internal object SignatureSerializer : KSerializer<Signature> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Signature") {
       optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodingSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement("type", listSerialDescriptor(lazyDescriptor { CodingSerializer.descriptor }))
       optionalElement("when", String.serializer().descriptor)
-      optionalElement("_when", ElementSerializer.descriptor)
-      optionalElement("who", ReferenceSerializer.descriptor)
-      optionalElement("onBehalfOf", ReferenceSerializer.descriptor)
+      optionalElement("_when", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("who", lazyDescriptor { ReferenceSerializer.descriptor })
+      optionalElement("onBehalfOf", lazyDescriptor { ReferenceSerializer.descriptor })
       optionalElement("targetFormat", String.serializer().descriptor)
-      optionalElement("_targetFormat", ElementSerializer.descriptor)
+      optionalElement("_targetFormat", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("sigFormat", String.serializer().descriptor)
-      optionalElement("_sigFormat", ElementSerializer.descriptor)
+      optionalElement("_sigFormat", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("data", String.serializer().descriptor)
-      optionalElement("_data", ElementSerializer.descriptor)
+      optionalElement("_data", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Signature>> = ListSerializer(this)

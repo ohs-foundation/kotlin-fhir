@@ -36,6 +36,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -46,9 +47,12 @@ internal object RatioSerializer : KSerializer<Ratio> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Ratio") {
       optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("numerator", QuantitySerializer.descriptor)
-      optionalElement("denominator", QuantitySerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement("numerator", lazyDescriptor { QuantitySerializer.descriptor })
+      optionalElement("denominator", lazyDescriptor { QuantitySerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Ratio>> = ListSerializer(this)

@@ -40,6 +40,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -50,12 +51,18 @@ internal object UsageContextSerializer : KSerializer<UsageContext> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("UsageContext") {
       optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodingSerializer.descriptor)
-      optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("valueQuantity", QuantitySerializer.descriptor)
-      optionalElement("valueRange", RangeSerializer.descriptor)
-      optionalElement("valueReference", ReferenceSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement("code", lazyDescriptor { CodingSerializer.descriptor })
+      optionalElement(
+        "valueCodeableConcept",
+        lazyDescriptor { CodeableConceptSerializer.descriptor },
+      )
+      optionalElement("valueQuantity", lazyDescriptor { QuantitySerializer.descriptor })
+      optionalElement("valueRange", lazyDescriptor { RangeSerializer.descriptor })
+      optionalElement("valueReference", lazyDescriptor { ReferenceSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<UsageContext>> = ListSerializer(this)

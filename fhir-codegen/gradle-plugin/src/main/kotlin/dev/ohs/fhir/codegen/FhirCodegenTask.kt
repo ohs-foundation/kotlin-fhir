@@ -187,6 +187,7 @@ abstract class FhirCodegenTask : DefaultTask() {
     FhirDateTimeSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
 
     LazySerialDescriptorFileSpecGenerator.writeTo(outputDir, serializersPackageName)
+    SerializerHelpersFileSpecGenerator.writeTo(outputDir, serializersPackageName)
 
     // Search parameters: a shared `SearchParam` interface plus a per-resource container of typed
     // search parameters, generated from the `SearchParameter-*.json` definitions.

@@ -40,10 +40,6 @@ class TypeGraphAnalyzer(structureDefinitions: List<StructureDefinition>) {
     for (structureDefinition in structureDefinitions) {
       val sourceName = structureDefinition.name.capitalized()
       val refs = deps.getOrPut(sourceName) { mutableSetOf() }
-      // `Element` and `Extension` break all outgoing complex references via `lazyDescriptor` in
-      // `SerializerDescriptorEmitter`, so omit their outgoing edges to keep unrelated complex
-      // types out of the `Extension` strongly-connected component.
-      if (sourceName == "Element" || sourceName == "Extension") continue
       structureDefinition.snapshot?.element?.forEach { element ->
         element.type?.forEach { type ->
           val code = type.code

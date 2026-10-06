@@ -41,6 +41,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -51,13 +52,22 @@ internal object ExtendedContactDetailSerializer : KSerializer<ExtendedContactDet
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ExtendedContactDetail") {
       optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("purpose", CodeableConceptSerializer.descriptor)
-      optionalElement("name", HumanNameSerializer.listSerializer.descriptor)
-      optionalElement("telecom", ContactPointSerializer.listSerializer.descriptor)
-      optionalElement("address", AddressSerializer.descriptor)
-      optionalElement("organization", ReferenceSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement("purpose", lazyDescriptor { CodeableConceptSerializer.descriptor })
+      optionalElement(
+        "name",
+        listSerialDescriptor(lazyDescriptor { HumanNameSerializer.descriptor }),
+      )
+      optionalElement(
+        "telecom",
+        listSerialDescriptor(lazyDescriptor { ContactPointSerializer.descriptor }),
+      )
+      optionalElement("address", lazyDescriptor { AddressSerializer.descriptor })
+      optionalElement("organization", lazyDescriptor { ReferenceSerializer.descriptor })
+      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<ExtendedContactDetail>> = ListSerializer(this)

@@ -43,6 +43,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -53,21 +54,24 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ParameterDefinition") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
+      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", ElementSerializer.descriptor)
+      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("min", Int.serializer().descriptor)
-      optionalElement("_min", ElementSerializer.descriptor)
+      optionalElement("_min", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("max", KotlinString.serializer().descriptor)
-      optionalElement("_max", ElementSerializer.descriptor)
+      optionalElement("_max", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("documentation", KotlinString.serializer().descriptor)
-      optionalElement("_documentation", ElementSerializer.descriptor)
+      optionalElement("_documentation", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("profile", KotlinString.serializer().descriptor)
-      optionalElement("_profile", ElementSerializer.descriptor)
+      optionalElement("_profile", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<ParameterDefinition>> = ListSerializer(this)

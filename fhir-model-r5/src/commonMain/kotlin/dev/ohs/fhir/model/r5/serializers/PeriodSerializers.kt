@@ -38,6 +38,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -48,11 +49,14 @@ internal object PeriodSerializer : KSerializer<Period> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Period") {
       optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("start", String.serializer().descriptor)
-      optionalElement("_start", ElementSerializer.descriptor)
+      optionalElement("_start", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("end", String.serializer().descriptor)
-      optionalElement("_end", ElementSerializer.descriptor)
+      optionalElement("_end", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Period>> = ListSerializer(this)

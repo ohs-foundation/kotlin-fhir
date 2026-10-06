@@ -39,6 +39,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -49,26 +50,32 @@ internal object AddressSerializer : KSerializer<Address> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Address") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", ElementSerializer.descriptor)
+      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", ElementSerializer.descriptor)
+      optionalElement("_text", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("line", stringNullableListSerializer.descriptor)
-      optionalElement("_line", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
+        "_line",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
       optionalElement("city", KotlinString.serializer().descriptor)
-      optionalElement("_city", ElementSerializer.descriptor)
+      optionalElement("_city", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("district", KotlinString.serializer().descriptor)
-      optionalElement("_district", ElementSerializer.descriptor)
+      optionalElement("_district", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("state", KotlinString.serializer().descriptor)
-      optionalElement("_state", ElementSerializer.descriptor)
+      optionalElement("_state", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("postalCode", KotlinString.serializer().descriptor)
-      optionalElement("_postalCode", ElementSerializer.descriptor)
+      optionalElement("_postalCode", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("country", KotlinString.serializer().descriptor)
-      optionalElement("_country", ElementSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
+      optionalElement("_country", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Address>> = ListSerializer(this)

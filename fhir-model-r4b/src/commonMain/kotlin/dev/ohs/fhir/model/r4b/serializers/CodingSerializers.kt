@@ -41,6 +41,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -51,17 +52,20 @@ internal object CodingSerializer : KSerializer<Coding> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Coding") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("system", KotlinString.serializer().descriptor)
-      optionalElement("_system", ElementSerializer.descriptor)
+      optionalElement("_system", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("version", KotlinString.serializer().descriptor)
-      optionalElement("_version", ElementSerializer.descriptor)
+      optionalElement("_version", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
+      optionalElement("_code", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("display", KotlinString.serializer().descriptor)
-      optionalElement("_display", ElementSerializer.descriptor)
+      optionalElement("_display", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("userSelected", KotlinBoolean.serializer().descriptor)
-      optionalElement("_userSelected", ElementSerializer.descriptor)
+      optionalElement("_userSelected", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Coding>> = ListSerializer(this)

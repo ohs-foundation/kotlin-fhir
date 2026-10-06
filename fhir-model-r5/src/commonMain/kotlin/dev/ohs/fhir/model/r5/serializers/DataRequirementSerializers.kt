@@ -49,6 +49,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -59,14 +60,17 @@ internal object DataRequirementCodeFilterSerializer : KSerializer<DataRequiremen
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("CodeFilter") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("path", KotlinString.serializer().descriptor)
-      optionalElement("_path", ElementSerializer.descriptor)
+      optionalElement("_path", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("searchParam", KotlinString.serializer().descriptor)
-      optionalElement("_searchParam", ElementSerializer.descriptor)
+      optionalElement("_searchParam", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("valueSet", KotlinString.serializer().descriptor)
-      optionalElement("_valueSet", ElementSerializer.descriptor)
-      optionalElement("code", CodingSerializer.listSerializer.descriptor)
+      optionalElement("_valueSet", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("code", listSerialDescriptor(lazyDescriptor { CodingSerializer.descriptor }))
     }
 
   internal val listSerializer: KSerializer<List<DataRequirement.CodeFilter>> = ListSerializer(this)
@@ -148,15 +152,18 @@ internal object DataRequirementDateFilterSerializer : KSerializer<DataRequiremen
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DateFilter") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("path", KotlinString.serializer().descriptor)
-      optionalElement("_path", ElementSerializer.descriptor)
+      optionalElement("_path", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("searchParam", KotlinString.serializer().descriptor)
-      optionalElement("_searchParam", ElementSerializer.descriptor)
+      optionalElement("_searchParam", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("valueDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_valueDateTime", ElementSerializer.descriptor)
-      optionalElement("valuePeriod", PeriodSerializer.descriptor)
-      optionalElement("valueDuration", DurationSerializer.descriptor)
+      optionalElement("_valueDateTime", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("valuePeriod", lazyDescriptor { PeriodSerializer.descriptor })
+      optionalElement("valueDuration", lazyDescriptor { DurationSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<DataRequirement.DateFilter>> = ListSerializer(this)
@@ -254,17 +261,20 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ValueFilter") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("path", KotlinString.serializer().descriptor)
-      optionalElement("_path", ElementSerializer.descriptor)
+      optionalElement("_path", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("searchParam", KotlinString.serializer().descriptor)
-      optionalElement("_searchParam", ElementSerializer.descriptor)
+      optionalElement("_searchParam", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("comparator", KotlinString.serializer().descriptor)
-      optionalElement("_comparator", ElementSerializer.descriptor)
+      optionalElement("_comparator", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("valueDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_valueDateTime", ElementSerializer.descriptor)
-      optionalElement("valuePeriod", PeriodSerializer.descriptor)
-      optionalElement("valueDuration", DurationSerializer.descriptor)
+      optionalElement("_valueDateTime", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("valuePeriod", lazyDescriptor { PeriodSerializer.descriptor })
+      optionalElement("valueDuration", lazyDescriptor { DurationSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<DataRequirement.ValueFilter>> = ListSerializer(this)
@@ -375,11 +385,14 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Sort") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("path", KotlinString.serializer().descriptor)
-      optionalElement("_path", ElementSerializer.descriptor)
+      optionalElement("_path", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("direction", KotlinString.serializer().descriptor)
-      optionalElement("_direction", ElementSerializer.descriptor)
+      optionalElement("_direction", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<DataRequirement.Sort>> = ListSerializer(this)
@@ -453,20 +466,32 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DataRequirement") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("profile", stringNullableListSerializer.descriptor)
-      optionalElement("_profile", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("subjectCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("subjectReference", ReferenceSerializer.descriptor)
+      optionalElement(
+        "_profile",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
+      optionalElement(
+        "subjectCodeableConcept",
+        lazyDescriptor { CodeableConceptSerializer.descriptor },
+      )
+      optionalElement("subjectReference", lazyDescriptor { ReferenceSerializer.descriptor })
       optionalElement("mustSupport", stringNullableListSerializer.descriptor)
-      optionalElement("_mustSupport", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
+        "_mustSupport",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
       optionalElement("codeFilter", DataRequirementCodeFilterSerializer.listSerializer.descriptor)
       optionalElement("dateFilter", DataRequirementDateFilterSerializer.listSerializer.descriptor)
       optionalElement("valueFilter", DataRequirementValueFilterSerializer.listSerializer.descriptor)
       optionalElement("limit", Int.serializer().descriptor)
-      optionalElement("_limit", ElementSerializer.descriptor)
+      optionalElement("_limit", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("sort", DataRequirementSortSerializer.listSerializer.descriptor)
     }
 

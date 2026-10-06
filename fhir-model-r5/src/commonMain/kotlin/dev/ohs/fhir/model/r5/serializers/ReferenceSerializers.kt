@@ -39,6 +39,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -49,14 +50,17 @@ internal object ReferenceSerializer : KSerializer<Reference> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Reference") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("reference", KotlinString.serializer().descriptor)
-      optionalElement("_reference", ElementSerializer.descriptor)
+      optionalElement("_reference", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("identifier", lazyDescriptor { IdentifierSerializer.descriptor })
       optionalElement("display", KotlinString.serializer().descriptor)
-      optionalElement("_display", ElementSerializer.descriptor)
+      optionalElement("_display", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Reference>> = ListSerializer(this)

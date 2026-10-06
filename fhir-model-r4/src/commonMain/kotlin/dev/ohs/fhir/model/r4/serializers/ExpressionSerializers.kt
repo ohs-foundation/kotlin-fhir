@@ -40,6 +40,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -50,17 +51,20 @@ internal object ExpressionSerializer : KSerializer<Expression> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Expression") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("_description", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
+      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("language", KotlinString.serializer().descriptor)
-      optionalElement("_language", ElementSerializer.descriptor)
+      optionalElement("_language", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("expression", KotlinString.serializer().descriptor)
-      optionalElement("_expression", ElementSerializer.descriptor)
+      optionalElement("_expression", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("reference", KotlinString.serializer().descriptor)
-      optionalElement("_reference", ElementSerializer.descriptor)
+      optionalElement("_reference", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Expression>> = ListSerializer(this)

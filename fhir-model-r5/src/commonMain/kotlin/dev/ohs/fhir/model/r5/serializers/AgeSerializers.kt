@@ -43,6 +43,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -53,17 +54,20 @@ internal object AgeSerializer : KSerializer<Age> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Age") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("value", FhirDecimalSerializer.descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
+      optionalElement("_value", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("comparator", KotlinString.serializer().descriptor)
-      optionalElement("_comparator", ElementSerializer.descriptor)
+      optionalElement("_comparator", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("unit", KotlinString.serializer().descriptor)
-      optionalElement("_unit", ElementSerializer.descriptor)
+      optionalElement("_unit", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("system", KotlinString.serializer().descriptor)
-      optionalElement("_system", ElementSerializer.descriptor)
+      optionalElement("_system", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
+      optionalElement("_code", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Age>> = ListSerializer(this)

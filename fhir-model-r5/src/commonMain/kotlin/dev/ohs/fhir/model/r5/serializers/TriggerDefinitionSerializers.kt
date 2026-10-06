@@ -48,6 +48,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -58,22 +59,28 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("TriggerDefinition") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
+      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("code", lazyDescriptor { CodeableConceptSerializer.descriptor })
       optionalElement("subscriptionTopic", KotlinString.serializer().descriptor)
-      optionalElement("_subscriptionTopic", ElementSerializer.descriptor)
-      optionalElement("timingTiming", TimingSerializer.descriptor)
-      optionalElement("timingReference", ReferenceSerializer.descriptor)
+      optionalElement("_subscriptionTopic", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("timingTiming", lazyDescriptor { TimingSerializer.descriptor })
+      optionalElement("timingReference", lazyDescriptor { ReferenceSerializer.descriptor })
       optionalElement("timingDate", KotlinString.serializer().descriptor)
-      optionalElement("_timingDate", ElementSerializer.descriptor)
+      optionalElement("_timingDate", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("timingDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_timingDateTime", ElementSerializer.descriptor)
-      optionalElement("data", DataRequirementSerializer.listSerializer.descriptor)
-      optionalElement("condition", ExpressionSerializer.descriptor)
+      optionalElement("_timingDateTime", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement(
+        "data",
+        listSerialDescriptor(lazyDescriptor { DataRequirementSerializer.descriptor }),
+      )
+      optionalElement("condition", lazyDescriptor { ExpressionSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<TriggerDefinition>> = ListSerializer(this)

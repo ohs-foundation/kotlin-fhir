@@ -41,6 +41,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -51,16 +52,19 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ContactPoint") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("system", KotlinString.serializer().descriptor)
-      optionalElement("_system", ElementSerializer.descriptor)
+      optionalElement("_system", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
+      optionalElement("_value", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", ElementSerializer.descriptor)
+      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("rank", Int.serializer().descriptor)
-      optionalElement("_rank", ElementSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
+      optionalElement("_rank", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<ContactPoint>> = ListSerializer(this)

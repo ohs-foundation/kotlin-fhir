@@ -38,6 +38,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -48,10 +49,16 @@ internal object ContactDetailSerializer : KSerializer<ContactDetail> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ContactDetail") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("telecom", ContactPointSerializer.listSerializer.descriptor)
+      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement(
+        "telecom",
+        listSerialDescriptor(lazyDescriptor { ContactPointSerializer.descriptor }),
+      )
     }
 
   internal val listSerializer: KSerializer<List<ContactDetail>> = ListSerializer(this)

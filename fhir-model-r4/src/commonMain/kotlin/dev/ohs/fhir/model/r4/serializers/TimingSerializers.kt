@@ -50,6 +50,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -60,38 +61,50 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Repeat") {
       optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("boundsDuration", DurationSerializer.descriptor)
-      optionalElement("boundsRange", RangeSerializer.descriptor)
-      optionalElement("boundsPeriod", PeriodSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement("boundsDuration", lazyDescriptor { DurationSerializer.descriptor })
+      optionalElement("boundsRange", lazyDescriptor { RangeSerializer.descriptor })
+      optionalElement("boundsPeriod", lazyDescriptor { PeriodSerializer.descriptor })
       optionalElement("count", Int.serializer().descriptor)
-      optionalElement("_count", ElementSerializer.descriptor)
+      optionalElement("_count", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("countMax", Int.serializer().descriptor)
-      optionalElement("_countMax", ElementSerializer.descriptor)
+      optionalElement("_countMax", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("duration", FhirDecimalSerializer.descriptor)
-      optionalElement("_duration", ElementSerializer.descriptor)
+      optionalElement("_duration", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("durationMax", FhirDecimalSerializer.descriptor)
-      optionalElement("_durationMax", ElementSerializer.descriptor)
+      optionalElement("_durationMax", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("durationUnit", String.serializer().descriptor)
-      optionalElement("_durationUnit", ElementSerializer.descriptor)
+      optionalElement("_durationUnit", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("frequency", Int.serializer().descriptor)
-      optionalElement("_frequency", ElementSerializer.descriptor)
+      optionalElement("_frequency", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("frequencyMax", Int.serializer().descriptor)
-      optionalElement("_frequencyMax", ElementSerializer.descriptor)
+      optionalElement("_frequencyMax", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("period", FhirDecimalSerializer.descriptor)
-      optionalElement("_period", ElementSerializer.descriptor)
+      optionalElement("_period", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("periodMax", FhirDecimalSerializer.descriptor)
-      optionalElement("_periodMax", ElementSerializer.descriptor)
+      optionalElement("_periodMax", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("periodUnit", String.serializer().descriptor)
-      optionalElement("_periodUnit", ElementSerializer.descriptor)
+      optionalElement("_periodUnit", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("dayOfWeek", stringNullableListSerializer.descriptor)
-      optionalElement("_dayOfWeek", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
+        "_dayOfWeek",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
       optionalElement("timeOfDay", LocalTimeSerializer.nullableListSerializer.descriptor)
-      optionalElement("_timeOfDay", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
+        "_timeOfDay",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
       optionalElement("when", stringNullableListSerializer.descriptor)
-      optionalElement("_when", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
+        "_when",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
       optionalElement("offset", Int.serializer().descriptor)
-      optionalElement("_offset", ElementSerializer.descriptor)
+      optionalElement("_offset", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Timing.Repeat>> = ListSerializer(this)
@@ -359,12 +372,21 @@ internal object TimingSerializer : KSerializer<Timing> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Timing") {
       optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement(
+        "modifierExtension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("event", stringNullableListSerializer.descriptor)
-      optionalElement("_event", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
+        "_event",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
       optionalElement("repeat", TimingRepeatSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
+      optionalElement("code", lazyDescriptor { CodeableConceptSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Timing>> = ListSerializer(this)

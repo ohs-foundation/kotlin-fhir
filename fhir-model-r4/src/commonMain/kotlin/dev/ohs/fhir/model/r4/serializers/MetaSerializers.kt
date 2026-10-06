@@ -42,6 +42,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -52,17 +53,26 @@ internal object MetaSerializer : KSerializer<Meta> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Meta") {
       optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("versionId", String.serializer().descriptor)
-      optionalElement("_versionId", ElementSerializer.descriptor)
+      optionalElement("_versionId", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("lastUpdated", String.serializer().descriptor)
-      optionalElement("_lastUpdated", ElementSerializer.descriptor)
+      optionalElement("_lastUpdated", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("source", String.serializer().descriptor)
-      optionalElement("_source", ElementSerializer.descriptor)
+      optionalElement("_source", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("profile", stringNullableListSerializer.descriptor)
-      optionalElement("_profile", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("security", CodingSerializer.listSerializer.descriptor)
-      optionalElement("tag", CodingSerializer.listSerializer.descriptor)
+      optionalElement(
+        "_profile",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
+      optionalElement(
+        "security",
+        listSerialDescriptor(lazyDescriptor { CodingSerializer.descriptor }),
+      )
+      optionalElement("tag", listSerialDescriptor(lazyDescriptor { CodingSerializer.descriptor }))
     }
 
   internal val listSerializer: KSerializer<List<Meta>> = ListSerializer(this)

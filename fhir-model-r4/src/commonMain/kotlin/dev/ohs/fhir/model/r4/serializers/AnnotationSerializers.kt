@@ -41,6 +41,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -51,14 +52,17 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Annotation") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("authorReference", ReferenceSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement("authorReference", lazyDescriptor { ReferenceSerializer.descriptor })
       optionalElement("authorString", KotlinString.serializer().descriptor)
-      optionalElement("_authorString", ElementSerializer.descriptor)
+      optionalElement("_authorString", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("time", KotlinString.serializer().descriptor)
-      optionalElement("_time", ElementSerializer.descriptor)
+      optionalElement("_time", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", ElementSerializer.descriptor)
+      optionalElement("_text", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Annotation>> = ListSerializer(this)

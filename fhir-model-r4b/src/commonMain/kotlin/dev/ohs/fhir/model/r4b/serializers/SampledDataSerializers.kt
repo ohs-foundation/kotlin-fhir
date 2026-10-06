@@ -42,6 +42,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -52,20 +53,23 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("SampledData") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("origin", QuantitySerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement("origin", lazyDescriptor { QuantitySerializer.descriptor })
       optionalElement("period", FhirDecimalSerializer.descriptor)
-      optionalElement("_period", ElementSerializer.descriptor)
+      optionalElement("_period", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
+      optionalElement("_factor", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("lowerLimit", FhirDecimalSerializer.descriptor)
-      optionalElement("_lowerLimit", ElementSerializer.descriptor)
+      optionalElement("_lowerLimit", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("upperLimit", FhirDecimalSerializer.descriptor)
-      optionalElement("_upperLimit", ElementSerializer.descriptor)
+      optionalElement("_upperLimit", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("dimensions", Int.serializer().descriptor)
-      optionalElement("_dimensions", ElementSerializer.descriptor)
+      optionalElement("_dimensions", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("data", KotlinString.serializer().descriptor)
-      optionalElement("_data", ElementSerializer.descriptor)
+      optionalElement("_data", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<SampledData>> = ListSerializer(this)

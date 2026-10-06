@@ -39,6 +39,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -49,20 +50,32 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("HumanName") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", ElementSerializer.descriptor)
+      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", ElementSerializer.descriptor)
+      optionalElement("_text", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("family", KotlinString.serializer().descriptor)
-      optionalElement("_family", ElementSerializer.descriptor)
+      optionalElement("_family", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("given", stringNullableListSerializer.descriptor)
-      optionalElement("_given", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
+        "_given",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
       optionalElement("prefix", stringNullableListSerializer.descriptor)
-      optionalElement("_prefix", ElementSerializer.nullableListSerializer.descriptor)
+      optionalElement(
+        "_prefix",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
       optionalElement("suffix", stringNullableListSerializer.descriptor)
-      optionalElement("_suffix", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
+      optionalElement(
+        "_suffix",
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
+      )
+      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<HumanName>> = ListSerializer(this)

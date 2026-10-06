@@ -166,14 +166,6 @@ internal class SerializerDescriptorEmitter(private val codegenContext: CodegenCo
     }
     val parentRoot = parent.simpleNames.first()
     val targetRoot = target.simpleNames.first()
-    // `ElementSerializer` only eagerly references `String.serializer()`, breaking its `Extension`
-    // reference via `lazyDescriptor`, so it has no eager outgoing dependencies and cannot cycle.
-    if (targetRoot == "Element") return false
-    // `ElementSerializer` and `ExtensionSerializer` break all non-`Element` outgoing references via
-    // `lazyDescriptor`, so `ExtensionSerializer` also has no eager outgoing dependencies on other
-    // complex types and can be referenced directly everywhere else.
-    if (parentRoot == "Element" || parentRoot == "Extension") return true
-    if (targetRoot == "Extension") return false
     // `Resource` is always treated as cyclic from any subclass: `ResourcePolymorphicSerializer`
     // eagerly references every `XSerializer`, so any resource `<clinit>` touching
     // `ResourcePolymorphicSerializer.descriptor` would recurse into a half-initialized object.

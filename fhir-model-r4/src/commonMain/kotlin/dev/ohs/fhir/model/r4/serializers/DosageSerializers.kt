@@ -46,6 +46,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -56,13 +57,16 @@ internal object DosageDoseAndRateSerializer : KSerializer<Dosage.DoseAndRate> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DoseAndRate") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("doseRange", RangeSerializer.descriptor)
-      optionalElement("doseQuantity", QuantitySerializer.descriptor)
-      optionalElement("rateRatio", RatioSerializer.descriptor)
-      optionalElement("rateRange", RangeSerializer.descriptor)
-      optionalElement("rateQuantity", QuantitySerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement("type", lazyDescriptor { CodeableConceptSerializer.descriptor })
+      optionalElement("doseRange", lazyDescriptor { RangeSerializer.descriptor })
+      optionalElement("doseQuantity", lazyDescriptor { QuantitySerializer.descriptor })
+      optionalElement("rateRatio", lazyDescriptor { RatioSerializer.descriptor })
+      optionalElement("rateRange", lazyDescriptor { RangeSerializer.descriptor })
+      optionalElement("rateQuantity", lazyDescriptor { QuantitySerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Dosage.DoseAndRate>> = ListSerializer(this)
@@ -152,26 +156,38 @@ internal object DosageSerializer : KSerializer<Dosage> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Dosage") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
+      optionalElement(
+        "modifierExtension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
+      optionalElement("_sequence", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", ElementSerializer.descriptor)
-      optionalElement("additionalInstruction", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("_text", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement(
+        "additionalInstruction",
+        listSerialDescriptor(lazyDescriptor { CodeableConceptSerializer.descriptor }),
+      )
       optionalElement("patientInstruction", KotlinString.serializer().descriptor)
-      optionalElement("_patientInstruction", ElementSerializer.descriptor)
-      optionalElement("timing", TimingSerializer.descriptor)
+      optionalElement("_patientInstruction", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("timing", lazyDescriptor { TimingSerializer.descriptor })
       optionalElement("asNeededBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_asNeededBoolean", ElementSerializer.descriptor)
-      optionalElement("asNeededCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("site", CodeableConceptSerializer.descriptor)
-      optionalElement("route", CodeableConceptSerializer.descriptor)
-      optionalElement("method", CodeableConceptSerializer.descriptor)
+      optionalElement("_asNeededBoolean", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement(
+        "asNeededCodeableConcept",
+        lazyDescriptor { CodeableConceptSerializer.descriptor },
+      )
+      optionalElement("site", lazyDescriptor { CodeableConceptSerializer.descriptor })
+      optionalElement("route", lazyDescriptor { CodeableConceptSerializer.descriptor })
+      optionalElement("method", lazyDescriptor { CodeableConceptSerializer.descriptor })
       optionalElement("doseAndRate", DosageDoseAndRateSerializer.listSerializer.descriptor)
-      optionalElement("maxDosePerPeriod", RatioSerializer.descriptor)
-      optionalElement("maxDosePerAdministration", QuantitySerializer.descriptor)
-      optionalElement("maxDosePerLifetime", QuantitySerializer.descriptor)
+      optionalElement("maxDosePerPeriod", lazyDescriptor { RatioSerializer.descriptor })
+      optionalElement("maxDosePerAdministration", lazyDescriptor { QuantitySerializer.descriptor })
+      optionalElement("maxDosePerLifetime", lazyDescriptor { QuantitySerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Dosage>> = ListSerializer(this)

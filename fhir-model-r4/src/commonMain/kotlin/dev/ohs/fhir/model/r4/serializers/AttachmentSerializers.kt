@@ -46,6 +46,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -56,23 +57,26 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Attachment") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("contentType", KotlinString.serializer().descriptor)
-      optionalElement("_contentType", ElementSerializer.descriptor)
+      optionalElement("_contentType", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("language", KotlinString.serializer().descriptor)
-      optionalElement("_language", ElementSerializer.descriptor)
+      optionalElement("_language", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("data", KotlinString.serializer().descriptor)
-      optionalElement("_data", ElementSerializer.descriptor)
+      optionalElement("_data", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("url", KotlinString.serializer().descriptor)
-      optionalElement("_url", ElementSerializer.descriptor)
+      optionalElement("_url", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("size", Int.serializer().descriptor)
-      optionalElement("_size", ElementSerializer.descriptor)
+      optionalElement("_size", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("hash", KotlinString.serializer().descriptor)
-      optionalElement("_hash", ElementSerializer.descriptor)
+      optionalElement("_hash", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("title", KotlinString.serializer().descriptor)
-      optionalElement("_title", ElementSerializer.descriptor)
+      optionalElement("_title", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("creation", KotlinString.serializer().descriptor)
-      optionalElement("_creation", ElementSerializer.descriptor)
+      optionalElement("_creation", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<Attachment>> = ListSerializer(this)

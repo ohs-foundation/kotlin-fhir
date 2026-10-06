@@ -46,6 +46,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -56,24 +57,30 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("RelatedArtifact") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("classifier", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement(
+        "classifier",
+        listSerialDescriptor(lazyDescriptor { CodeableConceptSerializer.descriptor }),
+      )
       optionalElement("label", KotlinString.serializer().descriptor)
-      optionalElement("_label", ElementSerializer.descriptor)
+      optionalElement("_label", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("display", KotlinString.serializer().descriptor)
-      optionalElement("_display", ElementSerializer.descriptor)
+      optionalElement("_display", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("citation", KotlinString.serializer().descriptor)
-      optionalElement("_citation", ElementSerializer.descriptor)
-      optionalElement("document", AttachmentSerializer.descriptor)
+      optionalElement("_citation", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("document", lazyDescriptor { AttachmentSerializer.descriptor })
       optionalElement("resource", KotlinString.serializer().descriptor)
-      optionalElement("_resource", ElementSerializer.descriptor)
-      optionalElement("resourceReference", ReferenceSerializer.descriptor)
+      optionalElement("_resource", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("resourceReference", lazyDescriptor { ReferenceSerializer.descriptor })
       optionalElement("publicationStatus", KotlinString.serializer().descriptor)
-      optionalElement("_publicationStatus", ElementSerializer.descriptor)
+      optionalElement("_publicationStatus", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("publicationDate", KotlinString.serializer().descriptor)
-      optionalElement("_publicationDate", ElementSerializer.descriptor)
+      optionalElement("_publicationDate", lazyDescriptor { ElementSerializer.descriptor })
     }
 
   internal val listSerializer: KSerializer<List<RelatedArtifact>> = ListSerializer(this)

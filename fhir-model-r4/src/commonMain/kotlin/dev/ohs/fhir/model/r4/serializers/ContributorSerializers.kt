@@ -39,6 +39,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -49,12 +50,18 @@ internal object ContributorSerializer : KSerializer<Contributor> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Contributor") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
+      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement(
+        "contact",
+        listSerialDescriptor(lazyDescriptor { ContactDetailSerializer.descriptor }),
+      )
     }
 
   internal val listSerializer: KSerializer<List<Contributor>> = ListSerializer(this)

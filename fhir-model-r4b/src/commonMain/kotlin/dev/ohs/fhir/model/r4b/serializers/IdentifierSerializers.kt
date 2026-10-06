@@ -42,6 +42,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -52,15 +53,18 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Identifier") {
       optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
+      )
       optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", ElementSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("type", lazyDescriptor { CodeableConceptSerializer.descriptor })
       optionalElement("system", KotlinString.serializer().descriptor)
-      optionalElement("_system", ElementSerializer.descriptor)
+      optionalElement("_system", lazyDescriptor { ElementSerializer.descriptor })
       optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
+      optionalElement("_value", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
       optionalElement("assigner", lazyDescriptor { ReferenceSerializer.descriptor })
     }
 

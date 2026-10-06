@@ -65,8 +65,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object NutritionProductNutrientSerializer : KSerializer<NutritionProduct.Nutrient> {
   override val descriptor: SerialDescriptor =
@@ -80,72 +78,93 @@ internal object NutritionProductNutrientSerializer : KSerializer<NutritionProduc
 
   internal val listSerializer: KSerializer<List<NutritionProduct.Nutrient>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): NutritionProduct.Nutrient =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var item: CodeableReference? = null
-      var amount: List<Ratio>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            item =
-              decodeNullableSerializableElement(descriptor, i, CodeableReferenceSerializer, null)
-          4 ->
-            amount =
-              decodeNullableSerializableElement(descriptor, i, RatioSerializer.listSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Nutrient: " + i)
-        }
+  override fun deserialize(decoder: Decoder): NutritionProduct.Nutrient {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var item: CodeableReference? = null
+    var amount: List<Ratio>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          item =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableReferenceSerializer,
+              null,
+            )
+        4 ->
+          amount =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              RatioSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Nutrient: " + i)
       }
-      NutritionProduct.Nutrient(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        item = item,
-        amount = amount ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return NutritionProduct.Nutrient(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      item = item,
+      amount = amount ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: NutritionProduct.Nutrient) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableIfNotNull(descriptor, 3, CodeableReferenceSerializer, value.item)
-      if (value.amount.isNotEmpty())
-        encodeSerializableElement(descriptor, 4, RatioSerializer.listSerializer, value.amount)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      CodeableReferenceSerializer,
+      value.item,
+    )
+    if (value.amount.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        RatioSerializer.listSerializer,
+        value.amount,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -161,76 +180,97 @@ internal object NutritionProductIngredientSerializer : KSerializer<NutritionProd
 
   internal val listSerializer: KSerializer<List<NutritionProduct.Ingredient>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): NutritionProduct.Ingredient =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var item: CodeableReference? = null
-      var amount: List<Ratio>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            item =
-              decodeNullableSerializableElement(descriptor, i, CodeableReferenceSerializer, null)
-          4 ->
-            amount =
-              decodeNullableSerializableElement(descriptor, i, RatioSerializer.listSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Ingredient: " + i)
-        }
+  override fun deserialize(decoder: Decoder): NutritionProduct.Ingredient {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var item: CodeableReference? = null
+    var amount: List<Ratio>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          item =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableReferenceSerializer,
+              null,
+            )
+        4 ->
+          amount =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              RatioSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Ingredient: " + i)
       }
-      NutritionProduct.Ingredient(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        item =
-          item
-            ?: throw SerializationException(
-              "Missing required property 'item' on NutritionProduct.Ingredient"
-            ),
-        amount = amount ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return NutritionProduct.Ingredient(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      item =
+        item
+          ?: throw SerializationException(
+            "Missing required property 'item' on NutritionProduct.Ingredient"
+          ),
+      amount = amount ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: NutritionProduct.Ingredient) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableElement(descriptor, 3, CodeableReferenceSerializer, value.item)
-      if (value.amount.isNotEmpty())
-        encodeSerializableElement(descriptor, 4, RatioSerializer.listSerializer, value.amount)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableElement(
+      descriptor,
+      3,
+      CodeableReferenceSerializer,
+      value.item,
+    )
+    if (value.amount.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        RatioSerializer.listSerializer,
+        value.amount,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -256,133 +296,181 @@ internal object NutritionProductProductCharacteristicSerializer :
   internal val listSerializer: KSerializer<List<NutritionProduct.ProductCharacteristic>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): NutritionProduct.ProductCharacteristic =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var type: CodeableConcept? = null
-      var valueCodeableConcept: CodeableConcept? = null
-      var valueString: KotlinString? = null
-      var _valueString: Element? = null
-      var valueQuantity: Quantity? = null
-      var valueBase64Binary: KotlinString? = null
-      var _valueBase64Binary: Element? = null
-      var valueAttachment: Attachment? = null
-      var valueBoolean: KotlinBoolean? = null
-      var _valueBoolean: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          4 ->
-            valueCodeableConcept =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          5 -> valueString = decodeStringElement(descriptor, i)
-          6 ->
-            _valueString = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 ->
-            valueQuantity =
-              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          8 -> valueBase64Binary = decodeStringElement(descriptor, i)
-          9 ->
-            _valueBase64Binary =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          10 ->
-            valueAttachment =
-              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-          11 -> valueBoolean = decodeBooleanElement(descriptor, i)
-          12 ->
-            _valueBoolean =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else ->
-            throw SerializationException("Unexpected index decoding ProductCharacteristic: " + i)
-        }
+  override fun deserialize(decoder: Decoder): NutritionProduct.ProductCharacteristic {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var type: CodeableConcept? = null
+    var valueCodeableConcept: CodeableConcept? = null
+    var valueString: KotlinString? = null
+    var _valueString: Element? = null
+    var valueQuantity: Quantity? = null
+    var valueBase64Binary: KotlinString? = null
+    var _valueBase64Binary: Element? = null
+    var valueAttachment: Attachment? = null
+    var valueBoolean: KotlinBoolean? = null
+    var _valueBoolean: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          valueCodeableConcept =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        5 -> valueString = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _valueString =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          valueQuantity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        8 -> valueBase64Binary = compositeDecoder.decodeStringElement(descriptor, i)
+        9 ->
+          _valueBase64Binary =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        10 ->
+          valueAttachment =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AttachmentSerializer,
+              null,
+            )
+        11 -> valueBoolean = compositeDecoder.decodeBooleanElement(descriptor, i)
+        12 ->
+          _valueBoolean =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException("Unexpected index decoding ProductCharacteristic: " + i)
       }
-      NutritionProduct.ProductCharacteristic(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        type =
-          type
-            ?: throw SerializationException(
-              "Missing required property 'type' on NutritionProduct.ProductCharacteristic"
-            ),
-        `value` =
-          NutritionProduct.ProductCharacteristic.Value.from(
-            valueCodeableConcept,
-            R4bString.of(valueString, _valueString),
-            valueQuantity,
-            Base64Binary.of(valueBase64Binary, _valueBase64Binary),
-            valueAttachment,
-            R4bBoolean.of(valueBoolean, _valueBoolean),
-          )
-            ?: throw SerializationException(
-              "Missing required property 'value' on NutritionProduct.ProductCharacteristic"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return NutritionProduct.ProductCharacteristic(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      type =
+        type
+          ?: throw SerializationException(
+            "Missing required property 'type' on NutritionProduct.ProductCharacteristic"
+          ),
+      `value` =
+        NutritionProduct.ProductCharacteristic.Value.from(
+          valueCodeableConcept,
+          R4bString.of(valueString, _valueString),
+          valueQuantity,
+          Base64Binary.of(valueBase64Binary, _valueBase64Binary),
+          valueAttachment,
+          R4bBoolean.of(valueBoolean, _valueBoolean),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on NutritionProduct.ProductCharacteristic"
+          ),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: NutritionProduct.ProductCharacteristic) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
+    when (val choice = value.`value`) {
+      is NutritionProduct.ProductCharacteristic.Value.CodeableConcept -> {
+        compositeEncoder.encodeSerializableElement(
           descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
+          4,
+          CodeableConceptSerializer,
+          choice.value,
         )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
+      }
+      is NutritionProduct.ProductCharacteristic.Value.String -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 5, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 6, choice.value)
+      }
+      is NutritionProduct.ProductCharacteristic.Value.Quantity -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 7, QuantitySerializer, choice.value)
+      }
+      is NutritionProduct.ProductCharacteristic.Value.Base64Binary -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 8, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 9, choice.value)
+      }
+      is NutritionProduct.ProductCharacteristic.Value.Attachment -> {
+        compositeEncoder.encodeSerializableElement(
           descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
+          10,
+          AttachmentSerializer,
+          choice.value,
         )
-      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
-      when (val choice = value.`value`) {
-        is NutritionProduct.ProductCharacteristic.Value.CodeableConcept -> {
-          encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
-        }
-        is NutritionProduct.ProductCharacteristic.Value.String -> {
-          encodeStringIfNotNull(descriptor, 5, choice.value.value)
-          encodeElementIfNotNull(descriptor, 6, choice.value)
-        }
-        is NutritionProduct.ProductCharacteristic.Value.Quantity -> {
-          encodeSerializableElement(descriptor, 7, QuantitySerializer, choice.value)
-        }
-        is NutritionProduct.ProductCharacteristic.Value.Base64Binary -> {
-          encodeStringIfNotNull(descriptor, 8, choice.value.value)
-          encodeElementIfNotNull(descriptor, 9, choice.value)
-        }
-        is NutritionProduct.ProductCharacteristic.Value.Attachment -> {
-          encodeSerializableElement(descriptor, 10, AttachmentSerializer, choice.value)
-        }
-        is NutritionProduct.ProductCharacteristic.Value.Boolean -> {
-          encodeBooleanIfNotNull(descriptor, 11, choice.value.value)
-          encodeElementIfNotNull(descriptor, 12, choice.value)
-        }
+      }
+      is NutritionProduct.ProductCharacteristic.Value.Boolean -> {
+        compositeEncoder.encodeBooleanIfNotNull(descriptor, 11, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 12, choice.value)
       }
     }
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -404,103 +492,130 @@ internal object NutritionProductInstanceSerializer : KSerializer<NutritionProduc
 
   internal val listSerializer: KSerializer<List<NutritionProduct.Instance>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): NutritionProduct.Instance =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var quantity: Quantity? = null
-      var identifier: List<Identifier>? = null
-      var lotNumber: KotlinString? = null
-      var _lotNumber: Element? = null
-      var expiry: KotlinString? = null
-      var _expiry: Element? = null
-      var useBy: KotlinString? = null
-      var _useBy: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> quantity = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          4 ->
-            identifier =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                IdentifierSerializer.listSerializer,
-                null,
-              )
-          5 -> lotNumber = decodeStringElement(descriptor, i)
-          6 ->
-            _lotNumber = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> expiry = decodeStringElement(descriptor, i)
-          8 -> _expiry = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> useBy = decodeStringElement(descriptor, i)
-          10 -> _useBy = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Instance: " + i)
-        }
+  override fun deserialize(decoder: Decoder): NutritionProduct.Instance {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var quantity: Quantity? = null
+    var identifier: List<Identifier>? = null
+    var lotNumber: KotlinString? = null
+    var _lotNumber: Element? = null
+    var expiry: KotlinString? = null
+    var _expiry: Element? = null
+    var useBy: KotlinString? = null
+    var _useBy: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          quantity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        4 ->
+          identifier =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
+        5 -> lotNumber = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _lotNumber =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> expiry = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _expiry =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> useBy = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _useBy =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Instance: " + i)
       }
-      NutritionProduct.Instance(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        quantity = quantity,
-        identifier = identifier ?: listOf(),
-        lotNumber = R4bString.of(lotNumber, _lotNumber),
-        expiry =
-          DateTime.of(if (expiry != null) FhirDateTime.fromString(expiry) else null, _expiry),
-        useBy = DateTime.of(if (useBy != null) FhirDateTime.fromString(useBy) else null, _useBy),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return NutritionProduct.Instance(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      quantity = quantity,
+      identifier = identifier ?: listOf(),
+      lotNumber = R4bString.of(lotNumber, _lotNumber),
+      expiry = DateTime.of(if (expiry != null) FhirDateTime.fromString(expiry) else null, _expiry),
+      useBy = DateTime.of(if (useBy != null) FhirDateTime.fromString(useBy) else null, _useBy),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: NutritionProduct.Instance) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableIfNotNull(descriptor, 3, QuantitySerializer, value.quantity)
-      if (value.identifier.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          4,
-          IdentifierSerializer.listSerializer,
-          value.identifier,
-        )
-      encodeStringIfNotNull(descriptor, 5, value.lotNumber?.value)
-      encodeElementIfNotNull(descriptor, 6, value.lotNumber)
-      encodeStringIfNotNull(descriptor, 7, value.expiry?.value?.toString())
-      encodeElementIfNotNull(descriptor, 8, value.expiry)
-      encodeStringIfNotNull(descriptor, 9, value.useBy?.value?.toString())
-      encodeElementIfNotNull(descriptor, 10, value.useBy)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 3, QuantitySerializer, value.quantity)
+    if (value.identifier.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        IdentifierSerializer.listSerializer,
+        value.identifier,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.lotNumber?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.lotNumber)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.expiry?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.expiry)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.useBy?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.useBy)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -538,7 +653,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): NutritionProduct {
@@ -564,25 +679,43 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
     var instance: NutritionProduct.Instance? = null
     var note: List<Annotation>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -590,7 +723,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -598,19 +731,24 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
               null,
             )
-        10 -> status = decoder.decodeStringElement(descriptor, i)
+        10 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         11 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         12 ->
           category =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -618,7 +756,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         13 ->
           code =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -626,7 +764,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         14 ->
           manufacturer =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -634,7 +772,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         15 ->
           nutrient =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               NutritionProductNutrientSerializer.listSerializer,
@@ -642,7 +780,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         16 ->
           ingredient =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               NutritionProductIngredientSerializer.listSerializer,
@@ -650,7 +788,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         17 ->
           knownAllergen =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableReferenceSerializer.listSerializer,
@@ -658,7 +796,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         18 ->
           productCharacteristic =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               NutritionProductProductCharacteristicSerializer.listSerializer,
@@ -666,7 +804,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         19 ->
           instance =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               NutritionProductInstanceSerializer,
@@ -674,7 +812,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
             )
         20 ->
           note =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               AnnotationSerializer.listSerializer,
@@ -710,107 +848,115 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: NutritionProduct,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.status)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      10 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.status)
     if (value.category.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         12 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.category,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       13 + descriptorOffset,
       CodeableConceptSerializer,
       value.code,
     )
     if (value.manufacturer.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         14 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.manufacturer,
       )
     if (value.nutrient.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         15 + descriptorOffset,
         NutritionProductNutrientSerializer.listSerializer,
         value.nutrient,
       )
     if (value.ingredient.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
         NutritionProductIngredientSerializer.listSerializer,
         value.ingredient,
       )
     if (value.knownAllergen.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         17 + descriptorOffset,
         CodeableReferenceSerializer.listSerializer,
         value.knownAllergen,
       )
     if (value.productCharacteristic.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         18 + descriptorOffset,
         NutritionProductProductCharacteristicSerializer.listSerializer,
         value.productCharacteristic,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       19 + descriptorOffset,
       NutritionProductInstanceSerializer,
       value.instance,
     )
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         20 + descriptorOffset,
         AnnotationSerializer.listSerializer,

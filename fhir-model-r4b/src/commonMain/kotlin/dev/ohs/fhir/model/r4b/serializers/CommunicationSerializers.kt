@@ -60,8 +60,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object CommunicationPayloadSerializer : KSerializer<Communication.Payload> {
   override val descriptor: SerialDescriptor =
@@ -77,94 +75,115 @@ internal object CommunicationPayloadSerializer : KSerializer<Communication.Paylo
 
   internal val listSerializer: KSerializer<List<Communication.Payload>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Communication.Payload =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var contentString: KotlinString? = null
-      var _contentString: Element? = null
-      var contentAttachment: Attachment? = null
-      var contentReference: Reference? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> contentString = decodeStringElement(descriptor, i)
-          4 ->
-            _contentString =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            contentAttachment =
-              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-          6 ->
-            contentReference =
-              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Payload: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Communication.Payload {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var contentString: KotlinString? = null
+    var _contentString: Element? = null
+    var contentAttachment: Attachment? = null
+    var contentReference: Reference? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> contentString = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _contentString =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          contentAttachment =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AttachmentSerializer,
+              null,
+            )
+        6 ->
+          contentReference =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Payload: " + i)
       }
-      Communication.Payload(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        content =
-          Communication.Payload.Content.from(
-            R4bString.of(contentString, _contentString),
-            contentAttachment,
-            contentReference,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'content' on Communication.Payload"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Communication.Payload(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      content =
+        Communication.Payload.Content.from(
+          R4bString.of(contentString, _contentString),
+          contentAttachment,
+          contentReference,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'content' on Communication.Payload"
+          ),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Communication.Payload) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    when (val choice = value.content) {
+      is Communication.Payload.Content.String -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 3, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 4, choice.value)
+      }
+      is Communication.Payload.Content.Attachment -> {
+        compositeEncoder.encodeSerializableElement(
           descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
+          5,
+          AttachmentSerializer,
+          choice.value,
         )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      when (val choice = value.content) {
-        is Communication.Payload.Content.String -> {
-          encodeStringIfNotNull(descriptor, 3, choice.value.value)
-          encodeElementIfNotNull(descriptor, 4, choice.value)
-        }
-        is Communication.Payload.Content.Attachment -> {
-          encodeSerializableElement(descriptor, 5, AttachmentSerializer, choice.value)
-        }
-        is Communication.Payload.Content.Reference -> {
-          encodeSerializableElement(descriptor, 6, ReferenceSerializer, choice.value)
-        }
+      }
+      is Communication.Payload.Content.Reference -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, choice.value)
       }
     }
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -217,7 +236,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): Communication {
@@ -261,25 +280,43 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
     var payload: List<Communication.Payload>? = null
     var note: List<Annotation>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -287,7 +324,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -295,7 +332,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -303,7 +340,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               IdentifierSerializer.listSerializer,
@@ -311,7 +348,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         11 ->
           instantiatesCanonical =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               stringNullableListSerializer,
@@ -319,7 +356,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         12 ->
           _instantiatesCanonical =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ElementSerializer.nullableListSerializer,
@@ -327,7 +364,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         13 ->
           instantiatesUri =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               stringNullableListSerializer,
@@ -335,7 +372,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         14 ->
           _instantiatesUri =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ElementSerializer.nullableListSerializer,
@@ -343,7 +380,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         15 ->
           basedOn =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -351,7 +388,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         16 ->
           partOf =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -359,19 +396,24 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         17 ->
           inResponseTo =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
               null,
             )
-        18 -> status = decoder.decodeStringElement(descriptor, i)
+        18 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         19 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         20 ->
           statusReason =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -379,19 +421,24 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         21 ->
           category =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
               null,
             )
-        22 -> priority = decoder.decodeStringElement(descriptor, i)
+        22 -> priority = compositeDecoder.decodeStringElement(descriptor, i)
         23 ->
           _priority =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         24 ->
           medium =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -399,10 +446,15 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         25 ->
           subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         26 ->
           topic =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -410,7 +462,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         27 ->
           about =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -418,17 +470,33 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         28 ->
           encounter =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        29 -> sent = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        29 -> sent = compositeDecoder.decodeStringElement(descriptor, i)
         30 ->
-          _sent = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        31 -> received = decoder.decodeStringElement(descriptor, i)
+          _sent =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        31 -> received = compositeDecoder.decodeStringElement(descriptor, i)
         32 ->
           _received =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         33 ->
           recipient =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -436,10 +504,15 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         34 ->
           sender =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         35 ->
           reasonCode =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -447,7 +520,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         36 ->
           reasonReference =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -455,7 +528,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         37 ->
           payload =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CommunicationPayloadSerializer.listSerializer,
@@ -463,7 +536,7 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
             )
         38 ->
           note =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               AnnotationSerializer.listSerializer,
@@ -535,192 +608,212 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: Communication,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
     if (value.instantiatesCanonical.isNotEmpty()) {
-      encoder.encodeNullableListIfNotNull(
+      compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
         stringNullableListSerializer,
         value.instantiatesCanonical.map { it.value },
       )
-      encoder.encodePrimitiveElementList(
+      compositeEncoder.encodePrimitiveElementList(
         descriptor,
         12 + descriptorOffset,
         value.instantiatesCanonical,
       )
     }
     if (value.instantiatesUri.isNotEmpty()) {
-      encoder.encodeNullableListIfNotNull(
+      compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
         stringNullableListSerializer,
         value.instantiatesUri.map { it.value },
       )
-      encoder.encodePrimitiveElementList(descriptor, 14 + descriptorOffset, value.instantiatesUri)
+      compositeEncoder.encodePrimitiveElementList(
+        descriptor,
+        14 + descriptorOffset,
+        value.instantiatesUri,
+      )
     }
     if (value.basedOn.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         15 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.basedOn,
       )
     if (value.partOf.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.partOf,
       )
     if (value.inResponseTo.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         17 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.inResponseTo,
       )
-    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.status)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.status)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       20 + descriptorOffset,
       CodeableConceptSerializer,
       value.statusReason,
     )
     if (value.category.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         21 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.category,
       )
-    encoder.encodeStringIfNotNull(descriptor, 22 + descriptorOffset, value.priority?.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.priority)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      value.priority?.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.priority)
     if (value.medium.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         24 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.medium,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       25 + descriptorOffset,
       ReferenceSerializer,
       value.subject,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       26 + descriptorOffset,
       CodeableConceptSerializer,
       value.topic,
     )
     if (value.about.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         27 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.about,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       28 + descriptorOffset,
       ReferenceSerializer,
       value.encounter,
     )
-    encoder.encodeStringIfNotNull(descriptor, 29 + descriptorOffset, value.sent?.value?.toString())
-    encoder.encodeElementIfNotNull(descriptor, 30 + descriptorOffset, value.sent)
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      29 + descriptorOffset,
+      value.sent?.value?.toString(),
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 30 + descriptorOffset, value.sent)
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       31 + descriptorOffset,
       value.received?.value?.toString(),
     )
-    encoder.encodeElementIfNotNull(descriptor, 32 + descriptorOffset, value.received)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 32 + descriptorOffset, value.received)
     if (value.recipient.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         33 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.recipient,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       34 + descriptorOffset,
       ReferenceSerializer,
       value.sender,
     )
     if (value.reasonCode.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         35 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.reasonCode,
       )
     if (value.reasonReference.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         36 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.reasonReference,
       )
     if (value.payload.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         37 + descriptorOffset,
         CommunicationPayloadSerializer.listSerializer,
         value.payload,
       )
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         38 + descriptorOffset,
         AnnotationSerializer.listSerializer,

@@ -63,8 +63,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object ImagingSelectionPerformerSerializer : KSerializer<ImagingSelection.Performer> {
   override val descriptor: SerialDescriptor =
@@ -78,69 +76,87 @@ internal object ImagingSelectionPerformerSerializer : KSerializer<ImagingSelecti
 
   internal val listSerializer: KSerializer<List<ImagingSelection.Performer>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ImagingSelection.Performer =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var function: CodeableConcept? = null
-      var actor: Reference? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            function =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          4 -> actor = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Performer: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ImagingSelection.Performer {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var function: CodeableConcept? = null
+    var actor: Reference? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          function =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          actor =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Performer: " + i)
       }
-      ImagingSelection.Performer(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        function = function,
-        actor = actor,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ImagingSelection.Performer(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      function = function,
+      actor = actor,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ImagingSelection.Performer) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.function)
-      encodeSerializableIfNotNull(descriptor, 4, ReferenceSerializer, value.actor)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      CodeableConceptSerializer,
+      value.function,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 4, ReferenceSerializer, value.actor)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -169,144 +185,171 @@ internal object ImagingSelectionInstanceSerializer : KSerializer<ImagingSelectio
 
   internal val listSerializer: KSerializer<List<ImagingSelection.Instance>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ImagingSelection.Instance =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var uid: KotlinString? = null
-      var _uid: Element? = null
-      var number: Int? = null
-      var _number: Element? = null
-      var sopClass: Coding? = null
-      var subset: List<KotlinString?>? = null
-      var _subset: List<Element?>? = null
-      var imageRegion2D: List<ImagingSelection.Instance.ImageRegion2D>? = null
-      var imageRegion3D: List<ImagingSelection.Instance.ImageRegion3D>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> uid = decodeStringElement(descriptor, i)
-          4 -> _uid = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> number = decodeIntElement(descriptor, i)
-          6 -> _number = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> sopClass = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-          8 ->
-            subset =
-              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
-          9 ->
-            _subset =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ElementSerializer.nullableListSerializer,
-                null,
-              )
-          10 ->
-            imageRegion2D =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ImagingSelectionInstanceImageRegion2DSerializer.listSerializer,
-                null,
-              )
-          11 ->
-            imageRegion3D =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ImagingSelectionInstanceImageRegion3DSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Instance: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ImagingSelection.Instance {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var uid: KotlinString? = null
+    var _uid: Element? = null
+    var number: Int? = null
+    var _number: Element? = null
+    var sopClass: Coding? = null
+    var subset: List<KotlinString?>? = null
+    var _subset: List<Element?>? = null
+    var imageRegion2D: List<ImagingSelection.Instance.ImageRegion2D>? = null
+    var imageRegion3D: List<ImagingSelection.Instance.ImageRegion3D>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> uid = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _uid =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> number = compositeDecoder.decodeIntElement(descriptor, i)
+        6 ->
+          _number =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          sopClass =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer,
+              null,
+            )
+        8 ->
+          subset =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
+        9 ->
+          _subset =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        10 ->
+          imageRegion2D =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ImagingSelectionInstanceImageRegion2DSerializer.listSerializer,
+              null,
+            )
+        11 ->
+          imageRegion3D =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ImagingSelectionInstanceImageRegion3DSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Instance: " + i)
       }
-      ImagingSelection.Instance(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        uid =
-          Id.of(uid, _uid)
-            ?: throw SerializationException(
-              "Missing required property 'uid' on ImagingSelection.Instance"
-            ),
-        number = UnsignedInt.of(number, _number),
-        sopClass = sopClass,
-        subset =
-          (kotlin.collections.List(maxOf(subset?.size ?: 0, _subset?.size ?: 0)) { index ->
-            R5String.of(subset?.getOrNull(index), _subset?.getOrNull(index))
-              ?: throw SerializationException(
-                "An entry of 'subset' on ImagingSelection.Instance has neither a value nor an id/extension"
-              )
-          }),
-        imageRegion2D = imageRegion2D ?: listOf(),
-        imageRegion3D = imageRegion3D ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ImagingSelection.Instance(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      uid =
+        Id.of(uid, _uid)
+          ?: throw SerializationException(
+            "Missing required property 'uid' on ImagingSelection.Instance"
+          ),
+      number = UnsignedInt.of(number, _number),
+      sopClass = sopClass,
+      subset =
+        (kotlin.collections.List(maxOf(subset?.size ?: 0, _subset?.size ?: 0)) { index ->
+          R5String.of(subset?.getOrNull(index), _subset?.getOrNull(index))
+            ?: throw SerializationException(
+              "An entry of 'subset' on ImagingSelection.Instance has neither a value nor an id/extension"
+            )
+        }),
+      imageRegion2D = imageRegion2D ?: listOf(),
+      imageRegion3D = imageRegion3D ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ImagingSelection.Instance) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.uid.value)
-      encodeElementIfNotNull(descriptor, 4, value.uid)
-      encodeIntIfNotNull(descriptor, 5, value.number?.value)
-      encodeElementIfNotNull(descriptor, 6, value.number)
-      encodeSerializableIfNotNull(descriptor, 7, CodingSerializer, value.sopClass)
-      if (value.subset.isNotEmpty()) {
-        encodeNullableListIfNotNull(
-          descriptor,
-          8,
-          stringNullableListSerializer,
-          value.subset.map { it.value },
-        )
-        encodePrimitiveElementList(descriptor, 9, value.subset)
-      }
-      if (value.imageRegion2D.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          10,
-          ImagingSelectionInstanceImageRegion2DSerializer.listSerializer,
-          value.imageRegion2D,
-        )
-      if (value.imageRegion3D.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          11,
-          ImagingSelectionInstanceImageRegion3DSerializer.listSerializer,
-          value.imageRegion3D,
-        )
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.uid.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.uid)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.number?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.number)
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 7, CodingSerializer, value.sopClass)
+    if (value.subset.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        8,
+        stringNullableListSerializer,
+        value.subset.map { it.value },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 9, value.subset)
     }
+    if (value.imageRegion2D.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        10,
+        ImagingSelectionInstanceImageRegion2DSerializer.listSerializer,
+        value.imageRegion2D,
+      )
+    if (value.imageRegion3D.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        11,
+        ImagingSelectionInstanceImageRegion3DSerializer.listSerializer,
+        value.imageRegion3D,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -326,110 +369,117 @@ internal object ImagingSelectionInstanceImageRegion2DSerializer :
   internal val listSerializer: KSerializer<List<ImagingSelection.Instance.ImageRegion2D>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ImagingSelection.Instance.ImageRegion2D =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var regionType: KotlinString? = null
-      var _regionType: Element? = null
-      var coordinate: List<FhirDecimal?>? = null
-      var _coordinate: List<Element?>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> regionType = decodeStringElement(descriptor, i)
-          4 ->
-            _regionType = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            coordinate =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                FhirDecimalSerializer.nullableListSerializer,
-                null,
-              )
-          6 ->
-            _coordinate =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ElementSerializer.nullableListSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding ImageRegion2D: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ImagingSelection.Instance.ImageRegion2D {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var regionType: KotlinString? = null
+    var _regionType: Element? = null
+    var coordinate: List<FhirDecimal?>? = null
+    var _coordinate: List<Element?>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> regionType = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _regionType =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          coordinate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer.nullableListSerializer,
+              null,
+            )
+        6 ->
+          _coordinate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding ImageRegion2D: " + i)
       }
-      ImagingSelection.Instance.ImageRegion2D(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        regionType =
-          Enumeration.of(
-            if (regionType != null)
-              ImagingSelection.ImagingSelection2DGraphicType.fromCode(regionType)
-            else null,
-            _regionType,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion2D"
-            ),
-        coordinate =
-          (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { index ->
-            Decimal.of(coordinate?.getOrNull(index), _coordinate?.getOrNull(index))
-              ?: throw SerializationException(
-                "An entry of 'coordinate' on ImagingSelection.Instance.ImageRegion2D has neither a value nor an id/extension"
-              )
-          }),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ImagingSelection.Instance.ImageRegion2D(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      regionType =
+        Enumeration.of(
+          if (regionType != null)
+            ImagingSelection.ImagingSelection2DGraphicType.fromCode(regionType)
+          else null,
+          _regionType,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion2D"
+          ),
+      coordinate =
+        (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { index ->
+          Decimal.of(coordinate?.getOrNull(index), _coordinate?.getOrNull(index))
+            ?: throw SerializationException(
+              "An entry of 'coordinate' on ImagingSelection.Instance.ImageRegion2D has neither a value nor an id/extension"
+            )
+        }),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ImagingSelection.Instance.ImageRegion2D) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.regionType.value?.code)
-      encodeElementIfNotNull(descriptor, 4, value.regionType)
-      if (value.coordinate.isNotEmpty()) {
-        encodeNullableListIfNotNull(
-          descriptor,
-          5,
-          FhirDecimalSerializer.nullableListSerializer,
-          value.coordinate.map { it.value },
-        )
-        encodePrimitiveElementList(descriptor, 6, value.coordinate)
-      }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.regionType.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.regionType)
+    if (value.coordinate.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        5,
+        FhirDecimalSerializer.nullableListSerializer,
+        value.coordinate.map { it.value },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 6, value.coordinate)
     }
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -449,110 +499,117 @@ internal object ImagingSelectionInstanceImageRegion3DSerializer :
   internal val listSerializer: KSerializer<List<ImagingSelection.Instance.ImageRegion3D>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ImagingSelection.Instance.ImageRegion3D =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var regionType: KotlinString? = null
-      var _regionType: Element? = null
-      var coordinate: List<FhirDecimal?>? = null
-      var _coordinate: List<Element?>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> regionType = decodeStringElement(descriptor, i)
-          4 ->
-            _regionType = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            coordinate =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                FhirDecimalSerializer.nullableListSerializer,
-                null,
-              )
-          6 ->
-            _coordinate =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ElementSerializer.nullableListSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding ImageRegion3D: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ImagingSelection.Instance.ImageRegion3D {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var regionType: KotlinString? = null
+    var _regionType: Element? = null
+    var coordinate: List<FhirDecimal?>? = null
+    var _coordinate: List<Element?>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> regionType = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _regionType =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          coordinate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer.nullableListSerializer,
+              null,
+            )
+        6 ->
+          _coordinate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding ImageRegion3D: " + i)
       }
-      ImagingSelection.Instance.ImageRegion3D(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        regionType =
-          Enumeration.of(
-            if (regionType != null)
-              ImagingSelection.ImagingSelection3DGraphicType.fromCode(regionType)
-            else null,
-            _regionType,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion3D"
-            ),
-        coordinate =
-          (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { index ->
-            Decimal.of(coordinate?.getOrNull(index), _coordinate?.getOrNull(index))
-              ?: throw SerializationException(
-                "An entry of 'coordinate' on ImagingSelection.Instance.ImageRegion3D has neither a value nor an id/extension"
-              )
-          }),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ImagingSelection.Instance.ImageRegion3D(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      regionType =
+        Enumeration.of(
+          if (regionType != null)
+            ImagingSelection.ImagingSelection3DGraphicType.fromCode(regionType)
+          else null,
+          _regionType,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'regionType' on ImagingSelection.Instance.ImageRegion3D"
+          ),
+      coordinate =
+        (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { index ->
+          Decimal.of(coordinate?.getOrNull(index), _coordinate?.getOrNull(index))
+            ?: throw SerializationException(
+              "An entry of 'coordinate' on ImagingSelection.Instance.ImageRegion3D has neither a value nor an id/extension"
+            )
+        }),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ImagingSelection.Instance.ImageRegion3D) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.regionType.value?.code)
-      encodeElementIfNotNull(descriptor, 4, value.regionType)
-      if (value.coordinate.isNotEmpty()) {
-        encodeNullableListIfNotNull(
-          descriptor,
-          5,
-          FhirDecimalSerializer.nullableListSerializer,
-          value.coordinate.map { it.value },
-        )
-        encodePrimitiveElementList(descriptor, 6, value.coordinate)
-      }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.regionType.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.regionType)
+    if (value.coordinate.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        5,
+        FhirDecimalSerializer.nullableListSerializer,
+        value.coordinate.map { it.value },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 6, value.coordinate)
     }
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -599,7 +656,7 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): ImagingSelection {
@@ -637,25 +694,43 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
     var focus: List<Reference>? = null
     var instance: List<ImagingSelection.Instance>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -663,7 +738,7 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -671,7 +746,7 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -679,26 +754,41 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
             )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = decoder.decodeStringElement(descriptor, i)
+        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         12 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         13 ->
           subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        14 -> issued = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        14 -> issued = compositeDecoder.decodeStringElement(descriptor, i)
         15 ->
           _issued =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         16 ->
           performer =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ImagingSelectionPerformerSerializer.listSerializer,
@@ -706,7 +796,7 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
             )
         17 ->
           basedOn =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -714,7 +804,7 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
             )
         18 ->
           category =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -722,19 +812,24 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
             )
         19 ->
           code =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
               null,
             )
-        20 -> studyUid = decoder.decodeStringElement(descriptor, i)
+        20 -> studyUid = compositeDecoder.decodeStringElement(descriptor, i)
         21 ->
           _studyUid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         22 ->
           derivedFrom =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -742,27 +837,42 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
             )
         23 ->
           endpoint =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
               null,
             )
-        24 -> seriesUid = decoder.decodeStringElement(descriptor, i)
+        24 -> seriesUid = compositeDecoder.decodeStringElement(descriptor, i)
         25 ->
           _seriesUid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        26 -> seriesNumber = decoder.decodeIntElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        26 -> seriesNumber = compositeDecoder.decodeIntElement(descriptor, i)
         27 ->
           _seriesNumber =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        28 -> frameOfReferenceUid = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        28 -> frameOfReferenceUid = compositeDecoder.decodeStringElement(descriptor, i)
         29 ->
           _frameOfReferenceUid =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         30 ->
           bodySite =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableReferenceSerializer,
@@ -770,7 +880,7 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
             )
         31 ->
           focus =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -778,7 +888,7 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
             )
         32 ->
           instance =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ImagingSelectionInstanceSerializer.listSerializer,
@@ -823,138 +933,158 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: ImagingSelection,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       13 + descriptorOffset,
       ReferenceSerializer,
       value.subject,
     )
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       14 + descriptorOffset,
       value.issued?.value?.toString(),
     )
-    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.issued)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.issued)
     if (value.performer.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
         ImagingSelectionPerformerSerializer.listSerializer,
         value.performer,
       )
     if (value.basedOn.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         17 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.basedOn,
       )
     if (value.category.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         18 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.category,
       )
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       19 + descriptorOffset,
       CodeableConceptSerializer,
       value.code,
     )
-    encoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.studyUid?.value)
-    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.studyUid)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.studyUid?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.studyUid)
     if (value.derivedFrom.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         22 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.derivedFrom,
       )
     if (value.endpoint.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         23 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.endpoint,
       )
-    encoder.encodeStringIfNotNull(descriptor, 24 + descriptorOffset, value.seriesUid?.value)
-    encoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.seriesUid)
-    encoder.encodeIntIfNotNull(descriptor, 26 + descriptorOffset, value.seriesNumber?.value)
-    encoder.encodeElementIfNotNull(descriptor, 27 + descriptorOffset, value.seriesNumber)
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      24 + descriptorOffset,
+      value.seriesUid?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.seriesUid)
+    compositeEncoder.encodeIntIfNotNull(
+      descriptor,
+      26 + descriptorOffset,
+      value.seriesNumber?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 27 + descriptorOffset, value.seriesNumber)
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       28 + descriptorOffset,
       value.frameOfReferenceUid?.value,
     )
-    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.frameOfReferenceUid)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeElementIfNotNull(
+      descriptor,
+      29 + descriptorOffset,
+      value.frameOfReferenceUid,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       30 + descriptorOffset,
       CodeableReferenceSerializer,
       value.bodySite,
     )
     if (value.focus.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         31 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.focus,
       )
     if (value.instance.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         32 + descriptorOffset,
         ImagingSelectionInstanceSerializer.listSerializer,

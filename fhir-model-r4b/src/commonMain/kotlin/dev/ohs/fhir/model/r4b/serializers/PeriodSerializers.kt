@@ -42,8 +42,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object PeriodSerializer : KSerializer<Period> {
   override val descriptor: SerialDescriptor =
@@ -61,55 +59,70 @@ internal object PeriodSerializer : KSerializer<Period> {
 
   internal val listSerializer: KSerializer<List<Period>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Period =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var start: String? = null
-      var _start: Element? = null
-      var end: String? = null
-      var _end: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 -> start = decodeStringElement(descriptor, i)
-          3 -> _start = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          4 -> end = decodeStringElement(descriptor, i)
-          5 -> _end = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Period: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Period {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var start: String? = null
+    var _start: Element? = null
+    var end: String? = null
+    var _end: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> start = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          _start =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> end = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _end =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Period: " + i)
       }
-      Period(
-        id = id,
-        extension = extension ?: listOf(),
-        start = DateTime.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
-        end = DateTime.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Period(
+      id = id,
+      extension = extension ?: listOf(),
+      start = DateTime.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
+      end = DateTime.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Period) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      encodeStringIfNotNull(descriptor, 2, value.start?.value?.toString())
-      encodeElementIfNotNull(descriptor, 3, value.start)
-      encodeStringIfNotNull(descriptor, 4, value.end?.value?.toString())
-      encodeElementIfNotNull(descriptor, 5, value.end)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.start?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.start)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.end?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.end)
+    compositeEncoder.endStructure(descriptor)
   }
 }

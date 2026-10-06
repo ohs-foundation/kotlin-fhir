@@ -44,8 +44,6 @@ import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object MonetaryComponentSerializer : KSerializer<MonetaryComponent> {
   override val descriptor: SerialDescriptor =
@@ -62,72 +60,108 @@ internal object MonetaryComponentSerializer : KSerializer<MonetaryComponent> {
 
   internal val listSerializer: KSerializer<List<MonetaryComponent>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): MonetaryComponent =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var type: String? = null
-      var _type: Element? = null
-      var code: CodeableConcept? = null
-      var factor: FhirDecimal? = null
-      var _factor: Element? = null
-      var amount: Money? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 -> type = decodeStringElement(descriptor, i)
-          3 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          4 ->
-            code = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          5 ->
-            factor = decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-          6 -> _factor = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> amount = decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding MonetaryComponent: " + i)
-        }
+  override fun deserialize(decoder: Decoder): MonetaryComponent {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var type: String? = null
+    var _type: Element? = null
+    var code: CodeableConcept? = null
+    var factor: FhirDecimal? = null
+    var _factor: Element? = null
+    var amount: Money? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          _type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 ->
+          code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        5 ->
+          factor =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
+        6 ->
+          _factor =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          amount =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding MonetaryComponent: " + i)
       }
-      MonetaryComponent(
-        id = id,
-        extension = extension ?: listOf(),
-        type =
-          Enumeration.of(
-            if (type != null) MonetaryComponent.PriceComponentType.fromCode(type) else null,
-            _type,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'type' on MonetaryComponent"
-            ),
-        code = code,
-        factor = Decimal.of(factor, _factor),
-        amount = amount,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return MonetaryComponent(
+      id = id,
+      extension = extension ?: listOf(),
+      type =
+        Enumeration.of(
+          if (type != null) MonetaryComponent.PriceComponentType.fromCode(type) else null,
+          _type,
+        ) ?: throw SerializationException("Missing required property 'type' on MonetaryComponent"),
+      code = code,
+      factor = Decimal.of(factor, _factor),
+      amount = amount,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: MonetaryComponent) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
-      encodeElementIfNotNull(descriptor, 3, value.type)
-      encodeSerializableIfNotNull(descriptor, 4, CodeableConceptSerializer, value.code)
-      encodeSerializableIfNotNull(descriptor, 5, FhirDecimalSerializer, value.factor?.value)
-      encodeElementIfNotNull(descriptor, 6, value.factor)
-      encodeSerializableIfNotNull(descriptor, 7, MoneySerializer, value.amount)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.type)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      4,
+      CodeableConceptSerializer,
+      value.code,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      5,
+      FhirDecimalSerializer,
+      value.factor?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.factor)
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 7, MoneySerializer, value.amount)
+    compositeEncoder.endStructure(descriptor)
   }
 }

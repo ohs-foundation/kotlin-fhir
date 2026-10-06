@@ -55,8 +55,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object SubstanceNucleicAcidSubunitSerializer : KSerializer<SubstanceNucleicAcid.Subunit> {
   override val descriptor: SerialDescriptor =
@@ -83,132 +81,184 @@ internal object SubstanceNucleicAcidSubunitSerializer : KSerializer<SubstanceNuc
   internal val listSerializer: KSerializer<List<SubstanceNucleicAcid.Subunit>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): SubstanceNucleicAcid.Subunit =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var subunit: Int? = null
-      var _subunit: Element? = null
-      var sequence: KotlinString? = null
-      var _sequence: Element? = null
-      var length: Int? = null
-      var _length: Element? = null
-      var sequenceAttachment: Attachment? = null
-      var fivePrime: CodeableConcept? = null
-      var threePrime: CodeableConcept? = null
-      var linkage: List<SubstanceNucleicAcid.Subunit.Linkage>? = null
-      var sugar: List<SubstanceNucleicAcid.Subunit.Sugar>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> subunit = decodeIntElement(descriptor, i)
-          4 -> _subunit = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> sequence = decodeStringElement(descriptor, i)
-          6 -> _sequence = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> length = decodeIntElement(descriptor, i)
-          8 -> _length = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 ->
-            sequenceAttachment =
-              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-          10 ->
-            fivePrime =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          11 ->
-            threePrime =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          12 ->
-            linkage =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                SubstanceNucleicAcidSubunitLinkageSerializer.listSerializer,
-                null,
-              )
-          13 ->
-            sugar =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                SubstanceNucleicAcidSubunitSugarSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Subunit: " + i)
-        }
+  override fun deserialize(decoder: Decoder): SubstanceNucleicAcid.Subunit {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var subunit: Int? = null
+    var _subunit: Element? = null
+    var sequence: KotlinString? = null
+    var _sequence: Element? = null
+    var length: Int? = null
+    var _length: Element? = null
+    var sequenceAttachment: Attachment? = null
+    var fivePrime: CodeableConcept? = null
+    var threePrime: CodeableConcept? = null
+    var linkage: List<SubstanceNucleicAcid.Subunit.Linkage>? = null
+    var sugar: List<SubstanceNucleicAcid.Subunit.Sugar>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> subunit = compositeDecoder.decodeIntElement(descriptor, i)
+        4 ->
+          _subunit =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> sequence = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _sequence =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> length = compositeDecoder.decodeIntElement(descriptor, i)
+        8 ->
+          _length =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 ->
+          sequenceAttachment =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AttachmentSerializer,
+              null,
+            )
+        10 ->
+          fivePrime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        11 ->
+          threePrime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        12 ->
+          linkage =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              SubstanceNucleicAcidSubunitLinkageSerializer.listSerializer,
+              null,
+            )
+        13 ->
+          sugar =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              SubstanceNucleicAcidSubunitSugarSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Subunit: " + i)
       }
-      SubstanceNucleicAcid.Subunit(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        subunit = Integer.of(subunit, _subunit),
-        sequence = R4String.of(sequence, _sequence),
-        length = Integer.of(length, _length),
-        sequenceAttachment = sequenceAttachment,
-        fivePrime = fivePrime,
-        threePrime = threePrime,
-        linkage = linkage ?: listOf(),
-        sugar = sugar ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return SubstanceNucleicAcid.Subunit(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      subunit = Integer.of(subunit, _subunit),
+      sequence = R4String.of(sequence, _sequence),
+      length = Integer.of(length, _length),
+      sequenceAttachment = sequenceAttachment,
+      fivePrime = fivePrime,
+      threePrime = threePrime,
+      linkage = linkage ?: listOf(),
+      sugar = sugar ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceNucleicAcid.Subunit) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeIntIfNotNull(descriptor, 3, value.subunit?.value)
-      encodeElementIfNotNull(descriptor, 4, value.subunit)
-      encodeStringIfNotNull(descriptor, 5, value.sequence?.value)
-      encodeElementIfNotNull(descriptor, 6, value.sequence)
-      encodeIntIfNotNull(descriptor, 7, value.length?.value)
-      encodeElementIfNotNull(descriptor, 8, value.length)
-      encodeSerializableIfNotNull(descriptor, 9, AttachmentSerializer, value.sequenceAttachment)
-      encodeSerializableIfNotNull(descriptor, 10, CodeableConceptSerializer, value.fivePrime)
-      encodeSerializableIfNotNull(descriptor, 11, CodeableConceptSerializer, value.threePrime)
-      if (value.linkage.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          12,
-          SubstanceNucleicAcidSubunitLinkageSerializer.listSerializer,
-          value.linkage,
-        )
-      if (value.sugar.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          13,
-          SubstanceNucleicAcidSubunitSugarSerializer.listSerializer,
-          value.sugar,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.subunit?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.subunit)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.sequence?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.sequence)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 7, value.length?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.length)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      9,
+      AttachmentSerializer,
+      value.sequenceAttachment,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      10,
+      CodeableConceptSerializer,
+      value.fivePrime,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      11,
+      CodeableConceptSerializer,
+      value.threePrime,
+    )
+    if (value.linkage.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        12,
+        SubstanceNucleicAcidSubunitLinkageSerializer.listSerializer,
+        value.linkage,
+      )
+    if (value.sugar.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        13,
+        SubstanceNucleicAcidSubunitSugarSerializer.listSerializer,
+        value.sugar,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -231,89 +281,118 @@ internal object SubstanceNucleicAcidSubunitLinkageSerializer :
   internal val listSerializer: KSerializer<List<SubstanceNucleicAcid.Subunit.Linkage>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): SubstanceNucleicAcid.Subunit.Linkage =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var connectivity: KotlinString? = null
-      var _connectivity: Element? = null
-      var identifier: Identifier? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var residueSite: KotlinString? = null
-      var _residueSite: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> connectivity = decodeStringElement(descriptor, i)
-          4 ->
-            _connectivity =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            identifier =
-              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-          6 -> name = decodeStringElement(descriptor, i)
-          7 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          8 -> residueSite = decodeStringElement(descriptor, i)
-          9 ->
-            _residueSite = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Linkage: " + i)
-        }
+  override fun deserialize(decoder: Decoder): SubstanceNucleicAcid.Subunit.Linkage {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var connectivity: KotlinString? = null
+    var _connectivity: Element? = null
+    var identifier: Identifier? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var residueSite: KotlinString? = null
+    var _residueSite: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> connectivity = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _connectivity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          identifier =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer,
+              null,
+            )
+        6 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        8 -> residueSite = compositeDecoder.decodeStringElement(descriptor, i)
+        9 ->
+          _residueSite =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Linkage: " + i)
       }
-      SubstanceNucleicAcid.Subunit.Linkage(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        connectivity = R4String.of(connectivity, _connectivity),
-        identifier = identifier,
-        name = R4String.of(name, _name),
-        residueSite = R4String.of(residueSite, _residueSite),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return SubstanceNucleicAcid.Subunit.Linkage(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      connectivity = R4String.of(connectivity, _connectivity),
+      identifier = identifier,
+      name = R4String.of(name, _name),
+      residueSite = R4String.of(residueSite, _residueSite),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceNucleicAcid.Subunit.Linkage) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.connectivity?.value)
-      encodeElementIfNotNull(descriptor, 4, value.connectivity)
-      encodeSerializableIfNotNull(descriptor, 5, IdentifierSerializer, value.identifier)
-      encodeStringIfNotNull(descriptor, 6, value.name?.value)
-      encodeElementIfNotNull(descriptor, 7, value.name)
-      encodeStringIfNotNull(descriptor, 8, value.residueSite?.value)
-      encodeElementIfNotNull(descriptor, 9, value.residueSite)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.connectivity?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.connectivity)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      5,
+      IdentifierSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 8, value.residueSite?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.residueSite)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -334,80 +413,104 @@ internal object SubstanceNucleicAcidSubunitSugarSerializer :
   internal val listSerializer: KSerializer<List<SubstanceNucleicAcid.Subunit.Sugar>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): SubstanceNucleicAcid.Subunit.Sugar =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var identifier: Identifier? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var residueSite: KotlinString? = null
-      var _residueSite: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            identifier =
-              decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-          4 -> name = decodeStringElement(descriptor, i)
-          5 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          6 -> residueSite = decodeStringElement(descriptor, i)
-          7 ->
-            _residueSite = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Sugar: " + i)
-        }
+  override fun deserialize(decoder: Decoder): SubstanceNucleicAcid.Subunit.Sugar {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var identifier: Identifier? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var residueSite: KotlinString? = null
+    var _residueSite: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          identifier =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer,
+              null,
+            )
+        4 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> residueSite = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          _residueSite =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Sugar: " + i)
       }
-      SubstanceNucleicAcid.Subunit.Sugar(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        identifier = identifier,
-        name = R4String.of(name, _name),
-        residueSite = R4String.of(residueSite, _residueSite),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return SubstanceNucleicAcid.Subunit.Sugar(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      identifier = identifier,
+      name = R4String.of(name, _name),
+      residueSite = R4String.of(residueSite, _residueSite),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceNucleicAcid.Subunit.Sugar) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableIfNotNull(descriptor, 3, IdentifierSerializer, value.identifier)
-      encodeStringIfNotNull(descriptor, 4, value.name?.value)
-      encodeElementIfNotNull(descriptor, 5, value.name)
-      encodeStringIfNotNull(descriptor, 6, value.residueSite?.value)
-      encodeElementIfNotNull(descriptor, 7, value.residueSite)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      IdentifierSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.residueSite?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.residueSite)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -438,7 +541,7 @@ internal object SubstanceNucleicAcidSerializer : FhirResourceSerializer<Substanc
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): SubstanceNucleicAcid {
@@ -460,25 +563,43 @@ internal object SubstanceNucleicAcidSerializer : FhirResourceSerializer<Substanc
     var oligoNucleotideType: CodeableConcept? = null
     var subunit: List<SubstanceNucleicAcid.Subunit>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -486,7 +607,7 @@ internal object SubstanceNucleicAcidSerializer : FhirResourceSerializer<Substanc
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -494,7 +615,7 @@ internal object SubstanceNucleicAcidSerializer : FhirResourceSerializer<Substanc
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -502,23 +623,33 @@ internal object SubstanceNucleicAcidSerializer : FhirResourceSerializer<Substanc
             )
         10 ->
           sequenceType =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
               null,
             )
-        11 -> numberOfSubunits = decoder.decodeIntElement(descriptor, i)
+        11 -> numberOfSubunits = compositeDecoder.decodeIntElement(descriptor, i)
         12 ->
           _numberOfSubunits =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        13 -> areaOfHybridisation = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 -> areaOfHybridisation = compositeDecoder.decodeStringElement(descriptor, i)
         14 ->
           _areaOfHybridisation =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         15 ->
           oligoNucleotideType =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -526,7 +657,7 @@ internal object SubstanceNucleicAcidSerializer : FhirResourceSerializer<Substanc
             )
         16 ->
           subunit =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               SubstanceNucleicAcidSubunitSerializer.listSerializer,
@@ -553,71 +684,87 @@ internal object SubstanceNucleicAcidSerializer : FhirResourceSerializer<Substanc
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: SubstanceNucleicAcid,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       10 + descriptorOffset,
       CodeableConceptSerializer,
       value.sequenceType,
     )
-    encoder.encodeIntIfNotNull(descriptor, 11 + descriptorOffset, value.numberOfSubunits?.value)
-    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.numberOfSubunits)
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeIntIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      value.numberOfSubunits?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(
+      descriptor,
+      12 + descriptorOffset,
+      value.numberOfSubunits,
+    )
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       13 + descriptorOffset,
       value.areaOfHybridisation?.value,
     )
-    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.areaOfHybridisation)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeElementIfNotNull(
+      descriptor,
+      14 + descriptorOffset,
+      value.areaOfHybridisation,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       15 + descriptorOffset,
       CodeableConceptSerializer,
       value.oligoNucleotideType,
     )
     if (value.subunit.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
         SubstanceNucleicAcidSubunitSerializer.listSerializer,

@@ -40,8 +40,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object RatioRangeSerializer : KSerializer<RatioRange> {
   override val descriptor: SerialDescriptor =
@@ -58,58 +56,90 @@ internal object RatioRangeSerializer : KSerializer<RatioRange> {
 
   internal val listSerializer: KSerializer<List<RatioRange>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): RatioRange =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var lowNumerator: Quantity? = null
-      var highNumerator: Quantity? = null
-      var denominator: Quantity? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            lowNumerator =
-              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          3 ->
-            highNumerator =
-              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          4 ->
-            denominator = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding RatioRange: " + i)
-        }
+  override fun deserialize(decoder: Decoder): RatioRange {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var lowNumerator: Quantity? = null
+    var highNumerator: Quantity? = null
+    var denominator: Quantity? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          lowNumerator =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        3 ->
+          highNumerator =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        4 ->
+          denominator =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding RatioRange: " + i)
       }
-      RatioRange(
-        id = id,
-        extension = extension ?: listOf(),
-        lowNumerator = lowNumerator,
-        highNumerator = highNumerator,
-        denominator = denominator,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return RatioRange(
+      id = id,
+      extension = extension ?: listOf(),
+      lowNumerator = lowNumerator,
+      highNumerator = highNumerator,
+      denominator = denominator,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: RatioRange) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      encodeSerializableIfNotNull(descriptor, 2, QuantitySerializer, value.lowNumerator)
-      encodeSerializableIfNotNull(descriptor, 3, QuantitySerializer, value.highNumerator)
-      encodeSerializableIfNotNull(descriptor, 4, QuantitySerializer, value.denominator)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      2,
+      QuantitySerializer,
+      value.lowNumerator,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      QuantitySerializer,
+      value.highNumerator,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      4,
+      QuantitySerializer,
+      value.denominator,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }

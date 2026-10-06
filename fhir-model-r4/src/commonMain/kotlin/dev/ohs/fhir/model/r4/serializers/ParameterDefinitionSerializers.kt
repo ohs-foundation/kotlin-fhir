@@ -47,8 +47,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition> {
   override val descriptor: SerialDescriptor =
@@ -76,104 +74,148 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
 
   internal val listSerializer: KSerializer<List<ParameterDefinition>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ParameterDefinition =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var use: KotlinString? = null
-      var _use: Element? = null
-      var min: Int? = null
-      var _min: Element? = null
-      var max: KotlinString? = null
-      var _max: Element? = null
-      var documentation: KotlinString? = null
-      var _documentation: Element? = null
-      var type: KotlinString? = null
-      var _type: Element? = null
-      var profile: KotlinString? = null
-      var _profile: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 -> name = decodeStringElement(descriptor, i)
-          3 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          4 -> use = decodeStringElement(descriptor, i)
-          5 -> _use = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          6 -> min = decodeIntElement(descriptor, i)
-          7 -> _min = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          8 -> max = decodeStringElement(descriptor, i)
-          9 -> _max = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          10 -> documentation = decodeStringElement(descriptor, i)
-          11 ->
-            _documentation =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          12 -> type = decodeStringElement(descriptor, i)
-          13 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          14 -> profile = decodeStringElement(descriptor, i)
-          15 -> _profile = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else ->
-            throw SerializationException("Unexpected index decoding ParameterDefinition: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ParameterDefinition {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var use: KotlinString? = null
+    var _use: Element? = null
+    var min: Int? = null
+    var _min: Element? = null
+    var max: KotlinString? = null
+    var _max: Element? = null
+    var documentation: KotlinString? = null
+    var _documentation: Element? = null
+    var type: KotlinString? = null
+    var _type: Element? = null
+    var profile: KotlinString? = null
+    var _profile: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _use =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> min = compositeDecoder.decodeIntElement(descriptor, i)
+        7 ->
+          _min =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        8 -> max = compositeDecoder.decodeStringElement(descriptor, i)
+        9 ->
+          _max =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        10 -> documentation = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          _documentation =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        12 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          _type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        14 -> profile = compositeDecoder.decodeStringElement(descriptor, i)
+        15 ->
+          _profile =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding ParameterDefinition: " + i)
       }
-      ParameterDefinition(
-        id = id,
-        extension = extension ?: listOf(),
-        name = Code.of(name, _name),
-        use =
-          Enumeration.of(
-            if (use != null) ParameterDefinition.OperationParameterUse.fromCode(use) else null,
-            _use,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'use' on ParameterDefinition"
-            ),
-        min = Integer.of(min, _min),
-        max = R4String.of(max, _max),
-        documentation = R4String.of(documentation, _documentation),
-        type =
-          Enumeration.of(if (type != null) FHIRAllTypes.fromCode(type) else null, _type)
-            ?: throw SerializationException(
-              "Missing required property 'type' on ParameterDefinition"
-            ),
-        profile = Canonical.of(profile, _profile),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ParameterDefinition(
+      id = id,
+      extension = extension ?: listOf(),
+      name = Code.of(name, _name),
+      use =
+        Enumeration.of(
+          if (use != null) ParameterDefinition.OperationParameterUse.fromCode(use) else null,
+          _use,
+        ) ?: throw SerializationException("Missing required property 'use' on ParameterDefinition"),
+      min = Integer.of(min, _min),
+      max = R4String.of(max, _max),
+      documentation = R4String.of(documentation, _documentation),
+      type =
+        Enumeration.of(if (type != null) FHIRAllTypes.fromCode(type) else null, _type)
+          ?: throw SerializationException(
+            "Missing required property 'type' on ParameterDefinition"
+          ),
+      profile = Canonical.of(profile, _profile),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ParameterDefinition) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      encodeStringIfNotNull(descriptor, 2, value.name?.value)
-      encodeElementIfNotNull(descriptor, 3, value.name)
-      encodeStringIfNotNull(descriptor, 4, value.use.value?.code)
-      encodeElementIfNotNull(descriptor, 5, value.use)
-      encodeIntIfNotNull(descriptor, 6, value.min?.value)
-      encodeElementIfNotNull(descriptor, 7, value.min)
-      encodeStringIfNotNull(descriptor, 8, value.max?.value)
-      encodeElementIfNotNull(descriptor, 9, value.max)
-      encodeStringIfNotNull(descriptor, 10, value.documentation?.value)
-      encodeElementIfNotNull(descriptor, 11, value.documentation)
-      encodeStringIfNotNull(descriptor, 12, value.type.value?.code)
-      encodeElementIfNotNull(descriptor, 13, value.type)
-      encodeStringIfNotNull(descriptor, 14, value.profile?.value)
-      encodeElementIfNotNull(descriptor, 15, value.profile)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.use.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.use)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 6, value.min?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.min)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 8, value.max?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.max)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 10, value.documentation?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 11, value.documentation)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 12, value.type.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 13, value.type)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 14, value.profile?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 15, value.profile)
+    compositeEncoder.endStructure(descriptor)
   }
 }

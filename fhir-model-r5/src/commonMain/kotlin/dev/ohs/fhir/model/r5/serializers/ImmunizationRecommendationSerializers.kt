@@ -57,8 +57,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object ImmunizationRecommendationRecommendationSerializer :
   KSerializer<ImmunizationRecommendation.Recommendation> {
@@ -94,219 +92,255 @@ internal object ImmunizationRecommendationRecommendationSerializer :
   internal val listSerializer: KSerializer<List<ImmunizationRecommendation.Recommendation>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ImmunizationRecommendation.Recommendation =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var vaccineCode: List<CodeableConcept>? = null
-      var targetDisease: List<CodeableConcept>? = null
-      var contraindicatedVaccineCode: List<CodeableConcept>? = null
-      var forecastStatus: CodeableConcept? = null
-      var forecastReason: List<CodeableConcept>? = null
-      var dateCriterion: List<ImmunizationRecommendation.Recommendation.DateCriterion>? = null
-      var description: KotlinString? = null
-      var _description: Element? = null
-      var series: KotlinString? = null
-      var _series: Element? = null
-      var doseNumber: KotlinString? = null
-      var _doseNumber: Element? = null
-      var seriesDoses: KotlinString? = null
-      var _seriesDoses: Element? = null
-      var supportingImmunization: List<Reference>? = null
-      var supportingPatientInformation: List<Reference>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            vaccineCode =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          4 ->
-            targetDisease =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          5 ->
-            contraindicatedVaccineCode =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          6 ->
-            forecastStatus =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          7 ->
-            forecastReason =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          8 ->
-            dateCriterion =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ImmunizationRecommendationRecommendationDateCriterionSerializer.listSerializer,
-                null,
-              )
-          9 -> description = decodeStringElement(descriptor, i)
-          10 ->
-            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          11 -> series = decodeStringElement(descriptor, i)
-          12 -> _series = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          13 -> doseNumber = decodeStringElement(descriptor, i)
-          14 ->
-            _doseNumber = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          15 -> seriesDoses = decodeStringElement(descriptor, i)
-          16 ->
-            _seriesDoses = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          17 ->
-            supportingImmunization =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ReferenceSerializer.listSerializer,
-                null,
-              )
-          18 ->
-            supportingPatientInformation =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ReferenceSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Recommendation: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ImmunizationRecommendation.Recommendation {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var vaccineCode: List<CodeableConcept>? = null
+    var targetDisease: List<CodeableConcept>? = null
+    var contraindicatedVaccineCode: List<CodeableConcept>? = null
+    var forecastStatus: CodeableConcept? = null
+    var forecastReason: List<CodeableConcept>? = null
+    var dateCriterion: List<ImmunizationRecommendation.Recommendation.DateCriterion>? = null
+    var description: KotlinString? = null
+    var _description: Element? = null
+    var series: KotlinString? = null
+    var _series: Element? = null
+    var doseNumber: KotlinString? = null
+    var _doseNumber: Element? = null
+    var seriesDoses: KotlinString? = null
+    var _seriesDoses: Element? = null
+    var supportingImmunization: List<Reference>? = null
+    var supportingPatientInformation: List<Reference>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          vaccineCode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        4 ->
+          targetDisease =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        5 ->
+          contraindicatedVaccineCode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        6 ->
+          forecastStatus =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        7 ->
+          forecastReason =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        8 ->
+          dateCriterion =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ImmunizationRecommendationRecommendationDateCriterionSerializer.listSerializer,
+              null,
+            )
+        9 -> description = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _description =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 -> series = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          _series =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 -> doseNumber = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          _doseNumber =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        15 -> seriesDoses = compositeDecoder.decodeStringElement(descriptor, i)
+        16 ->
+          _seriesDoses =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        17 ->
+          supportingImmunization =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
+        18 ->
+          supportingPatientInformation =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Recommendation: " + i)
       }
-      ImmunizationRecommendation.Recommendation(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        vaccineCode = vaccineCode ?: listOf(),
-        targetDisease = targetDisease ?: listOf(),
-        contraindicatedVaccineCode = contraindicatedVaccineCode ?: listOf(),
-        forecastStatus =
-          forecastStatus
-            ?: throw SerializationException(
-              "Missing required property 'forecastStatus' on ImmunizationRecommendation.Recommendation"
-            ),
-        forecastReason = forecastReason ?: listOf(),
-        dateCriterion = dateCriterion ?: listOf(),
-        description = Markdown.of(description, _description),
-        series = R5String.of(series, _series),
-        doseNumber = R5String.of(doseNumber, _doseNumber),
-        seriesDoses = R5String.of(seriesDoses, _seriesDoses),
-        supportingImmunization = supportingImmunization ?: listOf(),
-        supportingPatientInformation = supportingPatientInformation ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ImmunizationRecommendation.Recommendation(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      vaccineCode = vaccineCode ?: listOf(),
+      targetDisease = targetDisease ?: listOf(),
+      contraindicatedVaccineCode = contraindicatedVaccineCode ?: listOf(),
+      forecastStatus =
+        forecastStatus
+          ?: throw SerializationException(
+            "Missing required property 'forecastStatus' on ImmunizationRecommendation.Recommendation"
+          ),
+      forecastReason = forecastReason ?: listOf(),
+      dateCriterion = dateCriterion ?: listOf(),
+      description = Markdown.of(description, _description),
+      series = R5String.of(series, _series),
+      doseNumber = R5String.of(doseNumber, _doseNumber),
+      seriesDoses = R5String.of(seriesDoses, _seriesDoses),
+      supportingImmunization = supportingImmunization ?: listOf(),
+      supportingPatientInformation = supportingPatientInformation ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ImmunizationRecommendation.Recommendation) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      if (value.vaccineCode.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          3,
-          CodeableConceptSerializer.listSerializer,
-          value.vaccineCode,
-        )
-      if (value.targetDisease.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          4,
-          CodeableConceptSerializer.listSerializer,
-          value.targetDisease,
-        )
-      if (value.contraindicatedVaccineCode.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          5,
-          CodeableConceptSerializer.listSerializer,
-          value.contraindicatedVaccineCode,
-        )
-      encodeSerializableElement(descriptor, 6, CodeableConceptSerializer, value.forecastStatus)
-      if (value.forecastReason.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          7,
-          CodeableConceptSerializer.listSerializer,
-          value.forecastReason,
-        )
-      if (value.dateCriterion.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          8,
-          ImmunizationRecommendationRecommendationDateCriterionSerializer.listSerializer,
-          value.dateCriterion,
-        )
-      encodeStringIfNotNull(descriptor, 9, value.description?.value)
-      encodeElementIfNotNull(descriptor, 10, value.description)
-      encodeStringIfNotNull(descriptor, 11, value.series?.value)
-      encodeElementIfNotNull(descriptor, 12, value.series)
-      encodeStringIfNotNull(descriptor, 13, value.doseNumber?.value)
-      encodeElementIfNotNull(descriptor, 14, value.doseNumber)
-      encodeStringIfNotNull(descriptor, 15, value.seriesDoses?.value)
-      encodeElementIfNotNull(descriptor, 16, value.seriesDoses)
-      if (value.supportingImmunization.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          17,
-          ReferenceSerializer.listSerializer,
-          value.supportingImmunization,
-        )
-      if (value.supportingPatientInformation.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          18,
-          ReferenceSerializer.listSerializer,
-          value.supportingPatientInformation,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    if (value.vaccineCode.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        3,
+        CodeableConceptSerializer.listSerializer,
+        value.vaccineCode,
+      )
+    if (value.targetDisease.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        CodeableConceptSerializer.listSerializer,
+        value.targetDisease,
+      )
+    if (value.contraindicatedVaccineCode.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        5,
+        CodeableConceptSerializer.listSerializer,
+        value.contraindicatedVaccineCode,
+      )
+    compositeEncoder.encodeSerializableElement(
+      descriptor,
+      6,
+      CodeableConceptSerializer,
+      value.forecastStatus,
+    )
+    if (value.forecastReason.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        7,
+        CodeableConceptSerializer.listSerializer,
+        value.forecastReason,
+      )
+    if (value.dateCriterion.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        8,
+        ImmunizationRecommendationRecommendationDateCriterionSerializer.listSerializer,
+        value.dateCriterion,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.description?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.description)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 11, value.series?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.series)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 13, value.doseNumber?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 14, value.doseNumber)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 15, value.seriesDoses?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 16, value.seriesDoses)
+    if (value.supportingImmunization.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        17,
+        ReferenceSerializer.listSerializer,
+        value.supportingImmunization,
+      )
+    if (value.supportingPatientInformation.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        18,
+        ReferenceSerializer.listSerializer,
+        value.supportingPatientInformation,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -328,82 +362,96 @@ internal object ImmunizationRecommendationRecommendationDateCriterionSerializer 
 
   override fun deserialize(
     decoder: Decoder
-  ): ImmunizationRecommendation.Recommendation.DateCriterion =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var code: CodeableConcept? = null
-      var `value`: KotlinString? = null
-      var _value: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            code = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          4 -> `value` = decodeStringElement(descriptor, i)
-          5 -> _value = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding DateCriterion: " + i)
-        }
+  ): ImmunizationRecommendation.Recommendation.DateCriterion {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var code: CodeableConcept? = null
+    var `value`: KotlinString? = null
+    var _value: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 -> `value` = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _value =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding DateCriterion: " + i)
       }
-      ImmunizationRecommendation.Recommendation.DateCriterion(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        code =
-          code
-            ?: throw SerializationException(
-              "Missing required property 'code' on ImmunizationRecommendation.Recommendation.DateCriterion"
-            ),
-        `value` =
-          DateTime.of(if (`value` != null) FhirDateTime.fromString(`value`) else null, _value)
-            ?: throw SerializationException(
-              "Missing required property 'value' on ImmunizationRecommendation.Recommendation.DateCriterion"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ImmunizationRecommendation.Recommendation.DateCriterion(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      code =
+        code
+          ?: throw SerializationException(
+            "Missing required property 'code' on ImmunizationRecommendation.Recommendation.DateCriterion"
+          ),
+      `value` =
+        DateTime.of(if (`value` != null) FhirDateTime.fromString(`value`) else null, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on ImmunizationRecommendation.Recommendation.DateCriterion"
+          ),
+    )
+  }
 
   override fun serialize(
     encoder: Encoder,
     `value`: ImmunizationRecommendation.Recommendation.DateCriterion,
   ) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
-      encodeStringIfNotNull(descriptor, 4, value.`value`.value?.toString())
-      encodeElementIfNotNull(descriptor, 5, value.`value`)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.`value`.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.`value`)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -437,7 +485,7 @@ internal object ImmunizationRecommendationSerializer :
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): ImmunizationRecommendation {
@@ -458,25 +506,43 @@ internal object ImmunizationRecommendationSerializer :
     var authority: Reference? = null
     var recommendation: List<ImmunizationRecommendation.Recommendation>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -484,7 +550,7 @@ internal object ImmunizationRecommendationSerializer :
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -492,7 +558,7 @@ internal object ImmunizationRecommendationSerializer :
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -500,7 +566,7 @@ internal object ImmunizationRecommendationSerializer :
             )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               IdentifierSerializer.listSerializer,
@@ -508,16 +574,32 @@ internal object ImmunizationRecommendationSerializer :
             )
         11 ->
           patient =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        12 -> date = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        12 -> date = compositeDecoder.decodeStringElement(descriptor, i)
         13 ->
-          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          _date =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         14 ->
           authority =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         15 ->
           recommendation =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ImmunizationRecommendationRecommendationSerializer.listSerializer,
@@ -553,72 +635,80 @@ internal object ImmunizationRecommendationSerializer :
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: ImmunizationRecommendation,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       11 + descriptorOffset,
       ReferenceSerializer,
       value.patient,
     )
-    encoder.encodeStringIfNotNull(descriptor, 12 + descriptorOffset, value.date.value?.toString())
-    encoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.date)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      12 + descriptorOffset,
+      value.date.value?.toString(),
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.date)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       14 + descriptorOffset,
       ReferenceSerializer,
       value.authority,
     )
     if (value.recommendation.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         15 + descriptorOffset,
         ImmunizationRecommendationRecommendationSerializer.listSerializer,

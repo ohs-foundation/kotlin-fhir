@@ -64,8 +64,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object ConceptMapGroupSerializer : KSerializer<ConceptMap.Group> {
   override val descriptor: SerialDescriptor =
@@ -87,119 +85,149 @@ internal object ConceptMapGroupSerializer : KSerializer<ConceptMap.Group> {
 
   internal val listSerializer: KSerializer<List<ConceptMap.Group>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ConceptMap.Group =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var source: KotlinString? = null
-      var _source: Element? = null
-      var sourceVersion: KotlinString? = null
-      var _sourceVersion: Element? = null
-      var target: KotlinString? = null
-      var _target: Element? = null
-      var targetVersion: KotlinString? = null
-      var _targetVersion: Element? = null
-      var element: List<ConceptMap.Group.Element>? = null
-      var unmapped: ConceptMap.Group.Unmapped? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> source = decodeStringElement(descriptor, i)
-          4 -> _source = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> sourceVersion = decodeStringElement(descriptor, i)
-          6 ->
-            _sourceVersion =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> target = decodeStringElement(descriptor, i)
-          8 -> _target = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> targetVersion = decodeStringElement(descriptor, i)
-          10 ->
-            _targetVersion =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          11 ->
-            element =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ConceptMapGroupElementSerializer.listSerializer,
-                null,
-              )
-          12 ->
-            unmapped =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ConceptMapGroupUnmappedSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Group: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ConceptMap.Group {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var source: KotlinString? = null
+    var _source: Element? = null
+    var sourceVersion: KotlinString? = null
+    var _sourceVersion: Element? = null
+    var target: KotlinString? = null
+    var _target: Element? = null
+    var targetVersion: KotlinString? = null
+    var _targetVersion: Element? = null
+    var element: List<ConceptMap.Group.Element>? = null
+    var unmapped: ConceptMap.Group.Unmapped? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> source = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _source =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> sourceVersion = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _sourceVersion =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> target = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _target =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> targetVersion = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _targetVersion =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 ->
+          element =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ConceptMapGroupElementSerializer.listSerializer,
+              null,
+            )
+        12 ->
+          unmapped =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ConceptMapGroupUnmappedSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Group: " + i)
       }
-      ConceptMap.Group(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        source = Uri.of(source, _source),
-        sourceVersion = R4String.of(sourceVersion, _sourceVersion),
-        target = Uri.of(target, _target),
-        targetVersion = R4String.of(targetVersion, _targetVersion),
-        element = element ?: listOf(),
-        unmapped = unmapped,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ConceptMap.Group(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      source = Uri.of(source, _source),
+      sourceVersion = R4String.of(sourceVersion, _sourceVersion),
+      target = Uri.of(target, _target),
+      targetVersion = R4String.of(targetVersion, _targetVersion),
+      element = element ?: listOf(),
+      unmapped = unmapped,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.source?.value)
-      encodeElementIfNotNull(descriptor, 4, value.source)
-      encodeStringIfNotNull(descriptor, 5, value.sourceVersion?.value)
-      encodeElementIfNotNull(descriptor, 6, value.sourceVersion)
-      encodeStringIfNotNull(descriptor, 7, value.target?.value)
-      encodeElementIfNotNull(descriptor, 8, value.target)
-      encodeStringIfNotNull(descriptor, 9, value.targetVersion?.value)
-      encodeElementIfNotNull(descriptor, 10, value.targetVersion)
-      if (value.element.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          11,
-          ConceptMapGroupElementSerializer.listSerializer,
-          value.element,
-        )
-      encodeSerializableIfNotNull(descriptor, 12, ConceptMapGroupUnmappedSerializer, value.unmapped)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.source?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.source)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.sourceVersion?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.sourceVersion)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.target?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.target)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.targetVersion?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.targetVersion)
+    if (value.element.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        11,
+        ConceptMapGroupElementSerializer.listSerializer,
+        value.element,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      12,
+      ConceptMapGroupUnmappedSerializer,
+      value.unmapped,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -218,90 +246,105 @@ internal object ConceptMapGroupElementSerializer : KSerializer<ConceptMap.Group.
 
   internal val listSerializer: KSerializer<List<ConceptMap.Group.Element>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ConceptMap.Group.Element =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var code: KotlinString? = null
-      var _code: Element? = null
-      var display: KotlinString? = null
-      var _display: Element? = null
-      var target: List<ConceptMap.Group.Element.Target>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> code = decodeStringElement(descriptor, i)
-          4 -> _code = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> display = decodeStringElement(descriptor, i)
-          6 -> _display = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 ->
-            target =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ConceptMapGroupElementTargetSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Element: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ConceptMap.Group.Element {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var code: KotlinString? = null
+    var _code: Element? = null
+    var display: KotlinString? = null
+    var _display: Element? = null
+    var target: List<ConceptMap.Group.Element.Target>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> code = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> display = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _display =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          target =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ConceptMapGroupElementTargetSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Element: " + i)
       }
-      ConceptMap.Group.Element(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        code = Code.of(code, _code),
-        display = R4String.of(display, _display),
-        target = target ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ConceptMap.Group.Element(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      code = Code.of(code, _code),
+      display = R4String.of(display, _display),
+      target = target ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group.Element) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.code?.value)
-      encodeElementIfNotNull(descriptor, 4, value.code)
-      encodeStringIfNotNull(descriptor, 5, value.display?.value)
-      encodeElementIfNotNull(descriptor, 6, value.display)
-      if (value.target.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          7,
-          ConceptMapGroupElementTargetSerializer.listSerializer,
-          value.target,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.display?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.display)
+    if (value.target.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        7,
+        ConceptMapGroupElementTargetSerializer.listSerializer,
+        value.target,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -333,129 +376,157 @@ internal object ConceptMapGroupElementTargetSerializer :
   internal val listSerializer: KSerializer<List<ConceptMap.Group.Element.Target>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ConceptMap.Group.Element.Target =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var code: KotlinString? = null
-      var _code: Element? = null
-      var display: KotlinString? = null
-      var _display: Element? = null
-      var equivalence: KotlinString? = null
-      var _equivalence: Element? = null
-      var comment: KotlinString? = null
-      var _comment: Element? = null
-      var dependsOn: List<ConceptMap.Group.Element.Target.DependsOn>? = null
-      var product: List<ConceptMap.Group.Element.Target.DependsOn>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> code = decodeStringElement(descriptor, i)
-          4 -> _code = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> display = decodeStringElement(descriptor, i)
-          6 -> _display = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> equivalence = decodeStringElement(descriptor, i)
-          8 ->
-            _equivalence = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> comment = decodeStringElement(descriptor, i)
-          10 -> _comment = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          11 ->
-            dependsOn =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ConceptMapGroupElementTargetDependsOnSerializer.listSerializer,
-                null,
-              )
-          12 ->
-            product =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ConceptMapGroupElementTargetDependsOnSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Target: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ConceptMap.Group.Element.Target {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var code: KotlinString? = null
+    var _code: Element? = null
+    var display: KotlinString? = null
+    var _display: Element? = null
+    var equivalence: KotlinString? = null
+    var _equivalence: Element? = null
+    var comment: KotlinString? = null
+    var _comment: Element? = null
+    var dependsOn: List<ConceptMap.Group.Element.Target.DependsOn>? = null
+    var product: List<ConceptMap.Group.Element.Target.DependsOn>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> code = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> display = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _display =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> equivalence = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _equivalence =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> comment = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _comment =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 ->
+          dependsOn =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ConceptMapGroupElementTargetDependsOnSerializer.listSerializer,
+              null,
+            )
+        12 ->
+          product =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ConceptMapGroupElementTargetDependsOnSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Target: " + i)
       }
-      ConceptMap.Group.Element.Target(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        code = Code.of(code, _code),
-        display = R4String.of(display, _display),
-        equivalence =
-          Enumeration.of(
-            if (equivalence != null) ConceptMapEquivalence.fromCode(equivalence) else null,
-            _equivalence,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'equivalence' on ConceptMap.Group.Element.Target"
-            ),
-        comment = R4String.of(comment, _comment),
-        dependsOn = dependsOn ?: listOf(),
-        product = product ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ConceptMap.Group.Element.Target(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      code = Code.of(code, _code),
+      display = R4String.of(display, _display),
+      equivalence =
+        Enumeration.of(
+          if (equivalence != null) ConceptMapEquivalence.fromCode(equivalence) else null,
+          _equivalence,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'equivalence' on ConceptMap.Group.Element.Target"
+          ),
+      comment = R4String.of(comment, _comment),
+      dependsOn = dependsOn ?: listOf(),
+      product = product ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group.Element.Target) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.code?.value)
-      encodeElementIfNotNull(descriptor, 4, value.code)
-      encodeStringIfNotNull(descriptor, 5, value.display?.value)
-      encodeElementIfNotNull(descriptor, 6, value.display)
-      encodeStringIfNotNull(descriptor, 7, value.equivalence.value?.code)
-      encodeElementIfNotNull(descriptor, 8, value.equivalence)
-      encodeStringIfNotNull(descriptor, 9, value.comment?.value)
-      encodeElementIfNotNull(descriptor, 10, value.comment)
-      if (value.dependsOn.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          11,
-          ConceptMapGroupElementTargetDependsOnSerializer.listSerializer,
-          value.dependsOn,
-        )
-      if (value.product.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          12,
-          ConceptMapGroupElementTargetDependsOnSerializer.listSerializer,
-          value.product,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.display?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.display)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.equivalence.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.equivalence)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.comment?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.comment)
+    if (value.dependsOn.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        11,
+        ConceptMapGroupElementTargetDependsOnSerializer.listSerializer,
+        value.dependsOn,
+      )
+    if (value.product.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        12,
+        ConceptMapGroupElementTargetDependsOnSerializer.listSerializer,
+        value.product,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -479,95 +550,124 @@ internal object ConceptMapGroupElementTargetDependsOnSerializer :
   internal val listSerializer: KSerializer<List<ConceptMap.Group.Element.Target.DependsOn>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ConceptMap.Group.Element.Target.DependsOn =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var `property`: KotlinString? = null
-      var _property: Element? = null
-      var system: KotlinString? = null
-      var _system: Element? = null
-      var `value`: KotlinString? = null
-      var _value: Element? = null
-      var display: KotlinString? = null
-      var _display: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> `property` = decodeStringElement(descriptor, i)
-          4 -> _property = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> system = decodeStringElement(descriptor, i)
-          6 -> _system = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> `value` = decodeStringElement(descriptor, i)
-          8 -> _value = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> display = decodeStringElement(descriptor, i)
-          10 -> _display = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding DependsOn: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ConceptMap.Group.Element.Target.DependsOn {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var `property`: KotlinString? = null
+    var _property: Element? = null
+    var system: KotlinString? = null
+    var _system: Element? = null
+    var `value`: KotlinString? = null
+    var _value: Element? = null
+    var display: KotlinString? = null
+    var _display: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> `property` = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _property =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> system = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _system =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> `value` = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _value =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> display = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _display =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding DependsOn: " + i)
       }
-      ConceptMap.Group.Element.Target.DependsOn(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        `property` =
-          Uri.of(`property`, _property)
-            ?: throw SerializationException(
-              "Missing required property 'property' on ConceptMap.Group.Element.Target.DependsOn"
-            ),
-        system = Canonical.of(system, _system),
-        `value` =
-          R4String.of(`value`, _value)
-            ?: throw SerializationException(
-              "Missing required property 'value' on ConceptMap.Group.Element.Target.DependsOn"
-            ),
-        display = R4String.of(display, _display),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ConceptMap.Group.Element.Target.DependsOn(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      `property` =
+        Uri.of(`property`, _property)
+          ?: throw SerializationException(
+            "Missing required property 'property' on ConceptMap.Group.Element.Target.DependsOn"
+          ),
+      system = Canonical.of(system, _system),
+      `value` =
+        R4String.of(`value`, _value)
+          ?: throw SerializationException(
+            "Missing required property 'value' on ConceptMap.Group.Element.Target.DependsOn"
+          ),
+      display = R4String.of(display, _display),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group.Element.Target.DependsOn) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.`property`.value)
-      encodeElementIfNotNull(descriptor, 4, value.`property`)
-      encodeStringIfNotNull(descriptor, 5, value.system?.value)
-      encodeElementIfNotNull(descriptor, 6, value.system)
-      encodeStringIfNotNull(descriptor, 7, value.`value`.value)
-      encodeElementIfNotNull(descriptor, 8, value.`value`)
-      encodeStringIfNotNull(descriptor, 9, value.display?.value)
-      encodeElementIfNotNull(descriptor, 10, value.display)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.`property`.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.`property`)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.system?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.system)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.`value`.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.`value`)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.display?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.display)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -589,94 +689,123 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
 
   internal val listSerializer: KSerializer<List<ConceptMap.Group.Unmapped>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ConceptMap.Group.Unmapped =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var mode: KotlinString? = null
-      var _mode: Element? = null
-      var code: KotlinString? = null
-      var _code: Element? = null
-      var display: KotlinString? = null
-      var _display: Element? = null
-      var url: KotlinString? = null
-      var _url: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> mode = decodeStringElement(descriptor, i)
-          4 -> _mode = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> code = decodeStringElement(descriptor, i)
-          6 -> _code = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> display = decodeStringElement(descriptor, i)
-          8 -> _display = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> url = decodeStringElement(descriptor, i)
-          10 -> _url = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Unmapped: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ConceptMap.Group.Unmapped {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var mode: KotlinString? = null
+    var _mode: Element? = null
+    var code: KotlinString? = null
+    var _code: Element? = null
+    var display: KotlinString? = null
+    var _display: Element? = null
+    var url: KotlinString? = null
+    var _url: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> mode = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _mode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> code = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> display = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _display =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> url = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _url =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Unmapped: " + i)
       }
-      ConceptMap.Group.Unmapped(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        mode =
-          Enumeration.of(
-            if (mode != null) ConceptMap.ConceptMapGroupUnmappedMode.fromCode(mode) else null,
-            _mode,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'mode' on ConceptMap.Group.Unmapped"
-            ),
-        code = Code.of(code, _code),
-        display = R4String.of(display, _display),
-        url = Canonical.of(url, _url),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ConceptMap.Group.Unmapped(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      mode =
+        Enumeration.of(
+          if (mode != null) ConceptMap.ConceptMapGroupUnmappedMode.fromCode(mode) else null,
+          _mode,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'mode' on ConceptMap.Group.Unmapped"
+          ),
+      code = Code.of(code, _code),
+      display = R4String.of(display, _display),
+      url = Canonical.of(url, _url),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ConceptMap.Group.Unmapped) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.mode.value?.code)
-      encodeElementIfNotNull(descriptor, 4, value.mode)
-      encodeStringIfNotNull(descriptor, 5, value.code?.value)
-      encodeElementIfNotNull(descriptor, 6, value.code)
-      encodeStringIfNotNull(descriptor, 7, value.display?.value)
-      encodeElementIfNotNull(descriptor, 8, value.display)
-      encodeStringIfNotNull(descriptor, 9, value.url?.value)
-      encodeElementIfNotNull(descriptor, 10, value.url)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.mode.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.mode)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.code?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.code)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.display?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.display)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.url?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.url)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -735,7 +864,7 @@ internal object ConceptMapSerializer : FhirResourceSerializer<ConceptMap> {
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): ConceptMap {
@@ -785,25 +914,43 @@ internal object ConceptMapSerializer : FhirResourceSerializer<ConceptMap> {
     var _targetCanonical: Element? = null
     var group: List<ConceptMap.Group>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -811,7 +958,7 @@ internal object ConceptMapSerializer : FhirResourceSerializer<ConceptMap> {
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -819,58 +966,112 @@ internal object ConceptMapSerializer : FhirResourceSerializer<ConceptMap> {
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
               null,
             )
-        10 -> url = decoder.decodeStringElement(descriptor, i)
+        10 -> url = compositeDecoder.decodeStringElement(descriptor, i)
         11 ->
-          _url = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          _url =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         12 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
-        13 -> version = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer,
+              null,
+            )
+        13 -> version = compositeDecoder.decodeStringElement(descriptor, i)
         14 ->
           _version =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        15 -> name = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        15 -> name = compositeDecoder.decodeStringElement(descriptor, i)
         16 ->
-          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        17 -> title = decoder.decodeStringElement(descriptor, i)
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        17 -> title = compositeDecoder.decodeStringElement(descriptor, i)
         18 ->
-          _title = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        19 -> status = decoder.decodeStringElement(descriptor, i)
+          _title =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        19 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         20 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        21 -> experimental = decoder.decodeBooleanElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        21 -> experimental = compositeDecoder.decodeBooleanElement(descriptor, i)
         22 ->
           _experimental =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        23 -> date = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        23 -> date = compositeDecoder.decodeStringElement(descriptor, i)
         24 ->
-          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        25 -> publisher = decoder.decodeStringElement(descriptor, i)
+          _date =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        25 -> publisher = compositeDecoder.decodeStringElement(descriptor, i)
         26 ->
           _publisher =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         27 ->
           contact =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ContactDetailSerializer.listSerializer,
               null,
             )
-        28 -> description = decoder.decodeStringElement(descriptor, i)
+        28 -> description = compositeDecoder.decodeStringElement(descriptor, i)
         29 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         30 ->
           useContext =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               UsageContextSerializer.listSerializer,
@@ -878,39 +1079,69 @@ internal object ConceptMapSerializer : FhirResourceSerializer<ConceptMap> {
             )
         31 ->
           jurisdiction =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
               null,
             )
-        32 -> purpose = decoder.decodeStringElement(descriptor, i)
+        32 -> purpose = compositeDecoder.decodeStringElement(descriptor, i)
         33 ->
           _purpose =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        34 -> copyright = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        34 -> copyright = compositeDecoder.decodeStringElement(descriptor, i)
         35 ->
           _copyright =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        36 -> sourceUri = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        36 -> sourceUri = compositeDecoder.decodeStringElement(descriptor, i)
         37 ->
           _sourceUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        38 -> sourceCanonical = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        38 -> sourceCanonical = compositeDecoder.decodeStringElement(descriptor, i)
         39 ->
           _sourceCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        40 -> targetUri = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        40 -> targetUri = compositeDecoder.decodeStringElement(descriptor, i)
         41 ->
           _targetUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        42 -> targetCanonical = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        42 -> targetCanonical = compositeDecoder.decodeStringElement(descriptor, i)
         43 ->
           _targetCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         44 ->
           group =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ConceptMapGroupSerializer.listSerializer,
@@ -960,122 +1191,166 @@ internal object ConceptMapSerializer : FhirResourceSerializer<ConceptMap> {
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: ConceptMap,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
-    encoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       12 + descriptorOffset,
       IdentifierSerializer,
       value.identifier,
     )
-    encoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
-    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
-    encoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.name?.value)
-    encoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.name)
-    encoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.title?.value)
-    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.title)
-    encoder.encodeStringIfNotNull(descriptor, 19 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.status)
-    encoder.encodeBooleanIfNotNull(descriptor, 21 + descriptorOffset, value.experimental?.value)
-    encoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.experimental)
-    encoder.encodeStringIfNotNull(descriptor, 23 + descriptorOffset, value.date?.value?.toString())
-    encoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.date)
-    encoder.encodeStringIfNotNull(descriptor, 25 + descriptorOffset, value.publisher?.value)
-    encoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.publisher)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.title?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.title)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.status)
+    compositeEncoder.encodeBooleanIfNotNull(
+      descriptor,
+      21 + descriptorOffset,
+      value.experimental?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.experimental)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      23 + descriptorOffset,
+      value.date?.value?.toString(),
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.date)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      25 + descriptorOffset,
+      value.publisher?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.publisher)
     if (value.contact.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         27 + descriptorOffset,
         ContactDetailSerializer.listSerializer,
         value.contact,
       )
-    encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.description?.value)
-    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.description)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      28 + descriptorOffset,
+      value.description?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.description)
     if (value.useContext.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         30 + descriptorOffset,
         UsageContextSerializer.listSerializer,
         value.useContext,
       )
     if (value.jurisdiction.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         31 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.jurisdiction,
       )
-    encoder.encodeStringIfNotNull(descriptor, 32 + descriptorOffset, value.purpose?.value)
-    encoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.purpose)
-    encoder.encodeStringIfNotNull(descriptor, 34 + descriptorOffset, value.copyright?.value)
-    encoder.encodeElementIfNotNull(descriptor, 35 + descriptorOffset, value.copyright)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 32 + descriptorOffset, value.purpose?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.purpose)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      34 + descriptorOffset,
+      value.copyright?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 35 + descriptorOffset, value.copyright)
     when (val choice = value.source) {
       null -> {}
       is ConceptMap.Source.Uri -> {
-        encoder.encodeStringIfNotNull(descriptor, 36 + descriptorOffset, choice.value.value)
-        encoder.encodeElementIfNotNull(descriptor, 37 + descriptorOffset, choice.value)
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          36 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 37 + descriptorOffset, choice.value)
       }
       is ConceptMap.Source.Canonical -> {
-        encoder.encodeStringIfNotNull(descriptor, 38 + descriptorOffset, choice.value.value)
-        encoder.encodeElementIfNotNull(descriptor, 39 + descriptorOffset, choice.value)
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          38 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 39 + descriptorOffset, choice.value)
       }
     }
     when (val choice = value.target) {
       null -> {}
       is ConceptMap.Target.Uri -> {
-        encoder.encodeStringIfNotNull(descriptor, 40 + descriptorOffset, choice.value.value)
-        encoder.encodeElementIfNotNull(descriptor, 41 + descriptorOffset, choice.value)
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          40 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 41 + descriptorOffset, choice.value)
       }
       is ConceptMap.Target.Canonical -> {
-        encoder.encodeStringIfNotNull(descriptor, 42 + descriptorOffset, choice.value.value)
-        encoder.encodeElementIfNotNull(descriptor, 43 + descriptorOffset, choice.value)
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          42 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 43 + descriptorOffset, choice.value)
       }
     }
     if (value.group.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         44 + descriptorOffset,
         ConceptMapGroupSerializer.listSerializer,

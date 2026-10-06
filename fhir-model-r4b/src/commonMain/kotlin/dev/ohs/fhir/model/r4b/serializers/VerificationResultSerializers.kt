@@ -60,8 +60,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object VerificationResultPrimarySourceSerializer :
   KSerializer<VerificationResult.PrimarySource> {
@@ -83,139 +81,172 @@ internal object VerificationResultPrimarySourceSerializer :
   internal val listSerializer: KSerializer<List<VerificationResult.PrimarySource>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): VerificationResult.PrimarySource =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var who: Reference? = null
-      var type: List<CodeableConcept>? = null
-      var communicationMethod: List<CodeableConcept>? = null
-      var validationStatus: CodeableConcept? = null
-      var validationDate: KotlinString? = null
-      var _validationDate: Element? = null
-      var canPushUpdates: CodeableConcept? = null
-      var pushTypeAvailable: List<CodeableConcept>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> who = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          4 ->
-            type =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          5 ->
-            communicationMethod =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          6 ->
-            validationStatus =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          7 -> validationDate = decodeStringElement(descriptor, i)
-          8 ->
-            _validationDate =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 ->
-            canPushUpdates =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          10 ->
-            pushTypeAvailable =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding PrimarySource: " + i)
-        }
+  override fun deserialize(decoder: Decoder): VerificationResult.PrimarySource {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var who: Reference? = null
+    var type: List<CodeableConcept>? = null
+    var communicationMethod: List<CodeableConcept>? = null
+    var validationStatus: CodeableConcept? = null
+    var validationDate: KotlinString? = null
+    var _validationDate: Element? = null
+    var canPushUpdates: CodeableConcept? = null
+    var pushTypeAvailable: List<CodeableConcept>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          who =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        4 ->
+          type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        5 ->
+          communicationMethod =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        6 ->
+          validationStatus =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        7 -> validationDate = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _validationDate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 ->
+          canPushUpdates =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        10 ->
+          pushTypeAvailable =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding PrimarySource: " + i)
       }
-      VerificationResult.PrimarySource(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        who = who,
-        type = type ?: listOf(),
-        communicationMethod = communicationMethod ?: listOf(),
-        validationStatus = validationStatus,
-        validationDate =
-          DateTime.of(
-            if (validationDate != null) FhirDateTime.fromString(validationDate) else null,
-            _validationDate,
-          ),
-        canPushUpdates = canPushUpdates,
-        pushTypeAvailable = pushTypeAvailable ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return VerificationResult.PrimarySource(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      who = who,
+      type = type ?: listOf(),
+      communicationMethod = communicationMethod ?: listOf(),
+      validationStatus = validationStatus,
+      validationDate =
+        DateTime.of(
+          if (validationDate != null) FhirDateTime.fromString(validationDate) else null,
+          _validationDate,
+        ),
+      canPushUpdates = canPushUpdates,
+      pushTypeAvailable = pushTypeAvailable ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult.PrimarySource) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.who)
-      if (value.type.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          4,
-          CodeableConceptSerializer.listSerializer,
-          value.type,
-        )
-      if (value.communicationMethod.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          5,
-          CodeableConceptSerializer.listSerializer,
-          value.communicationMethod,
-        )
-      encodeSerializableIfNotNull(descriptor, 6, CodeableConceptSerializer, value.validationStatus)
-      encodeStringIfNotNull(descriptor, 7, value.validationDate?.value?.toString())
-      encodeElementIfNotNull(descriptor, 8, value.validationDate)
-      encodeSerializableIfNotNull(descriptor, 9, CodeableConceptSerializer, value.canPushUpdates)
-      if (value.pushTypeAvailable.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          10,
-          CodeableConceptSerializer.listSerializer,
-          value.pushTypeAvailable,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.who)
+    if (value.type.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        CodeableConceptSerializer.listSerializer,
+        value.type,
+      )
+    if (value.communicationMethod.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        5,
+        CodeableConceptSerializer.listSerializer,
+        value.communicationMethod,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6,
+      CodeableConceptSerializer,
+      value.validationStatus,
+    )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.validationDate?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.validationDate)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      9,
+      CodeableConceptSerializer,
+      value.canPushUpdates,
+    )
+    if (value.pushTypeAvailable.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        10,
+        CodeableConceptSerializer.listSerializer,
+        value.pushTypeAvailable,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -242,118 +273,178 @@ internal object VerificationResultAttestationSerializer :
   internal val listSerializer: KSerializer<List<VerificationResult.Attestation>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): VerificationResult.Attestation =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var who: Reference? = null
-      var onBehalfOf: Reference? = null
-      var communicationMethod: CodeableConcept? = null
-      var date: KotlinString? = null
-      var _date: Element? = null
-      var sourceIdentityCertificate: KotlinString? = null
-      var _sourceIdentityCertificate: Element? = null
-      var proxyIdentityCertificate: KotlinString? = null
-      var _proxyIdentityCertificate: Element? = null
-      var proxySignature: Signature? = null
-      var sourceSignature: Signature? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> who = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          4 ->
-            onBehalfOf = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          5 ->
-            communicationMethod =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          6 -> date = decodeStringElement(descriptor, i)
-          7 -> _date = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          8 -> sourceIdentityCertificate = decodeStringElement(descriptor, i)
-          9 ->
-            _sourceIdentityCertificate =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          10 -> proxyIdentityCertificate = decodeStringElement(descriptor, i)
-          11 ->
-            _proxyIdentityCertificate =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          12 ->
-            proxySignature =
-              decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
-          13 ->
-            sourceSignature =
-              decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Attestation: " + i)
-        }
+  override fun deserialize(decoder: Decoder): VerificationResult.Attestation {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var who: Reference? = null
+    var onBehalfOf: Reference? = null
+    var communicationMethod: CodeableConcept? = null
+    var date: KotlinString? = null
+    var _date: Element? = null
+    var sourceIdentityCertificate: KotlinString? = null
+    var _sourceIdentityCertificate: Element? = null
+    var proxyIdentityCertificate: KotlinString? = null
+    var _proxyIdentityCertificate: Element? = null
+    var proxySignature: Signature? = null
+    var sourceSignature: Signature? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          who =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        4 ->
+          onBehalfOf =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        5 ->
+          communicationMethod =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        6 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          _date =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        8 -> sourceIdentityCertificate = compositeDecoder.decodeStringElement(descriptor, i)
+        9 ->
+          _sourceIdentityCertificate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        10 -> proxyIdentityCertificate = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          _proxyIdentityCertificate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        12 ->
+          proxySignature =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              SignatureSerializer,
+              null,
+            )
+        13 ->
+          sourceSignature =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              SignatureSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Attestation: " + i)
       }
-      VerificationResult.Attestation(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        who = who,
-        onBehalfOf = onBehalfOf,
-        communicationMethod = communicationMethod,
-        date = Date.of(if (date != null) FhirDate.fromString(date) else null, _date),
-        sourceIdentityCertificate =
-          R4bString.of(sourceIdentityCertificate, _sourceIdentityCertificate),
-        proxyIdentityCertificate =
-          R4bString.of(proxyIdentityCertificate, _proxyIdentityCertificate),
-        proxySignature = proxySignature,
-        sourceSignature = sourceSignature,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return VerificationResult.Attestation(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      who = who,
+      onBehalfOf = onBehalfOf,
+      communicationMethod = communicationMethod,
+      date = Date.of(if (date != null) FhirDate.fromString(date) else null, _date),
+      sourceIdentityCertificate =
+        R4bString.of(sourceIdentityCertificate, _sourceIdentityCertificate),
+      proxyIdentityCertificate = R4bString.of(proxyIdentityCertificate, _proxyIdentityCertificate),
+      proxySignature = proxySignature,
+      sourceSignature = sourceSignature,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult.Attestation) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.who)
-      encodeSerializableIfNotNull(descriptor, 4, ReferenceSerializer, value.onBehalfOf)
-      encodeSerializableIfNotNull(
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
         descriptor,
-        5,
-        CodeableConceptSerializer,
-        value.communicationMethod,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
       )
-      encodeStringIfNotNull(descriptor, 6, value.date?.value?.toString())
-      encodeElementIfNotNull(descriptor, 7, value.date)
-      encodeStringIfNotNull(descriptor, 8, value.sourceIdentityCertificate?.value)
-      encodeElementIfNotNull(descriptor, 9, value.sourceIdentityCertificate)
-      encodeStringIfNotNull(descriptor, 10, value.proxyIdentityCertificate?.value)
-      encodeElementIfNotNull(descriptor, 11, value.proxyIdentityCertificate)
-      encodeSerializableIfNotNull(descriptor, 12, SignatureSerializer, value.proxySignature)
-      encodeSerializableIfNotNull(descriptor, 13, SignatureSerializer, value.sourceSignature)
-    }
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.who)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      4,
+      ReferenceSerializer,
+      value.onBehalfOf,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      5,
+      CodeableConceptSerializer,
+      value.communicationMethod,
+    )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.date?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.date)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 8, value.sourceIdentityCertificate?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.sourceIdentityCertificate)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 10, value.proxyIdentityCertificate?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 11, value.proxyIdentityCertificate)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      12,
+      SignatureSerializer,
+      value.proxySignature,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      13,
+      SignatureSerializer,
+      value.sourceSignature,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -372,84 +463,110 @@ internal object VerificationResultValidatorSerializer : KSerializer<Verification
   internal val listSerializer: KSerializer<List<VerificationResult.Validator>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): VerificationResult.Validator =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var organization: Reference? = null
-      var identityCertificate: KotlinString? = null
-      var _identityCertificate: Element? = null
-      var attestationSignature: Signature? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            organization =
-              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          4 -> identityCertificate = decodeStringElement(descriptor, i)
-          5 ->
-            _identityCertificate =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          6 ->
-            attestationSignature =
-              decodeNullableSerializableElement(descriptor, i, SignatureSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Validator: " + i)
-        }
+  override fun deserialize(decoder: Decoder): VerificationResult.Validator {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var organization: Reference? = null
+    var identityCertificate: KotlinString? = null
+    var _identityCertificate: Element? = null
+    var attestationSignature: Signature? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          organization =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        4 -> identityCertificate = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _identityCertificate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 ->
+          attestationSignature =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              SignatureSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Validator: " + i)
       }
-      VerificationResult.Validator(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        organization =
-          organization
-            ?: throw SerializationException(
-              "Missing required property 'organization' on VerificationResult.Validator"
-            ),
-        identityCertificate = R4bString.of(identityCertificate, _identityCertificate),
-        attestationSignature = attestationSignature,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return VerificationResult.Validator(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      organization =
+        organization
+          ?: throw SerializationException(
+            "Missing required property 'organization' on VerificationResult.Validator"
+          ),
+      identityCertificate = R4bString.of(identityCertificate, _identityCertificate),
+      attestationSignature = attestationSignature,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult.Validator) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.organization)
-      encodeStringIfNotNull(descriptor, 4, value.identityCertificate?.value)
-      encodeElementIfNotNull(descriptor, 5, value.identityCertificate)
-      encodeSerializableIfNotNull(descriptor, 6, SignatureSerializer, value.attestationSignature)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableElement(
+      descriptor,
+      3,
+      ReferenceSerializer,
+      value.organization,
+    )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.identityCertificate?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.identityCertificate)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6,
+      SignatureSerializer,
+      value.attestationSignature,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -495,7 +612,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): VerificationResult {
@@ -529,25 +646,43 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
     var attestation: VerificationResult.Attestation? = null
     var validator: List<VerificationResult.Validator>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -555,7 +690,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -563,7 +698,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -571,7 +706,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         10 ->
           target =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -579,7 +714,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         11 ->
           targetLocation =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               stringNullableListSerializer,
@@ -587,7 +722,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         12 ->
           _targetLocation =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ElementSerializer.nullableListSerializer,
@@ -595,23 +730,33 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         13 ->
           need =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
               null,
             )
-        14 -> status = decoder.decodeStringElement(descriptor, i)
+        14 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         15 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        16 -> statusDate = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        16 -> statusDate = compositeDecoder.decodeStringElement(descriptor, i)
         17 ->
           _statusDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         18 ->
           validationType =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -619,7 +764,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         19 ->
           validationProcess =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -627,18 +772,33 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         20 ->
           frequency =
-            decoder.decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
-        21 -> lastPerformed = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              TimingSerializer,
+              null,
+            )
+        21 -> lastPerformed = compositeDecoder.decodeStringElement(descriptor, i)
         22 ->
           _lastPerformed =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        23 -> nextScheduled = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        23 -> nextScheduled = compositeDecoder.decodeStringElement(descriptor, i)
         24 ->
           _nextScheduled =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         25 ->
           failureAction =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -646,7 +806,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         26 ->
           primarySource =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               VerificationResultPrimarySourceSerializer.listSerializer,
@@ -654,7 +814,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         27 ->
           attestation =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               VerificationResultAttestationSerializer,
@@ -662,7 +822,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
             )
         28 ->
           validator =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               VerificationResultValidatorSerializer.listSerializer,
@@ -724,131 +884,143 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: VerificationResult,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.target.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.target,
       )
     if (value.targetLocation.isNotEmpty()) {
-      encoder.encodeNullableListIfNotNull(
+      compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
         stringNullableListSerializer,
         value.targetLocation.map { it.value },
       )
-      encoder.encodePrimitiveElementList(descriptor, 12 + descriptorOffset, value.targetLocation)
+      compositeEncoder.encodePrimitiveElementList(
+        descriptor,
+        12 + descriptorOffset,
+        value.targetLocation,
+      )
     }
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       13 + descriptorOffset,
       CodeableConceptSerializer,
       value.need,
     )
-    encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.status)
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      14 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.status)
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       16 + descriptorOffset,
       value.statusDate?.value?.toString(),
     )
-    encoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.statusDate)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.statusDate)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       18 + descriptorOffset,
       CodeableConceptSerializer,
       value.validationType,
     )
     if (value.validationProcess.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         19 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.validationProcess,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       20 + descriptorOffset,
       TimingSerializer,
       value.frequency,
     )
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       21 + descriptorOffset,
       value.lastPerformed?.value?.toString(),
     )
-    encoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.lastPerformed)
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.lastPerformed)
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       23 + descriptorOffset,
       value.nextScheduled?.value?.toString(),
     )
-    encoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.nextScheduled)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.nextScheduled)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       25 + descriptorOffset,
       CodeableConceptSerializer,
       value.failureAction,
     )
     if (value.primarySource.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         26 + descriptorOffset,
         VerificationResultPrimarySourceSerializer.listSerializer,
         value.primarySource,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       27 + descriptorOffset,
       VerificationResultAttestationSerializer,
       value.attestation,
     )
     if (value.validator.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         28 + descriptorOffset,
         VerificationResultValidatorSerializer.listSerializer,

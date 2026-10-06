@@ -65,8 +65,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssessment.Content> {
   override val descriptor: SerialDescriptor =
@@ -95,182 +93,231 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
 
   internal val listSerializer: KSerializer<List<ArtifactAssessment.Content>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ArtifactAssessment.Content =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var informationType: KotlinString? = null
-      var _informationType: Element? = null
-      var summary: KotlinString? = null
-      var _summary: Element? = null
-      var type: CodeableConcept? = null
-      var classifier: List<CodeableConcept>? = null
-      var quantity: Quantity? = null
-      var author: Reference? = null
-      var path: List<KotlinString?>? = null
-      var _path: List<Element?>? = null
-      var relatedArtifact: List<RelatedArtifact>? = null
-      var freeToShare: KotlinBoolean? = null
-      var _freeToShare: Element? = null
-      var component: List<ArtifactAssessment.Content>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> informationType = decodeStringElement(descriptor, i)
-          4 ->
-            _informationType =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> summary = decodeStringElement(descriptor, i)
-          6 -> _summary = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 ->
-            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          8 ->
-            classifier =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          9 -> quantity = decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          10 -> author = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          11 ->
-            path =
-              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
-          12 ->
-            _path =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ElementSerializer.nullableListSerializer,
-                null,
-              )
-          13 ->
-            relatedArtifact =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                RelatedArtifactSerializer.listSerializer,
-                null,
-              )
-          14 -> freeToShare = decodeBooleanElement(descriptor, i)
-          15 ->
-            _freeToShare = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          16 ->
-            component =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ArtifactAssessmentContentSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Content: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ArtifactAssessment.Content {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var informationType: KotlinString? = null
+    var _informationType: Element? = null
+    var summary: KotlinString? = null
+    var _summary: Element? = null
+    var type: CodeableConcept? = null
+    var classifier: List<CodeableConcept>? = null
+    var quantity: Quantity? = null
+    var author: Reference? = null
+    var path: List<KotlinString?>? = null
+    var _path: List<Element?>? = null
+    var relatedArtifact: List<RelatedArtifact>? = null
+    var freeToShare: KotlinBoolean? = null
+    var _freeToShare: Element? = null
+    var component: List<ArtifactAssessment.Content>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> informationType = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _informationType =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> summary = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _summary =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        8 ->
+          classifier =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        9 ->
+          quantity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        10 ->
+          author =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        11 ->
+          path =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
+        12 ->
+          _path =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        13 ->
+          relatedArtifact =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              RelatedArtifactSerializer.listSerializer,
+              null,
+            )
+        14 -> freeToShare = compositeDecoder.decodeBooleanElement(descriptor, i)
+        15 ->
+          _freeToShare =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        16 ->
+          component =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ArtifactAssessmentContentSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Content: " + i)
       }
-      ArtifactAssessment.Content(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        informationType =
-          Enumeration.of(
-            if (informationType != null)
-              ArtifactAssessment.ArtifactAssessmentInformationType.fromCode(informationType)
-            else null,
-            _informationType,
-          ),
-        summary = Markdown.of(summary, _summary),
-        type = type,
-        classifier = classifier ?: listOf(),
-        quantity = quantity,
-        author = author,
-        path =
-          (kotlin.collections.List(maxOf(path?.size ?: 0, _path?.size ?: 0)) { index ->
-            Uri.of(path?.getOrNull(index), _path?.getOrNull(index))
-              ?: throw SerializationException(
-                "An entry of 'path' on ArtifactAssessment.Content has neither a value nor an id/extension"
-              )
-          }),
-        relatedArtifact = relatedArtifact ?: listOf(),
-        freeToShare = R5Boolean.of(freeToShare, _freeToShare),
-        component = component ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ArtifactAssessment.Content(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      informationType =
+        Enumeration.of(
+          if (informationType != null)
+            ArtifactAssessment.ArtifactAssessmentInformationType.fromCode(informationType)
+          else null,
+          _informationType,
+        ),
+      summary = Markdown.of(summary, _summary),
+      type = type,
+      classifier = classifier ?: listOf(),
+      quantity = quantity,
+      author = author,
+      path =
+        (kotlin.collections.List(maxOf(path?.size ?: 0, _path?.size ?: 0)) { index ->
+          Uri.of(path?.getOrNull(index), _path?.getOrNull(index))
+            ?: throw SerializationException(
+              "An entry of 'path' on ArtifactAssessment.Content has neither a value nor an id/extension"
+            )
+        }),
+      relatedArtifact = relatedArtifact ?: listOf(),
+      freeToShare = R5Boolean.of(freeToShare, _freeToShare),
+      component = component ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ArtifactAssessment.Content) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.informationType?.value?.code)
-      encodeElementIfNotNull(descriptor, 4, value.informationType)
-      encodeStringIfNotNull(descriptor, 5, value.summary?.value)
-      encodeElementIfNotNull(descriptor, 6, value.summary)
-      encodeSerializableIfNotNull(descriptor, 7, CodeableConceptSerializer, value.type)
-      if (value.classifier.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          8,
-          CodeableConceptSerializer.listSerializer,
-          value.classifier,
-        )
-      encodeSerializableIfNotNull(descriptor, 9, QuantitySerializer, value.quantity)
-      encodeSerializableIfNotNull(descriptor, 10, ReferenceSerializer, value.author)
-      if (value.path.isNotEmpty()) {
-        encodeNullableListIfNotNull(
-          descriptor,
-          11,
-          stringNullableListSerializer,
-          value.path.map { it.value },
-        )
-        encodePrimitiveElementList(descriptor, 12, value.path)
-      }
-      if (value.relatedArtifact.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          13,
-          RelatedArtifactSerializer.listSerializer,
-          value.relatedArtifact,
-        )
-      encodeBooleanIfNotNull(descriptor, 14, value.freeToShare?.value)
-      encodeElementIfNotNull(descriptor, 15, value.freeToShare)
-      if (value.component.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          16,
-          ArtifactAssessmentContentSerializer.listSerializer,
-          value.component,
-        )
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.informationType?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.informationType)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.summary?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.summary)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      7,
+      CodeableConceptSerializer,
+      value.type,
+    )
+    if (value.classifier.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        8,
+        CodeableConceptSerializer.listSerializer,
+        value.classifier,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 9, QuantitySerializer, value.quantity)
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 10, ReferenceSerializer, value.author)
+    if (value.path.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        11,
+        stringNullableListSerializer,
+        value.path.map { it.value },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 12, value.path)
     }
+    if (value.relatedArtifact.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        13,
+        RelatedArtifactSerializer.listSerializer,
+        value.relatedArtifact,
+      )
+    compositeEncoder.encodeBooleanIfNotNull(descriptor, 14, value.freeToShare?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 15, value.freeToShare)
+    if (value.component.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        16,
+        ArtifactAssessmentContentSerializer.listSerializer,
+        value.component,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -318,7 +365,7 @@ internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAs
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): ArtifactAssessment {
@@ -357,25 +404,43 @@ internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAs
     var disposition: KotlinString? = null
     var _disposition: Element? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -383,7 +448,7 @@ internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAs
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -391,7 +456,7 @@ internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAs
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -399,64 +464,126 @@ internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAs
             )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> title = decoder.decodeStringElement(descriptor, i)
+        11 -> title = compositeDecoder.decodeStringElement(descriptor, i)
         12 ->
-          _title = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          _title =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         13 ->
           citeAsReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        14 -> citeAsMarkdown = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        14 -> citeAsMarkdown = compositeDecoder.decodeStringElement(descriptor, i)
         15 ->
           _citeAsMarkdown =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        16 -> date = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        16 -> date = compositeDecoder.decodeStringElement(descriptor, i)
         17 ->
-          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        18 -> copyright = decoder.decodeStringElement(descriptor, i)
+          _date =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        18 -> copyright = compositeDecoder.decodeStringElement(descriptor, i)
         19 ->
           _copyright =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        20 -> approvalDate = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        20 -> approvalDate = compositeDecoder.decodeStringElement(descriptor, i)
         21 ->
           _approvalDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        22 -> lastReviewDate = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        22 -> lastReviewDate = compositeDecoder.decodeStringElement(descriptor, i)
         23 ->
           _lastReviewDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         24 ->
           artifactReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        25 -> artifactCanonical = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        25 -> artifactCanonical = compositeDecoder.decodeStringElement(descriptor, i)
         26 ->
           _artifactCanonical =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        27 -> artifactUri = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        27 -> artifactUri = compositeDecoder.decodeStringElement(descriptor, i)
         28 ->
           _artifactUri =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         29 ->
           content =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ArtifactAssessmentContentSerializer.listSerializer,
               null,
             )
-        30 -> workflowStatus = decoder.decodeStringElement(descriptor, i)
+        30 -> workflowStatus = compositeDecoder.decodeStringElement(descriptor, i)
         31 ->
           _workflowStatus =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        32 -> disposition = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        32 -> disposition = compositeDecoder.decodeStringElement(descriptor, i)
         33 ->
           _disposition =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding ArtifactAssessment: " + i)
       }
     }
@@ -516,62 +643,66 @@ internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAs
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: ArtifactAssessment,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.title?.value)
-    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.title)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.title?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.title)
     when (val choice = value.citeAs) {
       null -> {}
       is ArtifactAssessment.CiteAs.Reference -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           13 + descriptorOffset,
           ReferenceSerializer,
@@ -579,29 +710,41 @@ internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAs
         )
       }
       is ArtifactAssessment.CiteAs.Markdown -> {
-        encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, choice.value.value)
-        encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, choice.value)
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          14 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, choice.value)
       }
     }
-    encoder.encodeStringIfNotNull(descriptor, 16 + descriptorOffset, value.date?.value?.toString())
-    encoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.date)
-    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.copyright?.value)
-    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.copyright)
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      16 + descriptorOffset,
+      value.date?.value?.toString(),
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.date)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      value.copyright?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.copyright)
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       20 + descriptorOffset,
       value.approvalDate?.value?.toString(),
     )
-    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.approvalDate)
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.approvalDate)
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       22 + descriptorOffset,
       value.lastReviewDate?.value?.toString(),
     )
-    encoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.lastReviewDate)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.lastReviewDate)
     when (val choice = value.artifact) {
       is ArtifactAssessment.Artifact.Reference -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           24 + descriptorOffset,
           ReferenceSerializer,
@@ -609,28 +752,40 @@ internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAs
         )
       }
       is ArtifactAssessment.Artifact.Canonical -> {
-        encoder.encodeStringIfNotNull(descriptor, 25 + descriptorOffset, choice.value.value)
-        encoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, choice.value)
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          25 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, choice.value)
       }
       is ArtifactAssessment.Artifact.Uri -> {
-        encoder.encodeStringIfNotNull(descriptor, 27 + descriptorOffset, choice.value.value)
-        encoder.encodeElementIfNotNull(descriptor, 28 + descriptorOffset, choice.value)
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          27 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 28 + descriptorOffset, choice.value)
       }
     }
     if (value.content.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         29 + descriptorOffset,
         ArtifactAssessmentContentSerializer.listSerializer,
         value.content,
       )
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       30 + descriptorOffset,
       value.workflowStatus?.value?.code,
     )
-    encoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.workflowStatus)
-    encoder.encodeStringIfNotNull(descriptor, 32 + descriptorOffset, value.disposition?.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.disposition)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.workflowStatus)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      32 + descriptorOffset,
+      value.disposition?.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.disposition)
   }
 }

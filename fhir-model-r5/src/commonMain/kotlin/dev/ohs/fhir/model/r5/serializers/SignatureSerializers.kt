@@ -46,8 +46,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object SignatureSerializer : KSerializer<Signature> {
   override val descriptor: SerialDescriptor =
@@ -72,93 +70,142 @@ internal object SignatureSerializer : KSerializer<Signature> {
 
   internal val listSerializer: KSerializer<List<Signature>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Signature =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var type: List<Coding>? = null
-      var `when`: String? = null
-      var _when: Element? = null
-      var who: Reference? = null
-      var onBehalfOf: Reference? = null
-      var targetFormat: String? = null
-      var _targetFormat: Element? = null
-      var sigFormat: String? = null
-      var _sigFormat: Element? = null
-      var `data`: String? = null
-      var _data: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            type =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodingSerializer.listSerializer,
-                null,
-              )
-          3 -> `when` = decodeStringElement(descriptor, i)
-          4 -> _when = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> who = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          6 ->
-            onBehalfOf = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          7 -> targetFormat = decodeStringElement(descriptor, i)
-          8 ->
-            _targetFormat =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> sigFormat = decodeStringElement(descriptor, i)
-          10 ->
-            _sigFormat = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          11 -> `data` = decodeStringElement(descriptor, i)
-          12 -> _data = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Signature: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Signature {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var type: List<Coding>? = null
+    var `when`: String? = null
+    var _when: Element? = null
+    var who: Reference? = null
+    var onBehalfOf: Reference? = null
+    var targetFormat: String? = null
+    var _targetFormat: Element? = null
+    var sigFormat: String? = null
+    var _sigFormat: Element? = null
+    var `data`: String? = null
+    var _data: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
+        3 -> `when` = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _when =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          who =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        6 ->
+          onBehalfOf =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        7 -> targetFormat = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _targetFormat =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> sigFormat = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _sigFormat =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 -> `data` = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          _data =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Signature: " + i)
       }
-      Signature(
-        id = id,
-        extension = extension ?: listOf(),
-        type = type ?: listOf(),
-        `when` = Instant.of(if (`when` != null) FhirDateTime.fromString(`when`) else null, _when),
-        who = who,
-        onBehalfOf = onBehalfOf,
-        targetFormat = Code.of(targetFormat, _targetFormat),
-        sigFormat = Code.of(sigFormat, _sigFormat),
-        `data` = Base64Binary.of(`data`, _data),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Signature(
+      id = id,
+      extension = extension ?: listOf(),
+      type = type ?: listOf(),
+      `when` = Instant.of(if (`when` != null) FhirDateTime.fromString(`when`) else null, _when),
+      who = who,
+      onBehalfOf = onBehalfOf,
+      targetFormat = Code.of(targetFormat, _targetFormat),
+      sigFormat = Code.of(sigFormat, _sigFormat),
+      `data` = Base64Binary.of(`data`, _data),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Signature) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.type.isNotEmpty())
-        encodeSerializableElement(descriptor, 2, CodingSerializer.listSerializer, value.type)
-      encodeStringIfNotNull(descriptor, 3, value.`when`?.value?.toString())
-      encodeElementIfNotNull(descriptor, 4, value.`when`)
-      encodeSerializableIfNotNull(descriptor, 5, ReferenceSerializer, value.who)
-      encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.onBehalfOf)
-      encodeStringIfNotNull(descriptor, 7, value.targetFormat?.value)
-      encodeElementIfNotNull(descriptor, 8, value.targetFormat)
-      encodeStringIfNotNull(descriptor, 9, value.sigFormat?.value)
-      encodeElementIfNotNull(descriptor, 10, value.sigFormat)
-      encodeStringIfNotNull(descriptor, 11, value.`data`?.value)
-      encodeElementIfNotNull(descriptor, 12, value.`data`)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.type.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        CodingSerializer.listSerializer,
+        value.type,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.`when`?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.`when`)
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 5, ReferenceSerializer, value.who)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6,
+      ReferenceSerializer,
+      value.onBehalfOf,
+    )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.targetFormat?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.targetFormat)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.sigFormat?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.sigFormat)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 11, value.`data`?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.`data`)
+    compositeEncoder.endStructure(descriptor)
   }
 }

@@ -70,8 +70,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object InventoryItemNameSerializer : KSerializer<InventoryItem.Name> {
   override val descriptor: SerialDescriptor =
@@ -88,92 +86,112 @@ internal object InventoryItemNameSerializer : KSerializer<InventoryItem.Name> {
 
   internal val listSerializer: KSerializer<List<InventoryItem.Name>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): InventoryItem.Name =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var nameType: Coding? = null
-      var language: KotlinString? = null
-      var _language: Element? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> nameType = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-          4 -> language = decodeStringElement(descriptor, i)
-          5 -> _language = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          6 -> name = decodeStringElement(descriptor, i)
-          7 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Name: " + i)
-        }
+  override fun deserialize(decoder: Decoder): InventoryItem.Name {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var nameType: Coding? = null
+    var language: KotlinString? = null
+    var _language: Element? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          nameType =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _language =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Name: " + i)
       }
-      InventoryItem.Name(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        nameType =
-          nameType
-            ?: throw SerializationException(
-              "Missing required property 'nameType' on InventoryItem.Name"
-            ),
-        language =
-          Enumeration.of(
-            if (language != null) InventoryItem.CommonLanguages.fromCode(language) else null,
-            _language,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'language' on InventoryItem.Name"
-            ),
-        name =
-          R5String.of(name, _name)
-            ?: throw SerializationException(
-              "Missing required property 'name' on InventoryItem.Name"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return InventoryItem.Name(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      nameType =
+        nameType
+          ?: throw SerializationException(
+            "Missing required property 'nameType' on InventoryItem.Name"
+          ),
+      language =
+        Enumeration.of(
+          if (language != null) InventoryItem.CommonLanguages.fromCode(language) else null,
+          _language,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'language' on InventoryItem.Name"
+          ),
+      name =
+        R5String.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on InventoryItem.Name"),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Name) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableElement(descriptor, 3, CodingSerializer, value.nameType)
-      encodeStringIfNotNull(descriptor, 4, value.language.value?.code)
-      encodeElementIfNotNull(descriptor, 5, value.language)
-      encodeStringIfNotNull(descriptor, 6, value.name.value)
-      encodeElementIfNotNull(descriptor, 7, value.name)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableElement(descriptor, 3, CodingSerializer, value.nameType)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.language.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.language)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.name.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.name)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -191,79 +209,96 @@ internal object InventoryItemResponsibleOrganizationSerializer :
   internal val listSerializer: KSerializer<List<InventoryItem.ResponsibleOrganization>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): InventoryItem.ResponsibleOrganization =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var role: CodeableConcept? = null
-      var organization: Reference? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            role = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          4 ->
-            organization =
-              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else ->
-            throw SerializationException("Unexpected index decoding ResponsibleOrganization: " + i)
-        }
+  override fun deserialize(decoder: Decoder): InventoryItem.ResponsibleOrganization {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var role: CodeableConcept? = null
+    var organization: Reference? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          role =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          organization =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException("Unexpected index decoding ResponsibleOrganization: " + i)
       }
-      InventoryItem.ResponsibleOrganization(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        role =
-          role
-            ?: throw SerializationException(
-              "Missing required property 'role' on InventoryItem.ResponsibleOrganization"
-            ),
-        organization =
-          organization
-            ?: throw SerializationException(
-              "Missing required property 'organization' on InventoryItem.ResponsibleOrganization"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return InventoryItem.ResponsibleOrganization(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      role =
+        role
+          ?: throw SerializationException(
+            "Missing required property 'role' on InventoryItem.ResponsibleOrganization"
+          ),
+      organization =
+        organization
+          ?: throw SerializationException(
+            "Missing required property 'organization' on InventoryItem.ResponsibleOrganization"
+          ),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.ResponsibleOrganization) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.role)
-      encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.organization)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.role)
+    compositeEncoder.encodeSerializableElement(
+      descriptor,
+      4,
+      ReferenceSerializer,
+      value.organization,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -281,78 +316,92 @@ internal object InventoryItemDescriptionSerializer : KSerializer<InventoryItem.D
 
   internal val listSerializer: KSerializer<List<InventoryItem.Description>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): InventoryItem.Description =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var language: KotlinString? = null
-      var _language: Element? = null
-      var description: KotlinString? = null
-      var _description: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> language = decodeStringElement(descriptor, i)
-          4 -> _language = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> description = decodeStringElement(descriptor, i)
-          6 ->
-            _description = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Description: " + i)
-        }
+  override fun deserialize(decoder: Decoder): InventoryItem.Description {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var language: KotlinString? = null
+    var _language: Element? = null
+    var description: KotlinString? = null
+    var _description: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> language = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _language =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> description = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _description =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Description: " + i)
       }
-      InventoryItem.Description(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        language =
-          Enumeration.of(
-            if (language != null) InventoryItem.CommonLanguages.fromCode(language) else null,
-            _language,
-          ),
-        description = R5String.of(description, _description),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return InventoryItem.Description(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      language =
+        Enumeration.of(
+          if (language != null) InventoryItem.CommonLanguages.fromCode(language) else null,
+          _language,
+        ),
+      description = R5String.of(description, _description),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Description) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.language?.value?.code)
-      encodeElementIfNotNull(descriptor, 4, value.language)
-      encodeStringIfNotNull(descriptor, 5, value.description?.value)
-      encodeElementIfNotNull(descriptor, 6, value.description)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.language?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.language)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.description)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -369,87 +418,110 @@ internal object InventoryItemAssociationSerializer : KSerializer<InventoryItem.A
 
   internal val listSerializer: KSerializer<List<InventoryItem.Association>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): InventoryItem.Association =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var associationType: CodeableConcept? = null
-      var relatedItem: Reference? = null
-      var quantity: Ratio? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            associationType =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          4 ->
-            relatedItem =
-              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          5 -> quantity = decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Association: " + i)
-        }
+  override fun deserialize(decoder: Decoder): InventoryItem.Association {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var associationType: CodeableConcept? = null
+    var relatedItem: Reference? = null
+    var quantity: Ratio? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          associationType =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          relatedItem =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        5 ->
+          quantity =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Association: " + i)
       }
-      InventoryItem.Association(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        associationType =
-          associationType
-            ?: throw SerializationException(
-              "Missing required property 'associationType' on InventoryItem.Association"
-            ),
-        relatedItem =
-          relatedItem
-            ?: throw SerializationException(
-              "Missing required property 'relatedItem' on InventoryItem.Association"
-            ),
-        quantity =
-          quantity
-            ?: throw SerializationException(
-              "Missing required property 'quantity' on InventoryItem.Association"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return InventoryItem.Association(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      associationType =
+        associationType
+          ?: throw SerializationException(
+            "Missing required property 'associationType' on InventoryItem.Association"
+          ),
+      relatedItem =
+        relatedItem
+          ?: throw SerializationException(
+            "Missing required property 'relatedItem' on InventoryItem.Association"
+          ),
+      quantity =
+        quantity
+          ?: throw SerializationException(
+            "Missing required property 'quantity' on InventoryItem.Association"
+          ),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Association) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.associationType)
-      encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.relatedItem)
-      encodeSerializableElement(descriptor, 5, RatioSerializer, value.quantity)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableElement(
+      descriptor,
+      3,
+      CodeableConceptSerializer,
+      value.associationType,
+    )
+    compositeEncoder.encodeSerializableElement(
+      descriptor,
+      4,
+      ReferenceSerializer,
+      value.relatedItem,
+    )
+    compositeEncoder.encodeSerializableElement(descriptor, 5, RatioSerializer, value.quantity)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -484,197 +556,290 @@ internal object InventoryItemCharacteristicSerializer : KSerializer<InventoryIte
   internal val listSerializer: KSerializer<List<InventoryItem.Characteristic>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): InventoryItem.Characteristic =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var characteristicType: CodeableConcept? = null
-      var valueString: KotlinString? = null
-      var _valueString: Element? = null
-      var valueInteger: Int? = null
-      var _valueInteger: Element? = null
-      var valueDecimal: FhirDecimal? = null
-      var _valueDecimal: Element? = null
-      var valueBoolean: KotlinBoolean? = null
-      var _valueBoolean: Element? = null
-      var valueUrl: KotlinString? = null
-      var _valueUrl: Element? = null
-      var valueDateTime: KotlinString? = null
-      var _valueDateTime: Element? = null
-      var valueQuantity: Quantity? = null
-      var valueRange: Range? = null
-      var valueRatio: Ratio? = null
-      var valueAnnotation: Annotation? = null
-      var valueAddress: Address? = null
-      var valueDuration: Duration? = null
-      var valueCodeableConcept: CodeableConcept? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            characteristicType =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          4 -> valueString = decodeStringElement(descriptor, i)
-          5 ->
-            _valueString = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          6 -> valueInteger = decodeIntElement(descriptor, i)
-          7 ->
-            _valueInteger =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          8 ->
-            valueDecimal =
-              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-          9 ->
-            _valueDecimal =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          10 -> valueBoolean = decodeBooleanElement(descriptor, i)
-          11 ->
-            _valueBoolean =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          12 -> valueUrl = decodeStringElement(descriptor, i)
-          13 ->
-            _valueUrl = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          14 -> valueDateTime = decodeStringElement(descriptor, i)
-          15 ->
-            _valueDateTime =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          16 ->
-            valueQuantity =
-              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          17 -> valueRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-          18 -> valueRatio = decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-          19 ->
-            valueAnnotation =
-              decodeNullableSerializableElement(descriptor, i, AnnotationSerializer, null)
-          20 ->
-            valueAddress = decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
-          21 ->
-            valueDuration =
-              decodeNullableSerializableElement(descriptor, i, DurationSerializer, null)
-          22 ->
-            valueCodeableConcept =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Characteristic: " + i)
-        }
+  override fun deserialize(decoder: Decoder): InventoryItem.Characteristic {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var characteristicType: CodeableConcept? = null
+    var valueString: KotlinString? = null
+    var _valueString: Element? = null
+    var valueInteger: Int? = null
+    var _valueInteger: Element? = null
+    var valueDecimal: FhirDecimal? = null
+    var _valueDecimal: Element? = null
+    var valueBoolean: KotlinBoolean? = null
+    var _valueBoolean: Element? = null
+    var valueUrl: KotlinString? = null
+    var _valueUrl: Element? = null
+    var valueDateTime: KotlinString? = null
+    var _valueDateTime: Element? = null
+    var valueQuantity: Quantity? = null
+    var valueRange: Range? = null
+    var valueRatio: Ratio? = null
+    var valueAnnotation: Annotation? = null
+    var valueAddress: Address? = null
+    var valueDuration: Duration? = null
+    var valueCodeableConcept: CodeableConcept? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          characteristicType =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 -> valueString = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _valueString =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> valueInteger = compositeDecoder.decodeIntElement(descriptor, i)
+        7 ->
+          _valueInteger =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        8 ->
+          valueDecimal =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
+        9 ->
+          _valueDecimal =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        10 -> valueBoolean = compositeDecoder.decodeBooleanElement(descriptor, i)
+        11 ->
+          _valueBoolean =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        12 -> valueUrl = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          _valueUrl =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        14 -> valueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        15 ->
+          _valueDateTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        16 ->
+          valueQuantity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        17 ->
+          valueRange =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        18 ->
+          valueRatio =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+        19 ->
+          valueAnnotation =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AnnotationSerializer,
+              null,
+            )
+        20 ->
+          valueAddress =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AddressSerializer,
+              null,
+            )
+        21 ->
+          valueDuration =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              DurationSerializer,
+              null,
+            )
+        22 ->
+          valueCodeableConcept =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Characteristic: " + i)
       }
-      InventoryItem.Characteristic(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        characteristicType =
-          characteristicType
-            ?: throw SerializationException(
-              "Missing required property 'characteristicType' on InventoryItem.Characteristic"
-            ),
-        `value` =
-          InventoryItem.Characteristic.Value.from(
-            R5String.of(valueString, _valueString),
-            Integer.of(valueInteger, _valueInteger),
-            Decimal.of(valueDecimal, _valueDecimal),
-            R5Boolean.of(valueBoolean, _valueBoolean),
-            Url.of(valueUrl, _valueUrl),
-            DateTime.of(
-              if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
-              _valueDateTime,
-            ),
-            valueQuantity,
-            valueRange,
-            valueRatio,
-            valueAnnotation,
-            valueAddress,
-            valueDuration,
-            valueCodeableConcept,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'value' on InventoryItem.Characteristic"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return InventoryItem.Characteristic(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      characteristicType =
+        characteristicType
+          ?: throw SerializationException(
+            "Missing required property 'characteristicType' on InventoryItem.Characteristic"
+          ),
+      `value` =
+        InventoryItem.Characteristic.Value.from(
+          R5String.of(valueString, _valueString),
+          Integer.of(valueInteger, _valueInteger),
+          Decimal.of(valueDecimal, _valueDecimal),
+          R5Boolean.of(valueBoolean, _valueBoolean),
+          Url.of(valueUrl, _valueUrl),
+          DateTime.of(
+            if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
+            _valueDateTime,
+          ),
+          valueQuantity,
+          valueRange,
+          valueRatio,
+          valueAnnotation,
+          valueAddress,
+          valueDuration,
+          valueCodeableConcept,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on InventoryItem.Characteristic"
+          ),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Characteristic) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableElement(
+      descriptor,
+      3,
+      CodeableConceptSerializer,
+      value.characteristicType,
+    )
+    when (val choice = value.`value`) {
+      is InventoryItem.Characteristic.Value.String -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 4, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 5, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.Integer -> {
+        compositeEncoder.encodeIntIfNotNull(descriptor, 6, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 7, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.Decimal -> {
+        compositeEncoder.encodeSerializableIfNotNull(
           descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
+          8,
+          FhirDecimalSerializer,
+          choice.value.value,
         )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
+        compositeEncoder.encodeElementIfNotNull(descriptor, 9, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.Boolean -> {
+        compositeEncoder.encodeBooleanIfNotNull(descriptor, 10, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 11, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.Url -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 12, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 13, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.DateTime -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 14, choice.value.value?.toString())
+        compositeEncoder.encodeElementIfNotNull(descriptor, 15, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.Quantity -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 16, QuantitySerializer, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.Range -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 17, RangeSerializer, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.Ratio -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 18, RatioSerializer, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.Annotation -> {
+        compositeEncoder.encodeSerializableElement(
           descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
+          19,
+          AnnotationSerializer,
+          choice.value,
         )
-      encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.characteristicType)
-      when (val choice = value.`value`) {
-        is InventoryItem.Characteristic.Value.String -> {
-          encodeStringIfNotNull(descriptor, 4, choice.value.value)
-          encodeElementIfNotNull(descriptor, 5, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Integer -> {
-          encodeIntIfNotNull(descriptor, 6, choice.value.value)
-          encodeElementIfNotNull(descriptor, 7, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Decimal -> {
-          encodeSerializableIfNotNull(descriptor, 8, FhirDecimalSerializer, choice.value.value)
-          encodeElementIfNotNull(descriptor, 9, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Boolean -> {
-          encodeBooleanIfNotNull(descriptor, 10, choice.value.value)
-          encodeElementIfNotNull(descriptor, 11, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Url -> {
-          encodeStringIfNotNull(descriptor, 12, choice.value.value)
-          encodeElementIfNotNull(descriptor, 13, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.DateTime -> {
-          encodeStringIfNotNull(descriptor, 14, choice.value.value?.toString())
-          encodeElementIfNotNull(descriptor, 15, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Quantity -> {
-          encodeSerializableElement(descriptor, 16, QuantitySerializer, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Range -> {
-          encodeSerializableElement(descriptor, 17, RangeSerializer, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Ratio -> {
-          encodeSerializableElement(descriptor, 18, RatioSerializer, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Annotation -> {
-          encodeSerializableElement(descriptor, 19, AnnotationSerializer, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Address -> {
-          encodeSerializableElement(descriptor, 20, AddressSerializer, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.Duration -> {
-          encodeSerializableElement(descriptor, 21, DurationSerializer, choice.value)
-        }
-        is InventoryItem.Characteristic.Value.CodeableConcept -> {
-          encodeSerializableElement(descriptor, 22, CodeableConceptSerializer, choice.value)
-        }
+      }
+      is InventoryItem.Characteristic.Value.Address -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 20, AddressSerializer, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.Duration -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 21, DurationSerializer, choice.value)
+      }
+      is InventoryItem.Characteristic.Value.CodeableConcept -> {
+        compositeEncoder.encodeSerializableElement(
+          descriptor,
+          22,
+          CodeableConceptSerializer,
+          choice.value,
+        )
       }
     }
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -695,101 +860,127 @@ internal object InventoryItemInstanceSerializer : KSerializer<InventoryItem.Inst
 
   internal val listSerializer: KSerializer<List<InventoryItem.Instance>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): InventoryItem.Instance =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var identifier: List<Identifier>? = null
-      var lotNumber: KotlinString? = null
-      var _lotNumber: Element? = null
-      var expiry: KotlinString? = null
-      var _expiry: Element? = null
-      var subject: Reference? = null
-      var location: Reference? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            identifier =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                IdentifierSerializer.listSerializer,
-                null,
-              )
-          4 -> lotNumber = decodeStringElement(descriptor, i)
-          5 ->
-            _lotNumber = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          6 -> expiry = decodeStringElement(descriptor, i)
-          7 -> _expiry = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          8 -> subject = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          9 ->
-            location = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Instance: " + i)
-        }
+  override fun deserialize(decoder: Decoder): InventoryItem.Instance {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var identifier: List<Identifier>? = null
+    var lotNumber: KotlinString? = null
+    var _lotNumber: Element? = null
+    var expiry: KotlinString? = null
+    var _expiry: Element? = null
+    var subject: Reference? = null
+    var location: Reference? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          identifier =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
+        4 -> lotNumber = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _lotNumber =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> expiry = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          _expiry =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        8 ->
+          subject =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        9 ->
+          location =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Instance: " + i)
       }
-      InventoryItem.Instance(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        identifier = identifier ?: listOf(),
-        lotNumber = R5String.of(lotNumber, _lotNumber),
-        expiry =
-          DateTime.of(if (expiry != null) FhirDateTime.fromString(expiry) else null, _expiry),
-        subject = subject,
-        location = location,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return InventoryItem.Instance(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      identifier = identifier ?: listOf(),
+      lotNumber = R5String.of(lotNumber, _lotNumber),
+      expiry = DateTime.of(if (expiry != null) FhirDateTime.fromString(expiry) else null, _expiry),
+      subject = subject,
+      location = location,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem.Instance) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      if (value.identifier.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          3,
-          IdentifierSerializer.listSerializer,
-          value.identifier,
-        )
-      encodeStringIfNotNull(descriptor, 4, value.lotNumber?.value)
-      encodeElementIfNotNull(descriptor, 5, value.lotNumber)
-      encodeStringIfNotNull(descriptor, 6, value.expiry?.value?.toString())
-      encodeElementIfNotNull(descriptor, 7, value.expiry)
-      encodeSerializableIfNotNull(descriptor, 8, ReferenceSerializer, value.subject)
-      encodeSerializableIfNotNull(descriptor, 9, ReferenceSerializer, value.location)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    if (value.identifier.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        3,
+        IdentifierSerializer.listSerializer,
+        value.identifier,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.lotNumber?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.lotNumber)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.expiry?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.expiry)
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 8, ReferenceSerializer, value.subject)
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 9, ReferenceSerializer, value.location)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -834,7 +1025,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): InventoryItem {
@@ -864,25 +1055,43 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
     var instance: InventoryItem.Instance? = null
     var productReference: Reference? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -890,7 +1099,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -898,7 +1107,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -906,19 +1115,24 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = decoder.decodeStringElement(descriptor, i)
+        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         12 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         13 ->
           category =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -926,7 +1140,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         14 ->
           code =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -934,7 +1148,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         15 ->
           name =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               InventoryItemNameSerializer.listSerializer,
@@ -942,7 +1156,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         16 ->
           responsibleOrganization =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               InventoryItemResponsibleOrganizationSerializer.listSerializer,
@@ -950,7 +1164,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         17 ->
           description =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               InventoryItemDescriptionSerializer,
@@ -958,7 +1172,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         18 ->
           inventoryStatus =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -966,7 +1180,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         19 ->
           baseUnit =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -974,10 +1188,15 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         20 ->
           netContent =
-            decoder.decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
         21 ->
           association =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               InventoryItemAssociationSerializer.listSerializer,
@@ -985,7 +1204,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         22 ->
           characteristic =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               InventoryItemCharacteristicSerializer.listSerializer,
@@ -993,7 +1212,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         23 ->
           instance =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               InventoryItemInstanceSerializer,
@@ -1001,7 +1220,12 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
             )
         24 ->
           productReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding InventoryItem: " + i)
       }
     }
@@ -1036,132 +1260,140 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: InventoryItem,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
     if (value.category.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         13 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.category,
       )
     if (value.code.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         14 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.code,
       )
     if (value.name.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         15 + descriptorOffset,
         InventoryItemNameSerializer.listSerializer,
         value.name,
       )
     if (value.responsibleOrganization.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
         InventoryItemResponsibleOrganizationSerializer.listSerializer,
         value.responsibleOrganization,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       17 + descriptorOffset,
       InventoryItemDescriptionSerializer,
       value.description,
     )
     if (value.inventoryStatus.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         18 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.inventoryStatus,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       19 + descriptorOffset,
       CodeableConceptSerializer,
       value.baseUnit,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       20 + descriptorOffset,
       QuantitySerializer,
       value.netContent,
     )
     if (value.association.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         21 + descriptorOffset,
         InventoryItemAssociationSerializer.listSerializer,
         value.association,
       )
     if (value.characteristic.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         22 + descriptorOffset,
         InventoryItemCharacteristicSerializer.listSerializer,
         value.characteristic,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       23 + descriptorOffset,
       InventoryItemInstanceSerializer,
       value.instance,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       24 + descriptorOffset,
       ReferenceSerializer,

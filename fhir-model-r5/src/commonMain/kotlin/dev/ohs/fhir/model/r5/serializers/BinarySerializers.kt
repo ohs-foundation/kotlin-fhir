@@ -60,7 +60,7 @@ internal object BinarySerializer : FhirResourceSerializer<Binary> {
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): Binary {
@@ -76,30 +76,58 @@ internal object BinarySerializer : FhirResourceSerializer<Binary> {
     var `data`: String? = null
     var _data: Element? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        6 -> contentType = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> contentType = compositeDecoder.decodeStringElement(descriptor, i)
         7 ->
           _contentType =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         8 ->
           securityContext =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        9 -> `data` = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        9 -> `data` = compositeDecoder.decodeStringElement(descriptor, i)
         10 ->
-          _data = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          _data =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding Binary: " + i)
       }
     }
@@ -117,31 +145,39 @@ internal object BinarySerializer : FhirResourceSerializer<Binary> {
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: Binary,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeStringIfNotNull(descriptor, 6 + descriptorOffset, value.contentType.value)
-    encoder.encodeElementIfNotNull(descriptor, 7 + descriptorOffset, value.contentType)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      value.contentType.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7 + descriptorOffset, value.contentType)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       8 + descriptorOffset,
       ReferenceSerializer,
       value.securityContext,
     )
-    encoder.encodeStringIfNotNull(descriptor, 9 + descriptorOffset, value.`data`?.value)
-    encoder.encodeElementIfNotNull(descriptor, 10 + descriptorOffset, value.`data`)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9 + descriptorOffset, value.`data`?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10 + descriptorOffset, value.`data`)
   }
 }

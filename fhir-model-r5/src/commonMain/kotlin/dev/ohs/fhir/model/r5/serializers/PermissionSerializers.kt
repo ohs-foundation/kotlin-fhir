@@ -58,8 +58,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object PermissionJustificationSerializer : KSerializer<Permission.Justification> {
   override val descriptor: SerialDescriptor =
@@ -73,88 +71,94 @@ internal object PermissionJustificationSerializer : KSerializer<Permission.Justi
 
   internal val listSerializer: KSerializer<List<Permission.Justification>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Permission.Justification =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var basis: List<CodeableConcept>? = null
-      var evidence: List<Reference>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            basis =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          4 ->
-            evidence =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ReferenceSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Justification: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Permission.Justification {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var basis: List<CodeableConcept>? = null
+    var evidence: List<Reference>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          basis =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        4 ->
+          evidence =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Justification: " + i)
       }
-      Permission.Justification(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        basis = basis ?: listOf(),
-        evidence = evidence ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Permission.Justification(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      basis = basis ?: listOf(),
+      evidence = evidence ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Justification) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      if (value.basis.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          3,
-          CodeableConceptSerializer.listSerializer,
-          value.basis,
-        )
-      if (value.evidence.isNotEmpty())
-        encodeSerializableElement(descriptor, 4, ReferenceSerializer.listSerializer, value.evidence)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    if (value.basis.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        3,
+        CodeableConceptSerializer.listSerializer,
+        value.basis,
+      )
+    if (value.evidence.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        ReferenceSerializer.listSerializer,
+        value.evidence,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -173,121 +177,129 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
 
   internal val listSerializer: KSerializer<List<Permission.Rule>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Permission.Rule =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var type: String? = null
-      var _type: Element? = null
-      var `data`: List<Permission.Rule.Data>? = null
-      var activity: List<Permission.Rule.Activity>? = null
-      var limit: List<CodeableConcept>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> type = decodeStringElement(descriptor, i)
-          4 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            `data` =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                PermissionRuleDataSerializer.listSerializer,
-                null,
-              )
-          6 ->
-            activity =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                PermissionRuleActivitySerializer.listSerializer,
-                null,
-              )
-          7 ->
-            limit =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Rule: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Permission.Rule {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var type: String? = null
+    var _type: Element? = null
+    var `data`: List<Permission.Rule.Data>? = null
+    var activity: List<Permission.Rule.Activity>? = null
+    var limit: List<CodeableConcept>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          `data` =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PermissionRuleDataSerializer.listSerializer,
+              null,
+            )
+        6 ->
+          activity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PermissionRuleActivitySerializer.listSerializer,
+              null,
+            )
+        7 ->
+          limit =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Rule: " + i)
       }
-      Permission.Rule(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        type =
-          Enumeration.of(
-            if (type != null) Permission.ConsentProvisionType.fromCode(type) else null,
-            _type,
-          ),
-        `data` = `data` ?: listOf(),
-        activity = activity ?: listOf(),
-        limit = limit ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Permission.Rule(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      type =
+        Enumeration.of(
+          if (type != null) Permission.ConsentProvisionType.fromCode(type) else null,
+          _type,
+        ),
+      `data` = `data` ?: listOf(),
+      activity = activity ?: listOf(),
+      limit = limit ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Rule) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.type?.value?.code)
-      encodeElementIfNotNull(descriptor, 4, value.type)
-      if (value.`data`.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          5,
-          PermissionRuleDataSerializer.listSerializer,
-          value.`data`,
-        )
-      if (value.activity.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          6,
-          PermissionRuleActivitySerializer.listSerializer,
-          value.activity,
-        )
-      if (value.limit.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          7,
-          CodeableConceptSerializer.listSerializer,
-          value.limit,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.type?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.type)
+    if (value.`data`.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        5,
+        PermissionRuleDataSerializer.listSerializer,
+        value.`data`,
+      )
+    if (value.activity.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        6,
+        PermissionRuleActivitySerializer.listSerializer,
+        value.activity,
+      )
+    if (value.limit.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        7,
+        CodeableConceptSerializer.listSerializer,
+        value.limit,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -305,106 +317,127 @@ internal object PermissionRuleDataSerializer : KSerializer<Permission.Rule.Data>
 
   internal val listSerializer: KSerializer<List<Permission.Rule.Data>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Permission.Rule.Data =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var resource: List<Permission.Rule.Data.Resource>? = null
-      var security: List<Coding>? = null
-      var period: List<Period>? = null
-      var expression: Expression? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            resource =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                PermissionRuleDataResourceSerializer.listSerializer,
-                null,
-              )
-          4 ->
-            security =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodingSerializer.listSerializer,
-                null,
-              )
-          5 ->
-            period =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                PeriodSerializer.listSerializer,
-                null,
-              )
-          6 ->
-            expression =
-              decodeNullableSerializableElement(descriptor, i, ExpressionSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Data: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Permission.Rule.Data {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var resource: List<Permission.Rule.Data.Resource>? = null
+    var security: List<Coding>? = null
+    var period: List<Period>? = null
+    var expression: Expression? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          resource =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PermissionRuleDataResourceSerializer.listSerializer,
+              null,
+            )
+        4 ->
+          security =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
+        5 ->
+          period =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer.listSerializer,
+              null,
+            )
+        6 ->
+          expression =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExpressionSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Data: " + i)
       }
-      Permission.Rule.Data(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        resource = resource ?: listOf(),
-        security = security ?: listOf(),
-        period = period ?: listOf(),
-        expression = expression,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Permission.Rule.Data(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      resource = resource ?: listOf(),
+      security = security ?: listOf(),
+      period = period ?: listOf(),
+      expression = expression,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Rule.Data) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      if (value.resource.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          3,
-          PermissionRuleDataResourceSerializer.listSerializer,
-          value.resource,
-        )
-      if (value.security.isNotEmpty())
-        encodeSerializableElement(descriptor, 4, CodingSerializer.listSerializer, value.security)
-      if (value.period.isNotEmpty())
-        encodeSerializableElement(descriptor, 5, PeriodSerializer.listSerializer, value.period)
-      encodeSerializableIfNotNull(descriptor, 6, ExpressionSerializer, value.expression)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    if (value.resource.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        3,
+        PermissionRuleDataResourceSerializer.listSerializer,
+        value.resource,
+      )
+    if (value.security.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        CodingSerializer.listSerializer,
+        value.security,
+      )
+    if (value.period.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        5,
+        PeriodSerializer.listSerializer,
+        value.period,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6,
+      ExpressionSerializer,
+      value.expression,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -422,82 +455,96 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
   internal val listSerializer: KSerializer<List<Permission.Rule.Data.Resource>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Permission.Rule.Data.Resource =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var meaning: String? = null
-      var _meaning: Element? = null
-      var reference: Reference? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> meaning = decodeStringElement(descriptor, i)
-          4 -> _meaning = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            reference = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Resource: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Permission.Rule.Data.Resource {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var meaning: String? = null
+    var _meaning: Element? = null
+    var reference: Reference? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> meaning = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _meaning =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          reference =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Resource: " + i)
       }
-      Permission.Rule.Data.Resource(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        meaning =
-          Enumeration.of(
-            if (meaning != null) Permission.ConsentDataMeaning.fromCode(meaning) else null,
-            _meaning,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'meaning' on Permission.Rule.Data.Resource"
-            ),
-        reference =
-          reference
-            ?: throw SerializationException(
-              "Missing required property 'reference' on Permission.Rule.Data.Resource"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Permission.Rule.Data.Resource(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      meaning =
+        Enumeration.of(
+          if (meaning != null) Permission.ConsentDataMeaning.fromCode(meaning) else null,
+          _meaning,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'meaning' on Permission.Rule.Data.Resource"
+          ),
+      reference =
+        reference
+          ?: throw SerializationException(
+            "Missing required property 'reference' on Permission.Rule.Data.Resource"
+          ),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Rule.Data.Resource) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.meaning.value?.code)
-      encodeElementIfNotNull(descriptor, 4, value.meaning)
-      encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.reference)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.meaning.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.meaning)
+    compositeEncoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.reference)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -514,105 +561,111 @@ internal object PermissionRuleActivitySerializer : KSerializer<Permission.Rule.A
 
   internal val listSerializer: KSerializer<List<Permission.Rule.Activity>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Permission.Rule.Activity =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var actor: List<Reference>? = null
-      var action: List<CodeableConcept>? = null
-      var purpose: List<CodeableConcept>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            actor =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ReferenceSerializer.listSerializer,
-                null,
-              )
-          4 ->
-            action =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          5 ->
-            purpose =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Activity: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Permission.Rule.Activity {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var actor: List<Reference>? = null
+    var action: List<CodeableConcept>? = null
+    var purpose: List<CodeableConcept>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          actor =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
+        4 ->
+          action =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        5 ->
+          purpose =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Activity: " + i)
       }
-      Permission.Rule.Activity(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        actor = actor ?: listOf(),
-        action = action ?: listOf(),
-        purpose = purpose ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Permission.Rule.Activity(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      actor = actor ?: listOf(),
+      action = action ?: listOf(),
+      purpose = purpose ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Permission.Rule.Activity) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      if (value.actor.isNotEmpty())
-        encodeSerializableElement(descriptor, 3, ReferenceSerializer.listSerializer, value.actor)
-      if (value.action.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          4,
-          CodeableConceptSerializer.listSerializer,
-          value.action,
-        )
-      if (value.purpose.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          5,
-          CodeableConceptSerializer.listSerializer,
-          value.purpose,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    if (value.actor.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        3,
+        ReferenceSerializer.listSerializer,
+        value.actor,
+      )
+    if (value.action.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        CodeableConceptSerializer.listSerializer,
+        value.action,
+      )
+    if (value.purpose.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        5,
+        CodeableConceptSerializer.listSerializer,
+        value.purpose,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -646,7 +699,7 @@ internal object PermissionSerializer : FhirResourceSerializer<Permission> {
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): Permission {
@@ -671,25 +724,43 @@ internal object PermissionSerializer : FhirResourceSerializer<Permission> {
     var _combining: Element? = null
     var rule: List<Permission.Rule>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -697,7 +768,7 @@ internal object PermissionSerializer : FhirResourceSerializer<Permission> {
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -705,22 +776,32 @@ internal object PermissionSerializer : FhirResourceSerializer<Permission> {
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
               null,
             )
-        10 -> status = decoder.decodeStringElement(descriptor, i)
+        10 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         11 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         12 ->
           asserter =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         13 ->
           date =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               stringNullableListSerializer,
@@ -728,7 +809,7 @@ internal object PermissionSerializer : FhirResourceSerializer<Permission> {
             )
         14 ->
           _date =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ElementSerializer.nullableListSerializer,
@@ -736,22 +817,32 @@ internal object PermissionSerializer : FhirResourceSerializer<Permission> {
             )
         15 ->
           validity =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
         16 ->
           justification =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               PermissionJustificationSerializer,
               null,
             )
-        17 -> combining = decoder.decodeStringElement(descriptor, i)
+        17 -> combining = compositeDecoder.decodeStringElement(descriptor, i)
         18 ->
           _combining =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         19 ->
           rule =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               PermissionRuleSerializer.listSerializer,
@@ -797,82 +888,94 @@ internal object PermissionSerializer : FhirResourceSerializer<Permission> {
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: Permission,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.status)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      10 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.status)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       12 + descriptorOffset,
       ReferenceSerializer,
       value.asserter,
     )
     if (value.date.isNotEmpty()) {
-      encoder.encodeNullableListIfNotNull(
+      compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
         stringNullableListSerializer,
         value.date.map { it.value?.toString() },
       )
-      encoder.encodePrimitiveElementList(descriptor, 14 + descriptorOffset, value.date)
+      compositeEncoder.encodePrimitiveElementList(descriptor, 14 + descriptorOffset, value.date)
     }
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       15 + descriptorOffset,
       PeriodSerializer,
       value.validity,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       16 + descriptorOffset,
       PermissionJustificationSerializer,
       value.justification,
     )
-    encoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.combining.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.combining)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      value.combining.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.combining)
     if (value.rule.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         19 + descriptorOffset,
         PermissionRuleSerializer.listSerializer,

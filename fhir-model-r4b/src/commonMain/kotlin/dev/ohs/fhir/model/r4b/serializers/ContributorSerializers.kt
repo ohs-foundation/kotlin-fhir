@@ -43,8 +43,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object ContributorSerializer : KSerializer<Contributor> {
   override val descriptor: SerialDescriptor =
@@ -66,78 +64,93 @@ internal object ContributorSerializer : KSerializer<Contributor> {
 
   internal val listSerializer: KSerializer<List<Contributor>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Contributor =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var type: KotlinString? = null
-      var _type: Element? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var contact: List<ContactDetail>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 -> type = decodeStringElement(descriptor, i)
-          3 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          4 -> name = decodeStringElement(descriptor, i)
-          5 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          6 ->
-            contact =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ContactDetailSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Contributor: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Contributor {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var type: KotlinString? = null
+    var _type: Element? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var contact: List<ContactDetail>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          _type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 ->
+          contact =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ContactDetailSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Contributor: " + i)
       }
-      Contributor(
-        id = id,
-        extension = extension ?: listOf(),
-        type =
-          Enumeration.of(
-            if (type != null) Contributor.ContributorType.fromCode(type) else null,
-            _type,
-          ) ?: throw SerializationException("Missing required property 'type' on Contributor"),
-        name =
-          R4bString.of(name, _name)
-            ?: throw SerializationException("Missing required property 'name' on Contributor"),
-        contact = contact ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Contributor(
+      id = id,
+      extension = extension ?: listOf(),
+      type =
+        Enumeration.of(
+          if (type != null) Contributor.ContributorType.fromCode(type) else null,
+          _type,
+        ) ?: throw SerializationException("Missing required property 'type' on Contributor"),
+      name =
+        R4bString.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on Contributor"),
+      contact = contact ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Contributor) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
-      encodeElementIfNotNull(descriptor, 3, value.type)
-      encodeStringIfNotNull(descriptor, 4, value.name.value)
-      encodeElementIfNotNull(descriptor, 5, value.name)
-      if (value.contact.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          6,
-          ContactDetailSerializer.listSerializer,
-          value.contact,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.type)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.name.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.name)
+    if (value.contact.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        6,
+        ContactDetailSerializer.listSerializer,
+        value.contact,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }

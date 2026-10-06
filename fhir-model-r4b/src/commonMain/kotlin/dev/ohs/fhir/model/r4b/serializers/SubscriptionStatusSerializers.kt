@@ -57,8 +57,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object SubscriptionStatusNotificationEventSerializer :
   KSerializer<SubscriptionStatus.NotificationEvent> {
@@ -78,104 +76,121 @@ internal object SubscriptionStatusNotificationEventSerializer :
   internal val listSerializer: KSerializer<List<SubscriptionStatus.NotificationEvent>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): SubscriptionStatus.NotificationEvent =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var eventNumber: KotlinString? = null
-      var _eventNumber: Element? = null
-      var timestamp: KotlinString? = null
-      var _timestamp: Element? = null
-      var focus: Reference? = null
-      var additionalContext: List<Reference>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> eventNumber = decodeStringElement(descriptor, i)
-          4 ->
-            _eventNumber = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> timestamp = decodeStringElement(descriptor, i)
-          6 ->
-            _timestamp = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> focus = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          8 ->
-            additionalContext =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ReferenceSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding NotificationEvent: " + i)
-        }
+  override fun deserialize(decoder: Decoder): SubscriptionStatus.NotificationEvent {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var eventNumber: KotlinString? = null
+    var _eventNumber: Element? = null
+    var timestamp: KotlinString? = null
+    var _timestamp: Element? = null
+    var focus: Reference? = null
+    var additionalContext: List<Reference>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> eventNumber = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _eventNumber =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> timestamp = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _timestamp =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          focus =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        8 ->
+          additionalContext =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding NotificationEvent: " + i)
       }
-      SubscriptionStatus.NotificationEvent(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        eventNumber =
-          R4bString.of(eventNumber, _eventNumber)
-            ?: throw SerializationException(
-              "Missing required property 'eventNumber' on SubscriptionStatus.NotificationEvent"
-            ),
-        timestamp =
-          Instant.of(
-            if (timestamp != null) FhirDateTime.fromString(timestamp) else null,
-            _timestamp,
-          ),
-        focus = focus,
-        additionalContext = additionalContext ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return SubscriptionStatus.NotificationEvent(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      eventNumber =
+        R4bString.of(eventNumber, _eventNumber)
+          ?: throw SerializationException(
+            "Missing required property 'eventNumber' on SubscriptionStatus.NotificationEvent"
+          ),
+      timestamp =
+        Instant.of(if (timestamp != null) FhirDateTime.fromString(timestamp) else null, _timestamp),
+      focus = focus,
+      additionalContext = additionalContext ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionStatus.NotificationEvent) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.eventNumber.value)
-      encodeElementIfNotNull(descriptor, 4, value.eventNumber)
-      encodeStringIfNotNull(descriptor, 5, value.timestamp?.value?.toString())
-      encodeElementIfNotNull(descriptor, 6, value.timestamp)
-      encodeSerializableIfNotNull(descriptor, 7, ReferenceSerializer, value.focus)
-      if (value.additionalContext.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          8,
-          ReferenceSerializer.listSerializer,
-          value.additionalContext,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.eventNumber.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.eventNumber)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.timestamp?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.timestamp)
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 7, ReferenceSerializer, value.focus)
+    if (value.additionalContext.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        8,
+        ReferenceSerializer.listSerializer,
+        value.additionalContext,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -213,7 +228,7 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): SubscriptionStatus {
@@ -239,25 +254,43 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
     var _topic: Element? = null
     var error: List<CodeableConcept>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -265,7 +298,7 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -273,26 +306,42 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
               null,
             )
-        10 -> status = decoder.decodeStringElement(descriptor, i)
+        10 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         11 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        12 -> type = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        12 -> type = compositeDecoder.decodeStringElement(descriptor, i)
         13 ->
-          _type = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        14 -> eventsSinceSubscriptionStart = decoder.decodeStringElement(descriptor, i)
+          _type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        14 -> eventsSinceSubscriptionStart = compositeDecoder.decodeStringElement(descriptor, i)
         15 ->
           _eventsSinceSubscriptionStart =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         16 ->
           notificationEvent =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               SubscriptionStatusNotificationEventSerializer.listSerializer,
@@ -300,13 +349,24 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
             )
         17 ->
           subscription =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        18 -> topic = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        18 -> topic = compositeDecoder.decodeStringElement(descriptor, i)
         19 ->
-          _topic = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          _topic =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         20 ->
           error =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -349,80 +409,92 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: SubscriptionStatus,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.status?.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.status)
-    encoder.encodeStringIfNotNull(descriptor, 12 + descriptorOffset, value.type.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.type)
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      10 + descriptorOffset,
+      value.status?.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.status)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      12 + descriptorOffset,
+      value.type.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.type)
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       14 + descriptorOffset,
       value.eventsSinceSubscriptionStart?.value,
     )
-    encoder.encodeElementIfNotNull(
+    compositeEncoder.encodeElementIfNotNull(
       descriptor,
       15 + descriptorOffset,
       value.eventsSinceSubscriptionStart,
     )
     if (value.notificationEvent.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         16 + descriptorOffset,
         SubscriptionStatusNotificationEventSerializer.listSerializer,
         value.notificationEvent,
       )
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       17 + descriptorOffset,
       ReferenceSerializer,
       value.subscription,
     )
-    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.topic?.value)
-    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.topic)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.topic?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.topic)
     if (value.error.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         20 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,

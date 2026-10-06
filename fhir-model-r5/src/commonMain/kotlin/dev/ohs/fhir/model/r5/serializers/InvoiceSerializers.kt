@@ -65,8 +65,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object InvoiceParticipantSerializer : KSerializer<Invoice.Participant> {
   override val descriptor: SerialDescriptor =
@@ -80,72 +78,91 @@ internal object InvoiceParticipantSerializer : KSerializer<Invoice.Participant> 
 
   internal val listSerializer: KSerializer<List<Invoice.Participant>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Invoice.Participant =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var role: CodeableConcept? = null
-      var actor: Reference? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            role = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          4 -> actor = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Participant: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Invoice.Participant {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var role: CodeableConcept? = null
+    var actor: Reference? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          role =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          actor =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Participant: " + i)
       }
-      Invoice.Participant(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        role = role,
-        actor =
-          actor
-            ?: throw SerializationException(
-              "Missing required property 'actor' on Invoice.Participant"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Invoice.Participant(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      role = role,
+      actor =
+        actor
+          ?: throw SerializationException(
+            "Missing required property 'actor' on Invoice.Participant"
+          ),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Invoice.Participant) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.role)
-      encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.actor)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      CodeableConceptSerializer,
+      value.role,
+    )
+    compositeEncoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.actor)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -167,132 +184,165 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
 
   internal val listSerializer: KSerializer<List<Invoice.LineItem>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Invoice.LineItem =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var sequence: Int? = null
-      var _sequence: Element? = null
-      var servicedDate: KotlinString? = null
-      var _servicedDate: Element? = null
-      var servicedPeriod: Period? = null
-      var chargeItemReference: Reference? = null
-      var chargeItemCodeableConcept: CodeableConcept? = null
-      var priceComponent: List<MonetaryComponent>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> sequence = decodeIntElement(descriptor, i)
-          4 -> _sequence = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> servicedDate = decodeStringElement(descriptor, i)
-          6 ->
-            _servicedDate =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 ->
-            servicedPeriod =
-              decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-          8 ->
-            chargeItemReference =
-              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          9 ->
-            chargeItemCodeableConcept =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          10 ->
-            priceComponent =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                MonetaryComponentSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding LineItem: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Invoice.LineItem {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var servicedDate: KotlinString? = null
+    var _servicedDate: Element? = null
+    var servicedPeriod: Period? = null
+    var chargeItemReference: Reference? = null
+    var chargeItemCodeableConcept: CodeableConcept? = null
+    var priceComponent: List<MonetaryComponent>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> sequence = compositeDecoder.decodeIntElement(descriptor, i)
+        4 ->
+          _sequence =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> servicedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _servicedDate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          servicedPeriod =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
+        8 ->
+          chargeItemReference =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        9 ->
+          chargeItemCodeableConcept =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        10 ->
+          priceComponent =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              MonetaryComponentSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding LineItem: " + i)
       }
-      Invoice.LineItem(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        sequence = PositiveInt.of(sequence, _sequence),
-        serviced =
-          Invoice.LineItem.Serviced.from(
-            Date.of(
-              if (servicedDate != null) FhirDate.fromString(servicedDate) else null,
-              _servicedDate,
-            ),
-            servicedPeriod,
-          ),
-        chargeItem =
-          Invoice.LineItem.ChargeItem.from(chargeItemReference, chargeItemCodeableConcept)
-            ?: throw SerializationException(
-              "Missing required property 'chargeItem' on Invoice.LineItem"
-            ),
-        priceComponent = priceComponent ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Invoice.LineItem(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = PositiveInt.of(sequence, _sequence),
+      serviced =
+        Invoice.LineItem.Serviced.from(
+          Date.of(
+            if (servicedDate != null) FhirDate.fromString(servicedDate) else null,
+            _servicedDate,
+          ),
+          servicedPeriod,
+        ),
+      chargeItem =
+        Invoice.LineItem.ChargeItem.from(chargeItemReference, chargeItemCodeableConcept)
+          ?: throw SerializationException(
+            "Missing required property 'chargeItem' on Invoice.LineItem"
+          ),
+      priceComponent = priceComponent ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Invoice.LineItem) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeIntIfNotNull(descriptor, 3, value.sequence?.value)
-      encodeElementIfNotNull(descriptor, 4, value.sequence)
-      when (val choice = value.serviced) {
-        null -> {}
-        is Invoice.LineItem.Serviced.Date -> {
-          encodeStringIfNotNull(descriptor, 5, choice.value.value?.toString())
-          encodeElementIfNotNull(descriptor, 6, choice.value)
-        }
-        is Invoice.LineItem.Serviced.Period -> {
-          encodeSerializableElement(descriptor, 7, PeriodSerializer, choice.value)
-        }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
+    when (val choice = value.serviced) {
+      null -> {}
+      is Invoice.LineItem.Serviced.Date -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 5, choice.value.value?.toString())
+        compositeEncoder.encodeElementIfNotNull(descriptor, 6, choice.value)
       }
-      when (val choice = value.chargeItem) {
-        is Invoice.LineItem.ChargeItem.Reference -> {
-          encodeSerializableElement(descriptor, 8, ReferenceSerializer, choice.value)
-        }
-        is Invoice.LineItem.ChargeItem.CodeableConcept -> {
-          encodeSerializableElement(descriptor, 9, CodeableConceptSerializer, choice.value)
-        }
+      is Invoice.LineItem.Serviced.Period -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 7, PeriodSerializer, choice.value)
       }
-      if (value.priceComponent.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          10,
-          MonetaryComponentSerializer.listSerializer,
-          value.priceComponent,
-        )
     }
+    when (val choice = value.chargeItem) {
+      is Invoice.LineItem.ChargeItem.Reference -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 8, ReferenceSerializer, choice.value)
+      }
+      is Invoice.LineItem.ChargeItem.CodeableConcept -> {
+        compositeEncoder.encodeSerializableElement(
+          descriptor,
+          9,
+          CodeableConceptSerializer,
+          choice.value,
+        )
+      }
+    }
+    if (value.priceComponent.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        10,
+        MonetaryComponentSerializer.listSerializer,
+        value.priceComponent,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -341,7 +391,7 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): Invoice {
@@ -381,25 +431,43 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
     var _paymentTerms: Element? = null
     var note: List<Annotation>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -407,7 +475,7 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -415,7 +483,7 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -423,23 +491,33 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
             )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = decoder.decodeStringElement(descriptor, i)
+        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         12 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        13 -> cancelledReason = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 -> cancelledReason = compositeDecoder.decodeStringElement(descriptor, i)
         14 ->
           _cancelledReason =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         15 ->
           type =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -447,27 +525,58 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
             )
         16 ->
           subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         17 ->
           recipient =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        18 -> date = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        18 -> date = compositeDecoder.decodeStringElement(descriptor, i)
         19 ->
-          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        20 -> creation = decoder.decodeStringElement(descriptor, i)
+          _date =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        20 -> creation = compositeDecoder.decodeStringElement(descriptor, i)
         21 ->
           _creation =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        22 -> periodDate = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        22 -> periodDate = compositeDecoder.decodeStringElement(descriptor, i)
         23 ->
           _periodDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         24 ->
           periodPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
         25 ->
           participant =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               InvoiceParticipantSerializer.listSerializer,
@@ -475,13 +584,23 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
             )
         26 ->
           issuer =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         27 ->
           account =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         28 ->
           lineItem =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               InvoiceLineItemSerializer.listSerializer,
@@ -489,24 +608,30 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
             )
         29 ->
           totalPriceComponent =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               MonetaryComponentSerializer.listSerializer,
               null,
             )
         30 ->
-          totalNet = decoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
+          totalNet =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
         31 ->
           totalGross =
-            decoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
-        32 -> paymentTerms = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
+        32 -> paymentTerms = compositeDecoder.decodeStringElement(descriptor, i)
         33 ->
           _paymentTerms =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         34 ->
           note =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               AnnotationSerializer.listSerializer,
@@ -555,98 +680,118 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: Invoice,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
-    encoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.cancelledReason?.value)
-    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.cancelledReason)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      value.cancelledReason?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(
+      descriptor,
+      14 + descriptorOffset,
+      value.cancelledReason,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       15 + descriptorOffset,
       CodeableConceptSerializer,
       value.type,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       16 + descriptorOffset,
       ReferenceSerializer,
       value.subject,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       17 + descriptorOffset,
       ReferenceSerializer,
       value.recipient,
     )
-    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.date?.value?.toString())
-    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.date)
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      value.date?.value?.toString(),
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.date)
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       20 + descriptorOffset,
       value.creation?.value?.toString(),
     )
-    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.creation)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.creation)
     when (val choice = value.period) {
       null -> {}
       is Invoice.Period.Date -> {
-        encoder.encodeStringIfNotNull(
+        compositeEncoder.encodeStringIfNotNull(
           descriptor,
           22 + descriptorOffset,
           choice.value.value?.toString(),
         )
-        encoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, choice.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, choice.value)
       }
       is Invoice.Period.Period -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           24 + descriptorOffset,
           PeriodSerializer,
@@ -655,54 +800,58 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
       }
     }
     if (value.participant.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         25 + descriptorOffset,
         InvoiceParticipantSerializer.listSerializer,
         value.participant,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       26 + descriptorOffset,
       ReferenceSerializer,
       value.issuer,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       27 + descriptorOffset,
       ReferenceSerializer,
       value.account,
     )
     if (value.lineItem.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         28 + descriptorOffset,
         InvoiceLineItemSerializer.listSerializer,
         value.lineItem,
       )
     if (value.totalPriceComponent.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         29 + descriptorOffset,
         MonetaryComponentSerializer.listSerializer,
         value.totalPriceComponent,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       30 + descriptorOffset,
       MoneySerializer,
       value.totalNet,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       31 + descriptorOffset,
       MoneySerializer,
       value.totalGross,
     )
-    encoder.encodeStringIfNotNull(descriptor, 32 + descriptorOffset, value.paymentTerms?.value)
-    encoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.paymentTerms)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      32 + descriptorOffset,
+      value.paymentTerms?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.paymentTerms)
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         34 + descriptorOffset,
         AnnotationSerializer.listSerializer,

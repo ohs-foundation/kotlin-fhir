@@ -62,8 +62,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object RiskAssessmentPredictionSerializer : KSerializer<RiskAssessment.Prediction> {
   override val descriptor: SerialDescriptor =
@@ -86,132 +84,197 @@ internal object RiskAssessmentPredictionSerializer : KSerializer<RiskAssessment.
 
   internal val listSerializer: KSerializer<List<RiskAssessment.Prediction>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): RiskAssessment.Prediction =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var outcome: CodeableConcept? = null
-      var probabilityDecimal: FhirDecimal? = null
-      var _probabilityDecimal: Element? = null
-      var probabilityRange: Range? = null
-      var qualitativeRisk: CodeableConcept? = null
-      var relativeRisk: FhirDecimal? = null
-      var _relativeRisk: Element? = null
-      var whenPeriod: Period? = null
-      var whenRange: Range? = null
-      var rationale: KotlinString? = null
-      var _rationale: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            outcome =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          4 ->
-            probabilityDecimal =
-              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-          5 ->
-            _probabilityDecimal =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          6 ->
-            probabilityRange =
-              decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-          7 ->
-            qualitativeRisk =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          8 ->
-            relativeRisk =
-              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-          9 ->
-            _relativeRisk =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          10 ->
-            whenPeriod = decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
-          11 -> whenRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-          12 -> rationale = decodeStringElement(descriptor, i)
-          13 ->
-            _rationale = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Prediction: " + i)
-        }
+  override fun deserialize(decoder: Decoder): RiskAssessment.Prediction {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var outcome: CodeableConcept? = null
+    var probabilityDecimal: FhirDecimal? = null
+    var _probabilityDecimal: Element? = null
+    var probabilityRange: Range? = null
+    var qualitativeRisk: CodeableConcept? = null
+    var relativeRisk: FhirDecimal? = null
+    var _relativeRisk: Element? = null
+    var whenPeriod: Period? = null
+    var whenRange: Range? = null
+    var rationale: KotlinString? = null
+    var _rationale: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          outcome =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          probabilityDecimal =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
+        5 ->
+          _probabilityDecimal =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 ->
+          probabilityRange =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        7 ->
+          qualitativeRisk =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        8 ->
+          relativeRisk =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
+        9 ->
+          _relativeRisk =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        10 ->
+          whenPeriod =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
+        11 ->
+          whenRange =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        12 -> rationale = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          _rationale =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Prediction: " + i)
       }
-      RiskAssessment.Prediction(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        outcome = outcome,
-        probability =
-          RiskAssessment.Prediction.Probability.from(
-            Decimal.of(probabilityDecimal, _probabilityDecimal),
-            probabilityRange,
-          ),
-        qualitativeRisk = qualitativeRisk,
-        relativeRisk = Decimal.of(relativeRisk, _relativeRisk),
-        `when` = RiskAssessment.Prediction.When.from(whenPeriod, whenRange),
-        rationale = R4String.of(rationale, _rationale),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return RiskAssessment.Prediction(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      outcome = outcome,
+      probability =
+        RiskAssessment.Prediction.Probability.from(
+          Decimal.of(probabilityDecimal, _probabilityDecimal),
+          probabilityRange,
+        ),
+      qualitativeRisk = qualitativeRisk,
+      relativeRisk = Decimal.of(relativeRisk, _relativeRisk),
+      `when` = RiskAssessment.Prediction.When.from(whenPeriod, whenRange),
+      rationale = R4String.of(rationale, _rationale),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: RiskAssessment.Prediction) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      CodeableConceptSerializer,
+      value.outcome,
+    )
+    when (val choice = value.probability) {
+      null -> {}
+      is RiskAssessment.Prediction.Probability.Decimal -> {
+        compositeEncoder.encodeSerializableIfNotNull(
           descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
+          4,
+          FhirDecimalSerializer,
+          choice.value.value,
         )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableIfNotNull(descriptor, 3, CodeableConceptSerializer, value.outcome)
-      when (val choice = value.probability) {
-        null -> {}
-        is RiskAssessment.Prediction.Probability.Decimal -> {
-          encodeSerializableIfNotNull(descriptor, 4, FhirDecimalSerializer, choice.value.value)
-          encodeElementIfNotNull(descriptor, 5, choice.value)
-        }
-        is RiskAssessment.Prediction.Probability.Range -> {
-          encodeSerializableElement(descriptor, 6, RangeSerializer, choice.value)
-        }
+        compositeEncoder.encodeElementIfNotNull(descriptor, 5, choice.value)
       }
-      encodeSerializableIfNotNull(descriptor, 7, CodeableConceptSerializer, value.qualitativeRisk)
-      encodeSerializableIfNotNull(descriptor, 8, FhirDecimalSerializer, value.relativeRisk?.value)
-      encodeElementIfNotNull(descriptor, 9, value.relativeRisk)
-      when (val choice = value.`when`) {
-        null -> {}
-        is RiskAssessment.Prediction.When.Period -> {
-          encodeSerializableElement(descriptor, 10, PeriodSerializer, choice.value)
-        }
-        is RiskAssessment.Prediction.When.Range -> {
-          encodeSerializableElement(descriptor, 11, RangeSerializer, choice.value)
-        }
+      is RiskAssessment.Prediction.Probability.Range -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 6, RangeSerializer, choice.value)
       }
-      encodeStringIfNotNull(descriptor, 12, value.rationale?.value)
-      encodeElementIfNotNull(descriptor, 13, value.rationale)
     }
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      7,
+      CodeableConceptSerializer,
+      value.qualitativeRisk,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      8,
+      FhirDecimalSerializer,
+      value.relativeRisk?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.relativeRisk)
+    when (val choice = value.`when`) {
+      null -> {}
+      is RiskAssessment.Prediction.When.Period -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 10, PeriodSerializer, choice.value)
+      }
+      is RiskAssessment.Prediction.When.Range -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 11, RangeSerializer, choice.value)
+      }
+    }
+    compositeEncoder.encodeStringIfNotNull(descriptor, 12, value.rationale?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 13, value.rationale)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -256,7 +319,7 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): RiskAssessment {
@@ -292,25 +355,43 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
     var _mitigation: Element? = null
     var note: List<Annotation>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -318,7 +399,7 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -326,7 +407,7 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -334,7 +415,7 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
             )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               IdentifierSerializer.listSerializer,
@@ -342,17 +423,32 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
             )
         11 ->
           basedOn =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         12 ->
           parent =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        13 -> status = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        13 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         14 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         15 ->
           method =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -360,7 +456,7 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
             )
         16 ->
           code =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -368,26 +464,56 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
             )
         17 ->
           subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         18 ->
           encounter =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        19 -> occurrenceDateTime = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        19 -> occurrenceDateTime = compositeDecoder.decodeStringElement(descriptor, i)
         20 ->
           _occurrenceDateTime =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         21 ->
           occurrencePeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, PeriodSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
         22 ->
           condition =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         23 ->
           performer =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         24 ->
           reasonCode =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -395,7 +521,7 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
             )
         25 ->
           reasonReference =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -403,7 +529,7 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
             )
         26 ->
           basis =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -411,19 +537,24 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
             )
         27 ->
           prediction =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               RiskAssessmentPredictionSerializer.listSerializer,
               null,
             )
-        28 -> mitigation = decoder.decodeStringElement(descriptor, i)
+        28 -> mitigation = compositeDecoder.decodeStringElement(descriptor, i)
         29 ->
           _mitigation =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         30 ->
           note =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               AnnotationSerializer.listSerializer,
@@ -475,89 +606,97 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: RiskAssessment,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       11 + descriptorOffset,
       ReferenceSerializer,
       value.basedOn,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       12 + descriptorOffset,
       ReferenceSerializer,
       value.parent,
     )
-    encoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.status)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.status)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       15 + descriptorOffset,
       CodeableConceptSerializer,
       value.method,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       16 + descriptorOffset,
       CodeableConceptSerializer,
       value.code,
     )
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       17 + descriptorOffset,
       ReferenceSerializer,
       value.subject,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       18 + descriptorOffset,
       ReferenceSerializer,
@@ -566,15 +705,15 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
     when (val choice = value.occurrence) {
       null -> {}
       is RiskAssessment.Occurrence.DateTime -> {
-        encoder.encodeStringIfNotNull(
+        compositeEncoder.encodeStringIfNotNull(
           descriptor,
           19 + descriptorOffset,
           choice.value.value?.toString(),
         )
-        encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, choice.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, choice.value)
       }
       is RiskAssessment.Occurrence.Period -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           21 + descriptorOffset,
           PeriodSerializer,
@@ -582,50 +721,54 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
         )
       }
     }
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       22 + descriptorOffset,
       ReferenceSerializer,
       value.condition,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       23 + descriptorOffset,
       ReferenceSerializer,
       value.performer,
     )
     if (value.reasonCode.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         24 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.reasonCode,
       )
     if (value.reasonReference.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         25 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.reasonReference,
       )
     if (value.basis.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         26 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.basis,
       )
     if (value.prediction.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         27 + descriptorOffset,
         RiskAssessmentPredictionSerializer.listSerializer,
         value.prediction,
       )
-    encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.mitigation?.value)
-    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.mitigation)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      28 + descriptorOffset,
+      value.mitigation?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.mitigation)
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         30 + descriptorOffset,
         AnnotationSerializer.listSerializer,

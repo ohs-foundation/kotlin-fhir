@@ -64,8 +64,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object LocationPositionSerializer : KSerializer<Location.Position> {
   override val descriptor: SerialDescriptor =
@@ -83,93 +81,146 @@ internal object LocationPositionSerializer : KSerializer<Location.Position> {
 
   internal val listSerializer: KSerializer<List<Location.Position>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Location.Position =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var longitude: FhirDecimal? = null
-      var _longitude: Element? = null
-      var latitude: FhirDecimal? = null
-      var _latitude: Element? = null
-      var altitude: FhirDecimal? = null
-      var _altitude: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            longitude =
-              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-          4 ->
-            _longitude = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            latitude = decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-          6 -> _latitude = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 ->
-            altitude = decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-          8 -> _altitude = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Position: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Location.Position {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var longitude: FhirDecimal? = null
+    var _longitude: Element? = null
+    var latitude: FhirDecimal? = null
+    var _latitude: Element? = null
+    var altitude: FhirDecimal? = null
+    var _altitude: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          longitude =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
+        4 ->
+          _longitude =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          latitude =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
+        6 ->
+          _latitude =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          altitude =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
+        8 ->
+          _altitude =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Position: " + i)
       }
-      Location.Position(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        longitude =
-          Decimal.of(longitude, _longitude)
-            ?: throw SerializationException(
-              "Missing required property 'longitude' on Location.Position"
-            ),
-        latitude =
-          Decimal.of(latitude, _latitude)
-            ?: throw SerializationException(
-              "Missing required property 'latitude' on Location.Position"
-            ),
-        altitude = Decimal.of(altitude, _altitude),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Location.Position(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      longitude =
+        Decimal.of(longitude, _longitude)
+          ?: throw SerializationException(
+            "Missing required property 'longitude' on Location.Position"
+          ),
+      latitude =
+        Decimal.of(latitude, _latitude)
+          ?: throw SerializationException(
+            "Missing required property 'latitude' on Location.Position"
+          ),
+      altitude = Decimal.of(altitude, _altitude),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Location.Position) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeSerializableIfNotNull(descriptor, 3, FhirDecimalSerializer, value.longitude.value)
-      encodeElementIfNotNull(descriptor, 4, value.longitude)
-      encodeSerializableIfNotNull(descriptor, 5, FhirDecimalSerializer, value.latitude.value)
-      encodeElementIfNotNull(descriptor, 6, value.latitude)
-      encodeSerializableIfNotNull(descriptor, 7, FhirDecimalSerializer, value.altitude?.value)
-      encodeElementIfNotNull(descriptor, 8, value.altitude)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      FhirDecimalSerializer,
+      value.longitude.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.longitude)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      5,
+      FhirDecimalSerializer,
+      value.latitude.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.latitude)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      7,
+      FhirDecimalSerializer,
+      value.altitude?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.altitude)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -191,118 +242,163 @@ internal object LocationHoursOfOperationSerializer : KSerializer<Location.HoursO
 
   internal val listSerializer: KSerializer<List<Location.HoursOfOperation>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Location.HoursOfOperation =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var daysOfWeek: List<KotlinString?>? = null
-      var _daysOfWeek: List<Element?>? = null
-      var allDay: KotlinBoolean? = null
-      var _allDay: Element? = null
-      var openingTime: LocalTime? = null
-      var _openingTime: Element? = null
-      var closingTime: LocalTime? = null
-      var _closingTime: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 ->
-            daysOfWeek =
-              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
-          4 ->
-            _daysOfWeek =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ElementSerializer.nullableListSerializer,
-                null,
-              )
-          5 -> allDay = decodeBooleanElement(descriptor, i)
-          6 -> _allDay = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 ->
-            openingTime =
-              decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-          8 ->
-            _openingTime = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 ->
-            closingTime =
-              decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-          10 ->
-            _closingTime = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding HoursOfOperation: " + i)
-        }
-      }
-      Location.HoursOfOperation(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        daysOfWeek =
-          (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
-            Enumeration.of(
-              daysOfWeek?.getOrNull(index)?.let { Location.DaysOfWeek.fromCode(it) },
-              _daysOfWeek?.getOrNull(index),
+  override fun deserialize(decoder: Decoder): Location.HoursOfOperation {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var daysOfWeek: List<KotlinString?>? = null
+    var _daysOfWeek: List<Element?>? = null
+    var allDay: KotlinBoolean? = null
+    var _allDay: Element? = null
+    var openingTime: LocalTime? = null
+    var _openingTime: Element? = null
+    var closingTime: LocalTime? = null
+    var _closingTime: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
             )
-              ?: throw SerializationException(
-                "An entry of 'daysOfWeek' on Location.HoursOfOperation has neither a value nor an id/extension"
-              )
-          }),
-        allDay = R4bBoolean.of(allDay, _allDay),
-        openingTime = Time.of(openingTime, _openingTime),
-        closingTime = Time.of(closingTime, _closingTime),
-      )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          daysOfWeek =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
+        4 ->
+          _daysOfWeek =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        5 -> allDay = compositeDecoder.decodeBooleanElement(descriptor, i)
+        6 ->
+          _allDay =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          openingTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              LocalTimeSerializer,
+              null,
+            )
+        8 ->
+          _openingTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 ->
+          closingTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              LocalTimeSerializer,
+              null,
+            )
+        10 ->
+          _closingTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding HoursOfOperation: " + i)
+      }
     }
+    compositeDecoder.endStructure(descriptor)
+    return Location.HoursOfOperation(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      daysOfWeek =
+        (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
+          Enumeration.of(
+            daysOfWeek?.getOrNull(index)?.let { Location.DaysOfWeek.fromCode(it) },
+            _daysOfWeek?.getOrNull(index),
+          )
+            ?: throw SerializationException(
+              "An entry of 'daysOfWeek' on Location.HoursOfOperation has neither a value nor an id/extension"
+            )
+        }),
+      allDay = R4bBoolean.of(allDay, _allDay),
+      openingTime = Time.of(openingTime, _openingTime),
+      closingTime = Time.of(closingTime, _closingTime),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Location.HoursOfOperation) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      if (value.daysOfWeek.isNotEmpty()) {
-        encodeNullableListIfNotNull(
-          descriptor,
-          3,
-          stringNullableListSerializer,
-          value.daysOfWeek.map { it.value?.code },
-        )
-        encodePrimitiveElementList(descriptor, 4, value.daysOfWeek)
-      }
-      encodeBooleanIfNotNull(descriptor, 5, value.allDay?.value)
-      encodeElementIfNotNull(descriptor, 6, value.allDay)
-      encodeSerializableIfNotNull(descriptor, 7, LocalTimeSerializer, value.openingTime?.value)
-      encodeElementIfNotNull(descriptor, 8, value.openingTime)
-      encodeSerializableIfNotNull(descriptor, 9, LocalTimeSerializer, value.closingTime?.value)
-      encodeElementIfNotNull(descriptor, 10, value.closingTime)
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    if (value.daysOfWeek.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        3,
+        stringNullableListSerializer,
+        value.daysOfWeek.map { it.value?.code },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 4, value.daysOfWeek)
     }
+    compositeEncoder.encodeBooleanIfNotNull(descriptor, 5, value.allDay?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.allDay)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      7,
+      LocalTimeSerializer,
+      value.openingTime?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.openingTime)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      9,
+      LocalTimeSerializer,
+      value.closingTime?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.closingTime)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -352,7 +448,7 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): Location {
@@ -390,25 +486,43 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
     var _availabilityExceptions: Element? = null
     var endpoint: List<Reference>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -416,7 +530,7 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -424,7 +538,7 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -432,25 +546,41 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = decoder.decodeStringElement(descriptor, i)
+        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         12 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         13 ->
           operationalStatus =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        14 -> name = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer,
+              null,
+            )
+        14 -> name = compositeDecoder.decodeStringElement(descriptor, i)
         15 ->
-          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         16 ->
           alias =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               stringNullableListSerializer,
@@ -458,22 +588,33 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         17 ->
           _alias =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ElementSerializer.nullableListSerializer,
               null,
             )
-        18 -> description = decoder.decodeStringElement(descriptor, i)
+        18 -> description = compositeDecoder.decodeStringElement(descriptor, i)
         19 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        20 -> mode = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        20 -> mode = compositeDecoder.decodeStringElement(descriptor, i)
         21 ->
-          _mode = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          _mode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         22 ->
           type =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
@@ -481,7 +622,7 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         23 ->
           telecom =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ContactPointSerializer.listSerializer,
@@ -489,10 +630,15 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         24 ->
           address =
-            decoder.decodeNullableSerializableElement(descriptor, i, AddressSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AddressSerializer,
+              null,
+            )
         25 ->
           physicalType =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer,
@@ -500,7 +646,7 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         26 ->
           position =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               LocationPositionSerializer,
@@ -508,25 +654,40 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         27 ->
           managingOrganization =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         28 ->
           partOf =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         29 ->
           hoursOfOperation =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               LocationHoursOfOperationSerializer.listSerializer,
               null,
             )
-        30 -> availabilityExceptions = decoder.decodeStringElement(descriptor, i)
+        30 -> availabilityExceptions = compositeDecoder.decodeStringElement(descriptor, i)
         31 ->
           _availabilityExceptions =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         32 ->
           endpoint =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -576,138 +737,158 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: Location,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    encoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.status?.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      value.status?.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       13 + descriptorOffset,
       CodingSerializer,
       value.operationalStatus,
     )
-    encoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.name?.value)
-    encoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.name)
     if (value.alias.isNotEmpty()) {
-      encoder.encodeNullableListIfNotNull(
+      compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         16 + descriptorOffset,
         stringNullableListSerializer,
         value.alias.map { it.value },
       )
-      encoder.encodePrimitiveElementList(descriptor, 17 + descriptorOffset, value.alias)
+      compositeEncoder.encodePrimitiveElementList(descriptor, 17 + descriptorOffset, value.alias)
     }
-    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.description?.value)
-    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.description)
-    encoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.mode?.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.mode)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      18 + descriptorOffset,
+      value.description?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.description)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      20 + descriptorOffset,
+      value.mode?.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.mode)
     if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         22 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.type,
       )
     if (value.telecom.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         23 + descriptorOffset,
         ContactPointSerializer.listSerializer,
         value.telecom,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       24 + descriptorOffset,
       AddressSerializer,
       value.address,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       25 + descriptorOffset,
       CodeableConceptSerializer,
       value.physicalType,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       26 + descriptorOffset,
       LocationPositionSerializer,
       value.position,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       27 + descriptorOffset,
       ReferenceSerializer,
       value.managingOrganization,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       28 + descriptorOffset,
       ReferenceSerializer,
       value.partOf,
     )
     if (value.hoursOfOperation.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         29 + descriptorOffset,
         LocationHoursOfOperationSerializer.listSerializer,
         value.hoursOfOperation,
       )
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       30 + descriptorOffset,
       value.availabilityExceptions?.value,
     )
-    encoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.availabilityExceptions)
+    compositeEncoder.encodeElementIfNotNull(
+      descriptor,
+      31 + descriptorOffset,
+      value.availabilityExceptions,
+    )
     if (value.endpoint.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         32 + descriptorOffset,
         ReferenceSerializer.listSerializer,

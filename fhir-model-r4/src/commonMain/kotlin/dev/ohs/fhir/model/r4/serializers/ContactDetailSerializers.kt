@@ -42,8 +42,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object ContactDetailSerializer : KSerializer<ContactDetail> {
   override val descriptor: SerialDescriptor =
@@ -63,65 +61,73 @@ internal object ContactDetailSerializer : KSerializer<ContactDetail> {
 
   internal val listSerializer: KSerializer<List<ContactDetail>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): ContactDetail =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var telecom: List<ContactPoint>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 -> name = decodeStringElement(descriptor, i)
-          3 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          4 ->
-            telecom =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ContactPointSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding ContactDetail: " + i)
-        }
+  override fun deserialize(decoder: Decoder): ContactDetail {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var telecom: List<ContactPoint>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 ->
+          telecom =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ContactPointSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding ContactDetail: " + i)
       }
-      ContactDetail(
-        id = id,
-        extension = extension ?: listOf(),
-        name = R4String.of(name, _name),
-        telecom = telecom ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return ContactDetail(
+      id = id,
+      extension = extension ?: listOf(),
+      name = R4String.of(name, _name),
+      telecom = telecom ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: ContactDetail) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      encodeStringIfNotNull(descriptor, 2, value.name?.value)
-      encodeElementIfNotNull(descriptor, 3, value.name)
-      if (value.telecom.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          4,
-          ContactPointSerializer.listSerializer,
-          value.telecom,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.name)
+    if (value.telecom.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        ContactPointSerializer.listSerializer,
+        value.telecom,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }

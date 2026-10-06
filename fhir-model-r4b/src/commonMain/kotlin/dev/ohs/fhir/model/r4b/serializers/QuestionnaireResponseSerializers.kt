@@ -69,8 +69,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object QuestionnaireResponseItemSerializer : KSerializer<QuestionnaireResponse.Item> {
   override val descriptor: SerialDescriptor =
@@ -93,119 +91,140 @@ internal object QuestionnaireResponseItemSerializer : KSerializer<QuestionnaireR
 
   internal val listSerializer: KSerializer<List<QuestionnaireResponse.Item>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): QuestionnaireResponse.Item =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var linkId: KotlinString? = null
-      var _linkId: Element? = null
-      var definition: KotlinString? = null
-      var _definition: Element? = null
-      var text: KotlinString? = null
-      var _text: Element? = null
-      var answer: List<QuestionnaireResponse.Item.Answer>? = null
-      var item: List<QuestionnaireResponse.Item>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> linkId = decodeStringElement(descriptor, i)
-          4 -> _linkId = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> definition = decodeStringElement(descriptor, i)
-          6 ->
-            _definition = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> text = decodeStringElement(descriptor, i)
-          8 -> _text = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 ->
-            answer =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                QuestionnaireResponseItemAnswerSerializer.listSerializer,
-                null,
-              )
-          10 ->
-            item =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                QuestionnaireResponseItemSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Item: " + i)
-        }
+  override fun deserialize(decoder: Decoder): QuestionnaireResponse.Item {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var linkId: KotlinString? = null
+    var _linkId: Element? = null
+    var definition: KotlinString? = null
+    var _definition: Element? = null
+    var text: KotlinString? = null
+    var _text: Element? = null
+    var answer: List<QuestionnaireResponse.Item.Answer>? = null
+    var item: List<QuestionnaireResponse.Item>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> linkId = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _linkId =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> definition = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _definition =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> text = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 ->
+          answer =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuestionnaireResponseItemAnswerSerializer.listSerializer,
+              null,
+            )
+        10 ->
+          item =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuestionnaireResponseItemSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Item: " + i)
       }
-      QuestionnaireResponse.Item(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        linkId =
-          R4bString.of(linkId, _linkId)
-            ?: throw SerializationException(
-              "Missing required property 'linkId' on QuestionnaireResponse.Item"
-            ),
-        definition = Uri.of(definition, _definition),
-        text = R4bString.of(text, _text),
-        answer = answer ?: listOf(),
-        item = item ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return QuestionnaireResponse.Item(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      linkId =
+        R4bString.of(linkId, _linkId)
+          ?: throw SerializationException(
+            "Missing required property 'linkId' on QuestionnaireResponse.Item"
+          ),
+      definition = Uri.of(definition, _definition),
+      text = R4bString.of(text, _text),
+      answer = answer ?: listOf(),
+      item = item ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: QuestionnaireResponse.Item) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.linkId.value)
-      encodeElementIfNotNull(descriptor, 4, value.linkId)
-      encodeStringIfNotNull(descriptor, 5, value.definition?.value)
-      encodeElementIfNotNull(descriptor, 6, value.definition)
-      encodeStringIfNotNull(descriptor, 7, value.text?.value)
-      encodeElementIfNotNull(descriptor, 8, value.text)
-      if (value.answer.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          9,
-          QuestionnaireResponseItemAnswerSerializer.listSerializer,
-          value.answer,
-        )
-      if (value.item.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          10,
-          QuestionnaireResponseItemSerializer.listSerializer,
-          value.item,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.linkId.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.linkId)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.definition?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.definition)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.text?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.text)
+    if (value.answer.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        9,
+        QuestionnaireResponseItemAnswerSerializer.listSerializer,
+        value.answer,
+      )
+    if (value.item.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        10,
+        QuestionnaireResponseItemSerializer.listSerializer,
+        value.item,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -245,203 +264,300 @@ internal object QuestionnaireResponseItemAnswerSerializer :
   internal val listSerializer: KSerializer<List<QuestionnaireResponse.Item.Answer>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): QuestionnaireResponse.Item.Answer =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var valueBoolean: KotlinBoolean? = null
-      var _valueBoolean: Element? = null
-      var valueDecimal: FhirDecimal? = null
-      var _valueDecimal: Element? = null
-      var valueInteger: Int? = null
-      var _valueInteger: Element? = null
-      var valueDate: KotlinString? = null
-      var _valueDate: Element? = null
-      var valueDateTime: KotlinString? = null
-      var _valueDateTime: Element? = null
-      var valueTime: LocalTime? = null
-      var _valueTime: Element? = null
-      var valueString: KotlinString? = null
-      var _valueString: Element? = null
-      var valueUri: KotlinString? = null
-      var _valueUri: Element? = null
-      var valueAttachment: Attachment? = null
-      var valueCoding: Coding? = null
-      var valueQuantity: Quantity? = null
-      var valueReference: Reference? = null
-      var item: List<QuestionnaireResponse.Item>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> valueBoolean = decodeBooleanElement(descriptor, i)
-          4 ->
-            _valueBoolean =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            valueDecimal =
-              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-          6 ->
-            _valueDecimal =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> valueInteger = decodeIntElement(descriptor, i)
-          8 ->
-            _valueInteger =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> valueDate = decodeStringElement(descriptor, i)
-          10 ->
-            _valueDate = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          11 -> valueDateTime = decodeStringElement(descriptor, i)
-          12 ->
-            _valueDateTime =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          13 ->
-            valueTime = decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-          14 ->
-            _valueTime = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          15 -> valueString = decodeStringElement(descriptor, i)
-          16 ->
-            _valueString = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          17 -> valueUri = decodeStringElement(descriptor, i)
-          18 ->
-            _valueUri = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          19 ->
-            valueAttachment =
-              decodeNullableSerializableElement(descriptor, i, AttachmentSerializer, null)
-          20 ->
-            valueCoding = decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-          21 ->
-            valueQuantity =
-              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          22 ->
-            valueReference =
-              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          23 ->
-            item =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                QuestionnaireResponseItemSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Answer: " + i)
-        }
+  override fun deserialize(decoder: Decoder): QuestionnaireResponse.Item.Answer {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var valueBoolean: KotlinBoolean? = null
+    var _valueBoolean: Element? = null
+    var valueDecimal: FhirDecimal? = null
+    var _valueDecimal: Element? = null
+    var valueInteger: Int? = null
+    var _valueInteger: Element? = null
+    var valueDate: KotlinString? = null
+    var _valueDate: Element? = null
+    var valueDateTime: KotlinString? = null
+    var _valueDateTime: Element? = null
+    var valueTime: LocalTime? = null
+    var _valueTime: Element? = null
+    var valueString: KotlinString? = null
+    var _valueString: Element? = null
+    var valueUri: KotlinString? = null
+    var _valueUri: Element? = null
+    var valueAttachment: Attachment? = null
+    var valueCoding: Coding? = null
+    var valueQuantity: Quantity? = null
+    var valueReference: Reference? = null
+    var item: List<QuestionnaireResponse.Item>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> valueBoolean = compositeDecoder.decodeBooleanElement(descriptor, i)
+        4 ->
+          _valueBoolean =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          valueDecimal =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
+        6 ->
+          _valueDecimal =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> valueInteger = compositeDecoder.decodeIntElement(descriptor, i)
+        8 ->
+          _valueInteger =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> valueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _valueDate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 -> valueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          _valueDateTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 ->
+          valueTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              LocalTimeSerializer,
+              null,
+            )
+        14 ->
+          _valueTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        15 -> valueString = compositeDecoder.decodeStringElement(descriptor, i)
+        16 ->
+          _valueString =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        17 -> valueUri = compositeDecoder.decodeStringElement(descriptor, i)
+        18 ->
+          _valueUri =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        19 ->
+          valueAttachment =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AttachmentSerializer,
+              null,
+            )
+        20 ->
+          valueCoding =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer,
+              null,
+            )
+        21 ->
+          valueQuantity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        22 ->
+          valueReference =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        23 ->
+          item =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuestionnaireResponseItemSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Answer: " + i)
       }
-      QuestionnaireResponse.Item.Answer(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        `value` =
-          QuestionnaireResponse.Item.Answer.Value.from(
-            R4bBoolean.of(valueBoolean, _valueBoolean),
-            Decimal.of(valueDecimal, _valueDecimal),
-            Integer.of(valueInteger, _valueInteger),
-            Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
-            DateTime.of(
-              if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
-              _valueDateTime,
-            ),
-            Time.of(valueTime, _valueTime),
-            R4bString.of(valueString, _valueString),
-            Uri.of(valueUri, _valueUri),
-            valueAttachment,
-            valueCoding,
-            valueQuantity,
-            valueReference,
-          ),
-        item = item ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return QuestionnaireResponse.Item.Answer(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      `value` =
+        QuestionnaireResponse.Item.Answer.Value.from(
+          R4bBoolean.of(valueBoolean, _valueBoolean),
+          Decimal.of(valueDecimal, _valueDecimal),
+          Integer.of(valueInteger, _valueInteger),
+          Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
+          DateTime.of(
+            if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
+            _valueDateTime,
+          ),
+          Time.of(valueTime, _valueTime),
+          R4bString.of(valueString, _valueString),
+          Uri.of(valueUri, _valueUri),
+          valueAttachment,
+          valueCoding,
+          valueQuantity,
+          valueReference,
+        ),
+      item = item ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: QuestionnaireResponse.Item.Answer) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      when (val choice = value.`value`) {
-        null -> {}
-        is QuestionnaireResponse.Item.Answer.Value.Boolean -> {
-          encodeBooleanIfNotNull(descriptor, 3, choice.value.value)
-          encodeElementIfNotNull(descriptor, 4, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.Decimal -> {
-          encodeSerializableIfNotNull(descriptor, 5, FhirDecimalSerializer, choice.value.value)
-          encodeElementIfNotNull(descriptor, 6, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.Integer -> {
-          encodeIntIfNotNull(descriptor, 7, choice.value.value)
-          encodeElementIfNotNull(descriptor, 8, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.Date -> {
-          encodeStringIfNotNull(descriptor, 9, choice.value.value?.toString())
-          encodeElementIfNotNull(descriptor, 10, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.DateTime -> {
-          encodeStringIfNotNull(descriptor, 11, choice.value.value?.toString())
-          encodeElementIfNotNull(descriptor, 12, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.Time -> {
-          encodeSerializableIfNotNull(descriptor, 13, LocalTimeSerializer, choice.value.value)
-          encodeElementIfNotNull(descriptor, 14, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.String -> {
-          encodeStringIfNotNull(descriptor, 15, choice.value.value)
-          encodeElementIfNotNull(descriptor, 16, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.Uri -> {
-          encodeStringIfNotNull(descriptor, 17, choice.value.value)
-          encodeElementIfNotNull(descriptor, 18, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.Attachment -> {
-          encodeSerializableElement(descriptor, 19, AttachmentSerializer, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.Coding -> {
-          encodeSerializableElement(descriptor, 20, CodingSerializer, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.Quantity -> {
-          encodeSerializableElement(descriptor, 21, QuantitySerializer, choice.value)
-        }
-        is QuestionnaireResponse.Item.Answer.Value.Reference -> {
-          encodeSerializableElement(descriptor, 22, ReferenceSerializer, choice.value)
-        }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    when (val choice = value.`value`) {
+      null -> {}
+      is QuestionnaireResponse.Item.Answer.Value.Boolean -> {
+        compositeEncoder.encodeBooleanIfNotNull(descriptor, 3, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 4, choice.value)
       }
-      if (value.item.isNotEmpty())
-        encodeSerializableElement(
+      is QuestionnaireResponse.Item.Answer.Value.Decimal -> {
+        compositeEncoder.encodeSerializableIfNotNull(
           descriptor,
-          23,
-          QuestionnaireResponseItemSerializer.listSerializer,
-          value.item,
+          5,
+          FhirDecimalSerializer,
+          choice.value.value,
         )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 6, choice.value)
+      }
+      is QuestionnaireResponse.Item.Answer.Value.Integer -> {
+        compositeEncoder.encodeIntIfNotNull(descriptor, 7, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 8, choice.value)
+      }
+      is QuestionnaireResponse.Item.Answer.Value.Date -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 9, choice.value.value?.toString())
+        compositeEncoder.encodeElementIfNotNull(descriptor, 10, choice.value)
+      }
+      is QuestionnaireResponse.Item.Answer.Value.DateTime -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 11, choice.value.value?.toString())
+        compositeEncoder.encodeElementIfNotNull(descriptor, 12, choice.value)
+      }
+      is QuestionnaireResponse.Item.Answer.Value.Time -> {
+        compositeEncoder.encodeSerializableIfNotNull(
+          descriptor,
+          13,
+          LocalTimeSerializer,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 14, choice.value)
+      }
+      is QuestionnaireResponse.Item.Answer.Value.String -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 15, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 16, choice.value)
+      }
+      is QuestionnaireResponse.Item.Answer.Value.Uri -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 17, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 18, choice.value)
+      }
+      is QuestionnaireResponse.Item.Answer.Value.Attachment -> {
+        compositeEncoder.encodeSerializableElement(
+          descriptor,
+          19,
+          AttachmentSerializer,
+          choice.value,
+        )
+      }
+      is QuestionnaireResponse.Item.Answer.Value.Coding -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 20, CodingSerializer, choice.value)
+      }
+      is QuestionnaireResponse.Item.Answer.Value.Quantity -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 21, QuantitySerializer, choice.value)
+      }
+      is QuestionnaireResponse.Item.Answer.Value.Reference -> {
+        compositeEncoder.encodeSerializableElement(
+          descriptor,
+          22,
+          ReferenceSerializer,
+          choice.value,
+        )
+      }
     }
+    if (value.item.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        23,
+        QuestionnaireResponseItemSerializer.listSerializer,
+        value.item,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -479,7 +595,7 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): QuestionnaireResponse {
@@ -508,25 +624,43 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
     var source: Reference? = null
     var item: List<QuestionnaireResponse.Item>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -534,7 +668,7 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -542,7 +676,7 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -550,10 +684,15 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
             )
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, IdentifierSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer,
+              null,
+            )
         11 ->
           basedOn =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
@@ -561,39 +700,74 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
             )
         12 ->
           partOf =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ReferenceSerializer.listSerializer,
               null,
             )
-        13 -> questionnaire = decoder.decodeStringElement(descriptor, i)
+        13 -> questionnaire = compositeDecoder.decodeStringElement(descriptor, i)
         14 ->
           _questionnaire =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        15 -> status = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        15 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         16 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         17 ->
           subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         18 ->
           encounter =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-        19 -> authored = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        19 -> authored = compositeDecoder.decodeStringElement(descriptor, i)
         20 ->
           _authored =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         21 ->
           author =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         22 ->
           source =
-            decoder.decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         23 ->
           item =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               QuestionnaireResponseItemSerializer.listSerializer,
@@ -636,105 +810,117 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: QuestionnaireResponse,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       10 + descriptorOffset,
       IdentifierSerializer,
       value.identifier,
     )
     if (value.basedOn.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         11 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.basedOn,
       )
     if (value.partOf.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         12 + descriptorOffset,
         ReferenceSerializer.listSerializer,
         value.partOf,
       )
-    encoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.questionnaire?.value)
-    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.questionnaire)
-    encoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.status)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      value.questionnaire?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.questionnaire)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      15 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.status)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       17 + descriptorOffset,
       ReferenceSerializer,
       value.subject,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       18 + descriptorOffset,
       ReferenceSerializer,
       value.encounter,
     )
-    encoder.encodeStringIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
       descriptor,
       19 + descriptorOffset,
       value.authored?.value?.toString(),
     )
-    encoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.authored)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.authored)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       21 + descriptorOffset,
       ReferenceSerializer,
       value.author,
     )
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       22 + descriptorOffset,
       ReferenceSerializer,
       value.source,
     )
     if (value.item.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         23 + descriptorOffset,
         QuestionnaireResponseItemSerializer.listSerializer,

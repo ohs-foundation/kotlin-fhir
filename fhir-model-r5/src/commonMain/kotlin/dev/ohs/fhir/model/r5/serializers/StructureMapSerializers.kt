@@ -72,8 +72,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object StructureMapStructureSerializer : KSerializer<StructureMap.Structure> {
   override val descriptor: SerialDescriptor =
@@ -93,100 +91,127 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
 
   internal val listSerializer: KSerializer<List<StructureMap.Structure>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): StructureMap.Structure =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var url: KotlinString? = null
-      var _url: Element? = null
-      var mode: KotlinString? = null
-      var _mode: Element? = null
-      var alias: KotlinString? = null
-      var _alias: Element? = null
-      var documentation: KotlinString? = null
-      var _documentation: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> url = decodeStringElement(descriptor, i)
-          4 -> _url = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> mode = decodeStringElement(descriptor, i)
-          6 -> _mode = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> alias = decodeStringElement(descriptor, i)
-          8 -> _alias = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> documentation = decodeStringElement(descriptor, i)
-          10 ->
-            _documentation =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Structure: " + i)
-        }
+  override fun deserialize(decoder: Decoder): StructureMap.Structure {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var url: KotlinString? = null
+    var _url: Element? = null
+    var mode: KotlinString? = null
+    var _mode: Element? = null
+    var alias: KotlinString? = null
+    var _alias: Element? = null
+    var documentation: KotlinString? = null
+    var _documentation: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> url = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _url =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> mode = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _mode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> alias = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _alias =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> documentation = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _documentation =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Structure: " + i)
       }
-      StructureMap.Structure(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        url =
-          Canonical.of(url, _url)
-            ?: throw SerializationException(
-              "Missing required property 'url' on StructureMap.Structure"
-            ),
-        mode =
-          Enumeration.of(
-            if (mode != null) StructureMap.StructureMapModelMode.fromCode(mode) else null,
-            _mode,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'mode' on StructureMap.Structure"
-            ),
-        alias = R5String.of(alias, _alias),
-        documentation = R5String.of(documentation, _documentation),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return StructureMap.Structure(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      url =
+        Canonical.of(url, _url)
+          ?: throw SerializationException(
+            "Missing required property 'url' on StructureMap.Structure"
+          ),
+      mode =
+        Enumeration.of(
+          if (mode != null) StructureMap.StructureMapModelMode.fromCode(mode) else null,
+          _mode,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'mode' on StructureMap.Structure"
+          ),
+      alias = R5String.of(alias, _alias),
+      documentation = R5String.of(documentation, _documentation),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Structure) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.url.value)
-      encodeElementIfNotNull(descriptor, 4, value.url)
-      encodeStringIfNotNull(descriptor, 5, value.mode.value?.code)
-      encodeElementIfNotNull(descriptor, 6, value.mode)
-      encodeStringIfNotNull(descriptor, 7, value.alias?.value)
-      encodeElementIfNotNull(descriptor, 8, value.alias)
-      encodeStringIfNotNull(descriptor, 9, value.documentation?.value)
-      encodeElementIfNotNull(descriptor, 10, value.documentation)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.url.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.url)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.mode.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.mode)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.alias?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.alias)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.documentation?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.documentation)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -204,73 +229,88 @@ internal object StructureMapConstSerializer : KSerializer<StructureMap.Const> {
 
   internal val listSerializer: KSerializer<List<StructureMap.Const>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): StructureMap.Const =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var `value`: KotlinString? = null
-      var _value: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> name = decodeStringElement(descriptor, i)
-          4 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> `value` = decodeStringElement(descriptor, i)
-          6 -> _value = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Const: " + i)
-        }
+  override fun deserialize(decoder: Decoder): StructureMap.Const {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var `value`: KotlinString? = null
+    var _value: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> `value` = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _value =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Const: " + i)
       }
-      StructureMap.Const(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        name = Id.of(name, _name),
-        `value` = R5String.of(`value`, _value),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return StructureMap.Const(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      name = Id.of(name, _name),
+      `value` = R5String.of(`value`, _value),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Const) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.name?.value)
-      encodeElementIfNotNull(descriptor, 4, value.name)
-      encodeStringIfNotNull(descriptor, 5, value.`value`?.value)
-      encodeElementIfNotNull(descriptor, 6, value.`value`)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.`value`?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.`value`)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -294,132 +334,156 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
 
   internal val listSerializer: KSerializer<List<StructureMap.Group>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): StructureMap.Group =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var extends: KotlinString? = null
-      var _extends: Element? = null
-      var typeMode: KotlinString? = null
-      var _typeMode: Element? = null
-      var documentation: KotlinString? = null
-      var _documentation: Element? = null
-      var input: List<StructureMap.Group.Input>? = null
-      var rule: List<StructureMap.Group.Rule>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> name = decodeStringElement(descriptor, i)
-          4 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> extends = decodeStringElement(descriptor, i)
-          6 -> _extends = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> typeMode = decodeStringElement(descriptor, i)
-          8 -> _typeMode = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> documentation = decodeStringElement(descriptor, i)
-          10 ->
-            _documentation =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          11 ->
-            input =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                StructureMapGroupInputSerializer.listSerializer,
-                null,
-              )
-          12 ->
-            rule =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                StructureMapGroupRuleSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Group: " + i)
-        }
+  override fun deserialize(decoder: Decoder): StructureMap.Group {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var extends: KotlinString? = null
+    var _extends: Element? = null
+    var typeMode: KotlinString? = null
+    var _typeMode: Element? = null
+    var documentation: KotlinString? = null
+    var _documentation: Element? = null
+    var input: List<StructureMap.Group.Input>? = null
+    var rule: List<StructureMap.Group.Rule>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> extends = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _extends =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> typeMode = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _typeMode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> documentation = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _documentation =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 ->
+          input =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupInputSerializer.listSerializer,
+              null,
+            )
+        12 ->
+          rule =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Group: " + i)
       }
-      StructureMap.Group(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        name =
-          Id.of(name, _name)
-            ?: throw SerializationException(
-              "Missing required property 'name' on StructureMap.Group"
-            ),
-        extends = Id.of(extends, _extends),
-        typeMode =
-          Enumeration.of(
-            if (typeMode != null) StructureMap.StructureMapGroupTypeMode.fromCode(typeMode)
-            else null,
-            _typeMode,
-          ),
-        documentation = R5String.of(documentation, _documentation),
-        input = input ?: listOf(),
-        rule = rule ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return StructureMap.Group(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException("Missing required property 'name' on StructureMap.Group"),
+      extends = Id.of(extends, _extends),
+      typeMode =
+        Enumeration.of(
+          if (typeMode != null) StructureMap.StructureMapGroupTypeMode.fromCode(typeMode) else null,
+          _typeMode,
+        ),
+      documentation = R5String.of(documentation, _documentation),
+      input = input ?: listOf(),
+      rule = rule ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.name.value)
-      encodeElementIfNotNull(descriptor, 4, value.name)
-      encodeStringIfNotNull(descriptor, 5, value.extends?.value)
-      encodeElementIfNotNull(descriptor, 6, value.extends)
-      encodeStringIfNotNull(descriptor, 7, value.typeMode?.value?.code)
-      encodeElementIfNotNull(descriptor, 8, value.typeMode)
-      encodeStringIfNotNull(descriptor, 9, value.documentation?.value)
-      encodeElementIfNotNull(descriptor, 10, value.documentation)
-      if (value.input.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          11,
-          StructureMapGroupInputSerializer.listSerializer,
-          value.input,
-        )
-      if (value.rule.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          12,
-          StructureMapGroupRuleSerializer.listSerializer,
-          value.rule,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.extends?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.extends)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.typeMode?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.typeMode)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.documentation?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.documentation)
+    if (value.input.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        11,
+        StructureMapGroupInputSerializer.listSerializer,
+        value.input,
+      )
+    if (value.rule.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        12,
+        StructureMapGroupRuleSerializer.listSerializer,
+        value.rule,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -441,100 +505,127 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
 
   internal val listSerializer: KSerializer<List<StructureMap.Group.Input>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): StructureMap.Group.Input =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var type: KotlinString? = null
-      var _type: Element? = null
-      var mode: KotlinString? = null
-      var _mode: Element? = null
-      var documentation: KotlinString? = null
-      var _documentation: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> name = decodeStringElement(descriptor, i)
-          4 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> type = decodeStringElement(descriptor, i)
-          6 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> mode = decodeStringElement(descriptor, i)
-          8 -> _mode = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> documentation = decodeStringElement(descriptor, i)
-          10 ->
-            _documentation =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Input: " + i)
-        }
+  override fun deserialize(decoder: Decoder): StructureMap.Group.Input {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var type: KotlinString? = null
+    var _type: Element? = null
+    var mode: KotlinString? = null
+    var _mode: Element? = null
+    var documentation: KotlinString? = null
+    var _documentation: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> mode = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _mode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> documentation = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _documentation =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Input: " + i)
       }
-      StructureMap.Group.Input(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        name =
-          Id.of(name, _name)
-            ?: throw SerializationException(
-              "Missing required property 'name' on StructureMap.Group.Input"
-            ),
-        type = R5String.of(type, _type),
-        mode =
-          Enumeration.of(
-            if (mode != null) StructureMap.StructureMapInputMode.fromCode(mode) else null,
-            _mode,
-          )
-            ?: throw SerializationException(
-              "Missing required property 'mode' on StructureMap.Group.Input"
-            ),
-        documentation = R5String.of(documentation, _documentation),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return StructureMap.Group.Input(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on StructureMap.Group.Input"
+          ),
+      type = R5String.of(type, _type),
+      mode =
+        Enumeration.of(
+          if (mode != null) StructureMap.StructureMapInputMode.fromCode(mode) else null,
+          _mode,
+        )
+          ?: throw SerializationException(
+            "Missing required property 'mode' on StructureMap.Group.Input"
+          ),
+      documentation = R5String.of(documentation, _documentation),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Input) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.name.value)
-      encodeElementIfNotNull(descriptor, 4, value.name)
-      encodeStringIfNotNull(descriptor, 5, value.type?.value)
-      encodeElementIfNotNull(descriptor, 6, value.type)
-      encodeStringIfNotNull(descriptor, 7, value.mode.value?.code)
-      encodeElementIfNotNull(descriptor, 8, value.mode)
-      encodeStringIfNotNull(descriptor, 9, value.documentation?.value)
-      encodeElementIfNotNull(descriptor, 10, value.documentation)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.type?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.type)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.mode.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.mode)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.documentation?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.documentation)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -562,143 +653,156 @@ internal object StructureMapGroupRuleSerializer : KSerializer<StructureMap.Group
 
   internal val listSerializer: KSerializer<List<StructureMap.Group.Rule>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var source: List<StructureMap.Group.Rule.Source>? = null
-      var target: List<StructureMap.Group.Rule.Target>? = null
-      var rule: List<StructureMap.Group.Rule>? = null
-      var dependent: List<StructureMap.Group.Rule.Dependent>? = null
-      var documentation: KotlinString? = null
-      var _documentation: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> name = decodeStringElement(descriptor, i)
-          4 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            source =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                StructureMapGroupRuleSourceSerializer.listSerializer,
-                null,
-              )
-          6 ->
-            target =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                StructureMapGroupRuleTargetSerializer.listSerializer,
-                null,
-              )
-          7 ->
-            rule =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                StructureMapGroupRuleSerializer.listSerializer,
-                null,
-              )
-          8 ->
-            dependent =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                StructureMapGroupRuleDependentSerializer.listSerializer,
-                null,
-              )
-          9 -> documentation = decodeStringElement(descriptor, i)
-          10 ->
-            _documentation =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Rule: " + i)
-        }
+  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var source: List<StructureMap.Group.Rule.Source>? = null
+    var target: List<StructureMap.Group.Rule.Target>? = null
+    var rule: List<StructureMap.Group.Rule>? = null
+    var dependent: List<StructureMap.Group.Rule.Dependent>? = null
+    var documentation: KotlinString? = null
+    var _documentation: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          source =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleSourceSerializer.listSerializer,
+              null,
+            )
+        6 ->
+          target =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleTargetSerializer.listSerializer,
+              null,
+            )
+        7 ->
+          rule =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleSerializer.listSerializer,
+              null,
+            )
+        8 ->
+          dependent =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleDependentSerializer.listSerializer,
+              null,
+            )
+        9 -> documentation = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _documentation =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Rule: " + i)
       }
-      StructureMap.Group.Rule(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        name = Id.of(name, _name),
-        source = source ?: listOf(),
-        target = target ?: listOf(),
-        rule = rule ?: listOf(),
-        dependent = dependent ?: listOf(),
-        documentation = R5String.of(documentation, _documentation),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return StructureMap.Group.Rule(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      name = Id.of(name, _name),
+      source = source ?: listOf(),
+      target = target ?: listOf(),
+      rule = rule ?: listOf(),
+      dependent = dependent ?: listOf(),
+      documentation = R5String.of(documentation, _documentation),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.name?.value)
-      encodeElementIfNotNull(descriptor, 4, value.name)
-      if (value.source.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          5,
-          StructureMapGroupRuleSourceSerializer.listSerializer,
-          value.source,
-        )
-      if (value.target.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          6,
-          StructureMapGroupRuleTargetSerializer.listSerializer,
-          value.target,
-        )
-      if (value.rule.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          7,
-          StructureMapGroupRuleSerializer.listSerializer,
-          value.rule,
-        )
-      if (value.dependent.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          8,
-          StructureMapGroupRuleDependentSerializer.listSerializer,
-          value.dependent,
-        )
-      encodeStringIfNotNull(descriptor, 9, value.documentation?.value)
-      encodeElementIfNotNull(descriptor, 10, value.documentation)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
+    if (value.source.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        5,
+        StructureMapGroupRuleSourceSerializer.listSerializer,
+        value.source,
+      )
+    if (value.target.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        6,
+        StructureMapGroupRuleTargetSerializer.listSerializer,
+        value.target,
+      )
+    if (value.rule.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        7,
+        StructureMapGroupRuleSerializer.listSerializer,
+        value.rule,
+      )
+    if (value.dependent.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        8,
+        StructureMapGroupRuleDependentSerializer.listSerializer,
+        value.dependent,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.documentation?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.documentation)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -736,151 +840,223 @@ internal object StructureMapGroupRuleSourceSerializer :
   internal val listSerializer: KSerializer<List<StructureMap.Group.Rule.Source>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Source =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var context: KotlinString? = null
-      var _context: Element? = null
-      var min: Int? = null
-      var _min: Element? = null
-      var max: KotlinString? = null
-      var _max: Element? = null
-      var type: KotlinString? = null
-      var _type: Element? = null
-      var defaultValue: KotlinString? = null
-      var _defaultValue: Element? = null
-      var element: KotlinString? = null
-      var _element: Element? = null
-      var listMode: KotlinString? = null
-      var _listMode: Element? = null
-      var variable: KotlinString? = null
-      var _variable: Element? = null
-      var condition: KotlinString? = null
-      var _condition: Element? = null
-      var check: KotlinString? = null
-      var _check: Element? = null
-      var logMessage: KotlinString? = null
-      var _logMessage: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> context = decodeStringElement(descriptor, i)
-          4 -> _context = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> min = decodeIntElement(descriptor, i)
-          6 -> _min = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> max = decodeStringElement(descriptor, i)
-          8 -> _max = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> type = decodeStringElement(descriptor, i)
-          10 -> _type = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          11 -> defaultValue = decodeStringElement(descriptor, i)
-          12 ->
-            _defaultValue =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          13 -> element = decodeStringElement(descriptor, i)
-          14 -> _element = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          15 -> listMode = decodeStringElement(descriptor, i)
-          16 ->
-            _listMode = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          17 -> variable = decodeStringElement(descriptor, i)
-          18 ->
-            _variable = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          19 -> condition = decodeStringElement(descriptor, i)
-          20 ->
-            _condition = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          21 -> check = decodeStringElement(descriptor, i)
-          22 -> _check = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          23 -> logMessage = decodeStringElement(descriptor, i)
-          24 ->
-            _logMessage = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Source: " + i)
-        }
+  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Source {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var context: KotlinString? = null
+    var _context: Element? = null
+    var min: Int? = null
+    var _min: Element? = null
+    var max: KotlinString? = null
+    var _max: Element? = null
+    var type: KotlinString? = null
+    var _type: Element? = null
+    var defaultValue: KotlinString? = null
+    var _defaultValue: Element? = null
+    var element: KotlinString? = null
+    var _element: Element? = null
+    var listMode: KotlinString? = null
+    var _listMode: Element? = null
+    var variable: KotlinString? = null
+    var _variable: Element? = null
+    var condition: KotlinString? = null
+    var _condition: Element? = null
+    var check: KotlinString? = null
+    var _check: Element? = null
+    var logMessage: KotlinString? = null
+    var _logMessage: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> context = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _context =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> min = compositeDecoder.decodeIntElement(descriptor, i)
+        6 ->
+          _min =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> max = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _max =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 -> defaultValue = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          _defaultValue =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 -> element = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          _element =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        15 -> listMode = compositeDecoder.decodeStringElement(descriptor, i)
+        16 ->
+          _listMode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        17 -> variable = compositeDecoder.decodeStringElement(descriptor, i)
+        18 ->
+          _variable =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        19 -> condition = compositeDecoder.decodeStringElement(descriptor, i)
+        20 ->
+          _condition =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        21 -> check = compositeDecoder.decodeStringElement(descriptor, i)
+        22 ->
+          _check =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        23 -> logMessage = compositeDecoder.decodeStringElement(descriptor, i)
+        24 ->
+          _logMessage =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Source: " + i)
       }
-      StructureMap.Group.Rule.Source(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        context =
-          Id.of(context, _context)
-            ?: throw SerializationException(
-              "Missing required property 'context' on StructureMap.Group.Rule.Source"
-            ),
-        min = Integer.of(min, _min),
-        max = R5String.of(max, _max),
-        type = R5String.of(type, _type),
-        defaultValue = R5String.of(defaultValue, _defaultValue),
-        element = R5String.of(element, _element),
-        listMode =
-          Enumeration.of(
-            if (listMode != null) StructureMap.StructureMapSourceListMode.fromCode(listMode)
-            else null,
-            _listMode,
-          ),
-        variable = Id.of(variable, _variable),
-        condition = R5String.of(condition, _condition),
-        check = R5String.of(check, _check),
-        logMessage = R5String.of(logMessage, _logMessage),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return StructureMap.Group.Rule.Source(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      context =
+        Id.of(context, _context)
+          ?: throw SerializationException(
+            "Missing required property 'context' on StructureMap.Group.Rule.Source"
+          ),
+      min = Integer.of(min, _min),
+      max = R5String.of(max, _max),
+      type = R5String.of(type, _type),
+      defaultValue = R5String.of(defaultValue, _defaultValue),
+      element = R5String.of(element, _element),
+      listMode =
+        Enumeration.of(
+          if (listMode != null) StructureMap.StructureMapSourceListMode.fromCode(listMode)
+          else null,
+          _listMode,
+        ),
+      variable = Id.of(variable, _variable),
+      condition = R5String.of(condition, _condition),
+      check = R5String.of(check, _check),
+      logMessage = R5String.of(logMessage, _logMessage),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule.Source) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.context.value)
-      encodeElementIfNotNull(descriptor, 4, value.context)
-      encodeIntIfNotNull(descriptor, 5, value.min?.value)
-      encodeElementIfNotNull(descriptor, 6, value.min)
-      encodeStringIfNotNull(descriptor, 7, value.max?.value)
-      encodeElementIfNotNull(descriptor, 8, value.max)
-      encodeStringIfNotNull(descriptor, 9, value.type?.value)
-      encodeElementIfNotNull(descriptor, 10, value.type)
-      encodeStringIfNotNull(descriptor, 11, value.defaultValue?.value)
-      encodeElementIfNotNull(descriptor, 12, value.defaultValue)
-      encodeStringIfNotNull(descriptor, 13, value.element?.value)
-      encodeElementIfNotNull(descriptor, 14, value.element)
-      encodeStringIfNotNull(descriptor, 15, value.listMode?.value?.code)
-      encodeElementIfNotNull(descriptor, 16, value.listMode)
-      encodeStringIfNotNull(descriptor, 17, value.variable?.value)
-      encodeElementIfNotNull(descriptor, 18, value.variable)
-      encodeStringIfNotNull(descriptor, 19, value.condition?.value)
-      encodeElementIfNotNull(descriptor, 20, value.condition)
-      encodeStringIfNotNull(descriptor, 21, value.check?.value)
-      encodeElementIfNotNull(descriptor, 22, value.check)
-      encodeStringIfNotNull(descriptor, 23, value.logMessage?.value)
-      encodeElementIfNotNull(descriptor, 24, value.logMessage)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.context.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.context)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.min?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.min)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.max?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.max)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.type?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.type)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 11, value.defaultValue?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.defaultValue)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 13, value.element?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 14, value.element)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 15, value.listMode?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 16, value.listMode)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 17, value.variable?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 18, value.variable)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 19, value.condition?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 20, value.condition)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 21, value.check?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 22, value.check)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 23, value.logMessage?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 24, value.logMessage)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -912,151 +1088,190 @@ internal object StructureMapGroupRuleTargetSerializer :
   internal val listSerializer: KSerializer<List<StructureMap.Group.Rule.Target>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Target =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var context: KotlinString? = null
-      var _context: Element? = null
-      var element: KotlinString? = null
-      var _element: Element? = null
-      var variable: KotlinString? = null
-      var _variable: Element? = null
-      var listMode: List<KotlinString?>? = null
-      var _listMode: List<Element?>? = null
-      var listRuleId: KotlinString? = null
-      var _listRuleId: Element? = null
-      var transform: KotlinString? = null
-      var _transform: Element? = null
-      var parameter: List<StructureMap.Group.Rule.Target.Parameter>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> context = decodeStringElement(descriptor, i)
-          4 -> _context = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> element = decodeStringElement(descriptor, i)
-          6 -> _element = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> variable = decodeStringElement(descriptor, i)
-          8 -> _variable = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 ->
-            listMode =
-              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
-          10 ->
-            _listMode =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ElementSerializer.nullableListSerializer,
-                null,
-              )
-          11 -> listRuleId = decodeStringElement(descriptor, i)
-          12 ->
-            _listRuleId = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          13 -> transform = decodeStringElement(descriptor, i)
-          14 ->
-            _transform = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          15 ->
-            parameter =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                StructureMapGroupRuleTargetParameterSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Target: " + i)
-        }
-      }
-      StructureMap.Group.Rule.Target(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        context = R5String.of(context, _context),
-        element = R5String.of(element, _element),
-        variable = Id.of(variable, _variable),
-        listMode =
-          (kotlin.collections.List(maxOf(listMode?.size ?: 0, _listMode?.size ?: 0)) { index ->
-            Enumeration.of(
-              listMode?.getOrNull(index)?.let {
-                StructureMap.StructureMapTargetListMode.fromCode(it)
-              },
-              _listMode?.getOrNull(index),
+  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Target {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var context: KotlinString? = null
+    var _context: Element? = null
+    var element: KotlinString? = null
+    var _element: Element? = null
+    var variable: KotlinString? = null
+    var _variable: Element? = null
+    var listMode: List<KotlinString?>? = null
+    var _listMode: List<Element?>? = null
+    var listRuleId: KotlinString? = null
+    var _listRuleId: Element? = null
+    var transform: KotlinString? = null
+    var _transform: Element? = null
+    var parameter: List<StructureMap.Group.Rule.Target.Parameter>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
             )
-              ?: throw SerializationException(
-                "An entry of 'listMode' on StructureMap.Group.Rule.Target has neither a value nor an id/extension"
-              )
-          }),
-        listRuleId = Id.of(listRuleId, _listRuleId),
-        transform =
-          Enumeration.of(
-            if (transform != null) StructureMap.StructureMapTransform.fromCode(transform) else null,
-            _transform,
-          ),
-        parameter = parameter ?: listOf(),
-      )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> context = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _context =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> element = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _element =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> variable = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _variable =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 ->
+          listMode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
+        10 ->
+          _listMode =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        11 -> listRuleId = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          _listRuleId =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 -> transform = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          _transform =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        15 ->
+          parameter =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleTargetParameterSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Target: " + i)
+      }
     }
+    compositeDecoder.endStructure(descriptor)
+    return StructureMap.Group.Rule.Target(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      context = R5String.of(context, _context),
+      element = R5String.of(element, _element),
+      variable = Id.of(variable, _variable),
+      listMode =
+        (kotlin.collections.List(maxOf(listMode?.size ?: 0, _listMode?.size ?: 0)) { index ->
+          Enumeration.of(
+            listMode?.getOrNull(index)?.let {
+              StructureMap.StructureMapTargetListMode.fromCode(it)
+            },
+            _listMode?.getOrNull(index),
+          )
+            ?: throw SerializationException(
+              "An entry of 'listMode' on StructureMap.Group.Rule.Target has neither a value nor an id/extension"
+            )
+        }),
+      listRuleId = Id.of(listRuleId, _listRuleId),
+      transform =
+        Enumeration.of(
+          if (transform != null) StructureMap.StructureMapTransform.fromCode(transform) else null,
+          _transform,
+        ),
+      parameter = parameter ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule.Target) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.context?.value)
-      encodeElementIfNotNull(descriptor, 4, value.context)
-      encodeStringIfNotNull(descriptor, 5, value.element?.value)
-      encodeElementIfNotNull(descriptor, 6, value.element)
-      encodeStringIfNotNull(descriptor, 7, value.variable?.value)
-      encodeElementIfNotNull(descriptor, 8, value.variable)
-      if (value.listMode.isNotEmpty()) {
-        encodeNullableListIfNotNull(
-          descriptor,
-          9,
-          stringNullableListSerializer,
-          value.listMode.map { it.value?.code },
-        )
-        encodePrimitiveElementList(descriptor, 10, value.listMode)
-      }
-      encodeStringIfNotNull(descriptor, 11, value.listRuleId?.value)
-      encodeElementIfNotNull(descriptor, 12, value.listRuleId)
-      encodeStringIfNotNull(descriptor, 13, value.transform?.value?.code)
-      encodeElementIfNotNull(descriptor, 14, value.transform)
-      if (value.parameter.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          15,
-          StructureMapGroupRuleTargetParameterSerializer.listSerializer,
-          value.parameter,
-        )
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.context?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.context)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.element?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.element)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.variable?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.variable)
+    if (value.listMode.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        9,
+        stringNullableListSerializer,
+        value.listMode.map { it.value?.code },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 10, value.listMode)
     }
+    compositeEncoder.encodeStringIfNotNull(descriptor, 11, value.listRuleId?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.listRuleId)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 13, value.transform?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 14, value.transform)
+    if (value.parameter.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        15,
+        StructureMapGroupRuleTargetParameterSerializer.listSerializer,
+        value.parameter,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -1088,156 +1303,223 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
   internal val listSerializer: KSerializer<List<StructureMap.Group.Rule.Target.Parameter>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Target.Parameter =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var valueId: KotlinString? = null
-      var _valueId: Element? = null
-      var valueString: KotlinString? = null
-      var _valueString: Element? = null
-      var valueBoolean: KotlinBoolean? = null
-      var _valueBoolean: Element? = null
-      var valueInteger: Int? = null
-      var _valueInteger: Element? = null
-      var valueDecimal: FhirDecimal? = null
-      var _valueDecimal: Element? = null
-      var valueDate: KotlinString? = null
-      var _valueDate: Element? = null
-      var valueTime: LocalTime? = null
-      var _valueTime: Element? = null
-      var valueDateTime: KotlinString? = null
-      var _valueDateTime: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> valueId = decodeStringElement(descriptor, i)
-          4 -> _valueId = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> valueString = decodeStringElement(descriptor, i)
-          6 ->
-            _valueString = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> valueBoolean = decodeBooleanElement(descriptor, i)
-          8 ->
-            _valueBoolean =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          9 -> valueInteger = decodeIntElement(descriptor, i)
-          10 ->
-            _valueInteger =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          11 ->
-            valueDecimal =
-              decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
-          12 ->
-            _valueDecimal =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          13 -> valueDate = decodeStringElement(descriptor, i)
-          14 ->
-            _valueDate = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          15 ->
-            valueTime = decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
-          16 ->
-            _valueTime = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          17 -> valueDateTime = decodeStringElement(descriptor, i)
-          18 ->
-            _valueDateTime =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Parameter: " + i)
-        }
+  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Target.Parameter {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var valueId: KotlinString? = null
+    var _valueId: Element? = null
+    var valueString: KotlinString? = null
+    var _valueString: Element? = null
+    var valueBoolean: KotlinBoolean? = null
+    var _valueBoolean: Element? = null
+    var valueInteger: Int? = null
+    var _valueInteger: Element? = null
+    var valueDecimal: FhirDecimal? = null
+    var _valueDecimal: Element? = null
+    var valueDate: KotlinString? = null
+    var _valueDate: Element? = null
+    var valueTime: LocalTime? = null
+    var _valueTime: Element? = null
+    var valueDateTime: KotlinString? = null
+    var _valueDateTime: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> valueId = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _valueId =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> valueString = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _valueString =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> valueBoolean = compositeDecoder.decodeBooleanElement(descriptor, i)
+        8 ->
+          _valueBoolean =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> valueInteger = compositeDecoder.decodeIntElement(descriptor, i)
+        10 ->
+          _valueInteger =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 ->
+          valueDecimal =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
+        12 ->
+          _valueDecimal =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 -> valueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          _valueDate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        15 ->
+          valueTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              LocalTimeSerializer,
+              null,
+            )
+        16 ->
+          _valueTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        17 -> valueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        18 ->
+          _valueDateTime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Parameter: " + i)
       }
-      StructureMap.Group.Rule.Target.Parameter(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        `value` =
-          StructureMap.Group.Rule.Target.Parameter.Value.from(
-            Id.of(valueId, _valueId),
-            R5String.of(valueString, _valueString),
-            R5Boolean.of(valueBoolean, _valueBoolean),
-            Integer.of(valueInteger, _valueInteger),
-            Decimal.of(valueDecimal, _valueDecimal),
-            Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
-            Time.of(valueTime, _valueTime),
-            DateTime.of(
-              if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
-              _valueDateTime,
-            ),
-          )
-            ?: throw SerializationException(
-              "Missing required property 'value' on StructureMap.Group.Rule.Target.Parameter"
-            ),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return StructureMap.Group.Rule.Target.Parameter(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      `value` =
+        StructureMap.Group.Rule.Target.Parameter.Value.from(
+          Id.of(valueId, _valueId),
+          R5String.of(valueString, _valueString),
+          R5Boolean.of(valueBoolean, _valueBoolean),
+          Integer.of(valueInteger, _valueInteger),
+          Decimal.of(valueDecimal, _valueDecimal),
+          Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
+          Time.of(valueTime, _valueTime),
+          DateTime.of(
+            if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
+            _valueDateTime,
+          ),
+        )
+          ?: throw SerializationException(
+            "Missing required property 'value' on StructureMap.Group.Rule.Target.Parameter"
+          ),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule.Target.Parameter) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    when (val choice = value.`value`) {
+      is StructureMap.Group.Rule.Target.Parameter.Value.Id -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 3, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 4, choice.value)
+      }
+      is StructureMap.Group.Rule.Target.Parameter.Value.String -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 5, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 6, choice.value)
+      }
+      is StructureMap.Group.Rule.Target.Parameter.Value.Boolean -> {
+        compositeEncoder.encodeBooleanIfNotNull(descriptor, 7, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 8, choice.value)
+      }
+      is StructureMap.Group.Rule.Target.Parameter.Value.Integer -> {
+        compositeEncoder.encodeIntIfNotNull(descriptor, 9, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 10, choice.value)
+      }
+      is StructureMap.Group.Rule.Target.Parameter.Value.Decimal -> {
+        compositeEncoder.encodeSerializableIfNotNull(
           descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
+          11,
+          FhirDecimalSerializer,
+          choice.value.value,
         )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
+        compositeEncoder.encodeElementIfNotNull(descriptor, 12, choice.value)
+      }
+      is StructureMap.Group.Rule.Target.Parameter.Value.Date -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 13, choice.value.value?.toString())
+        compositeEncoder.encodeElementIfNotNull(descriptor, 14, choice.value)
+      }
+      is StructureMap.Group.Rule.Target.Parameter.Value.Time -> {
+        compositeEncoder.encodeSerializableIfNotNull(
           descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
+          15,
+          LocalTimeSerializer,
+          choice.value.value,
         )
-      when (val choice = value.`value`) {
-        is StructureMap.Group.Rule.Target.Parameter.Value.Id -> {
-          encodeStringIfNotNull(descriptor, 3, choice.value.value)
-          encodeElementIfNotNull(descriptor, 4, choice.value)
-        }
-        is StructureMap.Group.Rule.Target.Parameter.Value.String -> {
-          encodeStringIfNotNull(descriptor, 5, choice.value.value)
-          encodeElementIfNotNull(descriptor, 6, choice.value)
-        }
-        is StructureMap.Group.Rule.Target.Parameter.Value.Boolean -> {
-          encodeBooleanIfNotNull(descriptor, 7, choice.value.value)
-          encodeElementIfNotNull(descriptor, 8, choice.value)
-        }
-        is StructureMap.Group.Rule.Target.Parameter.Value.Integer -> {
-          encodeIntIfNotNull(descriptor, 9, choice.value.value)
-          encodeElementIfNotNull(descriptor, 10, choice.value)
-        }
-        is StructureMap.Group.Rule.Target.Parameter.Value.Decimal -> {
-          encodeSerializableIfNotNull(descriptor, 11, FhirDecimalSerializer, choice.value.value)
-          encodeElementIfNotNull(descriptor, 12, choice.value)
-        }
-        is StructureMap.Group.Rule.Target.Parameter.Value.Date -> {
-          encodeStringIfNotNull(descriptor, 13, choice.value.value?.toString())
-          encodeElementIfNotNull(descriptor, 14, choice.value)
-        }
-        is StructureMap.Group.Rule.Target.Parameter.Value.Time -> {
-          encodeSerializableIfNotNull(descriptor, 15, LocalTimeSerializer, choice.value.value)
-          encodeElementIfNotNull(descriptor, 16, choice.value)
-        }
-        is StructureMap.Group.Rule.Target.Parameter.Value.DateTime -> {
-          encodeStringIfNotNull(descriptor, 17, choice.value.value?.toString())
-          encodeElementIfNotNull(descriptor, 18, choice.value)
-        }
+        compositeEncoder.encodeElementIfNotNull(descriptor, 16, choice.value)
+      }
+      is StructureMap.Group.Rule.Target.Parameter.Value.DateTime -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 17, choice.value.value?.toString())
+        compositeEncoder.encodeElementIfNotNull(descriptor, 18, choice.value)
       }
     }
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -1259,87 +1541,95 @@ internal object StructureMapGroupRuleDependentSerializer :
   internal val listSerializer: KSerializer<List<StructureMap.Group.Rule.Dependent>> =
     ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Dependent =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var name: KotlinString? = null
-      var _name: Element? = null
-      var parameter: List<StructureMap.Group.Rule.Target.Parameter>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> name = decodeStringElement(descriptor, i)
-          4 -> _name = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 ->
-            parameter =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                StructureMapGroupRuleTargetParameterSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Dependent: " + i)
-        }
+  override fun deserialize(decoder: Decoder): StructureMap.Group.Rule.Dependent {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var parameter: List<StructureMap.Group.Rule.Target.Parameter>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 ->
+          parameter =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              StructureMapGroupRuleTargetParameterSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Dependent: " + i)
       }
-      StructureMap.Group.Rule.Dependent(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        name =
-          Id.of(name, _name)
-            ?: throw SerializationException(
-              "Missing required property 'name' on StructureMap.Group.Rule.Dependent"
-            ),
-        parameter = parameter ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return StructureMap.Group.Rule.Dependent(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      name =
+        Id.of(name, _name)
+          ?: throw SerializationException(
+            "Missing required property 'name' on StructureMap.Group.Rule.Dependent"
+          ),
+      parameter = parameter ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: StructureMap.Group.Rule.Dependent) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeStringIfNotNull(descriptor, 3, value.name.value)
-      encodeElementIfNotNull(descriptor, 4, value.name)
-      if (value.parameter.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          5,
-          StructureMapGroupRuleTargetParameterSerializer.listSerializer,
-          value.parameter,
-        )
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
+    if (value.parameter.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        5,
+        StructureMapGroupRuleTargetParameterSerializer.listSerializer,
+        value.parameter,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -1399,7 +1689,7 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
   }
 
   override fun deserializeInternal(
-    decoder: CompositeDecoder,
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): StructureMap {
@@ -1450,25 +1740,43 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
     var `const`: List<StructureMap.Const>? = null
     var group: List<StructureMap.Group>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
-          text = decoder.decodeNullableSerializableElement(descriptor, i, NarrativeSerializer, null)
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ResourcePolymorphicSerializer.listSerializer,
@@ -1476,7 +1784,7 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
             )
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
@@ -1484,70 +1792,129 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
             )
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ExtensionSerializer.listSerializer,
               null,
             )
-        10 -> url = decoder.decodeStringElement(descriptor, i)
+        10 -> url = compositeDecoder.decodeStringElement(descriptor, i)
         11 ->
-          _url = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+          _url =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         12 ->
           identifier =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               IdentifierSerializer.listSerializer,
               null,
             )
-        13 -> version = decoder.decodeStringElement(descriptor, i)
+        13 -> version = compositeDecoder.decodeStringElement(descriptor, i)
         14 ->
           _version =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        15 -> versionAlgorithmString = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        15 -> versionAlgorithmString = compositeDecoder.decodeStringElement(descriptor, i)
         16 ->
           _versionAlgorithmString =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         17 ->
           versionAlgorithmCoding =
-            decoder.decodeNullableSerializableElement(descriptor, i, CodingSerializer, null)
-        18 -> name = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer,
+              null,
+            )
+        18 -> name = compositeDecoder.decodeStringElement(descriptor, i)
         19 ->
-          _name = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        20 -> title = decoder.decodeStringElement(descriptor, i)
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        20 -> title = compositeDecoder.decodeStringElement(descriptor, i)
         21 ->
-          _title = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        22 -> status = decoder.decodeStringElement(descriptor, i)
+          _title =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        22 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         23 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        24 -> experimental = decoder.decodeBooleanElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        24 -> experimental = compositeDecoder.decodeBooleanElement(descriptor, i)
         25 ->
           _experimental =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        26 -> date = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        26 -> date = compositeDecoder.decodeStringElement(descriptor, i)
         27 ->
-          _date = decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        28 -> publisher = decoder.decodeStringElement(descriptor, i)
+          _date =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        28 -> publisher = compositeDecoder.decodeStringElement(descriptor, i)
         29 ->
           _publisher =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         30 ->
           contact =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ContactDetailSerializer.listSerializer,
               null,
             )
-        31 -> description = decoder.decodeStringElement(descriptor, i)
+        31 -> description = compositeDecoder.decodeStringElement(descriptor, i)
         32 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         33 ->
           useContext =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               UsageContextSerializer.listSerializer,
@@ -1555,27 +1922,42 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
             )
         34 ->
           jurisdiction =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               CodeableConceptSerializer.listSerializer,
               null,
             )
-        35 -> purpose = decoder.decodeStringElement(descriptor, i)
+        35 -> purpose = compositeDecoder.decodeStringElement(descriptor, i)
         36 ->
           _purpose =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        37 -> copyright = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        37 -> copyright = compositeDecoder.decodeStringElement(descriptor, i)
         38 ->
           _copyright =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-        39 -> copyrightLabel = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        39 -> copyrightLabel = compositeDecoder.decodeStringElement(descriptor, i)
         40 ->
           _copyrightLabel =
-            decoder.decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         41 ->
           structure =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               StructureMapStructureSerializer.listSerializer,
@@ -1583,7 +1965,7 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
             )
         42 ->
           `import` =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               stringNullableListSerializer,
@@ -1591,7 +1973,7 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
             )
         43 ->
           _import =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               ElementSerializer.nullableListSerializer,
@@ -1599,7 +1981,7 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
             )
         44 ->
           `const` =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               StructureMapConstSerializer.listSerializer,
@@ -1607,7 +1989,7 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
             )
         45 ->
           group =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
               StructureMapGroupSerializer.listSerializer,
@@ -1666,68 +2048,76 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
   }
 
   override fun serializeInternal(
-    encoder: CompositeEncoder,
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: StructureMap,
   ) {
-    encoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       1 + descriptorOffset,
       MetaSerializer,
       value.meta,
     )
-    encoder.encodeStringIfNotNull(descriptor, 2 + descriptorOffset, value.implicitRules?.value)
-    encoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
-    encoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
-    encoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
-    encoder.encodeSerializableIfNotNull(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6 + descriptorOffset,
       NarrativeSerializer,
       value.text,
     )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
         ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
         ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url.value)
-    encoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         12 + descriptorOffset,
         IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    encoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
-    encoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     when (val choice = value.versionAlgorithm) {
       null -> {}
       is StructureMap.VersionAlgorithm.String -> {
-        encoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, choice.value.value)
-        encoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, choice.value)
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          15 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, choice.value)
       }
       is StructureMap.VersionAlgorithm.Coding -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           17 + descriptorOffset,
           CodingSerializer,
@@ -1735,72 +2125,100 @@ internal object StructureMapSerializer : FhirResourceSerializer<StructureMap> {
         )
       }
     }
-    encoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.name.value)
-    encoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.name)
-    encoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.title?.value)
-    encoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.title)
-    encoder.encodeStringIfNotNull(descriptor, 22 + descriptorOffset, value.status.value?.code)
-    encoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.status)
-    encoder.encodeBooleanIfNotNull(descriptor, 24 + descriptorOffset, value.experimental?.value)
-    encoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.experimental)
-    encoder.encodeStringIfNotNull(descriptor, 26 + descriptorOffset, value.date?.value?.toString())
-    encoder.encodeElementIfNotNull(descriptor, 27 + descriptorOffset, value.date)
-    encoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.publisher?.value)
-    encoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.publisher)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.name.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.title?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.title)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.status)
+    compositeEncoder.encodeBooleanIfNotNull(
+      descriptor,
+      24 + descriptorOffset,
+      value.experimental?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.experimental)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      26 + descriptorOffset,
+      value.date?.value?.toString(),
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 27 + descriptorOffset, value.date)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      28 + descriptorOffset,
+      value.publisher?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.publisher)
     if (value.contact.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         30 + descriptorOffset,
         ContactDetailSerializer.listSerializer,
         value.contact,
       )
-    encoder.encodeStringIfNotNull(descriptor, 31 + descriptorOffset, value.description?.value)
-    encoder.encodeElementIfNotNull(descriptor, 32 + descriptorOffset, value.description)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      31 + descriptorOffset,
+      value.description?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 32 + descriptorOffset, value.description)
     if (value.useContext.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         33 + descriptorOffset,
         UsageContextSerializer.listSerializer,
         value.useContext,
       )
     if (value.jurisdiction.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         34 + descriptorOffset,
         CodeableConceptSerializer.listSerializer,
         value.jurisdiction,
       )
-    encoder.encodeStringIfNotNull(descriptor, 35 + descriptorOffset, value.purpose?.value)
-    encoder.encodeElementIfNotNull(descriptor, 36 + descriptorOffset, value.purpose)
-    encoder.encodeStringIfNotNull(descriptor, 37 + descriptorOffset, value.copyright?.value)
-    encoder.encodeElementIfNotNull(descriptor, 38 + descriptorOffset, value.copyright)
-    encoder.encodeStringIfNotNull(descriptor, 39 + descriptorOffset, value.copyrightLabel?.value)
-    encoder.encodeElementIfNotNull(descriptor, 40 + descriptorOffset, value.copyrightLabel)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 35 + descriptorOffset, value.purpose?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 36 + descriptorOffset, value.purpose)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      37 + descriptorOffset,
+      value.copyright?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 38 + descriptorOffset, value.copyright)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      39 + descriptorOffset,
+      value.copyrightLabel?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 40 + descriptorOffset, value.copyrightLabel)
     if (value.structure.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         41 + descriptorOffset,
         StructureMapStructureSerializer.listSerializer,
         value.structure,
       )
     if (value.`import`.isNotEmpty()) {
-      encoder.encodeNullableListIfNotNull(
+      compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         42 + descriptorOffset,
         stringNullableListSerializer,
         value.`import`.map { it.value },
       )
-      encoder.encodePrimitiveElementList(descriptor, 43 + descriptorOffset, value.`import`)
+      compositeEncoder.encodePrimitiveElementList(descriptor, 43 + descriptorOffset, value.`import`)
     }
     if (value.`const`.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         44 + descriptorOffset,
         StructureMapConstSerializer.listSerializer,
         value.`const`,
       )
     if (value.group.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         45 + descriptorOffset,
         StructureMapGroupSerializer.listSerializer,

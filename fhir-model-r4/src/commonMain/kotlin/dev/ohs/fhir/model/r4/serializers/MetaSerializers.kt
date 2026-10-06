@@ -46,8 +46,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object MetaSerializer : KSerializer<Meta> {
   override val descriptor: SerialDescriptor =
@@ -77,121 +75,156 @@ internal object MetaSerializer : KSerializer<Meta> {
 
   internal val listSerializer: KSerializer<List<Meta>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Meta =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var versionId: String? = null
-      var _versionId: Element? = null
-      var lastUpdated: String? = null
-      var _lastUpdated: Element? = null
-      var source: String? = null
-      var _source: Element? = null
-      var profile: List<String?>? = null
-      var _profile: List<Element?>? = null
-      var security: List<Coding>? = null
-      var tag: List<Coding>? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 -> versionId = decodeStringElement(descriptor, i)
-          3 ->
-            _versionId = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          4 -> lastUpdated = decodeStringElement(descriptor, i)
-          5 ->
-            _lastUpdated = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          6 -> source = decodeStringElement(descriptor, i)
-          7 -> _source = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          8 ->
-            profile =
-              decodeNullableSerializableElement(descriptor, i, stringNullableListSerializer, null)
-          9 ->
-            _profile =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ElementSerializer.nullableListSerializer,
-                null,
-              )
-          10 ->
-            security =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodingSerializer.listSerializer,
-                null,
-              )
-          11 ->
-            tag =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodingSerializer.listSerializer,
-                null,
-              )
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Meta: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Meta {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var versionId: String? = null
+    var _versionId: Element? = null
+    var lastUpdated: String? = null
+    var _lastUpdated: Element? = null
+    var source: String? = null
+    var _source: Element? = null
+    var profile: List<String?>? = null
+    var _profile: List<Element?>? = null
+    var security: List<Coding>? = null
+    var tag: List<Coding>? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> versionId = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          _versionId =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> lastUpdated = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _lastUpdated =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> source = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          _source =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        8 ->
+          profile =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
+        9 ->
+          _profile =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        10 ->
+          security =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
+        11 ->
+          tag =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer.listSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Meta: " + i)
       }
-      Meta(
-        id = id,
-        extension = extension ?: listOf(),
-        versionId = Id.of(versionId, _versionId),
-        lastUpdated =
-          Instant.of(
-            if (lastUpdated != null) FhirDateTime.fromString(lastUpdated) else null,
-            _lastUpdated,
-          ),
-        source = Uri.of(source, _source),
-        profile =
-          (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
-            Canonical.of(profile?.getOrNull(index), _profile?.getOrNull(index))
-              ?: throw SerializationException(
-                "An entry of 'profile' on Meta has neither a value nor an id/extension"
-              )
-          }),
-        security = security ?: listOf(),
-        tag = tag ?: listOf(),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Meta(
+      id = id,
+      extension = extension ?: listOf(),
+      versionId = Id.of(versionId, _versionId),
+      lastUpdated =
+        Instant.of(
+          if (lastUpdated != null) FhirDateTime.fromString(lastUpdated) else null,
+          _lastUpdated,
+        ),
+      source = Uri.of(source, _source),
+      profile =
+        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
+          Canonical.of(profile?.getOrNull(index), _profile?.getOrNull(index))
+            ?: throw SerializationException(
+              "An entry of 'profile' on Meta has neither a value nor an id/extension"
+            )
+        }),
+      security = security ?: listOf(),
+      tag = tag ?: listOf(),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Meta) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      encodeStringIfNotNull(descriptor, 2, value.versionId?.value)
-      encodeElementIfNotNull(descriptor, 3, value.versionId)
-      encodeStringIfNotNull(descriptor, 4, value.lastUpdated?.value?.toString())
-      encodeElementIfNotNull(descriptor, 5, value.lastUpdated)
-      encodeStringIfNotNull(descriptor, 6, value.source?.value)
-      encodeElementIfNotNull(descriptor, 7, value.source)
-      if (value.profile.isNotEmpty()) {
-        encodeNullableListIfNotNull(
-          descriptor,
-          8,
-          stringNullableListSerializer,
-          value.profile.map { it.value },
-        )
-        encodePrimitiveElementList(descriptor, 9, value.profile)
-      }
-      if (value.security.isNotEmpty())
-        encodeSerializableElement(descriptor, 10, CodingSerializer.listSerializer, value.security)
-      if (value.tag.isNotEmpty())
-        encodeSerializableElement(descriptor, 11, CodingSerializer.listSerializer, value.tag)
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.versionId?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.versionId)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.lastUpdated?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.lastUpdated)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.source?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.source)
+    if (value.profile.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        8,
+        stringNullableListSerializer,
+        value.profile.map { it.value },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 9, value.profile)
     }
+    if (value.security.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        10,
+        CodingSerializer.listSerializer,
+        value.security,
+      )
+    if (value.tag.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        11,
+        CodingSerializer.listSerializer,
+        value.tag,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }

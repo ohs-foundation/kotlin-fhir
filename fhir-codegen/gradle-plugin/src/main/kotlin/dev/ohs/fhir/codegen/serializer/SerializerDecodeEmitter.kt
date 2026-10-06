@@ -51,7 +51,7 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
   ): FunSpec {
     val codeBlock = CodeBlock.builder()
     if (!parameterized) {
-      codeBlock.add("return decoder.%M(descriptor) {\n", decodeStructureMemberName).indent()
+      codeBlock.add("val compositeDecoder = decoder.beginStructure(descriptor)\n")
     }
     // One local per flat wire field — choice types expand into per-expansion value + element
     // (`_field`) locals
@@ -74,17 +74,17 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
       // `discriminatorHolder` consumes that key before we ever see slot 0, so the branch is dead
       // but harmless there.
       codeBlock.add("while (true) {\n").indent()
-      codeBlock.add("val i = decoder.decodeElementIndex(descriptor)\n")
+      codeBlock.add("val i = compositeDecoder.decodeElementIndex(descriptor)\n")
       codeBlock.add("if (i == %T.DECODE_DONE) break\n", compositeDecoderClassName)
       codeBlock.add("when (i - descriptorOffset) {\n").indent()
-      codeBlock.add("-1 -> decoder.decodeStringElement(descriptor, i)\n")
+      codeBlock.add("-1 -> compositeDecoder.decodeStringElement(descriptor, i)\n")
       for (wireField in wireFields) {
         val label = nameToCaseLabel.getValue(wireField.name)
         codeBlock.add(
           "%L -> %N = %L\n",
           label,
           wireField.name,
-          jsonDecodeElementCall(wireField, className, recv = "decoder."),
+          jsonDecodeElementCall(wireField, className),
         )
       }
       codeBlock.add(
@@ -98,7 +98,7 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
       codeBlock.add(emitModelConstruction(className, elements))
       return FunSpec.builder("deserializeInternal")
         .addModifiers(KModifier.OVERRIDE)
-        .addParameter("decoder", compositeDecoderClassName)
+        .addParameter("compositeDecoder", compositeDecoderClassName)
         .addParameter("descriptor", serialDescriptorClassName)
         .addParameter("descriptorOffset", Int::class)
         .returns(className)
@@ -106,14 +106,14 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
         .build()
     } else {
       codeBlock.add("while (true) {\n").indent()
-      codeBlock.add("when (val i = decodeElementIndex(descriptor)) {\n").indent()
+      codeBlock.add("when (val i = compositeDecoder.decodeElementIndex(descriptor)) {\n").indent()
       for (wireField in wireFields) {
         val label = nameToCaseLabel.getValue(wireField.name)
         codeBlock.add(
           "%L -> %N = %L\n",
           label,
           wireField.name,
-          jsonDecodeElementCall(wireField, className, recv = ""),
+          jsonDecodeElementCall(wireField, className),
         )
       }
       codeBlock.add("%T.DECODE_DONE -> break\n", compositeDecoderClassName)
@@ -124,8 +124,9 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
       )
       codeBlock.unindent().add("}\n")
       codeBlock.unindent().add("}\n")
+      codeBlock.add("compositeDecoder.endStructure(descriptor)\n")
+      codeBlock.add("return ")
       codeBlock.add(emitModelConstruction(className, elements))
-      codeBlock.unindent().add("}\n")
       return FunSpec.builder("deserialize")
         .addModifiers(KModifier.OVERRIDE)
         .addParameter("decoder", decoderClassName)
@@ -143,7 +144,6 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
   private fun jsonDecodeElementCall(
     wireField: WireField,
     parentClass: ClassName,
-    recv: String,
   ): CodeBlock {
     // The descriptor index always comes from `i` — the value just returned by
     // `decodeElementIndex`. Encoding it as a literal here (instead of `i`) would lock the
@@ -153,18 +153,21 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
     val nonNull = wireField.typeName.copy(nullable = false)
     if (nonNull is ClassName && nonNull.packageName == "kotlin") {
       when (nonNull.simpleName) {
-        "String" -> return CodeBlock.of("${recv}decodeStringElement(descriptor, i)")
-        "Boolean" -> return CodeBlock.of("${recv}decodeBooleanElement(descriptor, i)")
-        "Int" -> return CodeBlock.of("${recv}decodeIntElement(descriptor, i)")
-        "Long" -> return CodeBlock.of("${recv}decodeLongElement(descriptor, i)")
-        "Double" -> return CodeBlock.of("${recv}decodeDoubleElement(descriptor, i)")
-        "Char" -> return CodeBlock.of("${recv}decodeCharElement(descriptor, i)")
+        "String" -> return CodeBlock.of("compositeDecoder.decodeStringElement(descriptor, i)")
+        "Boolean" -> return CodeBlock.of("compositeDecoder.decodeBooleanElement(descriptor, i)")
+        "Int" -> return CodeBlock.of("compositeDecoder.decodeIntElement(descriptor, i)")
+        "Long" -> return CodeBlock.of("compositeDecoder.decodeLongElement(descriptor, i)")
+        "Double" -> return CodeBlock.of("compositeDecoder.decodeDoubleElement(descriptor, i)")
+        "Char" -> return CodeBlock.of("compositeDecoder.decodeCharElement(descriptor, i)")
       }
     }
     val ser = serializerRefForTypeName(wireField.typeName, parentClass)
     // Explicit `previousValue = null` — 4-arg form — so Kotlin emits a direct interface call
     // instead of the `decodeNullableSerializableElement$default` static synthetic bridge.
-    return CodeBlock.of("${recv}decodeNullableSerializableElement(descriptor, i, %L, null)", ser)
+    return CodeBlock.of(
+      "compositeDecoder.decodeNullableSerializableElement(descriptor, i, %L, null)",
+      ser,
+    )
   }
 
   /** Builds the `return ModelType(...)` expression after the decode loop has populated locals. */

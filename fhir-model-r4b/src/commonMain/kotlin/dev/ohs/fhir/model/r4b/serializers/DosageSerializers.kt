@@ -50,8 +50,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object DosageDoseAndRateSerializer : KSerializer<Dosage.DoseAndRate> {
   override val descriptor: SerialDescriptor =
@@ -71,84 +69,112 @@ internal object DosageDoseAndRateSerializer : KSerializer<Dosage.DoseAndRate> {
 
   internal val listSerializer: KSerializer<List<Dosage.DoseAndRate>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Dosage.DoseAndRate =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var type: CodeableConcept? = null
-      var doseRange: Range? = null
-      var doseQuantity: Quantity? = null
-      var rateRatio: Ratio? = null
-      var rateRange: Range? = null
-      var rateQuantity: Quantity? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            type = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          3 -> doseRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-          4 ->
-            doseQuantity =
-              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          5 -> rateRatio = decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-          6 -> rateRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-          7 ->
-            rateQuantity =
-              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding DoseAndRate: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Dosage.DoseAndRate {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var type: CodeableConcept? = null
+    var doseRange: Range? = null
+    var doseQuantity: Quantity? = null
+    var rateRatio: Ratio? = null
+    var rateRange: Range? = null
+    var rateQuantity: Quantity? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        3 ->
+          doseRange =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        4 ->
+          doseQuantity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        5 ->
+          rateRatio =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+        6 ->
+          rateRange =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        7 ->
+          rateQuantity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding DoseAndRate: " + i)
       }
-      Dosage.DoseAndRate(
-        id = id,
-        extension = extension ?: listOf(),
-        type = type,
-        dose = Dosage.DoseAndRate.Dose.from(doseRange, doseQuantity),
-        rate = Dosage.DoseAndRate.Rate.from(rateRatio, rateRange, rateQuantity),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Dosage.DoseAndRate(
+      id = id,
+      extension = extension ?: listOf(),
+      type = type,
+      dose = Dosage.DoseAndRate.Dose.from(doseRange, doseQuantity),
+      rate = Dosage.DoseAndRate.Rate.from(rateRatio, rateRange, rateQuantity),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Dosage.DoseAndRate) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      encodeSerializableIfNotNull(descriptor, 2, CodeableConceptSerializer, value.type)
-      when (val choice = value.dose) {
-        null -> {}
-        is Dosage.DoseAndRate.Dose.Range -> {
-          encodeSerializableElement(descriptor, 3, RangeSerializer, choice.value)
-        }
-        is Dosage.DoseAndRate.Dose.Quantity -> {
-          encodeSerializableElement(descriptor, 4, QuantitySerializer, choice.value)
-        }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      2,
+      CodeableConceptSerializer,
+      value.type,
+    )
+    when (val choice = value.dose) {
+      null -> {}
+      is Dosage.DoseAndRate.Dose.Range -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 3, RangeSerializer, choice.value)
       }
-      when (val choice = value.rate) {
-        null -> {}
-        is Dosage.DoseAndRate.Rate.Ratio -> {
-          encodeSerializableElement(descriptor, 5, RatioSerializer, choice.value)
-        }
-        is Dosage.DoseAndRate.Rate.Range -> {
-          encodeSerializableElement(descriptor, 6, RangeSerializer, choice.value)
-        }
-        is Dosage.DoseAndRate.Rate.Quantity -> {
-          encodeSerializableElement(descriptor, 7, QuantitySerializer, choice.value)
-        }
+      is Dosage.DoseAndRate.Dose.Quantity -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, choice.value)
       }
     }
+    when (val choice = value.rate) {
+      null -> {}
+      is Dosage.DoseAndRate.Rate.Ratio -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 5, RatioSerializer, choice.value)
+      }
+      is Dosage.DoseAndRate.Rate.Range -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 6, RangeSerializer, choice.value)
+      }
+      is Dosage.DoseAndRate.Rate.Quantity -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 7, QuantitySerializer, choice.value)
+      }
+    }
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -192,184 +218,277 @@ internal object DosageSerializer : KSerializer<Dosage> {
 
   internal val listSerializer: KSerializer<List<Dosage>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Dosage =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var sequence: Int? = null
-      var _sequence: Element? = null
-      var text: KotlinString? = null
-      var _text: Element? = null
-      var additionalInstruction: List<CodeableConcept>? = null
-      var patientInstruction: KotlinString? = null
-      var _patientInstruction: Element? = null
-      var timing: Timing? = null
-      var asNeededBoolean: KotlinBoolean? = null
-      var _asNeededBoolean: Element? = null
-      var asNeededCodeableConcept: CodeableConcept? = null
-      var site: CodeableConcept? = null
-      var route: CodeableConcept? = null
-      var method: CodeableConcept? = null
-      var doseAndRate: List<Dosage.DoseAndRate>? = null
-      var maxDosePerPeriod: Ratio? = null
-      var maxDosePerAdministration: Quantity? = null
-      var maxDosePerLifetime: Quantity? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> sequence = decodeIntElement(descriptor, i)
-          4 -> _sequence = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> text = decodeStringElement(descriptor, i)
-          6 -> _text = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 ->
-            additionalInstruction =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                CodeableConceptSerializer.listSerializer,
-                null,
-              )
-          8 -> patientInstruction = decodeStringElement(descriptor, i)
-          9 ->
-            _patientInstruction =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          10 -> timing = decodeNullableSerializableElement(descriptor, i, TimingSerializer, null)
-          11 -> asNeededBoolean = decodeBooleanElement(descriptor, i)
-          12 ->
-            _asNeededBoolean =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          13 ->
-            asNeededCodeableConcept =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          14 ->
-            site = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          15 ->
-            route =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          16 ->
-            method =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          17 ->
-            doseAndRate =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                DosageDoseAndRateSerializer.listSerializer,
-                null,
-              )
-          18 ->
-            maxDosePerPeriod =
-              decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-          19 ->
-            maxDosePerAdministration =
-              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          20 ->
-            maxDosePerLifetime =
-              decodeNullableSerializableElement(descriptor, i, QuantitySerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Dosage: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Dosage {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var text: KotlinString? = null
+    var _text: Element? = null
+    var additionalInstruction: List<CodeableConcept>? = null
+    var patientInstruction: KotlinString? = null
+    var _patientInstruction: Element? = null
+    var timing: Timing? = null
+    var asNeededBoolean: KotlinBoolean? = null
+    var _asNeededBoolean: Element? = null
+    var asNeededCodeableConcept: CodeableConcept? = null
+    var site: CodeableConcept? = null
+    var route: CodeableConcept? = null
+    var method: CodeableConcept? = null
+    var doseAndRate: List<Dosage.DoseAndRate>? = null
+    var maxDosePerPeriod: Ratio? = null
+    var maxDosePerAdministration: Quantity? = null
+    var maxDosePerLifetime: Quantity? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 -> sequence = compositeDecoder.decodeIntElement(descriptor, i)
+        4 ->
+          _sequence =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> text = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 ->
+          additionalInstruction =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        8 -> patientInstruction = compositeDecoder.decodeStringElement(descriptor, i)
+        9 ->
+          _patientInstruction =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        10 ->
+          timing =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              TimingSerializer,
+              null,
+            )
+        11 -> asNeededBoolean = compositeDecoder.decodeBooleanElement(descriptor, i)
+        12 ->
+          _asNeededBoolean =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 ->
+          asNeededCodeableConcept =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        14 ->
+          site =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        15 ->
+          route =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        16 ->
+          method =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        17 ->
+          doseAndRate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              DosageDoseAndRateSerializer.listSerializer,
+              null,
+            )
+        18 ->
+          maxDosePerPeriod =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+        19 ->
+          maxDosePerAdministration =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        20 ->
+          maxDosePerLifetime =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Dosage: " + i)
       }
-      Dosage(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        sequence = Integer.of(sequence, _sequence),
-        text = R4bString.of(text, _text),
-        additionalInstruction = additionalInstruction ?: listOf(),
-        patientInstruction = R4bString.of(patientInstruction, _patientInstruction),
-        timing = timing,
-        asNeeded =
-          Dosage.AsNeeded.from(
-            R4bBoolean.of(asNeededBoolean, _asNeededBoolean),
-            asNeededCodeableConcept,
-          ),
-        site = site,
-        route = route,
-        method = method,
-        doseAndRate = doseAndRate ?: listOf(),
-        maxDosePerPeriod = maxDosePerPeriod,
-        maxDosePerAdministration = maxDosePerAdministration,
-        maxDosePerLifetime = maxDosePerLifetime,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Dosage(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = Integer.of(sequence, _sequence),
+      text = R4bString.of(text, _text),
+      additionalInstruction = additionalInstruction ?: listOf(),
+      patientInstruction = R4bString.of(patientInstruction, _patientInstruction),
+      timing = timing,
+      asNeeded =
+        Dosage.AsNeeded.from(
+          R4bBoolean.of(asNeededBoolean, _asNeededBoolean),
+          asNeededCodeableConcept,
+        ),
+      site = site,
+      route = route,
+      method = method,
+      doseAndRate = doseAndRate ?: listOf(),
+      maxDosePerPeriod = maxDosePerPeriod,
+      maxDosePerAdministration = maxDosePerAdministration,
+      maxDosePerLifetime = maxDosePerLifetime,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Dosage) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      encodeIntIfNotNull(descriptor, 3, value.sequence?.value)
-      encodeElementIfNotNull(descriptor, 4, value.sequence)
-      encodeStringIfNotNull(descriptor, 5, value.text?.value)
-      encodeElementIfNotNull(descriptor, 6, value.text)
-      if (value.additionalInstruction.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          7,
-          CodeableConceptSerializer.listSerializer,
-          value.additionalInstruction,
-        )
-      encodeStringIfNotNull(descriptor, 8, value.patientInstruction?.value)
-      encodeElementIfNotNull(descriptor, 9, value.patientInstruction)
-      encodeSerializableIfNotNull(descriptor, 10, TimingSerializer, value.timing)
-      when (val choice = value.asNeeded) {
-        null -> {}
-        is Dosage.AsNeeded.Boolean -> {
-          encodeBooleanIfNotNull(descriptor, 11, choice.value.value)
-          encodeElementIfNotNull(descriptor, 12, choice.value)
-        }
-        is Dosage.AsNeeded.CodeableConcept -> {
-          encodeSerializableElement(descriptor, 13, CodeableConceptSerializer, choice.value)
-        }
-      }
-      encodeSerializableIfNotNull(descriptor, 14, CodeableConceptSerializer, value.site)
-      encodeSerializableIfNotNull(descriptor, 15, CodeableConceptSerializer, value.route)
-      encodeSerializableIfNotNull(descriptor, 16, CodeableConceptSerializer, value.method)
-      if (value.doseAndRate.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          17,
-          DosageDoseAndRateSerializer.listSerializer,
-          value.doseAndRate,
-        )
-      encodeSerializableIfNotNull(descriptor, 18, RatioSerializer, value.maxDosePerPeriod)
-      encodeSerializableIfNotNull(
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
         descriptor,
-        19,
-        QuantitySerializer,
-        value.maxDosePerAdministration,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
       )
-      encodeSerializableIfNotNull(descriptor, 20, QuantitySerializer, value.maxDosePerLifetime)
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.text?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.text)
+    if (value.additionalInstruction.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        7,
+        CodeableConceptSerializer.listSerializer,
+        value.additionalInstruction,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 8, value.patientInstruction?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.patientInstruction)
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 10, TimingSerializer, value.timing)
+    when (val choice = value.asNeeded) {
+      null -> {}
+      is Dosage.AsNeeded.Boolean -> {
+        compositeEncoder.encodeBooleanIfNotNull(descriptor, 11, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 12, choice.value)
+      }
+      is Dosage.AsNeeded.CodeableConcept -> {
+        compositeEncoder.encodeSerializableElement(
+          descriptor,
+          13,
+          CodeableConceptSerializer,
+          choice.value,
+        )
+      }
     }
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      14,
+      CodeableConceptSerializer,
+      value.site,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      15,
+      CodeableConceptSerializer,
+      value.route,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      16,
+      CodeableConceptSerializer,
+      value.method,
+    )
+    if (value.doseAndRate.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        17,
+        DosageDoseAndRateSerializer.listSerializer,
+        value.doseAndRate,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      18,
+      RatioSerializer,
+      value.maxDosePerPeriod,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      19,
+      QuantitySerializer,
+      value.maxDosePerAdministration,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      20,
+      QuantitySerializer,
+      value.maxDosePerLifetime,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }

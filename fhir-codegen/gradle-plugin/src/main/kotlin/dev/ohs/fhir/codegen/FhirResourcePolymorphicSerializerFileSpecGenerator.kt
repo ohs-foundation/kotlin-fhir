@@ -117,7 +117,7 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
         .addFunction(
           FunSpec.builder("deserializeInternal")
             .addModifiers(KModifier.ABSTRACT)
-            .addParameter("decoder", compositeDecoderClassName)
+            .addParameter("compositeDecoder", compositeDecoderClassName)
             .addParameter("descriptor", serialDescriptorClassName)
             .addParameter("descriptorOffset", Int::class)
             .returns(typeVarT)
@@ -126,7 +126,7 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
         .addFunction(
           FunSpec.builder("serializeInternal")
             .addModifiers(KModifier.ABSTRACT)
-            .addParameter("encoder", compositeEncoderClassName)
+            .addParameter("compositeEncoder", compositeEncoderClassName)
             .addParameter("descriptor", serialDescriptorClassName)
             .addParameter("descriptorOffset", Int::class)
             .addParameter("value", typeVarT)

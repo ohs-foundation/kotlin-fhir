@@ -41,8 +41,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
   override val descriptor: SerialDescriptor =
@@ -58,52 +56,74 @@ internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
 
   internal val listSerializer: KSerializer<List<CodeableReference>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): CodeableReference =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var concept: CodeableConcept? = null
-      var reference: Reference? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            concept =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          3 ->
-            reference = decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding CodeableReference: " + i)
-        }
+  override fun deserialize(decoder: Decoder): CodeableReference {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var concept: CodeableConcept? = null
+    var reference: Reference? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          concept =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        3 ->
+          reference =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding CodeableReference: " + i)
       }
-      CodeableReference(
-        id = id,
-        extension = extension ?: listOf(),
-        concept = concept,
-        reference = reference,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return CodeableReference(
+      id = id,
+      extension = extension ?: listOf(),
+      concept = concept,
+      reference = reference,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: CodeableReference) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      encodeSerializableIfNotNull(descriptor, 2, CodeableConceptSerializer, value.concept)
-      encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.reference)
-    }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      2,
+      CodeableConceptSerializer,
+      value.concept,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      ReferenceSerializer,
+      value.reference,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }

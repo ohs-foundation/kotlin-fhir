@@ -40,8 +40,6 @@ import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object PopulationSerializer : KSerializer<Population> {
   override val descriptor: SerialDescriptor =
@@ -58,96 +56,135 @@ internal object PopulationSerializer : KSerializer<Population> {
 
   internal val listSerializer: KSerializer<List<Population>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Population =
-    decoder.decodeStructure(descriptor) {
-      var id: String? = null
-      var extension: List<Extension>? = null
-      var modifierExtension: List<Extension>? = null
-      var ageRange: Range? = null
-      var ageCodeableConcept: CodeableConcept? = null
-      var gender: CodeableConcept? = null
-      var race: CodeableConcept? = null
-      var physiologicalCondition: CodeableConcept? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            modifierExtension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          3 -> ageRange = decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-          4 ->
-            ageCodeableConcept =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          5 ->
-            gender =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          6 ->
-            race = decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          7 ->
-            physiologicalCondition =
-              decodeNullableSerializableElement(descriptor, i, CodeableConceptSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Population: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Population {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var ageRange: Range? = null
+    var ageCodeableConcept: CodeableConcept? = null
+    var gender: CodeableConcept? = null
+    var race: CodeableConcept? = null
+    var physiologicalCondition: CodeableConcept? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          ageRange =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        4 ->
+          ageCodeableConcept =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        5 ->
+          gender =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        6 ->
+          race =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        7 ->
+          physiologicalCondition =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Population: " + i)
       }
-      Population(
-        id = id,
-        extension = extension ?: listOf(),
-        modifierExtension = modifierExtension ?: listOf(),
-        age = Population.Age.from(ageRange, ageCodeableConcept),
-        gender = gender,
-        race = race,
-        physiologicalCondition = physiologicalCondition,
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Population(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      age = Population.Age.from(ageRange, ageCodeableConcept),
+      gender = gender,
+      race = race,
+      physiologicalCondition = physiologicalCondition,
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Population) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      if (value.modifierExtension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          2,
-          ExtensionSerializer.listSerializer,
-          value.modifierExtension,
-        )
-      when (val choice = value.age) {
-        null -> {}
-        is Population.Age.Range -> {
-          encodeSerializableElement(descriptor, 3, RangeSerializer, choice.value)
-        }
-        is Population.Age.CodeableConcept -> {
-          encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, choice.value)
-        }
-      }
-      encodeSerializableIfNotNull(descriptor, 5, CodeableConceptSerializer, value.gender)
-      encodeSerializableIfNotNull(descriptor, 6, CodeableConceptSerializer, value.race)
-      encodeSerializableIfNotNull(
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
         descriptor,
-        7,
-        CodeableConceptSerializer,
-        value.physiologicalCondition,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
       )
+    if (value.modifierExtension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        2,
+        ExtensionSerializer.listSerializer,
+        value.modifierExtension,
+      )
+    when (val choice = value.age) {
+      null -> {}
+      is Population.Age.Range -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 3, RangeSerializer, choice.value)
+      }
+      is Population.Age.CodeableConcept -> {
+        compositeEncoder.encodeSerializableElement(
+          descriptor,
+          4,
+          CodeableConceptSerializer,
+          choice.value,
+        )
+      }
     }
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      5,
+      CodeableConceptSerializer,
+      value.gender,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6,
+      CodeableConceptSerializer,
+      value.race,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      7,
+      CodeableConceptSerializer,
+      value.physiologicalCondition,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }

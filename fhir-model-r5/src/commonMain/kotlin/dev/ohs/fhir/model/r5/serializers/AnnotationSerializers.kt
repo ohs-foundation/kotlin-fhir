@@ -45,8 +45,6 @@ import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object AnnotationSerializer : KSerializer<Annotation> {
   override val descriptor: SerialDescriptor =
@@ -67,78 +65,103 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
 
   internal val listSerializer: KSerializer<List<Annotation>> = ListSerializer(this)
 
-  override fun deserialize(decoder: Decoder): Annotation =
-    decoder.decodeStructure(descriptor) {
-      var id: KotlinString? = null
-      var extension: List<Extension>? = null
-      var authorReference: Reference? = null
-      var authorString: KotlinString? = null
-      var _authorString: Element? = null
-      var time: KotlinString? = null
-      var _time: Element? = null
-      var text: KotlinString? = null
-      var _text: Element? = null
-      while (true) {
-        when (val i = decodeElementIndex(descriptor)) {
-          0 -> id = decodeStringElement(descriptor, i)
-          1 ->
-            extension =
-              decodeNullableSerializableElement(
-                descriptor,
-                i,
-                ExtensionSerializer.listSerializer,
-                null,
-              )
-          2 ->
-            authorReference =
-              decodeNullableSerializableElement(descriptor, i, ReferenceSerializer, null)
-          3 -> authorString = decodeStringElement(descriptor, i)
-          4 ->
-            _authorString =
-              decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          5 -> time = decodeStringElement(descriptor, i)
-          6 -> _time = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          7 -> text = decodeStringElement(descriptor, i)
-          8 -> _text = decodeNullableSerializableElement(descriptor, i, ElementSerializer, null)
-          CompositeDecoder.DECODE_DONE -> break
-          else -> throw SerializationException("Unexpected index decoding Annotation: " + i)
-        }
+  override fun deserialize(decoder: Decoder): Annotation {
+    val compositeDecoder = decoder.beginStructure(descriptor)
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var authorReference: Reference? = null
+    var authorString: KotlinString? = null
+    var _authorString: Element? = null
+    var time: KotlinString? = null
+    var _time: Element? = null
+    var text: KotlinString? = null
+    var _text: Element? = null
+    while (true) {
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          authorReference =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        3 -> authorString = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          _authorString =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        5 -> time = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _time =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> text = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Annotation: " + i)
       }
-      Annotation(
-        id = id,
-        extension = extension ?: listOf(),
-        author = Annotation.Author.from(authorReference, R5String.of(authorString, _authorString)),
-        time = DateTime.of(if (time != null) FhirDateTime.fromString(time) else null, _time),
-        text =
-          Markdown.of(text, _text)
-            ?: throw SerializationException("Missing required property 'text' on Annotation"),
-      )
     }
+    compositeDecoder.endStructure(descriptor)
+    return Annotation(
+      id = id,
+      extension = extension ?: listOf(),
+      author = Annotation.Author.from(authorReference, R5String.of(authorString, _authorString)),
+      time = DateTime.of(if (time != null) FhirDateTime.fromString(time) else null, _time),
+      text =
+        Markdown.of(text, _text)
+          ?: throw SerializationException("Missing required property 'text' on Annotation"),
+    )
+  }
 
   override fun serialize(encoder: Encoder, `value`: Annotation) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringIfNotNull(descriptor, 0, value.id)
-      if (value.extension.isNotEmpty())
-        encodeSerializableElement(
-          descriptor,
-          1,
-          ExtensionSerializer.listSerializer,
-          value.extension,
-        )
-      when (val choice = value.author) {
-        null -> {}
-        is Annotation.Author.Reference -> {
-          encodeSerializableElement(descriptor, 2, ReferenceSerializer, choice.value)
-        }
-        is Annotation.Author.String -> {
-          encodeStringIfNotNull(descriptor, 3, choice.value.value)
-          encodeElementIfNotNull(descriptor, 4, choice.value)
-        }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
+    if (value.extension.isNotEmpty())
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    when (val choice = value.author) {
+      null -> {}
+      is Annotation.Author.Reference -> {
+        compositeEncoder.encodeSerializableElement(descriptor, 2, ReferenceSerializer, choice.value)
       }
-      encodeStringIfNotNull(descriptor, 5, value.time?.value?.toString())
-      encodeElementIfNotNull(descriptor, 6, value.time)
-      encodeStringIfNotNull(descriptor, 7, value.text.value)
-      encodeElementIfNotNull(descriptor, 8, value.text)
+      is Annotation.Author.String -> {
+        compositeEncoder.encodeStringIfNotNull(descriptor, 3, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 4, choice.value)
+      }
     }
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.time?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.time)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.text.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.text)
+    compositeEncoder.endStructure(descriptor)
   }
 }
